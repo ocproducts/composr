@@ -25,8 +25,6 @@
  */
 function init__database_search()
 {
-    require_code('search');
-
     $GLOBALS['TOTAL_SEARCH_RESULTS'] = 0;
 
     $maximum_result_count_point = get_value('maximum_result_count_point');
@@ -1262,7 +1260,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
             $db->dedupe_mode = false;
         } else { // Much simpler code if we don't have multi-lang-content
-            list(, $boolean_operator, $body_where, $include_where, $disclude_where) = build_content_where($content, $boolean_search, $boolean_operator);
+            list(, $boolean_operator, $body_where, $include_where, $exclude_where) = build_content_where($content, $boolean_search, $boolean_operator);
 
             $simple_table = preg_replace('# .*#', '', $table);
             $indices_for_table = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_fields'), array('i_table' => $simple_table));
@@ -1351,7 +1349,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                     }
                 }
             }
-            if ($disclude_where != '') {
+            if ($exclude_where != '') {
                 foreach ($all_fields as $field) {
                     if (($field == '') || ($field == '!')) {
                         continue;
@@ -1364,7 +1362,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                     if ($where_clause != '') {
                         $where_clause .= ' AND ';
                     }
-                    $where_clause .= preg_replace('#\?#', $field, $disclude_where);
+                    $where_clause .= preg_replace('#\?#', $field, $exclude_where);
                 }
             }
 
@@ -1500,7 +1498,7 @@ function _boolean_search_prepare($search_filter)
 
     $body_words = array();
     $include_words = array();
-    $disclude_words = array();
+    $exclude_words = array();
     for ($i = 0; $i < count($content_explode); $i++) {
         $word = trim($content_explode[$i]);
         if (($word == '') || ($word == '+') || ($word == '-')) {
@@ -1530,13 +1528,13 @@ function _boolean_search_prepare($search_filter)
         if ($word[0] == '+') {
             $include_words[] = $word;
         } elseif ($word[0] == '-') {
-            $disclude_words[] = $word;
+            $exclude_words[] = $word;
         } else {
             $body_words[] = $word;
         }
     }
 
-    return array($body_words, $include_words, $disclude_words);
+    return array($body_words, $include_words, $exclude_words);
 }
 
 /**
@@ -1562,13 +1560,13 @@ function in_memory_search_match($filter, $title, $post = null)
 
     $boolean_operator = array_key_exists('conjunctive_operator', $filter) ? $filter['conjunctive_operator'] : 'OR';
 
-    list($body_words, $include_words, $disclude_words) = _boolean_search_prepare($search_filter);
+    list($body_words, $include_words, $exclude_words) = _boolean_search_prepare($search_filter);
     foreach ($include_words as $word) {
         if (!simulated_wildcard_match($context, $word)) {
             return false;
         }
     }
-    foreach ($disclude_words as $word) {
+    foreach ($exclude_words as $word) {
         if (simulated_wildcard_match($context, $word)) {
             return false;
         }
@@ -1605,7 +1603,9 @@ function in_memory_search_match($filter, $title, $post = null)
  */
 function build_content_where($content, $boolean_search, &$boolean_operator, $full_coverage = false)
 {
-    list($body_words, $include_words, $disclude_words) = _boolean_search_prepare($content);
+    list($body_words, $include_words, $exclude_words) = _boolean_search_prepare($content);
+
+    require_code('search');
 
     $under_radar = false;
     if ((is_under_radar($content)) && ($content != '')) {
@@ -1620,15 +1620,15 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
             $content_where = '';
             $body_where = array();
             $include_where = array();
-            $disclude_where = '';
+            $exclude_where = '';
         } else {
             if ((get_param_integer('force_like', 0) == 0) && ($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) && (!$under_radar)) {
                 $content_where = $GLOBALS['SITE_DB']->full_text_assemble($content, true);
                 $body_where = array($content_where);
                 $include_where = array();
-                $disclude_where = '';
+                $exclude_where = '';
             } else {
-                list($content_where, $boolean_operator, $body_where, $include_where, $disclude_where) = db_like_assemble($content, $boolean_operator, $full_coverage);
+                list($content_where, $boolean_operator, $body_where, $include_where, $exclude_where) = db_like_assemble($content, $boolean_operator, $full_coverage);
                 if ($content_where == '') {
                     $content_where = '1=1';
                 }
@@ -1639,17 +1639,17 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
             $content_where = '';
             $body_where = array();
             $include_where = array();
-            $disclude_where = '';
+            $exclude_where = '';
         } else {
             $content_where = $GLOBALS['SITE_DB']->full_text_assemble($content, false);
             $body_where = array($content_where);
             $include_where = array();
-            $disclude_where = '';
+            $exclude_where = '';
         }
         $boolean_operator = 'OR';
     }
 
-    return array($content_where, $boolean_operator, $body_where, $include_where, $disclude_where);
+    return array($content_where, $boolean_operator, $body_where, $include_where, $exclude_where);
 }
 
 /**
@@ -1666,7 +1666,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
     $content = str_replace('?', '_', $content);
     $content = str_replace('*', '%', $content);
 
-    list($body_words, $include_words, $disclude_words) = _boolean_search_prepare($content);
+    list($body_words, $include_words, $exclude_words) = _boolean_search_prepare($content);
 
     $fc_before = $full_coverage ? '' : '%';
     $fc_after = $full_coverage ? '' : '%';
@@ -1687,15 +1687,15 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
             $include_where[] = '? LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
         }
     }
-    $disclude_where = '';
-    foreach ($disclude_words as $word) {
-        if ($disclude_where != '') {
-            $disclude_where .= ' AND ';
+    $exclude_where = '';
+    foreach ($exclude_words as $word) {
+        if ($exclude_where != '') {
+            $exclude_where .= ' AND ';
         }
         if ((strtoupper($word) == $word) && ($GLOBALS['DB_STATIC_OBJECT']->has_collate_settings()) && (!is_numeric($word))) {
-            $disclude_where .= 'CONVERT(? USING latin1) NOT LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
+            $exclude_where .= 'CONVERT(? USING latin1) NOT LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
-            $disclude_where .= '? NOT LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
+            $exclude_where .= '? NOT LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
         }
     }
 
@@ -1713,14 +1713,14 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
         }
         $content_where .= '(' . implode(' AND ', $include_where) . ')';
     }
-    if ($disclude_where != '') {
+    if ($exclude_where != '') {
         if ($content_where != '') {
             $content_where .= ' AND ';
         }
-        $content_where .= '(' . $disclude_where . ')';
+        $content_where .= '(' . $exclude_where . ')';
     }
 
-    return array($content_where, $boolean_operator, $body_where, $include_where, $disclude_where);
+    return array($content_where, $boolean_operator, $body_where, $include_where, $exclude_where);
 }
 
 /**

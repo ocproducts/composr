@@ -126,7 +126,15 @@
 			{+END}
 		{+END}
 
-		{+START,IF,{$OR,{$AND,{VIEW_PROFILES},{$IS_NON_EMPTY,{CUSTOM_FIELDS}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
+		{+START,SET,cpf_display}
+			{+START,IF,{VIEW_PROFILES}}
+				{+START,LOOP,CUSTOM_FIELDS}
+					{+START,INCLUDE,CNS_MEMBER_PROFILE_FIELDS}{+END}
+				{+END}
+			{+END}
+		{+END}
+
+		{+START,IF,{$OR,{$IS_NON_EMPTY,{$TRIM,{$GET,cpf_display}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
 			<h2>{!ABOUT}</h2>
 
 			<div class="wide-table-wrap">
@@ -139,11 +147,7 @@
 					{+END}
 
 					<tbody>
-						{+START,IF,{VIEW_PROFILES}}
-							{+START,LOOP,CUSTOM_FIELDS}
-								{+START,INCLUDE,CNS_MEMBER_PROFILE_FIELDS}{+END}
-							{+END}
-						{+END}
+						{$GET,cpf_display}
 
 						{+START,IF,{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}
 							<tr>
@@ -314,7 +318,7 @@
 							{+START,IF_PASSED,SUBMIT_DAYS_AGO}
 								<tr>
 									<th class="de-th">{!LAST_SUBMIT_TIME}:</th>
-									<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
+									<td>{!_AGO,{!DAYS,{SUBMIT_DAYS_AGO}}}</td>
 								</tr>
 							{+END}
 

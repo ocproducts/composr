@@ -45,6 +45,14 @@ function init__form_templates()
     global $DOING_ALTERNATE_FIELDS_SET;
     $DOING_ALTERNATE_FIELDS_SET = null;
 
+    // This is a hackerish way to chain raw field inputs together
+    global $_FORM_INPUT_PREFIX, $_FORM_INPUT_SUFFIX;
+    $_FORM_INPUT_PREFIX = null;
+    $_FORM_INPUT_SUFFIX = null;
+
+    global $SKIPPING_LABELS;
+    $SKIPPING_LABELS = false;
+
     require_css('forms');
 
     if (function_exists('get_member')) {
@@ -682,10 +690,14 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
 
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $_default = $coder_ob->decode($default);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_URL', array('_GUID' => '12789c9af25cbc971e86bfcc0ad322d5', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_URL', array('_GUID' => '12789c9af25cbc971e86bfcc0ad322d5', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $_default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -1487,11 +1499,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    require_code('urls_simplifier');
-    $coder_ob = new HarmlessURLCoder();
-    $_default = $coder_ob->decode($default);
-
-    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $_default, $required);
+    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required);
 
     $field_set->attach($url_widget);
 
@@ -1520,7 +1528,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
             } else {
                 $filedump_options = array();
             }
-            $filedump_default = (preg_match('#^uploads/filedump/#', $default) != 0) ? $default : '';
+            if ($default === null) {
+                $filedump_default = '';
+            } else {
+                $filedump_default = (preg_match('#^uploads/filedump/#', $default) != 0) ? $default : '';
+            }
             $filedump_field_description = do_lang_tempcode('DESCRIPTION_ALTERNATE_URL_FILEDUMP', escape_html($filedump_url->evaluate()));
             $filedump_widget = form_input_tree_list(do_lang_tempcode('FILEDUMP'), $filedump_field_description, $field_filedump, '', 'choose_filedump_file', $filedump_options, $required, $filedump_default, false);
             $field_set->attach($filedump_widget);
@@ -2605,6 +2617,23 @@ function form_input_na($pretty_name, $tabindex = null)
  */
 function _form_input($name, $pretty_name, $description, $input, $required, $comcode = false, $tabindex = null, $w = false, $skip_label = false, $description_side = '', $pattern_error = null)
 {
+    global $_FORM_INPUT_PREFIX, $_FORM_INPUT_SUFFIX;
+    if ($_FORM_INPUT_PREFIX !== null) {
+        $_input = new Tempcode();
+        $_input->attach($_FORM_INPUT_PREFIX);
+        $_input->attach('<br />');
+        $_input->attach('<br />');
+        $_input->attach($input);
+        if ($_FORM_INPUT_SUFFIX !== null) {
+            $_input->attach($_FORM_INPUT_SUFFIX);
+        }
+        $input = $_input;
+    } elseif ($_FORM_INPUT_SUFFIX !== null) {
+        $input->attach('<br />');
+        $input->attach('<br />');
+        $input->attach($_FORM_INPUT_SUFFIX);
+    }
+
     check_suhosin_request_quantity(2, ($name == '') ? 20 : strlen($name));
 
     if (($GLOBALS['DEV_MODE']) && (user_lang() == fallback_lang())) {
@@ -2617,7 +2646,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
     $help_zone = get_comcode_zone('userguide_comcode', false);
     $_comcode = (($help_zone === null) || (!$comcode)) ? new Tempcode() : do_template('COMCODE_MESSAGE', array('_GUID' => '7668b8365e34b2484be7c2c271f82e79', 'NAME' => $name, 'W' => $w, 'URL' => build_url(array('page' => 'userguide_comcode'), $help_zone)));
 
-    global $DOING_ALTERNATE_FIELDS_SET;
+    global $DOING_ALTERNATE_FIELDS_SET, $SKIPPING_LABELS;
     if ($DOING_ALTERNATE_FIELDS_SET !== null) {
         if ($DOING_ALTERNATE_FIELDS_SET == '') {
             return $input;
@@ -2627,7 +2656,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
             '_GUID' => '23f2e2df7fcacc01d9f5158dc635e73d',
             'SET_NAME' => $DOING_ALTERNATE_FIELDS_SET,
             'REQUIRED' => $required,
-            'SKIP_LABEL' => $skip_label,
+            'SKIP_LABEL' => $skip_label || $SKIPPING_LABELS,
             'NAME' => $name,
             'PRETTY_NAME' => $pretty_name,
             'DESCRIPTION' => $description,
@@ -2641,7 +2670,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
     $tpl = do_template('FORM_SCREEN_FIELD', array(
         '_GUID' => 'fa1402b7ad8319372f4bb5b152be7852',
         'REQUIRED' => $required,
-        'SKIP_LABEL' => $skip_label,
+        'SKIP_LABEL' => $skip_label || $SKIPPING_LABELS,
         'NAME' => $name,
         'PRETTY_NAME' => $pretty_name,
         'DESCRIPTION' => $description,

@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    code_quality
+ * @package    testing_platform
  */
 
 /*
@@ -151,7 +151,7 @@ function get_charset()
     return 'utf-8';
 }
 
-function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = array())
+function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = array(), $filter = array(), $filter_avoid = array())
 {
     global $COMPOSR_PATH;
     require_once($COMPOSR_PATH . '/sources/files.php');
@@ -164,6 +164,17 @@ function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = ar
         while (($file = readdir($dh)) !== false) {
             if (in_array($file, $avoid)) {
                 continue;
+            }
+
+            foreach ($filter as $_filter) {
+                if (preg_match('#^' . $_filter . '$#', $file) == 0) {
+                    continue 2;
+                }
+            }
+            foreach ($filter_avoid as $_filter_avoid) {
+                if (preg_match('#^' . $_filter_avoid . '$#', $file) != 0) {
+                    continue 2;
+                }
             }
 
             $stripped_path = preg_replace('#^' . preg_quote($COMPOSR_PATH . '/', '#') . '#', '', $dir . '/') . $file;
@@ -190,7 +201,7 @@ function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = ar
                         }
                     }
                 } elseif (is_dir($_dir . '/' . $file)) {
-                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file, $enable_custom, $orig_priority, $avoid));
+                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file, $enable_custom, $orig_priority, $avoid, $filter, $filter_avoid));
                 }
             }
         }

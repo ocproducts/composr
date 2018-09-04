@@ -346,6 +346,7 @@ class CMSModerationWrite
         }
 
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_cache_forum_id', array('id' => $post_id));
+        $title = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('id' => $post_id));
 
         if (!cns_may_moderate_forum($forum_id)) {
             access_denied('I_ERROR');
@@ -357,12 +358,12 @@ class CMSModerationWrite
             require_code('cns_topics_action2');
             $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_validated' => 1), array('id' => $post_id), '', 1);
 
-            cns_mod_log_it('VALIDATE_POST', strval($post_id));
+            cns_mod_log_it('VALIDATE_POST', strval($post_id), $title);
         } else {
             require_code('cns_topics_action2');
             $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_validated' => 0), array('id' => $post_id), '', 1);
 
-            cns_mod_log_it('UNVALIDATE_POST', strval($post_id));
+            cns_mod_log_it('UNVALIDATE_POST', strval($post_id), $title);
         }
 
         return true;
@@ -426,7 +427,7 @@ class CMSModerationWrite
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $expires), array('id' => $user_id), '', 1);
 
             require_code('cns_general_action2');
-            cns_mod_log_it('PUT_ON_PROBATION', strval($user_id), $username, $reason);
+            cns_mod_log_it('START_PROBATION', strval($user_id), $username, $reason);
         }
 
         return true;
@@ -466,7 +467,7 @@ class CMSModerationWrite
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => null), array('id' => $user_id), '', 1);
 
             require_code('cns_general_action2');
-            cns_mod_log_it('REMOVE_FROM_PROBATION', strval($user_id), $username);
+            cns_mod_log_it('STOP_PROBATION', strval($user_id), $username);
         }
 
         return true;

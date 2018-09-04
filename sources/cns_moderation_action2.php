@@ -220,7 +220,7 @@ function warnings_script()
         $content = paragraph(do_lang_tempcode('NO_ENTRIES'), 'rfdsfsdf3t45', 'nothing-here');
     }
 
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '90c86490760cee23a8d5b8a5d14122e9', 'TITLE' => do_lang_tempcode('CHOOSE_SAVED_WARNING'), 'POPUP' => true, 'CONTENT' => $content));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '90c86490760cee23a8d5b8a5d14122e9', 'TITLE' => do_lang_tempcode('CHOOSE_SAVED_WARNING'), 'POPUP' => true, 'NOINDEX' => true, 'CONTENT' => $content));
     $echo->evaluate_echo();
 }
 
@@ -262,7 +262,7 @@ function cns_make_warning($member_id, $explanation, $by = null, $time = null, $i
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_cache_warnings=(m_cache_warnings+1) WHERE id=' . strval($member_id), 1);
     }
 
-    return $GLOBALS['FORUM_DB']->query_insert('f_warnings', array(
+    $id = $GLOBALS['FORUM_DB']->query_insert('f_warnings', array(
         'w_member_id' => $member_id,
         'w_time' => $time,
         'w_explanation' => $explanation,
@@ -276,6 +276,11 @@ function cns_make_warning($member_id, $explanation, $by = null, $time = null, $i
         'p_banned_member' => $banned_member,
         'p_changed_usergroup_from' => $changed_usergroup_from,
     ), true);
+
+    require_code('cns_general_action2');
+    cns_mod_log_it('ADD_WARNING', strval($id), strval($member_id));
+
+    return $id;
 }
 
 /**
@@ -308,6 +313,9 @@ function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
 
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_warnings' => $num_warnings), array('id' => $member_id), '', 1);
 
+    require_code('cns_general_action2');
+    cns_mod_log_it('EDIT_WARNING', strval($warning_id), strval($member_id));
+
     return $member_id;
 }
 
@@ -336,6 +344,9 @@ function cns_delete_warning($warning_id)
 
     $num_warnings = $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'COUNT(*)', array('w_is_warning' => 1, 'w_member_id' => $member_id));
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_warnings' => $num_warnings), array('id' => $member_id), '', 1);
+
+    require_code('cns_general_action2');
+    cns_mod_log_it('DELETE_WARNING', strval($warning_id), strval($member_id));
 
     return $member_id;
 }

@@ -271,7 +271,7 @@ function object_factory($class)
  * @param  string $value New value of option.
  * @return ~string                      Old value of option (false: error).
  */
-function cms_ini_set($var,$value)
+function cms_ini_set($var, $value)
 {
     if (@preg_match('#(\s|,|^)ini_set(\s|$|,)#', strtolower(ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) != 0) {
         return false;

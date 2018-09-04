@@ -21,18 +21,20 @@
 
 {+START,LOOP,NEWS}
 	{+START,SET,news_html}
-		<h3><a href="{URL*`}">{TITLE`}</a></h3>
+		{+START,IF_NON_EMPTY,{TITLE}}
+			<h3><a href="{URL*`}">{TITLE`}</a></h3>
+		{+END}
 
 		<div class="meta-details" role="note">
 			<ul class="meta-details-list">
 				<li>{!POSTED_TIME_SIMPLE,{DATE*`}}</li>
 				{+START,SET,author_details}
-					{+START,IF,{$IS_NON_EMPTY,{AUTHOR_URL}}}
+					{+START,IF_NON_EMPTY,{AUTHOR_URL}}
 						{!BY_SIMPLE,<a href="{AUTHOR_URL*`}" title="{!AUTHOR`}: {AUTHOR*`}">{AUTHOR*`}</a>}
-						{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
+						{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
 					{+END}
 
-					{+START,IF,{$IS_EMPTY,{AUTHOR_URL}}}
+					{+START,IF_EMPTY,{AUTHOR_URL}}
 						{+START,IF_NON_EMPTY,{$USERNAME*,{SUBMITTER}}}
 							{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*`,{SUBMITTER}}">{$USERNAME*`,{SUBMITTER}}</a>}
 							{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
@@ -60,8 +62,5 @@
 			</div>
 		{+END}
 	{+END}
-
-	<script type="text/html" id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" {$CSP_NONCE_HTML}>
-		{$GET,news_html}
-	</script>
+	<span id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" data-tp-html="{ html: {$JSON_ENCODE*,{$GET,news_html}} }" style="display: none"></span>
 {+END}

@@ -164,7 +164,7 @@ function _fixed_post_parser($key, $value)
 }
 
 /**
- * Relay all POST variables for this URL, to the URL embedded in the form.
+ * Relay all POST parameters for this URL, to the URL embedded in the form.
  *
  * @param  array $exclude A list of parameters to exclude
  * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
@@ -297,17 +297,27 @@ function _qualify_url($url, $url_base, $base_is_full_url)
  */
 function _convert_url_to_path($url)
 {
+    $url = preg_replace('#\?\d+$#', '', $url);
     if (strpos($url, '?') !== false) {
         return null;
     }
     if (substr($url, -4) == '.php') {
         return null;
     }
-    if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') || (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/')) {
-        if (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') {
-            $file_path_stub = urldecode(substr($url, strlen(get_base_url()) + 1));
-        } elseif (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/') {
-            $file_path_stub = urldecode(substr($url, strlen(get_custom_base_url()) + 1));
+
+    $url = str_replace('://www.', '://', $url);
+    $bu = str_replace('://www.', '://', get_base_url());
+    $cbu = str_replace('://www.', '://', get_custom_base_url());
+
+    if (
+        (strpos($url, '://') === false) ||
+        (substr($url, 0, strlen($bu) + 1) == $bu . '/') ||
+        (substr($url, 0, strlen($cbu) + 1) == $cbu . '/')
+    ) {
+        if (substr($url, 0, strlen($bu) + 1) == $bu . '/') {
+            $file_path_stub = urldecode(substr($url, strlen($bu) + 1));
+        } elseif (substr($url, 0, strlen($cbu) + 1) == $cbu . '/') {
+            $file_path_stub = urldecode(substr($url, strlen($cbu) + 1));
         } else {
             $file_path_stub = urldecode($url);
         }
@@ -794,7 +804,7 @@ function _generate_moniker($moniker_src)
 {
     $moniker = strip_comcode($moniker_src);
 
-    $max_moniker_length = intval(get_option('max_moniker_length'));
+    $max_moniker_length = min(80, intval(get_option('max_moniker_length')));
 
     // Transliteration first
     if (get_option('moniker_transliteration') == '1') {

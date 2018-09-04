@@ -254,7 +254,7 @@ function cms_file_get_contents_safe($path, $locking = true, $handle_file_bom = f
     if ($locking) {
         flock($tmp, LOCK_SH);
     }
-    $contents = file_get_contents($path);
+    $contents = stream_get_contents($tmp);
     if ($locking) {
         flock($tmp, LOCK_UN);
     }
@@ -637,7 +637,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
     restore_output_state(true); // Here we reset some Tempcode environmental stuff, because template compilation or preprocessing may have dirtied things
 
     $show_border = (get_param_integer('show_border', $show_border ? 1 : 0) == 1);
-    if (!$show_border && !running_script('index')) {
+    if (!$show_border && !running_script('index') && $middle !== null) {
         $global = do_template('STANDALONE_HTML_WRAP', array(
             '_GUID' => 'fe818a6fb0870f0b211e8e52adb23f26',
             'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -660,7 +660,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         global $DOING_OUTPUT_PINGS;
-        if (headers_sent() && !$DOING_OUTPUT_PINGS) {
+        if (headers_sent() && !$DOING_OUTPUT_PINGS && $middle !== null) {
             $global = do_template('STANDALONE_HTML_WRAP', array(
                 '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
                 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -900,9 +900,10 @@ function set_http_status_code($code)
  * @param  string $directory Subdirectory type to look in
  * @set templates css
  * @param  boolean $non_custom_only Whether to only search in the default templates
+ * @param  boolean $fallback_other_themes Allow fallback to other themes, in case it is defined only in a specific theme we would not noprmally look in
  * @return ?array List of parameters needed for the _do_template function to be able to load the template (null: could not find the template)
  */
-function find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only = false)
+function find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only = false, $fallback_other_themes = true)
 {
     global $FILE_ARRAY, $CURRENT_SHARE_USER;
 
@@ -913,7 +914,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
     }
 
     if (addon_installed('less') && $suffix == '.css') {
-        $test = find_template_place($codename, $lang, $theme, '.less', $directory);
+        $test = find_template_place($codename, $lang, $theme, '.less', $directory, $non_custom_only, false);
         if ($test !== null) {
             $tp_cache[$sz] = $test;
             return $test;
@@ -944,7 +945,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             $place = null;
         }
 
-        if (($place === null) && (!$non_custom_only)) { // Get desperate, search in themes other than current and default
+        if (($place === null) && (!$non_custom_only) && ($fallback_other_themes)) { // Get desperate, search in themes other than current and default
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
                 if (($possible_theme[0] !== '.') && ($possible_theme !== 'default') && ($possible_theme !== $theme) && ($possible_theme !== 'map.ini') && ($possible_theme !== 'index.html')) {
@@ -1284,6 +1285,8 @@ function addon_installed($addon, $check_hookless = false)
 
     // Check addons table
     if (!running_script('install')) {
+        require_code('database');
+
         if ((!$answer) && ($check_hookless)) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
             if ($test !== null) {
@@ -2425,12 +2428,8 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
-                    if (!php_function_allowed('gethostbyname')) {
-                        $self_ip = gethostbyname($self_host);
-                    } else {
-                        $self_ip = '';
-                    }
-                    if ($self_ip == '') {
+                    $self_ip = cms_gethostbyname($self_host);
+                    if ($self_ip == $self_host) {
                         $self_ip = $_SERVER['SERVER_ADDR'];
                     }
                 }
@@ -2865,6 +2864,7 @@ function is_mobile($user_agent = null, $truth = false)
             }
         }
     }
+
     return $result;
 }
 
@@ -3382,18 +3382,42 @@ function strip_html($in)
 
     $text = $in;
 
+    // Normalise line breaks
+    $text = preg_replace('#\s+#', ' ', $text);
+    $text = preg_replace('#(<br(\s[^<>]*)?' . '>)#i', '$1' . "\n", $text);
+
+    // Special stuff to strip
     $search = array(
         '#<script[^>]*?' . '>.*?</script>#si',  // Strip out JavaScript
         '#<style[^>]*?' . '>.*?</style>#siU',   // Strip style tags properly
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
     $text = preg_replace($search, '', $text);
+
+    // ASCII conversion
     if (get_charset() != 'utf-8') {
         $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
     }
-    $text = str_replace('><', '> <', $text);
+
+    require_code('webstandards');
+    global $TAGS_BLOCK;
+    $_block_tags = '(' . implode('|', array_keys($TAGS_BLOCK)) . ')';
+
+    // Remove leading/trailing space from block tags
+    $text = preg_replace('#\s*(<' . $_block_tags . '(\s[^<>]*)?' . '>)#i', '$1', $text);
+    $text = preg_replace('#(</' . $_block_tags . '>)\s*#i', '$1', $text);
+
+    // Add space between block tags
+    $text = preg_replace('#(</' . $_block_tags . '>)(<' . $_block_tags . '(\s[^<>]*)?)#i', '$1 $3', $text);
+
+    // Strip remaining HTML tags
     $text = strip_tags($text);
-    return @html_entity_decode($text, ENT_QUOTES);
+    $text = @html_entity_decode($text, ENT_QUOTES);
+
+    // Trim each line (as spacing can't be perfected)
+    $text = preg_replace('#^ *(.*?) *$#m', '$1', $text);
+
+    return $text;
 }
 
 /**
@@ -3927,13 +3951,14 @@ function get_login_url()
 {
     $_lead_source_description = either_param_string('_lead_source_description', '');
     if ($_lead_source_description == '') {
-        $_lead_source_description = get_self_url_easy();
+        global $METADATA;
+        $_lead_source_description = (isset($METADATA['real_page']) ? $METADATA['real_page'] : get_page_name()) . ' (' . get_self_url_easy() . ')';
     }
 
     if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
-        $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
+        $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => true));
     } else {
-        $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+        $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => true, 'redirect' => true), true);
     }
 
     $url_map = array('page' => 'login', 'type' => 'browse');
@@ -4009,13 +4034,24 @@ function is_maintained($code)
 {
     static $cache = array();
     if ($cache === array()) {
-        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
-        // TODO: #3032 (must default charset to utf-8 if no BOM though)
-        fgetcsv($myfile); // Skip header row
-        while (($row = fgetcsv($myfile)) !== false) {
-            $cache[$row[0]] = !empty($row[3]);
+        global $FILE_ARRAY;
+        if (@is_array($FILE_ARRAY)) {
+            $file = file_array_get('data/maintenance_status.csv');
+            $lines = explode("\n", $file);
+            array_shift($lines); // Skip header row
+            foreach ($lines as $line) {
+                $row = str_getcsv($line);
+                $cache[$row[0]] = !empty($row[3]);
+            }
+        } else {
+            $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+            // TODO: #3032 (must default charset to utf-8 if no BOM though)
+            fgetcsv($myfile); // Skip header row
+            while (($row = fgetcsv($myfile)) !== false) {
+                $cache[$row[0]] = !empty($row[3]);
+            }
+            fclose($myfile);
         }
-        fclose($myfile);
     }
 
     if (isset($cache[$code])) {
@@ -4042,4 +4078,112 @@ function is_maintained_description($code, $text)
         return do_lang_tempcode('NON_MAINTAINED_STATUS', $text, make_string_tempcode(escape_html(get_brand_base_url())), escape_html($code));
     }
     return $text;
+}
+
+/**
+ * Find if a forum post is a spacer post.
+ *
+ * @param  string $post The spacer post
+ * @return boolean Whether it is
+ */
+function is_spacer_post($post)
+{
+    if (substr($post, 0, 10) == '[semihtml]') {
+        $post = substr($post, 10);
+    }
+
+    $langs = find_all_langs();
+    foreach (array_keys($langs) as $lang) {
+        $matcher = do_lang('SPACER_POST_MATCHER', null, null, null, $lang);
+        if (substr($post, 0, strlen($matcher)) == $matcher) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Get the Internet host name corresponding to a given IP address. Wrapper around gethostbyaddr.
+ *
+ * @param  string $ip_address IP address
+ * @return string Host name OR IP address if failed to look up
+ */
+function cms_gethostbyaddr($ip_address)
+{
+    $hostname = '';
+
+    if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
+        $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg_wrap($ip_address))));
+    }
+
+    if ($hostname == '') {
+        if (php_function_allowed('gethostbyaddr')) {
+            $hostname = @gethostbyaddr($ip_address);
+        }
+    }
+
+    if ($hostname == '') {
+        $hostname = $ip_address;
+    }
+
+    return $hostname;
+}
+
+/**
+ * Get the IP address corresponding to a given Internet host name. Wrapper around gethostbyname.
+ *
+ * @param  string $hostname Host name
+ * @return string IP address OR host name if failed to look up
+ */
+function cms_gethostbyname($hostname)
+{
+    $ip_address = '';
+
+    if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
+        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg_wrap($hostname)));
+    }
+
+    if ($ip_address == '') {
+        if (php_function_allowed('gethostbyaddr')) {
+            $ip_address = @gethostbyaddr($ip_address);
+        }
+    }
+
+    if (empty($ip_address)) {
+        $ip_address = $hostname;
+    }
+
+    return $ip_address;
+}
+
+/**
+ * Unpack some bytes to an integer, so we can do some bitwise arithmetic on them.
+ * Assumes unsigned, unless you request 4 bytes.
+ *
+ * @param  string $str Input string
+ * @param  ?integer $bytes How many bytes to read (null: as many as there are in $str)
+ * @set 1 2 4
+ * @param  boolean $little_endian Whether to use little endian (Intel order) as opposed to big endian (network/natural order)
+ * @return integer Read integer
+ */
+function cms_unpack_to_uinteger($str, $bytes = null, $little_endian = false)
+{
+    if ($bytes === null) {
+        $bytes = strlen($str);
+    }
+
+    switch ($bytes) {
+        case 1:
+            $result = unpack('C', $str);
+            break;
+        case 2:
+            $result = unpack($little_endian ? 'v' : 'n', $str);
+            break;
+        case 4:
+            $result = unpack($little_endian ? 'V' : 'N', $str);
+            break;
+        default:
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+    return $result[1];
 }

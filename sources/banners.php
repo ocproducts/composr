@@ -97,7 +97,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
     }
 
     if ($type == 'image_proxy') {
-        $dest = get_param_string('dest');
+        $dest = substr(get_param_string('dest'), 0, 80);
 
         $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_to=(views_to+1) WHERE ' . db_string_equal_to('name', $dest), 1);
 
@@ -108,14 +108,14 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if (url_is_local($img_url)) {
             $img_url = get_custom_base_url() . '/' . $img_url;
         }
-        header('Location: ' . escape_header($img_url));
+        header('Location: ' . escape_header($img_url)); // assign_refresh not used, as no UI here
     } elseif ($type == 'click') {
         // Input parameters
         if ($source === null) {
-            $source = get_param_string('source', '');
+            $source = substr(get_param_string('source', ''), 0, 80);
         }
         if ($dest === null) {
-            $dest = get_param_string('dest', '');
+            $dest = substr(get_param_string('dest', ''), 0, 80);
         }
 
         // Has the banner been clicked before?
@@ -155,6 +155,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if (($source != '') && ($unique)) {
             $rows = $GLOBALS['SITE_DB']->query_select('banners', array('hits_from', 'campaign_remaining'), array('name' => $source));
             if (!array_key_exists(0, $rows)) {
+                set_http_status_code(404);
                 warn_exit(do_lang_tempcode('BANNER_MISSING_SOURCE'));
             }
             $myrow = $rows[0];
@@ -183,11 +184,12 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if ((strpos($url, "\n") !== false) || (strpos($url, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . escape_header($url));
+        require_code('site2');
+        redirect_exit($url);
     } // Being called to display a banner
     else {
         if ($dest === null) {
-            $dest = get_param_string('dest', '');
+            $dest = substr(get_param_string('dest', ''), 0, 80);
         }
         if ($b_type === null) {
             $b_type = get_param_string('b_type', '');
@@ -198,7 +200,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
 
         // Input parameters (clicks-in from source site)
         if ($source === null) {
-            $source = get_param_string('source', '');
+            $source = substr(get_param_string('source', ''), 0, 80);
         }
 
         // To allow overriding to specify a specific banner

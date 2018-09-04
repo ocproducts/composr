@@ -84,6 +84,14 @@
 		</div>
 	{+END}
 
+	{+START,IF_PASSED,MAIL_EMAIL_ADDRESS}
+		<div class="box box___cns_forum_mailing_list_advertise"><div class="box_inner">
+			<p>
+				{!MAILING_LIST_ADVERTISE,<a href="mailto:{MAIL_EMAIL_ADDRESS*}">{MAIL_EMAIL_ADDRESS*}</a>}
+			</p>
+		</div></div>
+	{+END}
+
 	{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 	{+START,IF_PASSED,ID}
 		{$REVIEW_STATUS,forum,{ID}}

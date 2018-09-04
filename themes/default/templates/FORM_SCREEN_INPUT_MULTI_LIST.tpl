@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 <div data-tpl="formScreenInputMultiList">
-	<select multiple="multiple" size="{SIZE*}" tabindex="{TABINDEX*}" class="input-list" id="{NAME*}" name="{NAME*}[]"{+START,IF,{$EQ,{SIZE},5}} data-cms-select2="{ dropdownAutoWidth: true }"{+END}>
+	<select multiple="multiple" size="{SIZE*}" tabindex="{TABINDEX*}" class="input-list" id="{NAME*}" name="{NAME*}[]" data-submit-on-enter="1" {+START,IF,{$EQ,{SIZE},5}} data-cms-select2="{ dropdownAutoWidth: true }"{+END}>
 		{CONTENT}
 	</select>
 

@@ -179,7 +179,7 @@ function erase_comcode_cache()
                     }
 
                     $db = get_db_for($table);
-                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
+                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/, null, null, true/*in case meta DB has an issue*/);
                 }
             }
         }
@@ -248,7 +248,7 @@ function erase_cached_language()
 
     $langs = find_all_langs(true);
     foreach (array_merge(array_keys($langs), array('')) as $lang) {
-        $path = get_custom_file_base() . '/caches/lang/' . $lang;
+        $path = get_custom_file_base() . '/caches/lang' . (($lang == '') ? '' : '/') . $lang;
         $_dir = @opendir($path);
         if ($_dir === false) {
             require_code('files2');
@@ -270,7 +270,9 @@ function erase_cached_language()
                         if (!file_exists($path . '/' . $file)) {
                             break; // Race condition, gone already
                         }
-                        sleep(1); // May be race condition, lock
+                        if (php_function_allowed('usleep')) {
+                            usleep(1000000); // May be race condition, lock
+                        }
                         $i++;
                     }
                     if ($i >= 5) {
@@ -331,54 +333,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     $themes = array_keys(find_all_themes());
     $langs = find_all_langs(true);
 
-    if ($raw_file_regexp !== null) {
-        $all_template_data = array();
-
-        $base_dirs = array(get_custom_file_base());
-        if (get_custom_file_base() != get_file_base()) {
-            $base_dirs[] = get_file_base();
-        }
-
-        $theme_dirs = array(
-            'css' => '.css',
-            'css_custom' => '.css',
-            'javascript' => '.js',
-            'javascript_custom' => '.js',
-            'templates' => '.tpl',
-            'templates_custom' => '.tpl',
-            'text' => '.txt',
-            'text_custom' => '.txt',
-            'xml' => '.xml',
-            'xml_custom' => '.xml',
-        );
-
-        foreach ($base_dirs as $base_dir) {
-            foreach ($themes as $theme) {
-                foreach ($theme_dirs as $theme_dir => $ext) {
-                    $dir_path = $base_dir . '/themes/' . $theme . '/' . $theme_dir;
-                    $_dir = @opendir($dir_path);
-                    if ($_dir !== false) {
-                        while (false !== ($file = readdir($_dir))) {
-                            // Basic filter
-                            if (substr($file, -strlen($ext)) != $ext) {
-                                continue;
-                            }
-
-                            if (!isset($all_template_data[$file])) {
-                                $all_template_data[$file] = array();
-                            }
-                            $contents = @file_get_contents($dir_path . '/' . $file);
-                            if ($contents !== false) {
-                                $all_template_data[$file][] = $contents;
-                            }
-                        }
-                        closedir($_dir);
-                    }
-                }
-            }
-        }
-    }
-
+    $relevant_templates_in_cache = array();
     foreach ($themes as $theme) {
         $using_less =
             (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
@@ -420,72 +375,138 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                             (substr($file_template_name, -3) == '.js')
                             ||
                             (substr($file_template_name, -4) == '.css')
+                            ||
+                            (substr($file_template_name, -3) == '.gz')
                         )
                     ) {
                         continue;
                     }
 
-                    // $raw_file_regexp filter
-                    if ($raw_file_regexp !== null) {
-                        $may_delete = false;
-                        if (isset($all_template_data[$file_template_name])) {
-                            foreach ($all_template_data[$file_template_name] as $c) {
-                                if (preg_match('#' . $raw_file_regexp . '#', $c) != 0) {
-                                    $may_delete = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!$may_delete) {
-                            continue;
-                        }
+                    if (!isset($relevant_templates_in_cache[$file_template_name])) {
+                        $relevant_templates_in_cache[$file_template_name] = array();
                     }
-
-                    // Do deletion
-                    $i = 0;
-                    while ((@unlink($path . $file) === false) && ($i < 5)) {
-                        if (!file_exists($path . $file)) {
-                            break; // Successful delete
-                        }
-                        sleep(1); // May be race condition, lock
-                        $i++;
-                    }
-                    if ($i >= 5) {
-                        if (file_exists($path . $file)) {
-                            @unlink($path . $file) or intelligent_write_error($path . $file);
-                        }
-                    }
-
-                    // Recreate static files right away because of parallelism...
-                    if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($rebuild_some_deleted_files)) {
-                        if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
-                            if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'editing.js', 'global.js', 'modalwindow.js', 'posting.js'))) {
-                                if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-                                    @unlink($path . $file . '.tcp'); // To stop it just coming back from the .tcp
-
-                                    if (substr($file_template_name, -3) == '.js') {
-                                        require_code('web_resources');
-                                        javascript_enforce(basename($file_template_name, '.js'), $theme);
-                                    }
-
-                                    if (substr($file_template_name, -4) == '.css') {
-                                        require_code('web_resources');
-                                        css_enforce(basename($file_template_name, '.css'), $theme);
-                                    }
-
-                                    $rebuilt[$file_template_name] = true;
-                                }
-                            }
-                        }
-                    }
+                    $relevant_templates_in_cache[$file_template_name][] = array($file, $path);
                 }
                 closedir($_dir);
             }
         }
     }
+
+    static $all_template_data = null;
+    if (($raw_file_regexp !== null) && ($all_template_data === null)) {
+        $all_template_data = array();
+
+        $base_dirs = array(get_custom_file_base());
+        if (get_custom_file_base() != get_file_base()) {
+            $base_dirs[] = get_file_base();
+        }
+
+        $theme_dirs = array(
+            'css' => '.css',
+            'css_custom' => '.css',
+            'javascript' => '.js',
+            'javascript_custom' => '.js',
+            'templates' => '.tpl',
+            'templates_custom' => '.tpl',
+            'text' => '.txt',
+            'text_custom' => '.txt',
+            'xml' => '.xml',
+            'xml_custom' => '.xml',
+        );
+
+        foreach ($base_dirs as $base_dir) {
+            foreach ($themes as $theme) {
+                foreach ($theme_dirs as $theme_dir => $ext) {
+                    $dir_path = $base_dir . '/themes/' . $theme . '/' . $theme_dir;
+                    $_dir = @opendir($dir_path);
+                    if ($_dir !== false) {
+                        while (false !== ($file = readdir($_dir))) {
+                            // Basic filter
+                            if (substr($file, -strlen($ext)) != $ext) {
+                                continue;
+                            }
+                            if (!isset($relevant_templates_in_cache[$file])) {
+                                continue;
+                            }
+
+                            if (!isset($all_template_data[$file])) {
+                                $all_template_data[$file] = array();
+                            }
+                            $contents = @file_get_contents($dir_path . '/' . $file);
+                            if ($contents !== false) {
+                                $all_template_data[$file][] = $contents;
+                            }
+                        }
+                        closedir($_dir);
+                    }
+                }
+            }
+        }
+    }
+
+    foreach ($relevant_templates_in_cache as $file_template_name => $_bits_arr) {
+        foreach ($_bits_arr as $_bits) {
+            list($file, $path) = $_bits;
+
+            // $raw_file_regexp filter
+            if ($raw_file_regexp !== null) {
+                $may_delete = false;
+                if (isset($all_template_data[$file_template_name])) {
+                    foreach ($all_template_data[$file_template_name] as $c) {
+                        if (preg_match('#' . $raw_file_regexp . '#', $c) != 0) {
+                            $may_delete = true;
+                            break;
+                        }
+                    }
+                }
+                if (!$may_delete) {
+                    continue;
+                }
+            }
+
+            // Do deletion
+            $i = 0;
+            while ((@unlink($path . $file) === false) && ($i < 5)) {
+                if (!file_exists($path . $file)) {
+                    break; // Successful delete
+                }
+                if (php_function_allowed('usleep')) {
+                    usleep(1000000); // May be race condition, lock
+                }
+                $i++;
+            }
+            if ($i >= 5) {
+                if (file_exists($path . $file)) {
+                    @unlink($path . $file) or intelligent_write_error($path . $file);
+                }
+            }
+        }
+
+        // Recreate static files right away because of parallelism...
+        if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && (!running_script('upgrader')) && ($rebuild_some_deleted_files)) {
+            if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
+                if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'editing.js', 'global.js', 'posting.js'))) {
+                    if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
+                        if (substr($file_template_name, -3) == '.js') {
+                            require_code('web_resources');
+                            javascript_enforce(basename($file_template_name, '.js'), $theme);
+                        }
+
+                        if (substr($file_template_name, -4) == '.css') {
+                            require_code('web_resources');
+                            css_enforce(basename($file_template_name, '.css'), $theme);
+                        }
+
+                        $rebuilt[$file_template_name] = true;
+                    }
+                }
+            }
+        }
+    }
+
     foreach (array_keys($langs) as $lang) {
         $path = get_custom_file_base() . '/site/pages/html_custom/' . $lang . '/';
-        $_dir = @opendir($path);
+        $_dir = is_dir($path) ? opendir($path) : false;
         if ($_dir !== false) {
             while (false !== ($file = readdir($_dir))) {
                 if (substr($file, -14) == '_tree_made.htm') {
@@ -496,10 +517,16 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         }
     }
 
-    // Often the back button will be used to return to a form, so we need to ensure we have not broken the JavaScript
-    if ((function_exists('get_member')) && (!$GLOBALS['BOOTSTRAPPING'])) {
-        javascript_enforce('validation');
-        javascript_enforce('editing');
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+        $zones = find_all_zones();
+        $values = array();
+        foreach ($zones as $zone) {
+            $values[] = 'merged__' . $zone . '.css';
+            $values[] = 'merged__' . $zone . '.js';
+            $values[] = 'merged__' . $zone . '__admin.css';
+            $values[] = 'merged__' . $zone . '__admin.js';
+        }
+        delete_values($values);
     }
 
     if ((class_exists('Self_learning_cache')) && ($raw_file_regexp === null) && ($only_templates === array())) {
@@ -509,7 +536,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     cms_profile_end_for('erase_cached_templates');
 
     // Rebuild ones needed for this session
-    if (!$preserve_some && !$GLOBALS['IN_MINIKERNEL_VERSION']) {
+    if ((!$preserve_some) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && (!running_script('upgrader'))) {
         global $JAVASCRIPTS, $CSSS;
         if (is_array($JAVASCRIPTS)) {
             foreach (array_keys($JAVASCRIPTS) as $j) {

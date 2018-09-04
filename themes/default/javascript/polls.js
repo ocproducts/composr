@@ -20,7 +20,7 @@
         confirmForfeit: function (e, target) {
             var form = target.form;
 
-            $cms.ui.confirm('{!polls:VOTE_FORFEIGHT;^}', function(answer) {
+            $cms.ui.confirm('{!polls:VOTE_FORFEIGHT;^}', function (answer) {
                 if (answer) {
                     $dom.submit(form);
                 }
@@ -30,9 +30,7 @@
         }
     });
 
-    $cms.templates.blockMainPoll = function blockMainPoll(params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
-    };
+    $cms.templates.blockMainPoll = function blockMainPoll(params) {};
 
     $cms.templates.pollAnswer = function pollAnswer(params, container) {
         var pollId = strVal(params.pid);

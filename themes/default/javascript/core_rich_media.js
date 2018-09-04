@@ -101,7 +101,7 @@
                 left.style.visibility = (mainEl.scrollLeft == 0) ? 'hidden' : 'visible';
             }
 
-            if (right.style.position === 'absolute'){ // Ditto
+            if (right.style.position === 'absolute') { // Ditto
                 right.style.visibility = (mainEl.scrollLeft + mainEl.offsetWidth >= mainEl.scrollWidth - 1) ? 'hidden' : 'visible';
             }
         },
@@ -145,7 +145,7 @@
     $cms.views.ComcodeMediaSet = ComcodeMediaSet;
     /**
      * @memberof $cms.views
-     * @class
+     * @class $cms.views.ComcodeMediaSet
      * @extends $cms.View
      */
     function ComcodeMediaSet(params) {
@@ -156,7 +156,7 @@
         }
     }
 
-    $util.inherits(ComcodeMediaSet, $cms.View, /**@lends ComcodeMediaSet#*/{
+    $util.inherits(ComcodeMediaSet, $cms.View, /**@lends $cms.views.ComcodeMediaSet#*/{
         setup: function (params) {
             var imgs = window['imgs_' + params.rand] = [],
                 imgsThumbs = window['imgs_thumbs_' + params.rand] = [],
@@ -189,7 +189,7 @@
 
                     x++;
 
-                } else if ((as[i].children.length === 1) && (as[i].firstElementChild.localName === 'img'))  {
+                } else if ((as[i].children.length === 1) && (as[i].firstElementChild.localName === 'img')) {
                     as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW^;}', '').replace(/^\s+/, '');
 
                     imgs.push([as[i].href, (as[i].title === '') ? as[i].firstElementChild.alt : as[i].title, false]);
@@ -341,7 +341,7 @@
                 description = params.description || '';
 
             window.$editing.doAttachment(fieldName, id, description).then(function () {
-                window.fauxClose ? window.fauxClose() :  window.close();
+                window.fauxClose ? window.fauxClose() : window.close();
             });
         }
     });
@@ -446,8 +446,6 @@
          * @param attachmentBrowseButton
          */
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentBrowseButton) {
-            //console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentBrowseButton:', attachmentBrowseButton);
-
             if (_postingFieldName !== postingFieldName) {
                 return;
             }

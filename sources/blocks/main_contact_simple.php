@@ -99,7 +99,7 @@ class Block_main_contact_simple
             if ($redirect != '') {
                 $redirect = page_link_to_url($redirect);
                 require_code('site2');
-                assign_refresh($redirect, 0.0);
+                assign_refresh($redirect, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
             } else {
                 attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
             }

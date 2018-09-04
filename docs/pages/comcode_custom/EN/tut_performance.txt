@@ -105,6 +105,57 @@ You could:
 
 Of course you may want to make changes to [tt]galleries.css[/tt] too. In which case you'd need to copy and paste the contents onto the end of [tt]global.css[/tt] and make changes there, rather than doing an include.
 
+[title="2"][tt]HTML_COMPRESS[/tt] and [tt]CDN_FILTER[/tt] directives[/title]
+
+Composr has HTML compression. If you wish you can edit the [tt]GLOBAL_HTML_WRAP[/tt] template to wrap the contents like:
+[code="HTML"]
+{+START,HTML_COMPRESS,relativeurls|protocolrelativeurls|selfclose|redundantclose|quotes|cdata|delayjavascript|comments}{+START,CDN_FILTER}
+...
+{+END}{+END}
+[/code]
+
+The beauty of these directives is that they can run fast because they don't do a full parse of the HTML code while the concern of accidentally breaking anything is removed because you have full control over what portions of your HTML they run on.
+Both directives make some assumptions based upon Composr coding standards. So make sure you stick to Composr HTML standards when using it.
+
+Note that these directives will not do anything if the "Output streaming" option is enabled. Also they will disable if you temporarily are disabling output minification.
+
+[title="3"][tt]HTML_COMPRESS[/tt] directive[/title]
+
+The [tt]HTML_COMPRESS[/tt] rules available are:
+ - [tt]cdata[/tt] -- remove [tt]CDATA[/tt] code from JavaScript, which is needed for XHTML but not HTML
+ - [tt]comments[/tt] -- remove HTML comments
+  - we don't include [m]any in Composr because we use Tempcode comments, but it may be useful to remove them from third-party code you've integrated
+ - [tt]delayjavascript[/tt] -- remove any inline JavaScript to the end of the HTML [tt]</body>[/tt] execution to stop render blocking
+  - we don't have any in Composr, but you may have integrated some
+  - it is possible JavaScript may need to run early for the page to render convincingly, or for accurate page-load-speed tracking (in the case of Google Analytics). In this case you need to add a [tt]data-optimize="no"[/tt] attribute to appropriate [tt]<script>[/tt] tag(s).
+ - [tt]protocolrelativeurls[/tt] -- make absolute URLs that are on the same protocol (e.g. [tt]https[/tt]) shorter
+ - [tt]quotes[/tt] -- remove unneeded HTML quotes (this is invalid XHTML, but valid HTML)
+ - [tt]redundantclose[/tt] -- remove unneeded closing tags for tags that get automatically closed
+ - [tt]relativeurls[/tt] -- make URLs relative where possible, greatly shortening them
+  - if you're using this then only do it in [tt]GLOBAL_HTML_WRAP[/tt], not anywhere that may be cached in the block cache, as the URL base won't stay the same
+  - if you're using a [tt]<base>[/tt] tag with a new base URL, you shouldn't use this
+ - [tt]selfclose[/tt] -- remove unneeded tag self-closing indicators for tags that always self-close
+
+[title="4"]More advanced discussion[/title]
+
+We don't do anything particularly assumptive or risky in this directive, for that you can consider Cloudflare or [tt]mod_pagespeed[/tt]. For example:
+ - We don't recompress images, or target scaled-down images to different devices, or switch file extensions on you. We assume you'll compress your own theme images well, and do some image compression when we generate thumbnails. It would be technically very challenging for us to implement these image switching techniques, and we feel we'd cause as many problems as we'd solve.
+ - We don't make changes to your stylesheet structure. Almost any change can alter the priorities styles are applied with, i.e. break your layout.
+ - We don't automatically inline images. You can do this manually using the [tt]IMG_INLINE[/tt] symbol, in full knowledge of your real trade-offs.
+ - We don't automatically merge stylesheets or script files. A technique to do this manually (i.e. in knowledge of your real trade-offs) is discussed in this tutorial though.
+ - We don't try and implement an initially-inlined-then-locally-cached mechanism using a shared client/server memory of what resources have already been sent. This is a really cool technique that can make initial page-load time optimal, and subsequent page-load time optimal, without any kind of trade-off. However it is very complex and should not be implemented within the scope of a CMS. It also is not necessarily optimal except for simple sites, due to the possibility of connection stutter during the initial monolithic page transfer.
+
+[title="3"][tt]CDN_FILTER[/tt] directive[/title]
+
+The [tt]CDN_FILTER[/tt] directive is equivalent of individually wrapping the [tt]CDN_FILTER[/tt] symbol on each URL within the contained HTML.
+This allows images in WYSIWYG-edited code to be passed through the CDN without this having to be seen or considered at the editing level.
+
+You must not run the directive [i]outside[/i] the [tt]HTML_COMPRESS[/tt] directive, as that directive will break the Composr coding standards this directive relies on.
+
+If you are using this directive then there are some [tt]recommended.htaccess[/tt] rules you can use (commented out by default) to use long-lasting HTTP Expires headers (Apache-only). The last-modified timestamp is automatically a part of the CDN URLs used, so this works very well (if you change the file, the URL changes, so the cache is implicitly expired).
+
+CDNs are discussed elsewhere in this tutorial.
+
 [title="2"]Persistent cache[/title]
 
 The [b]persistent cache[/b] is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or re-calculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.
@@ -300,7 +351,7 @@ If you have outgrown normal shared hosting / a single VPS or server, you can do 
 1) Composr runs perfectly on Rackspace Cloud Sites hosting, where you can set up quite large instances (we have been told that behind-the-scenes there is database replication, to share database load).
 2) You can run on Amazon EC2 Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
 3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
-4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine[/page] tutorial. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
+4) You can use Google App Engine, to get automated scaling, with a trade-off that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine[/page] tutorial. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
 
 [title="3"]Amazon EC2[/title]
 
@@ -453,27 +504,36 @@ By default we place trust on Cloudflare IP ranges.
 
 Some people with very ambitious goals want to have multiple servers dotted around the world. This requires some custom programming but the developers have studied the scenario and can role out solutions to clients if required. Our solution would involve priority-based geo-DNS resolution coupled with a reverse proxy server to also cover fail-over scenarios. The custom programming to implement this is in setting up the complex network infrastructure as well as implementing ID randomisation instead of key auto-incrementing to avoid conflicts (across distances replication can not be set to be instant).
 
-[title="3"]Content Delivery Networks[/title]
+[title="3"]Content Delivery Networks (CDNs)[/title]
 
 There are a number of approaches you can take if you want to serve media from third party servers. Doing this reduces latency, and your own hosting costs, as well as some other potential side benefits such as automatic transcoding.
 
-[title="4"]Theme files[/title]
+[title="4"]Theme/content files[/title]
 
-You can have randomised content delivery networks used for your theme images and CSS files.
+You can have randomised content delivery networks used for your theme images, CSS files, JavaScript files, and other files (such as within the File/media library).
 
 Change the Content Delivery Network option to something like:
+[code="Text"]
+cdn.example.com
+[/code]
+Or:
 [code="Text"]
 example1.example.com,example2.example.com
 [/code]
 
-As you can see, it is a comma-separated list of domain names. These domain names must be serving your files from a directory structure that mirrors that of your normal domain precisely.
+As you can see, it is a comma-separated list of domain names. These domain names must be serving your files from a directory structure that mirrors that of your normal domain precisely. How you achieve that is up to you, but here are some ideas:
+ - Use a commercial CDN service
+  - There are many commercial CDN services available that can be configured in via this option. Many of them automatically will transfer over any file you reference on their service (via URL equivalencies) so that you don't need to worry about copying files over yourself.
+ - Use your own CDN servers, and something like [tt]rsync[/tt] to keep files in sync
+  - If you are very sophisticated, you may use implement choice of the best geographic server location at the DNS level
+ - Use Cloudflare, but just on the CDN domain (hence getting all the CDN advantages of Cloudflare but without having to proxy your entire website)
+  - If you set Cloudflare to control your entire site then this is actually creating a bottleneck and a performance degradation, as you are relying on all your content flowing through Cloudflare, even for users in the same building as your server
+ - Just run your CDN domains off the same server (this is called 'domain sharding', and is like CDN-lite)
 
 Composr will randomise what CDN's it uses, so parallelisation can work more efficiently (this is the only reason for the comma-separation). Web browsers have a limit on how many parallel web requests may come from a single server, and this works around that.
-DNS may be used to route the CDN servers based on geographic location.
 
-There are many commercial CDN services available that can be configured in via this option. Many of them automatically will transfer over any file you reference on their service (via URL equivalencies) so that you don't need to worry about copying files over yourself.
-
-If you use a service like Cloudflare it can automatically provide CDN functionality similar to the above, although from a single server only. Cloudflare works a little differently as it automatically rewrites your pages as they route through its systems. The CDN options above directly affect Composr's output.
+By default Composr will pipe CSS, JavaScript, and theme image files, through the CDN.
+You can use the [tt]CDN_FILTER[/tt] directive and symbol to pass anything through the CDN though.
 
 [title="4"]Upload syndication[/title]
 
@@ -518,36 +578,42 @@ We have tried in the past to support:
 But after quite a lot of work we have concluded these projects are too buggy to be realistic, not well maintained, no longer maintained, or don't actually offer any performance improvement. Never-the-less, making Composr work on these platforms in the past has led to improvements in the Composr code quality, as these PHP replacements have a tendency to float different kinds of subtle coding errors to the surface.
 There are also newer PHP alternatives such as HippyVM, or approaches that limit the PHP language significantly such as PH7.
 
-[title="2"]mod_pagespeed[/title]
+[title="2"]mod_pagespeed / Cloudflare optimisations[/title]
 
-Google's [tt]mod_pagespeed[/tt] adds some nice micro optimisations. Composr doesn't do these itself because they would hurt CPU performance and modularity, but applying them in a fast Apache module is useful. To be honest, this will not really result in any particularly noticeable performance gain, but if you've got a good budget for trying lots of small things at once, every little bit helps and we thought it worth mentioning and documenting against.
+Google's [tt]mod_pagespeed[/tt] adds some nice micro optimisations. Most of these are done automatically by Composr, or can be achieved in Composr using the [tt]HTML_COMPRESS[/tt] directive.
 
-mod_pagespeed is not supplied with Apache, but can be installed on most Linux servers. However you would need server access or for the webhost to do this for you.
+[tt]mod_pagespeed[/tt] is not supplied with Apache, but can be installed on most Linux servers. However you would need server access or for the webhost to do this for you.
 
 Interesting optimisations include:
- - https://www.modpagespeed.com/doc/filter-trim-urls (this breaks modularity -- but that is fine for primary output streams)
- - https://www.modpagespeed.com/doc/filter-quote-remove and https://www.modpagespeed.com/doc/filter-attribute-elide (Composr is XHTML-compliant, this breaks that -- but that is fine for primary output streams)
- - https://www.modpagespeed.com/doc/filter-whitespace-collapse (this will save some bytes, although not nearly as many as you think if you already have gzip encoding on)
- - https://www.modpagespeed.com/doc/filter-image-optimize (mod_pagespeed may do a better job that your manual optimisation, and its support of WebP is very interesting)
- - https://www.modpagespeed.com/doc/filter-js-defer (this will improve performance initial rendering time, but at the expensive of delaying interaction time -- this may be a fairly good idea for very non-interactive sites, but a terrible idea for very-interactive sites -- use with great care)
+ - https://www.modpagespeed.com/doc/filter-image-optimize ([tt]mod_pagespeed[/tt] may do a better job that your manual optimisation, and its support of WebP is very interesting)
+ - (this list used to be longer, but now most of the optimisations can be achieved in Composr using the [tt]HTML_COMPRESS[/tt] directive)
 
 The work on HTTP/2 is also interesting (previously Google SPDY), and SDCH is [i]extremely interesting[/i]. At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr.
 
-The Cloudflare service provides some of the same optimisations that mod_pagespeed does, as well as a CDN. However personally I'd opt to use mod_pagespeed and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, Cloudflare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. Cloudflare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
+The Cloudflare service provides some of the same optimisations that [tt]mod_pagespeed[/tt] does, as well as a CDN. However personally I'd opt to use [tt]mod_pagespeed[/tt] and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, Cloudflare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. Cloudflare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
 
 [title="2"]Preloaded links[/title]
 
 Web browsers are starting to support link preloading. If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links.
+Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[/url] are discussed in a blog post I wrote.
 
 [title="2"]Profiling[/title]
 
 A developer can run a profiler to work out bottlenecks in code, and decide optimisations.
-For hard-core programming, xdebug would be used. However, you can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+For hard-core programming, xdebug would be used. Here are a few things to look at:
+ - Functions called a lot (function calls are costly, perhaps the function isn't really needed that much)
+ - Functions that take a long time to run individually (perhaps they can be optimised)
+ - Functions that take a long time to run in aggregate (perhaps they can be optimised)
+ - Disk operations called a log (e.g. [tt]is_file[/tt]) (perhaps they can be avoided)
+
+You can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
 
 If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
 [code="SQL"]
 SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
 [/code]
+
+If you create a [tt]data_custom/debug_fs.log[/tt] file then all disk activity will be written to it if you load the site with [tt]keep_debug_fs=1[/tt].
 
 [title="2"]Calculating hosting requirements[/title]
 

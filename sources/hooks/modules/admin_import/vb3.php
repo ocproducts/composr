@@ -369,7 +369,49 @@ class Hook_import_vb3
                     $requests[$i]['usergroupid'] = import_id_remap_get('group', strval($request['usergroupid']));
                 }
 
-                $id_new = cns_make_member($row['username'], $password, $row['email'], null, $bday_day, $bday_month, $bday_year, $custom_fields, strval($row['timezoneoffset']), $primary_group, $validated, $row['joindate'], $row['lastvisit'], '', $avatar_url, $signature, 0, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $row['autosubscribe'], $language, $row['options'] & 16, $row['options'] & 16, $row['ipaddress'], '', false, $type, $salt, 1, ($row['lastpost'] == 0) ? $row['lastpost'] : null);
+                $id_new = cns_make_member(
+                    $row['username'], // username
+                    $password, // password
+                    $row['email'], // email_address
+                    $primary_group, // primary_group
+                    null, // secondary_groups
+                    $bday_day, // dob_day
+                    $bday_month, // dob_month
+                    $bday_year, // dob_year
+                    $custom_fields, // custom_fields
+                    strval($row['timezoneoffset']), // timezone
+                    $language, // language
+                    '', // theme
+                    $title, // title
+                    $photo_url, // photo_url
+                    $photo_thumb_url, // photo_thumb_url
+                    $avatar_url, // avatar_url
+                    $signature, // signature
+                    $preview_posts, // preview_posts
+                    $reveal_age, // reveal_age
+                    $views_signatures, // views_signatures
+                    $row['autosubscribe'], // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    $row['options'] & 16, // allow_emails
+                    $row['options'] & 16, // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    $validated, // validated
+                    '', // validated_email_confirm_code
+                    null, // on_probation_until
+                    0, // is_perm_banned
+                    false, // check_correctness
+                    null, // ip_address
+                    $type, // password_compatibility_scheme
+                    $salt, // salt
+                    $row['joindate'], // join_time
+                    $row['lastvisit'], // last_visit_time
+                    ($row['lastpost'] == 0) ? $row['lastpost'] : null // last_submit_time
+                );
 
                 // Fix usergroup leadership
                 $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_group_leader' => $id_new), array('g_group_leader' => -$row['userid']));

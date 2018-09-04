@@ -86,7 +86,12 @@ class Hook_addon_registry_sugarcrm
      */
     public function get_description()
     {
-        return 'Sync new accounts into SugarCRM (Accounts and Contacts and/or Leads), and contact form messages into SugarCRM (Cases or Leads). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].
+        return 'Provides a number of Composr integrations with SugarCRM:
+1) Sync new accounts into SugarCRM (Accounts, and Contacts and/or Leads)
+2) Sync contact form messages into SugarCRM (Cases or Leads)
+3) Insert URLs into Contacts to view Composr metadata of corresponding members
+
+Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].
 
 You can define mappings between:
  - Custom Profile Fields and SugarCRM fields
@@ -180,6 +185,20 @@ CRM software supported:
 
             'sources_custom/hooks/systems/config/sugarcrm_member_sync_types.php',
             'sources_custom/hooks/systems/config/sugarcrm_member_mappings.php',
+            'sources_custom/hooks/systems/config/sugarcrm_contact_metadata_field.php',
+            'sources_custom/hooks/systems/config/sugarcrm_lead_metadata_field.php',
+
+            'sources_custom/hooks/systems/config/sugarcrm_skip_string.php',
+
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_message.php',
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_member.php',
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_contact_metadata.php',
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_lead_metadata.php',
+
+            'data_custom/user_metadata_display.php',
+            'sources_custom/user_metadata_display.php',
+            'sources_custom/hooks/systems/cron/sugarcrm_sync_contact_metadata.php',
+            'sources_custom/hooks/systems/cron/sugarcrm_sync_lead_metadata.php',
         );
     }
 }

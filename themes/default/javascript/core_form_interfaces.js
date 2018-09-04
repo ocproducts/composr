@@ -126,7 +126,7 @@
             var form = this.form,
                 submitBtn = document.getElementById('submit-button'),
                 inputs = form.getElementsByTagName('input'),
-                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
+                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search', 'tel', 'url'];
 
             for (var i = 0; i < inputs.length; i++) {
                 type = inputs[i].type;
@@ -345,7 +345,7 @@
             $cms.loadSnippet('password_strength', post, true).then(function (strength) {
                 strength = Number(strength);
                 strength *= 2;
-                if (strength > 10) {  // Normally too harsh!
+                if (strength > 10) { // Normally too harsh!
                     strength = 10;
                 }
                 ind.style.width = (strength * 10) + 'px';
@@ -371,7 +371,7 @@
     };
 
     $cms.templates.form = function (params, container) {
-        var skippable =  strVal(params.skippable);
+        var skippable = strVal(params.skippable);
 
         $dom.on(container, 'click', '.js-click-btn-skip-step', function () {
             $dom.$('#' + skippable).value = '1';
@@ -587,6 +587,13 @@
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
+
+        var block = document.getElementById('field_set_' + params.name);
+        block.addEventListener('click', function () {
+            window.setTimeout(function () {
+                $dom.trigger(document.getElementById('choose-' + params.name), 'click');
+            }, 0);
+        });
     };
 
     $cms.templates.formScreenFieldSpacer = function (params, container) {
@@ -653,7 +660,7 @@
             });
         }
 
-        var soundObject = (typeof window.Audio != 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
+        var soundObject = (typeof window.Audio !== 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
 
         $dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
             e.preventDefault();
@@ -691,7 +698,7 @@
                 return opt.text; // optgroup
             }
 
-            var imageSources = JSON.parse(strVal(params.imageSources, '{}'));
+            var imageSources = JSON.parse(strVal(params.imageSources) || '{}');
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {
@@ -872,7 +879,9 @@
             newPostValueHtml = strVal(params.newPostValueHtml),
             mainWindow = $cms.getMainCmsWindow();
 
-        var post = mainWindow.document.getElementById('post');
+        var postField = strVal(params.attachmentField);
+
+        var post = mainWindow.document.getElementById(postField);
 
         // Replace Comcode
         var oldComcode = mainWindow.$editing.getTextbox(post);
@@ -880,7 +889,7 @@
 
         // Turn main post editing back on
         if (window.$editing !== undefined) {
-            window.$editing.wysiwygSetReadonly('post', false);
+            window.$editing.wysiwygSetReadonly(postField, false);
         }
 
         // Remove attachment uploads
@@ -903,7 +912,7 @@
                         doneOne = true;
                     }
 
-                    uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
+                    uploadButton = mainWindow.document.getElementById('upload-button-' + inputs[i].name);
                     if (uploadButton) {
                         uploadButton.disabled = true;
                     }
@@ -957,13 +966,16 @@
                     ob.bind('Error', shutdownOverlay);
 
                     // Keep copying the upload indicator
-                    var progress = $dom.html(targetWin.document.getElementById('fsUploadProgress_' + field));
-                    setInterval(function () {
-                        if (progress !== '') {
-                            $dom.html(loadingSpace, progress);
-                            loadingSpace.className = 'spaced';
-                        }
-                    }, 100);
+                    var imageProgressElement = targetWin.document.getElementById('fsUploadProgress_' + field);
+                    if (imageProgressElement) {
+                        var progress = $dom.html(imageProgressElement);
+                        setInterval(function () {
+                            if (progress !== '') {
+                                $dom.html(loadingSpace, progress);
+                                loadingSpace.className = 'spaced';
+                            }
+                        }, 100);
+                    }
 
                     attachedEventAction = true;
                 }
@@ -1153,6 +1165,10 @@
     $cms.templates.formScreenInputMultiList = function formScreenInputMultiList(params, container) {
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
             $coreFormInterfaces.ensureNextField2(e, input);
+        });
+
+        $dom.on(container, 'keyup', function (e, input) {
+            TODO
         });
     };
 

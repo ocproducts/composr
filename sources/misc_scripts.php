@@ -31,6 +31,8 @@ function gd_text_script()
         return;
     }
 
+    header('X-Robots-Tag: noindex');
+
     $text = get_param_string('text', false, INPUT_FILTER_GET_COMPLEX);
 
     $direction = array_key_exists('direction', $_GET) ? $_GET['direction'] : 'vertical';
@@ -201,7 +203,8 @@ function simple_tracker_script()
         'c_url' => cms_mb_substr($url, 0, 255),
     ));
 
-    header('Location: ' . escape_header($url));
+    require_code('site2');
+    redirect_exit($url);
 }
 
 /**
@@ -234,6 +237,7 @@ function preview_script()
             'TITLE' => do_lang_tempcode('PREVIEW'),
             'FRAME' => true,
             'TARGET' => '_top',
+            'NOINDEX' => true,
             'CONTENT' => $output,
         ));
     } else {
@@ -252,6 +256,8 @@ function preview_script()
  */
 function cron_bridge_script($caller)
 {
+    header('X-Robots-Tag: noindex');
+
     // In query mode, Composr will just give advice on the system scheduler settings to use
     if (get_param_integer('querymode', 0) == 1) {
         header('Content-type: text/plain; charset=' . get_charset());
@@ -477,6 +483,7 @@ function iframe_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -502,6 +509,7 @@ function iframe_script()
         '_GUID' => '04cf4ef7aac4201bb985327ec0e04c87',
         'OPENS_BELOW' => get_param_integer('opens_below', 0) == 1,
         'FRAME' => true,
+        'NOINDEX' => true,
         'TARGET' => '_top',
         'CONTENT' => $output,
     ));
@@ -528,7 +536,8 @@ function page_link_redirect_script()
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
 
-    header('Location: ' . escape_header($x));
+    require_code('site2');
+    redirect_exit($x);
 }
 
 /**
@@ -553,7 +562,7 @@ function page_link_chooser_script()
 
     // Display
     $content = do_template('PAGE_LINK_CHOOSER', array('_GUID' => '235d969528d7b81aeb17e042a17f5537', 'NAME' => 'tree_list', 'VALUE' => ''));
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '58768379196d6ad27d6298134e33fabd', 'TITLE' => do_lang_tempcode('CHOOSE'), 'CONTENT' => $content, 'POPUP' => true));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '58768379196d6ad27d6298134e33fabd', 'TITLE' => do_lang_tempcode('CHOOSE'), 'CONTENT' => $content, 'POPUP' => true, 'NOINDEX' => true));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
 }
@@ -658,7 +667,7 @@ function thumb_script()
     if ((strpos($url_thumb, "\n") !== false) || (strpos($url_thumb, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Location: ' . escape_header($url_thumb));
+    header('Location: ' . escape_header($url_thumb)); // assign_refresh not used, as no UI here
 }
 
 /**
@@ -693,6 +702,8 @@ function question_ui_script()
  */
 function external_url_proxy_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
 
     // Don't allow loops

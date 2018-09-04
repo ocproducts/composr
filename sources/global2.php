@@ -43,12 +43,13 @@ function init__global2()
     define('INPUT_FILTER_DYNAMIC_FIREWALL', 2048); // Check against dynamic firewall. Applies to POST/GET
     define('INPUT_FILTER_TRUSTED_SITES', 4096); // Only allow a POST request from a trusted site. Applies to POST
     define('INPUT_FILTER_MODSECURITY_URL_PARAMETER', 8192); // Decode a URL-in-URL parameter that was encoded to bypass ModSecurity protection. Applies to POST/GET
+    define('INPUT_FILTER_URL_RECODING', 16384); // Re-encodes Unicode to %-encoding and Punycode for a valid URL
     //Compound ones intended for direct use
     define('INPUT_FILTER_DEFAULT_POST', INPUT_FILTER_WORDFILTER | INPUT_FILTER_WYSIWYG_TO_COMCODE | INPUT_FILTER_COMCODE_CLEANUP | INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA | INPUT_FILTER_FIELDS_XML | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_TRUSTED_SITES);
     define('INPUT_FILTER_DEFAULT_GET', INPUT_FILTER_JS_URLS | INPUT_FILTER_VERY_STRICT | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
     define('INPUT_FILTER_GET_COMPLEX', INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
-    define('INPUT_FILTER_URL_GENERAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER);
-    define('INPUT_FILTER_URL_INTERNAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_URL_DESTINATION | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER);
+    define('INPUT_FILTER_URL_GENERAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER | INPUT_FILTER_URL_RECODING);
+    define('INPUT_FILTER_URL_INTERNAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_URL_DESTINATION | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER | INPUT_FILTER_URL_RECODING);
     define('INPUT_FILTER_NONE', 0);
 
     fixup_bad_php_env_vars();
@@ -81,9 +82,9 @@ function init__global2()
     if ((is_file(get_file_base() . '/closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
         if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] != '1'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
-                header('HTTP/1.0 503 Service Temporarily Unavailable');
+                http_response_code(503);
             }
-            header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
+            header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html')); // assign_refresh not used, as it is a pre-page situation
 
             $aaf = ini_get('auto_append_file');
             if (!empty($aaf)) {
@@ -97,7 +98,6 @@ function init__global2()
     $SUPPRESS_ERROR_DEATH = array(false);
     $JAVASCRIPTS_DEFAULT = array(
         'global' => true,
-        'modalwindow' => true,
         'custom_globals' => true,
     );
     $RUNNING_SCRIPT_CACHE = array();
@@ -180,7 +180,7 @@ function init__global2()
         require_code('chat_poller');
         chat_poller();
     }
-    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier'))) {
+    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier')) && (get_param_string('type', '') == 'poller')) {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
@@ -280,13 +280,17 @@ function init__global2()
         $SITE_INFO['cns_table_prefix'] = $SITE_INFO['table_prefix'];
     }
 
-    require_code_no_override('version');
-    @header('X-Content-Type-Options: nosniff');
-    @header('X-XSS-Protection: 1');
+    require_code('version');
+    if (!headers_sent()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-XSS-Protection: 1');
+    }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
         //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
-        @header('X-Powered-By: Composr'); // Better to keep it vague, for security reasons
+        if (!headers_sent()) {
+            header('X-Powered-By: Composr'); // Better to keep it vague, for security reasons
+        }
 
         // Get ready for query logging if requested
         $QUERY_LOG = false;
@@ -305,7 +309,7 @@ function init__global2()
     if ((!running_script('webdav')) && (!running_script('endpoint'))) {
         $http_method = $_SERVER['REQUEST_METHOD'];
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
-            header('HTTP/1.0 405 Method Not Allowed');
+            http_response_code(405);
             exit();
         }
     }
@@ -323,7 +327,15 @@ function init__global2()
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__FAST_SPIDER);
             }
-            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) && (!isset($_GET['keep_session']))) {
+            if (
+                (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') &&
+                (
+                    (get_forum_type() == 'cns') && (!isset($_COOKIE[$SITE_INFO['user_cookie']])) && (!isset($_COOKIE[$SITE_INFO['session_cookie']])) ||
+                    (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0)
+                ) &&
+                ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) &&
+                (!isset($_GET['keep_session'])
+            )) {
                 load_csp(array('csp_enabled' => '0'));
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
@@ -364,12 +376,16 @@ function init__global2()
     }
     require_code('users'); // Users are important due to permissions
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
-        if (($STATIC_CACHE_ENABLED) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (empty($_SERVER['PHP_AUTH_USER']))) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
         }
+    }
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
+        require_code('debug_fs');
+        enable_debug_fs();
     }
     $CACHE_TEMPLATES = has_caching_for('template');
     require_code('lang'); // So that we can do language stuff (e.g. errors). Note that even though we have included a lot so far, we can't really use any of it until lang is loaded. Lang isn't loaded earlier as it itself has a dependency on Tempcode.
@@ -616,12 +632,14 @@ function fixup_bad_php_env_vars()
 
     $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'];
     if (empty($document_root)) {
+        // Note on Windows we really do use '/' in DOCUMENT_ROOT
+
         $document_root = '';
 
         global $SITE_INFO;
         if (isset($SITE_INFO['base_url'])) {
             // Algorithm: backwards from URL-path in base URL
-            $base_url_path = str_replace('/', DIRECTORY_SEPARATOR, parse_url($SITE_INFO['base_url'], PHP_URL_PATH));
+            $base_url_path = parse_url($SITE_INFO['base_url'], PHP_URL_PATH);
             if (substr(get_file_base(), -strlen($base_url_path)) == $base_url_path) {
                 $document_root = substr(get_file_base(), 0, strlen(get_file_base()) - strlen($base_url_path));
             }
@@ -630,12 +648,12 @@ function fixup_bad_php_env_vars()
             // Algorithm: up until a known document-root directory
             $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
             foreach ($path_components as $i => $path_component) {
-                $document_root .= $path_component . DIRECTORY_SEPARATOR;
+                $document_root .= $path_component . '/';
                 if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents'))) {
                     break;
                 }
             }
-            $document_root = substr($document_root, 0, strlen($document_root) - strlen(DIRECTORY_SEPARATOR));
+            $document_root = substr($document_root, 0, strlen($document_root) - strlen('/'));
         }
 
         $_SERVER['DOCUMENT_ROOT'] = $document_root;
@@ -644,7 +662,8 @@ function fixup_bad_php_env_vars()
     $php_self = empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
         // We're really desperate if we have to derive this, but here we go
-        $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
+        $regexp = '#^' . preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $document_root) . DIRECTORY_SEPARATOR, '#') . '#';
+        $_SERVER['PHP_SELF'] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', preg_replace($regexp, '', str_replace('/', DIRECTORY_SEPARATOR, $script_filename)));
         $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
             $_SERVER['PHP_SELF'] .= $path_info;
@@ -752,6 +771,8 @@ function memory_tracking()
  */
 function prepare_for_known_ajax_response()
 {
+    header('X-Robots-Tag: noindex');
+
     set_http_caching(null);
 
     convert_request_data_encodings(true);
@@ -894,6 +915,7 @@ function load_user_stuff()
          */
         $FORUM_DB = null;
         $GLOBALS['FORUM_DB'] = &$FORUM_DRIVER->db; // Done like this to workaround that PHP can't put a reference in a global'd variable
+        reload_lang_fields(false, 'f_member_custom_fields');
     }
 }
 
@@ -2038,4 +2060,30 @@ function cms_ob_end_clean()
             break;
         }
     }
+}
+
+/**
+ * Check if a string starts with a substring.
+ *
+ * @param  string $haystack The haystack
+ * @param  string $needle The needle
+ * @return boolean Whether the haystack starts with the needle
+ */
+function starts_with($haystack, $needle)
+{
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
+/**
+ * Check if a string ends with a substring.
+ *
+ * @param  string $haystack The haystack
+ * @param  string $needle The needle
+ * @return boolean Whether the haystack ends with the needle
+ */
+function ends_with($haystack, $needle)
+{
+    $length = strlen($needle);
+    return ($length === 0) || (substr($haystack, -$length) === $needle);
 }

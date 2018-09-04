@@ -49,7 +49,7 @@ class Block_side_network
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '';
+        $info['cache_on'] = 'array()';
         $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
         return $info;
     }

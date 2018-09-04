@@ -117,13 +117,13 @@ class Module_purchase
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
                 'e_session_id' => 'ID_TEXT',
+                'e_ip_address' => 'IP',
                 'e_price' => 'REAL',
                 'e_tax_derivation' => 'LONG_TEXT',
                 'e_tax' => 'REAL',
                 'e_tax_tracking' => 'LONG_TEXT',
                 'e_currency' => 'ID_TEXT',
                 'e_price_points' => 'INTEGER', // This is supplementary, not an alternative; if it is only points then no ecom_trans_expecting record will be created
-                'e_ip_address' => 'IP',
                 'e_time' => 'TIME',
                 'e_length' => '?INTEGER',
                 'e_length_units' => 'ID_TEXT',
@@ -909,7 +909,7 @@ class Module_purchase
         }
         if ($message === null) {
             // Ah, not even a message to show - jump ahead
-            return redirect_screen($this->title, $url, '');
+            return redirect_screen($this->title, $url);
         }
         $text->attach($message);
 
@@ -950,7 +950,7 @@ class Module_purchase
         }
         if ($terms === '') {
             // Ah, not even any terms to show - jump ahead
-            return redirect_screen($this->title, $url, '');
+            return redirect_screen($this->title, $url);
         }
 
         $result = do_template('ECOM_PURCHASE_STAGE_TERMS', array(
@@ -1009,7 +1009,7 @@ class Module_purchase
             $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array(), true);
 
             // Ah, not even any fields to show - jump ahead
-            return redirect_screen($this->title, $url, '');
+            return redirect_screen($this->title, $url);
         }
 
         $result = do_template('ECOM_PURCHASE_STAGE_DETAILS', array(
@@ -1221,7 +1221,7 @@ class Module_purchase
             ));
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
-            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => true), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
             $icon = 'menu/rich_content/ecommerce/purchase';
 
@@ -1341,6 +1341,8 @@ class Module_purchase
         }
 
         if ($subtype == 'cancel') {
+            delete_pending_orders_for_current_user();
+
             if ($message !== null) {
                 $result = do_template('ECOM_PURCHASE_STAGE_FINISH', array(
                     '_GUID' => '859c31e8f0f02a2a46951be698dd22cf',

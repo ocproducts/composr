@@ -27,9 +27,10 @@ class Hook_sitemap_page extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):([^:]+)(:browse)?$#', $page_link, $matches) != 0) {
@@ -96,8 +97,8 @@ class Hook_sitemap_page extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime(get_file_base() . '/' . $path) : null,
-                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/' . $path) : null,
+                'add_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime(get_file_base() . '/' . $path) : null,
+                'edit_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/' . $path) : null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -178,7 +179,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             $functions = extract_module_functions($path_addon, array('get_description'));
                             $description = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $path_addon);
                             $description = do_lang('FROM_ADDON', $package, $description);
-                            $struct['description'] = $description;
+                            $struct['description'] = comcode_to_tempcode($description);
                         }
                     }
 
@@ -209,7 +210,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
         // Get more details from menu link / page grouping?
         $this->_ameliorate_with_row($options, $struct, $row, $meta_gather);
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 
@@ -231,7 +232,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
 
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                     $check_perms, // $check_perms
-                    null, // $member_id
+                    $this->get_member($options), // $member_id
                     $simplified || $use_page_groupings, // $support_crosslinks
                     $simplified || $use_page_groupings // $be_deferential
                 ));
@@ -364,7 +365,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
             $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
             foreach ($hooks as $ob) {
                 if ($ob->is_active()) {
-                    $is_handled = $ob->handles_page_link($page_link);
+                    $is_handled = $ob->handles_page_link($page_link, $options);
                     if ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY) {
                         $struct['privilege_page'] = $ob->get_privilege_page($page_link);
                         $struct['has_possible_children'] = true;

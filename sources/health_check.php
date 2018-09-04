@@ -105,6 +105,8 @@ function health_check_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('health_check')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     if (!is_cli()) {
         if (!has_actual_page_access(get_member(), 'admin_health_check', 'adminzone')) {
             require_lang('permissions');
@@ -464,26 +466,21 @@ abstract class Hook_Health_Check
      * Get a list of e-mail domains the site uses.
      *
      * @param  boolean $include_all Include all e-mail domains, as opposed to just the main outgoing one
-     * @return array List of e-mail domains
+     * @return array Map of e-mail domains to e-mail addresses on the  domain
      */
     protected function get_mail_domains($include_all = true)
     {
+        require_code('mail');
+
         $domains = array();
-        $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
-        if ($include_all) {
-            $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
-            if (addon_installed('tickets')) {
-                $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
+        $addresses = find_system_email_addresses($include_all);
+        foreach ($addresses as $address => $domain) {
+            if (!$this->is_localhost_domain($domain)) {
+                $domains[$domain] = $address;
             }
         }
 
-        foreach ($domains as $domain => $email) {
-            if ($this->is_localhost_domain($domain)) {
-                unset($domains[$domain]);
-            }
-        }
-
-        return array_unique($domains);
+        return $domains;
     }
 
     /*
@@ -498,7 +495,7 @@ abstract class Hook_Health_Check
      */
     protected function get_page_content($page_link = ':')
     {
-        $http_result = $this->get_page_http_content($page_link);
+        $http_result = $this->get_page_http_content($page_link, array('timeout' => 20.0));
         return $http_result->data;
     }
 

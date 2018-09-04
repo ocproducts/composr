@@ -113,6 +113,7 @@ class Hook_addon_registry_cns_warnings
             'themes/default/templates/CNS_WARN_SPAM_URLS.tpl',
             'sources/hooks/systems/commandr_fs_extended_member/warnings.php',
             'themes/default/javascript/cns_warnings.js',
+            'sources/hooks/systems/actionlog/cns_warnings.php',
         );
     }
 

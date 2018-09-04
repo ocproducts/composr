@@ -508,6 +508,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>{$IS_FRIEND,2,3}</td>
 			<td>Detect if the second parameter/member ID (or current member if no second parameter) has befriended the first parameter/member ID.</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_ICON_IN_SVG_SPRITE,admin/add}</td>
+			<td>Detect if the provided icon name/path is compiled in an SVG sprite (internal use only).</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
@@ -630,6 +634,34 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		<tr style="background: #DDFFDD">
 			<td>{$RTL}</td>
 			<td>If the current language pack is right-to-left (Arabic etc)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PROVIDE_WITH_TRANSLATION}</td>
+			<td>
+				<p>This symbol is designed for assistive translations of user-supplied content.</p>
+
+				<p>Before you can use the API you must first configure it:</p>
+				<ol>
+					<li>Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)</li>
+					<li>Make sure that Google Translation API is enabled on Google\'s end</li>
+					<li>Enable the "Google translate enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
+				</ol>
+
+				<p>To use the symbol just wrap it around text that needs translating in templates, e.g. <kbd>{$PROVIDE_WITH_TRANSLATION,{TEXT},html_block,FR}</kbd>.</p>
+
+				<p>This example translates French in [tt]{TEXT}[/tt] to the site\'s current language, within the context of a block of HTML. The original text is followed by the translated text, and as it is a block of HTML it also includes the "Powered by Google Translate" message.</p>
+
+				<p>Here are the available translation modes:</p>
+				<ol>
+					<li>[tt]plain[/tt] &ndash; translate plain text (without any translation metadata or credit message)</li>
+					<li>[tt]html_block[/tt] &ndash; translate a block of HTML (with a [tt]div[/tt] specifying translation metadata and a credit message to Google)</li>
+					<li>[tt]html_inline[/tt] &ndash; translate inline HTML (with a [tt]span[/tt] specifying translation metadata but without a credit message to Google)
+					<li>[tt]html_raw[/tt] &ndash; translate HTML (without any translation metadata or credit message)</li>
+					<li>[tt]autodetect[/tt] &ndash; autodetect whether it is plain text or HTML (without any translation metadata or credit message)</li>
+				</ol>
+
+				<p>If you omit the source language then it will be autodetected.</p>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -1320,6 +1352,10 @@ where:
 			<td>{$ALREADY_RATED,downloads,3}</td>
 			<td>Find if the current user has already rated something.</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FORM_TO_EMAIL_URL,pagename}</td>
+			<td>Used to cleanly produce a URL to the <kbd>form_to_mail</kbd> script. Documented in the [/html][page="_SEARCH:tut_feedback"]Feedback and user interaction[/page][html] tutorial.</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
@@ -1532,6 +1568,10 @@ Understanding of these symbols requires an understanding of basic boolean operat
 				<kbd>{$?,0,yes}</kbd> &rarr; (blank)<br />
 				<kbd>{$?,1,yes}</kbd> &rarr; <kbd>yes</kbd>
 			</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ATTR_DEFAULTED,parameter,somevalue,defaultvalue}</td>
+			<td>This is for outputting HTML parameters only where they differ from the browser's inbuilt default (hence saving some bandwidth). It is a compact equivalent of <kbd>{$?,{$NEQ,somevalue,defaultvalue}, parameter="somevalue"}</kbd>.</td>
 		</tr>
 	</tbody>
 </table>
@@ -1860,7 +1900,7 @@ Note that you cannot use directives for symbol parameters because directives con
 				<br />The parameters to the directive are (all may be blank or left out):
 				<ol>
 					<li>the title (blank means no title is used)</li>
-					<li>the type of the table (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
+					<li>the type of the box (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
 					<li>the CSS width</li>
 					<li>'|' separated list of options (meaning dependant upon templates interpretation)</li>
 					<li>'|' separated list of meta information (key|value|key|value|...) (e.g. [/html][tt]Name|Allen|Gender|Male|Country|USA[/tt][html])</li>
@@ -1947,11 +1987,11 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>See if something is contained in an array, returning a boolean. This only works with arrays passed into templates (not something like a delimited-list). This is rarely used because it can't be embedded easily within wider expressions. Usually you will use <kbd>IF_IN_ARRAY</kbd>.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>IF_IN_ARRAY,example,PASSED_IN_ARRAY,output if it is</td>
+			<td>IF_IN_ARRAY,PASSED_IN_ARRAY,example</td>
 			<td>Output something if something is in an array. This only works with arrays passed into templates (not something like a delimited-list). First parameter is a string to check for, second parameter is the name of an array, third parameter is what to output.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>IF_NOT_IN_ARRAY,example,PASSED_IN_ARRAY,output if it is not</td>
+			<td>IF_NOT_IN_ARRAY,PASSED_IN_ARRAY,example</td>
 			<td>Opposite of IF_IN_ARRAY</td>
 		</tr>
 		<tr style="background: #DDFFDD">
@@ -1977,6 +2017,14 @@ Note that you cannot use directives for symbol parameters because directives con
 		<tr style="background: #DDFFDD">
 			<td>MAKE_MOBILE</td>
 			<td>On mobile mode perform some basic conversions on the enclosed HTML to make it mobile-friendly. Covered in the [page="_SEARCH:tut_mobile"]Mobile design[/page] tutorial.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>HTML_COMPRESS</td>
+			<td>Apply HTML compression techniques to an area of the output. Covered in the [page="_SEARCH:tut_performance"]Optimising Performance[/page] tutorial.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>CDN_FILTER</td>
+			<td>Mass-apply the <kbd>CDN_FILTER</kbd> symbol to appropriate URLs found inside the directive. Covered in the [page="_SEARCH:tut_performance"]Optimising Performance[/page] tutorial.</td>
 		</tr>
 	</tbody>
 </table>

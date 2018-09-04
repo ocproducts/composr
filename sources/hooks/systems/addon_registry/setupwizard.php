@@ -126,6 +126,7 @@ class Hook_addon_registry_setupwizard
             'themes/default/css/setupwizard.css',
             'sources/hooks/blocks/main_staff_checklist/default_content.php',
             'themes/default/javascript/setupwizard.js',
+            'sources/hooks/systems/actionlog/setupwizard.php',
         );
     }
 

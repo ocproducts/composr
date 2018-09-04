@@ -5,16 +5,11 @@
 		{+END}
 
 		{+START,IF,{$NOT,{GIVE_CONTEXT}}}
-			{+START,IF_NON_EMPTY,{ID}}
-				<a href="{URL*}">{NAME*}</a>
-			{+END}
-			{+START,IF_EMPTY,{ID}}
-				{NAME*}
-			{+END}
+			{NAME*}
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$GET,skip_content_box_title}}}
-		<h3><a class="subtle-link" href="{URL*}">{$GET,content_box_title}</a></h3>
+		<h3>{+START,IF_NON_EMPTY,{URL}}<a class="subtle-link" href="{URL*}">{+END}{$GET,content_box_title}{+START,IF_NON_EMPTY,{URL}}</a>{+END}</h3>
 	{+END}
 
 	<div class="meta-details" role="note">

@@ -68,6 +68,7 @@ function semi_dev_mode_startup()
             (get_param_string('keep_devtest', null) === null)
         ) {
             $_GET['keep_devtest'] = '1';
+            require_code('site');
             attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or $cms.keep() (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
             $_GET['keep_devtest'] = '1';
@@ -113,14 +114,14 @@ function semi_dev_mode_startup()
                 $rs = get_resources();
                 foreach ($rs as $r) {
                     $type = get_resource_type($r);
-                    if (!in_array($type, array('Unknown', 'stream-context'))) {
+                    if (!in_array($type, array('Unknown', 'stream-context', 'pspell', 'pspell config'))) {
                         if ($type == 'stream') {
                             $stream_meta = stream_get_meta_data($r);
                         } else {
                             $stream_meta = null;
                         }
 
-                        if (($stream_meta === null) || (!in_array($stream_meta['stream_type'], array('TEMP', 'MEMORY')))) {
+                        if (($stream_meta === null) || (!in_array($stream_meta['stream_type'], array('TEMP', 'MEMORY', 'STDIO')))) {
                             @exit(escape_html('Unexpected resource left open of type, ' . $type . (($type == 'stream') ? ('; ' . var_export($stream_meta, true)) : '')));
                         }
                     }
@@ -141,15 +142,11 @@ function semi_dev_mode_startup()
 /**
  * Remove Composr's strictness, to help integration of third-party code.
  *
- * @param  boolean $change_content_type Whether to also set the content type to plain-HTML
  * @param  boolean $db_too Whether to destrictify database commands over the Composr database driver
  */
-function destrictify($change_content_type = true, $db_too = false)
+function destrictify($db_too = false)
 {
     // Turn off strictness
-    if ((!headers_sent()) && ($change_content_type)) {
-        @header('Content-type: text/html; charset=' . get_charset());
-    }
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);

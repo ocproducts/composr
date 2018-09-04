@@ -32,7 +32,6 @@ public class MainDialog extends JFrame {
     JButton optionsBtn = new JButton();
     JButton scanSignaturesBtn = new JButton();
     JButton countBtn = new JButton();
-    JButton specialBtn = new JButton();
     JList files = null;
     JList errors = null;
     JLabel jLabel1 = new JLabel();
@@ -106,12 +105,12 @@ public class MainDialog extends JFrame {
         ClearErrorsBtn.setActionCommand("ClearErrorsBtn");
         ClearErrorsBtn.addActionListener(new Dialog1_ClearErrorsBtn_actionAdapter(this));
         ClearErrorsBtn.setText("<html>Clear error list</html>");
-        aboutBtn.setBounds(new Rectangle(715, 538, 65, 37));
+        aboutBtn.setBounds(new Rectangle(636, 538, 65, 37));
         aboutBtn.setMargin(new Insets(0, 0, 0, 0));
         aboutBtn.setActionCommand("aboutBtn");
         aboutBtn.setText("<html>About</html>");
         aboutBtn.addActionListener(new Dialog1_aboutBtn_actionAdapter(this));
-        optionsBtn.setBounds(new Rectangle(639, 538, 72, 37));
+        optionsBtn.setBounds(new Rectangle(560, 538, 72, 37));
         optionsBtn.setMargin(new Insets(0, 0, 0, 0));
         optionsBtn.setActionCommand("optionsBtn");
         optionsBtn.setText("<html>Options</html>");
@@ -128,12 +127,6 @@ public class MainDialog extends JFrame {
         countBtn.setText("<html>Line Count</html>");
         countBtn.addActionListener(new Dialog1_countBtn_actionAdapter(this));
         countBtn.setBackground(new Color(215, 245, 229));
-        specialBtn.setBounds(new Rectangle(560, 538, 75, 37));
-        specialBtn.setMargin(new Insets(0, 0, 0, 0));
-        specialBtn.setActionCommand("countBtn");
-        specialBtn.setText("<html>Special tools</html>");
-        specialBtn.addActionListener(new Dialog1_specialBtn_actionAdapter(this));
-        specialBtn.setBackground(new Color(215, 245, 229));
         panel1.setMinimumSize(new Dimension(790, 590));
         files.setBackground(new Color(215, 245, 229));
         files.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -144,21 +137,18 @@ public class MainDialog extends JFrame {
         errors.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         errors.addKeyListener(new Dialog1_errors_actionAdapterKey(this));
         errors.addMouseListener(new Dialog1_errors_actionAdapterClick(this));
-        scrollPaneErrors.setBounds(new Rectangle(406, 14, 375, 517));
+        scrollPaneErrors.setBounds(new Rectangle(406, 14, 885, 517));
         jLabel1.setToolTipText("");
-        jLabel1.setText(
-                "<html>This is your project workspace. Set it by setting your code "
-                + "directory in the options.</html>");
+        jLabel1.setText("<html>This is your project workspace. Set it by setting your code directory in the options.</html>");
         jLabel1.setBounds(new Rectangle(26, 490, 339, 37));
         jLabel2.setText(
-                "<html>Either double click a file from the left, click examine selected "
-                + "files, or just drag and drop files here from your OS.<br>"
-                + "<br>Any errors will show up in this pane, and you\'ll be able "
-                + "to view the involved code in the chosen editor via a double-click.</html>");
+            "<html>Either double click a file from the left, click examine selected "
+            + "files, or just drag and drop files here from your OS.<br>"
+            + "<br>Any errors will show up in this pane, and you\'ll be able "
+            + "to view the involved code in the chosen editor via a double-click.</html>");
         jLabel2.setBounds(new Rectangle(415, 380, 350, 130));
         panel1.add(aboutBtn);
         panel1.add(countBtn);
-        panel1.add(specialBtn);
         panel1.add(examineFilesBtn);
         panel1.add(scanSignaturesBtn);
         panel1.add(ViewCodeBtn);
@@ -172,7 +162,7 @@ public class MainDialog extends JFrame {
         panel1.add(jLabel2);
         panel1.add(scrollPaneErrors);
         this.getContentPane().add(panel1, java.awt.BorderLayout.WEST);
-        panel1.setPreferredSize(new Dimension(790, 590));
+        panel1.setPreferredSize(new Dimension(1300, 590));
 
         this.setVisible(true);
 
@@ -194,11 +184,27 @@ public class MainDialog extends JFrame {
         }
 
         int n;
-        n = JOptionPane.showOptionDialog(this, "Would you like to skip files underneath any directory with '*_custom' in the name?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        n = JOptionPane.showOptionDialog(
+            this,
+            "Would you like to skip files underneath any directory with '*_custom' in the name?",
+            "Question", JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            null,
+            null
+        );
         if (n == JOptionPane.YES_OPTION) {
             skip_custom = true;
         }
-        n = JOptionPane.showOptionDialog(this, "Would you like to sort by date?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        n = JOptionPane.showOptionDialog(
+            this,
+            "Would you like to sort by date?",
+            "Question", JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            null,
+            null
+        );
         if (n == JOptionPane.YES_OPTION) {
             sort_new = true;
         }
@@ -354,11 +360,7 @@ public class MainDialog extends JFrame {
             } // No contribution to count
         }
 
-        JOptionPane.showMessageDialog(this, "There are " + count + " lines of code in these files (discluding blank lines).");
-    }
-
-    public void specialBtn_actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(this,  "Open up a web browser to the testing-tools directory, so the index.php loads and displays all available tools.");
+        JOptionPane.showMessageDialog(this, "There are " + count + " lines of code in these files (excluding blank lines).");
     }
 
     private ArrayList<String> decompose_line(String line) {
@@ -486,7 +488,12 @@ public class MainDialog extends JFrame {
             this.jLabel1.setVisible(false);
             this.jLabel2.setVisible(false);
         } catch (java.io.IOException e2) {
-            JOptionPane.showMessageDialog(this, "Failure executing PHP backend. (" + e2.toString() + ")", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                this,
+                "Failure executing PHP backend. (" + e2.toString() + ")",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
             tempProgress.setVisible(false);
             return;
         }
@@ -502,7 +509,7 @@ public class MainDialog extends JFrame {
         }
         String line = "code_quality.php spacedpaths=1";
         if (!no_path) {
-            line = line + " path="  + Main.projectPath;
+            line = line + " path=" + Main.projectPath;
         } else {
             line = line + " path=\"\"";
         }
@@ -553,49 +560,51 @@ public class MainDialog extends JFrame {
             return;
         }
 
-        String params = "";
+        String params;
         String line;
-        if (Main.textEditorPath.toLowerCase().endsWith("ClPhpEd.exe")) {
-            params = " /g" + decomposed.get(3) + ":" + decomposed.get(2);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
-        } else if (Main.textEditorPath.toLowerCase().endsWith("context.exe")) {
-            params = " /g" + decomposed.get(3) + ":" + decomposed.get(2);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
-        } else if ((Main.textEditorPath.toLowerCase().endsWith("netbeans")) || (Main.textEditorPath.toLowerCase().endsWith("netbeans.exe"))) {
-            line = Main.textEditorPath + " --open \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\":" + decomposed.get(2);
-        } else if (Main.textEditorPath.toLowerCase().endsWith("jedit.exe")) {
+        String filePath = (((((String) decomposed.get(1)).charAt(1) == ':') || (((String) decomposed.get(1)).charAt(0) == '/')) ? "" : Main.projectPath) + File.separator + decomposed.get(1);
+        if (filePath.contains(" ")) {
+            filePath = "\"" + filePath + "\"";
+        }
+        if (Main.textEditorPath.toLowerCase().endsWith("jedit.exe") || Main.textEditorPath.toLowerCase().endsWith("jedit")) {
             params = " +line:" + decomposed.get(2);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("notepad++.exe")) {
+            params = " -multiInst " + filePath + " -n" + decomposed.get(2);
+            line = Main.textEditorPath + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("kate")) {
-            params = " --line " + decomposed.get(2) + " --column "
-                    + decomposed.get(3);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+            params = " --line " + decomposed.get(2) + " --column " + decomposed.get(3);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("geany")) {
+            params = " +" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("bbedit")) {
+            params = " +" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("clphped.exe")) {
+            params = " /g" + filePath + ":" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("codelobsteride.exe") || Main.textEditorPath.toLowerCase().endsWith("codelobsteride") || Main.textEditorPath.toLowerCase().endsWith("codelobster")) {
+            params = ""; // TODO: Add line number support, once told about it
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if ((Main.textEditorPath.toLowerCase().endsWith("netbeans.exe")) || (Main.textEditorPath.toLowerCase().endsWith("netbeans"))) {
+            params = " --open " + filePath + ":" + decomposed.get(2);
+            line = Main.textEditorPath + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("mate")) {
-            params = " -wl" + decomposed.get(2);
-            line = Main.textEditorPath + " " + params + " "
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1);
+            params = " -wl" + decomposed.get(2) + " " + filePath;
+            line = Main.textEditorPath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("atom.exe") || Main.textEditorPath.toLowerCase().endsWith("atom.sh") || Main.textEditorPath.toLowerCase().endsWith("atom")) {
+            params = ":" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("code.exe") || Main.textEditorPath.toLowerCase().endsWith("code")) {
+            params = " -g " + filePath + ":" + decomposed.get(2);
+            line = Main.textEditorPath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("pspad.exe")) {
+            params = " \\" + decomposed.get(2);
+            line = Main.textEditorPath + params + " " + filePath;
         } else {
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+            params = "";
+            line = Main.textEditorPath + " " + filePath + params;
         }
 
         if (this.errors.getSelectedIndex() == -1) {
@@ -821,20 +830,6 @@ class Dialog1_countBtn_actionAdapter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         adaptee.countBtn_actionPerformed(e);
-    }
-}
-
-class Dialog1_specialBtn_actionAdapter implements ActionListener {
-
-    private final MainDialog adaptee;
-
-    Dialog1_specialBtn_actionAdapter(MainDialog adaptee) {
-        this.adaptee = adaptee;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        adaptee.specialBtn_actionPerformed(e);
     }
 }
 

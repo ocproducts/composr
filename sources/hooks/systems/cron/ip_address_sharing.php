@@ -103,7 +103,7 @@ class Hook_cron_ip_address_sharing
                     $ips[] = array(
                         $ip['ip'],
                         $ip['cnt'],
-                        gethostbyaddr($ip['ip']),
+                        cms_gethostbyaddr($ip['ip']),
                     );
                 }
 

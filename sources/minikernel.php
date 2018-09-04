@@ -93,6 +93,11 @@ function init__minikernel()
     cms_ini_set('date.timezone', 'UTC');
 
     set_http_caching(null);
+
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
+        require_code('debug_fs');
+        enable_debug_fs();
+    }
 }
 
 /**
@@ -153,7 +158,7 @@ function peek_suppress_error_death()
 /**
  * PHP's environment can be a real mess across servers. Cleanup the best we can.
  * See phpstub.php for info on what environmental data we can rely on.
- * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also
+ * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also.
  */
 function fixup_bad_php_env_vars()
 {
@@ -208,10 +213,12 @@ function fixup_bad_php_env_vars()
 
     $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'];
     if (empty($document_root)) {
+        // Note on Windows we really do use '/' in DOCUMENT_ROOT
+
         $document_root = '';
         $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
         foreach ($path_components as $i => $path_component) {
-            $document_root .= $path_component . DIRECTORY_SEPARATOR;
+            $document_root .= $path_component . '/';
             if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'wwwroot', 'Documents'))) {
                 break;
             }
@@ -223,7 +230,8 @@ function fixup_bad_php_env_vars()
     $php_self = empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
         // We're really desperate if we have to derive this, but here we go
-        $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
+        $regexp = '#^' . preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $document_root) . DIRECTORY_SEPARATOR, '#') . '#';
+        $_SERVER['PHP_SELF'] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', preg_replace($regexp, '', str_replace('/', DIRECTORY_SEPARATOR, $script_filename)));
         $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
             $_SERVER['PHP_SELF'] .= $path_info;
@@ -456,6 +464,8 @@ function fatal_exit($text)
 {
     //if (is_object($text)) $text = $text->evaluate();
 
+    set_http_status_code(500);
+
     // To break any looping of errors
     global $EXITING;
     if (($EXITING !== null) || (!class_exists('Tempcode'))) {
@@ -504,6 +514,8 @@ function fatal_exit($text)
         ));
     }
     $out_final->evaluate_echo();
+
+    echo '<!--ERROR-->';
 
     exit();
 }
@@ -1091,6 +1103,18 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
     }
 
     return preg_match('#' . str_replace('#', '\#', $rexp) . '#i', $context) != 0;
+}
+
+/**
+ * Check to see if caching is enabled.
+ *
+ * @param  string $type Cache type
+ * @set block lang comcode_page template
+ * @return boolean Whether it has the caching
+ */
+function has_caching_for($type)
+{
+    return true;
 }
 
 /**

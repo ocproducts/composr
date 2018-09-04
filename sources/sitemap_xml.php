@@ -87,7 +87,7 @@ function rebuild_sitemap_set($set_number, $last_time, $callback = null)
     fwrite($sitemaps_out_file, $blob);
 
     // Nodes accessible by guests, and not deleted (ignore update time as we are rebuilding whole set)
-    $where = array('set_number' => $set_number, 'is_deleted' => 0, 'guest_access' => 0);
+    $where = array('set_number' => $set_number, 'is_deleted' => 0, 'guest_access' => 1);
     $nodes = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), $where);
     foreach ($nodes as $node) {
         $page_link = $node['page_link'];
@@ -95,14 +95,6 @@ function rebuild_sitemap_set($set_number, $last_time, $callback = null)
 
         if ($callback !== null) {
             call_user_func($callback);
-        }
-
-        if (!has_actual_page_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), $attributes['page'], $zone)) {
-            continue;
-        }
-
-        if (substr($attributes['page'], 0, 1) == '_') {
-            continue;
         }
 
         $add_date = $node['add_date'];
@@ -277,41 +269,76 @@ function build_sitemap_cache_table()
     load_up_all_module_category_permissions($GLOBALS['FORUM_DRIVER']->get_guest_id());
 
     // Runs via a callback mechanism, so we don't need to load an arbitrary complex structure into memory.
-    $callback = '_sitemap_cache_node';
+    $callback = '_sitemap_cache_node__nonguest';
     $meta_gather = SITEMAP_GATHER_TIMES;
+    $options = SITEMAP_GEN_CONSIDER_VALIDATION | SITEMAP_GEN_MACHINE_SITEMAP;
     retrieve_sitemap_node(
         '',
         $callback,
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
         /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_CHECK_PERMS | SITEMAP_GEN_CONSIDER_VALIDATION,
+        /*$options=*/$options,
+        /*$zone=*/'_SEARCH',
+        $meta_gather
+    );
+    $callback = '_sitemap_cache_node__guest';
+    $options = SITEMAP_GEN_CONSIDER_VALIDATION | SITEMAP_GEN_MACHINE_SITEMAP | SITEMAP_GEN_CHECK_PERMS | SITEMAP_GEN_AS_GUEST;
+    retrieve_sitemap_node(
+        '',
+        $callback,
+        /*$valid_node_types=*/null,
+        /*$child_cutoff=*/null,
+        /*$max_recurse_depth=*/null,
+        /*$options=*/$options,
         /*$zone=*/'_SEARCH',
         $meta_gather
     );
 }
 
-
 /**
- * Callback for referencing a Sitemap node in the cache.
+ * Callback for referencing a Sitemap node in the cache. Used for things guests may not necessarily have access to.
  *
  * @param  array $node The Sitemap node
  *
  * @ignore
  */
-function _sitemap_cache_node($node)
+function _sitemap_cache_node__nonguest($node)
+{
+    _sitemap_cache_node($node, false);
+}
+
+/**
+ * Callback for referencing a Sitemap node in the cache. Used for things guests do have access to.
+ *
+ * @param  array $node The Sitemap node
+ *
+ * @ignore
+ */
+function _sitemap_cache_node__guest($node)
+{
+    _sitemap_cache_node($node, true);
+}
+
+/**
+ * Backend for callbacks for referencing a Sitemap node in the cache.
+ *
+ * @param  array $node The Sitemap node
+ * @param  boolean $guest_access Whether there is guest access
+ *
+ * @ignore
+ */
+function _sitemap_cache_node($node, $guest_access)
 {
     $page_link = $node['page_link'];
     if ($page_link === null) {
         return;
     }
 
-    $add_date = $node['extra_meta']['add_date'];
-    $edit_date = $node['extra_meta']['edit_date'];
+    $add_date = isset($node['extra_meta']['add_date']) ? $node['extra_meta']['add_date'] : null;
+    $edit_date = isset($node['extra_meta']['edit_date']) ? $node['extra_meta']['edit_date'] : null;
     $priority = $node['sitemap_priority'];
     $refreshfreq = $node['sitemap_refreshfreq'];
-
-    $guest_access = true;
 
     notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access);
 }
@@ -322,13 +349,27 @@ function _sitemap_cache_node($node)
  * @param  SHORT_TEXT $page_link The page-link
  * @param  ?TIME $add_date The add time (null: unknown)
  * @param  ?TIME $edit_date The edit time (null: same as add time)
- * @param  float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant
- * @param  ID_TEXT $refreshfreq The refresh frequency
+ * @param  ?float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant (null: unknown - and trigger a Sitemap tail call to find it)
+ * @param  ?ID_TEXT $refreshfreq The refresh frequency (null: unknown - and trigger a Sitemap tail call to find it)
  * @set always hourly daily weekly monthly yearly never
- * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  ?boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to true then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses) (null: unknown - and trigger a Sitemap tail call to find it)
  */
-function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
+function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null, $priority = null, $refreshfreq = null, $guest_access = null)
 {
+    list($zone, $map) = page_link_decode($page_link);
+    if (isset($map['page'])) {
+        require_code('global4');
+        if (!comcode_page_is_indexable($zone, $map['page'])) {
+            return;
+        }
+
+        // We don't want to leave _SEARCH in there, as it's inconsistent with what the regular Sitemap code goes
+        $_zone = get_page_zone($map['page'], false);
+        if ($_zone !== null) {
+            $page_link = preg_replace('#^_SEARCH:#', $_zone . ':', $page_link);
+        }
+    }
+
     // Maybe we're still installing
     if (!$GLOBALS['SITE_DB']->table_exists('sitemap_cache') || running_script('install')) {
         return;
@@ -340,14 +381,68 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
     }
 
     // Find set number we will write into
-    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', array(), 'GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
-    if ($set_number === null) {
+    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', array(), 'WHERE guest_access=1 GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
+    if ($set_number === null) { // No free space in existing set
         // Next set number in sequence
-        $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(set_number)');
+        $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(set_number)', array('guest_access' => 1));
         if ($set_number === null) {
             $set_number = 0;
         } else {
             $set_number++;
+        }
+    }
+
+    if (($priority === null) || ($refreshfreq === null) || ($guest_access === null)) {
+        $meta_gather = SITEMAP_GATHER_TIMES;
+        $options = SITEMAP_GEN_CONSIDER_VALIDATION | SITEMAP_GEN_MACHINE_SITEMAP | SITEMAP_GEN_CHECK_PERMS | SITEMAP_GEN_AS_GUEST;
+        $node = retrieve_sitemap_node(
+            $page_link,
+            /*$callback*/null,
+            /*$valid_node_types=*/null,
+            /*$child_cutoff=*/null,
+            /*$max_recurse_depth=*/null,
+            /*$options=*/$options,
+            /*$zone=*/'_SEARCH',
+            $meta_gather
+        );
+        if ($node === null) {
+            $options = SITEMAP_GEN_CONSIDER_VALIDATION | SITEMAP_GEN_MACHINE_SITEMAP;
+            $node = retrieve_sitemap_node(
+                $page_link,
+                /*$callback*/null,
+                /*$valid_node_types=*/null,
+                /*$child_cutoff=*/null,
+                /*$max_recurse_depth=*/null,
+                /*$options=*/$options,
+                /*$zone=*/'_SEARCH',
+                $meta_gather
+            );
+
+            if ($node === null) {
+                // Some kind of error
+                return;
+            }
+
+            if ($guest_access === null) {
+                $guest_access = false;
+            }
+        } else {
+            if ($guest_access === null) {
+                $guest_access = true;
+            }
+        }
+
+        if ($add_date === null) {
+            $add_date = $node['extra_meta']['add_time'];
+        }
+        if ($edit_date === null) {
+            $edit_date = $node['extra_meta']['edit_time'];
+        }
+        if ($priority === null) {
+            $priority = $node['sitemap_priority'];
+        }
+        if ($refreshfreq === null) {
+            $refreshfreq = $node['sitemap_refreshfreq'];
         }
     }
 
@@ -379,15 +474,21 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
  * For renames instead call notify_sitemap_node_delete then notify_sitemap_node_add.
  *
  * @param  SHORT_TEXT $page_link The page-link
- * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  ?boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses) (null: unknown)
  */
-function notify_sitemap_node_edit($page_link, $guest_access)
+function notify_sitemap_node_edit($page_link, $guest_access = null)
 {
+    if ($guest_access === null) {
+        notify_sitemap_node_add($page_link); // Go through the full flow, which includes gathering metadata
+        return;
+    }
+
     $rows = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), array(
         'page_link' => $page_link,
     ), '', 1);
     if (!isset($rows[0])) {
-        return; // Allows us to call a bit lazily when we're not sure even if we added in the first place
+        notify_sitemap_node_add($page_link);
+        return;
     }
 
     $GLOBALS['SITE_DB']->query_delete('sitemap_cache', array(

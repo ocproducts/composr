@@ -441,28 +441,29 @@ function find_php_path($cgi = false)
         '/usr/php/sbin',
         '/usr/php5/bin',
         '/usr/php5/sbin',
-        '/usr/php6/bin',
-        '/usr/php6/sbin',
+        '/usr/php7/bin',
+        '/usr/php7/sbin',
         'c:\\php',
         'c:\\php5',
-        'c:\\php6',
+        'c:\\php7',
         'c:\\progra~1\\php',
         'c:\\progra~1\\php5',
-        'c:\\progra~1\\php6',
+        'c:\\progra~1\\php7',
     );
     $filenames = array(
         'php.dSYM',
         'php',
         'php5',
-        'php6',
+        'php7',
         'php-cli.dSYM',
         'php-cli',
         'php5-cli',
-        'php6-cli',
+        'php7-cli',
         'php-cgi.dSYM',
         'php-cgi',
         'php5-cgi',
-        'php6-cgi',
+        'php7-cgi',
+        'php-win.exe',
     );
     foreach ($search_dirs as $dir) {
         foreach ($filenames as $file) {
@@ -624,7 +625,7 @@ function get_max_file_size($source_member = null, $db = null, $consider_php_limi
             require_code('cns_groups');
             $daily_quota = cns_get_member_best_group_property($source_member, 'max_daily_upload_mb');
         } else {
-            $daily_quota = 5; // 5 is a hard-coded default for non-Conversr forums
+            $daily_quota = NON_CNS_QUOTA;
         }
         if ($db === null) {
             $db = $GLOBALS['SITE_DB'];
@@ -659,17 +660,22 @@ function get_max_file_size($source_member = null, $db = null, $consider_php_limi
  * @param  boolean $skip_server_side_security_check Whether to skip the server side security check
  * @param  ?string $file_to_delete Delete this file if we have to exit (null: no file to delete)
  * @param  boolean $accept_errors Whether to allow errors without dying
+ * @param  ?MEMBER $member_id Member to check as (null: current member)
  * @return boolean Success status
  */
-function check_extension($name, $skip_server_side_security_check = false, $file_to_delete = null, $accept_errors = false)
+function check_extension($name, $skip_server_side_security_check = false, $file_to_delete = null, $accept_errors = false, $member_id = null)
 {
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
     $ext = get_file_extension($name);
 
     $_types = get_option('valid_types');
     $types = array_flip(explode(',', $_types));
     ksort($types);
     if (!$skip_server_side_security_check) {
-        if (!has_privilege(get_member(), 'use_very_dangerous_comcode')) {
+        if (!has_privilege($member_id, 'use_very_dangerous_comcode')) {
             $dangerous_markup_types = array(
                 'js',
                 'json',

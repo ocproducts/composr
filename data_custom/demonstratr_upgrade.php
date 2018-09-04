@@ -84,6 +84,8 @@ if (!addon_installed('composr_homesite')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
 }
 
+header('X-Robots-Tag: noindex');
+
 if (get_base_url() != 'http://shareddemo.composr.info') {
     warn_exit('Must be called for shared demo');
 }

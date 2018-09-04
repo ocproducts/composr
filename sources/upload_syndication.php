@@ -117,7 +117,7 @@ function upload_syndication_auth_script()
         'HOOK' => $hook,
         'NAME' => $name,
     ));
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'abde85be22df7fcfd51c5067f1b82e7a', 'TITLE' => do_lang_tempcode('UPLOAD_SYNDICATION_AUTH'), 'CONTENT' => $tpl, 'POPUP' => true));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'abde85be22df7fcfd51c5067f1b82e7a', 'TITLE' => do_lang_tempcode('UPLOAD_SYNDICATION_AUTH'), 'CONTENT' => $tpl, 'POPUP' => true, 'NOINDEX' => true));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
 }

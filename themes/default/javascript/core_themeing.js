@@ -304,7 +304,7 @@
                     cssText = (selectors[i].cssText === undefined) ? selectors[i].style.cssText : selectors[i].cssText;
                     if (cssText.indexOf('{') !== -1) {
                         cssText = cssText.replace(/ \{ /g, ' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g, '<br />\n}').replace(/; /g, ';<br />\n&nbsp;&nbsp;&nbsp;');
-                    } else  { // IE
+                    } else { // IE
                         cssText = cssText.toLowerCase().replace(/; /, ';<br />\n');
                     }
                     li.addEventListener('mouseout', function (event) {

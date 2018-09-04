@@ -25,6 +25,8 @@ class geocoding_test_set extends cms_test_case
         // Please don't use these on a live site, we just need these to test against
         set_option('mapquest_geocoding_api_key', 'O6xkX0ZeucJRLDDCzyqahkCzAJpVmmfB');
         set_option('bing_geocoding_api_key', 'AvmgsVWtIoJeCnZXdDnu3dQ7izV9oOowHCNDwbN4R1RPA9OXjfsQX1Cr9HSrsY4j');
+        set_option('google_geocoding_api_enabled', '1');
+        set_option('google_apis_api_key', 'AIzaSyD-jqeO_HlD1bLmA68JhAJOBajZw96-UHE');
     }
 
     public function testIPGeocode()
@@ -77,20 +79,25 @@ class geocoding_test_set extends cms_test_case
             $error_msg = new Tempcode();
             $address = reverse_geocode(52.516667, 13.388889, $error_msg, $service);
             if ((get_param_integer('debug', 0) == 1) || ($address === null))  {
-                var_dump($error_msg);
+                var_dump($error_msg->evaluate());
                 var_dump($address);
             }
-            $this->assertTrue($address[2] == 'Berlin', 'Wrong city on ' . $service . ', got ' . $address[2] . ', expected Berlin');
-            $this->assertTrue($address[6] == 'DE', 'Wrong country on ' . $service . ', got ' . $address[6] . ', expected DE');
+            $this->assertTrue($address !== null, 'Failure on ' . $service);
+            if ($address !== null) {
+                $this->assertTrue($address[2] == 'Berlin', 'Wrong city on ' . $service . ', got ' . $address[2] . ', expected Berlin');
+                $this->assertTrue($address[6] == 'DE', 'Wrong country on ' . $service . ', got ' . $address[6] . ', expected DE');
+            }
 
             $error_msg = new Tempcode();
             $address = reverse_geocode(64.133333, -21.933333, $error_msg, $service);
             if ((get_param_integer('debug', 0) == 1) || ($address === null))  {
-                var_dump($error_msg);
+                var_dump($error_msg->evaluate());
                 var_dump($address);
             }
-            $this->assertTrue(substr($address[2], 0, 3) == 'Rey', 'Wrong city on ' . $service . ', got ' . $address[2] . ', expected ~Raycevick'); // Only check first chars due to charset issues
-            $this->assertTrue($address[6] == 'IS', 'Wrong country on ' . $service . ', got ' . $address[6] . ', expected IS');
+            $this->assertTrue($address !== null, 'Failure on ' . $service);
+            if ($address !== null) {
+                $this->assertTrue(substr($address[2], 0, 3) == 'Rey', 'Wrong city on ' . $service . ', got ' . $address[2] . ', expected ~Raycevick'); // Only check first chars due to charset issues
+            }
         }
     }
 }

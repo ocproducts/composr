@@ -56,5 +56,5 @@ $target = str_replace(array("\r", "\n"), array('', ''), $target);
 $domain = qr_get_domain();
 $OUR_SERVER = 'http://' . $domain;
 if (substr($_SERVER['HTTP_REFERER'], 0, strlen($OUR_SERVER)) == $OUR_SERVER) {
-    header('Location: ' . $target);
+    header('Location: ' . $target); // assign_refresh not used, as no UI here
 }

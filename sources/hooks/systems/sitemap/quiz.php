@@ -138,7 +138,7 @@ class Hook_sitemap_quiz extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'cms_quiz', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_quiz')),
         ) + $partial_struct;
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

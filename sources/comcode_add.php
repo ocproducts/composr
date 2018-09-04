@@ -88,7 +88,7 @@ function _get_details_comcode_tags()
         'hide' => array('param'),
         'tooltip' => array('param'),
         'if_in_group' => array('param', 'type'),
-        'media' => array('description', 'thumb_url', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
+        'media' => array('description', 'thumb_url', 'float', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url'),
         'img' => array('align', 'float', 'param', 'title', 'rollover', 'refresh_time', 'width', 'height'),
         'thumb' => array('align', 'param', 'caption', 'float'),
         'media_set' => array('width', 'height'),
@@ -323,7 +323,7 @@ function comcode_helper_script()
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'c1f229be68a1137c5b418b0d5d8a7ccf', 'TITLE' => do_lang_tempcode('COMCODE_HELPER'), 'POPUP' => true, 'CONTENT' => $content));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'c1f229be68a1137c5b418b0d5d8a7ccf', 'TITLE' => do_lang_tempcode('COMCODE_HELPER'), 'POPUP' => true, 'NOINDEX' => true, 'CONTENT' => $content));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
     exit();
@@ -347,13 +347,11 @@ function comcode_helper_script_replace()
         switch ($action) {
             case 'add':
                 $url = find_script('comcode_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
-                header('Location: ' . escape_header($url));
-                exit();
+                return redirect_screen(null, $url);
 
             case 'edit':
                 $url = str_replace('&type=replace', '&type=step2', get_self_url_easy());
-                header('Location: ' . escape_header($url));
-                exit();
+                return redirect_screen(null, $url);
 
             case 'delete':
                 require_javascript('posting');
@@ -540,6 +538,16 @@ function comcode_helper_script_step2()
                     }
                     $descriptiont = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $descriptiont);
 
+                    if (($tag == 'media') && (get_param_integer('image', 0) == 1)) {
+                        if ($param == 'wysiwyg_editable') {
+                            $default = '1';
+                        } elseif ($param == 'framed') {
+                            $default = '0';
+                        } elseif ($param == 'thumb') {
+                            $default = '0';
+                        }
+                    }
+
                     if ($GLOBALS['XSS_DETECT']) {
                         ocp_mark_as_escaped($descriptiont);
                     }
@@ -636,17 +644,26 @@ function comcode_helper_script_step2()
             }
 
             if ($is_advanced) {
-                if ($supports_comcode) {
-                    $fields_advanced->attach(form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
-                } else {
-                    $fields_advanced->attach(form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
-                }
+                $attach_to = &$fields_advanced;
             } else {
-                if ($supports_comcode) {
-                    $fields->attach(form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
-                } else {
-                    $fields->attach(form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required));
-                }
+                $attach_to = &$fields;
+            }
+
+            if ($supports_comcode) {
+                $field = form_input_line_comcode(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required);
+            } else {
+                $field = form_input_line(protect_from_escaping($field_title), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, $embed_required);
+            }
+
+            $goes_first = false;
+
+            if ($goes_first) {
+                $_attach_to = new Tempcode();
+                $_attach_to->attach($field);
+                $_attach_to->attach($attach_to);
+                $attach_to = $_attach_to;
+            } else {
+                $attach_to->attach($field);
             }
         }
     }
@@ -927,6 +944,8 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
         $field_set->attach(form_input_tree_list(do_lang_tempcode('filedump:FILEDUMP'), do_lang_tempcode('COMCODE_TAG_' . (($tag == 'attachment') ? 'attachment' : 'media') . '_PARAM_thumb_url', escape_html($filedump_url->evaluate())), 'thumb_url__b', '', 'choose_filedump_file', array('only_images' => true), false, $default, false));
 
         $fields_advanced->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, $default));
+    } elseif ((($tag == 'attachment') || ($tag == 'media')) && (($param == 'filesize') || ($param == 'length'))) {
+        $field = form_input_integer($parameter_name, protect_from_escaping($descriptiont), $param, ($default == '') ? null : intval($default), false);
     } elseif (($tag == 'page') && ($param == 'param') && (substr_count($default, ':') == 1)) {
         $fields->attach(form_input_page_link($parameter_name, protect_from_escaping($descriptiont), $param, $default, true, null));
     } else {
@@ -998,15 +1017,28 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
     if ($tag == 'random') {
         $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
     } elseif (($tag == 'media') && (addon_installed('filedump'))) {
+        global $_FORM_INPUT_SUFFIX, $DOING_ALTERNATE_FIELDS_SET;
+        $DOING_ALTERNATE_FIELDS_SET = '';
+        require_code('filedump');
+        require_lang('filedump');
+        $list = nice_get_filedump_places('');
+        $place_list = form_input_list(do_lang_tempcode('FOLDER'), '', 'place', $list, null, false, false);
+        $DOING_ALTERNATE_FIELDS_SET = null;
+
         $set_name = 'file';
         $required = true;
         $set_title = do_lang_tempcode('FILE');
         $field_set = alternate_fields_set__start($set_name);
 
-        $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'tag_contents__a', $default_embed, false));
+        $_FORM_INPUT_SUFFIX = $place_list;
+        $upload_field = form_input_upload(do_lang_tempcode('CHOICE_FILEDUMP_UPLOAD'), '', 'tag_contents__c', false);
+        $_FORM_INPUT_SUFFIX = null;
+        $field_set->attach($upload_field);
 
         $filedump_url = build_url(array('page' => 'filedump'), get_module_zone('filedump'));
-        $field_set->attach(form_input_tree_list(do_lang_tempcode('filedump:FILEDUMP'), do_lang_tempcode('COMCODE_TAG_media_EMBED__library', escape_html($filedump_url->evaluate())), 'tag_contents__b', '', 'choose_filedump_file', array(), false, '', false));
+        $field_set->attach(form_input_tree_list(do_lang_tempcode('CHOICE_FILEDUMP_EXISTING'), do_lang_tempcode('COMCODE_TAG_media_EMBED__library', escape_html($filedump_url->evaluate())), 'tag_contents__b', '', 'choose_filedump_file', array(), false, '', false));
+
+        $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'tag_contents__a', $default_embed, false));
 
         $js_function_calls[] = 'comcodeAddTryForSpecialComcodeTagSpecificContentsUi';
 
@@ -1121,7 +1153,46 @@ function _get_preview_environment_comcode($tag)
     }
     $bparameters = '';
 
-    $tag_contents = post_param_string('tag_contents', post_param_string('tag_contents__a', post_param_string('tag_contents__b', '')));
+    $tag_contents = post_param_string('tag_contents', '');
+
+    if ($tag == 'media') {
+        if ($tag_contents == '') {
+            $tag_contents = post_param_string('tag_contents__a', '');
+        }
+
+        if ($tag_contents == '') {
+            $tag_contents = post_param_string('tag_contents__b', '');
+        }
+
+        if (($tag_contents == '') && (addon_installed('filedump'))) {
+            require_code('filedump');
+            require_code('uploads');
+            is_plupload(true);
+
+            if (!empty($_FILES['tag_contents__c']['tmp_name'])) {
+                $place = post_param_string('place', '');
+
+                $file = $_FILES['tag_contents__c'];
+
+                $error_msg = check_filedump_uploaded($file);
+                if ($error_msg !== null) {
+                    warn_exit($error_msg);
+                }
+
+                $filename = $file['name'];
+                $tmp_path = $file['tmp_name'];
+
+                $description = post_param_string('description', '');
+
+                $error_msg = add_filedump_file($place, $filename, $file['tmp_name'], $description);
+                if ($error_msg !== null) {
+                    warn_exit($error_msg);
+                }
+
+                $tag_contents = 'uploads/filedump' . $place . $filename;
+            }
+        }
+    }
 
     if ($tag == 'include') {
         $tag_contents = preg_replace('# .*$#', '', $tag_contents);

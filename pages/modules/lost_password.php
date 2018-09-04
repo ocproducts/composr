@@ -315,7 +315,7 @@ class Module_lost_password
         if (intval($password_change_days) > 0) {
             if ($password_compatibility_scheme == '') {
                 require_code('password_rules');
-                bump_password_change_date($member_id, $new_password, $new, $salt, true);
+                bump_password_change_date($member_id, $new_password, $new, $salt, false);
             }
         }
 

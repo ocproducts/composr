@@ -23,7 +23,7 @@
         });
 
         function updateDetailsBox(element) {
-            /*{$SET,icon_proceed2,{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}}*/
+            /*{+START,SET,icon_proceed2}{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}{+END}*/
             var actionsTpl = '{!ACTIONS;^}:<nav><ul class="actions-list">[1]<\/ul><\/nav><br />',
                 actionsTplItem = '<li>{$GET;^,icon_proceed2} <a href="[2]">[1]<\/a><\/li>',
                 infoTpl = '<div class="wide-table-wrap"><table class="map-table results-table wide-table autosized-table"><tbody>[1]<\/tbody><\/table><\/div>',

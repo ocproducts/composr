@@ -24,9 +24,10 @@
  * @param  ?PATH $path The path to the TAR archive (null: write out directly to stdout)
  * @param  string $mode The mode to open the TAR archive (rb=read, wb=write)
  * @set rb wb c+b
+ * @param  boolean $known_exists Whether we know the file currently exists (performance optimisation)
  * @return array The TAR file handle
  */
-function tar_open($path, $mode)
+function tar_open($path, $mode, $known_exists = false)
 {
     if ($path === null) {
         $myfile = null;
@@ -34,7 +35,7 @@ function tar_open($path, $mode)
 
         cms_ob_end_clean();
     } else {
-        $exists = file_exists($path) && (strpos($mode, 'c+') !== false);
+        $exists = ($known_exists ? true : file_exists($path)) && (strpos($mode, 'c+') !== false);
         $myfile = @fopen($path, $mode);
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
@@ -379,7 +380,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
     $directory = $resource['directory'];
 
     foreach ($directory as $file) {
-        if (($file['path'] != 'addon.inf') && ($file['path'] != 'addon_install_code.php') && (($files === null) || (in_array($file['path'], $files)))) {
+        if (($file['path'] != 'addon.inf') && ($file['path'] != 'mod.inf'/*LEGACY*/) && ($file['path'] != 'addon_install_code.php') && (($files === null) || (in_array($file['path'], $files)))) {
             // Special case for directories. Composr doesn't add directory records, but at least 7-zip does
             if (substr($file['path'], -1) == '/') {
                 if (!$use_afm) {

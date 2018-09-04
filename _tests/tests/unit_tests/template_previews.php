@@ -29,7 +29,9 @@ class template_previews_test_set extends cms_test_case
         parent::setUp();
 
         $a = scandir(get_file_base() . '/_tests/screens_tested');
-        sleep(3);
+        if (function_exists('sleep')) {
+            sleep(3);
+        }
         $b = scandir(get_file_base() . '/_tests/screens_tested');
         if (count($b) > count($a)) {
             exit('Already running');
@@ -186,6 +188,10 @@ class template_previews_test_set extends cms_test_case
                         'templates/MEMBER_BAR_SEARCH.tpl',
                         'templates/NOTIFICATION_BUTTONS.tpl',
                         'templates/NOTIFICATION_TYPES.tpl',
+                        'templates/CNS_MEMBER_PROFILE_FIELDS.tpl',
+                        'templates/CNS_MEMBER_PROFILE_FIELD.tpl',
+                        'templates/ICON.tpl',
+                        'templates/RED_ALERT.tpl',
                     ))) {
                         continue;
                     }
@@ -398,15 +404,12 @@ class template_previews_test_set extends cms_test_case
     protected function shuffle_assoc(&$array)
     {
         $keys = array_keys($array);
-
         shuffle($keys);
 
+        $new = array();
         foreach ($keys as $key) {
             $new[$key] = $array[$key];
         }
-
         $array = $new;
-
-        return true;
     }
 }

@@ -822,6 +822,9 @@ class Module_admin
                             $tar = tar_open(get_custom_file_base() . '/imports/addons/' . $f, 'rb');
                             $directory = tar_get_directory($tar);
                             $info_file = tar_get_file($tar, 'addon.inf');
+                            if ($info_file === null) {
+                                $info_file = tar_get_file($tar, 'mod.inf'); // LEGACY
+                            }
                             tar_close($tar);
                             if ($info_file !== null) {
                                 $info = better_parse_ini_file(null, $info_file['data']);

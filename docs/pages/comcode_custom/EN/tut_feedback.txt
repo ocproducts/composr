@@ -165,7 +165,8 @@ The required field validation wouldn't work as this is controlled via the Compos
 
 If you want this within a Comcode page:
 [indent="30"]
-Just put it inside [tt]semihtml[/tt] Comcode tags, or paste into the source view of the WYSIWYG editor.
+Put it inside [tt]semihtml[/tt] Comcode tags, or paste into the source view of the WYSIWYG editor.
+It also is likely a good idea to change [tt]{$BASE_URL*}/data/form_to_email.php[/tt] to [tt]{$FORM_TO_EMAIL_URL,_some_page_name}[/tt], where [tt]_some_page_name[/tt] is your "message sent, thank you" page. The symbol automatically inserts a redirect parameter and propagates any [tt]keep_*[/tt] URL parameters, without you having to embed too much complex Tempcode which you'd then risk having mangled by content editors. If you just use [tt]{$FORM_TO_EMAIL_URL}[/tt] then it will redirect back to the page your form is on.
 [/indent]
 
 The example will produce an e-mail like:

@@ -27,9 +27,10 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):admin_config(:browse|$)#', $page_link, $matches) != 0) {
@@ -78,21 +79,14 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
         $page = $this->_make_zone_concrete($zone, $page_link);
 
         // Find all categories
-        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         $categories = array();
-        foreach ($hooks as $ob) {
-            $option = $ob->get_details();
-            if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
-                if ($ob->get_default() !== null) {
-                    $category = $option['category'];
-                    if (!isset($categories[$category])) {
-                        $categories[$category] = 0;
-                    }
-                    $categories[$category]++;
-                }
+        $hook_obs = find_all_hook_obs('systems', 'config_categories', 'Hook_config_categories_');
+        foreach ($hook_obs as $hook => $hook_ob) {
+            if ($hook_ob->is_enabled()) {
+                $categories[] = strtoupper($hook);
             }
         }
-        ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+        uksort($categories, 'strnatcasecmp');
 
         if ($child_cutoff !== null) {
             if (count($categories) > $child_cutoff) {
@@ -100,7 +94,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             }
         }
 
-        foreach (array_keys($categories) as $category) {
+        foreach ($categories as $category) {
             $child_page_link = $zone . ':' . $page . ':category:' . $category;
             $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather);
             if (($callback === null || $return_anyway) && ($node !== null)) {
@@ -152,8 +146,8 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/menu/adminzone/setup/config/config') : null,
-                'add_date' => null,
-                'edit_date' => null,
+                'add_time' => null,
+                'edit_time' => null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -174,7 +168,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             'privilege_page' => null,
         );
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

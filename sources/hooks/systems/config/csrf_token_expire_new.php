@@ -54,6 +54,6 @@ class Hook_config_csrf_token_expire_new
      */
     public function get_default()
     {
-        return strval(7 * 24);
+        return strval(7 * 24 * 10); // 10 weeks
     }
 }

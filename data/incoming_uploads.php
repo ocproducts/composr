@@ -58,6 +58,3 @@ require_code('incoming_uploads');
 
 // Do upload, output result and exit the entry point script
 incoming_uploads_script();
-
-// Clear uploads records/files older then 2 days
-clear_old_uploads();

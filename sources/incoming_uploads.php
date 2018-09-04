@@ -23,10 +23,14 @@
  */
 function incoming_uploads_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $is_uploaded = false;
 
     if ($GLOBALS['DEV_MODE']) {
-        sleep(4); // Makes testing more realistic
+        if (php_function_allowed('usleep')) {
+            usleep(4000000); // Makes testing more realistic
+        }
     }
 
     $path = get_custom_file_base() . '/uploads/incoming';
@@ -105,7 +109,9 @@ function incoming_uploads_script()
 
         $member_id = get_member();
 
-        $file_db_id = $GLOBALS['SITE_DB']->query_insert('incoming_uploads', array('i_submitter' => $member_id, 'i_date_and_time' => time(), 'i_orig_filename' => $name, 'i_save_url' => $savename), true, false);
+        $insert_map = array('i_submitter' => $member_id, 'i_date_and_time' => time(), 'i_orig_filename' => $name, 'i_save_url' => $savename);
+        $insert_map['id'] = mt_rand(0, 2147483647);
+        $file_db_id = $GLOBALS['SITE_DB']->query_insert('incoming_uploads', $insert_map, true, false);
 
         // File is valid, and was successfully uploaded. Now see if there is any metadata to surface from the file.
         require_code('images');
@@ -119,6 +125,9 @@ function incoming_uploads_script()
         $outa['upload_savename'] = $savename;
         cms_ini_set('ocproducts.xss_detect', '0');
         echo json_encode($outa);
+
+        // Clear uploads records/files older then 2 days
+        clear_old_uploads();
 
         exit(); // So auto_append_file cannot run and corrupt our output
     } else {

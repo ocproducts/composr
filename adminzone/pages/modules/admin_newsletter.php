@@ -153,6 +153,8 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('newsletter');
         require_css('newsletter');
 
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_PERIODIC_NEWSLETTER');
+
         $this->extra_donext_entries = array(
             array('menu/site_meta/newsletters', array('_SELF', array('type' => 'new'), '_SELF'), do_lang('NEWSLETTER_SEND')),
             array('menu/adminzone/tools/newsletter/newsletter_from_changes', array('_SELF', array('type' => 'whatsnew'), '_SELF'), do_lang('WHATSNEW'), 'DOC_WHATSNEW'),
@@ -376,6 +378,8 @@ class Module_admin_newsletter extends Standard_crud_module
             $action_title = do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS');
         }
 
+        log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
+
         require_code('tasks');
         return call_user_func_array__long_task($action_title, $this->title, 'import_newsletter_subscribers', array($_language, $newsletter_id, $subscribe, $target_path));
     }
@@ -395,10 +399,16 @@ class Module_admin_newsletter extends Standard_crud_module
 
         url_default_parameters__enable();
 
-        $fields->attach(form_input_line(do_lang_tempcode('HOST'), new Tempcode(), 'server', get_option('imap_host'), true));
-        $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), new Tempcode(), 'username', get_option('imap_username'), true));
-        $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), new Tempcode(), 'password', true, null, get_option('imap_password')));
-        $fields->attach(form_input_integer(do_lang_tempcode('PORT'), new Tempcode(), 'port', intval(get_option('imap_port')), true));
+        require_lang('config');
+        $mail_server_types = new Tempcode();
+        foreach (array('imap', 'imaps', 'imaps_nocert', 'imapt', 'imapt_nocert', 'pop3', 'pop3s', 'pop3s_nocert', 'pop3t', 'pop3t_nocert') as $_server_type) {
+            $mail_server_types->attach(form_input_list_entry($_server_type, $_server_type == get_option('mail_server_type')));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('SERVER_TYPE'), do_lang_tempcode('CONFIG_OPTION_mail_server_type'), 'mail_server_type', $mail_server_types));
+        $fields->attach(form_input_line(do_lang_tempcode('HOST'), do_lang_tempcode('CONFIG_OPTION_mail_server_host'), 'host', get_option('mail_server_host'), true));
+        $fields->attach(form_input_integer(do_lang_tempcode('PORT'), do_lang_tempcode('CONFIG_OPTION_mail_server_port'), 'port', intval(get_option('mail_server_port')), true));
+        $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('CONFIG_OPTION_mail_username'), 'username', get_option('mail_username'), true));
+        $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), do_lang_tempcode('CONFIG_OPTION_mail_password'), 'password', true, null, get_option('mail_password')));
 
         url_default_parameters__disable();
 
@@ -429,21 +439,22 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('mail');
         require_code('mail2');
 
+        $type = post_param_string('type');
+        $host = post_param_string('host');
+        $port = post_param_integer('port');
         $username = post_param_string('username');
         $password = post_param_string('password', false, INPUT_FILTER_NONE);
-        $server = post_param_string('server');
-        $port = post_param_integer('port');
 
-        $_folders = find_mail_folders($server, $port, $username, $password);
+        $_folders = find_mail_folders($host, $port, $type, $username, $password);
 
         $folders = new Tempcode();
         foreach ($_folders as $folder => $label) {
-            $selected = ((get_option('imap_folder') != '') && (get_option('imap_folder') == $folder)) || ((get_option('imap_folder') == '') && (stripos($folder, 'bounce') !== false));
+            $selected = ((get_option('mail_folder') != '') && (get_option('mail_folder') == $folder)) || ((get_option('mail_folder') == '') && (stripos($folder, 'bounce') !== false));
             $folders->attach(form_input_list_entry($folder, $selected, $label));
         }
 
         $fields = new Tempcode();
-        $fields->attach(form_input_list(do_lang_tempcode('DIRECTORY'), new Tempcode(), 'box', $folders, null, true));
+        $fields->attach(form_input_list(do_lang_tempcode('DIRECTORY'), new Tempcode(), 'folder', $folders, null, true));
 
         $submit_name = do_lang_tempcode('PROCEED');
         $post_url = get_self_url();
@@ -477,13 +488,14 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('mail');
         require_code('mail2');
 
+        $type = post_param_string('type');
+        $host = post_param_string('host');
+        $port = post_param_integer('port');
+        $folder = post_param_string('folder');
         $username = post_param_string('username');
         $password = post_param_string('password', false, INPUT_FILTER_NONE);
-        $server = post_param_string('server');
-        $port = post_param_integer('port');
-        $box = post_param_string('box');
 
-        $out = _find_mail_bounces($server, $port, $box, $username, $password, false);
+        $out = _find_mail_bounces($host, $port, $type, $folder, $username, $password, false);
         $num = count($out);
 
         $fields = '';//new Tempcode();
@@ -1505,7 +1517,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
         }
 
-        log_it('NEWSLETTER_SEND');
+        log_it('NEWSLETTER_SEND', $subject);
 
         return send_newsletter($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $template);
     }

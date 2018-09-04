@@ -34,6 +34,8 @@ function init__tasks()
  */
 function tasks_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $id = get_param_integer('id');
     $secure_ref = get_param_string('secure_ref', '');
 
@@ -109,7 +111,12 @@ function execute_task_background($task_row)
         } else {
             $content_result = mixed();
 
-            list($mime_type, $content_result) = $result;
+            if ($result === false) {
+                $mime_type = null;
+                $content_result = do_lang('INTERNAL_ERROR');
+            } else {
+                list($mime_type, $content_result) = $result;
+            }
 
             // Handle error results
             if ($mime_type === null) {
@@ -144,19 +151,27 @@ function execute_task_background($task_row)
         }
 
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, array('priority' => 2, 'attachments' => $attachments, 'send_immediately' => true));
+    }
 
-        if ($result !== null) {
-            list($mime_type, $content_result) = $result;
-            if (is_array($content_result)) {
-                @unlink($content_result[1]);
-                sync_file($content_result[1]);
-            }
+    if (is_array($result)) {
+        list($mime_type, $content_result) = $result;
+        if (is_array($content_result)) {
+            @unlink($content_result[1]);
+            sync_file($content_result[1]);
         }
     }
 
-    $GLOBALS['SITE_DB']->query_delete('task_queue', array(
-        'id' => $task_row['id'],
-    ), '', 1);
+    if ($result === false) {
+        $GLOBALS['SITE_DB']->query_update('task_queue', array(
+            't_locked' => 0,
+        ), array(
+            'id' => $task_row['id'],
+        ), '', 1);
+    } else {
+        $GLOBALS['SITE_DB']->query_delete('task_queue', array(
+            'id' => $task_row['id'],
+        ), '', 1);
+    }
 
     $RUNNING_TASK = false;
 }
@@ -208,6 +223,9 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         task_log_open();
         task_log(null, 'Starting task ' . $hook);
         $result = call_user_func_array(array($ob, 'run'), $args);
+        if ($result === false) {
+            $result = array(null, do_lang_tempcode('INTERNAL_ERROR'));
+        }
         task_log(null, 'Finished task ' . $hook);
         task_log_close();
         if ($result === null) {
@@ -237,6 +255,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         // Handle error results
         if ($mime_type === null) {
             if ($title === null) {
+                attach_message(do_lang_tempcode('TASK_FAILED_SUBJECT', escape_html($plain_title)), 'warn');
                 return $content_result;
             }
             return warn_screen($title, $content_result);

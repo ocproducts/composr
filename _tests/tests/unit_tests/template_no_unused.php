@@ -33,6 +33,7 @@ class template_no_unused_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'MAIL_RAW',
             'BLOCK_MAIN_MEMBERS',
             'BLOCK_MAIN_MEMBERS_COMPLEX',
             'CAPTCHA_LOOSE',
@@ -166,9 +167,9 @@ class template_no_unused_test_set extends cms_test_case
             'BLOCK_MAIN_CHOOSE_TO_BOOK',
             'BLOCK_SIDE_BOOK_DATE_RANGE',
             'BLOCK_TWITTER_FEED',
-            'BLOCK_TWITTER_FEED_STYLE',
+            'BLOCK_TWITTER_FEED_TWEET',
             'BLOCK_YOUTUBE_CHANNEL',
-            'BLOCK_YOUTUBE_CHANNEL_STYLE',
+            'BLOCK_YOUTUBE_CHANNEL_VIDEO',
             'BOOK_DATE_CHOOSE',
             'BOOKABLE_NOTES',
             'BOOKING_CONFIRM_FCOMCODE',

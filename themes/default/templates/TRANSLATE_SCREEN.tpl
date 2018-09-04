@@ -9,9 +9,9 @@
 		</p>
 	{+END}
 
-	{+START,IF_NON_EMPTY,{GOOGLE}}
+	{+START,IF_NON_EMPTY,{TRANSLATION_CREDIT}}
 		<p>
-			{!POWERED_BY,<a rel="external" title="Google {!LINK_NEW_WINDOW}" target="_blank" href="http://translate.google.com/">Google</a>}.
+			{TRANSLATION_CREDIT}
 		</p>
 	{+END}
 
@@ -27,7 +27,7 @@
 					<th>
 						{!OLD}/{!NEW}
 					</th>
-					{+START,IF_NON_EMPTY,{GOOGLE}}
+					{+START,IF_NON_EMPTY,{TRANSLATION_CREDIT}}
 						<th>
 							{!ACTIONS}
 						</th>

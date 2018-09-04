@@ -31,8 +31,9 @@ if ((strpos($script_name, '/sources/') !== false) || (strpos($script_name, '/sou
  *
  * @param  string $codename The codename for the source module to load (or a full relative path, ending with .php; if custom checking is needed, this must be the custom version)
  * @param  boolean $light_exit Whether to cleanly fail when a source file is missing
+ * @param  ?boolean $has_custom Whether this is going to be from under a custom directory (null: search). This is used for performance to avoid extra searching when we already know where a file is
  */
-function require_code($codename, $light_exit = false)
+function require_code($codename, $light_exit = false, $has_custom = null)
 {
     // Handle if already required...
 
@@ -40,6 +41,7 @@ function require_code($codename, $light_exit = false)
     if (isset($REQUIRED_CODE[$codename])) {
         return;
     }
+
     $ok_per_safe_mode = (!function_exists('in_safe_mode')) || ($REQUIRING_CODE) || (!in_safe_mode());
     if (isset($REQUIRED_CODE[$codename])) {
         return; // In case it changed through the above safe mode check
@@ -80,23 +82,29 @@ function require_code($codename, $light_exit = false)
             }
         }
         if (isset($CODE_OVERRIDES[$codename])) {
-            $has_custom = $CODE_OVERRIDES[$codename];
-            if ($has_custom) {
-                $has_custom = is_file($path_custom); // Double-check still there
+            if ($has_custom === null) {
+                $has_custom = $CODE_OVERRIDES[$codename];
+                if ($has_custom) {
+                    $has_custom = is_file($path_custom); // Double-check still there
+                }
             }
             $has_orig = $CODE_OVERRIDES['!' . $codename];
             if ($has_orig) {
                 $has_orig = is_file($path_orig); // Double-check still there
             }
         } else {
-            $has_custom = is_file($path_custom);
+            if ($has_custom === null) {
+                $has_custom = is_file($path_custom);
+            }
             $has_orig = is_file($path_orig);
             $CODE_OVERRIDES[$codename] = $has_custom;
             $CODE_OVERRIDES['!' . $codename] = $has_orig;
             persistent_cache_set('CODE_OVERRIDES', $CODE_OVERRIDES);
         }
     } else {
-        $has_custom = is_file($path_custom);
+        if ($has_custom === null) {
+            $has_custom = is_file($path_custom);
+        }
     }
 
     if ((isset($SITE_INFO['safe_mode'])) && ($SITE_INFO['safe_mode'] === '1')) {
@@ -116,9 +124,9 @@ function require_code($codename, $light_exit = false)
             // Have a custom and original (i.e. override)...
 
             $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
-            $a = file_get_contents($path_custom);
+            $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
 
-            if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
+            if (strpos($custom, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
                 call_included_code($path_custom, $codename, $light_exit); // Include our custom
@@ -295,7 +303,7 @@ if (!class_exists('Error')) {
  * @param  string $path File path
  * @param  string $codename The codename for the source module to load
  * @param  boolean $light_exit Whether to cleanly fail when a source file is missing
- * @param  ?string $code File contents (null: use include not eval)
+ * @param  ?string $code File contents (null: use include not eval, which we prefer when possible as we benefit from opcode caching)
  */
 function call_included_code($path, $codename, $light_exit, $code = null)
 {
@@ -316,12 +324,16 @@ function call_included_code($path, $codename, $light_exit, $code = null)
             $result = eval($code);
         }
 
-        $errormsg = cms_error_get_last();
-        if (($errormsg == '') || ($errormsg === $errormsg_before)) {
+        if ($result === false) {
+            $errormsg = cms_error_get_last();
+            if (($errormsg == '') || ($errormsg === $errormsg_before)) {
+                $errormsg = '';
+            }
+            if (stripos($errormsg, 'deprecated') !== false) {
+                $errormsg = ''; // Deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here
+            }
+        } else {
             $errormsg = '';
-        }
-        if (stripos($errormsg, 'deprecated') !== false) {
-            $errormsg = ''; // Deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here
         }
     }
     catch (Exception $e) {
@@ -347,7 +359,7 @@ function call_included_code($path, $codename, $light_exit, $code = null)
         }
 
         if ((!function_exists('do_lang')) || (!function_exists('fatal_exit')) || ($codename === 'failure')) {
-            critical_error('PASSON', $errormsg . ' ins ' . $path);
+            critical_error('PASSON', $errormsg . ' in ' . $path);
         }
 
         $error_lang_str = (is_file($path) ? 'CORRUPT_SOURCE_FILE' : 'MISSING_SOURCE_FILE');
@@ -402,7 +414,8 @@ function cms_error_get_last()
             break;
     }
 
-    return '<strong>' . strtoupper($type) . '</strong> [' . strval($error['type']) . '] ' . $error['message'] . ' in ' . $error['file'] . ' on line ' . strval($error['line']);
+    $ret = '<strong>' . strtoupper($type) . '</strong> [' . strval($error['type']) . '] ' . $error['message'] . ' in ' . $error['file'] . ' on line ' . strval($error['line']);
+    return $ret;
 }
 
 /**
@@ -804,7 +817,7 @@ if ($rate_limiting) {
             // Do we have to block?
             $rate_limit_hits_per_window = empty($SITE_INFO['rate_limit_hits_per_window']) ? 5 : intval($SITE_INFO['rate_limit_hits_per_window']);
             if (count($pertinent) >= $rate_limit_hits_per_window) {
-                header('HTTP/1.0 429 Too Many Requests');
+                http_response_code(429);
                 header('Content-Type: text/plain');
                 exit('We only allow ' . strval($rate_limit_hits_per_window - 1) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
             }
@@ -826,7 +839,7 @@ if ($rate_limiting) {
             // Write out new state
             $RATE_LIMITING_DATA[$ip] = $pertinent;
             $RATE_LIMITING_DATA[$ip][] = $time;
-            file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';', LOCK_EX);
+            file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';' . "\n", LOCK_EX);
             //sync_file($rate_limiter_path); Not done. Each server should rate limit separately. Synching this data across servers would be too slow and not scalable
 
             // Save some memory

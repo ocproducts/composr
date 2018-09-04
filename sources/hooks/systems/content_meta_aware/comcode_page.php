@@ -27,10 +27,15 @@ class Hook_content_meta_aware_comcode_page
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url)
      * @return ?array Map of award content-type info (null: disabled)
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
+        if (($zone === null) && ($get_extended_data)) {
+            $zone = @strval(get_page_zone('sitemap', false));
+        }
+
         return array(
             'support_custom_fields' => true,
 
@@ -63,8 +68,8 @@ class Hook_content_meta_aware_comcode_page
             'view_page_link_pattern' => '_WILD:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_comcode_pages:_edit:page_link=_WILD',
             'view_category_page_link_pattern' => '_WILD:',
-            'add_url' => (function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('high', get_member(), get_ip_address(), 'cms_comcode_pages')) ? (get_module_zone('cms_comcode_pages') . ':cms_comcode_pages:edit') : null,
-            'archive_url' => (($zone !== null) ? $zone : @strval(get_page_zone('sitemap', false))) . ':sitemap',
+            'add_url' => ($get_extended_data && function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('high', get_member(), get_ip_address(), 'cms_comcode_pages')) ? (get_module_zone('cms_comcode_pages') . ':cms_comcode_pages:edit') : null,
+            'archive_url' => $get_extended_data ? ($zone . ':sitemap') : null,
 
             'support_url_monikers' => true,
 

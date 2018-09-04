@@ -517,7 +517,7 @@
 
         $cms.ui.disableButton(button);
 
-        if (typeof form.originalURL == 'undefined') {
+        if (typeof form.originalURL === 'undefined') {
             form.originalURL = form.action;
         }
 
@@ -535,7 +535,7 @@
 
         $cms.ui.disableButton(button);
 
-        if (typeof form.originalURL != 'undefined') {
+        if (typeof form.originalURL !== 'undefined') {
             form.action = form.originalURL;
         }
 

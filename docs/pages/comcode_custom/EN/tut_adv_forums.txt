@@ -1,0 +1,76 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced forum settings[/title]
+
+This tutorial covers more advanced forum configuration.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Mailing lists[/title]
+
+[surround]
+[media width="150" description="Setting up mailing list settings on a forum" float="right"]data_custom/images/docs/tut_adv_forums/mailing_list.png[/media]
+There is an option to allow people to e-mail in to the forums.
+
+This requires:
+1) The PHP IMAP extension to be installed
+2) The system scheduler must be running (Cron)
+
+Also recommended:
+1) The mail server supports IMAP (not just POP3)
+2) The mail server enforces SPF and DKIM, so that Composr can know that e-mails have legitimately come from where they claim to come from
+3) The mail server enforce a reasonable maximum size for an individual e-mail, e.g. 5MB
+4) The system scheduler be set to run every minute
+
+Each individual forum is configured with its own mailing list settings, on the forum add/edit form. You can inherit settings from the IMAP configuration options, so long as each forum gets its own individual E-mail address and Username.
+
+E-mails are bound to accounts via recognition of e-mail addresses. You can configure how to handle unrecognised addresses:
+ - Block the posting
+ - Automatically create an account (and e-mail the randomly-generated password back)
+ - Post as guest
+
+Forums with a mailing list configured will say so when the forum is viewed.
+
+Members enable/disable the functionality from the notifications tab of their account settings (Notifications tab settings). It is on by default, although you can configure this default via the "Mailing list style" configuration option (in Admin Zone > Setup > Configuration > User/usergroup options > Default settings for new members). Users may wish to disable if they prefer to reduce their e-mail volume using the "Smart topic notification" setting.
+
+For a member to receive mailing list e-mails the following must all be true:
+1) All the requirements above must be met (PHP IMAP extension etc)
+2) The forum involved must have them configured in the forum settings; between the settings for the forum, and the global configuration, it must be fully configured with the mail server details
+3) They must have a configured e-mail address -- if you want to force this you can configure e-mail addresses to be required
+4) They must be monitoring the forum or topic where a post is coming in to, specifically with e-mail as the notification type -- if you want to force this, you can use the [page="_SEARCH:tut_notifications"]"Lock-down" feature[/page] to force all member's to receive e-mail notifications on all forums
+5) They must have enabled them in their account settings (Notification tab settings) -- if you want to force this you can configure the default setting
+[/surround]
+
+[title="3"]Processing notes[/title]
+
+Be aware of the following:
+ - Composr makes some attempt to clean up the e-mail text, so that the forum posts are not too much of a mess.
+ - Comcode will be processed with guest permissions if the poster would normally have "Use dangerous Comcode" privilege, due to us not being able to perfectly confirm the poster is who they say they are.
+ - You may want to assign usergroups the "Subject to a more liberal HTML filter" privilege, so that complicated HTML e-mails don't look too ugly. If an e-mail has both HTML and text versions, the HTML version will only be used if this privilege is present.
+ - Attachments provided are not fully protected from unauthorised access, due to the need for them be able to render with guest credentials.
+ - Post date/time will reflect the time of the e-mail being picked up, not the e-mail being sent. As long as the system scheduler is running frequently this should not be a problem.
+
+Debugging:
+ - Posting is tracked by marking e-mails read. If you mark an e-mail unread (unseen), it will post again. This can be useful for testing.
+ - You may make an empty writeable file, [tt]data_custom/mail_integration.log[/tt], and Composr will write detailed log data into this file.
+
+[title="3"]Specific mail servers[/title]
+
+This section covers some advice for specific mail servers we have tested.
+
+[title="4"]Gmail[/title]
+
+Gmail can be highly problematic, and we were not able to get it to work reliably during testing due to automated threat detection measures running on Google's servers.
+To get it to run you need to do the following:
+ - Enable IMAP in the gmail settings of the account
+ - Enable [url="less secure apps"]https://myaccount.google.com/lesssecureapps[/url]
+ - Either disable 2-step verification, or configure using app-specific passwords rather than the account password
+ - You may need to do a [url="CAPTCHA unlock"]https://accounts.google.com/b/0/DisplayUnlockCaptcha[/url]
+
+[title="4"]Zoho[/title]
+
+For Zoho to work you just need to enable IMAP in your Zoho Mail account settings.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
+
+{$SET,tutorial_tags,Forum,cns_forum,Social,regular}{$SET,tutorial_add_date,May 2018}{$SET,tutorial_summary,This tutorial covers more advanced forum configuration.}[block]main_tutorial_rating[/block]

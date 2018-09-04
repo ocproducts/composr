@@ -74,6 +74,8 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function run_start($type)
     {
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_TUTORIAL');
+
         require_code('tutorials');
 
         if ($type == 'browse') {

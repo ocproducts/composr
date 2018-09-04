@@ -322,6 +322,8 @@ class Module_admin_revisions
 
         $url = get_param_string('redirect', get_self_url(true, false, array('type' => 'browse')), INPUT_FILTER_URL_INTERNAL);
 
+        log_it('DELETE_REVISION', $revision_type, strval($id));
+
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 

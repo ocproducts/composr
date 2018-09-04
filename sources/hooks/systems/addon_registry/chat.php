@@ -208,6 +208,7 @@ class Hook_addon_registry_chat
             'sources/hooks/systems/commandr_fs_extended_member/chat_blocking.php',
             'sources/hooks/systems/commandr_fs_extended_member/chat_friends.php',
             'sources/hooks/systems/commandr_fs_extended_member/chat_sound_effects.php',
+            'sources/hooks/systems/actionlog/chat.php',
         );
     }
 
@@ -669,7 +670,7 @@ class Hook_addon_registry_chat
                 'INTRODUCTION' => '',
                 'TITLE' => lorem_title(),
                 'CONTENT' => lorem_phrase(),
-                'LINKS' => placeholder_array(),
+                'LINKS' => array('admin/edit2' => placeholder_link(), 'checklist/toggle' => placeholder_link()),
                 'TEXT_COLOUR_DEFAULT' => lorem_word(),
                 'FONT_NAME_DEFAULT' => 'Tahoma',
                 'CHATCODE_HELP' => placeholder_url(),

@@ -15,7 +15,7 @@
      * @memberof $cms
      * @class $cms.View
      */
-    function View(params, viewOptions) {
+    function View(/*params, viewOptions*/) {
         /** @member {number}*/
         this.uid = $util.uid(this);
         /** @member {string} */
@@ -329,7 +329,7 @@
 
         // Properties
         /** @type { Element }*/
-        this.el =  null;
+        this.el = null;
         /** @type { Element }*/
         this.overlayEl = null;
         /** @type { Element }*/
@@ -468,20 +468,20 @@
             
             const self = this;
 
-            $dom.on(this.overlayEl, 'click', function (e) {
+            $dom.on(this.overlayEl, 'click', function () {
                 if ($cms.isMobile() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
                     self.option('right');
                 }
             });
 
-            /*{$SET,icon_proceed,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
-            /*{$SET,icon_yes,{+START,INCLUDE,ICON}NAME=buttons/yes{+END}}*/
-            /*{$SET,icon_no,{+START,INCLUDE,ICON}NAME=buttons/no{+END}}*/
+            /*{+START,SET,icon_proceed}{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}{+END}*/
+            /*{+START,SET,icon_yes}{+START,INCLUDE,ICON}NAME=buttons/yes{+END}{+END}*/
+            /*{+START,SET,icon_no}{+START,INCLUDE,ICON}NAME=buttons/no{+END}{+END}*/
 
             switch (this.type) {
                 case 'iframe':
-                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
-                        iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
+                    var iframeWidth = (this.width.match(/^[\d.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
+                        iframeHeight = (this.height.match(/^[\d.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
 
                     var iframe = $dom.create('iframe', {
                         'frameBorder': '0',
@@ -618,7 +618,7 @@
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
             if (this.cancelButton) {
                 if (this.buttonContainerEl.firstElementChild) {
-                    /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
+                    /*{+START,SET,icon_cancel}{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}{+END}*/
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_cancel} ' + this.cancelButton,
@@ -779,11 +779,11 @@
 
             // Calculate percentage sizes
             var match;
-            match = width.match(/^([\d\.]+)%$/);
+            match = width.match(/^([\d.]+)%$/);
             if (match !== null) {
                 width = '' + (parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
             }
-            match = height.match(/^([\d\.]+)%$/);
+            match = height.match(/^([\d.]+)%$/);
             if (match !== null) {
                 height = '' + (parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
             }
@@ -881,7 +881,9 @@
                     if (iframe && ($dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolledUpFor = true;
                     }
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
             }
         },
         /**
@@ -978,7 +980,9 @@
             function hasIframeLoaded(iframe) {
                 try {
                     return (iframe != null) && (iframe.contentWindow.location.host !== '');
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
 
                 return false;
             }
@@ -986,7 +990,9 @@
             function hasIframeOwnership(iframe) {
                 try {
                     return (iframe != null) && (iframe.contentWindow.location.host === window.location.host) && (iframe.contentWindow.document != null);
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
 
                 return false;
             }
@@ -1006,18 +1012,19 @@
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
         if (strVal($cms.configOption('google_analytics')).trim() && !$cms.isStaff() && !$cms.isAdmin()) {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function () {
-                        (i[r].q = i[r].q || []).push(arguments);
-                    };
-                i[r].l = 1 * new Date();
-                a = s.createElement(o);
-                m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            (function () {
+                window['GoogleAnalyticsObject'] = 'ga';
+                window.ga || (window.ga = function () {
+                    window.ga.q || (window.ga.q = []);
+                    window.ga.q.push(arguments);
+                });
+                window.ga.l = 1 * new Date();
+                var script = document.createElement('script'),
+                    newSibling = document.getElementsByTagName('script')[0];
+                script.async = true;
+                script.src = '//www.google-analytics.com/analytics.js';
+                newSibling.parentNode.insertBefore(script, newSibling);
+            }());
 
             var aConfig = {};
 
@@ -1058,7 +1065,7 @@
         }
         /*END JS from HTML_HEAD.tpl*/
 
-        $dom.registerMouseListener();
+        this.registerMousePositionListener();
 
         if ($dom.$('#global-messages-2')) {
             var m1 = $dom.$('#global-messages');
@@ -1073,7 +1080,9 @@
         if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
-            } catch (ignore) {}
+            } catch (ignore) {
+                // continue
+            }
         }
 
         if (($cms.getZoneName() === 'adminzone') && $cms.configOption('background_template_compilation')) {
@@ -1177,13 +1186,34 @@
             window.location = url + append;
         },
 
+        registerMousePositionListener: function () {
+            window.currentMouseX = 0;
+            window.currentMouseY = 0;
+
+            // Guess the initial mouse position approximately if possible:
+            var hoveredElement = document.querySelectorAll(':hover');
+            hoveredElement = hoveredElement[hoveredElement.length - 1];
+
+            if (hoveredElement != null) {
+                var rect = hoveredElement.getBoundingClientRect();
+                window.currentMouseX = window.scrollX + rect.x;
+                window.currentMouseY = window.scrollY + rect.y;
+            }
+
+            // Listen for mouse movements to set the correct values
+            document.addEventListener('mousemove', function (e) {
+                window.currentMouseX = e.pageX;
+                window.currentMouseY = e.pageY;
+            });
+        },
+
         /* Software Chat */
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
             if ($cms.getUsername() !== 'admin') {
-                url += encodeURIComponent($cms.getUsername().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.getUsername().replace(/[^a-zA-Z0-9_\-\\[]{}^`|]/g, ''));
             } else {
-                url += encodeURIComponent($cms.getSiteName().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.getSiteName().replace(/[^a-zA-Z0-9_\-\\[]{}^`|]/g, ''));
             }
             url += '#composrcms';
 
@@ -1201,7 +1231,7 @@
 
             var box = $dom.$('#software-chat-box'), img;
             if (box) {
-                box.parentNode.removeChild(box);
+                box.remove();
 
                 img = $dom.$('.software-chat-img');
                 img.style.opacity = 1;
@@ -1287,7 +1317,7 @@
             }
 
             // Theme image editing hovers
-            var els = $dom.$$('*:not(.no_theme_img_click)'), i, el, isImage;
+            var els = $dom.$$('*:not(.no-theme-img-click)'), i, el, isImage;
             for (i = 0; i < els.length; i++) {
                 el = els[i];
                 isImage = (el.localName === 'img') || ((el.localName === 'input') && (el.type === 'image')) || $dom.css(el, 'background-image').includes('url');
@@ -1302,7 +1332,7 @@
             }
 
             /* Thumbnail tooltips */
-            if ($cms.isDevMode() || loc.replace($cms.getBaseUrlNohttp(), '').includes('/cms/')) {
+            if ($cms.isDevMode() || loc.replace($util.rel($cms.getBaseUrl()), '').includes('/cms/')) {
                 var urlPatterns = $cms.staffTooltipsUrlPatterns(),
                     links, pattern, hook, patternRgx;
 
@@ -1312,7 +1342,7 @@
                     patternRgx = new RegExp(pattern);
 
                     links.forEach(function (link) {
-                        if (link.href && !link.onmouseover) {
+                        if ((link.href) && (!link.onmouseover) && !link.classList.contains('no-auto-tooltip')) {
                             var id = link.href.match(patternRgx);
                             if (id) {
                                 applyComcodeTooltip(hook, id, link);
@@ -1327,8 +1357,8 @@
                 $cms.undoStaffUnloadAction();
 
                 // If clicking a download link then don't show the animation
-                if (document.activeElement && document.activeElement.href !== undefined && document.activeElement.href != null) {
-                    var url = document.activeElement.href.replace(/.*:\/\/[^\/:]+/, '');
+                if (document.activeElement && (document.activeElement.href != null)) {
+                    var url = document.activeElement.href.replace(/.*:\/\/[^/:]+/, '');
                     if (url.includes('download') || url.includes('export')) {
                         return;
                     }
@@ -1352,7 +1382,8 @@
                 div.style.position = 'fixed';
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
-                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="{$IMG_INLINE*;,loading}" /></div>');
+                // Intentionally using $IMG instead of $IMG_INLINE as data URIs trigger a CSP warning when used during a 'beforeunload' event handler for some reason.
+                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" /></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($dom.$('#loading-image')) {
@@ -1415,7 +1446,7 @@
                 var src = (target.src === undefined) ? $dom.css(target, 'background-image') : target.src;
 
                 if ((target.src === undefined) && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) {
-                    return;  // Needs ctrl key for background images
+                    return;// Needs ctrl key for background images
                 }
                 if (!src.includes('/themes/') || ($cms.getPageName() === 'admin_themes')) {
                     return;
@@ -1497,7 +1528,7 @@
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.preventDefault();
 
-                    if (src.includes($cms.getBaseUrlNohttp() + '/themes/')) {
+                    if (src.includes($util.rel($cms.getBaseUrl()) + '/themes/')) {
                         ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.userLang()) + '&theme=' + encodeURIComponent($cms.getTheme()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keep(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
@@ -1571,7 +1602,7 @@
      * @class GlobalHelperPanel
      * @extends $cms.View
      */
-    function GlobalHelperPanel(params) {
+    function GlobalHelperPanel() {
         GlobalHelperPanel.base(this, 'constructor', arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
@@ -1656,7 +1687,7 @@
      * @class $cms.views.DropdownMenu
      * @extends Menu
      */
-    function DropdownMenu(params) {
+    function DropdownMenu() {
         DropdownMenu.base(this, 'constructor', arguments);
 
         this.menuContentEl = this.$('.menu-dropdown-content');
@@ -1762,7 +1793,7 @@
      * @class
      * @extends Menu
      */
-    function PopupMenu(params) {
+    function PopupMenu() {
         PopupMenu.base(this, 'constructor', arguments);
     }
 
@@ -2090,7 +2121,7 @@
             left += popupEl.parentElement.offsetLeft;
             top += popupEl.parentElement.offsetTop;
         } else {
-            var  offsetParent = popupEl.parentElement;
+            var offsetParent = popupEl.parentElement;
             while (offsetParent) {
                 if (offsetParent && $dom.isCss(offsetParent, 'position', 'relative')) {
                     break;

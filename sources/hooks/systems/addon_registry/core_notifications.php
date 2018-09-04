@@ -420,7 +420,9 @@ class Hook_addon_registry_core_notifications
             'NOTIFICATION_TYPES_TITLES' => $notification_types_titles,
             'NOTIFICATION_SECTIONS' => $notification_sections,
             'AUTO_NOTIFICATION_CONTRIB_CONTENT' => false,
-            'SMART_TOPIC_NOTIFICATION_CONTENT' => false,
+            'SMART_TOPIC_NOTIFICATION' => false,
+            'MAILING_LIST_STYLE' => false,
+            'MAILING_LIST_STYLE_DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', ''),
             'MEMBER_ID' => placeholder_id(),
             'ADVANCED_COLUMN' => true,
         ));

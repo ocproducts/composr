@@ -38,6 +38,8 @@ function init__user_import()
 
 function do_user_import()
 {
+    header('X-Robots-Tag: noindex');
+
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
     }
@@ -99,6 +101,8 @@ function do_user_import()
             $username = isset($USER_IMPORT_WANTED['m_username']) ? $row[$USER_IMPORT_WANTED['m_username']] : null;
             $password = isset($USER_IMPORT_WANTED['m_password']) ? $row[$USER_IMPORT_WANTED['m_password']] : null;
             $email_address = isset($USER_IMPORT_WANTED['m_email_address']) ? $row[$USER_IMPORT_WANTED['m_email_address']] : null;
+            $primary_group = isset($USER_IMPORT_WANTED['m_primary_group']) ? $row[$USER_IMPORT_WANTED['m_primary_group']] : null;
+            $groups = isset($USER_IMPORT_WANTED['groups']) ? array_map('intval', explode(',', $row[$USER_IMPORT_WANTED['groups']])) : null;
             $dob_day = isset($USER_IMPORT_WANTED['m_dob_day']) ? $row[$USER_IMPORT_WANTED['m_dob_day']] : null;
             $dob_month = isset($USER_IMPORT_WANTED['m_dob_month']) ? $row[$USER_IMPORT_WANTED['m_dob_month']] : null;
             $dob_year = isset($USER_IMPORT_WANTED['m_dob_year']) ? $row[$USER_IMPORT_WANTED['m_dob_year']] : null;
@@ -108,10 +112,13 @@ function do_user_import()
                     $custom_fields[$cpf_ids[$local_key]] = $row[$remote_index];
                 }
             }
-            $timezone = isset($USER_IMPORT_WANTED['m_timezone']) ? $row[$USER_IMPORT_WANTED['m_timezone']] : null;
-            $primary_group = isset($USER_IMPORT_WANTED['m_primary_group']) ? $row[$USER_IMPORT_WANTED['m_primary_group']] : null;
-            $groups = isset($USER_IMPORT_WANTED['groups']) ? array_map('intval', explode(',', $row[$USER_IMPORT_WANTED['groups']])) : null;
+            $language = isset($USER_IMPORT_WANTED['m_language']) ? $row[$USER_IMPORT_WANTED['m_language']] : null;
             $photo_url = isset($USER_IMPORT_WANTED['m_photo_url']) ? $row[$USER_IMPORT_WANTED['m_photo_url']] : null;
+            $reveal_age = isset($USER_IMPORT_WANTED['m_reveal_age']) ? $row[$USER_IMPORT_WANTED['m_reveal_age']] : 1;
+            $allow_emails = isset($USER_IMPORT_WANTED['m_allow_emails']) ? $row[$USER_IMPORT_WANTED['m_allow_emails']] : 1;
+            $allow_emails_from_staff = isset($USER_IMPORT_WANTED['m_allow_emails_from_staff']) ? $row[$USER_IMPORT_WANTED['m_allow_emails_from_staff']] : 1;
+            $validated = isset($USER_IMPORT_WANTED['m_validated']) ? $row[$USER_IMPORT_WANTED['m_validated']] : 1;
+            $is_perm_banned = isset($USER_IMPORT_WANTED['m_is_perm_banned']) ? $row[$USER_IMPORT_WANTED['m_is_perm_banned']] : 0;
 
             if ($member_id === null) {
                 if ($username !== null) {
@@ -120,11 +127,86 @@ function do_user_import()
                         require_code('crypt');
                         $password = get_secure_random_string();
                     }
-                    cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone, $primary_group, 1, null, null, '', null, '', 0, 0, 1, '', $photo_url, '', 1, null, null, 1, 1, null, '', false, 'plain');
+                    cns_make_member(
+                        $username, // username
+                        $password, // password
+                        $email_address, // email_address
+                        $primary_group, // primary_group
+                        $groups, // secondary_groups
+                        $dob_day, // dob_day
+                        $dob_month, // dob_month
+                        $dob_year, // dob_year
+                        $custom_fields, // custom_fields
+                        null, // timezone
+                        $language, // language
+                        '', // theme
+                        '', // title
+                        $photo_url, // photo_url
+                        '', // photo_thumb_url
+                        null, // avatar_url
+                        '', // signature
+                        null, // preview_posts
+                        $reveal_age, // reveal_age
+                        1, // views_signatures
+                        null, // auto_monitor_contrib_content
+                        null, // smart_topic_notification
+                        null, // mailing_list_style
+                        1, // auto_mark_read
+                        null, // sound_enabled
+                        $allow_emails, // allow_emails
+                        $allow_emails_from_staff, // allow_emails_from_staff
+                        0, // highlighted_name
+                        '*', // pt_allow
+                        '', // pt_rules_text
+                        $validated, // validated
+                        '', // validated_email_confirm_code
+                        null, // on_probation_until
+                        $is_perm_banned, // is_perm_banned
+                        false, // check_correctness
+                        '', // ip_address
+                        'plain', // password_compatibility_scheme
+                        '', // salt
+                        null // join_time
+                    );
                 }
             } else {
                 // Edit
-                cns_edit_member($member_id, $email_address, null, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, null, null, null, null, null, null, null, null, $username, $password, null, null, null, null, null, null, null, null, null, $photo_url, null, null, null, true);
+                cns_edit_member(
+                    $member_id, // member_id
+                    $username, // username
+                    $password, // password
+                    $email_address, // email_address
+                    $primary_group, // primary_group
+                    $dob_day, // dob_day
+                    $dob_month, // dob_month
+                    $dob_year, // dob_year
+                    $custom_fields, // custom_fields
+                    null, // timezone
+                    $language, // language
+                    null, // theme
+                    null, // title
+                    $photo_url, // photo_url
+                    null, // photo_thumb_url
+                    null, // avatar_url
+                    null, // signature
+                    null, // preview_posts
+                    $reveal_age, // reveal_age
+                    null, // views_signatures
+                    null, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    null, // auto_mark_read
+                    null, // sound_enabled
+                    $allow_emails, // allow_emails
+                    $allow_emails_from_staff, // allow_emails_from_staff
+                    null, // highlighted_name
+                    null, // pt_allow
+                    null, // pt_rules_text
+                    $validated, // validated
+                    null, // on_probation_until
+                    $is_perm_banned, // is_perm_banned
+                    false // check_correctness
+                );
                 require_code('cns_groups_action2');
                 if ($groups !== null) {
                     $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);

@@ -313,7 +313,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
                                 if ($is_absolute_url) {
                                     $result = cms_http_request($url, array('trigger_error' => false));
-                                    $this->assert_true($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url);
+                                    $this->assert_true($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url . ' (got ' . $result->message . ')');
                                 }
                             }
                         }
@@ -386,6 +386,8 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                 }
             }
         }
+
+        spellchecker_shutdown();
     }
 
     /**
@@ -446,7 +448,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             'snapchat',
             'soundcloud',
             'spotify',
-            'stumbleupon',
             'tumblr',
             'vimeo',
             'whatsapp',
@@ -558,5 +559,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             }
             while (count($rows) > 0);
         }
+
+        spellchecker_shutdown();
     }
 }

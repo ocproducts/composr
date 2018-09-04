@@ -10,7 +10,7 @@
  */
 
 // Add any defaults into URL
-defaults.thumb = ($cms.configOption('simplified_attachments_ui') && isImage && !multi) ? '0' : '1';
+defaults.thumb = (isImage && !multi) ? '0' : '1';
 defaults.type = ''; // =autodetect rendering type
 
 // Shall we show the options overlay?

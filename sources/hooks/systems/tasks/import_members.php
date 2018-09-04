@@ -40,8 +40,6 @@ class Hook_task_import_members
         require_code('hooks/systems/tasks/export_members');
         $download_ob = new Hook_task_export_members();
 
-        log_it('IMPORT_MEMBERS');
-
         push_query_limiting(false);
 
         $num_added = 0;
@@ -288,7 +286,6 @@ class Hook_task_import_members
             $language = array_key_exists('Language', $line) ? $line['Language'] : '';
             $allow_emails = array_key_exists('Accept member e-mails', $line) ? ((strtoupper($line['Accept member e-mails']) == 'YES' || $line['Accept member e-mails'] == '1' || strtoupper($line['Accept member e-mails']) == 'Y' || strtoupper($line['Accept member e-mails']) == 'ON') ? 1 : 0) : 0;
             $allow_emails_from_staff = array_key_exists('Opt-in', $line) ? ((strtoupper($line['Opt-in']) == 'YES' || $line['Opt-in'] == '1' || strtoupper($line['Opt-in']) == 'Y' || strtoupper($line['Opt-in']) == 'ON') ? 1 : 0) : 0;
-            $auto_mark_read = array_key_exists('Auto mark read', $line) ? ((strtoupper($line['Auto mark read']) == 'YES' || $line['Auto mark read'] == '1' || strtoupper($line['Auto mark read']) == 'Y' || strtoupper($line['Auto mark read']) == 'ON') ? 1 : 0) : 0;
             $primary_group = null;
             $groups = null;
             if (array_key_exists('Usergroup', $line)) {
@@ -387,7 +384,47 @@ class Hook_task_import_members
                     $password_compatibility_scheme = ($use_temporary_passwords ? 'temporary' : '');
                 }
 
-                $linked_id = cns_make_member($username, $password, ($email_address === null) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, 1, null, 0, '*', '', null, $auto_mark_read);
+                $linked_id = cns_make_member(
+                    $username, // username
+                    $password, // password
+                    ($email_address === null) ? '' : $email_address, // email_address
+                    $primary_group, // primary_group
+                    $groups, // secondary_groups
+                    $dob_day, // dob_day
+                    $dob_month, // dob_month
+                    $dob_year, // dob_year
+                    $custom_fields, // custom_fields
+                    null, // timezone
+                    $language, // language
+                    '', // theme
+                    '', // title
+                    $photo_url, // photo_url
+                    $photo_thumb_url, // photo_thumb_url
+                    $avatar_url, // avatar_url
+                    $signature, // signature
+                    null, // preview_posts
+                    $reveal_age, // reveal_age
+                    1, // views_signatures
+                    null, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    $allow_emails, // allow_emails
+                    $allow_emails_from_staff, // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    $validated, // validated
+                    '', // validated_email_confirm_code
+                    null, // on_probation_until
+                    $is_perm_banned, // is_perm_banned
+                    false, // check_correctness
+                    '', // ip_address
+                    $password_compatibility_scheme, // password_compatibility_scheme
+                    $salt, // salt
+                    $join_time // join_time
+                );
                 $all_members[$linked_id] = $username;
                 $all_members_flipped[$username] = $linked_id;
                 $num_added++;
@@ -397,7 +434,45 @@ class Hook_task_import_members
                     $username = null;
                 }
 
-                cns_edit_member($linked_id, $email_address, null, $dob_day, $dob_month, $dob_year, null, $primary_group, $custom_fields, null, $reveal_age, null, null, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, null, null, null, null, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, true);
+                cns_edit_member(
+                    $linked_id, // member_id
+                    $username, // username
+                    $password, // password
+                    $email_address, // email_address
+                    $primary_group, // primary_group
+                    $dob_day, // dob_day
+                    $dob_month, // dob_month
+                    $dob_year, // dob_year
+                    $custom_fields, // custom_fields
+                    null, // timezone
+                    $language, // language
+                    null, // theme
+                    null, // title
+                    $photo_url, // photo_url
+                    $photo_thumb_url, // photo_thumb_url
+                    $avatar_url, // avatar_url
+                    $signature, // signature
+                    null, // preview_posts
+                    $reveal_age, // reveal_age
+                    null, // views_signatures
+                    null, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    null, // auto_mark_read
+                    null, // sound_enabled
+                    $allow_emails, // allow_emails
+                    $allow_emails_from_staff, // allow_emails_from_staff
+                    null, // highlighted_name
+                    null, // pt_allow
+                    null, // pt_rules_text
+                    $validated, // validated
+                    null, // on_probation_until
+                    $is_perm_banned, // is_perm_banned
+                    false, // check_correctness
+                    $password_compatibility_scheme, // password_compatibility_scheme
+                    $salt, // salt
+                    $join_time // join_time
+                );
                 if ($groups !== null) {
                     foreach ($groups as $g_id) {
                         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_member_id' => $linked_id, 'gm_group_id' => $g_id), '', 1);

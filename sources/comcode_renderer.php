@@ -2096,7 +2096,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     require_code('cns_groups');
                     $daily_quota = cns_get_member_best_group_property($source_member, 'max_daily_upload_mb');
                 } else {
-                    $daily_quota = 5; // 5 is a hard coded default for non-Conversr forums
+                    require_code('files');
+                    $daily_quota = NON_CNS_QUOTA;
                 }
                 require_code('upload_syndication');
                 if (($daily_quota !== null) && ((substr($id, 0, 4) != 'new_') || (!upload_will_syndicate('file' . substr($id, 4))))) {
@@ -2272,7 +2273,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                 // Thumbnail generation
                 if ($attributes['thumb_url'] == '') {
-                    if (is_image($original_filename, IMAGE_CRITERIA_WEBSAFE, has_privilege($source_member, 'comcode_dangerous'))) {
+                    if (is_image($original_filename, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_GD_WRITE, has_privilege($source_member, 'comcode_dangerous'))) {
                         require_code('images');
                         $ext = '.' . get_file_extension($original_filename);
                         $md5 = md5(substr($original_filename, 0, 30));
@@ -2282,7 +2283,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                         if ($db->is_forum_db()) {
                             $attributes['thumb_url'] = get_custom_base_url() . '/' . $attributes['thumb_url'];
                         }
-                    } elseif ((addon_installed('galleries')) && (is_video($original_filename, $as_admin)) && (url_is_local($url))) {
+                    } elseif ((addon_installed('galleries')) && (is_video($original_filename, $as_admin, true)) && (url_is_local($url))) {
                         require_code('galleries2');
                         $attributes['thumb_url'] = create_video_thumb(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url);
                     }
@@ -2414,7 +2415,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
         require_code('geshi');
         if (class_exists('GeSHi')) {
             require_code('developer_tools');
-            destrictify(false);
+            destrictify();
             $geshi = new GeSHi($evaluated, ($type == 'HTML') ? 'html5' : strtolower($type));
             $geshi->set_header_type(GESHI_HEADER_DIV);
             if ($numbers) {

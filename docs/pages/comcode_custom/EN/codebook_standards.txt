@@ -626,6 +626,27 @@ Allow initialisation functions to run twice
 | Product development only
 | Manually
 | Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or Mac OS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Block access when closed
+| Stability
+| All development
+| Manually
+| Any URL that a user may reasonably navigate to manually that is not passed through [tt]index.php[/tt], must show the closed site message by its own means. Look to see how other code does it for example.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use [tt]log_it[/tt] calls
+| Usability
+| Composr development +
+| Manually
+| For any non-trivial admin action, do a [tt]log_it[/tt] call for it, and implement good quality metadata in an [tt]actionlog[/tt] hook for that.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use the correct redirection APIs
+| Portability
+| Composr development +
+| Manually
+| There are a number of internal functions to do redirects ([tt]redirect_screen[/tt], [tt]redirect_exit[/tt], [tt]assign_refresh[/tt]), supporting [tt]<meta>[/tt]-redirect for situations that don't allow HTTP-redirect, and attached-message hand-over. If you must output a [tt]Location[/tt] header manually then comment why you are doing so.
 |}
 
 [title="4"]Addons[/title]
@@ -711,7 +732,7 @@ Put your code in a function named [tt]<filename>_script()[/tt]
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Call [tt]prepare_for_ajax_response[/tt]
+Call [tt]prepare_for_known_ajax_response[/tt]
 | Internationalisation
 | Product development only
 | Manually
@@ -1985,6 +2006,13 @@ Either place checkboxes before labels, or place a colon after the label
 | Product development only
 | Automated test ([tt]template_previews.php[/tt])
 | Otherwise users may be confused as to how things are laid out.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Exclude robots appropriately
+| SEO
+| All development
+| Manually
+| You need to stop search engines indexing utility scripts, or pages that only should be navigated to manually by a human. This can be done using an [tt]attach_to_screen_header[/tt] call that adds a [tt]meta[/tt] tag for HTML pages, a [tt]NOINDEX[/tt] parameter to the [tt]STANDALONE_HTML_WRAP[/tt] template, or a [tt]X-Robots-Tag[/tt] HTTP header for non-HTML pages.
 |}
 
 Guidance for tables...
@@ -2364,7 +2392,7 @@ Do not omit semicolons
 | Stability
 | Product development only
 | Automated test ([tt]js_standards.php[/tt])
-| Use the relative version of the base URL ([tt]$cms.getBaseUrlNohttp[/tt]), just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error) -- or if the JavaScript is working across multiple domains (another potential security error). When Composr runs on multiple domains all URLs will work on all domains, with the exception of page URLs.
+| Use the relative version of the base URL ([tt]$util.rel($cms.getBaseUrl())[/tt]), just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error) -- or if the JavaScript is working across multiple domains (another potential security error). When Composr runs on multiple domains all URLs will work on all domains, with the exception of page URLs.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use relative script URLs[/color]

@@ -28,6 +28,7 @@ function catalogue_file_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -361,7 +362,11 @@ function manage_custom_fields_donext_link($content_type)
         $info = $ob->info();
 
         if (($info['support_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
-            $exists = ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)) !== null);
+            static $count = array();
+            if (!isset($count[$content_type])) {
+                $count[$content_type] = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'COUNT(*)', array('c_name' => '_' . $content_type));
+            }
+            $exists = ($count[$content_type] != 0);
 
             return array(
                 array('menu/cms/catalogues/edit_one_catalogue', array('cms_catalogues', array('type' => $exists ? '_edit_catalogue' : 'add_catalogue', 'id' => '_' . $content_type, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_catalogues')), do_lang('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label']))),
@@ -496,10 +501,23 @@ function get_bound_content_entry($content_type, $id)
     if (!$content_type_has_custom_fields_cache[$content_type]) {
         return;
     }
-    return $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entry_linkage', 'catalogue_entry_id', array(
+    $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entry_linkage', 'catalogue_entry_id', array(
         'content_type' => $content_type,
         'content_id' => $id,
     ));
+    if (in_array(get_zone_name(), array('cms', 'adminzone'))) {
+        // Extra testing, possible corruption
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'id', array('id' => $ret));
+        if ($test === null) {
+            $ret = null;
+
+            $GLOBALS['SITE_DB']->query_delete('catalogue_entry_linkage', array(
+                'content_type' => $content_type,
+                'content_id' => $id,
+            ));
+        }
+    }
+    return $ret;
 }
 
 /**

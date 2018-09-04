@@ -151,7 +151,7 @@ function i_force_refresh()
         }
 
         require_code('site2');
-        smart_redirect($GLOBALS['I_REFRESH_URL']);
+        redirect_exit($GLOBALS['I_REFRESH_URL']);
     }
 }
 

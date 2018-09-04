@@ -212,6 +212,10 @@ class Module_admin_group_member_timeouts
 
         cleanup_member_timeouts();
 
+        // Log
+
+        log_it('GROUP_MEMBER_TIMEOUTS');
+
         // Redirect
 
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

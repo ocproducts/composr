@@ -38,7 +38,7 @@ class ua_detection_test_set extends cms_test_case
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
 
-        $topic_id = cns_make_topic(db_get_first_id(), 'Test');
+        $topic_id = cns_make_topic(db_get_first_id(), 'Test', '', 1, 1, 0, 0, null, null, false);
         cns_make_post($topic_id, 'Welcome', 'Welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', null, false, false, false);
 
         $data = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'ua' => 'bingbot', 'cookies' => array(get_session_cookie() => get_session_id())));

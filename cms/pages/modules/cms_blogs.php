@@ -770,6 +770,8 @@ class Module_cms_blogs extends Standard_crud_module
                 @unlink($rss_url);
             }
 
+            log_it('IMPORT_NEWS');
+
             require_code('tasks');
             $ret = call_user_func_array__long_task(do_lang('IMPORT_WORDPRESS'), $this->title, 'import_rss', array($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $rss));
 
@@ -793,6 +795,8 @@ class Module_cms_blogs extends Standard_crud_module
                 $import_to_blog = 0;
             }
             $import_wordpress_users = (post_param_integer('wp_import_wordpress_users', 0) == 1);
+
+            log_it('IMPORT_NEWS');
 
             require_code('tasks');
             return call_user_func_array__long_task(do_lang('IMPORT_WORDPRESS'), $this->title, 'import_wordpress', array($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $import_wordpress_users));

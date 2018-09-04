@@ -289,7 +289,7 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
 
     save_zone_base_url($zone, $base_url);
 
-    log_it('ADD_ZONE', $zone);
+    log_it('ADD_ZONE', $zone, $title);
 
     return $zone;
 }
@@ -854,7 +854,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
         }
     }
     $stub = $custom ? get_custom_file_base() : get_file_base();
-    $dh = @opendir($stub . '/' . $module_path);
+    $dh = is_dir($stub . '/' . $module_path) ? opendir($stub . '/' . $module_path) : false;
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
             if ((substr($file, -4) == '.' . $ext) && (is_file($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {

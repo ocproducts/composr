@@ -296,7 +296,7 @@
                                 window.alreadyAutonomous = false;
                             }
 
-                            window.opener.console.log('Reattaching chat window to re-navigated master window.');
+                            window.opener.$util.inform('Reattaching chat window to re-navigated master window.');
                         }
                     }
                 }
@@ -338,22 +338,14 @@
     };
 
     $cms.templates.blockMainFriendsList = function (params, container) {
-        if (params.wrapperId && params.blockCallUrl) {
-            $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
-        }
-
         $dom.on(container, 'keyup', '.js-input-friends-search', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e);
         });
     };
 
     $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
-
-        $dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['shoutbox_message'])) {
-                $cms.ui.disableFormButtons(form);
-            } else {
+        $dom.on(container, 'click', '.js-onsubmit-check-message-not-blank', function (e, clicked) {
+            if (!$cms.form.checkFieldForBlankness(document.getElementById('shoutbox_message'))) {
                 e.preventDefault();
             }
         });
@@ -410,7 +402,7 @@
     };
 
     function playSoundUrl(url) { // Used for testing different sounds
-        var baseUrl = (!url.includes('data_custom/') && !url.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp();
+        var baseUrl = $util.rel((!url.includes('data_custom/') && !url.includes('uploads/')) ? $cms.getBaseUrl() : $cms.getCustomBaseUrl());
         var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
         if (soundObject) {
             soundObject.play();
@@ -431,7 +423,7 @@
             }
         }
 
-        window.topWindow.console.log('Playing ' + sId + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
+        window.topWindow.$util.inform('Playing ' + sId + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
 
         window.topWindow.soundManager.play(sId);
     }
@@ -537,7 +529,11 @@
         var messageText = strVal(element.value);
 
         if (messageText !== '') {
+            window.topWindow.$util.inform('Posting chat message (' + new Date().getTime() + ')');
+
             if (window.topWindow.ccTimer) {
+                window.topWindow.$util.inform('Clearing existing chat timer as this posting will take control until finished (' + new Date().getTime() + ')');
+
                 window.topWindow.clearTimeout(window.topWindow.ccTimer);
                 window.topWindow.ccTimer = null;
             }
@@ -573,6 +569,7 @@
                     }
 
                     // Reschedule the next check (ccTimer was reset already higher up in function)
+                    window.topWindow.$util.inform('Setting new chat timer (' + new Date().getTime() + ')');
                     window.topWindow.ccTimer = window.topWindow.setTimeout(function () {
                         window.topWindow.chatCheck(false, window.topWindow.lastMessageId, window.topWindow.lastEventId);
                     }, window.MESSAGE_CHECK_INTERVAL);
@@ -581,10 +578,13 @@
                         element.focus();
                     } catch (e) {}
                 } else {
+                    window.topWindow.$util.inform('Successfully posted chat message (' + new Date().getTime() + ')');
+
                     window.topWindow.currentlySendingMessage = false;
                     element.disabled = false;
 
                     // Reschedule the next check (ccTimer was reset already higher up in function)
+                    window.topWindow.$util.inform('Setting new chat timer (' + new Date().getTime() + ')');
                     window.topWindow.ccTimer = window.topWindow.setTimeout(function () {
                         window.topWindow.chatCheck(false, window.topWindow.lastMessageId, window.topWindow.lastEventId);
                     }, window.MESSAGE_CHECK_INTERVAL);
@@ -597,11 +597,14 @@
 
     // Check for new messages
     function chatCheck(backlog, messageId, eventId) {
-        if (window.currentlySendingMessage)  { // We'll reschedule once our currently-in-progress message is sent
+        if (window.currentlySendingMessage) { // We'll reschedule once our currently-in-progress message is sent
+            window.topWindow.$util.inform('Skip checking for chat messages (chat timer), as a message posting is pending completion (' + new Date().getTime() + ')');
             return null;
         }
 
-        eventId = intVal(eventId, -1);  // -1 Means, we don't want to look at events, but the server will give us a null event
+        window.topWindow.$util.inform('Checking for chat messages (chat timer) (' + new Date().getTime() + ')');
+
+        eventId = intVal(eventId, -1); // -1 Means, we don't want to look at events, but the server will give us a null event
 
         // Check for new messages on the server the new or old way
         setTimeout(function () {
@@ -609,7 +612,7 @@
         }, window.MESSAGE_CHECK_INTERVAL * 1.2);
 
         var theDate = new Date();
-        if (!window.messageChecking || (window.messageChecking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime()))  { // If not currently in process, or process stalled
+        if (!window.messageChecking || (window.messageChecking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime())) { // If not currently in process, or process stalled
             window.messageChecking = theDate.getTime();
             var url;
             var _roomId = (window.loadFromRoomId == null) ? -1 : window.loadFromRoomId;
@@ -630,6 +633,8 @@
                 }
             });
             return false;
+        } else {
+            window.topWindow.$util.inform('Skip checking for chat messages (chat timer), as a previous check is pending completion and not yet timed out (' + new Date().getTime() + ')');
         }
 
         return null;
@@ -640,8 +645,12 @@
     function chatCheckTimeout(backlog, messageId, eventId) {
         var theDate = new Date();
         if ((window.messageChecking) && (window.messageChecking <= theDate.getTime() - window.MESSAGE_CHECK_INTERVAL * 1.2) && (!window.currentlySendingMessage)) { // If we are awaiting a response (messageChecking is not false, and that response was made more than 12 seconds ago
+            indow.topWindow.$util.inform('(Guard) Making sure our last actioned chat check completed and was on time - and it did not! (' + new Date().getTime() + ')');
+
             // Our response is tardy - presume we've lost our scheduler / AJAX request, so fire off a new AJAX request and reset the chatCheckTimeout timer
             chatCheck(backlog, messageId, eventId);
+        } else {
+            window.topWindow.$util.inform('(Guard) Making sure our last actioned chat check completed and was on time - and it did (' + new Date().getTime() + ')');
         }
     }
 
@@ -650,6 +659,8 @@
         var ajaxResult = responseXML && responseXML.querySelector('result');
 
         if (ajaxResult != null) {
+            window.topWindow.$util.inform('Received chat check response (' + new Date().getTime() + ')');
+
             if (skipIncomingSound === undefined) {
                 skipIncomingSound = false;
             }
@@ -658,9 +669,12 @@
             if (temp == -2) {
                 return false;
             }
+        } else {
+            window.topWindow.$util.inform('Chat check failed (' + new Date().getTime() + ')');
         }
 
         // Schedule the next check
+        window.topWindow.$util.inform('Schedule next chat message check (chat timer) (' + new Date().getTime() + ')');
         if (window.ccTimer) {
             clearTimeout(window.ccTimer);
             window.ccTimer = null;
@@ -695,7 +709,7 @@
 
         // Look through our messages
         for (var i = 0; i < messages.length; i++) {
-            if (messages[i].localName === 'div')  { // MESSAGE
+            if (messages[i].localName === 'div') { // MESSAGE
                 // Find out about our message
                 id = messages[i].getAttribute('id');
                 timestamp = messages[i].getAttribute('timestamp');
@@ -774,7 +788,7 @@
 
                     if (!firstSet) {// Only if no other message sound already for this event update
                         if (!skipIncomingSound) {
-                            playChatSound(document.hidden ?  'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
+                            playChatSound(document.hidden ? 'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
                         }
                         flashableAlert = true;
                     }
@@ -1248,7 +1262,7 @@
         //div.style.left=($dom.getWindowWidth()/2-140)+'px';
         div.style.right = '1em';
         div.style.bottom = ((document.body.querySelectorAll('.im-event').length) * 185 + 20) + 'px';
-        /*{$SET,icon_buttons_proceed2,{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}}*/
+        /*{+START,SET,icon_buttons_proceed2}{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}{+END}*/
         var links = document.createElement('ul');
         links.className = 'actions-list';
 
@@ -1463,7 +1477,7 @@
             window.isShutdown = true;
         }
 
-        setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
+        setTimeout(function () { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
             window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,messages}?action=deinvolve_im' + window.topWindow.$cms.keep(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
             if (participants) {

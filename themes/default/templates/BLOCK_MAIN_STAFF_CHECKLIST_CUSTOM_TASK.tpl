@@ -15,6 +15,7 @@
 				NAME=checklist/{TASK_DONE}
 				ICON_SIZE=12
 				ICON_CLASS=js-icon-checklist-status
+				ICON_TITLE={!MARK_TASK_DONE}
 			{+END}
 			<span>{TASK_TITLE}</span>
 		</div>

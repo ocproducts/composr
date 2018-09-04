@@ -5,7 +5,8 @@
 <div class="site-special-message">
 	<div class="site-special-message-inner">
 		<div class="box box---redirect-screen"><div class="box-inner">
-			<p>{TEXT}</p>
+			<p>{TEXT*}</p>
+
 			{+START,IF_PASSED_AND_TRUE,REDIRECT_TEXT_NO_COMPLETE}
 				<p>{!REDIRECT_TEXT_NO_COMPLETE,{URL*}}</p>
 			{+END}

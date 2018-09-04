@@ -64,9 +64,20 @@ function cns_make_forum_grouping($title, $description, $expanded_by_default = 1)
  * @param  ID_TEXT $order The order the topics are shown in, by default
  * @param  BINARY $is_threaded Whether the forum is threaded
  * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
+ * @param  EMAIL $mail_email_address Mailing list e-mail address (blank: not set / use centrally configured)
+ * @param  SHORT_TEXT $mail_server_type Mailing list server type (blank: not set / use centrally configured)
+ * @set imap imaps imaps_nocert imapt imapt_nocert pop3 pop3s pop3s_nocert pop3t pop3t_nocert
+ * @param  SHORT_TEXT $mail_server_host Mailing list server host (blank: not set / use centrally configured)
+ * @param  ?integer $mail_server_port Mailing list server port (null: not set / use centrally configured)
+ * @param  SHORT_TEXT $mail_folder Mailing list folder (blank: not set)
+ * @param  SHORT_TEXT $mail_username Mailing list username (blank: not set)
+ * @param  SHORT_TEXT $mail_password Mailing list password (blank: not set / use centrally configured)
+ * @param  ID_TEXT $mail_nonmatch_policy Mailing list policy for non-matched users
+ * @set block post_as_guest create_account
+ * @param  BINARY $mail_unconfirmed_notice Mailing list policy: whether to highlight that members are not fully confirmed
  * @return AUTO_LINK The ID of the newly created forum
  */
-function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position = 1, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0)
+function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position = 1, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $mail_email_address = '', $mail_server_type = '', $mail_server_host = '', $mail_server_port = null, $mail_folder = '', $mail_username = '', $mail_password = '', $mail_nonmatch_policy = 'post_as_guest', $mail_unconfirmed_notice = 1)
 {
     require_code('global4');
     prevent_double_submit('ADD_FORUM', null, $name);
@@ -100,6 +111,15 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
         'f_order' => $order,
         'f_is_threaded' => $is_threaded,
         'f_allows_anonymous_posts' => $allows_anonymous_posts,
+        'f_mail_email_address' => $mail_email_address,
+        'f_mail_server_type' => $mail_server_type,
+        'f_mail_server_host' => $mail_server_host,
+        'f_mail_server_port' => $mail_server_port,
+        'f_mail_folder' => $mail_folder,
+        'f_mail_username' => $mail_username,
+        'f_mail_password' => $mail_password,
+        'f_mail_nonmatch_policy' => $mail_nonmatch_policy,
+        'f_mail_unconfirmed_notice' => $mail_unconfirmed_notice,
     );
     $map += insert_lang_comcode('f_description', $description, 2, $GLOBALS['FORUM_DB']);
     $map += insert_lang_comcode('f_intro_question', $intro_question, 3, $GLOBALS['FORUM_DB']);
@@ -198,16 +218,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     dispatch_member_mention_notifications('forum', strval($forum_id));
 
     require_code('sitemap_xml');
-    if ($forum_id == db_get_first_id()) {
-        $sitemap_priority = SITEMAP_IMPORTANCE_ULTRA;
-    } else {
-        if ($parent_forum == db_get_first_id()) {
-            $sitemap_priority = SITEMAP_IMPORTANCE_HIGH;
-        } else {
-            $sitemap_priority = SITEMAP_IMPORTANCE_MEDIUM;
-        }
-    }
-    notify_sitemap_node_add('_SEARCH:forumview:id=' . strval($forum_id), null, null, $sitemap_priority, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    notify_sitemap_node_add('_SEARCH:forumview:id=' . strval($forum_id));
 
     return $forum_id;
 }

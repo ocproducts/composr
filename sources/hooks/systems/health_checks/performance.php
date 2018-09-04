@@ -68,7 +68,7 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         // external_health_check (on maintenance sheet)
 
-        $this->stateCheckManual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->stateCheckManual('Check for speed issues on [url="Google PageSpeed"]https://developers.google.com/speed/pagespeed/insights/[/url], [url="Google Lighthouse"]https://developers.google.com/web/tools/lighthouse/[/url], [url="Pingdom"]https://tools.pingdom.com/[/url], [url="GTmetrix"]https://gtmetrix.com[/url], and [url="WebPageTest"]https://www.webpagetest.org[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**
@@ -135,6 +135,11 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
+        global $SITE_INFO;
+        if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1')) {
+            return;
+        }
+
         $url = $this->firewallify_url($this->get_page_url());
 
         require_code('files');
@@ -198,7 +203,9 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         $css_basename = basename(css_enforce('global', 'default'));
         $javascript_basename = basename(javascript_enforce('global', 'default'));
-        sleep(1);
+        if (php_function_allowed('usleep')) {
+            usleep(1000000);
+        }
 
         $urls = array(
             'page' => $this->get_page_url(),

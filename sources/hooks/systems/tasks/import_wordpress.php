@@ -45,8 +45,6 @@ class Hook_task_import_wordpress
         require_code('news2');
         require_code('files');
 
-        log_it('IMPORT_NEWS');
-
         push_lax_comcode(true);
 
         $data = _get_wordpress_db_data();
@@ -81,7 +79,45 @@ class Hook_task_import_wordpress
 
                     if ($submitter_id === null) {
                         if ($import_wordpress_users) {
-                            $submitter_id = cns_make_member($values['user_login'], $values['user_pass'], '', null, null, null, null, array(), null, $def_grp_id, 1, time(), time(), '', null, '', 0, 0, 1, '', '', '', 1, 0, null, 1, 1, null, '', false, 'wordpress');
+                            $submitter_id = cns_make_member(
+                                $values['user_login'], // username
+                                $values['user_pass'], // password
+                                '', // email_address
+                                $def_grp_id, // primary_group
+                                null, // secondary_groups
+                                null, // dob_day
+                                null, // dob_month
+                                null, // dob_year
+                                array(), // custom_fields
+                                null, // timezone
+                                '', // language
+                                '', // theme
+                                '', // title
+                                '', // photo_url
+                                '', // photo_thumb_url
+                                null, // avatar_url
+                                '', // signature
+                                null, // preview_posts
+                                1, // reveal_age
+                                1, // views_signatures
+                                null, // auto_monitor_contrib_content
+                                null, // smart_topic_notification
+                                null, // mailing_list_style
+                                1, // auto_mark_read
+                                null, // sound_enabled
+                                1, // allow_emails
+                                1, // allow_emails_from_staff
+                                0, // highlighted_name
+                                '*', // pt_allow
+                                '', // pt_rules_text
+                                1, // validated
+                                '', // validated_email_confirm_code
+                                null, // on_probation_until
+                                0, // is_perm_banned
+                                false, // check_correctness
+                                '', // ip_address
+                                'wordpress' // password_compatibility_scheme
+                            );
                         } else {
                             $submitter_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username('admin');    // Set admin as owner
                             if ($submitter_id === null) {

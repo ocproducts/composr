@@ -39,7 +39,43 @@ class members_test_set extends cms_test_case
             cns_delete_member($this->member_id);
         }
 
-        $this->member_id = cns_make_member('testmember', '123456aB$!x', 'test@test.com', array(), 10, 1, 1980, array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', true, null, '', 1, null, 0, '*', '');
+        $this->member_id = cns_make_member(
+            'testmember', // username
+            '123456aB$!x', // password
+            'test123@example.com', // email_address
+            null, // primary_group
+            null, // secondary_groups
+            10, // dob_day
+            1, // dob_month
+            1980, // dob_year
+            array(), // custom_fields
+            null, // timezone
+            '', // language
+            '', // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            null, // avatar_url
+            '', // signature
+            null, // preview_posts
+            1, // reveal_age
+            1, // views_signatures
+            null, // auto_monitor_contrib_content
+            null, // smart_topic_notification
+            null, // mailing_list_style
+            1, // auto_mark_read
+            null, // sound_enabled
+            1, // allow_emails
+            1, // allow_emails_from_staff
+            0, // highlighted_name
+            '*', // pt_allow
+            '', // pt_rules_text
+            1, // validated
+            '', // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            true // check_correctness
+        );
 
         $this->assertTrue('testmember' == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_username', array('id' => $this->member_id)));
     }
@@ -51,42 +87,14 @@ class members_test_set extends cms_test_case
         }
 
         cns_edit_member(
-            $this->member_id,
-            'testing@test.com',
-            0,
-            25,
-            12,
-            1975,
-            null,
-            null,
-            array(),
-            '',
-            0,
-            0,
-            0,
-            null, // language
-            1, // allow_emails
-            1, // allow_emails_from_staff
-            null, // validated
+            $this->member_id, // member_id
             null, // username
             null, // password
-            null, // highlighted_name
-            '*', // pt_allow
-            '', // pt_rules_text
-            null, // on_probation_until
-            null, // auto_mark_read
-            null, // join_time
-            null, // avatar_url
-            null, // signature
-            null, // is_perm_banned
-            null, // photo_url
-            null, // photo_thumb_url
-            null, // salt
-            null, // password_compatibility_scheme
-            false // skip_checks
+            'testing123@example.com', // email_address
+            null // primary_group
         );
 
-        $this->assertTrue('testing@test.com' == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_email_address', array('id' => $this->member_id)));
+        $this->assertTrue('testing123@example.com' == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_email_address', array('id' => $this->member_id)));
     }
 
     public function tearDown()

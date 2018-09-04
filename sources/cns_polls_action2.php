@@ -125,7 +125,7 @@ function cns_delete_poll($poll_id, $reason = '', $check_perms = true)
     $GLOBALS['FORUM_DB']->query_delete('f_poll_votes', array('pv_poll_id' => $poll_id));
 
     require_code('cns_general_action2');
-    cns_mod_log_it('DELETE_TOPIC_POLL', strval($poll_id), $name, $reason);
+    cns_mod_log_it('DELETE_TOPIC_POLL', strval($topic_id) . ':' . strval($poll_id), $name, $reason);
 
     return $topic_id;
 }

@@ -61,6 +61,8 @@ function set_coordinates()
         warn_exit(do_lang_tempcode('NO_CNS'));
     }
 
+    header('X-Robots-Tag: noindex');
+
     $_coords = get_param_string('coord', '');
     $member_id = get_param_integer('mid', get_member());
 

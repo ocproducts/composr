@@ -80,7 +80,7 @@ class Hook_syndication_facebook
             }
             $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => $scope));
             require_code('site2');
-            smart_redirect($oauth_redir_url);
+            redirect_exit($oauth_redir_url);
         }
 
         if (get_param_string('error_reason', null, INPUT_FILTER_GET_COMPLEX) !== null) { // oauth happened and ERROR!
@@ -131,7 +131,7 @@ class Hook_syndication_facebook
             $target_url = $oauth_url->evaluate();
             $target_url = preg_replace('#oauth_in_progress=\d+#', '', $target_url);
             $target_url = preg_replace('#syndicate_start__facebook=\d+#', '', $target_url);
-            smart_redirect($target_url);
+            redirect_exit($target_url);
         }
 
         return true;

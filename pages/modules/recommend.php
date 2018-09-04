@@ -130,6 +130,8 @@ class Module_recommend
 
         require_lang('recommend');
 
+        inform_non_canonical_parameter('_lead_source_description');
+
         if ($type == 'browse') {
             attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
@@ -688,7 +690,8 @@ class Module_recommend
             if (post_param_integer('wrap_message', 0) == 1) {
                 $_lead_source_description = either_param_string('_lead_source_description', '');
                 if ($_lead_source_description == '') {
-                    $_lead_source_description = get_self_url_easy();
+                    global $METADATA;
+                    $_lead_source_description = (isset($METADATA['real_page']) ? $METADATA['real_page'] : get_page_name()) . ' (' . get_self_url_easy() . ')';
                 }
 
                 $referring_username = is_guest() ? null : get_member();

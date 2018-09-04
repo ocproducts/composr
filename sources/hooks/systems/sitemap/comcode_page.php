@@ -36,9 +36,10 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):([^:]+)$#', $page_link, $matches) != 0) {
@@ -130,8 +131,8 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
             'extra_meta' => array(
                 'description' => null,
                 'image' => $test_icon,
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime(get_file_base() . '/' . $path) : null,
-                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/' . $path) : null,
+                'add_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime(get_file_base() . '/' . $path) : null,
+                'edit_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/' . $path) : null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -180,10 +181,10 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                 }
             }
             if (isset($db_row[0]['p_add_date'])) {
-                $struct['extra_meta']['add_date'] = $db_row[0]['p_add_date'];
+                $struct['extra_meta']['add_time'] = $db_row[0]['p_add_date'];
             }
             if (isset($db_row[0]['p_edit_date'])) {
-                $struct['extra_meta']['edit_date'] = $db_row[0]['p_edit_date'];
+                $struct['extra_meta']['edit_time'] = $db_row[0]['p_edit_date'];
             }
             if (isset($db_row[0]['p_submitter'])) {
                 $struct['extra_meta']['submitter'] = $db_row[0]['p_submitter'];
@@ -209,7 +210,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
             $struct['title'] = make_string_tempcode(do_lang('zones:COMCODE_PAGE') . ': ' . $page);
         }
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

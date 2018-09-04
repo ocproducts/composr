@@ -45,7 +45,9 @@ if ((isset($_SERVER['argv'][0])) && (strpos($_SERVER['argv'][0], 'critical_error
                 }
                 closedir($dh);
                 $last_run = time();
-                sleep(10);
+                if (php_function_allowed('usleep')) {
+                    usleep(10000000);
+                }
             }
         }
     }
@@ -75,7 +77,7 @@ if (!function_exists('critical_error')) {
         if (!headers_sent()) {
             if ((function_exists('browser_matches')) && (($relay === null) || (strpos($relay, 'Allowed memory') === false))) {
                 if ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
-                    header('HTTP/1.0 500 Internal server error');
+                    http_response_code(500);
                 }
             }
         }
@@ -170,7 +172,7 @@ if (!function_exists('critical_error')) {
             ((($relay === null)) || (strpos($relay, 'Stack trace') === false)) &&
             (
                 (($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) ||
-                ((isset($SITE_INFO['backdoor_ip'])) && ($_SERVER['REMOTE_ADDR'] == $SITE_INFO['backdoor_ip']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == ''))
+                ((isset($SITE_INFO['backdoor_ip'])) && ($_SERVER['REMOTE_ADDR'] == $SITE_INFO['backdoor_ip']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) ||
                 ((preg_match('#^localhost(\.|\:|$)#', $_SERVER['HTTP_HOST']) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost')) ||
                 ($in_upgrader)
             )
@@ -258,6 +260,8 @@ END;
         echo '</div></body>' . "\n" . '</html>';
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
+        echo '<!--ERROR-->';
+
         $contents = ob_get_contents();
         $dir = get_custom_file_base() . '/critical_errors';
         if ((is_dir($dir)) && ((!isset($_GET['page'])) || ($_GET['page'] != '_critical_error')) && ((!isset($GLOBALS['SEMI_DEV_MODE'])) || (!$GLOBALS['SEMI_DEV_MODE']) || (!empty($_GET['keep_dev_mode']) && ($_GET['keep_dev_mode'] == '0')))) {
@@ -265,7 +269,7 @@ END;
             file_put_contents($dir . '/' . $code . '.log', $contents);
             ob_end_clean();
 
-            @header('HTTP/1.0 500 Internal Server Error');
+            http_response_code(500);
             global $RELATIVE_PATH, $SITE_INFO;
             if (isset($SITE_INFO['base_url'])) {
                 $back_path = $SITE_INFO['base_url'];

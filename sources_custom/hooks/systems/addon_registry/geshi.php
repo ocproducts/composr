@@ -92,7 +92,7 @@ class Hook_addon_registry_geshi
 
 [code="Comcode"][codebox="language"]the code goes here[/codebox][/code]
 
-Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still under active development at the time of writing, missing many highlighters present in 1.0.
+Based off of [url="https://github.com/GeSHi/geshi-1.0"]GeSHI 1.0[/url]. GeSHI 1.1 is still under active development at the time of writing, missing many highlighters present in 1.0.
 ';
     }
 

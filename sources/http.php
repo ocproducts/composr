@@ -56,7 +56,9 @@ function cache_and_carry($func, $args, $timeout = null)
         require_code('files');
         if ($func == 'cms_http_request') {
             $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
-            cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+            if ($_ret->data !== null) {
+                cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+            }
         } else {
             $ret = is_string($_ret) ? $_ret : serialize($_ret);
             cms_file_put_contents_safe($path, $ret, FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
@@ -287,7 +289,7 @@ abstract class HttpDownloader
     protected $byte_limit = null; // ?integer. The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
     protected $trigger_error = true; // boolean. Whether to throw a Composr error, on error
     protected $no_redirect = false; // boolean. Whether to block redirects (returns null when found)
-    protected $ua = 'Composr'; // string. The user-agent to identify as
+    protected $ua = 'Composr'; // ~?string. The user-agent to identify as (null: simulate Google Chrome) (false: none, useful to avoid filtering rules on the other end)
     protected $post_params = null; // ?array. An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
     protected $cookies = array(); // array. An optional array of cookies to send
     protected $accept = null; // ?string. 'accept' header value (null: don't pass one)
@@ -386,9 +388,17 @@ abstract class HttpDownloader
             $url .= '/';
         }
 
+        // HTTP authentication in URL
+        if ($this->auth === null) {
+            $matches = array();
+            if (preg_match('#^https?://([^:@/]+):([^:@/]+)@#', $url, $matches) != 0) {
+                $this->auth = array($matches[1], $matches[2]);
+            }
+        }
+
         // Work out what we'll be connecting to...
 
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         if ($this->url_parts === false || !isset($this->url_parts['host'])) {
             if ($this->trigger_error) {
                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)), false, true);
@@ -410,7 +420,7 @@ abstract class HttpDownloader
         }
 
         $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
-        $this->do_ip_forwarding = ($base_url_parsed['host'] == $this->connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
+        $this->do_ip_forwarding = (preg_replace('#^www\.#', '', $base_url_parsed['host']) == preg_replace('#^www\.#', '', $this->connect_to)) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
 
         if ($this->do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
             if ($config_ip_forwarding == '1') {
@@ -429,8 +439,8 @@ abstract class HttpDownloader
                 }
                 $this->connect_to = $config_ip_forwarding;
             }
-        } elseif ((php_function_allowed('gethostbyname')) && ($this->url_parts['scheme'] == 'http')) {
-            $this->connect_to = @gethostbyname($this->connect_to); // for DNS caching
+        } elseif ($this->url_parts['scheme'] == 'http') {
+            $this->connect_to = cms_gethostbyname($this->connect_to); // for DNS caching
         }
         if (!array_key_exists('scheme', $this->url_parts)) {
             $this->url_parts['scheme'] = 'http';
@@ -615,6 +625,10 @@ abstract class HttpDownloader
 
         if (array_key_exists('ua', $options)) {
             $this->ua = $options['ua'];
+
+            if ($this->ua === null) {
+                $this->ua = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13';
+            }
         }
 
         if (array_key_exists('post_params', $options)) {
@@ -737,7 +751,9 @@ abstract class HttpDownloader
         if ($this->cookies != array()) {
             $headers .= 'Cookie: ' . $this->get_cookie_string() . "\r\n";
         }
-        $headers .= 'User-Agent: ' . rawurlencode($this->ua) . "\r\n";
+        if (is_string($this->ua)) {
+            $headers .= 'User-Agent: ' . rawurlencode($this->ua) . "\r\n";
+        }
         if ($this->auth !== null) {
             $headers .= 'Authorization: Basic ' . base64_encode(implode(':', $this->auth)) . "==\r\n";
         }
@@ -902,7 +918,7 @@ class HttpDownloaderCurl extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         $this->read_in_options($options);
 
         if (!function_exists('curl_version')) {
@@ -1025,7 +1041,9 @@ class HttpDownloaderCurl extends HttpDownloader
         if ($this->referer !== null) {
             curl_setopt($ch, CURLOPT_REFERER, $this->referer);
         }
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
+        if (is_string($this->ua)) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
+        }
         if ($this->byte_limit !== null) {
             curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($this->byte_limit == 0) ? 0 : ($this->byte_limit - 1)));
         }
@@ -1263,7 +1281,7 @@ class HttpDownloaderSockets extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         $this->read_in_options($options);
 
         if (isset($this->url_parts['scheme']) && ($this->url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
@@ -1354,8 +1372,12 @@ class HttpDownloaderSockets extends HttpDownloader
             $first_fail_time = null;
             $chunked = false;
             $buffer_unprocessed = '';
+            $time_init = time();
             while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
                 $line = @fread($mysock, 32000);
+                if (($input === '') && ($time_init + $this->timeout < time())) {
+                    $line = false; // Manual timeout
+                }
                 if ($line === false) {
                     if ((!$chunked) || ($buffer_unprocessed == '')) {
                         break;
@@ -1740,7 +1762,6 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 'http' => array(
                     'method' => $this->http_verb,
                     'header' => rtrim((($this->url_parts['host'] != $this->connect_to) ? ('Host: ' . $this->url_parts['host'] . "\r\n") : '') . $this->get_header_string()),
-                    'user_agent' => $this->ua,
                     'content' => $this->raw_payload,
                     'follow_location' => $this->no_redirect ? 0 : 1,
                     'ignore_errors' => $this->ignore_http_status,
@@ -1753,6 +1774,10 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                     ),
                 ),
             );
+
+            if (is_string($this->ua)) {
+                $opts['http']['user_agent'] = $this->ua;
+            }
 
             $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
@@ -1848,7 +1873,7 @@ class HttpDownloaderFilesystem extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         $this->read_in_options($options);
 
         $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;
@@ -1873,14 +1898,22 @@ class HttpDownloaderFilesystem extends HttpDownloader
      */
     protected function _run($url, $options)
     {
-        $parsed = parse_url($url);
+        $parsed = parse_url(normalise_idn_url($url));
         $parsed_base_url = parse_url(get_custom_base_url());
         $file_base = get_custom_file_base();
         $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);
         $file_path = $file_base . urldecode($parsed['path']);
 
         if ((php_function_allowed('escapeshellcmd')) && (php_function_allowed('shell_exec')) && (substr($file_path, -4) == '.php')) {
-            $cmd = 'DOCUMENT_ROOT=' . cms_escapeshellarg(dirname(get_file_base())) . ' PATH_TRANSLATED=' . cms_escapeshellarg($file_path) . ' SCRIPT_NAME=' . cms_escapeshellarg($file_path) . ' HTTP_USER_AGENT=' . cms_escapeshellarg($this->ua) . ' QUERY_STRING=' . cms_escapeshellarg($parsed['query']) . ' HTTP_HOST=' . cms_escapeshellarg($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . cms_escapeshellarg($file_path);
+            $cmd = 'DOCUMENT_ROOT=' . cms_escapeshellarg(dirname(get_file_base()));
+            $cmd .= ' PATH_TRANSLATED=' . cms_escapeshellarg($file_path);
+            $cmd .= ' SCRIPT_NAME=' . cms_escapeshellarg($file_path);
+            if (is_string($this->ua)) {
+                $cmd .= ' HTTP_USER_AGENT=' . cms_escapeshellarg($this->ua);
+            }
+            $cmd .= ' QUERY_STRING=' . cms_escapeshellarg($parsed['query']);
+            $cmd .= ' HTTP_HOST=' . cms_escapeshellarg($parsed['host']);
+            $cmd .= ' ' . escapeshellcmd(find_php_path(true)) . ' ' . cms_escapeshellarg($file_path);
             $contents = shell_exec($cmd);
             $split_pos = strpos($contents, "\r\n\r\n");
             if ($split_pos !== false) {

@@ -13,7 +13,7 @@
             minColor = window[el.id][2],
             textNodes = window[el.id][4];
 
-        if (textNodes.length === 0)  { // Setup
+        if (textNodes.length === 0) { // Setup
             var textNodesTemp = findTextNodes(el);
 
             // Now split up the nodes so each is actually wrapped by a span

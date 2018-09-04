@@ -182,7 +182,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
     persistent_cache_delete('OPEN_GROUPS');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:groups:view:' . strval($group_id), true);
+    notify_sitemap_node_edit('_SEARCH:groups:view:' . strval($group_id));
 }
 
 /**
@@ -261,7 +261,7 @@ function cns_delete_group($group_id, $target_group = null)
     persistent_cache_delete('OPEN_GROUPS');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:groups:view:' . strval($group_id));
+    notify_sitemap_node_delete('_SEARCH:groups:view:' . strval($group_id));
 }
 
 /**

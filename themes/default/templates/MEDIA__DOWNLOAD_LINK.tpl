@@ -1,7 +1,7 @@
 <nav>
 	<ul class="actions-list">
 		<li class="actions-list-strong">
-			{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} 
+			{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}
 			<a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!_ATTACHMENT;^*}', action: '{FILENAME;^*}' }"{+END} class="user-link" rel="enclosure" target="_blank" title="{!_DOWNLOAD,{FILENAME*}} {!LINK_NEW_WINDOW}" href="{URL*}">{!_DOWNLOAD,{FILENAME*}}</a>
 
 			{+START,IF_NON_EMPTY,{CLEAN_FILESIZE}{$GET,num_downloads}}

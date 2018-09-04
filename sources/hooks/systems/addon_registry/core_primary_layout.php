@@ -131,6 +131,7 @@ class Hook_addon_registry_core_primary_layout
             'templates/MESSAGE.tpl' => 'message',
             'text/MAIL_SUBJECT.txt' => 'mail_subject',
             'templates/MAIL.tpl' => 'mail',
+            'templates/MAIL_RAW.tpl' => 'mail_raw',
             'templates/GLOBAL_HTML_WRAP.tpl' => 'global_html_wrap',
             'templates/GLOBAL_HELPER_PANEL.tpl' => 'global_html_wrap',
             'templates/SCREEN_TITLE.tpl' => 'screen_title',
@@ -219,6 +220,27 @@ class Hook_addon_registry_core_primary_layout
             lorem_globalise(do_lorem_template('MAIL', array(
                 'CSS' => '',
                 'LOGOURL' => placeholder_image_url(),
+                'LANG' => fallback_lang(),
+                'TITLE' => lorem_phrase(),
+                'CONTENT' => lorem_paragraph(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__mail_raw()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('MAIL_RAW', array(
+                'CSS' => '',
+                'LOGOURL' => placeholder_image_url(),
+                'LOGOMAP' => '',
                 'LANG' => fallback_lang(),
                 'TITLE' => lorem_phrase(),
                 'CONTENT' => lorem_paragraph(),

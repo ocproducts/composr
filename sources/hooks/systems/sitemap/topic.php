@@ -104,7 +104,7 @@ class Hook_sitemap_topic extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'topics', 'type' => 'edit_topic', 'id' => $content_id), get_module_zone('topics')),
         ) + $partial_struct;
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

@@ -141,7 +141,7 @@ class Hook_sitemap_member extends Hook_sitemap_content
             $struct['extra_meta']['image'] = ensure_protocol_suitability($struct['extra_meta']['image']);
         }
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

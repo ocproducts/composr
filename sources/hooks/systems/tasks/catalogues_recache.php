@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    stats
+ * @package    catalogues
  */
 
 /**
@@ -30,7 +30,7 @@ class Hook_task_catalogues_recache
      */
     public function run()
     {
-        if (!addon_installed('stats')) {
+        if (!addon_installed('catalogues')) {
             return null;
         }
 

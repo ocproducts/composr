@@ -295,7 +295,8 @@ class Module_warnings extends Standard_crud_module
         }
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_probation' => 0), array('id' => $id), '', 1);
 
-        log_it('UNDO_PROBATION', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('STOP_PROBATION', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -317,7 +318,7 @@ class Module_warnings extends Standard_crud_module
         remove_ip_ban($banned_ip);
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_banned_ip' => ''), array('id' => $id), '', 1);
 
-        log_it('UNBAN_IP', strval($id), $banned_ip);
+        log_it('IP_UNBANNED', $banned_ip, strval($member_id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -337,7 +338,8 @@ class Module_warnings extends Standard_crud_module
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 0), array('id' => $member_id), '', 1);
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_banned_member' => 0), array('id' => $id), '', 1);
 
-        log_it('UNBAN_MEMBER', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('UNBAN_MEMBER', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -363,7 +365,8 @@ class Module_warnings extends Standard_crud_module
         ));
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_silence_from_topic' => null), array('id' => $id), '', 1);
 
-        log_it('UNSILENCE_TOPIC', strval($id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('UNSILENCE_TOPIC', strval($member_id), strval($id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -389,7 +392,8 @@ class Module_warnings extends Standard_crud_module
         ));
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_silence_from_forum' => null), array('id' => $id), '', 1);
 
-        log_it('UNSILENCE_FORUM', strval($id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('UNSILENCE_FORUM', strval($member_id), strval($id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -478,7 +482,7 @@ class Module_warnings extends Standard_crud_module
                     }
                     $sup = 'ORDER BY p_time';
                     if (!has_privilege(get_member(), 'view_other_pt')) {
-                        $sup = ' AND p_forum_id IS NOT NULL ' . $sup;
+                        $sup = ' AND p_cache_forum_id IS NOT NULL ' . $sup;
                     }
                     $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't_cache_first_post_id', 't_cache_last_post_id', 't_cache_num_posts', 't_cache_first_title', 'p_cache_forum_id'), $where, $sup);
                     $spam_urls = array();
@@ -490,7 +494,7 @@ class Module_warnings extends Standard_crud_module
                         for ($i = 0; $i < $num_matches; $i++) {
                             $spam_url = $matches[1][$i];
                             if (!url_is_local($spam_url)) {
-                                $domain = parse_url($spam_url, PHP_URL_HOST);
+                                $domain = parse_url(normalise_idn_url($spam_url), PHP_URL_HOST);
                                 if ($domain != get_domain()) {
                                     if (!isset($spam_urls[$domain])) {
                                         require_code('mail');
@@ -984,7 +988,7 @@ class Module_warnings extends Standard_crud_module
             $where = array('p_poster' => $member_id);
             $sup = 'ORDER BY p_time';
             if (!has_privilege(get_member(), 'view_other_pt')) {
-                $sup = ' AND p_forum_id IS NOT NULL ' . $sup;
+                $sup = ' AND p_cache_forum_id IS NOT NULL ' . $sup;
             }
             $posts_already_deleted = array();
             $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id', 'p_topic_id', 'p_time'), $where, $sup);
@@ -1029,7 +1033,7 @@ class Module_warnings extends Standard_crud_module
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $on_probation_until), array('id' => $member_id), '', 1);
 
                 require_code('cns_general_action2');
-                cns_mod_log_it('PUT_ON_PROBATION', strval($member_id), $username, $explanation);
+                cns_mod_log_it('START_PROBATION', strval($member_id), $username, $explanation);
             }
         }
 
@@ -1129,7 +1133,7 @@ class Module_warnings extends Standard_crud_module
 
         if ((get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') || ($deleted_all)) {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0); // redirect_screen not used because there is already a legitimate output screen happening
             unset($_GET['redirect']);
         }
 
@@ -1147,7 +1151,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0); // redirect_screen not used because there is already a legitimate output screen happening
         }
     }
 
@@ -1177,7 +1181,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0); // redirect_screen not used because there is already a legitimate output screen happening
         }
     }
 }

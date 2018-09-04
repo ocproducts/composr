@@ -133,9 +133,9 @@ function init__webstandards()
     $enforce_fractional = '(-?[0-9]*(\.)[0-9]+?)';
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
-    $enforce_color = '(darkgrey|slategrey|black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
-    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
-    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_color = '(currentColor|darkgrey|slategrey|black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%|vw))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%|vw)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%|vw))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%|vw)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';
     $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
     $enforce_auto_or_ilength = '(auto|' . $enforce_ilength . ')';
@@ -154,7 +154,7 @@ function init__webstandards()
     $enforce_css_color = '(' . implode('|', $color_types) . ')';
     $enforce_transparent_or_color = '(transparent|' . $enforce_css_color . ')';
     $enforce_fraction = '(\d%|\d\d%|100%|0?\.\d+|1\.0|0|1)';
-    $_enforce_font_list = "((?i)cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact'(?-i))";
+    $_enforce_font_list = "((?i)cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact'|'Open Sans'(?-i))";
     $enforce_font_list = '((([\w\-]+)|("[\w\- ]+")|(\'[\w\- ]+\')),\s*)*' . $_enforce_font_list;
     $enforce_functional_url = '(url\(\'.+\'\)|url\(".+"\)|url\([^\(\);]+\))';
     $enforce_functional_url_or_none = '(' . $enforce_functional_url . '|none)';
@@ -261,6 +261,8 @@ function init__webstandards()
         'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none|progress(?-i))',
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
+        'filter' => '.+',
+        'fill' => $enforce_css_color,
         'flex-wrap' => 'nowrap|wrap|wrap-reverse',
         'flex-shrink' => $enforce_number,
         'flex-grow' => $enforce_number,
@@ -294,6 +296,7 @@ function init__webstandards()
         'max-width' => '(none|' . $enforce_auto_or_length . ')',
         'min-height' => $enforce_auto_or_length,
         'min-width' => $enforce_auto_or_length,
+        'object-fit' => '(fill|contain|cover|none|scale-down)',
         'opacity' => $enforce_fraction,
         'outline' => $enforce_border,
         'outline-color' => $enforce_transparent_or_color,
@@ -385,7 +388,8 @@ function init__webstandards()
         'col' => true,
         'source' => true,
         'nobr' => true,
-    );
+        'use' => true, // Used by SVG icons
+     );
 
     // B's may not appear under A
     global $PROHIBITIONS;

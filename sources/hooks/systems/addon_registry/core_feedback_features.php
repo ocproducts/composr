@@ -114,6 +114,7 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/trackback/index.html',
             'sources_custom/hooks/systems/trackback/index.html',
             'data/trackback.php',
+            'sources/hooks/systems/symbols/FORM_TO_EMAIL_URL.php',
             'adminzone/pages/modules/admin_trackbacks.php',
             'sources/hooks/systems/addon_registry/core_feedback_features.php',
             'sources/hooks/systems/snippets/rating.php',

@@ -36,7 +36,7 @@
 
             if (errorMsgElementWrapper) {
                 var errorMsgElement = errorMsgElementWrapper.querySelector('.js-error-message');
-                
+
                 // Make error message visible, if there's an error
                 $dom.toggle(errorMsgElementWrapper, (errorMsg !== ''));
 
@@ -118,29 +118,29 @@
         }
 
         return new Promise(function (resolvePromise) {
-           var resolved = false;
+            var resolved = false;
 
             arrVal(form.elements).forEach(function (el) {
-               var plObj = $dom.data(el).pluploadObject;
+                var plObj = $dom.data(el).pluploadObject;
 
-               if (plObj == null) {
-                   return;
-               }
+                if (plObj == null) {
+                    return;
+                }
 
-               plObj.bind('FileUploaded', fileUploadedListener);
-           });
+                plObj.bind('FileUploaded', fileUploadedListener);
+            });
 
-           function fileUploadedListener(plObj) {
-               if (resolved) {
-                   plObj.unbind('FileUploaded', fileUploadedListener);
-                   return;
-               }
+            function fileUploadedListener(plObj) {
+                if (resolved) {
+                    plObj.unbind('FileUploaded', fileUploadedListener);
+                    return;
+                }
 
-               if ($cms.form.areUploadsComplete(form)) {
-                   resolvePromise();
-                   resolved = true;
-               }
-           }
+                if ($cms.form.areUploadsComplete(form)) {
+                    resolvePromise();
+                    resolved = true;
+                }
+            }
         });
     };
 
@@ -342,9 +342,9 @@
      * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
-        if ((element.nodeName === undefined) && $util.isArrayLike(element)) {
-            // A RadioNodeList? (returned by form.elements[<name of a radio input>])
-            element = element[0];
+        if ((typeof element === 'object') && (element instanceof window.RadioNodeList)) {
+            // A RadioNodeList (returned by form.elements[<name of a radio input>])
+            return element.value;
         }
 
         var value = '';
@@ -367,7 +367,7 @@
                     } else if (element.selectedIndex >= 0) {
                         value = element.value;
                         if ((value === '') && (element.size > 1)) {
-                            value = '-1';  // Fudge, as we have selected something explicitly that is blank
+                            value = '-1'; // Fudge, as we have selected something explicitly that is blank
                         }
                     }
                 }
@@ -387,22 +387,6 @@
                         }
                         break;
 
-                    case 'hidden':
-                    case 'text':
-                    case 'color':
-                    case 'date':
-                    case 'datetime':
-                    case 'datetime-local':
-                    case 'email':
-                    case 'month':
-                    case 'number':
-                    case 'range':
-                    case 'search':
-                    case 'tel':
-                    case 'time':
-                    case 'url':
-                    case 'week':
-                    case 'password':
                     default:
                         value = element.value;
                         break;
@@ -446,7 +430,7 @@
             return Promise.resolve(true);
         }
 
-        return  new Promise(function (resolveCheckFormPromise) {
+        return new Promise(function (resolveCheckFormPromise) {
             var erroneous = false,
                 totalFileSize = 0, alerted = false,
                 errorElement = null,
@@ -721,7 +705,7 @@
 
         // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever
         // special input types are coded to observe their master input field readonly status)
-        var button = $dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
+        var button = $dom.$id('upload-button-' + field.name.replace(/\[\]$/, ''));
 
         if (isLocked) {
             var labels = document.getElementsByTagName('label'), label = null;
@@ -751,6 +735,7 @@
 
         if (button) {
             button.disabled = isLocked;
+            button.style.pointerEvents = 'none'; // Allows clicking even when disabled
         }
     };
 
@@ -896,10 +881,8 @@
      * @returns {boolean} - true if the field isn't empty, false otherwise
      */
     $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field, alreadyShownMessage) {
-        if (!field) {
-            // Things can get confused on JS assigned to page-changing events
-            return true;
-        }
+        field = $dom.domArg(field);
+        alreadyShownMessage = Boolean(alreadyShownMessage);
 
         var value = field.value,
             errorEl = $dom.$('#error_' + field.id);

@@ -46,6 +46,8 @@ if (get_forum_type() != 'cns') {
     return warn_exit(do_lang_tempcode('NO_CNS'));
 }
 
+prepare_for_known_ajax_response();
+
 require_code('cns_members');
 require_code('cns_members2');
 

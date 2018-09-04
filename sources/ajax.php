@@ -372,6 +372,7 @@ function ajax_tree_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -472,22 +473,22 @@ function load_template_script()
 }
 
 /**
- * AJAX script for dynamic inclusion of CSS.
+ * Script for dynamic inclusion of CSS.
  *
  * @ignore
  */
 function sheet_script()
 {
-    prepare_for_known_ajax_response();
-
     cms_ini_set('ocproducts.xss_detect', '0');
 
-    header('Content-Type: text/css');
+    @header('Content-Type: text/css');
+    prepare_for_known_ajax_response();
+
     $sheet = get_param_string('sheet');
     if ($sheet != '') {
         $path = css_enforce(filter_naughty($sheet), get_param_string('theme', null));
         if ($path != '') {
-            echo str_replace('../../../', '', cms_file_get_contents_safe($path));
+            echo @str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }
 
@@ -495,7 +496,7 @@ function sheet_script()
 }
 
 /**
- * AJAX script for dynamic inclusion of JavaScript.
+ * Script for dynamic inclusion of JavaScript.
  *
  * @ignore
  */
@@ -510,8 +511,7 @@ function script_script()
     if ($script != '') {
         $path = javascript_enforce(filter_naughty($script), get_param_string('theme', null));
         if ($path != '') {
-            @header('Content-Type: application/javascript');
-            echo str_replace('../../../', '', cms_file_get_contents_safe($path));
+            echo @str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }
 
@@ -535,6 +535,8 @@ function snippet_script()
     }
 
     cms_ini_set('ocproducts.xss_detect', '0');
+
+    header('X-Robots-Tag: noindex');
 
     header('Content-Type: text/plain; charset=' . get_charset());
     $hook = filter_naughty_harsh(get_param_string('snippet'));

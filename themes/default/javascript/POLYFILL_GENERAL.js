@@ -46,6 +46,15 @@
         return Number.isFinite(value) && (Math.floor(value) === value);
     });
 
+    // Not part of a standard but it should be.
+    Object.defineProperty(String.prototype, 'replaceAll', {
+        value: function replaceAll(search, replacement) {
+            return this.split(search).join('' + replacement);
+        },
+        configurable: true,
+        writeable: true
+    });
+
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
     definePolyfill(String.prototype, 'includes', function includes(search, start) {
         start = +start || 0;

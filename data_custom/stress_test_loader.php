@@ -46,6 +46,8 @@ if (!addon_installed('stress_test')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('stress_test')));
 }
 
+header('X-Robots-Tag: noindex');
+
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
 }
@@ -112,7 +114,44 @@ function do_work()
     require_code('cns_members_action');
     require_code('notifications');
     for ($i = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        $member_id = cns_make_member(uniqid('', false), uniqid('', true), uniqid('', true) . '@example.com', array(), intval(date('d')), intval(date('m')), intval(date('Y')), array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
+        $member_id = cns_make_member(
+            uniqid('', false), // username
+            uniqid('', true), // password
+            uniqid('', true) . '@example.com', // email_address
+            null, // primary_group
+            null, // secondary_groups
+            intval(date('d')), // dob_day
+            intval(date('m')), // dob_month
+            intval(date('Y')), // dob_year
+            array(), // custom_fields
+            null, // timezone
+            '', // language
+            '', // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            null, // avatar_url
+            '', // signature
+            null, // preview_posts
+            1, // reveal_age
+            1, // views_signatures
+            null, // auto_monitor_contrib_content
+            null, // smart_topic_notification
+            null, // mailing_list_style
+            1, // auto_mark_read
+            null, // sound_enabled
+            1, // allow_emails
+            1, // allow_emails_from_staff
+            0, // highlighted_name
+            '*', // pt_allow
+            '', // pt_rules_text
+            1, // validated
+            '', // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            false // check_correctness
+        );
+
         add_author(random_line(), '', $member_id, random_text(), random_text());
 
         enable_notifications('cns_topic', 'forum:' . strval(db_get_first_id()), $member_id);

@@ -353,7 +353,7 @@ class CMSAccountWrite
         require_code('crypt');
         $code = get_secure_random_number();
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => strval($code)), array('id' => $member_id), '', 1);
-        log_it('RESET_PASSWORD', strval($member_id), strval($code));
+        log_it('LOST_PASSWORD', strval($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
 
         // Send confirm mail
         $zone = get_module_zone('lost_password');

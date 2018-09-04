@@ -49,7 +49,7 @@ function upgrader_file_upgrade_screen()
         $out .= '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
     }
     $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
-    $out .= '<p><button class="btn btn-primary btn-scr buttons--proceed" type="submit">' . $proceed_icon . ' ' . do_lang('PROCEED') . '</button></p>';
+    $out .= '<p><button class="btn btn-primary btn-scr buttons--proceed" type="submit">' . $proceed_icon->evaluate() . ' ' . do_lang('PROCEED') . '</button></p>';
     $out .= '</form>';
 
     return $out;
@@ -69,6 +69,8 @@ function _upgrader_file_upgrade_screen()
     $dry_run = (post_param_integer('dry_run', 0) == 1);
     if ($dry_run) {
         $out .= '<p>' . do_lang('UPGRADER_DOING_DRY_RUN') . '</p>';
+    } else {
+        log_it('UPGRADER_DOWNLOAD');
     }
 
     // Turn off limits, this may be exhaustive
@@ -89,7 +91,7 @@ function _upgrader_file_upgrade_screen()
 
         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
-            $local_temp_path = true;
+            //$local_temp_path = true;  We disabled this feature for security reasons (we don't want to have to pass a path of something to extract by URL)
             $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
             if (!is_file($temp_path)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));

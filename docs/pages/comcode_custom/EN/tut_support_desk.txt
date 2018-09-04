@@ -126,7 +126,17 @@ The [tt]main_contact_us[/tt] block is a simplified front-end for the creation of
 
 [title="3"]Integration with e-mail[/title]
 
-There is an option to allow people to e-mail in to the support ticket system. This requires the PHP IMAP extension to be installed.
+There is an option to allow people to e-mail in to the support ticket system.
+
+This requires:
+1) The PHP IMAP extension to be installed
+2) The PHP [tt]mail[/tt] command must work (on most servers this means a local SMTP server must be running [which can just relay to another if you wish]; on Windows it means the PHP SMTP settings must be correctly configured)
+3) The system scheduler must be running (Cron)
+
+Also recommended:
+1) The mail server supports IMAP (not just POP3)
+2) The mail server enforces SPF and DKIM, so that Composr can know that e-mails have legitimately come from where they claim to come from
+3) The mail server enforce a reasonable maximum size for an individual e-mail, e.g. 25MB
 
 If you choose to enable this, there are a number of assumptions:
  - Ticket categorisation is not very important
@@ -142,6 +152,8 @@ Composr will try and match the original e-mailer for forwarded e-mails. You can 
 [tt]Fwd: How does this work? [SomeUsername][/tt]
 This is useful if Composr cannot match the originating e-mail address automatically. Often people have multiple e-mail addresses. Composr will learn, so you only need to do it once per person. If Composr can't find a match it will e-mail you back saying so, rather than logging the ticket against a Guest. You can override this behaviour via tagging against [tt][Guest][/tt].
 You can also use square brackets to specify the ticket type to log as. Composr "intelligently" matches things in square brackets against whatever it can.
+
+Some further applicable advice is included in the [page="_SEARCH:tut_adv_forums"]Advanced forum settings[/page] tutorial.
 
 [title="2"]Discussion Forums[/title]
 

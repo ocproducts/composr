@@ -194,6 +194,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         }
     }
     $hidden = build_keep_form_fields('_SELF', true, array($max_name, $start_name));
+    $hidden->attach(build_keep_post_fields());
     $per_page = do_template('PAGINATION_PER_PAGE', array(
         '_GUID' => '1993243727e58347d1544279c5eba496',
         'HASH' => ($hash == '') ? null : $hash,
@@ -401,7 +402,13 @@ function _build_pagination_cat_url($url_array, $post_array, $hash)
     global $COMPOUND_PARAMS_TO_SKIP;
 
     $url_array = array_merge($url_array, $post_array);
-    $cat_url = build_url($url_array, '_SELF', array('auth_key' => true, 'block_map' => true, 'snippet' => true, 'utheme' => true, 'ajax' => true) + $COMPOUND_PARAMS_TO_SKIP, true, false, false, $hash);
+    $skipped_parameters = array('auth_key' => null, 'block_map' => null, 'snippet' => null, 'utheme' => null, 'ajax' => null); // Used for snippet.php AJAX block loading
+    foreach (array_keys($post_array) as $key) {
+        if (is_control_field($key, true, true)) {
+            $skipped_parameters[$key] = null;
+        }
+    }
+    $cat_url = build_url($skipped_parameters + $url_array, '_SELF', $COMPOUND_PARAMS_TO_SKIP, true, false, false, $hash);
 
     return $cat_url;
 }

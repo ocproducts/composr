@@ -79,54 +79,54 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
  * @param  SHORT_TEXT $username The username
  * @param  SHORT_TEXT $password The password
  * @param  SHORT_TEXT $email_address The e-mail address
- * @param  ?array $secondary_groups A list of secondary usergroups Note there are no security checks, so make sure anything you pass is already available for this user (null: default/current usergroups)
+ * @param  ?GROUP $primary_group The member's primary usergroup. Note there are no security checks, so make sure anything you pass is already available for this user (null: default)
+ * @param  ?array $secondary_groups A list of secondary usergroups. Note there are no security checks, so make sure anything you pass is already available for this user (null: default/current usergroups)
  * @param  ?integer $dob_day Day of date of birth (null: unknown)
  * @param  ?integer $dob_month Month of date of birth (null: unknown)
  * @param  ?integer $dob_year Year of date of birth (null: unknown)
  * @param  array $custom_fields A map of custom field values (fieldID=>value)
- * @param  ?ID_TEXT $timezone The member timezone (null: auto-detect)
- * @param  ?GROUP $primary_group The member's primary usergroup. Note there are no security checks, so make sure anything you pass is already available for this user (null: default)
- * @param  BINARY $validated Whether the profile has been validated
- * @param  ?TIME $join_time When the member joined (null: now)
- * @param  ?TIME $last_visit_time When the member last visited (null: now)
- * @param  ID_TEXT $theme The member's default theme
- * @param  ?URLPATH $avatar_url The URL to the member's avatar (blank: none) (null: choose one automatically)
- * @param  LONG_TEXT $signature The member's signature (blank: none)
- * @param  BINARY $is_perm_banned Whether the member is permanently banned
- * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate automatically)
- * @param  BINARY $reveal_age Whether the member's age may be shown
+ * @param  ?ID_TEXT $timezone The member timezone, should not be blank (null: auto-detect)
+ * @param  ?LANGUAGE_NAME $language The member's language (null: auto detect) (blank: site default)
+ * @param  ID_TEXT $theme The member's default theme (blank: default)
  * @param  SHORT_TEXT $title The member's title (blank: get from primary)
  * @param  URLPATH $photo_url The URL to the member's photo (blank: none)
  * @param  URLPATH $photo_thumb_url The URL to the member's photo thumbnail (blank: none)
+ * @param  ?URLPATH $avatar_url The URL to the member's avatar (blank: none) (null: choose one automatically)
+ * @param  LONG_TEXT $signature The member's signature (blank: none)
+ * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: global configured default)
+ * @param  BINARY $reveal_age Whether the member's age may be shown
  * @param  BINARY $views_signatures Whether the member sees signatures in posts
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
- * @param  ?LANGUAGE_NAME $language The member's language (null: auto detect)
+ * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: global configured default)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: global configured default)
+ * @param  BINARY $auto_mark_read Mark topics as read automatically
+ * @param  ?BINARY $sound_enabled Whether sound is enabled (null: global configured default)
  * @param  BINARY $allow_emails Whether the member allows e-mails via the site
  * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site
- * @param  ?IP $ip_address The member's IP address (null: IP address of current user)
- * @param  SHORT_TEXT $validated_email_confirm_code The code required before the account becomes active (blank: already entered)
- * @param  boolean $check_correctness Whether to check details for correctness
- * @param  ?ID_TEXT $password_compatibility_scheme The compatibility scheme that the password operates in (blank: none) (null: none [meaning normal Composr salted style] or plain, depending on whether passwords are encrypted)
- * @param  SHORT_TEXT $salt The password salt (blank: password compatibility scheme does not use a salt / auto-generate)
- * @param  ?TIME $last_submit_time The time the member last made a submission (null: set to now)
- * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  BINARY $highlighted_name Whether the member username will be highlighted
  * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member
  * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member
+ * @param  BINARY $validated Whether the account has been validated
+ * @param  SHORT_TEXT $validated_email_confirm_code The code required before the account becomes active (blank: already entered)
  * @param  ?TIME $on_probation_until When the member is on probation until (null: not on probation)
- * @param  BINARY $auto_mark_read Mark topics as read automatically
+ * @param  BINARY $is_perm_banned Whether the member is permanently banned
+ * @param  boolean $check_correctness Whether to check details for correctness
+ * @param  ?IP $ip_address The member's IP address (blank: unknown) (null: IP address of current user)
+ * @param  ?ID_TEXT $password_compatibility_scheme The compatibility scheme that the password operates in (blank: none) (null: none [meaning normal Composr salted style] or plain, depending on whether passwords are encrypted)
+ * @param  SHORT_TEXT $salt The password salt (blank: password compatibility scheme does not use a salt / auto-generate)
+ * @param  ?TIME $join_time When the member joined (null: now)
+ * @param  ?TIME $last_visit_time When the member last visited (null: now)
+ * @param  ?TIME $last_submit_time The time the member last made a submission (null: set to now)
  * @param  BINARY $profile_views Total number of views to the profile
  * @param  BINARY $total_sessions Total number of sessions (basically, visits)
+ * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @return AUTO_LINK The ID of the new member
  */
-function cns_make_member($username, $password, $email_address, $secondary_groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone = null, $primary_group = null, $validated = 1, $join_time = null, $last_visit_time = null, $theme = '', $avatar_url = null, $signature = '', $is_perm_banned = 0, $preview_posts = null, $reveal_age = 0, $title = '', $photo_url = '', $photo_thumb_url = '', $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $ip_address = null, $validated_email_confirm_code = '', $check_correctness = true, $password_compatibility_scheme = null, $salt = '', $last_submit_time = null, $id = null, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = 1, $profile_views = 0, $total_sessions = 0)
+function cns_make_member($username, $password, $email_address = '', $primary_group = null, $secondary_groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = array(), $timezone = null, $language = null, $theme = '', $title = '', $photo_url = '', $photo_thumb_url = '', $avatar_url = null, $signature = '', $preview_posts = null, $reveal_age = 0, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $validated_email_confirm_code = '', $on_probation_until = null, $is_perm_banned = 0, $check_correctness = true, $ip_address = null, $password_compatibility_scheme = null, $salt = '', $join_time = null, $last_visit_time = null, $last_submit_time = null, $profile_views = 0, $total_sessions = 0, $id = null)
 {
     require_code('form_templates');
-
-    $preview_posts = take_param_int_modeavg($preview_posts, 'm_preview_posts', 'f_members', 0);
-    if ($auto_monitor_contrib_content === null) {
-        $auto_monitor_contrib_content = (get_option('allow_auto_notifications') == '0') ? 0 : 1;
-    }
+    require_code('cns_members');
+    require_code('cns_groups');
 
     if ($password_compatibility_scheme === null) {
         if (get_value('disable_password_hashing') === '1' || $password == ''/*Makes debugging easier or allows basic testing to work on PHP installs with broken OpenSSL*/) {
@@ -135,32 +135,37 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
             $password_compatibility_scheme = '';
         }
     }
-    if ($language === null) {
-        $language = '';
+    if ((($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary')) && (get_value('disable_password_hashing') === '1')) {
+        $password_compatibility_scheme = 'plain';
+        $salt = '';
     }
-    if ($signature === null) {
-        $signature = '';
+    if (($salt == '') && (($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary'))) {
+        require_code('crypt');
+        $salt = get_secure_random_string();
+        $password_salted = ratchet_hash($password, $salt);
+    } else {
+        $password_salted = $password;
     }
-    if ($title === null) {
-        $title = '';
+
+    if ($primary_group === null) {
+        $primary_group = get_first_default_group(); // This is members
     }
+    if ($secondary_groups === null) {
+        $secondary_groups = cns_get_all_default_groups(false);
+    }
+    foreach ($secondary_groups as $_g_id => $g_id) {
+        if ($g_id == $primary_group) {
+            unset($secondary_groups[$_g_id]);
+        }
+    }
+
     if ($timezone === null) {
         $timezone = get_site_timezone();
     }
-    $doing_email_option = (get_option('member_email_receipt_configurability') == '2') && (addon_installed('cns_contact_member'));
-    if (!$doing_email_option) {
-        $allow_emails = 1;
+    if ($language === null) {
+        $language = user_lang();
     }
-    if ($allow_emails === null) {
-        $allow_emails = 1;
-    }
-    $doing_email_from_staff_option = (get_option('staff_email_receipt_configurability') == '2');
-    if (!$doing_email_from_staff_option) {
-        $allow_emails_from_staff = 1;
-    }
-    if ($allow_emails_from_staff === null) {
-        $allow_emails_from_staff = 1;
-    }
+
     if ($avatar_url === null) {
         if (($GLOBALS['IN_MINIKERNEL_VERSION']) || (!addon_installed('cns_member_avatars'))) {
             $avatar_url = '';
@@ -193,6 +198,29 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         }
     }
 
+    $preview_posts = (get_option('default_preview_guests') == '1') ? 1 : 0;
+    if ($auto_monitor_contrib_content === null) {
+        $auto_monitor_contrib_content = (get_option('allow_auto_notifications') == '0') ? 0 : 1;
+    }
+    if ($smart_topic_notification === null) {
+        $smart_topic_notification = (get_option('smart_topic_notification_default') == '1') ? 1 : 0;
+    }
+    if ($mailing_list_style === null) {
+        $mailing_list_style = (get_option('mailing_list_style_default') == '1') ? 1 : 0;
+    }
+    if ($sound_enabled === null) {
+        $sound_enabled = (get_option('sound_enabled_default') == '1') ? 1 : 0;
+    }
+
+    $doing_email_option = (get_option('member_email_receipt_configurability') == '2') && (addon_installed('cns_contact_member'));
+    if (!$doing_email_option) {
+        $allow_emails = 1;
+    }
+    $doing_email_from_staff_option = (get_option('staff_email_receipt_configurability') == '2');
+    if (!$doing_email_from_staff_option) {
+        $allow_emails_from_staff = 1;
+    }
+
     if ($check_correctness) {
         if (!in_array($password_compatibility_scheme, array('ldap', 'httpauth'))) {
             require_code('cns_members_action2');
@@ -205,7 +233,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
             }
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != '')) {
+        if ((get_option('one_per_email_address') != '0') && ($email_address != ''))
+        {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if ($test !== null) {
                 warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
@@ -213,42 +242,18 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         }
     }
 
-    require_code('cns_members');
-    require_code('cns_groups');
-    if ($last_submit_time === null) {
-        $last_submit_time = time();
+    if ($ip_address === null) {
+        $ip_address = get_ip_address();
     }
+
     if ($join_time === null) {
         $join_time = time();
     }
     if ($last_visit_time === null) {
         $last_visit_time = time();
     }
-    if ($primary_group === null) {
-        $primary_group = get_first_default_group(); // This is members
-    }
-    if ($secondary_groups === null) {
-        $secondary_groups = cns_get_all_default_groups(false);
-    }
-    foreach ($secondary_groups as $_g_id => $g_id) {
-        if ($g_id == $primary_group) {
-            unset($secondary_groups[$_g_id]);
-        }
-    }
-    if ($ip_address === null) {
-        $ip_address = get_ip_address();
-    }
-
-    if ((($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary')) && (get_value('disable_password_hashing') === '1')) {
-        $password_compatibility_scheme = 'plain';
-        $salt = '';
-    }
-    if (($salt == '') && (($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary'))) {
-        require_code('crypt');
-        $salt = get_secure_random_string();
-        $password_salted = ratchet_hash($password, $salt);
-    } else {
-        $password_salted = $password;
+    if ($last_submit_time === null) {
+        $last_submit_time = time();
     }
 
     // Supplement custom field values given with defaults, and check constraints
@@ -270,43 +275,46 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     $map = array(
         'm_username' => $username,
         'm_pass_hash_salted' => $password_salted,
+        'm_password_compat_scheme' => $password_compatibility_scheme,
         'm_pass_salt' => $salt,
-        'm_theme' => $theme,
-        'm_avatar_url' => $avatar_url,
-        'm_validated' => $validated,
-        'm_validated_email_confirm_code' => $validated_email_confirm_code,
-        'm_cache_num_posts' => 0,
-        'm_cache_warnings' => 0,
-        'm_max_email_attach_size_mb' => 5,
-        'm_join_time' => $join_time,
-        'm_timezone_offset' => $timezone,
+        'm_password_change_code' => '',
+        'm_email_address' => $email_address,
         'm_primary_group' => $primary_group,
-        'm_last_visit_time' => $last_visit_time,
-        'm_last_submit_time' => $last_submit_time,
-        'm_is_perm_banned' => $is_perm_banned,
-        'm_preview_posts' => $preview_posts,
         'm_dob_day' => $dob_day,
         'm_dob_month' => $dob_month,
         'm_dob_year' => $dob_year,
-        'm_reveal_age' => $reveal_age,
-        'm_email_address' => $email_address,
+        'm_timezone_offset' => $timezone,
+        'm_language' => $language,
+        'm_theme' => $theme,
         'm_title' => $title,
         'm_photo_url' => $photo_url,
         'm_photo_thumb_url' => $photo_thumb_url,
+        'm_avatar_url' => $avatar_url,
+        'm_preview_posts' => $preview_posts,
+        'm_reveal_age' => $reveal_age,
         'm_views_signatures' => $views_signatures,
         'm_auto_monitor_contrib_content' => $auto_monitor_contrib_content,
-        'm_highlighted_name' => $highlighted_name,
-        'm_pt_allow' => $pt_allow,
-        'm_language' => $language,
-        'm_ip_address' => $ip_address,
+        'm_smart_topic_notification' => $smart_topic_notification,
+        'm_mailing_list_style' => $mailing_list_style,
+        'm_auto_mark_read' => $auto_mark_read,
+        'm_sound_enabled' => $sound_enabled,
         'm_allow_emails' => $allow_emails,
         'm_allow_emails_from_staff' => $allow_emails_from_staff,
-        'm_password_change_code' => '',
-        'm_password_compat_scheme' => $password_compatibility_scheme,
+        'm_highlighted_name' => $highlighted_name,
+        'm_pt_allow' => $pt_allow,
+        'm_validated' => $validated,
+        'm_validated_email_confirm_code' => $validated_email_confirm_code,
         'm_on_probation_until' => $on_probation_until,
+        'm_is_perm_banned' => $is_perm_banned,
+        'm_ip_address' => $ip_address,
+        'm_join_time' => $join_time,
+        'm_last_visit_time' => $last_visit_time,
+        'm_last_submit_time' => $last_submit_time,
         'm_profile_views' => $profile_views,
         'm_total_sessions' => $total_sessions,
-        'm_auto_mark_read' => $auto_mark_read,
+        'm_cache_num_posts' => 0,
+        'm_cache_warnings' => 0,
+        'm_max_email_attach_size_mb' => 5,
     );
     $map += insert_lang_comcode('m_signature', $signature, 4, $GLOBALS['FORUM_DB']);
     $map += insert_lang_comcode('m_pt_rules_text', $pt_rules_text, 4, $GLOBALS['FORUM_DB']);
@@ -396,7 +404,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
         'member_id' => $member_id,
         'usergroup_id' => $primary_group,
-        'join_time' => time(),
+        'join_time' => time()
     ));
 
     if ($check_correctness) {
@@ -429,8 +437,10 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     set_value('cns_member_count', strval(intval(get_value('cns_member_count')) + 1));
 
-    require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:members:view:' . strval($member_id), $join_time, null, SITEMAP_IMPORTANCE_LOW, 'monthly', true);
+    if ($validated == 1) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('_SEARCH:members:view:' . strval($member_id), $join_time, null, SITEMAP_IMPORTANCE_LOW, 'monthly', true);
+    }
 
     return $member_id;
 }
@@ -680,12 +690,6 @@ function _cns_predefined_custom_field_details()
         'stack_overflow' => array(
             'type' => 'url',
             'icon' => 'icons/links/stack_overflow',
-            'section' => '',
-            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
-        ),
-        'sn_stumbleupon' => array(
-            'type' => 'url',
-            'icon' => 'icons/links/stumbleupon',
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
         ),

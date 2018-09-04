@@ -463,16 +463,18 @@ Composr keeps a number of logs, which can be very helpful for debugging low-leve
 
 Useful Composr logs include:
  - Run-time error logging (using the PHP error logging system) ([tt]data_custom/errorlog.php[/tt]; can view from Admin Zone > Audit > Low-level logging)
- - The logged page activity, available via 'Investigate user' on an IP address / member ID / username (useful also for finding all a member's recent IP addresses)
- - The {$IS_MAINTAINED,extra_logging,eCommerce log}, if enabled (enable it via creating an empty writable [tt]data_custom/ecommerce.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
- - The system scheduler log, if enabled (enable it via creating an empty writable [tt]data_custom/cron.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
- - The Health Check log, if enabled (enable it via creating an empty writable [tt]data_custom/health_check.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
- - The Tasks log, if enabled (enable it via creating an empty writable [tt]data_custom/tasks.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
- - Permission checks, if enabled (useful for debugging why accessing is failing) (enable it via creating an empty writable [tt]data_custom/permission_checks.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Logged page activity, available via 'Investigate user' on an IP address / member ID / username (useful also for finding all a member's recent IP addresses)
+ - {$IS_MAINTAINED,extra_logging,eCommerce log}, if enabled (enable it via creating an empty writable [tt]data_custom/ecommerce.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - System scheduler log, if enabled (enable it via creating an empty writable [tt]data_custom/cron.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Health Check log, if enabled (enable it via creating an empty writable [tt]data_custom/health_check.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Tasks log, if enabled (enable it via creating an empty writable [tt]data_custom/tasks.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Permission checks, if enabled (useful for debugging why accessing is failing) (enable it via creating an empty writable [tt]data_custom/permission_checks.log[/tt] file; can view from Admin Zone > Audit > Low-level logging); covered in the [page="_SARCH:tut_permissions"]Access control and privileges[/page] tutorial
  - Queries running (debugging), if enabled (enable it via creating an empty writable [tt]data_custom/queries.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
  - Slow queries running (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/big_query_screens.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Disk profiling (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/debug_fs.log[/tt] file and using the [tt]keep_debug_fs[/tt] parameter; can view from Admin Zone > Audit > Low-level logging)
  - Profiling (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/profiling*.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
  - Resource-fs operations (debugging and audit), if enabled (enable it via creating an empty writable [tt]data_custom/resource_fs.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
+ - Mail integration (debugging), if enabled (enable it via creating an empty writable [tt]data_custom/mail_integration.log[/tt] file; can view from Admin Zone > Audit > Low-level logging)
  - The mail log (view from Admin Zone > Audit > E-mail queue/log)
 Other very useful logs:
  - The web server's own access log; look carefully in it and you are likely to see things like HTTP response codes (e.g. 500 means Internal Server Error)
@@ -633,6 +635,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]addon_disabled_<addon>[/tt] -- set this to '1' to disable a particular addon (may not be supported by all addons)
   - [tt]mail_theme[/tt] -- set this to the name of a theme to force that theme to be used for all outbound e-mails. This is useful because otherwise the theme of the user triggering the e-mail to be sent will be used.
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]:
+  - [tt]slow_php_dns[/tt] -- set this to '1' if the server has very slow DNS resolution on the web server's main network interface, and therefore to do DNS resolution via the command line instead
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
   - [tt]catalogue_limit_cat_field_load__<cataloguename>[/tt] -- set this to '1' if you want that catalogue to not have all fields loaded on category views, an optimisation that reduces templating flexibility
@@ -665,6 +668,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]innodb[/tt] -- set this to '1' if you have switched to MySQL's InnoDB
   - [tt]disable_post_rating[/tt] -- set this to '1' if you don't want to allow post ratings, which saves one query per displayed post
  - Performance tuning (negative):
+  - [tt]flush_cache_on_action[/tt] -- set this to '1' to automatically flush the static cache when actions are performed
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs:
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
@@ -705,7 +709,7 @@ The 'keep' parameters available are:
  - [tt]keep_send_immediately[/tt] -- set this to '1' if you want to debug newsletter code, and not have newsletters sent in the background
  - [tt]keep_su_online[/tt] -- set this to '1' if you want the user [tt]keep_su[/tt] is used with to also show as online, and for their last online/submit statuses to be updated
  - [tt]keep_su_strict[/tt] -- set this to '1' if to strictly masquerade as another user rather than to allow a few exceptions like the display of stack traces
- - [tt]keep_minify[/tt] -- set this to '0' if you want to use a JavaScript debugger and hence do not want the JS to be minified (unreadable)
+ - [tt]keep_minify[/tt] -- set this to '0' if you want to use a JavaScript debugger and hence do not want the JS to be minified (unreadable), or otherwise are debugging and don't want HTML/CSS/JavaScript to be minified or a CDN to automatically be used
  - [tt]keep_show_loading[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as major server-side dependency files load
  - [tt]keep_show_loading_code[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as server-side PHP scripts load
  - [tt]keep_memory_limit[/tt] -- set this to '0' to not put on a memory limit (admins only); using this will also add in the option to remove paginations, for those with the remove_page_split privilege
@@ -741,6 +745,7 @@ The 'keep' parameters available are:
  - [tt]keep_notifications[/tt] -- set this to '0' to suppress sending of notifications (only works if logged in as an administrator)
  - [tt]keep_quick_hybrid[/tt] -- set this to '1' in a quick installer to let the installer read code files from disk while installing if they are there; this allows hot-fixing/hot-debugging of installation bugs
  - [tt]keep_translate_sort[/tt] -- set this to 'recent' to make the content translation interface show recent strings first; useful during debugging
+ - [tt]keep_debug_fs[/tt] -- set this to '1', while in the installer, or logged in as an admin, for disk I/O to be slowed and file system case sensitivity to be checked. Or, to a higher number of milliseconds if you want to introduce fake I/O latency. It is for developer filesystem testing.
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr

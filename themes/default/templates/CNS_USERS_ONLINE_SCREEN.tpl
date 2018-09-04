@@ -50,7 +50,7 @@
 					{MEMBER}
 				</td>
 				<td>
-					{!MINUTES_AGO,{TIME*}}
+					{!_AGO,{!MINUTES,{TIME*}}}
 
 					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
 						<p class="associated-details block-mobile">

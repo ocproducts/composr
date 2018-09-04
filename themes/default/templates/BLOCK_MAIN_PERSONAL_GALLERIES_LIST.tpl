@@ -1,6 +1,7 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{$SET,ajax_block_main_personal_galleries_list_wrapper,ajax-block-main-personal-galleries-list-wrapper-{$RAND%}}
-	<div id="{$GET*,ajax_block_main_personal_galleries_list_wrapper}">
+	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
+	<div id="{$GET*,ajax_block_main_personal_galleries_list_wrapper}" data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 		{+START,IF_NON_EMPTY,{GALLERIES}}
 			<div class="box box---block-main-personal-galleries-list"><div class="box-inner compacted-subbox-stream">
 				<div class="raw-ajax-grow-spot">
@@ -35,7 +36,10 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+			{+START,INCLUDE,AJAX_PAGINATION}
+				WRAPPER_ID={$GET,ajax_block_main_personal_galleries_list_wrapper}
+				ALLOW_INFINITE_SCROLL=1
+			{+END}
 		{+END}
 	</div>
 {+END}

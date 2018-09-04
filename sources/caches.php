@@ -53,7 +53,7 @@ function init__caches()
     $PERSISTENT_CACHE = null;
 
     $use_persistent_cache = (!empty($SITE_INFO['use_persistent_cache'])); // Default to off because badly configured caches can result in lots of very slow misses
-    if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
+    if ($use_persistent_cache) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/memcached');
             $PERSISTENT_CACHE = new Persistent_caching_memcached();
@@ -122,7 +122,7 @@ function init__caches()
  * The cache size is minimised, only required resources by the particular per-page/script are put there.
  * Typically cache entries will be very small and voluminous, but predictable,
  * hence why we don't just use individual fetches on a conventional cache layer.
- * It is a disk vs CPU tradeoff. The intent is to approach performance as if each page/script were hand-coded to know its exact dependencies.
+ * It is a disk vs CPU trade-off. The intent is to approach performance as if each page/script were hand-coded to know its exact dependencies.
  *
  * Some usage notes:
  * Cached items should not be too volatile, although the cache is clever enough to not re-save if no real changes actually resulted from set/append operations;
@@ -155,10 +155,6 @@ class Self_learning_cache
     {
         $this->bucket_name = $bucket_name;
         $dir = get_custom_file_base() . '/caches/self_learning';
-        if (!is_dir($dir)) {
-            require_code('files2');
-            make_missing_directory($dir);
-        }
         //$this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd'; Windows has a 260 character path limit, so we can't do it this way
         $this->path = $dir . '/' . filter_naughty(md5($bucket_name)) . '.gcd';
         $this->load();
@@ -203,6 +199,12 @@ class Self_learning_cache
                     $this->invalidate(); // Corrupt
                 }
             } else {
+                $dir = get_custom_file_base() . '/caches/self_learning';
+                if (!is_dir($dir)) {
+                    require_code('files2');
+                    make_missing_directory($dir);
+                }
+
                 $this->data = null;
             }
         }
@@ -353,7 +355,9 @@ class Self_learning_cache
         $this->already_invalidated = true;
 
         if ($this->path !== null) {
-            @unlink($this->path);
+            if (file_exists($this->path)) {
+                @unlink($this->path);
+            }
         } else {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -497,6 +501,7 @@ function erase_persistent_cache()
     }
     $done_once = true;
 
+    /* This is unsafe, the task queue may need something
     $path = get_custom_file_base() . '/caches/http';
     if (is_dir($path)) {
         $d = opendir($path);
@@ -507,6 +512,7 @@ function erase_persistent_cache()
         }
         closedir($d);
     }
+    */
 
     $path = get_custom_file_base() . '/caches/persistent';
     if (is_dir($path)) {
@@ -520,18 +526,7 @@ function erase_persistent_cache()
         closedir($d);
     }
 
-    $path = get_custom_file_base() . '/caches/guest_pages';
-    if (!file_exists($path)) {
-        return;
-    }
-    $d = opendir($path);
-    while (($e = readdir($d)) !== false) {
-        if ((substr($e, -4) == '.htm' || substr($e, -4) == '.xml') && (strpos($e, '__failover_mode') === false)) {
-            // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
-            @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
-        }
-    }
-    closedir($d);
+    erase_static_cache();
 
     require_code('files');
     cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
@@ -542,6 +537,25 @@ function erase_persistent_cache()
         return null;
     }
     $PERSISTENT_CACHE->flush();
+}
+
+/**
+ * Remove all data from the static cache.
+ */
+function erase_static_cache()
+{
+    $path = get_custom_file_base() . '/caches/guest_pages';
+    if (!file_exists($path)) {
+        return;
+    }
+    $d = opendir($path);
+    while (($e = readdir($d)) !== false) {
+        if ((substr($e, -4) == '.htm' || substr($e, -4) == '.xml' || substr($e, -3) == '.gz') && (strpos($e, '__failover_mode') === false)) {
+            // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
+            @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
+        }
+    }
+    closedir($d);
 }
 
 /**

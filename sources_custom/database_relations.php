@@ -82,6 +82,7 @@ function get_table_purpose_flags()
         'w_realms' => TABLE_PURPOSE__NORMAL,
         'w_rooms' => TABLE_PURPOSE__NORMAL,
         'w_travelhistory' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE,
+        'translation_cache' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE,
     );
     foreach ($more as $table => $flags) {
         $ret[$table] = $flags | TABLE_PURPOSE__NON_BUNDLED;

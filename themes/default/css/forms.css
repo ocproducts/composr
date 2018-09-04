@@ -1016,7 +1016,7 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	padding: 2px;
 }
 
-#wysiwyg-editor button.cms-keep-ui-controlled, 
+#wysiwyg-editor button.cms-keep-ui-controlled,
 #wysiwyg-editor button.cms-keep-ui-controlled:focus {
 	border: 1px dashed gray;
 	text-align: center;

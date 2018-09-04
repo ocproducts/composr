@@ -439,18 +439,6 @@ User-agent: *
 # Normal things to block bot access to
 Disallow: /cgi-bin/
 
-# Bots should never get here as these are frames
-Disallow: /data/attachment_popup.php
-Disallow: /data/authors.php
-Disallow: /data/block_helper.php
-Disallow: /data/captcha.php
-Disallow: /data/comcode_convert.php
-Disallow: /data/comcode_helper.php
-Disallow: /data/emoticons.php
-Disallow: /data/page_link_chooser.php
-Disallow: /data/preview.php
-Disallow: /data/question_ui.php
-
 # Bots should never get here as raw data
 Disallow: /caches/
 Disallow: /exports/
@@ -462,27 +450,12 @@ Disallow: /data/ace/
 Disallow: /data/ckeditor/
 Disallow: /text/
 Disallow: /text_custom/
-Disallow: /themes/default/
 Disallow: /themes/*/text
 Disallow: /themes/*/xml
 
-# Bots should never get here as exposes behind-the-scenes functionality
-Disallow: /data/backend_cloud.php
-Disallow: /data/cron_bridge.php
-Disallow: /data/form_to_email.php
-Disallow: /data/post_comment.php
-Disallow: /data/trackback.php
-
-# Bots should never get here as exposes admin functionality
+# Bots should never get here as exposes admin functionality (individual admin/utility scripts have noindex built-in)
 Disallow: /adminzone/
 #Disallow: /cms/
-Disallow: /code_editor.php
-Disallow: /config_editor.php
-Disallow: /data/upgrader2.php
-Disallow: /install.php
-Disallow: /rootkit_detection.php
-Disallow: /uninstall.php
-Disallow: /upgrader.php
 
 # Set Sitemap
 Sitemap: http://yourbaseurl/data_custom/sitemaps/index.xml

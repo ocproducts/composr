@@ -31,7 +31,7 @@
             if (this.$closest(e.target, '.js-click-confirm-delete')) {
                 return;
             }
-            
+
             if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
                 $cms.setIcon(this.iconChecklistStatus, 'checklist/checklist_done', '{$IMG;,icons/checklist/checklist_done}');
@@ -175,11 +175,11 @@
             }).bind(this));
         },
 
-        textareaExpand: function (e, textarea){
+        textareaExpand: function (e, textarea) {
             textarea.rows = '23';
         },
 
-        textareaContract: function (e, textarea){
+        textareaContract: function (e, textarea) {
             if (!this.formEl.disableSizeChange) {
                 textarea.rows = '10';
             }
@@ -225,7 +225,7 @@
                         $dom.hide(checklistRows[i]);
                         checklistRows[i].classList.add('task-hidden');
                     } else {
-                        checklistRows[i].classList.remove('task-hidden'); 
+                        checklistRows[i].classList.remove('task-hidden');
                     }
                 } else {
                     if ($dom.notDisplayed(checklistRows[i])) {
@@ -250,12 +250,10 @@
         }
     };
 
-    $cms.templates.blockMainStaffActions = function (params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
-    };
-
-    $cms.templates.blockMainStaffTips = function (params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
+    $cms.templates.blockMainStaffActions = function (params, container) {
+        $dom.on(container, 'change', '.js-onchange-submit-form', function (e, el) {
+            $dom.trigger(el.form, 'submit');
+        });
     };
 
     function ajaxFormSubmitAdminHeadless(form, blockName, map) {

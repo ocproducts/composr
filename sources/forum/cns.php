@@ -605,7 +605,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
             $page = '';
         }
-        $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+        $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => true, 'redirect' => true), true);
         $redirect_url = $_redirect_url->evaluate();
 
         $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url, INPUT_FILTER_URL_INTERNAL), INPUT_FILTER_URL_INTERNAL);
@@ -613,6 +613,8 @@ class Forum_driver_cns extends Forum_driver_base
         $_lead_source_description = either_param_string('_lead_source_description', '');
         if ($_lead_source_description == '') {
             $_lead_source_description = get_self_url_easy();
+            global $METADATA;
+            $_lead_source_description = (isset($METADATA['real_page']) ? $METADATA['real_page'] : get_page_name()) . ' (' . get_self_url_easy() . ')';
         }
 
         $url_map = array('page' => 'join', '_lead_source_description' => $_lead_source_description);

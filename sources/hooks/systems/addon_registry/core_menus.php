@@ -179,6 +179,7 @@ class Hook_addon_registry_core_menus
             'templates/PAGE_LINK_CHOOSER.tpl' => 'page_link_chooser',
             'templates/BLOCK_MENU.tpl' => 'block_menu__tree',
             'templates/MENU_STAFF_LINK.tpl' => 'block_menu__tree',
+            'templates/ICON.tpl' => 'block_menu__tree',
 
             'templates/MENU_SPACER_tree.tpl' => 'block_menu__tree',
             'templates/MENU_BRANCH_tree.tpl' => 'block_menu__tree',

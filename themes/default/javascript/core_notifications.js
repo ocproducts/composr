@@ -94,8 +94,8 @@
             $coreNotifications.toggleMessagingBox('pts', true);
         });
 
-        function notificationsMarkAllRead() {
-            var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=mark_all_read';
+        function notificationsMarkAllRead(event) {
+            var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=mark_all_read';
             if (window.maxNotificationsToShow !== undefined) {
                 url += '&max=' + window.maxNotificationsToShow;
             }
@@ -105,22 +105,6 @@
             $cms.doAjaxRequest(url, _pollForNotifications);
             $coreNotifications.toggleMessagingBox('web-notifications', true);
         }
-    };
-
-    $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
-        var soundRadioEl = $dom.$('#sound_' + $cms.readCookie('sound', 'off'));
-
-        if (soundRadioEl) {
-            soundRadioEl.checked = true;
-        }
-
-        $dom.on(container, 'click', '.js-click-set-sound-cookie-on', function () {
-            $cms.setCookie('sound', 'on');
-        });
-
-        $dom.on(container, 'click', '.js-click-set-sound-cookie-off', function () {
-            $cms.setCookie('sound', 'off');
-        });
     };
 
     $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
@@ -133,6 +117,7 @@
                 parentDepth = $dom.css(row.querySelector('th'), 'padding-left'),
                 childDepth, inputsTo;
 
+            // eslint-disable-next-line no-constant-condition
             while (true) {
                 row = $dom.next(row, 'tr');
 
@@ -199,7 +184,7 @@
             return;
         }
 
-        var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
+        var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller';
         if (window.maxNotificationsToShow !== undefined) {
             url += '&max=' + window.maxNotificationsToShow;
         }
@@ -212,7 +197,7 @@
     };
 
     function _pollForNotifications(responseXml) {
-        if (!responseXml || responseXml.getElementsByTagName === undefined){
+        if (!responseXml || responseXml.getElementsByTagName === undefined) {
             return; // Some kind of error
         }
 
@@ -229,7 +214,7 @@
         }
 
         alerts = responseXml.getElementsByTagName('pt');
-        for (var i = 0; i < alerts.length; i++) {
+        for (i = 0; i < alerts.length; i++) {
             displayAlert(alerts[i]);
         }
 
@@ -274,9 +259,6 @@
             if (!sound) {
                 sound = (parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
             }
-            if ($cms.readCookie('sound', 'off') === 'off') {
-                sound = 'off';
-            }
             var notificationCode = notification.getAttribute('notification_code');
             if (sound === 'on' && notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {
                 var goFunc = function goFunc() {
@@ -310,7 +292,9 @@
                         notificationWrapper.notification.addEventListener('click', function () {
                             try {
                                 focus();
-                            } catch (ignore) {}
+                            } catch (ignore) {
+                                // continue
+                            }
                         });
                     }
                 } else {
@@ -398,6 +382,7 @@
             try {
                 isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
             } catch (e) {
+                // continue
             }
             return isSupported;
         }()),
@@ -464,6 +449,7 @@
                     focus();
                 }
                 catch (e) {
+                    // continue
                 }
             }
         }

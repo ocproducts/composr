@@ -53,7 +53,7 @@ function init__database_helper()
  * @param  ID_TEXT $id_name The name of what we are checking (only used to generate clear error messages)
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
- * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+ * @param  boolean $save_bytes Whether to use lower-byte table storage, with trade-offs of not being able to support all unicode characters; use this if key length is an issue
  * @param  boolean $return_on_error Whether to return on errors
  * @return boolean Whether the size limit is not exceeded
  *
@@ -187,7 +187,7 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
  * @param  array $fields The fields
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
- * @param  ?boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue (null: auto-detect if needed). Pass as true/false for normal install code to make intentions explicit, maintenance code may use auto-detect.
+ * @param  ?boolean $save_bytes Whether to use lower-byte table storage, with trade-offs of not being able to support all unicode characters; use this if key length is an issue (null: auto-detect if needed). Pass as true/false for normal install code to make intentions explicit, maintenance code may use auto-detect.
  *
  * @ignore
  */
@@ -394,7 +394,7 @@ function _helper_generate_index_fields($table_name, $fields, $is_full_text)
                 return null; // We don't create a full-text index on *_TRANS fields if we are directing through the translate table
             }
 
-            if ((!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+            if ((strpos($field_name, '(') === false) && (!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
                 if (strpos($field_name, '(') === false) {
                     if (((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                         $_fields .= '(250)'; // 255 would be too much with MySQL's UTF. Only MySQL supports index lengths, but the other drivers will strip them back out again.

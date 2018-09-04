@@ -261,10 +261,10 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                     if (!$subforum['intro_question']->is_empty()) {
                         if ($subforum['intro_answer'] == '') {
                             $keep = keep_symbol(array());
-                            $forum_rules_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
+                            $forum_rules_url = find_script('rules') . '?id=' . urlencode(strval($subforum['id'])) . $keep;
                         } else {
                             $keep = keep_symbol(array());
-                            $intro_question_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
+                            $intro_question_url = find_script('rules') . '?id=' . urlencode(strval($subforum['id'])) . $keep;
                         }
                     }
 
@@ -466,6 +466,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         }
     }
 
+    require_code('cns_forums2');
     $map = array(
         '_GUID' => '1c14afd9265b1bf69375169dd6faf83c',
         'STARTER_TITLE' => $starter_title,
@@ -476,6 +477,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         'TOPIC_WRAPPER' => $topic_wrapper,
         'BREADCRUMBS' => $breadcrumbs,
         'FORUM_GROUPINGS' => $forum_groupings,
+        'MAIL_EMAIL_ADDRESS' => ($id === null || !cns_supports_mailing_list_style($forum_info)) ? null : $forum_info['f_mail_email_address'],
         'PARENT_FORUM' => ($forum_info === null) ? '-1' : (($forum_info['f_parent_forum'] === null) ? '' : strval($forum_info['f_parent_forum'])),
     );
     $content = do_template('CNS_FORUM', $map);
@@ -513,9 +515,9 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     // If it's a spacer post, we need to intercede at this point, and make a better one
     $linked_type = '';
     $linked_id = '';
-    $is_spacer_post = (substr($topic['first_post']->evaluate(), 0, strlen(do_lang('SPACER_POST_MATCHER'))) == do_lang('SPACER_POST_MATCHER'));
+    $is_spacer_post = is_spacer_post($topic['first_post']->evaluate());
     if ($is_spacer_post) {
-        $c_prefix = do_lang('COMMENT') . ': #';
+        $c_prefix = do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #';
         if ((substr($topic['description'], 0, strlen($c_prefix)) == $c_prefix) && ($topic['description_link'] != '')) {
             list($linked_type, $linked_id) = explode('_', substr($topic['description'], strlen($c_prefix)), 2);
             $topic['description'] = '';

@@ -1277,10 +1277,6 @@ class Module_filedump
      */
     public function do_upload()
     {
-        if (!has_privilege(get_member(), 'upload_filedump')) {
-            access_denied('I_ERROR');
-        }
-
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
         }
@@ -1293,77 +1289,25 @@ class Module_filedump
         $new_files = array();
 
         foreach ($_FILES as $file) {
-            // Error?
-            if ((!is_plupload()) && (!is_uploaded_file($file['tmp_name']))) {
-                $max_size = get_max_file_size();
-                if (($file['error'] == 1) || ($file['error'] == 2)) {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size))));
-                } elseif ((isset($file)) && (($file['error'] == 3) || ($file['error'] == 6) || ($file['error'] == 7))) {
-                    warn_exit(do_lang_tempcode('ERROR_UPLOADING_' . strval($file['error'])));
-                } else {
-                    warn_exit(do_lang_tempcode('ERROR_UPLOADING'));
-                }
+            $error_msg = check_filedump_uploaded($file);
+            if ($error_msg !== null) {
+                attach_message($error_msg, 'warn');
+                continue;
             }
 
             $filename = $file['name'];
 
-            // Security
-            if ((!has_privilege(get_member(), 'upload_anything_filedump')) || (get_file_base() != get_custom_file_base()/*demonstratr*/)) {
-                check_extension($filename);
-            }
-            // Don't allow double file extensions, huge security risk with Apache
-            $filename = str_replace('.', '-', basename($filename, '.' . get_file_extension($filename))) . '.' . get_file_extension($filename);
+            $tmp_path = $file['tmp_name'];
 
-            // Too big?
-            $max_size = get_max_file_size();
-            if ($file['size'] > $max_size) {
-                attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(intval($max_size)))), 'warn');
-                continue;
-            }
-
-            // Conflict?
-            if (file_exists(get_custom_file_base() . '/uploads/filedump' . $place . $filename)) {
-                attach_message(do_lang_tempcode('OVERWRITE_ERROR'), 'warn');
-                continue;
-            }
-
-            // Save in file
-            $full = get_custom_file_base() . '/uploads/filedump' . $place . $filename;
-            if (is_plupload()) {
-                @rename($file['tmp_name'], $full) or warn_exit(do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $place)));
-            } else {
-                @move_uploaded_file($file['tmp_name'], $full) or warn_exit(do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $place)));
-            }
-            fix_permissions($full);
-            sync_file($full);
-            $new_files[] = $filename;
-
-            // Add description
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
-            if ($test !== null) {
-                delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
-            }
             $description = post_param_string('description', '');
-            $map = array(
-                'name' => cms_mb_substr($filename, 0, 80),
-                'path' => cms_mb_substr($place, 0, 80),
-                'the_member' => get_member(),
-            );
-            $map += insert_lang('description', $description, 3);
-            $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
-            // Logging etc
-            require_code('notifications');
-            $subject = do_lang('FILEDUMP_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $filename, $place);
-            $mail = do_notification_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
-            dispatch_notification('filedump', $place, $subject, $mail);
-            log_it('FILEDUMP_UPLOAD', $filename, $place);
-            require_code('users2');
-            if (has_actual_page_access(get_modal_user(), get_page_name(), get_zone_name())) {
-                require_code('activities');
-                syndicate_described_activity('filedump:ACTIVITY_FILEDUMP_UPLOAD', $place . '/' . $filename, '', '', '', '', '', 'filedump');
+            $error_msg = add_filedump_file($place, $filename, $tmp_path, $description);
+            if ($error_msg !== null) {
+                attach_message($error_msg, 'warn');
+                continue;
             }
+
+            $new_files[] = $filename;
         }
 
         // Done

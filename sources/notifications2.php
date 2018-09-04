@@ -207,8 +207,23 @@ function notifications_ui($member_id_of)
     }
 
     $auto_monitor_contrib_content = null;
+    $smart_topic_notification = null;
+    $mailing_list_style = null;
+    $mlsn_description = new Tempcode();
     if (get_forum_type() == 'cns') {
-        $auto_monitor_contrib_content = strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_auto_monitor_contrib_content'));
+        $auto_monitor_contrib_content = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_auto_monitor_contrib_content') == 1);
+
+        if (addon_installed('cns_forum')) {
+            $smart_topic_notification = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_smart_topic_notification') == 1);
+
+            require_code('cns_forums2');
+            $test = cns_has_mailing_list_style();
+            if ($test[0] > 0) {
+                $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_mailing_list_style') == 1);
+            }
+            $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_CAVEAT');
+            $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', $mlsn_description_caveat);
+        }
     }
 
     $custom_fields = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member_id_of);
@@ -220,7 +235,9 @@ function notifications_ui($member_id_of)
         'AUTO_NOTIFICATION_CONTRIB_CONTENT' => $auto_monitor_contrib_content,
         'NOTIFICATION_TYPES_TITLES' => $notification_types_titles,
         'NOTIFICATION_SECTIONS' => $notification_sections,
-        'SMART_TOPIC_NOTIFICATION_CONTENT' => $smart_topic_notification_content,
+        'SMART_TOPIC_NOTIFICATION' => $smart_topic_notification,
+        'MAILING_LIST_STYLE' => $mailing_list_style,
+        'MAILING_LIST_STYLE_DESCRIPTION' => $mlsn_description,
         'MEMBER_ID' => strval($member_id_of),
         'ADVANCED_COLUMN' => true,
     ));
@@ -383,6 +400,8 @@ function _notifications_build_category_tree($_notification_types, $notification_
 {
     $_notification_categories = $ob->create_category_tree($notification_code, $id);
 
+    $allowed_setting = $ob->allowed_settings($notification_code);
+
     $notification_categories = array();
     foreach ($_notification_categories as $c) {
         $notification_category = (is_integer($c['id']) ? strval($c['id']) : $c['id']);
@@ -405,6 +424,12 @@ function _notifications_build_category_tree($_notification_types, $notification_
                 }
 
                 $done_get_change = true;
+
+                // Need to reload setting
+                $current_setting = notifications_setting($notification_code, $notification_category);
+                if ($current_setting == A__STATISTICAL) {
+                    $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
+                }
             } else {
                 $force_change_children_to_children = false;
             }
@@ -412,19 +437,8 @@ function _notifications_build_category_tree($_notification_types, $notification_
             $force_change_children_to_children = $force_change_children_to;
         }
 
-        $current_setting = notifications_setting($notification_code, $notification_category);
-        if ($current_setting == A__STATISTICAL) {
-            $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
-        }
-
         $notification_types = array();
         foreach ($_notification_types as $possible => $ntype) {
-            $current_setting = notifications_setting($notification_code, $notification_category);
-            if ($current_setting == A__STATISTICAL) {
-                $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
-            }
-            $allowed_setting = $ob->allowed_settings($notification_code);
-
             $available = (($possible & $allowed_setting) != 0);
 
             if (has_interesting_post_fields()) {

@@ -6,8 +6,9 @@
         <group>
             <file>file:/Library/WebServer/Documents/composr/_tests/codechecker/java_src/codequalitychecker/Main.java</file>
             <file>file:/Library/WebServer/Documents/composr/_tests/codechecker/java_src/codequalitychecker/MainDialog.java</file>
-            <file>file:/Library/WebServer/Documents/composr/_tests/codechecker/java_src/codequalitychecker/SearchFile.java</file>
             <file>file:/Library/WebServer/Documents/composr/_tests/codechecker/java_src/codequalitychecker/OptionsDialog.java</file>
+            <file>file:/Library/WebServer/Documents/composr/_tests/codechecker/java_src/codequalitychecker/ProcessingDialog.java</file>
+            <file>file:/Library/WebServer/Documents/composr/_tests/codechecker/java_src/codequalitychecker/SearchFile.java</file>
         </group>
     </open-files>
 </project-private>

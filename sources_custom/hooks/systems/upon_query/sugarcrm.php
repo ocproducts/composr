@@ -44,36 +44,18 @@ class Hook_upon_query_sugarcrm
         $prefix = preg_quote($GLOBALS['FORUM_DB']->get_table_prefix(), '#');
 
         $matches = array();
-        if (
-        (   preg_match('#^INSERT INTO ' . $prefix . 'f_member_custom_fields .*\((\d+),#U', $query, $matches) != 0)
-        ) {
-            $this->sync_user(intval($matches[1]));
+        if (preg_match('#^INSERT INTO ' . $prefix . 'f_member_custom_fields .*\((\d+),#U', $query, $matches) != 0) {
+            require_code('sugarcrm');
+
+            if (!sugarcrm_configured()) {
+                return;
+            }
+
+            require_code('tasks');
+            $_title = do_lang('SUGARCRM_MEMBER_SYNC');
+            call_user_func_array__long_task($_title, null, 'sugarcrm_sync_member', array(intval($matches[1]), $_GET, $_POST), false, false, false);
+
             return;
         }
-    }
-
-    protected function sync_user($member_id)
-    {
-        if (!addon_installed('sugarcrm')) {
-            return;
-        }
-
-        require_code('sugarcrm');
-
-        global $SUGARCRM;
-
-        if ($SUGARCRM === null) {
-            return null;
-        }
-
-        try {
-            $contact_id = save_composr_account_into_sugarcrm_as_configured($member_id);
-        }
-        catch (Exception $e) {
-            sugarcrm_failed($e->getMessage());
-            return null;
-        }
-
-        return $contact_id;
     }
 }

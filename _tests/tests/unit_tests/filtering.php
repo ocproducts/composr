@@ -209,7 +209,9 @@ class filtering_test_set extends cms_test_case
             'l_something' => 125,
         ));
 
-        sleep(4); // Some DBs require some time to generate full-text index
+        if (function_exists('sleep')) {
+            sleep(4); // Some DBs require some time to generate full-text index
+        }
 
         require_code('filtercode');
 

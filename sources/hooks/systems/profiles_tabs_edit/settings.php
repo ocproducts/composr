@@ -53,10 +53,41 @@ class Hook_profiles_tabs_edit_settings
 
         // Actualiser
         if ((post_param_string('submitting_settings_tab', null) !== null) || (fractional_edit())) {
+            require_code('cns_members_action');
             require_code('cns_members_action2');
+            require_code('cns_field_editability');
 
             $is_ldap = cns_is_ldap_member($member_id_of);
             $is_httpauth = cns_is_httpauth_member($member_id_of);
+
+            $special_type = get_member_special_type($member_id_of);
+
+            $username = null;
+            $username_old = null;
+            $email_address = null;
+            $primary_group = null;
+            $dob_day = null;
+            $dob_month = null;
+            $dob_year = null;
+            $timezone = null;
+            $theme = null;
+            $preview_posts = null;
+            $views_signatures = null;
+            $auto_monitor_contrib_content = null;
+            $smart_topic_notification = null;
+            $mailing_list_style = null;
+            $auto_mark_read = null;
+            $sound_enabled = null;
+            $highlighted_name = null;
+            $pt_allow = null;
+            $pt_rules_text = null;
+            $validated = null;
+            $on_probation_until = null;
+
+            if ((has_actual_page_access($member_id_viewing, 'admin_cns_members')) || (has_privilege($member_id_of, 'rename_self'))) {
+                $username = ($is_ldap) ? null : post_param_string('edit_username', null/*May not be passed if username not editable for member type*/);
+                $username_old = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
+            }
 
             if (($is_ldap) || ($is_httpauth) || (($member_id_of != $member_id_viewing) && (!has_privilege($member_id_viewing, 'assume_any_member')))) {
                 $password = null;
@@ -72,6 +103,26 @@ class Hook_profiles_tabs_edit_settings
                 }
             }
 
+            if ((cns_field_editable('email', $special_type)) && (!fractional_edit())) {
+                $email_address = trim(post_param_string('email_address', member_field_is_required($member_id_of, 'email_address', null, $member_id_viewing) ? false : ''));
+            }
+
+            if (!fractional_edit()) {
+                if (cns_field_editable('dob', $special_type)) {
+                    require_code('temporal2');
+                    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
+                    if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+                        if (member_field_is_required($member_id_of, 'dob', null, $member_id_viewing)) {
+                            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
+                        }
+
+                        $dob_day = null;
+                        $dob_month = null;
+                        $dob_year = null;
+                    }
+                }
+            }
+
             $custom_fields = cns_get_all_custom_fields_match(
                 $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id_of), // groups
                 (($member_id_of != $member_id_viewing) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, // public view
@@ -81,6 +132,25 @@ class Hook_profiles_tabs_edit_settings
             $actual_custom_fields = ((post_param_integer('submitting_profile_tab', 0) == 1) || (fractional_edit())) ? cns_read_in_custom_fields($custom_fields, $member_id_of) : array();
 
             if (!fractional_edit()) {
+                $timezone = post_param_string('timezone', get_site_timezone());
+                $theme = post_param_string('theme', null);
+
+                $preview_posts = post_param_integer('preview_posts', 0);
+                $views_signatures = post_param_integer('views_signatures', 0);
+
+                /*
+                Actually managed on the notifications tab, even though technically account settings
+                $auto_monitor_contrib_content = post_param_integer('auto_monitor_contrib_content',0);
+                $smart_topic_notification = post_param_integer('smart_topic_notification', 0);
+                $mailing_list_style = post_param_integer('mailing_list_style', 0);
+                */
+                $auto_monitor_contrib_content = null;
+                $smart_topic_notification = null;
+                $mailing_list_style = null;
+
+                $auto_mark_read = post_param_integer('auto_mark_read', 0);
+                $sound_enabled = post_param_integer('sound_enabled', 0);
+
                 $pt_allow = array_key_exists('pt_allow', $_POST) ? implode(',', $_POST['pt_allow']) : '';
                 $tmp_groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
                 $all_pt_allow = '';
@@ -96,14 +166,31 @@ class Hook_profiles_tabs_edit_settings
                     $pt_allow = '*';
                 }
                 $pt_rules_text = post_param_string('pt_rules_text', null);
-            } else {
-                $pt_allow = null;
-                $pt_rules_text = null;
             }
 
             if ((!fractional_edit()) && (has_privilege($member_id_viewing, 'member_maintenance'))) {
-                $validated = post_param_integer('validated', 0);
                 $primary_group = (($is_ldap) || (!has_privilege($member_id_viewing, 'assume_any_member'))) ? null : post_param_integer('primary_group', null);
+
+                $highlighted_name = post_param_integer('highlighted_name', 0);
+
+                $validated = post_param_integer('validated', 0);
+
+                if (has_privilege($member_id_viewing, 'probate_members')) {
+                    $on_probation_until = post_param_date('on_probation_until');
+
+                    require_code('cns_general_action2');
+                    $current__on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_on_probation_until');
+                    if ((($on_probation_until === null) || ($on_probation_until <= time())) && ($current__on_probation_until > time())) {
+                        cns_mod_log_it('STOP_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                    } elseif (($on_probation_until !== null) && ($on_probation_until > time()) && ($current__on_probation_until <= time())) {
+                        cns_mod_log_it('START_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                    } elseif (($on_probation_until !== null) && ($current__on_probation_until > $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
+                        cns_mod_log_it('REDUCE_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                    } elseif (($on_probation_until !== null) && ($current__on_probation_until < $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
+                        cns_mod_log_it('EXTEND_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                    }
+                }
+
                 $is_perm_banned = post_param_integer('is_perm_banned', 0);
                 $old_is_perm_banned = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_is_perm_banned');
                 if ($old_is_perm_banned != $is_perm_banned) {
@@ -113,85 +200,43 @@ class Hook_profiles_tabs_edit_settings
                         cns_unban_member($member_id_of);
                     }
                 }
-                $highlighted_name = post_param_integer('highlighted_name', 0);
-                if (has_privilege($member_id_viewing, 'probate_members')) {
-                    $on_probation_until = post_param_date('on_probation_until');
-
-                    $current__on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_on_probation_until');
-                    if ((($on_probation_until === null) || ($on_probation_until <= time())) && ($current__on_probation_until > time())) {
-                        log_it('STOP_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    } elseif (($on_probation_until !== null) && ($on_probation_until > time()) && ($current__on_probation_until <= time())) {
-                        log_it('START_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    } elseif (($on_probation_until !== null) && ($current__on_probation_until > $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
-                        log_it('REDUCE_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    } elseif (($on_probation_until !== null) && ($current__on_probation_until < $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
-                        log_it('EXTEND_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    }
-                } else {
-                    $on_probation_until = null;
-                }
-            } else {
-                $validated = null;
-                $primary_group = null;
-                $highlighted_name = null;
-                $on_probation_until = null;
-            }
-            if ((has_actual_page_access($member_id_viewing, 'admin_cns_members')) || (has_privilege($member_id_of, 'rename_self'))) {
-                $username = ($is_ldap) ? null : post_param_string('edit_username', null/*May not be passed if username not editable for member type*/);
-            } else {
-                $username = null;
             }
 
-            require_code('cns_members_action');
-            require_code('cns_field_editability');
-
-            $special_type = get_member_special_type($member_id_of);
-
-            if ((cns_field_editable('email', $special_type)) && (!fractional_edit())) {
-                $email_address = trim(post_param_string('email_address', member_field_is_required($member_id_of, 'email_address', null, $member_id_viewing) ? false : ''));
-            } else {
-                $email_address = STRING_MAGIC_NULL;
-            }
-
-            if (fractional_edit()) {
-                $preview_posts = null;
-                $auto_monitor_contrib_content = null;
-                $views_signatures = null;
-                $timezone = null;
-                $auto_mark_read = null;
-                $theme = null;
-
-                $dob_day = INTEGER_MAGIC_NULL;
-                $dob_month = INTEGER_MAGIC_NULL;
-                $dob_year = INTEGER_MAGIC_NULL;
-            } else {
-                $theme = post_param_string('theme', null);
-                $preview_posts = post_param_integer('preview_posts', 0);
-                $auto_monitor_contrib_content = null;//post_param_integer('auto_monitor_contrib_content', 0);   Moved to notifications tab
-                $views_signatures = post_param_integer('views_signatures', 0);
-                $timezone = post_param_string('timezone', get_site_timezone());
-                $auto_mark_read = post_param_integer('auto_mark_read', 0);
-
-                if (cns_field_editable('dob', $special_type)) {
-                    require_code('temporal2');
-                    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
-                    if (($dob_year === null) || ($dob_month === null) || ($dob_day === null)) {
-                        if (member_field_is_required($member_id_of, 'dob', null, $member_id_viewing)) {
-                            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
-                        }
-
-                        $dob_day = null;
-                        $dob_month = null;
-                        $dob_year = null;
-                    }
-                } else {
-                    $dob_day = INTEGER_MAGIC_NULL;
-                    $dob_month = INTEGER_MAGIC_NULL;
-                    $dob_year = INTEGER_MAGIC_NULL;
-                }
-            }
-
-            cns_edit_member($member_id_of, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $actual_custom_fields, $theme, post_param_integer('reveal_age', fractional_edit() ? INTEGER_MAGIC_NULL : 0), $views_signatures, $auto_monitor_contrib_content, post_param_string('language', fractional_edit() ? STRING_MAGIC_NULL : null), post_param_integer('allow_emails', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('allow_emails_from_staff', fractional_edit() ? INTEGER_MAGIC_NULL : 0), $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
+            cns_edit_member(
+                $member_id_of, // member_id
+                $username, // username
+                $password, // password
+                $email_address, // email_address
+                $primary_group, // primary_group
+                $dob_day, // dob_day
+                $dob_month, // dob_month
+                $dob_year, // dob_year
+                $actual_custom_fields, // custom_fields
+                $timezone, // timezone
+                post_param_string('language', fractional_edit() ? STRING_MAGIC_NULL : null), // language
+                $theme, // theme
+                null, // title
+                null, // photo_url
+                null, // photo_thumb_url
+                null, // avatar_url
+                null, // signature
+                $preview_posts, // preview_posts
+                post_param_integer('reveal_age', fractional_edit() ? INTEGER_MAGIC_NULL : 0), // reveal_age
+                $views_signatures, // views_signatures
+                $auto_monitor_contrib_content, // auto_monitor_contrib_content
+                $smart_topic_notification, // smart_topic_notification
+                $mailing_list_style, // mailing_list_style
+                $auto_mark_read, // auto_mark_read
+                $sound_enabled, // sound_enabled
+                post_param_integer('allow_emails', fractional_edit() ? INTEGER_MAGIC_NULL : 0), // allow_emails
+                post_param_integer('allow_emails_from_staff', fractional_edit() ? INTEGER_MAGIC_NULL : 0), // allow_emails_from_staff
+                $highlighted_name, // highlighted_name
+                $pt_allow, // pt_allow
+                $pt_rules_text, // pt_rules_text
+                $validated, // validated
+                $on_probation_until, // on_probation_until
+                null // is_perm_banned
+            );
 
             if (addon_installed('content_reviews')) {
                 require_code('content_reviews2');
@@ -240,7 +285,13 @@ class Hook_profiles_tabs_edit_settings
                 $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_GENERAL);
                 if ($redirect !== null) {
                     require_code('site2');
-                    assign_refresh($redirect, 0.0);
+                    assign_refresh($redirect, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
+                }
+
+                if (($username !== null) && ($username != $username_old)) {
+                    $title = get_screen_title('MEMBER_ACCOUNT', true, array(escape_html($username), escape_html($username)));
+                    require_code('site2');
+                    redirect_exit(get_self_url(), $title, do_lang_tempcode('SUCCESS_SAVE'));
                 }
 
                 attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');
@@ -260,7 +311,9 @@ class Hook_profiles_tabs_edit_settings
             require_code('mail');
             $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), array(), false, false, true);
             $login_url = $_login_url->evaluate();
-            dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id_of)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id_of)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
+            $vm_subject = do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id_of));
+            $vm_body = do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id_of));
+            dispatch_mail($vm_subject, $vm_body, array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
 
             attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');
         }
@@ -279,7 +332,37 @@ class Hook_profiles_tabs_edit_settings
         }
 
         require_code('cns_members_action2');
-        list($fields, $hidden) = cns_get_member_fields_settings(false, $member_id_of, null, $myrow['m_email_address'], $myrow['m_preview_posts'], $myrow['m_dob_day'], $myrow['m_dob_month'], $myrow['m_dob_year'], get_users_timezone($member_id_of), $myrow['m_theme'], $myrow['m_reveal_age'], $myrow['m_views_signatures'], $myrow['m_auto_monitor_contrib_content'], $myrow['m_language'], $myrow['m_allow_emails'], $myrow['m_allow_emails_from_staff'], $myrow['m_validated'], $myrow['m_primary_group'], $myrow['m_username'], $myrow['m_is_perm_banned'], '', $myrow['m_highlighted_name'], $myrow['m_pt_allow'], get_translated_text($myrow['m_pt_rules_text'], $GLOBALS['FORUM_DB']), $myrow['m_on_probation_until']);
+        list($fields, $hidden) = cns_get_member_fields_settings(
+            false,
+            '',
+            $member_id_of,
+            $myrow['m_username'],
+            $myrow['m_email_address'],
+            $myrow['m_primary_group'],
+            $GLOBALS['CNS_DRIVER']->get_members_groups($member_id_of),
+            $myrow['m_dob_day'],
+            $myrow['m_dob_month'],
+            $myrow['m_dob_year'],
+            get_users_timezone($member_id_of),
+            $myrow['m_language'],
+            $myrow['m_theme'],
+            $myrow['m_preview_posts'],
+            $myrow['m_reveal_age'],
+            $myrow['m_views_signatures'],
+            $myrow['m_auto_monitor_contrib_content'],
+            $myrow['m_smart_topic_notification'],
+            $myrow['m_mailing_list_style'],
+            $myrow['m_auto_mark_read'],
+            $myrow['m_sound_enabled'],
+            $myrow['m_allow_emails'],
+            $myrow['m_allow_emails_from_staff'],
+            $myrow['m_highlighted_name'],
+            $myrow['m_pt_allow'],
+            get_translated_text($myrow['m_pt_rules_text'], $GLOBALS['FORUM_DB']),
+            $myrow['m_validated'],
+            $myrow['m_on_probation_until'],
+            $myrow['m_is_perm_banned']
+        );
 
         // Awards?
         if (addon_installed('awards')) {

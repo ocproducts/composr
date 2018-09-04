@@ -4,7 +4,7 @@
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$SET,is_preview,{$RUNNING_SCRIPT,preview}}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" data-tpl="standaloneHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,is_preview}{_*}{+END}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" data-tpl="standaloneHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,is_preview}{_*}{+END}">
 	<head>
 		{+START,INCLUDE,HTML_HEAD}{+END}
 	</head>

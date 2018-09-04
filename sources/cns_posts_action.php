@@ -185,7 +185,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
     }
 
-    if (($forum_id === null) || (($topic_title == '') && (!$is_starter))) {
+    if (($forum_id === null) || (($topic_title == '') && (!$is_starter)) || ($check_permissions)) {
         $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_is_open', 't_pt_from', 't_pt_to', 't_forum_id', 't_cache_last_member_id', 't_cache_first_title'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
@@ -304,11 +304,12 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 require_code('notifications');
                 $msubject = do_lang('NEW_PERSONAL_POST_SUBJECT', $topic_title, null, null, get_lang($intended_solely_for));
                 $mmessage = do_notification_lang('NEW_PERSONAL_POST_MESSAGE', comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($anonymous ? db_get_first_id() : $poster, true)), comcode_escape($topic_title), array(comcode_escape($url), $post_comcode, $poster_name_if_guest, get_lang($intended_solely_for), strval($anonymous ? db_get_first_id() : $poster)));
+                $use_real_from = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($poster, 'm_allow_emails') == 1);
                 dispatch_notification('cns_new_pt', null, $msubject, $mmessage, array($intended_solely_for), $anonymous ? db_get_first_id() : $poster);
             } else {
                 require_code('cns_posts_action2');
                 cms_profile_start_for('cns_make_post:cns_send_topic_notification');
-                cns_send_topic_notification($url, $topic_id, $forum_id, $anonymous ? db_get_first_id() : $poster, $is_starter, $post_comcode, $topic_title, $intended_solely_for/*limits to this*/, $is_pt, null, null, $poster_name_if_guest);
+                cns_send_topic_notification($url, $topic_id, $post_id, $forum_id, $anonymous ? db_get_first_id() : $poster, $is_starter, $post_comcode, $topic_title, $intended_solely_for/*limits to this*/, $is_pt, null, null, $poster_name_if_guest);
                 cms_profile_end_for('cns_make_post:cns_send_topic_notification');
             }
         }
@@ -424,7 +425,10 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
 
     if (($is_starter) && (!$is_pt) && ($forum_id !== null)) {
         require_code('sitemap_xml');
-        notify_sitemap_node_add('_SEARCH:topicview:id=' . strval($topic_id), $time, $last_edit_time, SITEMAP_IMPORTANCE_LOW, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+        if ($validated == 1) {
+            require_code('sitemap_xml');
+            notify_sitemap_node_add('_SEARCH:topicview:id=' . strval($topic_id));
+        }
     }
 
     // Tidy up auto-save

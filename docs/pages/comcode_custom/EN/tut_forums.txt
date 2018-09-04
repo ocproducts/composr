@@ -179,5 +179,6 @@ Since the time of Conversr's development, standalone forums have actually reduce
  - [page="_SEARCH:tut_support_desk"]Running a virtual support desk[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]
+ - [page="_SEARCH:tut_adv_forums"]Advanced forum settings[/page]
 
 {$SET,tutorial_tags,Forum,cns_forum,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain how discussion forums work in Conversr, and how best to organise them.}[block]main_tutorial_rating[/block]

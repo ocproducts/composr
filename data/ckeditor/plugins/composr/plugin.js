@@ -1,4 +1,5 @@
 (function () {
+
 	CKEDITOR.plugins.add('composr', {
 		hidpi: true,
 
@@ -36,7 +37,7 @@
 				aub = document.getElementById('js-attachment-upload-button'),
 				doingAttachmentUploads = Boolean(aub) && (aub.classList.contains('for-field-' + editor.element.$.id));
 
-			if ((typeof window.rebuildAttachmentButtonForNext === 'function') && doingAttachmentUploads) { // NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove
+			if ((typeof window.rebuildAttachmentButtonForNext === 'function') && doingAttachmentUploads) { // NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove.
 				if (!aub || $dom.notDisplayed($dom.parent(aub, '#post-special-options, #post-special-options2, .post-special-options'))) { // If attachment button was not placed elsewhere
 					// Attach Plupload to the Image button on the WYSIWYG editor
 					setTimeout(function () {
@@ -61,8 +62,27 @@
 					if ((window.lang_PREFER_CMS_ATTACHMENTS === undefined) || hasSelection || !doingAttachmentUploads) {
 						editor.execCommand('image');
 					} else {
-						$cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS).then(function () {
-							editor.execCommand('image');
+						$cms.ui.generateQuestionUi(
+							window.lang_PREFER_CMS_ATTACHMENTS,
+							{
+								'buttons/all': window.lang_INPUTSYSTEM_MEDIA,
+								'buttons/upload': window.lang_INPUTSYSTEM_ATTACHMENT,
+								'buttons/proceed': window.lang_INPUTSYSTEM_RAW_IMAGE
+							},
+							window.lang_IMAGE_EDITING_TYPE,
+							window.lang_IMAGE_EDITING_QUESTION
+						).then(function (prompt) {
+							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_RAW_IMAGE.toLowerCase()) {
+								editor.execCommand('image');
+							}
+
+							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_ATTACHMENT.toLowerCase()) {
+								$dom.trigger(document.getElementById('upload-button-file' + window.numAttachments), 'click');
+							}
+
+							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_MEDIA.toLowerCase()) {
+								window.doInputComcode(editor.element.$.id, 'media', '&image=1');
+							}
 						});
 					}
 				}

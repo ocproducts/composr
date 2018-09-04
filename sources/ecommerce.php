@@ -932,7 +932,7 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
  * Fetch default eCommerce fields for a form (returns by reference).
  *
  * @param  ?MEMBER $member_id The member this is for (null: current member)
- * @param  string $shipping_email Shipping e-mail address (blank: unknown)
+ * @param  EMAIL $shipping_email Shipping e-mail address (blank: unknown)
  * @param  string $shipping_phone Shipping phone number (blank: unknown)
  * @param  string $shipping_firstname Shipping first name (blank: unknown)
  * @param  string $shipping_lastname Shipping last name (blank: unknown)
@@ -1348,10 +1348,13 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
     }
 
+    @header('X-Robots-Tag: noindex');
+
     if ((file_exists(get_custom_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_custom_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_custom_file_base() . '/data_custom/ecommerce.log', 'at');
         flock($myfile, LOCK_EX);
         fseek($myfile, 0, SEEK_END);
+        fwrite($myfile, date('Y-m-d H:i:s') . "\n");
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");
         fwrite($myfile, "\n\n");

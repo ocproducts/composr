@@ -20,6 +20,10 @@ class lang_spelling_epic_test_set extends cms_test_case
 {
     public function testSpelling()
     {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(200);
+        }
+
         require_code('files2');
         require_code('spelling');
 
@@ -33,6 +37,51 @@ class lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'ajaxify',
+            'ajaxified',
+            'regexes',
+            'beforeunload',
+            'modalwindow',
+            'hasjsstate',
+            'sexualised',
+            'doxxing',
+            'targetsselector',
+            'gunzip',
+            'hrefurl',
+            'bbedit',
+            'codelobster',
+            'minisiteinfo',
+            'pspad',
+            'cids',
+            'cid',
+            'chatjoin',
+            'availablerelationship',
+            'searchingpost',
+            'browsedsupport',
+            'darkplacement',
+            'screenimages',
+            'withconversr',
+            'clipart',
+            'debugfs',
+            'readdir',
+            'imaps',
+            'imapt',
+            'nocert',
+            'nonmatch',
+            'openbsd',
+            'preferencing',
+            'solaris',
+            'plaintext',
+            'starttls',
+            'balancer',
+            'usleep',
+            'insertelement',
+            'californian',
+            'spectrums',
+            'recompress',
+            'inlined',
+            'thefeedback',
+            'ipstack',
             'setattribute',
             'classname',
             'svganimatedstring',
@@ -1626,7 +1675,6 @@ class lang_spelling_epic_test_set extends cms_test_case
             'mockup',
             'modability',
             'modally',
-            'modalwindow',
             'modcp',
             'moderations',
             'modsecurity',
@@ -2319,7 +2367,6 @@ class lang_spelling_epic_test_set extends cms_test_case
             'strtoupper',
             'strval',
             'stucked',
-            'stumbleupon',
             'stylesheet',
             'stylesheets',
             'stylings',
@@ -2494,7 +2541,6 @@ class lang_spelling_epic_test_set extends cms_test_case
             'trackback',
             'trackbacked',
             'trackbacks',
-            'tradeoff',
             'trak',
             'transactional',
             'transcode',
@@ -2944,6 +2990,10 @@ class lang_spelling_epic_test_set extends cms_test_case
                     continue;
                 }
 
+                if ($path == 'data_custom/errorlog.php') {
+                    continue;
+                }
+
                 // Load and pre-process into plain text
                 $c = file_get_contents(get_file_base() . '/' . $path);
                 switch ($ext) {
@@ -3072,5 +3122,7 @@ class lang_spelling_epic_test_set extends cms_test_case
                 $this->assertTrue(false, 'Misspelling: ' . $word . ' (' . $addon . ' addon description)');
             }
         }
+
+        spellchecker_shutdown();
     }
 }

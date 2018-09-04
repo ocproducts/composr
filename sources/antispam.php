@@ -44,7 +44,7 @@ function init__antispam()
  * Do use it for anything that will result in publicly viewed content, or outbound emails.
  *
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
  */
 function inject_action_spamcheck($username = null, $email = null)
 {
@@ -59,7 +59,7 @@ function inject_action_spamcheck($username = null, $email = null)
  * Spam check call front-end.
  *
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
  * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
  */
 function check_for_spam($username, $email, $page_level)
@@ -270,7 +270,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
 
         $_confidence_level = floatval($rbl_response[2]) / 255.0;
         $threat_type = intval($rbl_response[3]);
-        if (($threat_type & 1) || ($threat_type & 2) || ($threat_type & 4)) {
+        if ((($threat_type & 1) != 0) || (($threat_type & 2) != 0) || (($threat_type & 4) != 0)) {
             if ($_confidence_level != 0.0) {
                 $spam_stale_threshold = intval(get_option('spam_stale_threshold'));
 
@@ -330,7 +330,7 @@ function rbl_resolve($ip, $rbl_domain, $page_level)
 
     $lookup = str_replace('*', $arpa, $rbl_domain) . '.';
 
-    $_result = gethostbyname($lookup);
+    $_result = cms_gethostbyname($lookup);
     $result = explode('.', $_result);
 
     if (implode('.', $result) == $lookup) { // This is how gethostbyname indicates an error happened; however it likely actually means no block happened (as the RBL returned no data on the IP)
@@ -410,7 +410,7 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
  * Check the stopforumspam service to see if we need to block this user.
  *
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
  */
 function check_stopforumspam($username = null, $email = null)
 {
@@ -447,7 +447,7 @@ function check_stopforumspam($username = null, $email = null)
  *
  * @param  string $user_ip Check this IP address
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
  * @return array Pair: Listed for potential blocking as a ANTISPAM_RESPONSE_* constant, confidence level if attainable (0.0 to 1.0) (else null)
  * @ignore
  */

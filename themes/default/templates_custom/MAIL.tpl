@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={$LCASE*,{$CHARSET}}" />
-<title>{TITLE*}</title>
-{CSS}
-</head>
-<body style="font-size: 12px" class="email-body">
-	<div style="font-size: 12px">
-		{CONTENT}
-	</div>
-</body>
-</html>
+{+START,INCLUDE,MAIL_RAW}
+	SOME_STYLE=1
+{+END}

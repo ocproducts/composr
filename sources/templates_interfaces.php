@@ -28,7 +28,7 @@
 function tpl_crop_text_mouse_over($text, $len)
 {
     if (cms_mb_strlen($text) > $len) {
-        $text2 = escape_html(substr($text, 0, $len - 2)) . '&hellip;';
+        $text2 = escape_html(cms_mb_substr($text, 0, $len - 2)) . '&hellip;';
         return do_template('CROP_TEXT_MOUSE_OVER', array('_GUID' => '5e6bb4853dd4bc2064e999b6820a3088', 'TEXT_LARGE' => escape_html($text), 'TEXT_SMALL' => $text2));
     }
     return make_string_tempcode(escape_html($text));

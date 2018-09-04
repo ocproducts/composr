@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_feedback_features}
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 {$,Template uses auto-complete}
 {$REQUIRE_JAVASCRIPT,jquery}
@@ -128,47 +129,47 @@
 									{+START,IF_EMPTY,{REVIEW_TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{REVIEW_TITLE}}{REVIEW_TITLE*}:{+END}
 								</th>
 
-								<td>
-									{+START,INCLUDE,ICON}
-									NAME=feedback/rating
-									ICON_ID=review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
-									ICON_CLASS=rating-star js-img-review-bar
-									ICON_SIZE=14
-									ICON_ATTRS=data-vw-rating="2"
-									{+END}
-									{+START,INCLUDE,ICON}
-									NAME=feedback/rating
-									ICON_ID=review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
-									ICON_CLASS=rating-star js-img-review-bar
-									ICON_SIZE=14
-									ICON_ATTRS=data-vw-rating="4"
-									{+END}
-									{+START,INCLUDE,ICON}
-									NAME=feedback/rating
-									ICON_ID=review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
-									ICON_CLASS=rating-star js-img-review-bar
-									ICON_SIZE=14
-									ICON_ATTRS=data-vw-rating="6"
-									{+END}
-									{+START,INCLUDE,ICON}
-									NAME=feedback/rating
-									ICON_ID=review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
-									ICON_CLASS=rating-star js-img-review-bar
-									ICON_SIZE=14
-									ICON_ATTRS=data-vw-rating="8"
-									{+END}
-									{+START,INCLUDE,ICON}
-									NAME=feedback/rating
-									ICON_ID=review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
-									ICON_CLASS=rating-star js-img-review-bar
-									ICON_SIZE=14
-									ICON_ATTRS=data-vw-rating="10"
-									{+END}
+										<td>
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="2"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="4"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="6"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="8"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="10"
+											{+END}
 
-									<input id="review-rating--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
-								</td>
-							</tr>
-							{+END}
+											<input id="review-rating--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
+										</td>
+									</tr>
+								{+END}
 							{+END}{+END}{+END}
 
 							<tr>
@@ -291,6 +292,6 @@
 	{+END}
 
 	{+START,IF,{$CONFIG_OPTION,enable_previews}}
-		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview-iframe" id="preview-iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden-preview-frame">{!PREVIEW}</iframe>
+		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview-iframe" id="preview-iframe" src="{$BASE_URL*}/data/empty.php" class="hidden-preview-frame">{!PREVIEW}</iframe>
 	{+END}
 </div>

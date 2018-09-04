@@ -28,6 +28,8 @@ class comment_encapsulation_test_set extends cms_test_case
             foreach ($files as $file) {
                 $c = file_get_contents($path . '/' . $file);
 
+                $c = preg_replace('#/\*.*\*/#Us', '', $c);
+
                 $matches = array();
                 $num_matches = preg_match_all('#\{\+#', $c, $matches, PREG_OFFSET_CAPTURE);
                 for ($i = 0; $i < $num_matches; $i++) {
@@ -36,7 +38,7 @@ class comment_encapsulation_test_set extends cms_test_case
 
                     $line = substr_count(substr($c, 0, $offset), "\n") + 1;
 
-                    $this->assertTrue(substr($c, $offset - 2, 2) == '/*', 'Missing comment encapsulation in themes/default/' . $subdir . '/' . $file . ' on line ' . strval($line));
+                    $this->assertTrue(false, 'Missing comment encapsulation in themes/default/' . $subdir . '/' . $file . ' on line ' . strval($line));
                 }
             }
         }

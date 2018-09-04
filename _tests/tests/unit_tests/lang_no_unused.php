@@ -25,7 +25,7 @@ class lang_no_unused_test_set extends cms_test_case
 
         disable_php_memory_limit();
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(100);
+            set_time_limit(300);
         }
 
         $all_code = '';
@@ -106,6 +106,9 @@ class lang_no_unused_test_set extends cms_test_case
             'ECOM_CATD_',
             'ARITHMETICAL_SYMBOL__',
             '_PASSWORD_RESET_TEXT_',
+            'MAIL_NONMATCH_POLICY_',
+            'MAILING_LIST_SIMPLE_SUBJECT_',
+            'MAILING_LIST_SIMPLE_MAIL_',
             'SECURITY_LEVEL_',
             'HEALTH_CHECK_SUBJECT_',
             'RECAPTCHA_ERROR_',
@@ -195,7 +198,6 @@ class lang_no_unused_test_set extends cms_test_case
             'BAD_CARD_DATE',
             'MISSING_ADDON',
             'NO_SANDBOX',
-            'HOURS_AGO',
             '_VIEW_IMAGE',
             '_VIEW_VIDEO',
             'EDIT_WARNING',

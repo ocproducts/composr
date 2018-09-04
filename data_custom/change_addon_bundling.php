@@ -60,6 +60,8 @@ if (!addon_installed('galleries')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('galleries')));
 }
 
+header('X-Robots-Tag: noindex');
+
 $password = post_param_string('password', null, INPUT_FILTER_NONE);
 if ($password === null) {
     @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><button class="btn btn-danger btn-scr" type="submit">' . do_template('ICON', array('NAME' => 'admin/delete3'))->evaluate() . ' Delete programmed data</button></form>');

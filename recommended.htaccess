@@ -17,6 +17,8 @@ php_value max_input_vars "2000"
 
 # This causes unstability (and is known/documented to) but some hosts turn it on
 php_value mbstring.func_overload "0"
+
+# SpamAssassin does not	like this
 php_flag mail.add_x_header off
 
 # Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
@@ -67,6 +69,24 @@ AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application
 SetEnvIfNoCase Request_URI \.tar$ no-gzip dont-vary
 </IfModule>
 
+# Cache expiry (stops having to first ask server to see if cache is updated)
+#<IfModule mod_expires.c>
+#ExpiresActive On
+
+# We use timestamps in URLs to obviate this in CDN mode. Uncomment if you have Composr's CDN option configured and are using the CDN_FILTER directive.
+#ExpiresByType image/gif "access plus 1 month"
+#ExpiresByType image/png "access plus 1 month"
+#ExpiresByType image/jpeg "access plus 1 month"
+#ExpiresByType image/svg+xml "access plus 1 month"
+#ExpiresByType font/woff "access plus 1 month"
+#ExpiresByType application/x-icon "access plus 1 month"
+
+# We use timestamps in URLs to obviate this
+#ExpiresByType text/css "access plus 1 month"
+#ExpiresByType application/x-javascript "access plus 1 month"
+#ExpiresByType application/javascript "access plus 1 month"
+#</IfModule>
+
 <IfModule mod_rewrite.c>
 
 # Needed for mod_rewrite. Disable this line if your server does not have AllowOverride permission (can be one cause of Internal Server Errors)
@@ -74,10 +94,15 @@ Options +SymLinksIfOwnerMatch -MultiViews
 
 RewriteEngine on
 
+# Needed to pass HTTP-auth header on PHP CGI (it's not automatic, unlike PHP Module)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
 # Serve pre-compressed CSS/JS files if they exist and the client accepts gzip
-<IfModule mod_setenv.c>
+#  This may not work properly on Windows due to Apache bugs. The RewriteRule may redirect to contain the full file path, and also the most recent FilesMatch expression
+<IfModule mod_env.c>
+<IfModule mod_headers.c>
 <FilesMatch "\.js(\.gz)?($|\?)">
 ForceType application/javascript
 Header set Content-Encoding: gzip
@@ -95,6 +120,7 @@ RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{REQUEST_FILENAME}\.gz -s
 RewriteRule (.*/templates_cached/[^/]*/[^/]*\.(css|js)) $1.gz [QSA]
 </FilesMatch>
+</IfModule>
 </IfModule>
 
 # Rewrite .gif emoticons for browsers that support APNG (LEGACY; when possible we want to get rid of the gifs, but Edge does not yet support)
@@ -150,25 +176,25 @@ RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.php\?$4&page=$2
 RewriteRule ^([^=]*)pg/([^/\&\?\.]*)&(.*)$ $1index.php\?$3&page=$2 [L,QSA]
 
 # HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # HTM STYLE: These are standard patterns
-RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 
 # SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-#RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 #RewriteRule ^s/([^\&\?]*)$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # SIMPLE STYLE: These are standard patterns
-#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
-#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,QSA]

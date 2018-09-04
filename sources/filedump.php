@@ -218,3 +218,207 @@ function extract_filedump_links($comcode, $identifier, $focus, &$paths_used)
         }
     }
 }
+
+
+/**
+ * Check a filedump file uploaded correctly.
+ *
+ * @param  array $file The $_FILES-array-style row
+ * @return ?Tempcode Error message (null: none)
+ */
+function check_filedump_uploaded($file)
+{
+    require_lang('filedump');
+
+    require_code('files2');
+
+    require_code('uploads');
+    is_plupload(true);
+
+    // Error?
+    if ((!is_plupload()) && (!is_uploaded_file($file['tmp_name']))) {
+        $max_size = get_max_file_size();
+        if (($file['error'] == 1) || ($file['error'] == 2)) {
+            return do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format($max_size)));
+        } elseif ((isset($file)) && (($file['error'] == 3) || ($file['error'] == 6) || ($file['error'] == 7))) {
+            return do_lang_tempcode('ERROR_UPLOADING_' . strval($file['error']));
+        } else {
+            return do_lang_tempcode('ERROR_UPLOADING');
+        }
+    }
+
+    // Too big?
+    $max_size = get_max_file_size();
+    if ($file['size'] > $max_size) {
+        return do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(intval($max_size))));
+    }
+
+    return null;
+}
+
+/**
+ * Add a filedump file to the system, moving in the file and adding a description to the database.
+ *
+ * @param  string $place Whether it is being stored under uploads/filedump
+ * @param  string $filename The filename
+ * @param  string $tmp_path The temporary file path
+ * @param  string $description The description
+ * @param  ?boolean $plupload_based Whether this is a Plupload (i.e. from a faked $_FILES-array-row) (null: work out from environment)
+ * @param  boolean $check_permissions Check access permissions
+ * @return ?Tempcode Error message (null: no error)
+ */
+function add_filedump_file($place, &$filename, $tmp_path, $description = '', $plupload_based = null, $check_permissions = true)
+{
+    require_lang('filedump');
+
+    if ($plupload_based === null) {
+        $plupload_based = is_plupload();
+    }
+
+    if ($check_permissions) {
+        if (!has_privilege(get_member(), 'upload_filedump')) {
+            access_denied('I_ERROR');
+        }
+    }
+
+    _check_filedump_filename($place, $filename, $check_permissions);
+
+    $full = get_custom_file_base() . '/uploads/filedump' . $place . $filename;
+
+    // Conflict?
+    $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+    if ((!$check_permissions) || (($owner !== null) && ($owner == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'))) {
+        @unlink($full);
+    }
+    if (file_exists($full)) { // Could not delete apparently
+        return do_lang_tempcode('OVERWRITE_ERROR');
+    }
+
+    // Save in file
+    if ($plupload_based) {
+        $test = @rename($tmp_path, $full);
+        if (!$test) {
+            return do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $place));
+        }
+    } else {
+        $test = @move_uploaded_file($tmp_path, $full);
+        if (!$test) {
+            return do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $place));
+        }
+    }
+    fix_permissions($full);
+    sync_file($full);
+
+    // Add description
+    $description_l = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+    if ($description_l !== null) {
+        delete_lang($description_l);
+        $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+    }
+    $map = array(
+        'name' => cms_mb_substr($filename, 0, 80),
+        'path' => cms_mb_substr($place, 0, 80),
+        'the_member' => get_member(),
+    );
+    $map += insert_lang('description', $description, 3);
+    $GLOBALS['SITE_DB']->query_insert('filedump', $map);
+
+    // Logging etc
+    require_code('notifications');
+    $subject = do_lang('FILEDUMP_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $filename, $place);
+    $mail = do_notification_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
+    dispatch_notification('filedump', $place, $subject, $mail);
+    log_it('FILEDUMP_UPLOAD', $filename, $place);
+    require_code('users2');
+    if (has_actual_page_access(get_modal_user(), 'filedump', get_module_zone('filedump'))) {
+        require_code('activities');
+        syndicate_described_activity('filedump:ACTIVITY_FILEDUMP_UPLOAD', $place . '/' . $filename, '', '', '', '', '', 'filedump');
+    }
+
+    return null;
+}
+
+/**
+ * Check a filedump filename is going to be valid / repair it if possible.
+ *
+ * @param  string $place Whether it is being stored under uploads/filedump
+ * @param  string $filename The filename
+ * @param  boolean $check_permissions Check access permissions
+ *
+ * @ignore
+ */
+function _check_filedump_filename(&$place, &$filename, $check_permissions = true)
+{
+    $place = filter_naughty($place);
+
+    // Security
+    if ($check_permissions) {
+        if ((!has_privilege(get_member(), 'upload_anything_filedump')) || (get_file_base() != get_custom_file_base()/*demonstratr*/)) {
+            check_extension($filename);
+        }
+    }
+
+    // Don't allow double file extensions, huge security risk with Apache
+    $filename = str_replace('.', '-', basename($filename, '.' . get_file_extension($filename))) . '.' . get_file_extension($filename);
+}
+
+/**
+ * Input a filedump filename.
+ *
+ * @param  ?string $it Current selection (null: none)
+ * @param  boolean $only_images Restrict to image input
+ * @param  ?ID_TEXT $base The base path to do under (null: root)
+ * @return Tempcode Selection list
+ */
+function nice_get_filedump_files($it, $only_images = false, $base = null)
+{
+    $out = '';
+
+    require_code('images');
+    require_code('files2');
+    $full_path = get_custom_file_base() . '/uploads/filedump';
+    if (!empty($base)) {
+        $full_path .= '/' . $base;
+    }
+    $tree = get_directory_contents($full_path, '');
+    sort($tree, SORT_NATURAL | SORT_FLAG_CASE);
+
+    foreach ($tree as $f) {
+        if ((!$only_images) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
+            $rel = ($base === null) ? $f : preg_replace('#^' . preg_quote($base, '#') . '/#', '', $f);
+            $out .= '<option value="' . escape_html('uploads/filedump/' . $f) . '"' . (($it === $f) ? ' selected="selected"' : '') . '>' . escape_html($rel) . '</option>' . "\n";
+        }
+    }
+
+    return make_string_tempcode($out);
+}
+
+/**
+ * Input a filedump file-path.
+ *
+ * @param  ?string $it Current selection (null: none)
+ * @param  ?ID_TEXT $base The base path to do under (null: root)
+ * @return Tempcode Selection list
+ */
+function nice_get_filedump_places($it, $base = null)
+{
+    $out = '';
+
+    require_code('images');
+    require_code('files2');
+    $full_path = get_custom_file_base() . '/uploads/filedump';
+    if (!empty($base)) {
+        $full_path .= '/' . $base;
+    }
+
+    $directories = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, true, false);
+    $directories[] = '';
+    sort($directories, SORT_NATURAL | SORT_FLAG_CASE);
+
+    foreach ($directories as $d) {
+        $rel = ($base === null) ? $d : preg_replace('#^' . preg_quote($base, '#') . '/#', '', $d);
+        $out .= '<option value="/' . escape_html($d) . (($d == '') ? '' : '/') . '"' . (($it === $d) ? ' selected="selected"' : '') . '>/' . escape_html($rel) . '</option>' . "\n";
+    }
+
+    return make_string_tempcode($out);
+}

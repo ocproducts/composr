@@ -27,9 +27,10 @@ class Hook_sitemap_root extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         if (get_option('single_public_zone') == '0') {
             if ($page_link == '' || $page_link == ':') {
@@ -99,8 +100,8 @@ class Hook_sitemap_root extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? website_creation_time() : null,
-                'edit_date' => null,
+                'add_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? website_creation_time() : null,
+                'edit_time' => null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,

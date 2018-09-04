@@ -194,7 +194,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
     $_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id), 'forum', array(), false, false, true, 'post_' . strval($post_id));
     $url = $_url->evaluate();
     if (addon_installed('cns_forum')) {
-        cns_send_topic_notification($url, $topic_id, $forum_id, $member_id, $is_new, $post, $content_title, null, false, $no_notify_for__notification_code, $no_notify_for__code_category, $poster_name);
+        cns_send_topic_notification($url, $topic_id, $post_id, $forum_id, $member_id, $is_new, $post, $content_title, null, false, $no_notify_for__notification_code, $no_notify_for__code_category, $poster_name);
     }
 
     $is_hidden = false;
@@ -283,7 +283,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query_simplified = $query;
 
             if (get_option('is_on_strong_forum_tie') == '1') { // So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
-                $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
+                $query .= ' AND (t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         } else {
             $query = '';
@@ -306,7 +306,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 $query_simplified .= $query_more;
 
                 if (get_option('is_on_strong_forum_tie') == '1') { // So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
-                    $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
+                    $query .= ' AND (t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
                 }
             }
         }
@@ -330,7 +330,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query_simplified .= $query_more;
 
             if (get_option('is_on_strong_forum_tie') == '1') { // So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
-                $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
+                $query .= ' AND (t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         }
     }

@@ -74,6 +74,10 @@ class Hook_rss_cns_unread_topics
         $content = new Tempcode();
         foreach ($rows as $row) {
             if ((($row['t_forum_id'] !== null) || ($row['t_pt_to'] == get_member())) && (has_category_access(get_member(), 'forums', strval($row['t_forum_id'])))) {
+                if ($row['p_post'] === null) {
+                    continue; // Post was deleted from database manually
+                }
+
                 $id = strval($row['t_id']);
                 $author = $row['t_cache_first_username'];
 

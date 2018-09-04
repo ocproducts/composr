@@ -32,6 +32,12 @@ function init__make_release()
 
 function make_installers($skip_file_grab = false)
 {
+    foreach (array('zip', 'tar', 'gzip') as $cmd) {
+        if (_shell_exec_bin($cmd . ' -h 2>&1') == '') {
+            warn_exit('Missing command in path: ' . $cmd);
+        }
+    }
+
     global $MAKE_INSTALLERS__FILE_ARRAY, $MAKE_INSTALLERS__DIR_ARRAY, $MAKE_INSTALLERS__TOTAL_DIRS, $MAKE_INSTALLERS__TOTAL_FILES;
 
     require_code('files');
@@ -197,7 +203,7 @@ function make_installers($skip_file_grab = false)
 
         chdir($builds_path . '/builds/' . $version_dotted);
         $cmd = 'zip -r -9 ' . cms_escapeshellarg($quick_zip) . ' ' . cms_escapeshellarg('data.cms') . ' ' . cms_escapeshellarg('install.php');
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -206,7 +212,7 @@ function make_installers($skip_file_grab = false)
 
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'zip -r -9 ' . cms_escapeshellarg($quick_zip) . ' ' . cms_escapeshellarg('readme.txt');
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -227,7 +233,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'zip -r -9 ' . cms_escapeshellarg($manual_zip) . ' *';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -251,8 +257,8 @@ function make_installers($skip_file_grab = false)
         // Do the main work...
 
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar -cvf ' . cms_escapeshellarg($bundled) . ' *';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd = 'tar  --force-local -cvf ' . cms_escapeshellarg($bundled) . ' *'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -260,8 +266,8 @@ function make_installers($skip_file_grab = false)
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'tar -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd = 'tar --force-local -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -270,7 +276,7 @@ function make_installers($skip_file_grab = false)
 
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . cms_escapeshellarg($bundled);
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             if (is_file($bundled . '.gz')) {
                 $cmd_result = '(no output)'; // gzip produces no output normally anyway, which means shell_exec returns null
@@ -324,7 +330,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build');
         $cmd = 'zip -r -9 -v ' . cms_escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -417,7 +423,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/aps');
         $cmd = 'zip -r -9 -v ' . cms_escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -429,7 +435,7 @@ function make_installers($skip_file_grab = false)
 
         // Delete the copied files
         deldir_contents($builds_path . '/builds/aps/');
-        rmdir($builds_path . '/builds/aps/');
+        @rmdir($builds_path . '/builds/aps/');
 
         chdir(get_file_base());
     }
@@ -440,8 +446,8 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd = 'tar --force-local --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
@@ -488,6 +494,21 @@ function make_installers($skip_file_grab = false)
     $_MODIFIED_FILES = array();
 
     return $out;
+}
+
+function _shell_exec_bin($cmd)
+{
+    static $bin_path = null;
+
+    if ($bin_path === null) {
+        if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') && file_exists('C:\cygwin64\bin\\')) {
+            $bin_path = 'C:\cygwin64\bin\\';
+        } else {
+            $bin_path = '';
+        }
+    }
+
+    return shell_exec($bin_path . $cmd);
 }
 
 // Used in the APS build process
@@ -1013,6 +1034,7 @@ function make_install_sql()
         } else {
             $segment = substr($contents, $from);
         }
+        $segment = trim($segment) . "\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
@@ -1046,7 +1068,8 @@ function _download_latest_data_ip_country()
     fclose($myfile);
 
     $tmp_name_tar = cms_tempnam();
-    shell_exec('gunzip -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_tar));
+    $cmd = 'gzip -d -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_tar);
+    _shell_exec_bin($cmd);
 
     $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_tar)));
     foreach ($lines as $line) {
@@ -1070,6 +1093,10 @@ function _download_latest_data_ip_country()
     }
 
     if (empty($csv_data)) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            fatal_exit('Failed to extract MaxMind IP address data - the build process is not regularly tested on Windows - you need to install certain Cygwin tools, even then it may not work');
+        }
+
         fatal_exit('Failed to extract MaxMind IP address data');
     }
 

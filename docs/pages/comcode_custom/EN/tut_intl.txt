@@ -234,6 +234,8 @@ Here's how the above sample cases would be translated:
 7) Again this one contains HTML entities. Translation in French may look like [tt]{1} dirige le &lsquo;{2}&rsquo; groupe d'utilisateurs[/tt].
 8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the [tt]{$SITE_NAME}[/tt] intact. Translation in French may look like [tt]WelBienvenue &#xE0; {$SITE_NAME}[/tt].
 
+If you use automatic translation then this code will probably get mangled. You need to carefully check all translated strings.
+
 [title="3"]Character sets[/title]
 
 There are three systems that are in common usage to allow diverse characters to be displayed in a document:
@@ -519,6 +521,17 @@ If you wish to directly distribute your translation as an addon, you can export 
 For languages that have very high-quality release-ready translations an addon is a good thing to provide users -- but building the addons from Transifex is integrated into the development process anyway.
 [/surround]
 
+[title="2"]Comment topics[/title]
+
+Composr associated topics with content using the topic description field. This involves a translated language string.
+Therefore if you switch your default site language, any existing topics will become disassociated.
+You can resolve with a manual database query (in something like phpMyAdmin):
+[code="SQL"]
+UPDATE cms_f_topics SET t_description=REPLACE(t_description, 'Comment: ', 'Commentaire: ');
+[/code]
+Replace [tt]Commentaire[/tt] with whatever you have translated the [tt]COMMENT[/tt] language string to.
+The example assumes the table prefix is [tt]cms_[/tt].
+
 [title="2"]Special language-specific challenges[/title]
 
 [title="3"]Gendered-descriptors[/title]
@@ -573,6 +586,11 @@ Using additional Tempcode, we could do additional deep remapping.
 [/code]
 
 This will remap the title based on what it already is. For each of the possible values ("Acteur" and "Policier" in our example) it will provide the gendered options for it.
+
+[title="2"]Exporting a language pack directly from Composr[/title]
+
+If you translate within Composr (not Transifex), then you can export a language pack within Composr.
+Go to Admin Zone > Structure > Addons, scroll down to "Create (export) an addon, from selected changed local files" at the bottom. From this screen there's an option to export a language to an addon.
 
 [concepts
  1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"

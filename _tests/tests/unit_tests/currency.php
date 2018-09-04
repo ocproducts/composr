@@ -34,26 +34,12 @@ class currency_test_set extends cms_test_case
     {
         $test_a = currency_convert(10.00, 'USD', 'GBP');
         $test_b = currency_convert(10, 'USD', 'GBP');
-        $this->assertTrue($test_a === $test_b); // Floats and integers should convert the same
-    }
-
-    public function testCurrencyViaECB()
-    {
-        $test = currency_convert(10.00, 'USD', 'GBP', 0, 'ecb');
-        $this->assertTrue($test > 0.00);
-        $this->assertTrue($test < 10.00); // GBP is worth more
+        $this->assertTrue(gettype($test_a) == gettype($test_b) && $test_a == $test_b, 'Got ' . serialize($test_a) . ' and ' . serialize($test_b)); // Floats and integers should convert the same
     }
 
     public function testCurrencyViaConvAPI()
     {
         $test = currency_convert(10.00, 'MMK', 'GBP', 0, 'conv_api');
-        $this->assertTrue($test > 0.00);
-        $this->assertTrue($test < 10.00); // GBP is worth *much* more
-    }
-
-    public function testCurrencyViaGoogle()
-    {
-        $test = currency_convert(10.00, 'MMK', 'GBP', 0, 'google');
         $this->assertTrue($test > 0.00);
         $this->assertTrue($test < 10.00); // GBP is worth *much* more
     }

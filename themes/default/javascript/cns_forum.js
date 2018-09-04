@@ -51,7 +51,9 @@
             if ($cms.form.isWysiwygField(post)) {
                 try {
                     textValue = window.CKEDITOR.instances['post'].getData();
-                } catch (ignore) { }
+                } catch (ignore) {
+                    // continue
+                }
             } else {
                 if (!post.value && post[1]) {
                     post = post[1];
@@ -185,7 +187,7 @@
         var form = this,
             minSelections = +params.minimumSelections || 0,
             maxSelections = +params.maximumSelections || 0,
-            error  = (minSelections === maxSelections) ? $util.format('{!cns:POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $util.format('{!cns:POLL_NOT_ENOUGH_ERROR;^}', [minSelections, maxSelections]);
+            error = (minSelections === maxSelections) ? $util.format('{!cns:POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $util.format('{!cns:POLL_NOT_ENOUGH_ERROR;^}', [minSelections, maxSelections]);
 
         $dom.on(form, 'submit', function (e) {
             if (cnsCheckPoll() === false) {

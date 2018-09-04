@@ -17,7 +17,7 @@
 	max-width: 140px;
 }
 
-.carousel .move-left, 
+.carousel .move-left,
 .carousel .move-right {
 	min-height: 16px;
 	width: 17px;
@@ -25,7 +25,7 @@
 }
 
 .carousel .move-left .icon ,
-.carousel .move-right .icon { 
+.carousel .move-right .icon {
 	width: 16px;
 	height: 16px;
 	position: absolute;

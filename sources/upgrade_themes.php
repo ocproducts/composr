@@ -410,7 +410,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
 
                         // Save
                         require_code('files');
-                        cms_file_put_contents_safe($templates_dir . $templates_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                        cms_file_put_contents_safe($templates_dir . $templates_file, $templates_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
 

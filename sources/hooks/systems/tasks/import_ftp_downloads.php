@@ -43,7 +43,7 @@ class Hook_task_import_ftp_downloads
         require_lang('downloads');
 
         // Firstly, parse the server URL, to make sure it is fine
-        $parsed_url = @parse_url($server_url);
+        $parsed_url = @parse_url(normalise_idn_url($server_url));
         if ($parsed_url === false) {
             return array(null, do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($server_url)));
         }
@@ -57,7 +57,7 @@ class Hook_task_import_ftp_downloads
             $server_url .= '/';
         }
 
-        $parsed_url = parse_url($server_url);
+        $parsed_url = parse_url(normalise_idn_url($server_url));
         $directory = array_key_exists('path', $parsed_url) ? $parsed_url['path'] : '';
 
         require_lang('installer');
@@ -89,8 +89,6 @@ class Hook_task_import_ftp_downloads
         if ((@ftp_nlist($conn_id, $directory . '/Program files') !== false) && ((@ftp_nlist($conn_id, $directory . '/Users') !== false) || (@ftp_nlist($conn_id, $directory . '/Documents and settings') !== false)) && (@ftp_nlist($conn_id, $directory . '/Windows') !== false)) {
             return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', escape_html($directory)));
         }
-
-        log_it('FTP_DOWNLOADS');
 
         // Actually start the scanning
         $num_added = $this->ftp_recursive_downloads_scan($conn_id, $server_url, $directory, $destination, $subfolders);

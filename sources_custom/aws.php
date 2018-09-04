@@ -32,6 +32,8 @@ function amazon_sns_topic_handler_script()
         warn_exit(do_lang_tempcode('NO_CURL_ON_SERVER'));
     }
 
+    header('X-Robots-Tag: noindex');
+
     if ($GLOBALS['DEV_MODE'] && get_param_integer('test', 0) == 1) {
         $notification_data = '{
           "notificationType": "Bounce",

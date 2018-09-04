@@ -138,7 +138,7 @@ class Hook_sitemap_chat extends Hook_sitemap_content
 
         $struct['extra_meta']['image'] = find_theme_image('icons/menu/social/chat/chat');
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

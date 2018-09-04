@@ -101,7 +101,8 @@
         },
 
         focusTexareaPost: function (e, textarea) {
-            if (((textarea.value.replace(/\s/g, '') === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || ((textarea.stripOnFocus != null) && (textarea.value == textarea.stripOnFocus))) {
+            var valueWithoutSpaces = textarea.value.replace(/\s/g, '');
+            if (((valueWithoutSpaces === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || (valueWithoutSpaces === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'.replace(/\s/g, '')) || ((textarea.stripOnFocus != null) && (textarea.value == textarea.stripOnFocus))) {
                 textarea.value = '';
             }
 
@@ -248,7 +249,11 @@
             });
 
             window.addEventListener('pageshow', function () {
-                form.elements['captcha'].src += '&'; // Force it to reload latest captcha
+                var image = document.getElementById('captcha-image');
+                if (!image) {
+                    image = document.getElementById('captcha-frame');
+                }
+                image.src += '&'; // Force it to reload latest captcha
             });
         }
     });
@@ -279,47 +284,31 @@
     };
 
     $cms.templates.commentAjaxHandler = function (params) {
-        var urlStem = params.urlStem,
-            wrapper = $dom.$('#comments-wrapper');
+        var urlStem = '{$FIND_SCRIPT_NOHTTP;,post_comment}?options=' + encodeURIComponent(params.options) + '&hash=' + encodeURIComponent(params.hash),
+            wrapperEl = document.getElementById('comments-wrapper');
 
         replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
 
-        if (wrapper) {
-            $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
-        }
-
         // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
         if (params.infiniteScroll) {
-            var infiniteScrollingCommentsWrapper = function (event) {
-                $dom.internaliseInfiniteScrolling(urlStem, wrapper);
-            };
-
-            $dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
-            $dom.on(window, 'keydown', $dom.infiniteScrollingBlock);
-            $dom.on(window, 'mousedown', $dom.infiniteScrollingBlockHold);
-            $dom.on(window, 'mousemove', function () {
-                $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
-            });
-
-            // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-            infiniteScrollingCommentsWrapper();
+            $dom.enableInternaliseInfiniteScrolling(urlStem, wrapperEl);
         }
     };
 
     $cms.templates.postChildLoadLink = function (params, container) {
-        var ids = params.implodedIds,
-            id = params.id;
+        var ids = strVal(params.implodedIds),
+            id = strVal(params.id);
 
         $dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash), null, true).then(function (html) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash)).then(function (html) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $dom.$('#post-children-' + id);
                 } else {
                     wrapper = container.parentNode;
                 }
-                container.parentNode.removeChild(container);
+                container.remove();
 
                 $dom.append(wrapper, html);
 
@@ -345,31 +334,28 @@
 
     /* Update a normal comments topic with AJAX replying */
     function replaceCommentsFormWithAjax(options, hash, commentsFormId, commentsWrapperId) {
-        var commentsForm = $dom.$id(commentsFormId);
-        if (!commentsForm) {
-            return;
-        }
+        var commentsForm = $dom.elArg('#' + commentsFormId);
 
         $dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
-            var ret;
+            var defaultNotPrevented;
 
             if (event.detail && (event.detail.triggeredByDoFormPreview || event.detail.triggeredByCommentsAjaxListener )) {
-                return true;
+                return;
             }
 
             // Cancel the event from running
             event.preventDefault();
 
-            ret = $dom.trigger(commentsForm, 'submit', { detail: { triggeredByCommentsAjaxListener: true } });
+            defaultNotPrevented = $dom.trigger(commentsForm, 'submit', { detail: { triggeredByCommentsAjaxListener: true } });
 
-            if (ret === false) {
+            if (defaultNotPrevented === false) {
                 return false;
             }
 
             var commentsWrapper = $dom.$id(commentsWrapperId);
             if (!commentsWrapper) { // No AJAX, as stuff missing from template
                 commentsForm.submit();
-                return true;
+                return;
             }
 
             var submitButton = $dom.$id('submit-button');
@@ -406,13 +392,13 @@
                     // Display
                     var oldAction = commentsForm.action;
                     $dom.replaceWith(commentsWrapper, xhr.responseText);
-                    commentsForm = $dom.$id(commentsFormId);
+                    commentsWrapper = document.getElementById(commentsWrapperId); // Because $dom.replaceWith() broke the references
+                    commentsForm = document.getElementById(commentsFormId);
                     commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
                     // Scroll back to comment
                     setTimeout(function () {
-                        var commentsWrapper = $dom.$id(commentsWrapperId); // outerhtml set will have broken the reference
-                        $dom.smoothScroll($dom.findPosY(commentsWrapper, true));
+                        $dom.smoothScroll(commentsWrapper);
                     }, 0);
 
                     // Force reload on back button, as otherwise comment would be missing
@@ -431,9 +417,6 @@
                             $dom.fadeIn(knownPosts[i]);
                         }
                     }
-
-                    // And re-attach this code (got killed by $dom.replaceWith())
-                    replaceCommentsFormWithAjax(options, hash);
                 } else { // Error: do a normal post so error can be seen
                     commentsForm.submit();
                 }
@@ -511,17 +494,16 @@
                 // AJAX call
                 var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent($cms.protectURLParameter(contentUrl)) + '&content_title=' + encodeURIComponent(contentTitle);
 
-                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (message) {
+                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number)).then(function (message) {
                     $dom.replaceWith(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
-
                 return false;
             });
         });
     }
 
     /**
-     * Reply to a topic using AJAX
+     * Prepare the UI to reply to a post in a topic
      * @param isThreaded
      * @param id
      * @param replyingToUsername
@@ -567,7 +549,7 @@
             post.stripOnFocus = post.value;
             post.classList.add('field-input-non-filled');
         } else {
-            if ((post.stripOnFocus !== undefined) && (post.value == post.stripOnFocus)) {
+            if ((post.stripOnFocus !== undefined) && (post.value === post.stripOnFocus)) {
                 post.value = '';
             } else if (post.value !== '') {
                 post.value += '\n\n';

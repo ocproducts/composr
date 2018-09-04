@@ -32,6 +32,12 @@ class ssl_test_set extends cms_test_case
             return;
         }
 
+        $test = http_get_contents('https://' . get_domain(), array('trigger_error' => false));
+        if ($test === null) {
+            $this->assertTrue(false, 'SSL not running on this machine');
+            return;
+        }
+
         global $HTTPS_PAGES_CACHE;
         $HTTPS_PAGES_CACHE = null;
 
@@ -50,7 +56,7 @@ class ssl_test_set extends cms_test_case
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
         $url = build_url(array('page' => $page), get_module_zone($page));
-        $c = http_get_contents($url->evaluate());
+        $c = http_get_contents($url->evaluate(), array('timeout' => 20.0));
         $this->assertTrue(strpos($c, 'src="http://') === false, 'HTTPS version failed (HTTP embed [e.g. image] found) on ' . $url->evaluate());
 
         // HTTP version
@@ -58,7 +64,7 @@ class ssl_test_set extends cms_test_case
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
         $url = build_url(array('page' => $page), get_module_zone($page));
-        $c = http_get_contents($url->evaluate());
+        $c = http_get_contents($url->evaluate(), array('timeout' => 20.0));
         $this->assertTrue(strpos($c, 'src="https://') === false, 'HTTP version failed (HTTPS embed [e.g. image] found) on ' . $url->evaluate());
     }
 

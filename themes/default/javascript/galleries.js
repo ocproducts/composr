@@ -25,7 +25,7 @@
         this.fpAnimationEl = document.getElementById('image-fader-' + id);
         this.fpAnimationFaderEl = $dom.create('img', { className: 'img-thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
         this.teaseTitleEl = document.getElementById('image-fader-title-' + id);
-        this.teaseScrollingTextEl =  document.getElementById('image-fader-scrolling-text-' + id);
+        this.teaseScrollingTextEl = document.getElementById('image-fader-scrolling-text-' + id);
 
         this.fpAnimationEl.parentNode.insertBefore(this.fpAnimationFaderEl, this.fpAnimationEl);
         this.fpAnimationEl.parentNode.style.position = 'relative';
@@ -48,7 +48,7 @@
         initializeTitle: function (data, value, index) {
             data['title' + index] = value;
             if (index === 0) {
-                if (this.teaseTitleEl) {
+                if (this.teaseTitleEl && data['title' + index]) {
                     $dom.html(this.teaseTitleEl, data['title' + index]);
                 }
             }
@@ -81,7 +81,7 @@
                     self.fpAnimationEl.src = $util.srl(data['url' + index]);
                     self.fpAnimationFaderEl.style.left = ((self.fpAnimationFaderEl.parentNode.offsetWidth - self.fpAnimationFaderEl.offsetWidth) / 2) + 'px';
                     self.fpAnimationFaderEl.style.top = ((self.fpAnimationFaderEl.parentNode.offsetHeight - self.fpAnimationFaderEl.offsetHeight) / 2) + 'px';
-                    if (self.teaseTitleEl) {
+                    if (self.teaseTitleEl && data['title' + index]) {
                         $dom.html(self.teaseTitleEl, data['title' + index]);
                     }
                     if (self.teaseScrollingTextEl) {
@@ -231,7 +231,7 @@
 
         for (i = 0; i < files.options.length; i++) {
             $dom.on(files[i], 'mouseover', function (event) {
-                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.getBaseUrlNohttp()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($util.rel($cms.getBaseUrl())) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
             });
             $dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);
@@ -393,7 +393,7 @@
                     });
                 } // else probably a video
 
-                if (slideshowFrom){
+                if (slideshowFrom) {
                     // Make sure stays the same
                     document.getElementById('slideshow_from').value = slideshowFrom.value;
                 }

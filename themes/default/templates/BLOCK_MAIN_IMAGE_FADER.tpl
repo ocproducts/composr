@@ -8,7 +8,7 @@
 			<h2>{!MEDIA}</h2>
 
 			<div class="img-thumb-wrap">
-				<a href="{GALLERY_URL*}"><img class="img-thumb" id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
+				<a href="{GALLERY_URL*}"><img id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 			</div>
 		</div>
 	</div>
@@ -20,7 +20,7 @@
 			<div class="clearfix">
 				<div class="gallery-tease-pic-pic">
 					<div class="img-thumb-wrap">
-						<a href="{GALLERY_URL*}"><img class="img-thumb" id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
+						<a href="{GALLERY_URL*}"><img id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 					</div>
 				</div>
 

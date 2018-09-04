@@ -66,19 +66,44 @@ function static_cache__get_self_url_easy()
 }
 
 /**
+ * Find if we are debugging the static cache.
+ * Manually alter this function to enable debugging.
+ *
+ * @return boolean Whether we are
+ */
+function debugging_static_cache()
+{
+    return false;
+}
+
+/**
  * Find if we can use the static cache.
  *
  * @return boolean Whether we can
  */
 function can_static_cache()
 {
+    $debugging = debugging_static_cache();
+
+    if ($debugging) {
+        require_code('urls');
+    }
+
     if (isset($_GET['redirect'])) {
+        if ($debugging) {
+            error_log('SC: No, redirect in URL on ' . get_self_url_easy());
+        }
+
         return false;
     }
 
     global $EXTRA_HEAD;
     if ($EXTRA_HEAD !== null) {
         if (strpos($EXTRA_HEAD->evaluate(), '<meta name="robots" content="noindex"') !== false) {
+            if ($debugging) {
+                error_log('SC: No, robots blocking so obscure on ' . get_self_url_easy());
+            }
+
             return false; // Too obscure to waste cache space with
         }
     }
@@ -88,6 +113,10 @@ function can_static_cache()
         foreach ($NON_CANONICAL_PARAMS as $param => $block_page_from_static_cache_if_present) {
             if (isset($_GET[$param])) {
                 if ($block_page_from_static_cache_if_present) {
+                    if ($debugging) {
+                        error_log('SC: No, has ' . $param .' on ' . get_self_url_easy());
+                    }
+
                     return false; // Too parameterised
                 }
             }
@@ -95,12 +124,24 @@ function can_static_cache()
     }
 
     if ((isset($_GET['page'])) && ($_GET['page'] == '404')) {
+        if ($debugging) {
+            error_log('SC: No, 404 page on ' . get_self_url_easy());
+        }
+
         return false;
     }
 
     global $HTTP_STATUS_CODE;
     if ($HTTP_STATUS_CODE == 404) {
+        if ($debugging) {
+            error_log('SC: No, 404 status on ' . get_self_url_easy());
+        }
+
         return false;
+    }
+
+    if ($debugging) {
+        error_log('SC: Yes, on ' . get_self_url_easy());
     }
 
     return true;
@@ -140,7 +181,7 @@ function static_cache($mode)
 
     $support_compressed = (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) && (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false);
     if ($support_compressed) {
-        $file_extension = '.gz';
+        $file_extension .= '.gz';
     }
 
     if (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) {
@@ -152,7 +193,7 @@ function static_cache($mode)
     if (($mode & STATIC_CACHE__FAILOVER_MODE) != 0) {
         // Correct HTTP status
         if ((!function_exists('browser_matches')) || ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false))) {
-            header('HTTP/1.0 503 Service Temporarily Unavailable');
+            http_response_code(503);
         }
     }
 
@@ -253,7 +294,7 @@ function static_cache($mode)
                 $since = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
                 if ($since != '') {
                     if (strtotime($since) < $mtime) {
-                        header('HTTP/1.0 304 Not Modified');
+                        http_response_code(304);
 
                         $aaf = ini_get('auto_append_file');
                         if (!empty($aaf)) {

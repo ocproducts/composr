@@ -44,6 +44,8 @@ function webdav_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     require_code('sabredav/vendor/autoload');
 
     require_code('webdav_commandr_fs');

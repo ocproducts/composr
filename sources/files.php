@@ -48,6 +48,8 @@ function init__files()
         define('FILE_WRITE_FAILURE_SOFT', 2);
         define('FILE_WRITE_SYNC_FILE', 4);
         define('FILE_WRITE_FIX_PERMISSIONS', 8);
+
+        define('NON_CNS_QUOTA', 5); // A hard-coded default for non-Conversr forums
     }
 }
 
@@ -110,7 +112,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
     }
 
     // Save
-    $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
+    $num_bytes_written = @file_put_contents($path, $contents, (strpos($path, '://') !== false) ? 0 : LOCK_EX);
     if (php_function_allowed('disk_free_space')) {
         if (($disk_space !== false) && ($num_bytes_written !== false)) {
             $disk_space -= $num_bytes_written;
@@ -204,8 +206,11 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 4)
     $looping = true;
 
     if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
-        require_code('site');
-        attach_message($error_message, 'warn', false, true);
+        global $IN_MINIKERNEL_VERSION;
+        if (!$IN_MINIKERNEL_VERSION) {
+            require_code('site');
+            attach_message($error_message, 'warn', false, true);
+        }
     } else { // default to hard error
         warn_exit($error_message, false, true);
     }
@@ -279,6 +284,9 @@ function clean_file_size($bytes)
     if ($bytes === null) {
         return do_lang('UNKNOWN') . ' bytes';
     }
+    if ($bytes == 2147483647) {
+        return do_lang('UNKNOWN') . ' bytes';
+    }
     if (floatval($bytes) > 2.0 * 1024.0 * 1024.0 * 1024.0) {
         return strval(intval(round(floatval($bytes) / 1024.0 / 1024.0 / 1024.0))) . ' GB';
     }
@@ -319,7 +327,7 @@ function better_parse_ini_file($filename, $file = null)
         if (@is_array($FILE_ARRAY)) {
             $file = file_array_get($filename);
         } else {
-            $file = cms_file_get_contents_safe($filename);
+            $file = function_exists('cms_file_get_contents_safe') ? cms_file_get_contents_safe($filename) : file_get_contents($filename);
         }
     }
 
@@ -378,6 +386,7 @@ function should_ignore_file($path, $bitmask = 0)
         'thumbs.db:encryptable' => '.*',
         'thumbs.db' => '.*',
         '.ds_store' => '.*',
+        "icon\r" => '.*',
 
         // Source code control systems
         '.git' => '.*',
@@ -437,6 +446,8 @@ function should_ignore_file($path, $bitmask = 0)
         '.project' => '', // Eclipse
         '.idea' => '', // JetBrains / PhpStorm
         '.editorconfig' => '',
+        '.eslintignore' => '', // ESLint ignore file
+        '.eslintrc.json' => '', // ESLint config file
 
         // Composr control files
         'closed.html' => '',
@@ -445,6 +456,9 @@ function should_ignore_file($path, $bitmask = 0)
         // Temporary files
         'temp' => '',
         'safe_mode_temp' => '', // LEGACY
+
+        // Composr testing platform
+        'checker.ini' => '_tests/codechecker',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
@@ -470,6 +484,7 @@ function should_ignore_file($path, $bitmask = 0)
 
         // IDE projects
         'clpprj' => '', // Code Lobster
+        'csprj' => '', // Code Lobster
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
@@ -554,7 +569,8 @@ function should_ignore_file($path, $bitmask = 0)
                 if ($place == 'sources_custom') {
                     if (function_exists('extract_module_functions')) {
                         require_code('addons');
-                        $addon_info = read_addon_info($hook);
+                        $hook_path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+                        $addon_info = read_addon_info($hook, false, null, null, $hook_path);
                         $addon_files = array_merge($addon_files, array_map('strtolower', $addon_info['files']));
                     } else { // Running from outside Composr
                         require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));

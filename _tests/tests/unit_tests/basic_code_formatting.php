@@ -25,6 +25,8 @@ class basic_code_formatting_test_set extends cms_test_case
     {
         parent::setUp();
 
+        @set_time_limit(1000);
+
         require_code('files2');
 
         $this->files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_CUSTOM_DIR_FLOATING_CONTENTS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_CUSTOM_THEMES);
@@ -184,6 +186,7 @@ class basic_code_formatting_test_set extends cms_test_case
                 'themes/default/javascript_custom/sortable_tables.js',
                 'themes/default/javascript_custom/unslider.js',
                 'themes/default/templates/BREADCRUMB_SEPARATOR.tpl',
+                'data_custom/rate_limiter.php',
             );
             if (in_array($path, $exceptions)) {
                 continue;
@@ -223,6 +226,9 @@ class basic_code_formatting_test_set extends cms_test_case
                 'sources_custom/spout',
                 'sources_custom/swift_mailer',
                 'tracker',
+                'lang_custom/(?!EN)\w+',
+                'text_custom/(?!EN)\w+',
+                'comcode_custom/(?!EN)\w+',
             );
             if (preg_match('#^(' . implode('|', $exceptions) . ')/#', $path) != 0) {
                 continue;
@@ -287,6 +293,9 @@ class basic_code_formatting_test_set extends cms_test_case
             if (preg_match('#^(' . implode('|', $exceptions) . ')/#', $path) != 0) {
                 continue;
             }
+            if ($path == '_tests/codechecker/checker.ini') {
+                continue;
+            }
 
             $ext = get_file_extension(get_file_base() . '/' . $path);
 
@@ -331,6 +340,8 @@ class basic_code_formatting_test_set extends cms_test_case
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER_INLINE.tpl',
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER.tpl',
                     'themes/default/templates/CNS_USER_MEMBER.tpl',
+                    'themes/default/templates/ICON.tpl',
+                    'themes/default/templates/MENU_LINK_PROPERTIES.tpl',
                 ))) {
                     $expected_breaks = 0;
                 }

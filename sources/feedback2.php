@@ -86,6 +86,8 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
  */
 function trackback_script()
 {
+    header('X-Robots-Tag: noindex');
+
     if (get_option('is_on_trackbacks') == '0') {
         return;
     }

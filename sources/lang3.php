@@ -304,6 +304,8 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
     }
     $_text_parsed = null;
 
+    $source_user = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
+
     if ($comcode && !get_mass_import_mode()) {
         if ($text_parsed === null) {
             if ((function_exists('get_member')) && (!$insert_as_admin)) {
@@ -312,6 +314,14 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
                 $member_id = is_object($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : 0;
                 $insert_as_admin = true;
             }
+
+            global $OVERRIDE_MEMBER_ID_COMCODE;
+            if ($OVERRIDE_MEMBER_ID_COMCODE !== null) {
+                $member = $OVERRIDE_MEMBER_ID_COMCODE;
+                $insert_as_admin = false;
+                $source_user = $OVERRIDE_MEMBER_ID_COMCODE;
+            }
+
             require_code('comcode');
             $_text_parsed = comcode_to_tempcode($text, $member_id, $insert_as_admin, $pass_id, $db, $preparse_mode ? COMCODE_PREPARSE_MODE : COMCODE_NORMAL);
             $text_parsed = $_text_parsed->to_assembly();
@@ -319,8 +329,6 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
     } else {
         $text_parsed = '';
     }
-
-    $source_user = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
     if (!multi_lang_content()) {
         $ret = array();
@@ -419,6 +427,13 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
         } else {
             $source_user = $for_member; // Reset to latest submitter for main record
         }
+    }
+
+    global $OVERRIDE_MEMBER_ID_COMCODE;
+    if ($OVERRIDE_MEMBER_ID_COMCODE !== null) {
+        $for_member = $OVERRIDE_MEMBER_ID_COMCODE;
+        $insert_as_admin = false;
+        $source_user = $OVERRIDE_MEMBER_ID_COMCODE;
     }
 
     if ($comcode) {

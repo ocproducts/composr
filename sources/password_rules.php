@@ -204,17 +204,17 @@ function check_password_complexity($username, $password, $return_errors = false)
  * @param  string $password New password
  * @param  string $password_salted Hashed password
  * @param  string $salt Password salt
- * @param  boolean $skip_checks Whether to skip enforcement checks
+ * @param  boolean $check_correctness Whether to check details for correctness
  * @param  ?TIME $time The time this is logged to be happening at (null: now)
  */
-function bump_password_change_date($member_id, $password, $password_salted, $salt, $skip_checks = false, $time = null)
+function bump_password_change_date($member_id, $password, $password_salted, $salt, $check_correctness = true, $time = null)
 {
     if ($time === null) {
         $time = time();
     }
 
     // Ensure does not re-use previous password
-    if (!$skip_checks) {
+    if ($check_correctness) {
         require_code('crypt');
 
         $past_passwords = $GLOBALS['FORUM_DB']->query_select('f_password_history', array('*'), array('p_member_id' => $member_id), 'ORDER BY p_time DESC', 1000/*reasonable limit*/);

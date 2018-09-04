@@ -13,12 +13,6 @@
 	{+END}
 
 	{+START,IF,{$NAND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-		{+START,IF,{TRUE_ATTACHMENT_UI}}{+START,IF,{$ADDON_INSTALLED,filedump}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,filedump}}{+START,IF,{$EQ,{$ZONE},cms}}
-			<p>
-				{!ADD_ATTACHMENTS_MEDIA_LIBRARY,{POSTING_FIELD_NAME;*}}
-			</p>
-		{+END}{+END}{+END}{+END}
-
 		<div id="js-attachment-store">
 			{ATTACHMENTS}
 		</div>

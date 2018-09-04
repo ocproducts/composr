@@ -124,7 +124,7 @@ if (is_writable(get_file_base() . '/themes/default/templates_cached/' . user_lan
 }
 
 // Set up some globals
-global $INSTALL_LANG, $VERSION_BEING_INSTALLED, $CHMOD_ARRAY, $USER_LANG_CACHED;
+global $INSTALL_LANG, $VERSION_BEING_INSTALLED, $USER_LANG_CACHED;
 $INSTALL_LANG = fallback_lang();
 if (array_key_exists('default_lang', $_GET)) {
     $INSTALL_LANG = $_GET['default_lang'];
@@ -155,7 +155,6 @@ $VERSION_BEING_INSTALLED = strval(cms_version());
 if ($minor != '') {
     $VERSION_BEING_INSTALLED .= (is_numeric($minor[0]) ? '.' : '-') . $minor;
 }
-$CHMOD_ARRAY = get_chmod_array($INSTALL_LANG);
 
 global $PASSWORD_PROMPT;
 $PASSWORD_PROMPT = new Tempcode();
@@ -298,6 +297,10 @@ function prepare_installer_url($url)
     if (get_param_integer('keep_quick_hybrid', 0) == 1) {
         $url .= '&keep_quick_hybrid=1';
     }
+    $kdfs = get_param_integer('keep_debug_fs', 0);
+    if ($kdfs != 0) {
+        $url .= '&keep_debug_fs=' . strval($kdfs);
+    }
     return $url;
 }
 
@@ -322,48 +325,59 @@ function step_1()
     $warnings = new Tempcode();
     global $DATADOTCMS_FILE;
     if (!@is_resource($DATADOTCMS_FILE)) { // Do an integrity check - missing corrupt files
-        if ((array_key_exists('skip_slow_checks', $_GET)) || (file_exists(get_file_base() . '/.git'))) {
+        $sdc = get_param_integer('skip_disk_checks', null);
+        if (($sdc === 1) || (($sdc !== 0) && (file_exists(get_file_base() . '/.git')))) {
             if (!file_exists(get_file_base() . '/.git')) {
                 $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('INSTALL_SLOW_SERVER'))));
             }
         } else {
             $files = @unserialize(file_get_contents(get_file_base() . '/data/files.dat'));
-            if (($files !== false) && (!file_exists(get_file_base() . '/.git'))) {
+            if ($files !== false) {
                 $missing = array();
                 $corrupt = array();
 
+                // Volatile files (see also list in make_release.php)
+                $skipped_files_may_be_changed_or_missing = array_flip(array(
+                    'data_custom/functions.dat',
+                    'data/files_previous.dat',
+                ));
+                $skipped_files_may_be_changed = array_flip(array(
+                    'sources/version.php',
+                    'data/files.dat',
+
+                    // Large file size, skip for performance
+                    'data/modules/admin_stats/IP_Country.txt',
+                ));
+
                 foreach ($files as $file => $file_info) {
-                    // Volatile files (see also list in make_release.php)
+                    if (isset($skipped_files_may_be_changed_or_missing[$file])) {
+                        continue;
+                    }
+
                     if (should_ignore_file($file, IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE)) {
                         continue;
                     }
-                    // These files are volatile when developing, really not worth checking
-                    if ($file == 'sources/version.php') {
-                        continue;
-                    }
-                    if ($file == 'data_custom/functions.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/files.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/files_previous.dat') {
-                        continue;
-                    }
 
-                    // Large file size, skip for performance
-                    if ($file == 'data/modules/admin_stats/IP_Country.txt') {
-                        continue;
-                    }
-                    if (substr($file, -4) == '.ttf') {
-                        continue;
-                    }
-
-                    $contents = @file_get_contents(get_file_base() . '/' . $file);
                     if (!file_exists(get_file_base() . '/' . $file)) {
                         $missing[] = $file;
-                    } elseif (($contents !== false) && (sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))) != $file_info[0])) {
-                        $corrupt[] = $file;
+                    } else {
+                        if (substr($file, -4) == '.ttf') {
+                            continue;
+                        }
+                        if (substr($file, -11) == '/index.html') { // These are always empty, no need to check
+                            continue;
+                        }
+                        if (isset($skipped_files_may_be_changed[$file])) {
+                            continue;
+                        }
+                        if (substr($file, -4) == '.php') { // There are so many files, we can't check all - and .php files will give an error when called if corrupt
+                            continue;
+                        }
+
+                        $contents = @strval(file_get_contents(get_file_base() . '/' . $file));
+                        if (sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))) != $file_info[0]) {
+                            $corrupt[] = $file;
+                        }
                     }
                 }
 
@@ -444,7 +458,7 @@ function step_1()
 
             $files = get_dir_contents('lang/' . $lang);
             foreach (array_keys($files) as $file) {
-                if (substr($file, -4) == '.ini') {
+                if ((substr($file, -4) == '.ini') && (($lang == fallback_lang()) || (is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $file)))) {
                     $lang_count[$lang] += count(better_parse_ini_file(get_file_base() . '/lang/' . $lang . '/' . $file));
                 }
             }
@@ -459,7 +473,7 @@ function step_1()
 
             $files = get_dir_contents('lang_custom/' . $lang);
             foreach (array_keys($files) as $file) {
-                if (substr($file, -4) == '.ini') {
+                if ((substr($file, -4) == '.ini') && (is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $file))) {
                     $lang_count[$lang] += count(better_parse_ini_file(get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file));
                 }
             }
@@ -789,6 +803,11 @@ function step_4()
 
     $forum_driver_specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
 
+    $use_msn = post_param_integer('use_msn', 0);
+    if ($use_msn == 0) {
+        $use_msn = post_param_integer('use_multi_db', 0);
+    }
+
     // Now we've gone through all the work of detecting it, lets grab from _config.php to see what we had last time we installed
     global $SITE_INFO;
     if ((file_exists(get_file_base() . '/_config.php')) && (filesize(get_file_base() . '/_config.php') != 0)) {
@@ -849,7 +868,7 @@ function step_4()
         if (isset($SITE_INFO['domain'])) {
             $domain = $SITE_INFO['domain'];
         }
-        if (!file_exists(get_file_base() . '/.git')) {
+        if ((!file_exists(get_file_base() . '/.git')) || ($use_msn == 1)) {
             if (isset($SITE_INFO['multi_lang_content'])) {
                 $multi_lang_content = intval($SITE_INFO['multi_lang_content']);
             }
@@ -949,10 +968,6 @@ function step_4()
         $forum_title = do_lang_tempcode('_FORUM_SETTINGS', escape_html($_forum_type));
     }
     $forum_options = new Tempcode();
-    $use_msn = post_param_integer('use_msn', 0);
-    if ($use_msn == 0) {
-        $use_msn = post_param_integer('use_multi_db', 0);
-    }
     $forum_type = post_param_string('forum_type');
     if ($forum_type != 'none') {
         if ($use_msn == 1) {
@@ -1135,6 +1150,9 @@ function step_5()
     if ($multi_lang_content == 0) {
         $_POST['multi_lang_content'] = '0';
     }
+
+    // Cleanup base URL
+    $_POST['base_url'] = normalise_idn_url($_POST['base_url']);
 
     // Check cookie settings. IF THIS CODE IS CHANGED ALSO CHANGE COPY&PASTED CODE IN CONFIG_EDITOR.PHP
     $cookie_path = post_param_string('cookie_path');
@@ -1402,7 +1420,9 @@ function step_5_ftp()
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
         }
         $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        sleep(1);
+        if (php_function_allowed('usleep')) {
+            usleep(1000000);
+        }
         $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
         if ($file_size_before !== $file_size_after) {
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
@@ -1582,9 +1602,10 @@ function step_5_ftp()
         // If the file user is different to the FTP user, we need to make it world writeable
         if (!is_suexec_like()) {
             // Chmod
-            global $CHMOD_ARRAY;
             $no_chmod = false;
-            foreach ($CHMOD_ARRAY as $chmod) {
+            global $INSTALL_LANG;
+            $chmod_array = get_chmod_array($INSTALL_LANG);
+            foreach ($chmod_array as $chmod) {
                 if ((file_exists($chmod)) && (!@ftp_site($conn, 'CHMOD 0777 ' . $chmod))) {
                     $no_chmod = true;
                 }
@@ -1632,12 +1653,13 @@ function step_5_checks_a()
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '48b15e3e8486e5654563a7c3b5e6af58', 'SOMETHING' => do_lang_tempcode('GOOD_PATH'))));
 
     // Check permissions
-    global $CHMOD_ARRAY;
     if (!file_exists(get_file_base() . '/_config.php')) {
         $myfile = @fopen(get_file_base() . '/_config.php', 'wb');
         @fclose($myfile);
     }
-    foreach ($CHMOD_ARRAY as $chmod) {
+    global $INSTALL_LANG;
+    $chmod_array = get_chmod_array($INSTALL_LANG);
+    foreach ($chmod_array as $chmod) {
         test_writable($chmod);
     }
 
@@ -2226,6 +2248,11 @@ function big_installation_common()
     require_once(get_file_base() . '/' . $config_file);
 
     require_code('database');
+
+    if (!isset($GLOBALS['SITE_DB'])) {
+        fatal_exit('Could not initialise database connection');
+    }
+
     $forum_type = get_forum_type();
     require_code('forum/' . $forum_type);
     $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_' . filter_naughty_harsh($forum_type));
@@ -2513,6 +2540,7 @@ function require_code($codename)
         } else {
             eval($file);
         }
+
         if (function_exists('init__' . str_replace('/', '__', $codename))) {
             call_user_func('init__' . str_replace('/', '__', $codename));
         }
@@ -3041,6 +3069,8 @@ Options +FollowSymLinks -MultiViews
 
 RewriteEngine on
 
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
 # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
@@ -3119,7 +3149,9 @@ END;
             ");
 
             cms_file_put_contents_safe(get_file_base() . '/exports/addons/.htaccess', $clause);
-            usleep(100000); // 100ms, some servers are slow to update
+            if (php_function_allowed('usleep')) {
+                usleep(1000000); // 100ms, some servers are slow to update
+            }
             $http_result = cms_http_request($base_url . '/exports/addons/index.php', array('trigger_error' => false));
 
             if ($http_result->message != '200') {

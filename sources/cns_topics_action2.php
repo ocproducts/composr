@@ -155,7 +155,11 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     if ($forum_id !== null) {
         require_code('sitemap_xml');
-        notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+        if ($validated == 1) {
+            notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_id));
+        } else {
+            notify_sitemap_node_delete('_SEARCH:topicview:id=' . strval($topic_id));
+        }
     }
 }
 
@@ -324,7 +328,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_resource_id' => strval($topic_id)));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:topicview:id=' . strval($topic_id));
+    notify_sitemap_node_delete('_SEARCH:topicview:id=' . strval($topic_id));
 
     return $forum_id;
 }
@@ -437,7 +441,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         }
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_forum_id=' . strval($to) . ',t_pt_from=NULL,t_pt_to=NULL WHERE t_forum_id' . (($from === null) ? ' IS NULL' : ('=' . strval($from))) . ' AND (' . $or_list . ')', null, 0, false, true);
-        log_it('MOVE_TOPICS', do_lang('MULTIPLE'));
+        log_it('MOVE_TOPICS', do_lang('MULTIPLE'), strval($topics[0]));
 
         $post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT SUM(t_cache_num_posts) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $or_list, false, true);
 

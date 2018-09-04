@@ -262,7 +262,12 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                     }
                     $out .= $_embed;
                     break;
+
                 case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+                    $_embed = nl2br(escape_html($embed->evaluate()));
+                    $out .= $_embed;
+                    break;
+
                 case WYSIWYG_COMCODE__XML_BLOCK:
                 case WYSIWYG_COMCODE__XML_INLINE:
                 default:
@@ -455,7 +460,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         }
     }
 
-    $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
+    $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;', '&quot;', '&rdquo;', '&ldquo;');
     if (get_charset() == 'utf-8') {
         $nbsp = hex2bin('c2a0');
         $link_terminator_strs[] = $nbsp;
@@ -1319,7 +1324,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
 
-                                                $num_cells_in_row = count($cells) / 2;
+                                                $num_cells_in_row = @intval((float)count($cells) / 2.0);
 
                                                 $inter_padding = 3.0;
 
@@ -1353,7 +1358,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                     if (array_key_exists($cell_i, $ratios)) {
                                                         $width = $ratios[$cell_i];
                                                     } else {
-                                                        $width = float_to_raw_string($total_box_width / $num_cells_in_row, 2) . '%';
+                                                        $width = (($num_cells_in_row == 0) ? float_to_raw_string($total_box_width, 2) : float_to_raw_string($total_box_width / $num_cells_in_row, 2)) . '%';
                                                     }
 
                                                     $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WIDE_START_CELL', array(
@@ -1519,7 +1524,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('title_text', '');
-                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql);
+                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, 0, true);
+                                        if ($rows === null) {
+                                            $rows = array(); // LEGACY: In case upgrader is struggling with an old database
+                                        }
 
                                         // Filter out what we don't have permission for
                                         if (get_option('use_banner_permissions', true) === '1') {

@@ -215,8 +215,6 @@ class Hook_task_import_newsletter_subscribers
             $message = do_lang_tempcode('NEWSLETTER_REMOVED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
         }
 
-        log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
-
         @unlink($path);
         return array('text/html', $message);
     }

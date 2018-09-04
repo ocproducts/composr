@@ -3,7 +3,7 @@
 {$REQUIRE_CSS,shoutbox}
 
 {+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,chat}}
-	<section class="box box---block-side-shoutbox" role="marquee" data-require-javascript="['chat', 'shoutr']" data-tpl="blockSideShoutbox" data-tpl-params="{+START,PARAMS_JSON,CHATROOM_ID,LAST_MESSAGE_ID}{_*}{+END}">
+	<section class="box box---block-side-shoutbox" role="marquee" data-tpl="blockSideShoutbox" data-tpl-params="{+START,PARAMS_JSON,CHATROOM_ID,LAST_MESSAGE_ID}{_*}{+END}">
 		<div class="box-inner">
 			<h3>{!SHOUTBOX}</h3>
 

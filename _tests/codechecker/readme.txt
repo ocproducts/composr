@@ -27,11 +27,16 @@ Text editors
 ------------
 
 The checker is designed to work with the following editors:
- - Code Lobster (Windows)
- - ConTEXT (Windows)
+ - CodeLobster (Windows)
+ - Notepad++ (Windows)
  - TextMate (Mac)
- - Dreamweaver
- - JEdit
+ - Kate (Linux)
+ - JEdit (Cross Platform)
+ - NetBeans (Cross Platform)
+ - BBEdit (Mac)
+ - Atom (Cross Platform)
+ - Visual Studio Code (Cross Platform)
+ - PSPad (Windows)
 The editor is particularly appropriate as it can be directed to open up code at specific positions, and thus the checker can direct you to exact error locations in your files.
 
 Error sensitivity

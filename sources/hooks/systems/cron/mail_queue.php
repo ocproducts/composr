@@ -71,6 +71,8 @@ class Hook_cron_mail_queue
                 $from_email = $row['m_from_email'];
                 $from_name = $row['m_from_name'];
                 $join_time = $row['m_join_time'];
+                $sender_email = ($row['m_sender_email'] == '') ? null : $row['m_sender_email'];
+                $plain_subject = $row['m_plain_subject'];
 
                 if ((!is_array($to_email)) && ($to_email !== null)) {
                     continue;
@@ -95,6 +97,8 @@ class Hook_cron_mail_queue
                         'extra_cc_addresses' => $extra_cc_addresses,
                         'extra_bcc_addresses' => $extra_bcc_addresses,
                         'require_recipient_valid_since' => $join_time,
+                        'sender_email' => $sender_email,
+                        'plain_subject' => $plain_subject == 1,
                     )
                 );
                 $success = $result_ob->worked;

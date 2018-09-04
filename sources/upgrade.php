@@ -52,6 +52,8 @@ function upgrade_script()
         return;
     }
 
+    load_csp(array('csp_enabled' => '0'));
+
     // Action handling...
 
     $type = get_param_string('type', 'browse');
@@ -210,14 +212,14 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
     if (get_param_integer('keep_show_loading', 0) == 1) {
         $url .= '&keep_show_loading=1';
     }
-    $icon = 'buttons/proceed';
+    $_icon = 'buttons/proceed';
     if ($text == do_lang('MORE_OPTIONS')) {
-        $icon = 'buttons/back';
+        $_icon = 'buttons/back';
     }
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
-    $icon = do_template('ICON', array('NAME' => $icon));
+    $icon = do_template('ICON', array('NAME' => $_icon));
     $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="btn btn-primary btn-scri" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;
@@ -580,6 +582,8 @@ function upgrader_decache_screen()
  */
 function upgrader_open_site_screen()
 {
+    log_it('UPGRADER_OPEN_SITE');
+
     set_option('site_closed', '0');
     return '<p>' . do_lang('SUCCESS') . '</p>';
 }
@@ -592,6 +596,8 @@ function upgrader_open_site_screen()
  */
 function upgrader_close_site_screen()
 {
+    log_it('UPGRADER_CLOSE_SITE');
+
     set_option('closed', do_lang('UPGRADER_CLOSED_FOR_UPGRADES', get_site_name()));
     set_option('site_closed', '1');
     return '<p>' . do_lang('SUCCESS') . '</p>';

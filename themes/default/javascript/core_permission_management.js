@@ -415,7 +415,7 @@
         $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
     }
 
-    function showPermissionSetting(ob, event) {
+    function showPermissionSetting(ob) {
         if (ob.disabled) { // already showing default in disabled dropdown
             return;
         }

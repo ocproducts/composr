@@ -61,4 +61,19 @@ class Hook_config_yeehaw
         }
         return '0';
     }
+
+    /**
+     * Code to run before the option is saved.
+     * If there is some kind of problem with the new value then we could attach an error message.
+     *
+     * @param  string $new_value The new value
+     * @param  string $old_value The old value
+     * @return boolean Whether to allow the save
+     */
+    public function presave_handler($new_value, $old_value)
+    {
+        erase_cached_language();
+
+        return true;
+    }
 }

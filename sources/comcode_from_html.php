@@ -466,10 +466,15 @@ function wysiwygify_media_set($semihtml)
  * @param  LONG_TEXT $semihtml The Semi-HTML to be converted
  * @param  boolean $force Whether to force full conversion regardless of settings
  * @param  boolean $quick Whether to trust the HTML is valid rather than cleaning it up (e.g. for Composr-generated HTML)
+ * @param  ?MEMBER $member_id Member to do as (null: current member)
  * @return LONG_TEXT The equivalent Comcode
  */
-function semihtml_to_comcode($semihtml, $force = false, $quick = false)
+function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_id = null)
 {
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
     // Optimisations
     $matches = array();
     if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {
@@ -517,7 +522,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     // ---
 
     // Maybe we don't do a conversion? If possible we want to avoid it because conversions are messy.
-    if (((!$force) && (get_option('eager_wysiwyg') == '0') && (has_privilege(get_member(), 'allow_html'))) || (strpos($semihtml, '{$,page hint: no_smart_conversion}') !== false)) {
+    if (((!$force) && (get_option('eager_wysiwyg') == '0') && (has_privilege($member_id, 'allow_html'))) || (strpos($semihtml, '{$,page hint: no_smart_conversion}') !== false)) {
         // Resolve relative URLs
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup_raw', $semihtml);
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*)>#siU', '_img_tag_fixup_raw', $semihtml);
@@ -969,7 +974,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = str_replace('[ / semihtml', '[/semihtml', $semihtml);
 
     // People without comcode_dangerous have further cleanups, that might lose some quality...
-    if ((!has_privilege(get_member(), 'allow_html')) || ($force)) {
+    if ((!has_privilege($member_id, 'allow_html')) || ($force)) {
         $semihtml2 = $semihtml;
 
         if (stripos($semihtml2, '<table') !== false) {
@@ -1236,53 +1241,46 @@ function array_html_preg_replace($element, $array, $semihtml)
 
         // Find offset of openers and closers
         $matches = array();
-        $count = preg_match_all('#<' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
-        $starts = array();
+        $count = preg_match_all('#<(/?)' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
+        $tags = array();
         for ($i = 0; $i < $count; $i++) {
-            $starts[] = $matches[0][$i][1];
+            $is_closer = ($matches[1][$i][0] == '/');
+            $tags[] = array(
+                $is_closer ? -1 : 1, // Balancer
+                $matches[0][$i][1], // Offset
+                strlen($matches[0][$i][0]), // Length
+            );
         }
-        $count = preg_match_all('#</' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
-        $ends = array();
-        $lengths = array();
-        for ($i = 0; $i < $count; $i++) {
-            $ends[] = $matches[0][$i][1];
-            $lengths[] = strlen($matches[0][$i][0]);
-        }
-        $s_opens = array();
-        $s_closes = array();
+        $num_tags = count($tags);
         foreach ($array as $index => $temp) {
             list($pattern, $replacement) = $temp;
-            foreach ($starts as $start) {
-                foreach ($ends as $i => $end) {
-                    if ($end < $start) {
-                        continue;
+            foreach ($tags as $i => $tag) {
+                if ($tag[0] == 1) {
+                    $start = $tag[1];
+
+                    // Find the matching end position
+                    $end = null;
+                    $balance = 0;
+                    for ($j = $i ; $j < $num_tags; $j++) {
+                        $balance += $tags[$j][0];
+                        if ($balance == 0) {
+                            $end = $tags[$j][1];
+                            $length = $tags[$j][2];
+                            break;
+                        }
+                    }
+                    if ($end === null) {
+                        break;
                     }
 
-                    $opens = isset($s_opens[$start][$end]) ? $s_opens[$start][$end] : null;
-                    $closes = isset($s_closes[$start][$end]) ? $s_closes[$start][$end] : null;
-                    if ($opens === null) { // Not worked out yet, work out and put into $s_opens and $s_closes
-                        $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
-                        $opens = substr_count($segment, '<' . $element . ' ') + substr_count($segment, '<' . $element . '>');
-                        $closes = substr_count($segment, '</' . $element . '>');
-                        $s_opens[$start][$end] = $opens;
-                        $s_closes[$start][$end] = $closes;
-                    } else {
-                        $segment = null;
-                    }
-
-                    // Segment is a clean isolated tag
-                    if ($opens == $closes) {
-                        if ($segment === null) {
-                            $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
-                        }
-                        $before = substr($semihtml, 0, $start);
-                        $after = substr($semihtml, $end + $lengths[$i]);
-                        $subbed = preg_replace($pattern . 'A', $replacement, $segment);
-                        $semihtml = $before . $subbed . $after;
-                        if ($semihtml != $old_semihtml) {
-                            break 3; // We need to start again now as the offsets have all changed
-                        }
-                        break; // Ok, well at least we know we found our tag bound, so no more need to search
+                    // Process segment
+                    $segment = substr($semihtml, $start, $end + $length - $start);
+                    $before = substr($semihtml, 0, $start);
+                    $after = substr($semihtml, $end + $length);
+                    $subbed = preg_replace($pattern . 'A', $replacement, $segment);
+                    $semihtml = $before . $subbed . $after;
+                    if ($semihtml != $old_semihtml) {
+                        break 2; // We need to start again now as the offsets have all changed
                     }
                 }
             }

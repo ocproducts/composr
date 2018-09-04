@@ -185,7 +185,7 @@ function external_db_user_add($record)
     require_code('cns_groups');
     require_code('cns_members2');
     require_code('cns_members_action');
-    $member_id = cns_member_external_linker($username, $password, '', false, $email_address, $dob_day, $dob_month, $dob_year);
+    $member_id = cns_member_external_linker('', $username, $password, false, $email_address, $dob_day, $dob_month, $dob_year);
 
     return $member_id;
 }

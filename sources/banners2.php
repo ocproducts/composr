@@ -592,7 +592,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
 
     reorganise_uploads__banners(array('name' => $name));
 
-    log_it('EDIT_BANNER', $name);
+    log_it('EDIT_BANNER', $name, $caption);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

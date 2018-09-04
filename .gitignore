@@ -1,4 +1,6 @@
 ; Similar to stuff defined in sources/files.php, but defined in terms of what we want never to be in git
+/_tests/codechecker/checker.ini
+/Icon?
 /cgi-bin
 *.bak
 *.old
@@ -43,6 +45,7 @@ test_a
 /data_custom/modules/web_notifications/latest.dat
 /cms_sitemap.xml
 /*.clpprj
+/*.csprj
 /.project
 /data_custom/latest_activity.txt
 tmpfile__*

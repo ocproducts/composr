@@ -210,6 +210,8 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function run_start($type)
     {
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_GIFT');
+
         cns_require_all_forum_stuff();
 
         require_code('cns_groups_action');

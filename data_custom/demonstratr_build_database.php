@@ -56,6 +56,8 @@ if (!addon_installed('composr_homesite')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
 }
 
+header('X-Robots-Tag: noindex');
+
 if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
     access_denied();
 }

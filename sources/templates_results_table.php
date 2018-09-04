@@ -41,9 +41,10 @@
  * @param  string $guid GUID to pass to template
  * @param  boolean $skip_sortables_form Whether to skip showing a sort form (useful if there is another form wrapped around this)
  * @param  ?ID_TEXT $hash URL hash component (null: none)
+ * @param  boolean $interactive Whether to allow interactive sorting and filtering
  * @return Tempcode The results table
  */
-function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $header_row, $result_entries, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tpl_set = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
+function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $header_row, $result_entries, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tpl_set = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null, $interactive = false)
 {
     require_code('templates_pagination');
 
@@ -54,6 +55,9 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
     if ($message === null) {
         $message = new Tempcode();
         foreach ($sortables as $_sortable => $text) {
+            if (is_array($text)) {
+                $text = $text[0];
+            }
             if (is_object($text)) {
                 $text = $text->evaluate();
             }
@@ -84,6 +88,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
             'SORT' => $skip_sortables_form ? new Tempcode() : $sort,
             'PAGINATION' => $pagination,
             'WIDTHS' => $widths,
+            'INTERACTIVE' => $interactive,
         ),
         null,
         false,
@@ -99,28 +104,70 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
  * @param  ID_TEXT $order_param The parameter name used to store our sortable
  * @param  ID_TEXT $current_ordering The current ordering ("$sortable $sort_order")
  * @param  string $guid GUID to pass to template
+ * @param  ?array $interactive_options Array of tuples matching the indices of $values, each pair being a boolean whether the value is searchable, boolean whether the value is filterable, and a sortable type supported by sortable_tables.js (or null) (null: no interactivity)
  * @return Tempcode The generated header row
  */
-function results_header_row($values, $sortables = array(), $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a')
+function results_header_row($values, $sortables = array(), $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a', $interactive_options = null)
 {
     $cells = new Tempcode();
-    foreach ($values as $value) {
+    $cnt = count($values);
+    foreach ($values as $i => $value) {
+        if ($value === null) {
+            continue;
+        }
+
+        $colspan = 1;
+        for ($j = $i + 1; $j < $cnt; $j++) {
+            if ($values[$j] !== null) {
+                break;
+            }
+
+            $colspan++;
+        }
+        if ($colspan == 1) {
+            $colspan = null;
+        }
+
         $found = null;
         foreach ($sortables as $key => $sortable) {
             $_value = is_object($value) ? $value->evaluate() : $value;
+
+            if (is_array($sortable)) {
+                $sortable = $sortable[0];
+            }
+
             if (((is_string($sortable)) && ($sortable == $_value)) || ((is_object($sortable)) && ($sortable->evaluate() == $_value))) {
                 $found = $key;
                 break;
             }
         }
+
+        $map = array(
+            '_GUID' => '80e9de91bb9e479766bc8568a790735c',
+            'VALUE' => $value,
+            'COLSPAN' => ($colspan === null) ? null : strval($colspan),
+
+            // Interactivity
+            'INTERACTIVE' => ($interactive_options !== null),
+            'SEARCHABLE' => (($interactive_options !== null) && (array_key_exists($i, $interactive_options))) ? $interactive_options[$i][0] : false,
+            'FILTERABLE' => (($interactive_options !== null) && (array_key_exists($i, $interactive_options))) ? $interactive_options[$i][1] : false,
+            'SORTABLE_TYPE' => (($interactive_options !== null) && (array_key_exists($i, $interactive_options))) ? $interactive_options[$i][2] : null,
+        );
+
         if ($found !== null) {
             $sort_url_asc = get_self_url(false, false, array($order_param => $found . ' ASC'), true);
             $sort_url_desc = get_self_url(false, false, array($order_param => $found . ' DESC'), true);
             $sort_asc_selected = ($current_ordering == $found . ' ASC');
             $sort_desc_selected = ($current_ordering == $found . ' DESC');
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', array('_GUID' => 'e71df89abff7c7d51907867924dbfa7e', 'VALUE' => $value, 'SORT_ASC_SELECTED' => $sort_asc_selected, 'SORT_DESC_SELECTED' => $sort_desc_selected, 'SORT_URL_DESC' => $sort_url_desc, 'SORT_URL_ASC' => $sort_url_asc)));
+            $map += array(
+                'SORT_ASC_SELECTED' => $sort_asc_selected,
+                'SORT_DESC_SELECTED' => $sort_desc_selected,
+                'SORT_URL_DESC' => $sort_url_desc,
+                'SORT_URL_ASC' => $sort_url_asc,
+            );
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', $map));
         } else {
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', array('_GUID' => '80e9de91bb9e479766bc8568a790735c', 'VALUE' => $value)));
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', $map));
         }
     }
 
@@ -138,21 +185,52 @@ function results_header_row($values, $sortables = array(), $order_param = 'sort'
  */
 function results_entry($values, $auto_escape, $tpl_set = null, $guid = '9e340dd14173c7320b57243d607718ab')
 {
+    $i = 0;
     $cells = new Tempcode();
+    $_values = array_values($values);
+    $cnt = count($_values);
     foreach ($values as $class => $value) {
+        if ($value === null) {
+            continue;
+        }
+
+        $colspan = 1;
+        for ($j = $i + 1; $j < $cnt; $j++) {
+            if ($_values[$j] !== null) {
+                break;
+            }
+
+            $colspan++;
+        }
+        if ($colspan == 1) {
+            $colspan = null;
+        }
+
         if (($auto_escape) && (!is_object($value))) {
             $value = escape_html($value);
         }
-        $cells->attach(do_template(($tpl_set === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tpl_set . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
+        $results_table_field_tpl = ($tpl_set === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tpl_set . '_FIELD');
+        $cells->attach(do_template($results_table_field_tpl, array(
+            '_GUID' => $guid,
+            'VALUE' => $value,
+            'CLASS' => (is_string($class)) ? $class : '',
+            'COLSPAN' => ($colspan === null) ? null : strval($colspan),
+        ), null, false, 'RESULTS_TABLE_FIELD'));
+
+        $i++;
     }
 
-    return do_template(($tpl_set === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tpl_set . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
+    $results_table_tpl = ($tpl_set === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tpl_set . '_ENTRY');
+    return do_template($results_table_tpl, array(
+        '_GUID' => $guid,
+        'VALUES' => $cells,
+    ), null, false, 'RESULTS_TABLE_ENTRY');
 }
 
 /**
  * Get the Tempcode for a results sorter.
  *
- * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
+ * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order or a pair of such and which direction to limit to
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set ASC DESC
@@ -166,19 +244,33 @@ function results_sorter($sortables, $sortable = null, $sort_order = null, $sort_
 
     $selectors = new Tempcode();
     foreach ($sortables as $_sortable => $text) {
-        $text_ascending = new Tempcode();
-        $text_ascending->attach($text);
-        if ($_sortable != 'random') {
-            $text_ascending->attach(do_lang_tempcode('_ASCENDING'));
+        if (is_array($text)) {
+            $limit_direction = $text[1];
+            $text = $text[0];
+        } else {
+            $limit_direction = ($_sortable == 'random') ? 'ASC' : null;
         }
-        $text_descending = new Tempcode();
-        $text_descending->attach($text);
-        $text_descending->attach(do_lang_tempcode('_DESCENDING'));
-        $selector_value = $_sortable . ' ASC';
-        $selected = (($sortable . ' ' . $sort_order) == $selector_value);
-        $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '6a57bbaeed04743ba2cafa2d262a1c98', 'SELECTED' => $selected, 'NAME' => $text_ascending, 'VALUE' => $selector_value)));
-        $selector_value = $_sortable . ' DESC';
-        if ($_sortable != 'random') {
+
+        if ($limit_direction !== 'DESC') {
+            $text_ascending = new Tempcode();
+            $text_ascending->attach($text);
+            if ($limit_direction === null) {
+                $text_ascending->attach(do_lang_tempcode('_ASCENDING'));
+            }
+
+            $selector_value = $_sortable . ' ASC';
+            $selected = (($sortable . ' ' . $sort_order) == $selector_value);
+            $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '6a57bbaeed04743ba2cafa2d262a1c98', 'SELECTED' => $selected, 'NAME' => $text_ascending, 'VALUE' => $selector_value)));
+        }
+
+        if ($limit_direction !== 'ASC') {
+            $text_descending = new Tempcode();
+            $text_descending->attach($text);
+            if ($limit_direction === null) {
+                $text_descending->attach(do_lang_tempcode('_DESCENDING'));
+            }
+
+            $selector_value = $_sortable . ' DESC';
             $selected = (($sortable . ' ' . $sort_order) == $selector_value);
             $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => 'bbf97817fa4f5e744a414b303a3d21fe', 'SELECTED' => $selected, 'NAME' => $text_descending, 'VALUE' => $selector_value)));
         }

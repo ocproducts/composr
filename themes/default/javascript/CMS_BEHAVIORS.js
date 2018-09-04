@@ -104,9 +104,9 @@
                 // Convert form element title attributes into composr tooltips
                 if ($cms.configOption('js_overlays')) {
                     // Convert title attributes into composr tooltips
-                    var elements = arrVal(form.elements), j;
+                    var elements = $util.toArray(form.elements), j;
 
-                    elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] ones in form.elements
+                    elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] elements in form.elements
 
                     for (j = 0; j < elements.length; j++) {
                         if ((elements[j].title !== undefined) && !elements[j].classList.contains('no-tooltip')) {
@@ -219,6 +219,7 @@
 
                     if (code !== '') {
                         (function () {
+                            // eslint-disable-next-line no-eval
                             eval(code); // eval() call
                         }).call(el); // Set `this` context for eval
                     }
@@ -261,7 +262,7 @@
             var inputs = $util.once($dom.$$$(context, '[data-submit-on-enter]'), 'behavior.submitOnEnter');
 
             inputs.forEach(function (input) {
-                $dom.on(input, 'keypress', function submitOnEnter(e) {
+                $dom.on(input, (input.nodeName.toLowerCase() === 'select') ? 'keyup' : 'keypress', function submitOnEnter(e) {
                     if ($dom.keyPressed(e, 'Enter')) {
                         $dom.submit(input.form);
                         e.preventDefault();
@@ -565,7 +566,7 @@
         }
     };
 
-    var _invalidPatternCache = {};
+    var _invalidPatternCache = Object.create(null);
     // Implementation for [data-prevent-input="<REGEX FOR DISALLOWED CHARACTERS>"]
     // Prevents input of matching characters
     $cms.behaviors.preventInput = {
@@ -601,9 +602,7 @@
 
             inputs.forEach(function (input) {
                 $dom.on(input, 'change', function () {
-                    if (input.form != null) {
-                        $dom.submit(input.form);
-                    }
+                    $dom.trigger(input.form, 'submit');
                 });
             });
         }
@@ -958,6 +957,163 @@
                         lastScrollY = window.scrollY;
                     }
                 });
+            });
+        }
+    };
+
+    // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
+    // Mark ajaxified containers with [data-ajaxify="{...}"]
+    // Mark links and forms to ajaxify with [data-ajaxify-target="1"] or specify a selector with the "targetsSelector" option
+    // Was previously known as $dom.internaliseAjaxBlockWrapperLinks()/internalise_ajax_block_wrapper_links()
+    $cms.behaviors.ajaxify = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-ajaxify]'), 'behavior.ajaxify');
+
+            els.forEach(function (ajaxifyContainer) {
+                var options = objVal($dom.data(ajaxifyContainer, 'ajaxify')),
+                    callUrl = $util.url(options.callUrl),
+                    // ^ Block call URL
+                    callParams = options.callParams,
+                    // ^ Can be a string or a map of additional query string parameters that will be added to the call URL.
+                    callParamsFromTarget = arrVal(options.callParamsFromTarget),
+                    // ^ An array of regexes that we will match with query string params in the target's [href] or [action] URL and if matched, pass them along with the block call.
+                    targetsSelector = strVal(options.targetsSelector);
+                    // ^ A selector can be provided for additional targets, by default only child elements with [data-ajaxify-target="1"] will be ajaxified.
+
+                if (typeof callParams === 'string') {
+                    var _callParams = $util.iterableToArray((new URLSearchParams(callParams)).entries());
+                    callParams = {};
+                    _callParams.forEach(function (param) {
+                        callParams[param[0]] = param[1];
+                    });
+                }
+
+                if (callParams != null) {
+                    for (var key in callParams) {
+                        callUrl.searchParams.set(key, callParams[key]);
+                    }
+                }
+
+                $dom.on(ajaxifyContainer, 'click', 'a[data-ajaxify-target]', doAjaxify);
+                $dom.on(ajaxifyContainer, 'submit', 'form[data-ajaxify-target]', doAjaxify);
+
+                if (targetsSelector !== '') {
+                    $dom.on(ajaxifyContainer, 'click', 'a', function (e, clicked) {
+                        if ((clicked.dataset.ajaxifyTarget != null) || ($util.url(clicked.href).origin !== window.location.origin)) {
+                            return;
+                        }
+                        var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
+                        if (targets.includes(clicked)) {
+                            doAjaxify(e, clicked);
+                        }
+                    });
+
+                    $dom.on(ajaxifyContainer, 'submit', 'form', function (e, submitted) {
+                        if ((submitted.dataset.ajaxifyTarget != null) || ($util.url(submitted.action).origin !== window.location.origin)) {
+                            return;
+                        }
+                        var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
+                        if (targets.includes(submitted)) {
+                            doAjaxify(e, submitted);
+                        }
+                    });
+                }
+
+                function doAjaxify(e, target) {
+                    if (
+                        e.defaultPrevented || // Default may have been prevented by a form validation function
+                        ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) || // Make sure we aren't dealing with the child of a different [data-ajaxify] container
+                        strVal(target.getAttribute((target.localName === 'a') ? 'href' : 'action')).startsWith('#') // Fragment identifier href/action
+                    ) {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    var thisCallUrl = $util.url(callUrl),
+                        postParams = null,
+                        targetUrl = $util.url((target.localName === 'a') ? target.href : target.action);
+
+                    if (callParamsFromTarget.length > 0) {
+                        // Any parameters matching a pattern must be sent in the URL to the AJAX block call
+                        $util.iterableToArray(targetUrl.searchParams.entries()).forEach(function (param) {
+                            var paramName = param[0],
+                                paramValue = param[1];
+
+                            callParamsFromTarget.forEach(function (pattern) {
+                                pattern = new RegExp(pattern);
+
+                                if (pattern.test(paramName)) {
+                                    thisCallUrl.searchParams.set(paramName, paramValue);
+                                }
+                            });
+                        });
+                    }
+
+                    var newWindowUrl = $cms.pageUrl(),
+                        rgxSkipParams = /^(zone|page|type|id|raw|cache|auth_key|block_map|snippet|utheme|ajax)$/; // Params that shouldn't be added to the window URL
+                    $util.iterableToArray(targetUrl.searchParams.entries()).forEach(function (param) {
+                        if (!rgxSkipParams.test(param[0])) {
+                            newWindowUrl.searchParams.set(param[0], param[1]);
+                        }
+                    });
+
+                    if (target.localName === 'form') {
+                        if (target.method.toLowerCase() === 'post') {
+                            postParams = '';
+                        }
+
+                        $util.toArray(target.elements).forEach(function (element) {
+                            var paramValue;
+
+                            if (!element.name) {
+                                return;
+                            }
+
+                            if (element.disabled || ['submit', 'reset', 'button', 'file'].includes(element.type) || (['radio', 'checkbox'].includes(element.type) && !element.checked)) {
+                                // ^ Skip disabled fields, certain types and non-checked radio and checkbox fields
+                                newWindowUrl.searchParams.delete(element.name); // Element value might have been previously added to the window URL
+                                return;
+                            }
+
+                            paramValue = $cms.form.cleverFindValue(target, element);
+
+                            if (target.method.toLowerCase() === 'post') {
+                                if (postParams !== '') {
+                                    postParams += '&';
+                                }
+                                postParams += element.name + '=' + encodeURIComponent(paramValue);
+                            } else {
+                                thisCallUrl.searchParams.set(element.name, paramValue);
+                                if (!rgxSkipParams.test(element.name)) {
+                                    newWindowUrl.searchParams.set(element.name, paramValue);
+                                }
+                            }
+                        });
+                    }
+
+                    $cms.ui.clearOutTooltips();
+
+                    // Make AJAX block call
+                    $cms.callBlock($util.rel(thisCallUrl), '', ajaxifyContainer, false, false, postParams).then(function () {
+                        window.scrollTo(0, $dom.findPosY(ajaxifyContainer, true));
+                        window.hasJsState = true;
+                        window.history.pushState({}, document.title, newWindowUrl.toString()); // Update window URL
+                    });
+                }
+            });
+        }
+    };
+
+    // Only for debugging purposes, finds and logs orphan [data-ajaxify-target] instances
+    $cms.behaviors.ajaxifyTarget = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-ajaxify-target]'), 'behavior.ajaxifyTarget');
+
+            els.forEach(function (ajaxifyTarget) {
+                if (!$dom.parent(ajaxifyTarget, '[data-ajaxify]')) {
+                    $util.error('[data-ajaxify-target] instance found without a corresponding [data-ajaxify] container.', ajaxifyTarget);
+                }
             });
         }
     };
@@ -1551,7 +1707,7 @@
         var el = options.el,
             url = (el.href === undefined) ? el.action : el.href,
             urlStripped = url.replace(/#.*/, ''),
-            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^#]+/, '');
 
         $cms.ui.open(newUrl, null, 'width=' + width + ';height=' + options.height, options.target);
     }

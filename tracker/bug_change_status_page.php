@@ -87,7 +87,7 @@
 		}
 	}
 
-	$t_status_label = str_replace( " ", "_", MantisEnum::getLabel( config_get( 'status_enum_string' ), $f_new_status ) );
+	$t_status_label = str_replace( array(" ", "-"), array("_", "_"), MantisEnum::getLabel( config_get( 'status_enum_string' ), $f_new_status ) );
 	$t_resolved = config_get( 'bug_resolved_status_threshold' );
 	$t_closed = config_get( 'bug_closed_status_threshold' );
 

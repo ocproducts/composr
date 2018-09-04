@@ -178,6 +178,8 @@ class Module_admin_disastr extends Standard_crud_module
     {
         cns_require_all_forum_stuff();
 
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_DISEASE');
+
         require_code('cns_groups_action');
         require_code('cns_forums_action');
         require_code('cns_groups_action2');
@@ -342,6 +344,8 @@ class Module_admin_disastr extends Standard_crud_module
 
         log_it('ADD_DISEASE', strval($id), $name);
 
+        log_it('ADD_DISEASE', strval($id), $name);
+
         return strval($id);
     }
 
@@ -391,6 +395,7 @@ class Module_admin_disastr extends Standard_crud_module
         $id = intval($_id);
 
         $name = $GLOBALS['SITE_DB']->query_select_value_if_there('diseases', 'name', array('id' => $id));
+
         if ($name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }

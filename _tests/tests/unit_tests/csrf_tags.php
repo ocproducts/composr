@@ -27,6 +27,10 @@ class csrf_tags_test_set extends cms_test_case
         foreach ($dirs as $dir) {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
+                if (($file === '.') || ($file === '..')) {
+                    continue;
+                }
+
                 $c = file_get_contents($dir . '/' . $file);
                 if (strpos($c, '<form') !== false) {
                     if (strpos($c, 'button-hyperlink') !== false) {

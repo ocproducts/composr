@@ -95,7 +95,7 @@
 			{+END}
 		{+END}
 
-		<div id="comments-wrapper">
+		<div>
 			{COMMENTS}
 		</div>
 
@@ -167,7 +167,7 @@
 		{+START,IF,{$NEQ,{$_GET,type},ticket}}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={!CREATE_SUPPORT_TICKET}
-				IMG=add_ticket
+				IMG=buttons/add_ticket
 				URL={ADD_TICKET_URL}
 				IMMEDIATE=0
 			{+END}

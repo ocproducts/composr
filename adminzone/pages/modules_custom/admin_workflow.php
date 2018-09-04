@@ -102,7 +102,7 @@ class Module_admin_workflow extends Standard_crud_module
         // The workflow_content_status table records the status of each approval point for a piece of content and the member who approved the point (if any)
         $GLOBALS['SITE_DB']->create_table('workflow_content_status', array(
             'id' => '*AUTO', // ID for reference. Larger IDs will override smaller ones if they report a different status (nondeterministic for non-incremental IDs!)
-            'workflow_content_id' => 'INTEGER', // The ID of this content in the workflow_content table
+            'workflow_content_id' => 'AUTO_LINK', // The ID of this content in the workflow_content table
             'workflow_approval_point_id' => 'AUTO_LINK', // The ID of the approval point
             'status_code' => 'SHORT_INTEGER', // A code indicating the status
             'approved_by' => 'MEMBER', // Remember who set this status, if the need arises to investigate this later
@@ -610,6 +610,8 @@ class Module_admin_workflow extends Standard_crud_module
         // Grab our data. We pass true so that it will create non-existent content for us (workflow and approval points)
         list($workflow_id, $workflow_name, $approval_points, $is_default) = $this->read_in_data(true);
 
+        log_it('ADD_WORKFLOW', strval($workflow_id), $workflow_name);
+
         return strval($workflow_id);
     }
 
@@ -669,6 +671,9 @@ class Module_admin_workflow extends Standard_crud_module
     public function edit_actualisation($id)
     {
         list($workflow_id, $workflow_name, $approval_points, $is_default) = $this->read_in_data(false);
+
+        log_it('EDIT_WORKFLOW', strval($workflow_id), $workflow_name);
+
         return null;
     }
 
@@ -679,6 +684,13 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function delete_actualisation($id)
     {
+        $workflow_name = $GLOBALS['SITE_DB']->query_select_value_if_there('workflows', 'workflow_name', array('id' => $id));
+        if ($workflow_name === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         delete_workflow(intval($id));
+
+        log_it('DELETE_WORKFLOW', $id, $workflow_name);
     }
 }

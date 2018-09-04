@@ -36,6 +36,10 @@ class Hook_cron_tickets_email_integration
             return null;
         }
 
+        if (get_option('ticket_mail_on') !== '1') {
+            return;
+        }
+
         return array(
             'label' => 'Process e-mailed support tickets',
             'num_queued' => null, // Too time-consuming to calculate
@@ -50,7 +54,9 @@ class Hook_cron_tickets_email_integration
      */
     public function run($last_run)
     {
+        require_code('mail_integration');
         require_code('tickets_email_integration');
-        ticket_incoming_scan();
+        $email_ob = new TicketsEmailIntegration();
+        $email_ob->incoming_scan();
     }
 }

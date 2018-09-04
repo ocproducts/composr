@@ -150,6 +150,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
             'uploads/disastr_addon/index.html',
             'data_custom/images/disastr/hazard.jpg',
             'data_custom/images/disastr/index.html',
+            'sources_custom/hooks/systems/actionlog/disastr.php',
         );
     }
 }

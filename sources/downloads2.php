@@ -29,6 +29,8 @@ function download_gateway_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     require_code('downloads');
 
     $id = get_param_integer('id');
@@ -55,8 +57,6 @@ function download_gateway_script()
 
     attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url->evaluate() . '">');
 
-    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
-
     if ($url != '') {
         require_lang('downloads');
         $title = get_screen_title('DOWNLOAD_GATEWAY', true, array(escape_html($name)));
@@ -64,7 +64,7 @@ function download_gateway_script()
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
-        header('Location:' . escape_header($download_url->evaluate()));
+        header('Location:' . escape_header($download_url->evaluate())); // assign_refresh not used, as it needs to be an invisible hop
     }
 }
 
@@ -80,6 +80,7 @@ function dload_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -107,8 +108,7 @@ function dload_script()
     if (!has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
         $redirect_url = get_download_category_purchase_url($myrow['category_id']);
         if ($redirect_url !== null) {
-            header('Location:' . $redirect_url->evaluate());
-            return;
+            redirect_exit($redirect_url);
         }
 
         access_denied('CATEGORY_ACCESS');
@@ -186,7 +186,7 @@ function dload_script()
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . escape_header($full));
+        header('Location: ' . escape_header($full)); // assign_refresh not used, as no UI here
         log_download($id, 0, $got_before !== null); // Bandwidth used is 0 for an external download
         return;
     }
@@ -365,7 +365,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
 
     require_code('downloads');
     require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:downloads:browse:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $id));
+    notify_sitemap_node_add('_SEARCH:downloads:browse:' . strval($id));
 
     return $id;
 }
@@ -437,7 +437,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
 
     require_code('downloads');
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:downloads:browse:' . strval($category_id), may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
+    notify_sitemap_node_edit('_SEARCH:downloads:browse:' . strval($category_id));
 }
 
 /**
@@ -494,7 +494,7 @@ function delete_download_category($category_id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:downloads:browse:' . strval($category_id));
+    notify_sitemap_node_delete('_SEARCH:downloads:browse:' . strval($category_id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
@@ -904,6 +904,10 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         }
     }
 
+    if (($file_size < 0) || ($file_size > 2147483647)) {
+        $file_size = 2147483647;
+    }
+
     if (!addon_installed('unvalidated')) {
         $validated = 1;
     }
@@ -927,7 +931,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         'out_mode_id' => $out_mode_id,
         'category_id' => $category_id,
         'url' => $url,
-        'author' => $author,
+        'author' => cms_mb_substr($author, 0, 80),
         'url_redirect' => $url_redirect,
         'validated' => $validated,
         'add_date' => $add_date,
@@ -1003,7 +1007,10 @@ function add_download($category_id, $name, $url, $description, $author, $additio
 
     require_code('downloads');
     require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:downloads:entry:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
+    if ($validated == 1) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('_SEARCH:downloads:entry:' . strval($id));
+    }
 
     return $id;
 }
@@ -1105,6 +1112,10 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         }
     }
 
+    if (($file_size < 0) || ($file_size > 2147483647)) {
+        $file_size = 2147483647;
+    }
+
     require_code('content2');
     seo_meta_set_for_explicit('downloads_download', strval($id), $meta_keywords, $meta_description);
 
@@ -1141,7 +1152,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         'validated' => $validated,
         'category_id' => $category_id,
         'url' => $url,
-        'author' => $author,
+        'author' => cms_mb_substr($author, 0, 80),
         'url_redirect' => $url_redirect,
         'default_pic' => $default_pic,
         'out_mode_id' => $out_mode_id,
@@ -1214,7 +1225,11 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
 
     require_code('downloads');
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:downloads:entry:' . strval($id), may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
+    if ($validated == 1) {
+        notify_sitemap_node_edit('_SEARCH:downloads:entry:' . strval($id));
+    } else {
+        notify_sitemap_node_delete('_SEARCH:downloads:entry:' . strval($id));
+    }
 }
 
 /**
@@ -1280,7 +1295,7 @@ function delete_download($id, $leave = false)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:downloads:entry:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:downloads:entry:' . strval($id));
 }
 
 /**

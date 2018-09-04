@@ -32,7 +32,7 @@
                         $dom.html('#g-' + tabCode, result);
 
                         // Give DOM some time to load, and protect against errors
-                        window.setTimeout(function() {
+                        window.setTimeout(function () {
                             $cms.ui.findUrlTab();
                         }, 0);
                     });
@@ -231,10 +231,10 @@
     };
 
     $cms.functions.hookProfilesTabsEditDeleteRenderTab = function hookProfilesTabsEditDeleteRenderTab() {
-        var suffix = $cms.filter.id('{!cns:DELETE_MEMBER;^}').toLowerCase();
+        var suffix = $cms.filter.id('{!DELETE;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function () {
-            var submitButton = document.getElementById('submit-button'),
+            var submitButton = document.getElementById('account-submit-button'),
                 deleteCheckbox = document.getElementById('delete'),
                 tab = document.getElementById('t-edit--' + suffix);
 
@@ -248,7 +248,7 @@
 
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
         var form = document.getElementById('main-form'),
-            submitBtn = document.getElementById('submit-button'),
+            submitBtn = document.getElementById('account-submit-button'),
             validValue;
 
         form.addEventListener('submit', function submitCheck(e) {
@@ -313,7 +313,7 @@
     };
 
     $cms.templates.joinForm = function (params, container) {
-        var skippable =  strVal(params.skippable);
+        var skippable = strVal(params.skippable);
 
         joinForm(params);
 
@@ -385,7 +385,7 @@
         proceedDiv.style.marginTop = '1em';
 
         // Cancel button
-        /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
+        /*{+START,SET,icon_cancel}{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}{+END}*/
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'btn btn-primary btn-scri buttons--cancel';
@@ -398,7 +398,7 @@
         proceedDiv.appendChild(button);
 
         // Submit button
-        /*{$SET,proceed_icon,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
+        /*{+START,SET,proceed_icon}{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}{+END}*/
         button = document.createElement('button');
         button.type = 'submit';
         button.className = 'btn btn-primary btn-scri buttons--proceed';

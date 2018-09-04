@@ -263,6 +263,8 @@ class Module_cms_downloads extends Standard_crud_module
         $server_url = post_param_string('server_url', false, INPUT_FILTER_URL_GENERAL);
         $subfolders = post_param_integer('subfolders', 0);
 
+        log_it('FTP_DOWNLOADS');
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('FTP_DOWNLOADS'), $this->title, 'import_ftp_downloads', array($destination, $server_url, $subfolders));
     }
@@ -311,6 +313,8 @@ class Module_cms_downloads extends Standard_crud_module
         $server_path = post_param_string('server_path');
 
         $subfolders = post_param_integer('subfolders', 0);
+
+        log_it('FILESYSTEM_DOWNLOADS');
 
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('FILESYSTEM_DOWNLOADS'), $this->title, 'import_filesystem_downloads', array($destination, $server_path, $subfolders));
@@ -1144,13 +1148,13 @@ class Module_cms_downloads_cat extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add one
-            (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads', array('downloads', $category_id)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF'), // Edit this
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads', array('downloads', $category_id)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF', do_lang_tempcode('EDIT_THIS_DOWNLOAD')), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
             ($id === null) ? null : array('downloads', array('type' => 'entry', 'id' => $id), get_module_zone('downloads')), // View this
             array('downloads', array('type' => 'browse'), get_module_zone('downloads')), // View archive
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'add_category'), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
-            has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => '_edit_category', 'id' => $category_id), '_SELF') : null, // Edit this category
+            has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => '_edit_category', 'id' => $category_id), '_SELF', do_lang_tempcode('EDIT_THIS_DOWNLOAD_CATEGORY')) : null, // Edit this category
             array('downloads', array('type' => 'browse', 'id' => ($category_id == db_get_first_id()) ? null : $category_id), get_module_zone('downloads')), // View this category
             /* SPECIALLY TYPED 'LINKS' */
             $special_links,

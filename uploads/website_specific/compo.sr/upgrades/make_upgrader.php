@@ -153,6 +153,8 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     if ($addons_in_upgrader !== null) {
         @mkdir($wip_path . '/exports', 0777);
         @mkdir($wip_path . '/exports/addons', 0777);
+        @mkdir($wip_path . '/imports', 0777);
+        @mkdir($wip_path . '/imports/addons', 0777);
 
         // Build all addon TARs
         global $CACHE_FROM_ADDONS;
@@ -175,6 +177,8 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
                 array(),
                 $new_base_path
             );
+
+            rename($wip_path . '/exports/addons/' . $addon . '.tar', $wip_path . '/imports/addons/' . $addon . '.tar');
         }
     }
 

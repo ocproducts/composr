@@ -665,7 +665,48 @@ class Hook_import_ipb2
                 if ($password === null) {
                     $password = '';
                 }
-                $id_new = cns_make_member($row['name'], $password, $row['email'], null, $row['bday_day'], $row['bday_month'], $row['bday_year'], $custom_fields, strval($row['time_offset']), $primary_group, $validated, $row['joined'], $row['last_visit'], '', '', $signature, 0, 1, 1, $row['title'], '', '', $row['view_sigs'], $row['auto_track'], $language, $row['email_pm'], $row['email_pm'], $row['ip_address'], '', false, $type, $salt);
+                $id_new = cns_make_member(
+                    $row['name'], // username
+                    $password, // password
+                    $row['email'], // email_address
+                    $primary_group, // primary_group
+                    null, // secondary_groups
+                    $row['bday_day'], // dob_day
+                    $row['bday_month'], // dob_month
+                    $row['bday_year'], // dob_year
+                    $custom_fields, // custom_fields
+                    strval($row['time_offset']), // timezone
+                    $language, // language
+                    '', // theme
+                    $row['title'], // title
+                    '', // photo_url
+                    '', // photo_thumb_url
+                    null, // avatar_url
+                    $signature, // signature
+                    1, // preview_posts
+                    1, // reveal_age
+                    $row['view_sigs'], // views_signatures
+                    $row['auto_track'], // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    $row['email_pm'], // allow_emails
+                    $row['email_pm'], // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    $validated, // validated
+                    '', // validated_email_confirm_code
+                    null, // on_probation_until
+                    0, // is_perm_banned
+                    false, // check_correctness
+                    $row['ip_address'], // ip_address
+                    $type, // password_compatibility_scheme
+                    $salt, // salt
+                    $row['joined'], // join_time
+                    $row['last_visit'] // last_visit_time
+                );
 
                 if ($row['mgroup'] == 5) {
                     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $id_new), '', 1);

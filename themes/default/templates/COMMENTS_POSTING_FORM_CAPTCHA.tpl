@@ -4,18 +4,18 @@
 			<div class="comments-captcha">
 				<div class="box box---comments-posting-form--captcha"><div class="box-inner">
 					{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a id="captcha-audio" class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$CUSTOM_BASE_URL*}/uploads/captcha/{$SESSION*}.wav">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!captcha:DESCRIPTION_CAPTCHA_2,<a id="captcha-audio" class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$CUSTOM_BASE_URL*}/uploads/captcha/{$SESSION*}.wav?cache_break={$RAND&*}">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
 					{+END}
 					{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
-						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!captcha:DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
 					{+END}
 					{+START,IF,{$CONFIG_OPTION,css_captcha}}
-						<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha-frame" class="captcha-frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
+						<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} tabindex="-1" id="captcha-frame" class="captcha-frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}?cache_break={$RAND}{$KEEP*,0,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
 					{+END}
 					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
 						<img id="captcha-image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}" />
 					{+END}
-					<input maxlength="6" size="8" class="input-text-required" type="text" id="captcha" class="form-control form-control-inline" name="captcha" />
+					<input maxlength="6" size="6" type="text" id="captcha" class="input-text-required form-control form-control-inline" name="captcha" />
 				</div></div>
 			</div>
 		{+END}

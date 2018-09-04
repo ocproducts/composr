@@ -147,11 +147,6 @@ class Hook_addon_registry_themewizard
             'themes/default/images/logo/default_backgrounds/banner9.png',
             'themes/default/images/logo/default_backgrounds/banner10.png',
             'themes/default/javascript/themewizard.js',
-
-            'adminzone/pages/modules/admin_svg_sprites.php',
-            'themes/default/templates/PREVIEW_SVG_SPRITE_ICON.tpl',
-            'themes/default/templates/PREVIEW_SVG_SPRITE_SCREEN.tpl',
-            'themes/default/templates/GENERATE_SVG_SPRITE_SCREEN.tpl',
         );
     }
 

@@ -45,7 +45,7 @@ class http_test_set extends cms_test_case
     public function testFail()
     {
         $result = cms_http_request('http://fdsdsfdsjfdsfdgfdgdf.com/', array('trigger_error' => false));
-        $this->assertTrue($result->data === null);
+        $this->assertTrue($result->data === null, 'Invalid domain producing a result; maybe your ISPs DNS mucks about and you need to disable that in their preferences somehow');
     }
 
     public function testFailHttps()
@@ -84,6 +84,7 @@ class http_test_set extends cms_test_case
         $write = fopen($write_path, 'wb');
         $result = cms_http_request('http://example.com/', array('write_to_file' => $write));
         $this->assertTrue(strpos(file_get_contents($write_path), 'Example Domain') !== false);
+        fclose($write);
         unlink($write_path);
     }
 
@@ -93,6 +94,7 @@ class http_test_set extends cms_test_case
         $write = fopen($write_path, 'wb');
         $result = cms_http_request('https://example.com/', array('write_to_file' => $write));
         $this->assertTrue(strpos(file_get_contents($write_path), 'Example Domain') !== false);
+        fclose($write);
         unlink($write_path);
     }
 }

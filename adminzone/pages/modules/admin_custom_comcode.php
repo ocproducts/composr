@@ -241,6 +241,10 @@ class Module_admin_custom_comcode extends Standard_crud_module
      */
     public function get_form_fields($title = '', $description = '', $enabled = 1, $tag = 'this', $replace = '<span class="example" style="color: {color}">{content}</span>', $example = '[this color="red"]blah[/this]', $parameters = 'color=black', $dangerous_tag = 0, $block_tag = 0, $textual_tag = 1)
     {
+        if ((get_forum_type() == 'cns') && (is_on_multi_site_network())) {
+            attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
+        }
+
         $fields = new Tempcode();
         require_code('comcode_compiler');
         $fields->attach(form_input_codename(do_lang_tempcode('COMCODE_TAG'), do_lang_tempcode('DESCRIPTION_COMCODE_TAG'), 'tag', $tag, true, null, MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH));

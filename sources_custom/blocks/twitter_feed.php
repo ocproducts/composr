@@ -30,7 +30,7 @@ class Block_twitter_feed
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('screen_name', 'title', 'template_main', 'template_style', 'max_statuses', 'style', 'show_profile_image', 'follow_button_size', 'twitter_logo_color', 'twitter_logo_size');
+        $info['parameters'] = array('screen_name', 'title', 'max_statuses', 'style', 'show_profile_image', 'follow_button_size', 'twitter_logo_color', 'twitter_logo_size');
         return $info;
     }
 
@@ -74,7 +74,8 @@ class Block_twitter_feed
 
         cms_ini_set('ocproducts.type_strictness', '0');
 
-        // Set up variables from parameters
+        // Set up variables from parameters...
+
         $api_key = get_option('twitter_api_key');
         $api_secret = get_option('twitter_api_secret');
         if ($api_key == '' || $api_secret == '') {
@@ -85,25 +86,25 @@ class Block_twitter_feed
         if ($token === null || $token_secret === null) {
             return do_template('RED_ALERT', array('_GUID' => 'm7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED_OAUTH')));
         }
-        $twitter_name = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
+
+        $twitter_query = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
+        if (preg_match('#^\w+$#', $twitter_query) != 0) {
+            $user_screen_name = $twitter_query;
+        } else {
+            $user_screen_name = '';
+        }
+
         $twitter_title = array_key_exists('title', $map) ? $map['title'] : 'Twitter Feed';
-        $twitter_tempmain = array_key_exists('template_main', $map) ? $map['template_main'] : '';
-        if ($twitter_tempmain) {
-            $twitter_tempmain = '_' . $twitter_tempmain;
-        }
-        $twitter_templatemain = 'BLOCK_TWITTER_FEED' . $twitter_tempmain;
-        $twitter_tempstyle = array_key_exists('template_style', $map) ? $map['template_style'] : '';
-        if ($twitter_tempstyle) {
-            $twitter_tempstyle = '_' . $twitter_tempstyle;
-        }
-        $twitter_templatestyle = 'BLOCK_TWITTER_FEED_STYLE' . $twitter_tempstyle;
+
         $twitter_maxstatuses = array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10;
         $twitter_showprofileimage = array_key_exists('show_profile_image', $map) ? intval($map['show_profile_image']) : 1;
         $twitter_followbuttonsize = array_key_exists('follow_button_size', $map) ? intval($map['follow_button_size']) : 1;
         $twitter_style = array_key_exists('style', $map) ? intval($map['style']) : 1;
-        $twitter_url = 'http://www.twitter.com/' . $twitter_name;
         $twitter_logocolorparam = array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1;
         $twitter_logosizeparam = array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2;
+
+        // ---
+
         $twitter_error = '';
 
         // Sanitize the input - be sure some key values are in range
@@ -144,6 +145,19 @@ class Block_twitter_feed
         // Create template object
         $content = new Tempcode();
 
+        // Check for Twitter Support addon dependency before we go any further
+        if (!addon_installed('twitter_support', true)) {
+            $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.<br />';
+            return do_template('BLOCK_TWITTER_FEED', array(
+                'TWITTER_TITLE' => $twitter_title,
+                'TWITTER_ERROR' => $twitter_error,
+                'CONTENT' => $content,
+                'STYLE' => strval($twitter_style),
+                'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
+                'USER_SCREEN_NAME' => $user_screen_name,
+            ));
+        }
+
         // Initiate Twitter connection
         require_code('twitter');
         $twitter = new Twitter($api_key, $api_secret);
@@ -152,17 +166,22 @@ class Block_twitter_feed
 
         // Get statuses
         try {
-            $twitter_statuses = $twitter->statusesUserTimeline(null, $twitter_name, null, null, $twitter_maxstatuses, null, false, true, true);
+            if ($user_screen_name != '') {
+                $twitter_statuses = $twitter->statusesUserTimeline(null, $twitter_query, null, $twitter_maxstatuses);
+            } else {
+                $twitter_result = $twitter->searchTweets($twitter_query, null, null, null, null, $twitter_maxstatuses);
+                $twitter_statuses = $twitter_result['statuses'];
+            }
         } catch (TwitterException $e) {
             $twitter_error = $e->getMessage();
             $twitter_error .= '<br />';
-            return do_template($twitter_templatemain, array(
+            return do_template('BLOCK_TWITTER_FEED', array(
                 'TWITTER_TITLE' => $twitter_title,
                 'TWITTER_ERROR' => $twitter_error,
                 'CONTENT' => $content,
                 'STYLE' => strval($twitter_style),
                 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
-                'USER_SCREEN_NAME' => $twitter_name,
+                'USER_SCREEN_NAME' => $user_screen_name,
             ));
         }
 
@@ -170,7 +189,7 @@ class Block_twitter_feed
             return do_template('BLOCK_NO_ENTRIES', array(
                 '_GUID' => '24982bb4c3bfdc2ada1b4ccad92b5039',
                 'BLOCK_ID' => $block_id,
-                'TITLE' => 'Twitter Profile Details',
+                'TITLE' => $twitter_title,
                 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
                 'ADD_NAME' => '',
                 'SUBMIT_URL' => '',
@@ -247,7 +266,7 @@ class Block_twitter_feed
                 }
             }
 
-            $content->attach(do_template($twitter_templatestyle, array(
+            $content->attach(do_template('BLOCK_TWITTER_FEED_TWEET', array(
                 'TWEET_TIME_AGO' => $time_ago,
                 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
                 'FOLLOW_BUTTON_SIZE' => strval($twitter_followbuttonsize),
@@ -281,7 +300,7 @@ class Block_twitter_feed
         }
 
         // Pass all the Styled statuses to the main template container
-        return do_template($twitter_templatemain, array(
+        return do_template('BLOCK_TWITTER_FEED', array(
             'BLOCK_ID' => $block_id,
             'TWITTER_ERROR' => $twitter_error,
             'TWITTER_TITLE' => $twitter_title,
@@ -294,7 +313,7 @@ class Block_twitter_feed
             'FOLLOW_BUTTON_NORMAL' => $follow_button_normal,
             'FOLLOW_BUTTON_LARGE' => $follow_button_large,
             'USER_NAME' => $status['user']['name'],
-            'USER_SCREEN_NAME' => $status['user']['screen_name'],
+            'USER_SCREEN_NAME' => $user_screen_name,
             'USER_LOCATION' => $status['user']['location'],
             'USER_URL' => $status['user']['url'],
             'USER_DESCRIPTION' => $twitter_userdescription,
@@ -362,16 +381,12 @@ class Block_twitter_feed
 function block_twitter_feed__cache_on($map)
 {
     return array(
-        array_key_exists('api_key', $map) ? $map['api_key'] : '',
-        array_key_exists('api_secret', $map) ? $map['api_secret'] : '',
         array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2,
         array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1,
         array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10,
         array_key_exists('style', $map) ? intval($map['style']) : 1,
         array_key_exists('title', $map) ? $map['title'] : '',
         array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens',
-        array_key_exists('template_main', $map) ? $map['template_main'] : '',
-        array_key_exists('template_style', $map) ? $map['template_style'] : '',
         array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1',
         array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1'
     );

@@ -19,14 +19,14 @@
  */
 
 /**
- * Get the Tempcode for a view space page. (a view space shows a single entry, with the field name for each field to the left of the value).
+ * Get the Tempcode for a map screen. (a map shows a single entry, with the field name for each field to the left of the value).
  *
- * @param  Tempcode $title The title of the view space; should be out of get_screen_title
+ * @param  Tempcode $title The title of the map screen; should be out of get_screen_title
  * @param  array $fields An array of mappings between title and value (each mapping being a field)
  * @param  ?Tempcode $text Text to show (null: none)
  * @param  ?Tempcode $buttons Buttons to show (null: none)
  * @param  boolean $responsive Use a responsive layout for the table (too much to fit in 2 columns on a small screen)
- * @return Tempcode The generated view space
+ * @return Tempcode The generated map screen
  */
 function map_table_screen($title, $fields, $text = null, $buttons = null, $responsive = false)
 {
@@ -51,13 +51,13 @@ function map_table_screen($title, $fields, $text = null, $buttons = null, $respo
 }
 
 /**
- * Get the Tempcode for a view space field.
+ * Get the Tempcode for a map field.
  *
  * @param  mixed $name The field title (Tempcode or string). Assumed unescaped.
  * @param  mixed $value The field value (Tempcode or string). Assumed unescaped.
- * @param  boolean $raw Whether the field should be shown as untitled... because it is an element of a subblock of raw rows
+ * @param  boolean $raw Whether the field should not be escaped
  * @param  string $abbr Field abbreviation (blank: none)
- * @return Tempcode The generated view space field
+ * @return Tempcode The generated map field
  */
 function map_table_field($name, $value, $raw = false, $abbr = '') // Not for use with the above, which takes the fields as a raw map
 {

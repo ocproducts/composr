@@ -77,8 +77,8 @@ abstract class Standard_crud_module
     protected $add_one_label = null;
     protected $add_one_cat_label = null;
     protected $edit_this_label = null;
-    protected $edit_one_label = null;
     protected $edit_this_cat_label = null;
+    protected $edit_one_label = null;
     protected $edit_one_cat_label = null;
     protected $entries_title = null;
     protected $categories_title = null;
@@ -1192,7 +1192,22 @@ abstract class Standard_crud_module
             $fields = form_input_radio(do_lang_tempcode($this->select_name), $description, 'id', $entries, $this->no_blank_ids, true, '');
         } elseif ((method_exists($this, 'create_selection_list_ajax_tree')) && (($_fields = $this->create_selection_list_ajax_tree()) !== null)) {
             if (is_array($_fields)) {
-                $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($_fields[1]->evaluate()), escape_html($_fields[2]->evaluate())));
+                $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA',
+                    escape_html($_fields[1]->evaluate()),
+                    escape_html($_fields[2]->evaluate()),
+                    array(
+                        static_evaluate_tempcode(do_template('ICON', array(
+                            'NAME' => 'admin/view_archive',
+                            'ICON_SIZE' => '18',
+                            'ICON_CLASS' => 'vertical-alignment',
+                        ))),
+                        static_evaluate_tempcode(do_template('ICON', array(
+                            'NAME' => 'buttons/search',
+                            'ICON_SIZE' => '18',
+                            'ICON_CLASS' => 'vertical-alignment',
+                        ))),
+                    )
+                ));
                 $fields = $_fields[0];
             } else {
                 $fields = $_fields;
@@ -1209,9 +1224,31 @@ abstract class Standard_crud_module
             $table = $table_result[0];
             $has_ordering = $table_result[1];
             if ((array_key_exists(2, $table_result)) && ($table_result[2] !== null)) {
-                $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_TABLE_EXTRA', escape_html($table_result[2]->evaluate()), escape_html($table_result[3]->evaluate())));
+                $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_TABLE_EXTRA',
+                    escape_html($table_result[2]->evaluate()),
+                    escape_html($table_result[3]->evaluate()),
+                    array(
+                        static_evaluate_tempcode(do_template('ICON', array(
+                            'NAME' => 'buttons/search',
+                            'ICON_SIZE' => '18',
+                            'ICON_CLASS' => 'vertical-alignment',
+                        ))),
+                        static_evaluate_tempcode(do_template('ICON', array(
+                            'NAME' => 'admin/view_archive',
+                            'ICON_SIZE' => '18',
+                            'ICON_CLASS' => 'vertical-alignment',
+                        ))),
+                    )
+                ));
             } elseif ((array_key_exists(3, $table_result)) && ($table_result[3] !== null)) {
-                $text = paragraph(do_lang_tempcode('_CHOOSE_EDIT_TABLE_EXTRA', escape_html($table_result[3]->evaluate())));
+                $text = paragraph(do_lang_tempcode('_CHOOSE_EDIT_TABLE_EXTRA',
+                    escape_html($table_result[3]->evaluate()),
+                    static_evaluate_tempcode(do_template('ICON', array(
+                        'NAME' => 'admin/view_archive',
+                        'ICON_SIZE' => '18',
+                        'ICON_CLASS' => 'vertical-alignment',
+                    )))
+                ));
             } else {
                 $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_TABLE'));
             }
@@ -1235,9 +1272,31 @@ abstract class Standard_crud_module
 
             if (is_array($_entries)) {
                 if ($_entries[1] !== null) {
-                    $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($_entries[1]->evaluate()), escape_html($_entries[2]->evaluate())));
+                    $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA',
+                        escape_html($_entries[1]->evaluate()),
+                        escape_html($_entries[2]->evaluate()),
+                        array(
+                            static_evaluate_tempcode(do_template('ICON', array(
+                                'NAME' => 'buttons/search',
+                                'ICON_SIZE' => '18',
+                                'ICON_CLASS' => 'vertical-alignment',
+                            ))),
+                            static_evaluate_tempcode(do_template('ICON', array(
+                                'NAME' => 'admin/view_archive',
+                                'ICON_SIZE' => '18',
+                                'ICON_CLASS' => 'vertical-alignment',
+                            ))),
+                        )
+                    ));
                 } else {
-                    $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($_entries[2]->evaluate())));
+                    $text = paragraph(do_lang_tempcode('_CHOOSE_EDIT_LIST_EXTRA',
+                        escape_html($_entries[2]->evaluate()),
+                        static_evaluate_tempcode(do_template('ICON', array(
+                            'NAME' => 'admin/view_archive',
+                            'ICON_SIZE' => '18',
+                            'ICON_CLASS' => 'vertical-alignment',
+                        )))
+                    ));
                 }
                 $entries = $_entries[0];
             } else {

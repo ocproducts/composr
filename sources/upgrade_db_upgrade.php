@@ -38,6 +38,8 @@ function upgrader_db_upgrade_screen()
 {
     $out = '';
 
+    log_it('UPGRADER_DATABASE_UPGRADE');
+
     clear_caches_2();
 
     $version_files = cms_version_number();

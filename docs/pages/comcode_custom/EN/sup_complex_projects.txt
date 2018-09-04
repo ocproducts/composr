@@ -59,7 +59,9 @@ Further on in this tutorial we will provide some guidelines for you to identify 
 [title="2"]Pricing[/title]
 
 [surround="right"]
-[media width="60" thumb="0" framed="0"]themes/default/images/icons/tiers/bronze.svg[/media][media width="60" thumb="0" framed="0"]themes/default/images/icons/tiers/silver.svg[/media][media width="60" thumb="0" framed="0"]themes/default/images/icons/tiers/gold.svg[/media]
+[media width="60" thumb="0" framed="0"]themes/default/images/icons/tiers/bronze.svg[/media]
+[media width="60" thumb="0" framed="0"]themes/default/images/icons/tiers/silver.svg[/media]
+[media width="60" thumb="0" framed="0"]themes/default/images/icons/tiers/gold.svg[/media]
 [/surround]
 Pricing is mainly covered in the [page="_SEARCH:sup_pricing"]Project pricing[/page] tutorial, but we will touch on it here also from a more philosophical point of view.
 

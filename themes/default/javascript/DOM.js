@@ -10,8 +10,9 @@
         return (property !== undefined) ? cs.getPropertyValue(dasherize(property)) : cs;
     }
 
-    var rgxIdSelector = /^#[\w\-]+$/,
-        rgxSimpleSelector = /^[#\.]?[\w\-]+$/,
+    var rgxIdSelector = /^#[\w-]+$/,
+        rgxSimpleSelector = /^[#.]?[\w-]+$/,
+        jsTypeRE = /^(?:|application\/javascript|text\/javascript)$/i,
         // Special attributes that should be set via method calls
         methodAttributes = { value: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
@@ -215,7 +216,7 @@
         if (rgxSimpleSelector.test(selector) && ($util.isDoc(context) || $util.isEl(context))) {
             switch (selector[0]) {
                 case '#': // selector is an ID
-                    return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
+                    return ((found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector)))) ? [found] : [];
                 case '.': // selector is a class name
                     return $util.toArray(context.getElementsByClassName(selector.substr(1)));
                 default: // selector is a tag name
@@ -405,21 +406,6 @@
         el.checked = strVal((typeof bool === 'function') ? bool.call(el, el.checked, el) : bool);
         $dom.trigger(el, 'change');
     };
-    /**
-     * @memberof $dom
-     * @param node
-     * @param newText
-     * @returns {string|*}
-     */
-    $dom.text = function text(node, newText) {
-        node = $dom.nodeArg(node);
-
-        if (newText === undefined) {
-            return node.textContent;
-        }
-
-        node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
-    };
 
     $dom.waitForResources = function waitForResources(resourceEls) {
         if (resourceEls == null) {
@@ -488,9 +474,11 @@
                     return;
                 }
 
-                if (event.type === 'load') {
-                    //$util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
-                } else {
+                // if (event.type === 'load') {
+                //     $util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
+                // } 
+
+                if (event.type === 'error') {
                     $util.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);
                 }
 
@@ -556,7 +544,7 @@
      * @param el
      * @param [key]
      * @param [value]
-     * @returns {(DomData|string|number)}
+     * @returns {(object|string|number)}
      */
     $dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
@@ -667,21 +655,23 @@
     };
 
     /**
+     * Get viewport width excluding scrollbars
      * @memberof $dom
      * @param win
      * @returns {number}
      */
     $dom.getWindowWidth = function getWindowWidth(win) {
-        return (win || window).innerWidth - 18;
+        return (win || window).document.documentElement.clientWidth;
     };
 
     /**
+     * Get viewport height excluding scrollbars
      * @memberof $dom
      * @param win
      * @returns {number}
      */
     $dom.getWindowHeight = function getWindowHeight(win) {
-        return (win || window).innerHeight - 18;
+        return (win || window).document.documentElement.clientHeight;
     };
 
     /**
@@ -692,10 +682,10 @@
     $dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
         win || (win = window);
 
-        var rectA = win.document.body.parentElement.getBoundingClientRect(),
-            rectB = win.document.body.getBoundingClientRect(),
-            a = (rectA.bottom - rectA.top),
-            b = (rectB.bottom - rectB.top);
+        var rectHtml = win.document.documentElement.getBoundingClientRect(),
+            rectBody = win.document.body.getBoundingClientRect(),
+            a = (rectHtml.bottom - rectHtml.top),
+            b = (rectBody.bottom - rectBody.top);
 
         return (a > b) ? a : b;
     };
@@ -715,7 +705,7 @@
         el = $dom.elArg(el);
         notRelative = Boolean(notRelative);
 
-        var left = el.getBoundingClientRect().left + window.pageXOffset;
+        var left = el.getBoundingClientRect().left + window.scrollX;
 
         if (!notRelative) {
             while (el) {
@@ -745,7 +735,7 @@
         el = $dom.elArg(el);
         notRelative = Boolean(notRelative);
 
-        var top = el.getBoundingClientRect().top + window.pageYOffset;
+        var top = el.getBoundingClientRect().top + window.scrollY;
 
         if (!notRelative) {
             while (el != null) {
@@ -893,7 +883,7 @@
      * @memberof $dom
      * @param el
      * @param selector
-     * @param context
+     * @param context (exclusive)
      * @returns {*}
      */
     $dom.closest = function closest(el, selector, context) {
@@ -920,7 +910,7 @@
 
         var parents = [];
 
-        while (el = el.parentElement) {
+        while ((el = el.parentElement)) {
             if ((selector === undefined) || $dom.matches(el, selector)) {
                 parents.push(el);
             }
@@ -938,7 +928,7 @@
     $dom.parent = function parent(el, selector) {
         el = $dom.elArg(el);
 
-        while (el = el.parentElement) {
+        while ((el = el.parentElement)) {
             if ((selector === undefined) || $dom.matches(el, selector)) {
                 return el;
             }
@@ -1074,11 +1064,11 @@
             matcher = matcherFor(event.ns);
         }
         return (eventHandlers[$util.uid(element)] || []).filter(function (handler) {
-            return handler
-                && (!event.e || (handler.e === event.e))
-                && (!event.ns || matcher.test(handler.ns))
-                && (!fn || ($util.uid(handler.fn) === $util.uid(fn)))
-                && (!selector || (handler.sel === selector));
+            return handler &&
+                (!event.e || (handler.e === event.e)) &&
+                (!event.ns || matcher.test(handler.ns)) &&
+                (!fn || ($util.uid(handler.fn) === $util.uid(fn))) &&
+                (!selector || (handler.sel === selector));
         });
     }
 
@@ -1104,7 +1094,7 @@
      * @memberof $dom
      * @param el { Window|Document|Element|string }
      * @param event {string|object}
-     * @param [selector] {string|function}
+     * @param [selector] {string|function} (or may be omitted, and callback used here instead)
      * @param [callback] {function}
      * @param [one] {number}
      */
@@ -1547,7 +1537,7 @@
                         options = { duration : duration },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.removeProperty('opacity');
 
                         if (Number($dom.css(el, 'opacity')) !== target) {
@@ -1595,7 +1585,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         $dom.hide(el);
                         resolve();
                     };
@@ -1637,7 +1627,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.opacity = opacity;
                         resolve();
                     };
@@ -1746,7 +1736,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.overflow = prevOverflow;
                         resolve();
                     };
@@ -1808,7 +1798,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.overflow = prevOverflow;
                         $dom.hide(el);
                         resolve();
@@ -1910,7 +1900,7 @@
 
         doc.body.classList.add('website-body', 'main-website-faux');
 
-        $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax-loading"><img id="loading-image" class="vertical-alignment" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical-alignment">{!LOADING;^}<\/span><\/div><\/div>');
+        $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax-loading"><img id="loading-image" class="vertical-alignment" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical-alignment">{!LOADING;^}</span></div></div>');
 
         // Stupid workaround for Google Chrome not loading an image on unload even if in cache
         setTimeout(function () {
@@ -2113,14 +2103,13 @@
         name = strVal(name);
 
         name.split(' ').forEach(function (attribute) {
-            setAttr(el, attribute, null)
+            setAttr(el, attribute, null);
         });
     };
 
     var fragmentRE = /^\s*<(\w+|!)[^>]*>/,
         singleTagRE = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
         tagExpanderRE = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
-        jsTypeRE = /^(?:|application\/javascript|text\/javascript)$/i,
         table = document.createElement('table'),
         tableRow = document.createElement('tr'),
         containers = {
@@ -2135,7 +2124,7 @@
     // The generated DOM nodes are returned as an array.
     // This function can be overridden in plugins for example to make
     // it compatible with browsers that don't support the DOM fully.
-    $dom.fragment = function(html, name, properties) {
+    $dom.fragment = function (html, name, properties) {
         var container, dom, i;
 
         html = strVal(html);
@@ -2155,7 +2144,7 @@
 
             container = containers[name];
             container.innerHTML = strVal(html);
-            $util.toArray(container.childNodes).forEach(function(child){
+            $util.toArray(container.childNodes).forEach(function (child) {
                 if (!$util.isEl(child)) {
                     return;
                 }
@@ -2190,7 +2179,7 @@
             for (i = 0; i < dom.length; i++) {
                 dom[i].remove();
 
-                // Cloning script[src] elements inserted using innerHTML is required for them to actually work
+                // Cloning script[src] elements inserted using innerHTML is required for them to actually be loaded and executed
                 if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
                     dom[i] = cloneScriptEl(dom[i]);
                 }
@@ -2198,7 +2187,7 @@
         }
 
         if ($util.isPlainObj(properties)) {
-            $util.each(properties, function(key, value) {
+            $util.each(properties, function (key, value) {
                 dom.forEach(function (node) {
                     if (!$util.isEl(node)) {
                         return;
@@ -2220,16 +2209,16 @@
     function createInsertionFunction(funcName) {
         var inside = (funcName === 'prepend') || (funcName === 'append');
 
-        return function insertionFunction(target, /*...*/args) {  // `args` can be nodes, arrays of nodes and HTML strings
+        return function insertionFunction(target, /*...*/args) {// `args` can be nodes, arrays of nodes and HTML strings
             target = $dom.elArg(target);
             args = $util.toArray(arguments, 1);
 
             var nodes = [],
                 newParent = inside ? target : target.parentNode;
 
-            args.forEach(function(arg) {
+            args.forEach(function (arg) {
                 if (Array.isArray(arg)) {
-                    arg.forEach(function(el) {
+                    arg.forEach(function (el) {
                         if (Array.isArray(el)) {
                             nodes = nodes.concat(el);
                         } else if ($util.isNode(el)) {
@@ -2294,6 +2283,7 @@
                             if (!el.src && jsTypeRE.test(el.type)) {
                                 var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
                                 (function () {
+                                    // eslint-disable-next-line no-eval
                                     eval(el.innerHTML); // eval() call
                                 }).call(win); // Set `this` context for eval
                             }
@@ -2395,7 +2385,7 @@
     $dom.empty = function empty(el) {
         el = $dom.elArg(el);
 
-        $util.forEach(el.children, function (child) {
+        $util.toArray(el.children).forEach(function (child) {
             $cms.detachBehaviors(child);
         });
 
@@ -2431,22 +2421,6 @@
         var promise = $dom.before(el, html);
         $dom.remove(el);
         return promise;
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param text
-     * @returns {string}
-     */
-    $dom.text = function text(el, text) {
-        el = $dom.elArg(el);
-
-        if (text === undefined) {
-            return el.textContent;
-        }
-
-        return el.textContent = strVal(text);
     };
 
     /**
@@ -2501,7 +2475,7 @@
 
         form = $dom.elArg(form);
 
-        arrVal(form.elements).forEach(function (field) {
+        $util.toArray(form.elements).forEach(function (field) {
             name = field.name;
             if (name && (field.localName !== 'fieldset') && !field.disabled && !(field.type in serializeExcludedTypes) && (!['radio', 'checkbox'].includes(field.type) || field.checked)) {
                 add($dom.value(field));
@@ -2532,43 +2506,6 @@
             result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value));
         });
         return result.join('&');
-    };
-
-    /**
-     * Dimension functions
-     * @memberof $dom
-     */
-    $dom.registerMouseListener = function registerMouseListener() {
-        $dom.registerMouseListener = function () {}; // ensure this function is only executed once
-
-        document.documentElement.addEventListener('mousemove', function (e) {
-            window.currentMouseX = getMouseX(e);
-            window.currentMouseY = getMouseY(e);
-
-            function getMouseX(event) {
-                try {
-                    if (event.pageX) {
-                        return event.pageX;
-                    } else if (event.clientX) {
-                        return event.clientX + window.pageXOffset;
-                    }
-                } catch (ignore) {}
-
-                return 0;
-            }
-
-            function getMouseY(event) {
-                try {
-                    if (event.pageY) {
-                        return event.pageY;
-                    } else if (event.clientY) {
-                        return event.clientY + window.pageYOffset;
-                    }
-                } catch (ignore) {}
-
-                return 0;
-            }
-        });
     };
 
     /**
@@ -2636,10 +2573,10 @@
         }
         var i, iframes;
 
-        if (window.parent != window) {
+        if (window.parent !== window) {
             iframes = window.parent.document.querySelectorAll('iframe');
             for (i = 0; i < iframes.length; i++) {
-                if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] === window))) {
+                if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] === window))) {
                     if (iframes[i].style.height === '900px') {
                         iframes[i].style.height = 'auto';
                     }
@@ -2665,127 +2602,117 @@
         infiniteScrollBlocked = false, // Blocked due to event tracking active
         infiniteScrollMouseHeld = false;
 
-    /**
-     * @param event
-     */
-    $dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(event) {
-        if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
-            infiniteScrollBlocked = true;
-            setTimeout(function () {
-                infiniteScrollBlocked = false;
-            }, 3000);
-        }
-    };
+    $dom.enableInternaliseInfiniteScrolling = function enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl) {
+        $dom.on(window, {
+            scroll: function () {
+                internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl)
+            },
+            touchmove: function () {
+                internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl)
+            },
+            keydown: function (e) {
+                if (e.key === 'End') { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+                    infiniteScrollBlocked = true;
+                    setTimeout(function () {
+                        infiniteScrollBlocked = false;
+                    }, 3000);
+                }
+            },
+            mousedown: function () {
+                if (!infiniteScrollBlocked) {
+                    infiniteScrollBlocked = true;
+                    infiniteScrollMouseHeld = true;
+                }
+            },
+            mousemove: function () {
+                // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                if (infiniteScrollMouseHeld) {
+                    infiniteScrollBlocked = false;
+                    infiniteScrollMouseHeld = false;
+                    internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
+                }
+            }
+        });
 
-    $dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold() {
-        if (!infiniteScrollBlocked) {
-            infiniteScrollBlocked = true;
-            infiniteScrollMouseHeld = true;
-        }
-    };
-
-    /**
-     * @param infiniteScrolling
-     */
-    $dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(infiniteScrolling) {
-        if (infiniteScrollMouseHeld) {
-            infiniteScrollBlocked = false;
-            infiniteScrollMouseHeld = false;
-            infiniteScrolling();
-        }
+        internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
     };
 
     /**
      * @param urlStem
      * @param wrapper
-     * @returns {*}
      */
-    $dom.internaliseInfiniteScrolling = function internaliseInfiniteScrolling(urlStem, wrapper) {
+    function internaliseInfiniteScrolling(urlStem, wrapper) {
         if (infiniteScrollBlocked || infiniteScrollPending) {
             // Already waiting for a result
-            return false;
+            return;
         }
 
-        var paginations = wrapper.querySelectorAll('.pagination'),
+        var paginations = $util.toArray(wrapper.querySelectorAll('.pagination')),
             paginationLoadMore;
 
         if (paginations.length === 0) {
-            return false;
+            return;
         }
 
-        var moreLinks = [], foundNewLinks = null, z, pagination, m;
+        var moreLinks = [], moreLinksFromPagination;
 
-        for (z = 0; z < paginations.length; z++) {
-            pagination = paginations[z];
-            if (pagination.style.display !== 'none') {
-                // Remove visibility of pagination, now we've replaced with AJAX load more link
-                var paginationParent = pagination.parentNode;
-                pagination.style.display = 'none';
-                var numNodeChildren = paginationParent.children.length;
-
-                if (numNodeChildren === 0) { // Remove empty pagination wrapper
-                    paginationParent.style.display = 'none';
-                }
-
-                // Add AJAX load more link before where the last pagination control was
-                // Remove old pagination-load-more's
-                paginationLoadMore = wrapper.querySelector('.pagination-load-more');
-                if (paginationLoadMore) {
-                    paginationLoadMore.parentNode.removeChild(paginationLoadMore);
-                }
-
-                // Add in new one
-                var loadMoreLink = document.createElement('div');
-                loadMoreLink.className = 'pagination-load-more';
-                var loadMoreLinkA = document.createElement('a');
-                $dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
-                loadMoreLinkA.href = '#!';
-                loadMoreLinkA.onclick = (function (moreLinks) {
-                    return function () {
-                        $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
-                        return false;
-                    };
-                }(moreLinks)); // Click link -- load
-                loadMoreLink.appendChild(loadMoreLinkA);
-                paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
-
-                moreLinks = pagination.getElementsByTagName('a');
-                foundNewLinks = z;
+        paginations.forEach(function (pagination) {
+            if ($dom.notDisplayed(pagination)) {
+                return;
             }
-        }
 
-        for (z = 0; z < paginations.length; z++) {
-            pagination = paginations[z];
-            if (foundNewLinks != null) {// Cleanup old pagination
-                if (z != foundNewLinks) {
-                    var _moreLinks = pagination.getElementsByTagName('a');
-                    var numLinks = _moreLinks.length;
-                    for (var i = numLinks - 1; i >= 0; i--) {
-                        _moreLinks[i].parentNode.removeChild(_moreLinks[i]);
-                    }
+            moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
+            moreLinksFromPagination = pagination;
+
+            // Remove visibility of pagination, now we've replaced with AJAX load more link
+            pagination.style.display = 'none';
+
+            // Add AJAX load more link before where the last pagination control was
+            // Remove old pagination-load-more's
+            paginationLoadMore = wrapper.querySelector('.pagination-load-more');
+            if (paginationLoadMore) {
+                paginationLoadMore.remove();
+            }
+
+            // Add in new one
+            var loadMoreLink = document.createElement('div');
+            loadMoreLink.className = 'pagination-load-more';
+            var loadMoreLinkA = loadMoreLink.appendChild(document.createElement('a'));
+            $dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
+            loadMoreLinkA.href = '#!';
+            loadMoreLinkA.onclick = (function (moreLinks) {
+                return function () {
+                    internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                };
+            }(moreLinks)); // Click link -- load
+            paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
+        });
+
+        paginations.some(function (pagination) {
+            if (moreLinksFromPagination != null) {// Cleanup old pagination
+                if (pagination !== moreLinksFromPagination) {
+                    $util.toArray(pagination.getElementsByTagName('a')).forEach(function (a) {
+                        a.remove();
+                    });
                 }
             } else { // Find links from an already-hidden pagination
-
-                moreLinks = pagination.getElementsByTagName('a');
+                moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
                 if (moreLinks.length !== 0) {
-                    break;
+                    return true; // (break)
                 }
             }
-        }
+        });
 
         // Is more scrolling possible?
-        var rel, foundRel = false;
-        for (var k = 0; k < moreLinks.length; k++) {
-            rel = moreLinks[k].getAttribute('rel');
-            if (rel && rel.includes('next')) {
-                foundRel = true;
-            }
-        }
+        var foundRel = moreLinks.some(function (link) {
+            return link.getAttribute('rel') && link.getAttribute('rel').includes('next');
+        });
+
         if (!foundRel) { // Ah, no more scrolling possible
             // Remove old pagination-load-more's
             paginationLoadMore = wrapper.querySelector('.pagination-load-more');
             if (paginationLoadMore) {
-                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+                paginationLoadMore.remove();
             }
 
             return;
@@ -2796,189 +2723,38 @@
             wrapperHeight = wrapper.offsetHeight,
             wrapperBottom = wrapperPosY + wrapperHeight,
             windowHeight = $dom.getWindowHeight(),
-            pageHeight = $dom.getWindowScrollHeight(),
-            scrollY = window.pageYOffset;
+            pageHeight = $dom.getWindowScrollHeight();
 
         // Scroll down -- load
-        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-            return $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+        if (((window.scrollY + windowHeight) > (wrapperBottom - (windowHeight * 2))) && ((window.scrollY + windowHeight) < (pageHeight - 30))) {
+            // ^ If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+            internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
-
-        return false;
-    };
+    }
 
     /**
      * @param urlStem
      * @param wrapper
      * @param moreLinks
-     * @returns {boolean}
      */
-    $dom.internaliseInfiniteScrollingGo = function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
+    function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
         if (infiniteScrollPending) {
-            return false;
-        }
-
-        var wrapperInner = $dom.$id(wrapper.id + '_inner');
-        if (!wrapperInner) {
-            wrapperInner = wrapper;
-        }
-
-        var rel;
-        for (var i = 0; i < moreLinks.length; i++) {
-            rel = moreLinks[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') !== -1) {
-                var nextLink = moreLinks[i];
-                var urlStub = '';
-
-                var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-                if (matches) {
-                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
-                    urlStub += matches[1] + '=' + matches[2];
-                    urlStub += '&raw=1';
-                    infiniteScrollPending = true;
-
-                    $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
-                        infiniteScrollPending = false;
-                        $dom.internaliseInfiniteScrolling(urlStem, wrapper);
-                    });
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    };
-
-    /**
-     * @param urlStem
-     * @param blockElement
-     * @param lookFor
-     * @param extraParams
-     * @param append
-     * @param formsToo
-     * @param scrollToTop
-     */
-    $dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
-        urlStem = strVal(urlStem);
-        lookFor = arrVal(lookFor);
-        append = Boolean(append);
-        formsToo = Boolean(formsToo);
-        scrollToTop = (scrollToTop !== undefined) ? Boolean(scrollToTop) : true;
-
-        if (!blockElement) {
             return;
         }
 
-        var blockPosY = blockElement ? $dom.findPosY(blockElement, true) : 0;
-
-        if (blockPosY > window.pageYOffset) {
-            scrollToTop = false;
-        }
-
-        var linkWrappers = blockElement.querySelectorAll('.ajax-block-wrapper-links');
-        if (linkWrappers.length === 0) {
-            linkWrappers = [blockElement];
-        }
-        var targets = [];
-        for (var i = 0; i < linkWrappers.length; i++) {
-            var linkWrapper = linkWrappers[i],
-                links = $dom.$$(linkWrapper, 'a');
-
-            targets = targets.concat(links);
-
-            if (formsToo) {
-                var forms = $dom.$$(linkWrapper, 'form');
-
-                targets = targets.concat(forms);
-
-                if (linkWrapper.localName === 'form') {
-                    targets.push(linkWrapper);
-                }
-            }
-        }
-
-        targets.forEach(function (target) {
-            if ((target.target !== '_self') || (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
-                return; // (continue)
-            }
-
-            if (target.localName === 'a') {
-                $dom.on(target, 'click', submitFunc);
-            } else {
-                $dom.on(target, 'submit', submitFunc);
-            }
-        });
-
-        function submitFunc(e, el) {
-            var blockCallUrl = $util.url(urlStem),
-                hrefUrl = $util.url((el.localName === 'a') ? el.href : el.action);
-
-            e.preventDefault();
-
-            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            $util.eachIter(hrefUrl.searchParams.entries(), function (param) {
-                var paramName = param[0],
-                    paramValue = param[1];
-
-                lookFor.forEach(function (pattern) {
-                    pattern = new RegExp(pattern);
-
-                    if (pattern.test(paramName)) {
-                        blockCallUrl.searchParams.set(paramName, paramValue);
-                    }
-                });
+        var wrapperInner = document.getElementById(wrapper.id + '-inner') || wrapper,
+            rgxStartParam = /[&?](start|[^_]*_start|start_[^_]*)=([^&]*)/,
+            nextLink = moreLinks.find(function (link) {
+                return link.rel.includes('next') && rgxStartParam.test(link.href);
             });
 
-            if (extraParams != null) {
-                for (var key in extraParams) {
-                    blockCallUrl.searchParams.set(key, extraParams[key]);
-                }
-            }
-
-            // Any POST parameters?
-            var j, postParams, paramName, paramValue;
-
-            if (el.localName === 'form') {
-                if (el.method.toLowerCase() === 'post') {
-                    postParams = '';
-                }
-
-                for (j = 0; j < el.elements.length; j++) {
-                    if (el.elements[j].name) {
-                        paramName = el.elements[j].name;
-                        paramValue = $cms.form.cleverFindValue(el, el.elements[j]);
-
-                        if (el.method.toLowerCase() === 'post') {
-                            if (postParams !== '') {
-                                postParams += '&';
-                            }
-                            postParams += paramName + '=' + encodeURIComponent(paramValue);
-                        } else {
-                            blockCallUrl.searchParams.set(paramName, paramValue);
-                        }
-                    }
-                }
-            }
-
-            hrefUrl.searchParams.delete('ajax');
-            hrefUrl.searchParams.delete('zone');
-
-            try {
-                window.hasJsState = true;
-                window.history.pushState({ js: true }, document.title, hrefUrl.toString());
-            } catch (ignore) {
-                // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
-            }
-
-            $cms.ui.clearOutTooltips();
-
-            // Make AJAX block call
-            $cms.callBlock($util.rel(blockCallUrl), '', blockElement, append, false, postParams).then(function () {
-                if (scrollToTop) {
-                    window.scrollTo(0, blockPosY);
-                }
+        if (nextLink != null) {
+            var startParam = nextLink.href.match(rgxStartParam);
+            infiniteScrollPending = true;
+            $cms.callBlock(urlStem + (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1', '', wrapperInner, true).then(function () {
+                infiniteScrollPending = false;
+                internaliseInfiniteScrolling(urlStem, wrapper);
             });
         }
-    };
+    }
 }(window.$cms || (window.$cms = {}), window.$util, window.$dom));

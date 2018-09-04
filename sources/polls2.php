@@ -159,8 +159,10 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
         generate_resource_fs_moniker('poll', strval($id), null, null, true);
     }
 
-    require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:polls:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', true);
+    if ($current == 1) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('_SEARCH:polls:view:' . strval($id));
+    }
 
     return $id;
 }
@@ -273,7 +275,11 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:polls:view:' . strval($id), true);
+    if ($rows[0]['is_current'] == 1) {
+        notify_sitemap_node_edit('_SEARCH:polls:view:' . strval($id));
+    } else {
+        notify_sitemap_node_delete('_SEARCH:polls:view:' . strval($id));
+    }
 }
 
 /**
@@ -318,7 +324,7 @@ function delete_poll($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:polls:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:polls:view:' . strval($id));
 }
 
 /**
@@ -360,4 +366,7 @@ function set_poll($id)
     $poll_url = build_url(array('page' => 'polls', 'type' => 'view', 'id' => $id), get_module_zone('polls'), array(), false, false, true);
     $mail = do_notification_lang('POLL_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(get_translated_text($question)), $poll_url->evaluate());
     dispatch_notification('poll_chosen', null, $subject, $mail);
+
+    require_code('sitemap_xml');
+    notify_sitemap_node_edit('_SEARCH:polls:view:' . strval($id));
 }

@@ -28,19 +28,23 @@ function get_alexa_rank($url)
 {
     $test = get_value_newer_than('alexa__' . md5($url), time() - 60 * 60 * 24 * 5, true);
     if ($test !== null) {
-       return unserialize($test);
+        return unserialize($test);
     }
 
-    require_code('files');
-    $p = array();
-    $result = http_get_contents('http://data.alexa.com/data?cli=10&dat=s&url=' . urlencode($url), array('trigger_error' => false, 'timeout' => 1.0));
-    if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
-        $rank = integer_format(intval($p[1]));
+    $_url = 'https://www.alexa.com/minisiteinfo/' . urlencode($url);
+    $result = http_get_contents($_url, array('trigger_error' => false, 'timeout' => 2.0));
+    if ($result === null) {
+        return array('', '');
+    }
+
+    $matches = array();
+    if (preg_match('#([\d,]+)\s*</a>\s*</div>\s*<div class="label">Alexa Traffic Rank#s', $result, $matches) != 0) {
+        $rank = integer_format(intval(str_replace(',', '', $matches[1])));
     } else {
         $rank = '';
     }
-    if (preg_match('#<LINKSIN [^<>]*NUM="([0-9]+){1,}"#si', $result, $p) != 0) {
-        $links = integer_format(intval($p[1]));
+    if (preg_match('#([\d,]+)\s*</a>\s*</div>\s*<div class="label">Sites Linking In#s', $result, $matches) != 0) {
+        $links = integer_format(intval(str_replace(',', '', $matches[1])));
     } else {
         $links = '';
     }

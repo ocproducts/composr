@@ -109,7 +109,6 @@ class Hook_addon_registry_core_language_editing
             'themes/default/css/translations_editor.css',
             'sources/hooks/systems/addon_registry/core_language_editing.php',
             'sources/hooks/blocks/main_staff_checklist/translations.php',
-            'themes/default/javascript/translate.js',
             'themes/default/templates/TRANSLATE_ACTION.tpl',
             'themes/default/templates/TRANSLATE_LINE.tpl',
             'themes/default/templates/TRANSLATE_LINE_CONTENT.tpl',
@@ -124,6 +123,9 @@ class Hook_addon_registry_core_language_editing
             'sources/hooks/systems/config/google_translate_enabled.php',
             'sources/database_multi_lang_conv.php',
             'themes/default/javascript/core_language_editing.js',
+            'sources/translation.php',
+            'sources/hooks/systems/symbols/PROVIDE_WITH_TRANSLATION.php',
+            'themes/default/images/google_translate.svg',
         );
     }
 
@@ -211,7 +213,7 @@ class Hook_addon_registry_core_language_editing
                 'LANG_NICE_NAME' => lorem_word(),
                 'LANG_NICE_ORIGINAL_NAME' => lorem_word(),
                 'TOO_MANY' => lorem_phrase(),
-                'GOOGLE' => lorem_phrase(),
+                'TRANSLATION_CREDIT' => '',
                 'TOTAL' => placeholder_number(),
                 'LANG' => fallback_lang(),
                 'LANG_ORIGINAL_NAME' => fallback_lang(),
@@ -237,7 +239,6 @@ class Hook_addon_registry_core_language_editing
         $lines = '';
         foreach (placeholder_array() as $i => $value) {
             $temp = do_lorem_template('TRANSLATE_LINE', array(
-                'TRANSLATE_AUTO' => $value,
                 'DESCRIPTION' => lorem_sentence(),
                 'NAME' => lorem_word() . strval($i),
                 'OLD' => str_replace('\n', "\n", $value),
@@ -250,7 +251,7 @@ class Hook_addon_registry_core_language_editing
         return array(
             lorem_globalise(do_lorem_template('TRANSLATE_SCREEN', array(
                 'PAGE' => lorem_phrase(),
-                'GOOGLE' => lorem_phrase(),
+                'TRANSLATION_CREDIT' => '',
                 'LANG' => fallback_lang(),
                 'LINES' => $lines,
                 'TITLE' => lorem_title(),

@@ -19,6 +19,17 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__addons()
+{
+    global $ADDON_INFO_CACHE;
+    $ADDON_INFO_CACHE = array();
+}
+
+/**
  * Find detail addon details.
  *
  * @return array Map of default addon details
@@ -41,6 +52,33 @@ function get_default_addon_details()
 }
 
 /**
+ * Read all the addons, in the most efficient way possible.
+ */
+function preload_all_ocproducts_addons_info()
+{
+    global $ADDON_INFO_CACHE;
+
+    $hooks = find_all_hooks('systems', 'addon_registry');
+    foreach ($hooks as $addon => $hook_dir) {
+        $hook_path = get_file_base() . '/' . $hook_dir . '/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+        $ADDON_INFO_CACHE[$addon] = read_addon_info($addon, false, null, null, $hook_path);
+    }
+
+    // Now fill in the 'dependencies' data
+    foreach ($ADDON_INFO_CACHE as $addon_a => $addon_info_a) {
+        $ADDON_INFO_CACHE[$addon_a]['dependencies_on_this'] = array();
+
+        foreach ($ADDON_INFO_CACHE as $addon_b => $addon_info_b) {
+            if ($addon_a != $addon_b) {
+                if (in_array($addon_a, $addon_info_b['dependencies'])) {
+                    $ADDON_INFO_CACHE[$addon_a]['dependencies_on_this'][] = $addon_b;
+                }
+            }
+        }
+    }
+}
+
+/**
  * Get info about an addon, simulating an extended version of the traditional Composr-addon database row.
  *
  * @param  string $addon_name The name of the addon
@@ -52,12 +90,17 @@ function get_default_addon_details()
  */
 function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = null, $ini_info = null, $path = null)
 {
+    global $ADDON_INFO_CACHE;
+    if ((isset($ADDON_INFO_CACHE[$addon_name])) && ((!$get_dependencies_on_this) || (isset($ADDON_INFO_CACHE[$addon_name]['dependencies_on_this'])))) {
+        return $ADDON_INFO_CACHE[$addon_name];
+    }
+
     // Hook file has highest priority...
 
     if ($path === null) {
         $is_orig = false;
         $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name) . '.php';
-        if (!file_exists($path)) {
+        if (!is_file($path)) {
             $is_orig = true;
             $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name) . '.php';
         }
@@ -65,7 +108,7 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
         $is_orig = (strpos($path, '/sources_custom/hooks/systems/addon_registry/') !== false);
     }
 
-    if (file_exists($path)) {
+    if (is_file($path)) {
         $_hook_bits = extract_module_functions($path, array('get_dependencies', 'get_version', 'get_category', 'get_copyright_attribution', 'get_licence', 'get_description', 'get_author', 'get_organisation', 'get_file_list', 'get_default_icon'));
         if ($_hook_bits[0] !== null) {
             $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : cms_eval($_hook_bits[0], $path, false);
@@ -137,6 +180,8 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
 
+        $ADDON_INFO_CACHE[$addon_name] = $addon_info;
+
         return $addon_info;
     }
 
@@ -170,6 +215,8 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
 
+        $ADDON_INFO_CACHE[$addon_name] = $addon_info;
+
         return $addon_info;
     }
 
@@ -202,6 +249,9 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
         if ($get_dependencies_on_this) {
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
+
+        $ADDON_INFO_CACHE[$addon_name] = $addon_info;
+
         return $addon_info;
     }
 

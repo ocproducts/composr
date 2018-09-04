@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    code_quality
+ * @package    testing_platform
  */
 
 /*
@@ -630,8 +630,16 @@ if (isset($_GET['test'])) {
     if (isset($_GET['avoid'])) {
         $avoid = explode(',', $_GET['avoid']);
     }
+    $filter = array();
+    if (isset($_GET['filter'])) {
+        $filter = explode(',', $_GET['filter']);
+    }
+    $filter_avoid = array();
+    if (isset($_GET['filter_avoid'])) {
+        $filter_avoid = explode(',', $_GET['filter_avoid']);
+    }
     $enable_custom = isset($_GET['enable_custom']) && ($_GET['enable_custom'] == '1');
-    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), $enable_custom, true, $avoid);
+    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), $enable_custom, true, $avoid, $filter, $filter_avoid);
     $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
     foreach ($files as $i => $to_use) {
         if ($i < $start) {
@@ -786,6 +794,8 @@ function check_function($function, $is_closure = false, $inside_class = false)
                     break;
                 }
             }
+        } else {
+            set_composr_type($p[1], 'mixed');
         }
     }
 
@@ -1912,6 +1922,24 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 infer_expression_type_to_variable_type('integer', $inner[1]);
             }
             return 'integer';
+        case 'BW_OR':
+        case 'BW_XOR':
+        case 'BW_AND':
+            $exp_1 = check_expression($inner[1], false, false, $function_guard);
+            $exp_2 = check_expression($inner[2], false, false, $function_guard);
+
+            $string_mode = ensure_type(array('string'), $exp_1, $c_pos, '', true, true) || ensure_type(array('string'), $exp_2, $c_pos, '', true, true);
+            $integer_mode = ensure_type(array('integer'), $exp_1, $c_pos, '', true, true) || ensure_type(array('integer'), $exp_2, $c_pos, '', true, true);
+            $arg_type = ($string_mode ? 'string' : 'integer');
+
+            $passes = ensure_type(array($arg_type), $exp_1, $c_pos, 'Can only bitwise 2 integers or 2 1-byte strings (got ' . $exp_1 . ')', true);
+
+            if (($passes) && ($string_mode || $integer_mode)) {
+                infer_expression_type_to_variable_type($arg_type, $inner[1]);
+                infer_expression_type_to_variable_type($arg_type, $inner[2]);
+            }
+
+            return $arg_type;
         case 'NEGATE':
             $type = check_expression($inner[1], false, false, $function_guard);
             ensure_type(array('integer', 'float'), $type, $c_pos, 'Can only negate a number');

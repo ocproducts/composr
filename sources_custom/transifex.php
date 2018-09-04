@@ -141,6 +141,8 @@ function transifex_push_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     $cli = is_cli();
     if (!$cli) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
@@ -460,6 +462,8 @@ function transifex_pull_script()
     if (!addon_installed('transifex')) {
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
     }
+
+    header('X-Robots-Tag: noindex');
 
     $version = _transifex_env_version();
     $lang = _transifex_env_lang();
@@ -807,7 +811,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
     if ($test[1] == '200') {
         $data = json_decode($test[0], true);
         $c = $data['content'];
-        $c = str_replace('&quot;', '"', $c); // Transifex uses non-standard escaping within JSON
+        $c = _transifex_decode_content($c);
         $c .= "\n";
 
         if (is_file($default_path) && trim($c) == trim(file_get_contents($default_path))) {
@@ -841,13 +845,13 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
     if ($test_a[1] == '200' || $test_b[1] == '200') {
         if ($test_a[1] == '200') {
             $data_a = json_decode($test_a[0], true);
-            $data_a['content'] = str_replace('&quot;', '"', $data_a['content']); // Transifex uses non-standard escaping within JSON
+            $data_a['content'] = _transifex_decode_content($data_a['content']);
         } else {
             $data_a = array('content' => '');
         }
         if ($test_b[1] == '200') {
             $data_b = json_decode($test_b[0], true);
-            $data_b['content'] = str_replace('&quot;', '"', $data_b['content']); // Transifex uses non-standard escaping within JSON
+            $data_b['content'] = _transifex_decode_content($data_b['content']);
         } else {
             $data_b = array('content' => '');
         }
@@ -1004,4 +1008,12 @@ function _transifex_env_lang()
     }
 
     return get_param_string('lang', null);
+}
+
+function _transifex_decode_content($in)
+{
+    $out = $in;
+    $out = str_replace('&quot;', '"', $out); // Transifex uses non-standard escaping within JSON
+    $out = str_replace('\\\\', '\\', $out); // Transifex adds slashes around slashes
+    return $out;
 }

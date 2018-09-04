@@ -217,7 +217,7 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
         foreach ($THEMEWIZARD_IMAGES as $expression) {
             if (($expression == $id) || ((substr($expression, -1) == '*') && (substr($id, 0, strlen($expression) - 1) . '*' == $expression))) {
                 $keep = keep_symbol(array());
-                return find_script('themewizard') . '?type=image&show=' . rawurlencode($id) . $keep;
+                return find_script('themewizard') . '?type=image&show=' . urlencode($id) . $keep;
             }
         }
     }
@@ -239,6 +239,10 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  */
 function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/default_logos/1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $standalone_version = false)
 {
+    if (!headers_sent()) {
+        header('X-Robots-Tag: noindex');
+    }
+
     require_code('character_sets');
     require_code('files');
     require_code('themes2');
@@ -560,6 +564,8 @@ function themewizard_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('themewizard')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     $type = get_param_string('type');
     $source_theme = get_param_string('keep_theme_source', 'default');
     $algorithm = get_param_string('keep_theme_algorithm', 'equations');
@@ -599,7 +605,7 @@ function themewizard_script()
     if ($type == 'image') {
         $image = calculate_theme($seed, $source_theme, $algorithm, $show, $dark);
         if ($image === null) {
-            header('Location: ' . escape_header(find_theme_image($show)));
+            header('Location: ' . escape_header(find_theme_image($show))); // assign_refresh not used, as no UI here
             exit();
         }
 

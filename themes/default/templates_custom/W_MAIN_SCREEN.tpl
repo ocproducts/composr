@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,buildr}
 
-<div data-require-javascript="buildr" data-tpl="wMainScreen">
+<div data-tpl="wMainScreen">
 	{TITLE}
 
 	<section class="box box---realm-main"><div class="box-inner">

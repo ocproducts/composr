@@ -140,6 +140,7 @@ class Hook_addon_registry_health_check
         return array(
             'sources/hooks/systems/addon_registry/health_check.php',
             'lang/EN/health_check.ini',
+            'sources/hooks/systems/config_categories/health_check.php',
             'sources/hooks/systems/health_checks/.htaccess',
             'sources/hooks/systems/health_checks/index.html',
             'sources/hooks/systems/health_checks/install_env.php',
@@ -180,12 +181,6 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/config/hc_error_log_day_flood_threshold.php',
             'sources/hooks/systems/config/hc_google_safe_browsing_api_enabled.php',
             'sources/hooks/systems/config/hc_io_pct_threshold.php',
-            'sources/hooks/systems/config/hc_mail_address.php',
-            'sources/hooks/systems/config/hc_mail_password.php',
-            'sources/hooks/systems/config/hc_mail_server.php',
-            'sources/hooks/systems/config/hc_mail_server_port.php',
-            'sources/hooks/systems/config/hc_mail_server_type.php',
-            'sources/hooks/systems/config/hc_mail_username.php',
             'sources/hooks/systems/config/hc_mail_wait_time.php',
             'sources/hooks/systems/config/hc_page_size_threshold.php',
             'sources/hooks/systems/config/hc_page_speed_threshold.php',
@@ -210,6 +205,7 @@ class Hook_addon_registry_health_check
             'adminzone/pages/modules/admin_health_check.php',
             'sources/hooks/systems/page_groupings/health_check.php',
             'sources/hooks/systems/commandr_commands/health_check.php',
+            'sources_custom/hooks/systems/actionlog/health_check.php',
         );
     }
 

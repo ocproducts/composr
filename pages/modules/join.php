@@ -76,6 +76,8 @@ class Module_join
 
         require_lang('cns');
 
+        inform_non_canonical_parameter('_lead_source_description');
+
         $this->title = get_screen_title('__JOIN', true, array(escape_html(get_site_name())));
 
         if ($type == 'browse') {
@@ -168,7 +170,7 @@ class Module_join
         }
 
         $hidden = new Tempcode();
-        $_lead_source_description = either_param_string('_lead_source_description', '');
+        $_lead_source_description = either_param_string('_lead_source_description', do_lang('JOINED'));
         if ($_lead_source_description != '') {
             $hidden->attach(form_input_hidden('_lead_source_description', $_lead_source_description));
         }
@@ -268,6 +270,8 @@ class Module_join
 
         // Activate user
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_validated_email_confirm_code' => ''), array('id' => $id), '', 1);
+
+        delete_cache_entry('main_members');
 
         if ($validated == 0) {
             return inform_screen($this->title, do_lang_tempcode('AWAITING_MEMBER_VALIDATION'));

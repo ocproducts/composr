@@ -89,6 +89,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
         $GLOBALS['SITE_DB']->drop_table_if_exists('post_tokens');
         $GLOBALS['SITE_DB']->drop_table_if_exists('cron_progression');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('translation_cache');
 
         /* We don't want to get rid of on-disk data when reinstalling
         $zones = find_all_zones(true);
@@ -371,6 +372,8 @@ class Module_admin_version
                 'm_url' => 'LONG_TEXT',
                 'm_queued' => 'BINARY',
                 'm_template' => 'ID_TEXT',
+                'm_sender_email' => 'SHORT_TEXT',
+                'm_plain_subject' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'recentmessages', array('m_date_and_time'));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'queued', array('m_queued'));
@@ -859,7 +862,6 @@ class Module_admin_version
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 1, '', 'tick', 0, '0', '', 'icons/tool_buttons/notifications');
 
             $GLOBALS['SITE_DB']->create_table('email_bounces', array(
                 'id' => '*AUTO',
@@ -1012,6 +1014,16 @@ class Module_admin_version
                 'c_last_error' => 'LONG_TEXT',
                 'c_enabled' => 'BINARY',
             ));
+
+            $GLOBALS['SITE_DB']->create_table('translation_cache', array(
+                'id' => '*AUTO',
+                't_lang_from' => 'LANGUAGE_NAME',
+                't_lang_to' => 'LANGUAGE_NAME',
+                't_text' => 'LONG_TEXT',
+                't_context' => 'INTEGER',
+                't_text_result' => 'LONG_TEXT',
+            ));
+            $GLOBALS['SITE_DB']->create_index('translation_cache', 'lookup', array('t_lang_from', 't_lang_to', 't_text(100)', 't_context'));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 18)) { // LEGACY
@@ -1080,6 +1092,21 @@ class Module_admin_version
                     'c_enabled' => 1,
                 ));
             }
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
+            $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('smart_topic_notification');
+
+            rename_config_option('imap_folder', 'mail_folder');
+            rename_config_option('imap_host', 'mail_server_host');
+            rename_config_option('imap_port', 'mail_server_port');
+            rename_config_option('imap_username', 'mail_username');
+            rename_config_option('imap_password', 'mail_password');
+
+            $GLOBALS['FORUM_DB']->add_table_field('logged_mail_messages', 'm_sender_email', 'SHORT_TEXT');
+            $GLOBALS['FORUM_DB']->add_table_field('logged_mail_messages', 'm_plain_subject', 'BINARY');
+
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'actionlogs SET param_a=param_b,param_b=param_a WHERE ' . db_string_equal_to('the_type', 'UNSILENCE_TOPIC') . ' OR ' . db_string_equal_to('the_type', 'UNSILENCE_FORUM'));
         }
     }
 

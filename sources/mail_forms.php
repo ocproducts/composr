@@ -33,7 +33,9 @@ function init__mail_forms()
  */
 function form_to_email_entry_script()
 {
-    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+    header('X-Robots-Tag: noindex');
+
+    if (($_SERVER['REQUEST_METHOD'] != 'POST') || (count($_POST) == 0)) {
         post_param_string('post'); // We need to produce a hard-error if nothing sent
     }
 
@@ -49,7 +51,7 @@ function form_to_email_entry_script()
     $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
     if ($redirect != '') {
         require_code('site2');
-        $tpl = redirect_screen($title, $redirect, '');
+        $tpl = redirect_screen($title, $redirect);
     } else {
         $tpl = do_template('INFORM_SCREEN', array('_GUID' => 'e577a4df79eefd9064c14240cc99e947', 'TITLE' => $title, 'TEXT' => $text));
     }
@@ -67,7 +69,7 @@ function form_to_email_entry_script()
  * @param  string $body_prefix The prefix text to the e-mail body (blank: none)
  * @param  string $body_suffix The suffix text to the e-mail body (blank: none)
  * @param  ?array $fields A map of fields to field titles to transmit. (null: all POSTed fields, except subject and e-mail)
- * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address)
+ * @param  ?EMAIL $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address)
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map
  */
 function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $fields = null, $to_email = null, $is_via_post = true)
@@ -119,7 +121,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
  * @param  string $body_prefix The prefix text to the e-mail body (blank: none)
  * @param  string $body_suffix The suffix text to the e-mail body (blank: none)
  * @param  ?array $fields A map of field names to field titles to transmit. (null: all POSTed fields, except certain standardised ones)
- * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address)
+ * @param  ?EMAIL $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address)
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map
  * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments, body parts (if calling code wants partials instead of a single $message)
  *

@@ -26,14 +26,6 @@ if (!addon_installed('meta_toolkit')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
 }
 
-/*
-This code is the frontend to make Composr builds.
-
-If running on Windows, you need to install the following commands in your path...
- - Infozip's zip.exe and unzip.exe
- - gunzip.exe, gzip.exe, and tar.exe
-*/
-
 restrictify();
 cms_ini_set('ocproducts.xss_detect', '0');
 
@@ -215,7 +207,7 @@ function phase_1()
     $old_tree = ($is_old_tree ? '1' : '0');
 
     if (post_param_integer('skip', 0) == 0) {
-        echo make_installers();
+        echo make_installers(get_param_integer('keep_skip_file_grab', 0) == 1);
     }
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '2')));
@@ -299,7 +291,7 @@ function phase_2()
 
         echo '
             <li><strong>Installatron</strong>: Go into <a target="_blank" href="http://installatron.com/editor">Installatron</a>, login with the privileged management account, and setup a new release with the new version number (Main tab), update the URL (Version Info tab, use "Installatron installer (direct download)") and scroll down and click "Save all changes", and Publish (Publisher tab).</li>
-            <li><strong>Microsoft Web Platform</strong>: <a target="_blank" href="https://webgallery.microsoft.com/portal">Submit the new MS Web App Gallery file to Microsoft</a> using the privileged management account (chris@compo.sr). Change the \'Version\', the \'Release Date\', the \'Package Location URL\' (use "Microsoft installer (direct download)"), and set the shasum to <kbd>' . escape_html($ms_sha1) . '</kbd>. <strong>Wait a few days for this (note down the task); approval takes time and we want to make sure we are past any teething problems first</strong></li>
+            <li><strong>Microsoft Web Platform</strong>: <a target="_blank" href="https://webgallery.microsoft.com/portal">Submit the new MS Web App Gallery file to Microsoft</a> using the privileged management account (chris@compo.sr). Change the \'Version\', the \'Release Date\', the \'Package Location URL\' (use "Microsoft installer (direct download)"), and set the shasum to <kbd>' . escape_html($ms_sha1) . '</kbd>. After submitting automatic checks will run and you have to click Publish again.</li>
             <li><strong>Other integrations</strong>: E-mail <a href="mailto:?bcc=punit@softaculous.com,brijesh@softaculous.com&amp;subject=New Composr release&amp;body=Hi, this is an automated notification that a new release of Composr has been released - regards, the Composr team.">integration partners</a></li>
             <li>Update <a target="_blank" href="https://en.wikipedia.org/w/index.php?title=Composr_CMS&action=edit">listing on Wikipedia</a> ("latest release version" and "latest release date")</li>
         ';

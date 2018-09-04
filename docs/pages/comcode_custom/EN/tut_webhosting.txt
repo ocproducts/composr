@@ -106,13 +106,16 @@ We require:
 
 We require:
  - A web server running Apache (the common Linux web server), {$IS_MAINTAINED,platform_litespeed,LiteSpeed} [an Apache drop-in replacement], or {$IS_MAINTAINED,platform_iis,IIS7+} [the Microsoft web server]. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working);
+ - If you want URL Schemes on Apache, [tt]mod_rewrite[/tt] must be enabled.
  - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache).
  - That the web server is not overloaded with too many users, or has very poor performance.
  - Either a suEXEC-style web server (strongly recommended) &dagger;, or a working FTP connection from PHP back to the hosting (so the server has to be running FTP, and PHP has to be running the PHP [tt]ftp[/tt] extension).
 
 If running Apache:
  - The server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security).
-
+ - If you want URL Schemes, [tt]mod_rewrite[/tt] must be enabled.
+ - The following Apache modules are recommended (for maximum performance): [tt]mod_headers[/tt], [tt]mod_setenvif[/tt], [tt]mod_env[/tt], [tt]mod_deflate[/tt], [tt]mod_filter[/tt]
+ 
 &dagger; By suEXEC-style web server we mean either:
 [list="a"]
 [*] an environment where the web server user has recursive write access over the web directories (most Windows servers)
@@ -169,15 +172,13 @@ If you want automatic thumbnail generation you need a server with FFMPEG on it. 
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension ([tt]ldap[/tt]) is required.
 
-If Tornevall integration is required, the PHP SOAP extension ([tt]soap[/tt]) is required.
-
 If encrypted CPFs (Custom Profile Fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial) the PHP OpenSSL extension ([tt]openssl[/tt]) is required.
 
 If Composr-fed DKIM is needed the PHP OpenSSL extension ([tt]openssl[/tt]) is required.
 
 If spell checking is needed, the Pspell ([tt]pspell[/tt]) or Enchant ([tt]enchant[/tt]) PHP extensions must be installed with matching aspell/hunspell installs and dictionaries on the server.
 
-If transliteration of non-European languages is desired (for quality URL moniker generation), the PHP intl extension ([tt]intl[/tt]) is required.
+If transliteration of non-European languages is desired (for quality URL moniker generation), or Punycode support, the PHP intl extension ([tt]intl[/tt]) is required.
 
 [title="2"]Further recommendations[/title]
 
@@ -190,6 +191,7 @@ Composr recommends:
  - A PHP opcode cache: Zend OpCache (bundled by default), APC (available for PHP 5.6 or lower only), APCu, XCache, Nusphere PhpExpress, or Wincache.
  - A PHP environment with [tt]open_basedir[/tt] enabled.
  - At least 100MB of disk space.
+ - Generally, if you are using shared webhosting then we advise picking a host that does nightly backups that you have access to restore -- we've seen a lot of webhosts not take any responsibility for backup, and it does need doing at the server level to work effectively.
 
 [title="2"]Forum drivers (advanced)[/title]
 

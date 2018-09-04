@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr}>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 		<link {$CSP_NONCE_HTML} href="restore.php?type=css" rel="stylesheet" />

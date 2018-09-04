@@ -53,7 +53,9 @@
 		{+END}
 
 		{$SET,ajax_block_main_multi_content_wrapper,ajax-block-main-multi-content-wrapper-{$RAND%}}
-		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box-wrapper">
+		{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
+		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box-wrapper" 
+			  data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 			<div class="clearfix cguid-{_GUID|*} raw-ajax-grow-spot">
 				{+START,IF_NON_EMPTY,{CONTENT}}
 					{+START,LOOP,CONTENT}
@@ -72,7 +74,10 @@
 						{PAGINATION}
 					</div>
 
-					{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+					{+START,INCLUDE,AJAX_PAGINATION}
+						WRAPPER_ID={$GET,ajax_block_main_multi_content_wrapper}
+						ALLOW_INFINITE_SCROLL=1
+					{+END}
 				{+END}
 			{+END}
 

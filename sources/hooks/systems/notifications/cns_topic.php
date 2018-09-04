@@ -23,6 +23,9 @@
  */
 class Hook_notification_cns_topic extends Hook_Notification
 {
+    public $handle_mailing_list = false;
+    public $mailing_list_members = array();
+
     /**
      * Find whether a handled notification code supports categories.
      * (Content types, for example, will define notifications on specific categories, not just in general. The categories are interpreted by the hook and may be complex. E.g. it might be like a regexp match, or like FORUM:3 or TOPIC:100).
@@ -216,14 +219,19 @@ class Hook_notification_cns_topic extends Hook_Notification
      * @param  ID_TEXT $notification_code Notification code
      * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
      * @param  ?array $to_member_ids List of member IDs we are restricting to (null: no restriction). This effectively works as a intersection set operator against those who have enabled.
+     * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
      * @param  integer $start Start position (for pagination)
      * @param  integer $max Maximum (for pagination)
      * @return array A pair: Map of members to their notification setting, and whether there may be more
      */
-    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
+    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
         if ((!is_numeric($category)) && ($category !== null)) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // We should never be accessing as forum:<id>, that is used only behind the scenes
+        }
+
+        if ($from_member_id === null) {
+            $from_member_id = get_member();
         }
 
         list($members, $maybe_more) = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
@@ -258,12 +266,30 @@ class Hook_notification_cns_topic extends Hook_Notification
             list($members, $maybe_more) = $this->_all_members_who_have_enabled_with_category_access(array($members, $maybe_more), 'forums', $notification_code, strval($forum_id), $to_member_ids, $start, $max);
         }
 
-        // Filter members who has more than one unread posts in that topic
+        // Filter members who will receive mailing-style e-mails
+        if ((is_numeric($category)) && ($this->handle_mailing_list)) {
+            require_code('cns_forums2');
+            $mls = cns_has_mailing_list_style($forum_id);
+            if ($mls[0] == 1) {
+                $this->mailing_list_members = array();
+
+                foreach ($members as $member_id => $setting) {
+                    $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style') == 1);
+                    $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
+                    $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
+                    if (($mailing_list_style) && ($email_address != '') && ($receive_email_notification) && ($member_id != $from_member_id)) {
+                        $this->mailing_list_members[] = $member_id;
+                        $members[$member_id] = $setting & ~A_INSTANT_EMAIL;
+                    }
+                }
+            }
+        }
+
+        // Filter members who have more than one unread posts in that topic
         if (is_numeric($category)) {
             $members_new = array();
             foreach ($members as $member_id => $setting) {
-                $fields = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member_id);
-                $smart_topic_notification_enabled = (isset($fields['smart_topic_notification'])) && ($fields['smart_topic_notification'] == '1');
+                $smart_topic_notification_enabled = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_smart_topic_notification') == 1);
 
                 if ($smart_topic_notification_enabled) { // Maybe we don't send, based on identifying whether they have received a notification already since last reading the topic
                     $read_log_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => $member_id, 'l_topic_id' => intval($category)));

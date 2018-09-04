@@ -96,7 +96,13 @@ Composr will generate a very thorough Sitemap for your website, providing links 
 
 Composr will also {$IS_MAINTAINED,sitemap_submit,automatically submit the Sitemap} to the above search engines every 24 hours, so long as the system scheduler is enabled and the 'Auto-submit sitemap' option is on. Configuration of the system scheduler is described in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page] tutorial. You will know if it is not working because your Admin Zone dashboard will say so.
 
-If you cannot configure the system scheduler for some reason, you can force generation of the sitemap by opening up [tt]http://yourbaseurl/data/force_sitemap_generation.php?keep_su=Guest[/tt], and then manually submitting the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
+If you cannot configure the system scheduler for some reason, you can force generation of the sitemap from Commandr:
+[code="Commandr"]
+:require_code('sitemap_xml');
+build_sitemap_cache_table();
+sitemap_xml_build();
+[/code]
+You then need to manually submit the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
 
 To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/data_custom/sitemaps/index.xml[/tt]. You should see an [abbr="eXtensible Markup Language"]XML[/abbr] document with reference to individual sitemap(s).
 

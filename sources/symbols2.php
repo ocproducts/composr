@@ -674,7 +674,7 @@ function ecv2_COMMA_LIST_UNSHIFT($lang, $escaped, $param)
  */
 function ecv2_COPPA_ON($lang, $escaped, $param)
 {
-    $value = (get_option('is_on_coppa') == '1') ? '1' : '0';
+    $value = ((get_option('is_on_coppa') == '1') && (get_option('dobs') == '1')) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -1240,38 +1240,6 @@ function ecv2_HAS_CATEGORY_ACCESS($lang, $escaped, $param)
 
     if ((isset($param[0])) && (function_exists('has_category_access'))) {
         $value = has_category_access((($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1]) ? '1' : '0';
-    }
-
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-    return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result
- */
-function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
-{
-    $value = '';
-
-    if (isset($param[1])) {
-        $range = strtolower($param[0]);
-        $owner = intval($param[1]);
-        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
-        if (array_key_exists(5, $param)) {
-            $value = has_edit_permission($range, $member_id, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
-        } else {
-            $value = has_edit_permission($range, $member_id, $owner, $cms_page) ? '1' : '0';
-        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -2993,7 +2961,7 @@ function ecv2_WHILE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $_p = $param[0]->evaluate();
-        if (($_p == '1') || ($_p == '1')) {
+        if ($_p == '1') {
             $value = '';
             $value .= $param[1]->evaluate();
             $put = '';

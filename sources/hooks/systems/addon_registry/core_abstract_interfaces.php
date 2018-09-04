@@ -266,6 +266,7 @@ class Hook_addon_registry_core_abstract_interfaces
             do_lorem_template('AJAX_PAGINATION', array(
                 'BLOCK_PARAMS' => '',
                 'ALLOW_INFINITE_SCROLL' => '1',
+                'WRAPPER_ID' => placeholder_id(),
             ))
         );
     }
@@ -676,8 +677,8 @@ class Hook_addon_registry_core_abstract_interfaces
     {
         return array(
             lorem_globalise(do_lorem_template('QUESTION_UI_BUTTONS', array(
-                'BUTTONS' => placeholder_array(),
-                'IMAGES' => array(),
+                'BUTTONS' => array(lorem_word()),
+                'IMAGES' => array('admin/add'),
                 'TITLE' => lorem_phrase(),
                 'MESSAGE' => lorem_phrase(),
             )), null, '', true)

@@ -93,7 +93,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
                 $wrong_domain = 'www.' . $domain;
             }
 
-            $lookup = @gethostbyname($wrong_domain);
+            $lookup = cms_gethostbyname($wrong_domain);
             $ok = ($lookup != $wrong_domain);
             $this->assertTrue($ok, 'Could not lookup [tt]' . $wrong_domain . '[/tt], should exist for it to redirect from [tt]' . $domain . '[/tt]');
             if (!$ok) {

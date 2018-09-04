@@ -31,7 +31,7 @@
 
                     grecaptchaParameters = {
                         sitekey: $cms.configOption('recaptcha_site_key'),
-                        callback: function() {
+                        callback: function () {
                             captchaEl.dataset.recaptchaSuccessful = '1';
                             $dom.submit(form);
                         },
@@ -42,7 +42,11 @@
                     if (captchaEl.dataset.tabindex != null) {
                         grecaptchaParameters.tabindex = captchaEl.dataset.tabindex;
                     }
-                    window.grecaptcha.render(captchaEl, grecaptchaParameters, false);
+
+                    // Decrease perceived page load time - the delay stops the browser 'spinning' while loading 13 URLs right away - people won't submit form within 5 seconds
+                    setTimeout(function () {
+                        window.grecaptcha.render(captchaEl, grecaptchaParameters, false);
+                    }, 5000);
 
                     $dom.on(form, 'submit', function (e) {
                         if (!captchaEl.dataset.recaptchaSuccessful || (captchaEl.dataset.recaptchaSuccessful === '0')) {

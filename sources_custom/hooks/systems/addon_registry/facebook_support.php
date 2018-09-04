@@ -103,8 +103,8 @@ For this addon to work you need to configure Composr\'s Facebook configuration s
 
 Please be aware that this addon overrides some common templates to add Facebook functionality to them, such as [tt]LOGIN_SCREEN.tpl[/tt] and [tt]BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt].
 
-The documentation for this addon is covered in a dedicated tutorial (' . get_brand_base_url() . '/docs/sup_facebook.htm).
-For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
+The documentation for this addon is covered in a [url="' . get_brand_base_url() . '/docs/sup_facebook.htm"]dedicated tutorial[/url].
+For a demo, see this [url="video tutorial"]https://www.youtube.com/watch?v=HUZ_O5io0F0[/url].
 ';
     }
 

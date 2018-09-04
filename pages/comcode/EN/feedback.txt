@@ -3,18 +3,21 @@
 You can leave us private feedback here. We don't normally reply directly to feedback -- but we do read it all.
 
 [semihtml]
-{+START,IF,{$NOT,{$ADDON_INSTALLED,tickets}}}
-	[email]{$STAFF_ADDRESS}[/email]
-{+END}
+	{+START,IF,{$NOT,{$ADDON_INSTALLED,tickets}}}
+		[email]{$STAFF_ADDRESS}[/email]
+	{+END}
 
-{+START,IF,{$ADDON_INSTALLED,tickets}}
-	[block title=""]main_contact_us[/block]
-{+END}
-[/semihtml]{+START,IF,{$ADDON_INSTALLED,ecommerce}}{| wide floats
-| [title="2"]Mailing address[/title]
+	{+START,IF,{$ADDON_INSTALLED,tickets}}
+		[block title=""]main_contact_us[/block]
+	{+END}
+[/semihtml]
 
-[semihtml]<div class="whitespace-visible">{$BUSINESS_ADDRESS}</div>[/semihtml]
-| [title="2"]Phone[/title]
+{+START,IF,{$ADDON_INSTALLED,ecommerce}}{+START,IF_NON_EMPTY,{$BUSINESS_ADDRESS}{$CONFIG_OPTION,pd_number}}
+{| wide floats
 
-{$CONFIG_OPTION,pd_number}
-|}{+END}
+| {+START,IF_NON_EMPTY,{$BUSINESS_ADDRESS}}[semihtml][title="2"]Mailing address[/title]<div class="whitespace-visible">{$BUSINESS_ADDRESS*}</div>[/semihtml]{+END}
+
+| {+START,IF_NON_EMPTY,{$CONFIG_OPTION,pd_number}}[semihtml][title="2"]Phone[/title]{$CONFIG_OPTION*,pd_number}[/semihtml]{+END}
+
+|}
+{+END}{+END}

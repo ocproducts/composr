@@ -51,6 +51,11 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            $only = get_param_string('only', null);
+            if (($only !== null) && ($only != $file)) {
+                continue;
+            }
+
             if (substr($file, -4) == '.txt') {
                 $c = file_get_contents($path . '/' . $file);
                 check_comcode($c);
@@ -88,6 +93,11 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            $only = get_param_string('only', null);
+            if (($only !== null) && ($only != $file)) {
+                continue;
+            }
+
             if (substr($file, 0, 4) == 'sup_') {
                 $this->assertTrue(strpos(file_get_contents($path . '/' . $file), 'Composr Supplementary: ') !== false, $file . ' has wrong title stub');
             }
@@ -108,6 +118,15 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            if (($file === '.') || ($file === '..')) {
+                continue;
+            }
+
+            $only = get_param_string('only', null);
+            if (($only !== null) && ($only != $file)) {
+                continue;
+            }
+
             $c = file_get_contents($path . '/' . $file);
 
             $c = str_replace('[page="docs:"]', '', $c);
@@ -138,6 +157,11 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            $only = get_param_string('only', null);
+            if (($only !== null) && ($only != $file)) {
+                continue;
+            }
+
             if (substr($file, -4) == '.txt') {
                 if ($file == 'panel_top.txt') {
                     continue;
@@ -172,6 +196,11 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            $only = get_param_string('only', null);
+            if (($only !== null) && ($only != $file)) {
+                continue;
+            }
+
             if (substr($file, -4) == '.txt') {
                 if ($file == 'panel_top.txt') {
                     continue;
@@ -222,6 +251,11 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            $only = get_param_string('only', null);
+            if (($only !== null) && ($only != $file)) {
+                continue;
+            }
+
             if (substr($file, -4) == '.txt') {
                 if ($file == 'panel_top.txt') {
                     continue;

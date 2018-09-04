@@ -27,9 +27,10 @@ class Hook_sitemap_search extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):search(:browse)?(:|$)#', $page_link, $matches) != 0) {
@@ -89,6 +90,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         $hooks = array();
         require_code('database_search');
+        require_code('search');
         foreach ($_hooks as $hook => $ob) {
             $info = $ob->info(false);
             if ($info === null) {
@@ -159,8 +161,8 @@ class Hook_sitemap_search extends Hook_sitemap_base
                 'extra_meta' => array(
                     'description' => null,
                     'image' => null,
-                    'add_date' => null,
-                    'edit_date' => null,
+                    'add_time' => null,
+                    'edit_time' => null,
                     'submitter' => null,
                     'views' => null,
                     'rating' => null,
@@ -187,7 +189,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
                 'sitemap_refreshfreq' => 'yearly',
             );
 
-            if (!$this->_check_node_permissions($struct)) {
+            if (!$this->_check_node_permissions($struct, $options)) {
                 return null;
             }
 
@@ -219,8 +221,8 @@ class Hook_sitemap_search extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'add_date' => null,
-                'edit_date' => null,
+                'add_time' => null,
+                'edit_time' => null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -240,7 +242,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
             'privilege_page' => null,
         );
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

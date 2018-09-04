@@ -282,51 +282,64 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     protected function __file_read_in_properties($path, $properties, $edit)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
+
         $password_hashed = $this->_default_property_str($properties, 'password_hashed');
+
         $email_address = $this->_default_property_str($properties, 'email_address');
+
         $groups = array();
         $primary_group_id = $this->_integer_category($category);
         $groups[] = $primary_group_id;
+
         $dob_day = $this->_default_property_int_null($properties, 'dob_day');
         $dob_month = $this->_default_property_int_null($properties, 'dob_month');
         $dob_year = $this->_default_property_int_null($properties, 'dob_year');
+
         $timezone = $this->_default_property_str_null($properties, 'timezone');
-        $validated = $this->_default_property_int_null($properties, 'validated');
-        if ($validated === null) {
-            $validated = 1;
-        }
-        $join_time = $this->_default_property_time($properties, 'join_time');
-        $last_visit_time = $this->_default_property_time_null($properties, 'last_visit_time');
-        $last_submit_time = $this->_default_property_time_null($properties, 'last_submit_time');
+        $language = $this->_default_property_str_null($properties, 'language');
         $theme = $this->_default_property_str($properties, 'theme');
-        $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url', $edit);
-        $signature = $this->_default_property_str($properties, 'signature');
-        $is_perm_banned = $this->_default_property_int($properties, 'is_perm_banned');
-        $preview_posts = $this->_default_property_int_modeavg($properties, 'preview_posts', 'f_members', 0, 'm_preview_posts');
-        $reveal_age = $this->_default_property_int_modeavg($properties, 'reveal_age', 'f_members', 0, 'm_reveal_age');
-        $user_title = $this->_default_property_str($properties, 'user_title');
+
+        $title = $this->_default_property_str($properties, 'title');
+
         $photo_url = $this->_default_property_urlpath($properties, 'photo_url', $edit);
         $photo_thumb_url = $this->_default_property_urlpath($properties, 'photo_thumb_url', $edit);
+        $avatar_url = $this->_default_property_urlpath($properties, 'avatar_url', $edit);
+        $signature = $this->_default_property_str($properties, 'signature');
+
+        $preview_posts = $this->_default_property_int_modeavg($properties, 'preview_posts', 'f_members', 0, 'm_preview_posts');
+        $reveal_age = $this->_default_property_int_modeavg($properties, 'reveal_age', 'f_members', 0, 'm_reveal_age');
         $views_signatures = $this->_default_property_int($properties, 'views_signatures');
         $auto_monitor_contrib_content = $this->_default_property_int_null($properties, 'auto_monitor_contrib_content');
         if ($auto_monitor_contrib_content === null) {
             $auto_monitor_contrib_content = intval(get_option('allow_auto_notifications'));
         }
-        $language = $this->_default_property_str_null($properties, 'language');
+        $smart_topic_notification = $this->_default_property_int($properties, 'smart_topic_notification');
+        $mailing_list_style = $this->_default_property_int($properties, 'mailing_list_style');
+        $auto_mark_read = $this->_default_property_int($properties, 'auto_mark_read');
+        $sound_enabled = $this->_default_property_int($properties, 'sound_enabled');
         $allow_emails = $this->_default_property_int_modeavg($properties, 'allow_emails', 'f_members', 1, 'm_allow_emails');
         $allow_emails_from_staff = $this->_default_property_int_modeavg($properties, 'allow_emails_from_staff', 'f_members', 1, 'm_allow_emails_from_staff');
-        $ip_address = $this->_default_property_str_null($properties, 'ip_address');
-        $validated_email_confirm_code = $this->_default_property_str($properties, 'validated_email_confirm_code');
-        $password_compatibility_scheme = $this->_default_property_str_null($properties, 'password_compatibility_scheme');
-        $salt = $this->_default_property_str($properties, 'salt');
         $highlighted_name = $this->_default_property_int($properties, 'highlighted_name');
         $pt_allow = $this->_default_property_str($properties, 'pt_allow');
         $pt_rules_text = $this->_default_property_str($properties, 'pt_rules_text');
+
+        $validated = $this->_default_property_int_null($properties, 'validated');
+        if ($validated === null) {
+            $validated = 1;
+        }
+        $validated_email_confirm_code = $this->_default_property_str($properties, 'validated_email_confirm_code');
         $on_probation_until = $this->_default_property_time_null($properties, 'on_probation_until');
-        $auto_mark_read = $this->_default_property_int($properties, 'auto_mark_read');
+        $is_perm_banned = $this->_default_property_int($properties, 'is_perm_banned');
+
+        $ip_address = $this->_default_property_str_null($properties, 'ip_address');
+
+        $password_compatibility_scheme = $this->_default_property_str_null($properties, 'password_compatibility_scheme');
+        $salt = $this->_default_property_str($properties, 'salt');
+
+        $join_time = $this->_default_property_time($properties, 'join_time');
 
         require_code('cns_members');
-        $custom_fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 0, null);
+        $custom_fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, null, null);
         $actual_custom_fields = array();
         $props_already = array();
         foreach ($custom_fields as $i => $custom_field) {
@@ -345,7 +358,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $actual_custom_fields[$custom_field['id']] = $value;
         }
 
-        return array($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
+        return array($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time);
     }
 
     /**
@@ -367,9 +380,49 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         require_code('cns_members_action');
 
-        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read) = $this->__file_read_in_properties($path, $properties, false);
+        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time) = $this->__file_read_in_properties($path, $properties, false);
 
-        $id = cns_make_member($label, $password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, intval($category), $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, false, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
+        $id = cns_make_member(
+            $label, // username
+            $password_hashed, // password
+            $email_address, // email_address
+            $category, // primary_group
+            $groups, // secondary_groups
+            $dob_day, // dob_day
+            $dob_month, // dob_month
+            $dob_year, // dob_year
+            $custom_fields, // custom_fields
+            $timezone, // timezone
+            $language, // language
+            $theme, // theme
+            $title, // title
+            $photo_url, // photo_url
+            $photo_thumb_url, // photo_thumb_url
+            $avatar_url, // avatar_url
+            $signature, // signature
+            $preview_posts, // preview_posts
+            $reveal_age, // reveal_age
+            $views_signatures, // views_signatures
+            $auto_monitor_contrib_content, // auto_monitor_contrib_content
+            $smart_topic_notification, // smart_topic_notification
+            $mailing_list_style, // mailing_list_style
+            $auto_mark_read, // auto_mark_read
+            $sound_enabled, // sound_enabled
+            $allow_emails, // allow_emails
+            $allow_emails_from_staff, // allow_emails_from_staff
+            $highlighted_name, // highlighted_name
+            $pt_allow, // pt_allow
+            $pt_rules_text, // pt_rules_text
+            $validated, // validated
+            $validated_email_confirm_code, // validated_email_confirm_code
+            $on_probation_until, // on_probation_until
+            $is_perm_banned, // is_perm_banned
+            false, // check_correctness
+            $ip_address, // ip_address
+            $password_compatibility_scheme, // password_compatibility_scheme
+            $salt, // salt
+            $join_time // join_time
+        );
 
         if (isset($properties['groups'])) {
             table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => $id), TABLE_REPLACE_MODE_NONE);
@@ -411,38 +464,40 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $properties = array(
             'label' => $row['m_username'],
             'password_hashed' => $row['m_pass_hash_salted'],
-            'salt' => $row['m_pass_salt'],
-            'password_compatibility_scheme' => $row['m_password_compat_scheme'],
             'email_address' => $row['m_email_address'],
             'groups' => table_to_portable_rows('f_group_members', array('gm_member_id'), array('gm_member_id' => intval($resource_id))),
             'dob_day' => $row['m_dob_day'],
             'dob_month' => $row['m_dob_month'],
             'dob_year' => $row['m_dob_year'],
             'timezone' => $row['m_timezone_offset'],
-            'validated' => $row['m_validated'],
-            'join_time' => remap_time_as_portable($row['m_join_time']),
-            'last_visit_time' => remap_time_as_portable($row['m_last_visit_time']),
-            'last_submit_time' => remap_time_as_portable($row['m_last_submit_time']),
-            'on_probation_until' => remap_time_as_portable($row['m_on_probation_until']),
+            'language' => $row['m_language'],
             'theme' => $row['m_theme'],
-            'avatar_url' => remap_urlpath_as_portable($row['m_avatar_url']),
-            'signature' => get_translated_text($row['m_signature'], $GLOBALS['FORUM_DB']),
-            'is_perm_banned' => $row['m_is_perm_banned'],
-            'preview_posts' => $row['m_preview_posts'],
-            'reveal_age' => $row['m_reveal_age'],
-            'user_title' => $row['m_title'],
+            'title' => $row['m_title'],
             'photo_url' => remap_urlpath_as_portable($row['m_photo_url']),
             'photo_thumb_url' => remap_urlpath_as_portable($row['m_photo_thumb_url']),
+            'avatar_url' => remap_urlpath_as_portable($row['m_avatar_url']),
+            'signature' => get_translated_text($row['m_signature'], $GLOBALS['FORUM_DB']),
+            'preview_posts' => $row['m_preview_posts'],
+            'reveal_age' => $row['m_reveal_age'],
             'views_signatures' => $row['m_views_signatures'],
             'auto_monitor_contrib_content' => $row['m_auto_monitor_contrib_content'],
-            'language' => $row['m_language'],
+            'smart_topic_notification' => $row['m_smart_topic_notification'],
+            'mailing_list_style' => $row['m_mailing_list_style'],
+            'auto_mark_read' => $row['m_auto_mark_read'],
+            'sound_enabled' => $row['m_sound_enabled'],
             'allow_emails' => $row['m_allow_emails'],
             'allow_emails_from_staff' => $row['m_allow_emails_from_staff'],
-            'ip_address' => $row['m_ip_address'],
-            'validated_email_confirm_code' => $row['m_validated_email_confirm_code'],
             'highlighted_name' => $row['m_highlighted_name'],
             'pt_allow' => $row['m_pt_allow'],
             'pt_rules_text' => $row['m_pt_rules_text'],
+            'validated' => $row['m_validated'],
+            'validated_email_confirm_code' => $row['m_validated_email_confirm_code'],
+            'on_probation_until' => remap_time_as_portable($row['m_on_probation_until']),
+            'is_perm_banned' => $row['m_is_perm_banned'],
+            'ip_address' => $row['m_ip_address'],
+            'password_compatibility_scheme' => $row['m_password_compat_scheme'],
+            'salt' => $row['m_pass_salt'],
+            'join_time' => remap_time_as_portable($row['m_join_time']),
         );
         $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
 
@@ -487,9 +542,47 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         require_code('cns_members_action2');
 
         $label = $this->_default_property_str($properties, 'label');
-        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $user_title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $password_compatibility_scheme, $salt, $last_submit_time, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read) = $this->__file_read_in_properties($path, $properties, true);
+        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time) = $this->__file_read_in_properties($path, $properties, true);
 
-        cns_edit_member(intval($resource_id), $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, intval($category), $actual_custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $label, $password_hashed, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, true);
+        cns_edit_member(
+            intval($resource_id), // member_id
+            $label, // username
+            $password_hashed, // password
+            $email_address, // email_address
+            $category, // primary_group
+            $dob_day, // dob_day
+            $dob_month, // dob_month
+            $dob_year, // dob_year
+            $custom_fields, // custom_fields
+            $timezone, // timezone
+            $language, // language
+            $theme, // theme
+            $title, // title
+            $photo_url, // photo_url
+            $photo_thumb_url, // photo_thumb_url
+            $avatar_url, // avatar_url
+            $signature, // signature
+            $preview_posts, // preview_posts
+            $reveal_age, // reveal_age
+            $views_signatures, // views_signatures
+            $auto_monitor_contrib_content, // views_signatures
+            $smart_topic_notification, // smart_topic_notification
+            $mailing_list_style, // mailing_list_style
+            $auto_mark_read, // auto_mark_read
+            $sound_enabled, // sound_enabled
+            $allow_emails, // allow_emails
+            $allow_emails_from_staff, // allow_emails_from_staff
+            $highlighted_name, // highlighted_name
+            $pt_allow, // pt_allow
+            $pt_rules_text, // pt_rules_text
+            $validated, // validated
+            $on_probation_until, // on_probation_until
+            $is_perm_banned, // is_perm_banned
+            false, // check_correctness
+            $password_compatibility_scheme, // password_compatibility_scheme
+            $salt, // salt
+            $join_time // join_time
+        );
 
         if (isset($properties['groups'])) {
             table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);

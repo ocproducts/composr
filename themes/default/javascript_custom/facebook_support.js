@@ -114,7 +114,7 @@
 
                     // Facebook has automatically rebuilt its expired fbsr cookie, auth.login not triggered as already technically logged in
                     else {
-                        if (serversideFbuid === null)  { // Definitive mismatch between server-side and client-side, so we must refresh
+                        if (serversideFbuid === null) { // Definitive mismatch between server-side and client-side, so we must refresh
                             facebookTriggerRefresh(homePageUrl);
                         }
                     }

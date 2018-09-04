@@ -287,7 +287,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         foreach (array('' => do_lang_tempcode('NA_EM'), 'contact' => do_lang_tempcode('menus:CONTACT')) as $_section => $section_label) {
             $sections->attach(form_input_list_entry($_section, $section == $_section, $section_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('SECTION'), do_lang_tempcode('DESCRIPTION_CPF_SECTION'), 'section', $sections));
+        $fields->attach(form_input_list(do_lang_tempcode('SECTION'), do_lang_tempcode('DESCRIPTION_CPF_SECTION'), 'section', $sections, null, false, false));
 
         $fields->attach(form_input_line(do_lang_tempcode('CODE'), do_lang_tempcode('DESCRIPTION_CPF_CODE'), 'tempcode', $tempcode, false, null, null, 'text', null, null, null, 130));
 

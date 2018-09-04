@@ -29,7 +29,7 @@
 
 	<div class="activities-line">
 		<div class="activity-time right">
-			{$MAKE_RELATIVE_DATE*,{TIMESTAMP},1} {!AGO}
+			{!_AGO,{$MAKE_RELATIVE_DATE*,{TIMESTAMP},1}}
 		</div>
 
 		{+START,SET,commented_out}

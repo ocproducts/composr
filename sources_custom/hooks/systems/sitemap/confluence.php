@@ -32,9 +32,10 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link.
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options.
      * @return integer A SITEMAP_NODE_* constant.
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):([^:]*)#', $page_link, $matches) != 0) {
@@ -81,7 +82,7 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
         $page = 'docs';
         $zone = get_page_zone($page);
 
-        if (!has_page_access(get_member(), $page, $zone)) {
+        if (!has_page_access($this->get_member($options), $page, $zone)) {
             return $nodes;
         }
 
@@ -157,8 +158,8 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'add_date' => null,
-                'edit_date' => null,
+                'add_time' => null,
+                'edit_time' => null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,

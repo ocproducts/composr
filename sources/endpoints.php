@@ -25,6 +25,8 @@ function endpoint_script()
 {
     set_http_caching(null);
 
+    @header('X-Robots-Tag: noindex');
+
     cms_ini_set('ocproducts.xss_detect', '0');
 
     $hook_type = mixed();
@@ -121,7 +123,7 @@ function endpoint_script()
     // Output
     switch ($response_type) {
         case 'json':
-            header('Content-type: application/json; charset=' . get_charset());
+            @header('Content-type: application/json; charset=' . get_charset());
             echo json_encode($return_data);
             break;
 

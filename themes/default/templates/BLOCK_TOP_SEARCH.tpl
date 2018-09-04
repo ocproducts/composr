@@ -2,21 +2,21 @@
 
 <form class="top-button-wrapper" role="search" title="{TITLE*}" data-tpl="blockTopSearch" data-tpl-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 	{$HIDDENS_FOR_GET_FORM,{URL}}
-	
+
 	{+START,LOOP,LIMIT_TO}
 		<input type="hidden" name="{_loop_var*}" value="1" />
 	{+END}
 	{+START,LOOP,EXTRA}
 		<input type="hidden" name="{_loop_key*}" value="{_loop_var*}" />
 	{+END}
-	<input type="hidden" name="author" value="{AUTHOR*}" />
-	<input type="hidden" name="days" value="{DAYS*}" />
-	<input type="hidden" name="sort" value="{SORT*}" />
-	<input type="hidden" name="direction" value="{DIRECTION*}" />
-	<input type="hidden" name="only_titles" value="{ONLY_TITLES*}" />
-	<input type="hidden" name="only_search_meta" value="{ONLY_SEARCH_META*}" />
-	<input type="hidden" name="boolean_search" value="{BOOLEAN_SEARCH*}" />
-	<input type="hidden" name="conjunctive_operator" value="{CONJUNCTIVE_OPERATOR*}" />
+	{+START,IF_NON_EMPTY,{AUTHOR}}<input type="hidden" name="author" value="{AUTHOR*}" />{+END}
+	{+START,IF,{$NEQ,{DAYS},-1}}<input type="hidden" name="days" value="{DAYS*}" />{+END}
+	{+START,IF,{$NEQ,{SORT},relevance}}<input type="hidden" name="sort" value="{SORT*}" />{+END}
+	{+START,IF,{$NEQ,{DIRECTION},DESC}}<input type="hidden" name="direction" value="{DIRECTION*}" />{+END}
+	{+START,IF,{$NEQ,{ONLY_TITLES},0}}<input type="hidden" name="only_titles" value="{ONLY_TITLES*}" />{+END}
+	{+START,IF,{$NEQ,{ONLY_SEARCH_META},0}}<input type="hidden" name="only_search_meta" value="{ONLY_SEARCH_META*}" />{+END}
+	{+START,IF,{$NEQ,{BOOLEAN_SEARCH},0}}<input type="hidden" name="boolean_search" value="{BOOLEAN_SEARCH*}" />{+END}
+	{+START,IF,{$NEQ,{CONJUNCTIVE_OPERATOR},AND}}<input type="hidden" name="conjunctive_operator" value="{CONJUNCTIVE_OPERATOR*}" />{+END}
 
 	<div class="top-button-popup" id="top-search-rel" style="display: none">
 		<div class="box box-arrow box--block-top-personal-stats">

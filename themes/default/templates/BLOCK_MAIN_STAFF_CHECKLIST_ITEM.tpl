@@ -8,7 +8,7 @@
 					<a href="{CONFIG_URL*}" title="{!CHANGE_REGULARITY}">
 						{+START,INCLUDE,ICON}
 							NAME=checklist/toggle2
-							ICON_SIZE=14 
+							ICON_SIZE=14
 						{+END}
 					</a>
 				{+END}

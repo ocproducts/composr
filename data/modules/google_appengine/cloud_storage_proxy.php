@@ -36,7 +36,7 @@ $request = ltrim($request, '/');
 
 $contents = @file_get_contents('gs://' . preg_replace('#^.*~#', '', $_SERVER['APPLICATION_ID']) . '/' . $request);
 if ($contents === false) {
-    header('HTTP/1.0 404 Not Found');
+    http_response_code(404);
 
     echo 'File not found.';
 } else {

@@ -3,7 +3,9 @@
 
 {+START,IF,{$NOT,{$GET,is_block_raw}}}
 	{$SET,ajax_block_main_activities_wrapper,ajax-block-main-activities-wrapper-{$RAND%}}
-	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
+	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
+	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}" 
+		  data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 		<div class="clearfix">
 			<div id="activities-feed">
 				<div id="activities-general-notify"></div>
@@ -28,7 +30,10 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+			{+START,INCLUDE,AJAX_PAGINATION}
+				WRAPPER_ID={$GET,ajax_block_main_activities_wrapper}
+				ALLOW_INFINITE_SCROLL=1
+			{+END}
 		{+END}
 	</div>
 {+END}

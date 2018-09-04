@@ -238,6 +238,7 @@ class Module_news
         inform_non_canonical_parameter('select');
         inform_non_canonical_parameter('select_and');
         inform_non_canonical_parameter('blog');
+        inform_non_canonical_parameter('filter');
 
         if ($type == 'cat_select') {
             $this->title = get_screen_title('JUST_NEWS_CATEGORIES');

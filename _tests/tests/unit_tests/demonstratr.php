@@ -25,6 +25,15 @@ class demonstratr_test_set extends cms_test_case
 
     public function testDemonstratrCloneOut()
     {
+        $cmd = '/usr/local/bin/mysql';
+        if (!is_file($cmd)) {
+            $cmd = '/usr/bin/mysql';
+        }
+        if (!is_file($cmd)) {
+            $this->assertTrue(false, 'Cannot find mySQL executable (likely on Windows, which we do not support here)');
+            return;
+        }
+
         if (strpos(get_db_type(), 'mysql') !== false) {
             require_code('composr_homesite');
 

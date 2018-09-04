@@ -32,13 +32,10 @@ public class AboutDialog extends JDialog {
         panel1.setLayout(null);
         closeBtn.setActionCommand("closeBtn");
         closeBtn.addActionListener(new Dialog3_closeBtn_actionAdapter(this));
-        jLabel1.setText(
-                "<html>This is the Web Code Quality Checker, for checking web documents "
-                + "against web standards.<br><br>See the readme.txt file for full documentation.</html>");
+        jLabel1.setText("<html>This is the Web Code Quality Checker, for checking web documents against web standards.<br><br>See the readme.txt file for full documentation.</html>");
         jLabel1.setBounds(new Rectangle(20, 31, 349, 70));
         jLabel2.setToolTipText("");
-        jLabel2.setText(
-                "<html>Copyright (c) ocProducts Ltd, 2004-2009.</html>");
+        jLabel2.setText("<html>Copyright (c) ocProducts Ltd, 2004-2018.</html>");
         jLabel2.setBounds(new Rectangle(20, 196, 348, 40));
         this.setModal(true);
         this.setResizable(false);

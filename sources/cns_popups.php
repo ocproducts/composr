@@ -54,6 +54,6 @@ function rules_script()
         $title = ($answer == '') ? do_lang_tempcode('FORUM_RULES') : do_lang_tempcode('INTRO_QUESTION');
     }
 
-    $tpl = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '26c4dbc7a4737310f089583f1048cb13', 'TITLE' => $title, 'POPUP' => true, 'TARGET' => '_top', 'CONTENT' => $output));
+    $tpl = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '26c4dbc7a4737310f089583f1048cb13', 'TITLE' => $title, 'POPUP' => true, 'NOINDEX' => true, 'TARGET' => '_top', 'CONTENT' => $output));
     $tpl->evaluate_echo();
 }

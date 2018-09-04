@@ -417,7 +417,7 @@ class Module_admin_ip_ban
             }
 
             $GLOBALS['SITE_DB']->query_insert('usersubmitban_member', array('the_member' => $id));
-            log_it('SUBMITTER_BANNED', strval($id));
+            log_it('SUBMITTER_BANNED', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($id));
         } else {
             $this->title = get_screen_title('SUBMITTER_UNBANNED');
 
@@ -428,7 +428,7 @@ class Module_admin_ip_ban
             }
 
             $GLOBALS['SITE_DB']->query_delete('usersubmitban_member', array('the_member' => $id), '', 1);
-            log_it('SUBMITTER_UNBANNED', strval($id));
+            log_it('SUBMITTER_UNBANNED', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($id));
         }
 
         persistent_cache_delete('IP_BANS');

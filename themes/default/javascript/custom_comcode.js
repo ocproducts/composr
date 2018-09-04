@@ -1,7 +1,7 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    $cms.functions.gfxRolloverButton  = function gfxRolloverButton(combId, url) {
+    $cms.functions.gfxRolloverButton = function gfxRolloverButton(combId, url) {
         $cms.createRollover(combId, url);
     };
 
@@ -34,7 +34,7 @@
             updateFunc();
             var title = document.getElementById('title');
             if (title.value === '') {
-                title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/\_/g, ' ');
+                title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/_/g, ' ');
             }
         });
     };

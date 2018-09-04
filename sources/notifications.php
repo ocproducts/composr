@@ -149,6 +149,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
     $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // A list of attachments (each attachment being a map, path=>filename) (null: none)
     $use_real_from = isset($advanced_parameters['use_real_from']) ? $advanced_parameters['use_real_from'] : false; // Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose e-mail addresses for this particular notification type (i.e. if it's a direct contact)
     $send_immediately = isset($advanced_parameters['send_immediately']) ? $advanced_parameters['send_immediately'] : false; // Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
+    $extra = isset($advanced_parameters['extra']) ? $advanced_parameters['extra'] : array(); // Extra data we may need to handle special cases in our dispatch code
 
     global $NOTIFICATIONS_ON;
     if (!$NOTIFICATIONS_ON) {
@@ -184,6 +185,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
     $dispatcher->body_suffix = $body_suffix;
     $dispatcher->attachments = $attachments;
     $dispatcher->use_real_from = $use_real_from;
+    $dispatcher->extra = $extra;
 
     if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($send_immediately) || (running_script('cron_bridge'))) {
         $dispatcher->dispatch();
@@ -249,6 +251,7 @@ class Notification_dispatcher
     public $body_suffix = '';
     public $attachments = array();
     public $use_real_from = false;
+    public $extra = array();
 
     /**
      * Construct notification dispatcher.
@@ -342,10 +345,28 @@ class Notification_dispatcher
 
         $testing = (get_param_integer('keep_debug_notifications', 0) == 1);
 
+        if (($this->notification_code == 'cns_topic') && (isset($this->extra['post_id']))) { // FUDGE
+            require_code('mail_integration');
+            require_code('cns_forum_email_integration');
+
+            $email_integration_ob = new ForumEmailIntegration();
+
+            $topic_id = $this->extra['topic_id'];
+            $post_id = $this->extra['post_id'];
+            $forum_id = $this->extra['forum_id'];
+            $post_url = $this->extra['url'];
+            $topic_title = $this->extra['topic_title'];
+            $post = $this->extra['post'];
+            $from_displayname = $GLOBALS['FORUM_DRIVER']->get_username($this->extra['sender_member_id'], true);
+            $is_starter = $this->extra['is_starter'];
+
+            $ob->handle_mailing_list = true;
+        }
+
         $start = 0;
         $max = 300;
         do {
-            list($members, $possibly_has_more) = $ob->list_members_who_have_enabled($this->notification_code, $this->code_category, $this->to_member_ids, $start, $max);
+            list($members, $possibly_has_more) = $ob->list_members_who_have_enabled($this->notification_code, $this->code_category, $this->to_member_ids, $this->from_member_id, $start, $max);
 
             if (get_value('notification_safety_testing') === '1') {
                 if (count($members) > 20) {
@@ -363,6 +384,15 @@ class Notification_dispatcher
 
                 if (($to_member_id !== $this->from_member_id) || ($testing)) {
                     $no_cc = $this->dispatch_notification_to_member($to_member_id, $setting, $this->notification_code, $this->code_category, $subject, $message, $this->from_member_id, $this->priority, $no_cc, $this->attachments, $this->use_real_from);
+                }
+            }
+
+            if (($this->notification_code == 'cns_topic') && (isset($this->extra['post_id']))) {
+                // FUDGE: We need to specially handle for the members that will receive mailing-list-style notifications. We don't handle as a regular notification type as it is a very specialised two-way dynamic.
+                foreach ($ob->mailing_list_members as $member_id) {
+                    $to_displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
+                    $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
+                    $email_integration_ob->outgoing_message($topic_id, $post_id, $forum_id, $post_url, $topic_title, $post, $member_id, $to_displayname, $to_email, $from_displayname, $is_starter);
                 }
             }
 
@@ -683,7 +713,10 @@ function _find_member_statistical_notification_type($to_member_id, $notification
 
     $setting = null;
 
-    $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_code_category' => ''), '', 100/*within reason*/);
+    $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_notification_code' => $notification_code), '', 100/*within reason*/);
+    if (count($notifications_enabled) == 0) {
+        $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_code_category' => ''), '', 100/*within reason*/);
+    }
 
     // If no notifications so far, we look for defaults
     if (count($notifications_enabled) == 0) {
@@ -706,17 +739,30 @@ function _find_member_statistical_notification_type($to_member_id, $notification
     // Search for what can be done to find true statistical result
     if ($setting === null) {
         $possible_settings = array();
+        $best_settings = array();
         global $ALL_NOTIFICATION_TYPES;
         foreach ($ALL_NOTIFICATION_TYPES as $possible_setting) {
             if (_notification_setting_available($possible_setting, $to_member_id)) {
-                $possible_settings[$possible_setting] = 0;
+                $possible_settings[] = $possible_setting;
             }
         }
         foreach ($notifications_enabled as $ml) {
-            foreach (array_keys($possible_settings) as $possible_setting) {
-                if ($ml['l_setting'] >= 0) {
+            if ($ml['l_setting'] >= 0) {
+                // Compound setting as possibility
+                if (($ml['l_setting'] & $possible_setting) != 0) {
+                    if (!isset($best_settings[$ml['l_setting']])) {
+                        $best_settings[$ml['l_setting']] = 0;
+                    }
+                    $best_settings[$ml['l_setting']]++;
+                }
+
+                // Individual settings as possibilities
+                foreach ($possible_settings as $possible_setting) {
                     if (($ml['l_setting'] & $possible_setting) != 0) {
-                        $possible_settings[$possible_setting]++;
+                        if (!isset($best_settings[$possible_setting])) {
+                            $best_settings[$possible_setting] = 0;
+                        }
+                        $best_settings[$possible_setting]++;
                     }
                 }
             }
@@ -725,13 +771,12 @@ function _find_member_statistical_notification_type($to_member_id, $notification
         reset($possible_settings);
         $setting = key($possible_settings);
         if ($setting === null) {
-            $setting = A_INSTANT_EMAIL; // Nothing available, so save as an e-mail notification even though it cannot be received
+            $setting = _notification_setting_available(A_INSTANT_EMAIL, $to_member_id) ? A_INSTANT_EMAIL : A_WEB_NOTIFICATION; // Nothing available, so save as an e-mail notification even though it cannot be received
         }
     }
 
     // Cache/return
     $cache[$to_member_id] = $setting;
-    $setting |= A_WEB_NOTIFICATION;
     return $setting;
 }
 
@@ -1070,11 +1115,12 @@ class Hook_Notification
      * @param  ID_TEXT $notification_code Notification code
      * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
      * @param  ?array $to_member_ids List of member IDs we are restricting to (null: no restriction). This effectively works as a intersection set operator against those who have enabled.
+     * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
      * @param  integer $start Start position (for pagination)
      * @param  integer $max Maximum (for pagination)
      * @return array A pair: Map of members to their notification setting, and whether there may be more
      */
-    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
+    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
         return $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
     }
@@ -1329,13 +1375,14 @@ class Hook_notification__Staff extends Hook_Notification
      * @param  ID_TEXT $notification_code Notification code
      * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
      * @param  ?array $to_member_ids List of member IDs we are restricting to (null: no restriction). This effectively works as a intersection set operator against those who have enabled.
+     * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
      * @param  integer $start Start position (for pagination)
      * @param  integer $max Maximum (for pagination)
      * @return array A pair: Map of members to their notification setting, and whether there may be more
      */
-    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
+    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
-        return $this->_all_staff_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
+        return $this->_all_staff_who_have_enabled($notification_code, $category, $to_member_ids, $from_member_id, $start, $max);
     }
 
     /**

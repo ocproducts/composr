@@ -142,6 +142,9 @@ class Hook_geocoding_google
             }
         }
 
+        if (!isset($r['geometry']['bounds'])) {
+            $r['geometry']['bounds'] = $r['geometry']['viewport'];
+        }
         $ne_latitude = $r['geometry']['bounds']['northeast']['lat'];
         $ne_longitude = $r['geometry']['bounds']['northeast']['lng'];
         $sw_latitude = $r['geometry']['bounds']['southwest']['lat'];
@@ -173,7 +176,7 @@ class Hook_geocoding_google
             return null;
         }*/
 
-        $url = 'http://maps.googleapis.com/maps/api/geocode/json';
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json';
         $url .= '?language=' . urlencode(strtolower(get_site_default_lang()));
         if (isset($_COOKIE['google_bias'])) {
             $url .= '&region=' . urlencode($_COOKIE['google_bias']);

@@ -274,18 +274,10 @@ function _enforce_temporary_passwords($member_id)
             delete_cache_entry('side_users_online');
 
             require_code('urls');
+            require_code('site2');
             require_lang('cns');
 
-            $screen = redirect_screen(
-                get_screen_title('LOGGED_IN'),
-                $redirect_url,
-                $force_change_message,
-                false,
-                'notice'
-            );
-            $out = globalise($screen, null, '', true);
-            $out->evaluate_echo();
-            exit();
+            redirect_exit($redirect_url, get_screen_title('LOGGED_IN'), $force_change_message);
         }
     }
 }

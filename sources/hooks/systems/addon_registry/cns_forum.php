@@ -63,6 +63,7 @@ class Hook_addon_registry_cns_forum
     {
         return array(
             'tut_forums',
+            'tut_adv_forums',
             'tut_forum_tracking',
             'tut_moderation',
             'tut_information',
@@ -122,7 +123,6 @@ class Hook_addon_registry_cns_forum
             'themes/default/images/icons/menu/adminzone/structure/forum/index.html',
             'themes/default/images/icons/menu/social/forum/index.html',
             'themes/default/images/icons/menu/social/forum/vforums/index.html',
-            'sources/hooks/systems/cns_cpf_filter/notifications.php',
             'sources/hooks/systems/resource_meta_aware/forum_grouping.php',
             'sources/hooks/systems/commandr_fs/forum_groupings.php',
             'sources/blocks/main_cns_involved_topics.php',
@@ -228,15 +228,6 @@ class Hook_addon_registry_cns_forum
             'themes/default/images/icons/cns_general/new_posts_redirect.svg',
             'themes/default/images/icons/cns_general/no_new_posts.svg',
             'themes/default/images/icons/cns_general/no_new_posts_redirect.svg',
-            'themes/default/images/cns_rank_images/0.svg',
-            'themes/default/images/cns_rank_images/1.svg',
-            'themes/default/images/cns_rank_images/2.svg',
-            'themes/default/images/cns_rank_images/3.svg',
-            'themes/default/images/cns_rank_images/4.svg',
-            'themes/default/images/cns_rank_images/index.html',
-            'themes/default/images/EN/cns_rank_images/admin.svg',
-            'themes/default/images/EN/cns_rank_images/mod.svg',
-            'themes/default/images/EN/cns_rank_images/index.html',
             'themes/default/images/icons/cns_topic_modifiers/announcement.svg',
             'themes/default/images/icons/cns_topic_modifiers/closed.svg',
             'themes/default/images/icons/cns_topic_modifiers/hot.svg',
@@ -276,6 +267,9 @@ class Hook_addon_registry_cns_forum
             'themes/default/templates/CNS_PT_FILTERS.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_POSTS.tpl',
             'sources/hooks/systems/cleanup/cns.php',
+            'sources/hooks/systems/config/mailing_list_style_default.php',
+            'sources/hooks/systems/config/smart_topic_notification_default.php',
+            'sources/hooks/systems/config/sound_enabled_default.php',
             'sources/hooks/systems/config/edit_time_limit.php',
             'sources/hooks/systems/config/delete_time_limit.php',
             'sources/hooks/systems/config/enable_add_topic_btn_in_topic.php',
@@ -309,6 +303,10 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/tasks/notify_topics_moved.php',
             'sources/hooks/systems/config/search_cns_own_pt.php',
             'sources/hooks/systems/config/search_cns_posts.php',
+            'sources/hooks/systems/cron/cns_forum_email_integration.php',
+            'sources/cns_forum_email_integration.php',
+            'themes/default/text/CNS_POST_FROM_MAILING_LIST.txt',
+            'sources/hooks/systems/actionlog/cns_forum.php',
         );
     }
 
@@ -377,6 +375,7 @@ class Hook_addon_registry_cns_forum
             'templates/CNS_MEMBER_PROFILE_POSTS.tpl' => 'cns_member_profile_posts',
             'templates/CNS_MEMBER_PROFILE_PTS.tpl' => 'cns_member_profile_pts',
             'templates/CNS_VFORUM_FILTERING.tpl' => 'cns_vforum_filtering',
+            'text/CNS_POST_FROM_MAILING_LIST.txt' => 'cns_post_from_mailing_list',
         );
     }
 
@@ -1147,6 +1146,7 @@ class Hook_addon_registry_cns_forum
             'FORUM_GROUPINGS' => $forum_groupings,
             'ID' => placeholder_id(),
             'DESCRIPTION' => lorem_phrase(),
+            'MAIL_EMAIL_ADDRESS' => 'example@example.com',
             'PARENT_FORUM' => '',
         ));
 
@@ -1870,5 +1870,25 @@ class Hook_addon_registry_cns_forum
             $topic_id = cns_make_topic(null, lorem_phrase(), '', 1, 1, 0, 0, $test_member_id, get_member(), false);
             cns_make_post($topic_id, lorem_phrase(), lorem_chunk(), 0, true, 1, 0, null, null, null, $test_member_id, null, null, null, false, true, null, true, lorem_phrase());
         }
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__cns_post_from_mailing_list()
+    {
+        require_lang('cns');
+
+        return array(
+            lorem_globalise(do_lorem_template('CNS_POST_FROM_MAILING_LIST', array(
+                'UNCONFIRMED_MEMBER_NOTICE' => true,
+                'POST' => lorem_paragraph(),
+                'USERNAME' => lorem_phrase(),
+            ), null, false, null, '.txt', 'text'), null, '', true)
+        );
     }
 }

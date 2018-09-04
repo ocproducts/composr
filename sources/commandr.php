@@ -52,6 +52,7 @@ function commandr_script()
 
         $site_closed = get_option('site_closed');
         if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+            http_response_code(503);
             header('Content-type: text/plain; charset=' . get_charset());
             @exit(get_option('closed'));
         }
@@ -108,7 +109,7 @@ function commandr_script()
             $temp = new Virtual_shell(trim($command));
             $temp->output_xml();
         } catch (Exception $e) {
-            @header('HTTP/1.0 200 Ok');
+            @http_response_code(200);
             @header('Content-type: text/xml; charset=' . get_charset());
             $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
                 <response>
@@ -239,7 +240,7 @@ class Virtual_shell
         }
 
         header('Content-Type: text/xml');
-        header('HTTP/1.0 200 Ok');
+        http_response_code(200);
 
         if (is_object($this->output[STREAM_STDCOMMAND])) {
             $this->output[STREAM_STDCOMMAND] = $this->output[STREAM_STDCOMMAND]->evaluate();
@@ -857,6 +858,8 @@ class Virtual_shell
         $this->parsed_input[SECTION_EXTRAS] = array();
 
         $this->fs = object_factory('commandr_fs');
+
+        log_it('COMMANDR_COMMAND', $this->output[STREAM_STDCOMMAND]);
 
         // Start parsing with the command
         $this->_extract_command();

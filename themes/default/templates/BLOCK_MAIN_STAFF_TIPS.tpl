@@ -1,8 +1,5 @@
 {$REQUIRE_JAVASCRIPT,checking}
-
-{$SET,ajax_block_main_staff_tips_wrapper,ajax-block-main-staff-tips-wrapper-{$RAND%}}
-{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
-<div id="{$GET*,ajax_block_main_staff_tips_wrapper}" class="box-wrapper" data-tpl="blockMainStaffTips" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_staff_tips_wrapper,block_call_url}{_*}{+END}">
+<div class="box-wrapper" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['^staff_tips_dismiss$', '^rand$'] }">
 	<section id="tray-{!TIPS|}" class="box box---block-main-staff-tips" data-toggleable-tray="{ save: true }">
 		<div class="box-inner">
 			<h3 class="toggleable-tray-title js-tray-header">
@@ -23,9 +20,9 @@
 				<div class="tips-trail">
 					{+START,IF_NON_EMPTY,{TIP_CODE}}
 					<ul class="horizontal-links associated-links-block-group">
-						<li><a target="_self" href="{$PAGE_LINK*,adminzone:staff_tips_dismiss={TIP_CODE}}">{!DISMISS_TIP}</a></li>
+						<li><a data-ajaxify-target="1" href="{$PAGE_LINK*,adminzone:staff_tips_dismiss={TIP_CODE}}">{!DISMISS_TIP}</a></li>
 						{+START,IF,{$NEQ,{TIP_CODE},0a}}
-						<li><a target="_self" accesskey="k" href="{$PAGE_LINK*,adminzone:rand={$RAND}}">{!ANOTHER_TIP}</a></li>
+							<li><a data-ajaxify-target="1" accesskey="k" href="{$PAGE_LINK*,adminzone:rand={$RAND}}">{!ANOTHER_TIP}</a></li>
 						{+END}
 					</ul>
 					{+END}

@@ -33,10 +33,10 @@ class Hook_checklist_version
         require_code('version2');
         $version = get_future_version_information();
         $ve = $version->evaluate();
-        $version_outdated = (strpos($ve, 'You are running the latest version') === false) && (strpos($ve, 'This version does not exist in our database') === false) && (strpos($ve, 'Cannot connect') === false);
+        $version_outdated = (strpos($ve, 'You are running the latest version') === false) && (strpos($ve, 'This version does not exist in our database') === false) && (strpos($ve, 'Cannot connect') === false) && (cms_version_minor() != 'custom');
 
         require_code('addons2');
-        $num_addons_outdated = count(find_updated_addons());
+        $num_addons_outdated = (cms_version_minor() == 'custom') ? 0 : count(find_updated_addons());
 
         if (($version_outdated) || ($num_addons_outdated > 0)) {
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0', array('_GUID' => 'm578142633c6f3d37776e82a869deb91'));

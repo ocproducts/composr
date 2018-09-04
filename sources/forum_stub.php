@@ -104,11 +104,12 @@ class Forum_driver_base
      * Get a hyperlink (i.e. HTML link, not just a URL) to a forum member's member profile.
      *
      * @param  MEMBER $id The forum member
-     * @param  string $_username The username (blank: look it up)
+     * @param  string $_username The username / display name (blank: look it up)
      * @param  boolean $use_displayname Whether to use the displayname rather than the username (if we have them)
+     * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
      * @return Tempcode The hyperlink
      */
-    public function member_profile_hyperlink($id, $_username = '', $use_displayname = true)
+    public function member_profile_hyperlink($id, $_username = '', $use_displayname = true, $tempcode_okay = false)
     {
         if (is_guest($id)) {
             return ($_username == '') ? make_string_tempcode($this->get_username($this->get_guest_id())) : make_string_tempcode(escape_html($_username));
@@ -239,7 +240,7 @@ class Forum_driver_base
         // How to handle missing members
         if ($ret === null) {
             if (($options & USERNAME_DEFAULT_DELETED) != 0) {
-                $ret = do_lang('DELETED');
+                $ret = function_exists('do_lang') ? do_lang('DELETED') : 'Deleted';
             } elseif (($options & USERNAME_DEFAULT_ID_RAW) != 0) {
                 $ret = strval($id);
             } elseif (($options & USERNAME_DEFAULT_ID_TIDY) != 0) {
@@ -453,7 +454,7 @@ class Forum_driver_base
         }
 
         // Try hardcoded in URL
-        $theme = $is_current_member ? '-1' : filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1')));
+        $theme = $is_current_member ? filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1'))) : '-1';
         if ($theme != '-1') {
             if ((!is_dir(get_file_base() . '/themes/' . $theme)) && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) { // Sanity check
                 require_code('site');
@@ -499,7 +500,7 @@ class Forum_driver_base
 
         // Get from member setting
         require_code('permissions');
-        $theme = filter_naughty($this->_get_theme($member_id));
+        $theme = filter_naughty($this->_get_theme(false, $member_id));
         if (empty($theme)) { // Cleanup bad data
             $theme = '-1';
         }

@@ -470,7 +470,7 @@ function get_option($name, $missing_ok = false)
  *
  * @param  ID_TEXT $name The name of the value
  * @param  ?ID_TEXT $default Value to return if value not found (null: return null)
- * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
+ * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance trade-off: frequently used values should not be elective, infrequently used values should be elective.
  * @param  boolean $env_also Whether to also check server environmental variables. Only use if $elective_or_lengthy is set to false
  * @return ?SHORT_TEXT The value (null: value not found and default is null)
  */
@@ -523,7 +523,7 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
  *
  * @param  ID_TEXT $name The name of the value
  * @param  TIME $cutoff The cutoff time (an absolute time, not a relative "time ago")
- * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
+ * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance trade-off: frequently used values should not be elective, infrequently used values should be elective.
  * @return ?SHORT_TEXT The value (null: value newer than not found)
  */
 function get_value_newer_than($name, $cutoff, $elective_or_lengthy = false)
@@ -562,7 +562,7 @@ function get_value_newer_than($name, $cutoff, $elective_or_lengthy = false)
  *
  * @param  ID_TEXT $name The name of the value
  * @param  ?SHORT_TEXT $value The value (null: delete)
- * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
+ * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance trade-off: frequently used values should not be elective, infrequently used values should be elective.
  * @return SHORT_TEXT The value just set, same as $value (just as a niceity so that Commandr users can see something "happen")
  */
 function set_value($name, $value, $elective_or_lengthy = false)
@@ -594,7 +594,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
  * Delete a situational value.
  *
  * @param  ID_TEXT $name The name of the value
- * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
+ * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance trade-off: frequently used values should not be elective, infrequently used values should be elective.
  */
 function delete_value($name, $elective_or_lengthy = false)
 {

@@ -256,14 +256,14 @@ function parse_aggregate_xml($display_errors = false)
     $aggregate_types = array();
 
     list($root_tag, $root_attributes, , $this_children) = $parsed->gleamed;
-    if ($root_tag == 'aggregatetypes') {
+    if ($root_tag == 'aggregateTypes') {
         foreach ($this_children as $_child) {
             if (!is_array($_child)) {
                 continue;
             }
             list($row_tag, $row_attributes, $row_value, $row_children) = $_child;
 
-            if ($row_tag == 'aggregatetype') {
+            if ($row_tag == 'aggregateType') {
                 if (!array_key_exists('name', $row_attributes)) {
                     $parse_errors[] = 'Missing aggregateType.name';
                     continue;

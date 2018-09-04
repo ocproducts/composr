@@ -51,6 +51,8 @@ if (!addon_installed('composr_homesite')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
 }
 
+header('X-Robots-Tag: noindex');
+
 require_code('patreon');
 $level = get_param_integer('level', 0);
 echo json_encode(get_patreon_patrons_on_minimum_level($level));

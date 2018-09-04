@@ -73,16 +73,25 @@
 	<h2>{!cns:AUTO_NOTIFICATION_CONTRIB_CONTENT}</h2>
 
 	<p class="simple-neat-checkbox">
-		<input {+START,IF,{AUTO_NOTIFICATION_CONTRIB_CONTENT}} checked="checked"{+END} type="checkbox" id="auto_monitor_contrib_content" name="auto_monitor_contrib_content" value="1" />
-		<label for="auto_monitor_contrib_content"><span>{!cns:DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT}</span></label>
+		<input {+START,IF,{AUTO_NOTIFICATION_CONTRIB_CONTENT}} checked="checked"{+END} type="checkbox" id="auto-monitor-contrib-content" name="auto_monitor_contrib_content" value="1" />
+		<label for="auto-monitor-contrib-content"><span>{!cns:DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT}</span></label>
 	</p>
 {+END}
 
-{+START,IF_PASSED,SMART_TOPIC_NOTIFICATION_CONTENT}
+{+START,IF_PASSED,SMART_TOPIC_NOTIFICATION}
 	<h2>{!cns:SMART_TOPIC_NOTIFICATION}</h2>
 
 	<p class="simple-neat-checkbox">
-		<input {+START,IF,{SMART_TOPIC_NOTIFICATION_CONTENT}} checked="checked"{+END} type="checkbox" id="smart_topic_notification_content" name="smart_topic_notification_content" value="1" />
-		<label for="smart_topic_notification_content"><span>{!cns:DESCRIPTION_SMART_TOPIC_NOTIFICATION}</span></label>
+		<input {+START,IF,{SMART_TOPIC_NOTIFICATION}} checked="checked"{+END} type="checkbox" id="smart-topic-notification" name="smart_topic_notification" value="1" />
+		<label for="smart-topic-notification"><span>{!cns:DESCRIPTION_SMART_TOPIC_NOTIFICATION}</span></label>
+	</p>
+{+END}
+
+{+START,IF_PASSED,MAILING_LIST_STYLE}
+	<h2>{!cns:MAILING_LIST_STYLE}</h2>
+
+	<p class="simple-neat-checkbox">
+		<input{+START,IF,{MAILING_LIST_STYLE}} checked="checked"{+END} type="checkbox" id="mailing-list-style" name="mailing_list_style" value="1" />
+		<label for="mailing-list-style"><span>{MAILING_LIST_STYLE_DESCRIPTION}</span></label>
 	</p>
 {+END}

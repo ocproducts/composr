@@ -29,12 +29,8 @@
  */
 function _enforce_sessioned_url($url)
 {
-    // Take hash off
-    $hash = '';
-    $hash_pos = strpos($url, '#');
-    if ($hash_pos !== false) {
-        $hash = substr($url, $hash_pos);
-        $url = substr($url, 0, $hash_pos);
+    if (get_bot_type() === null) {
+        return $url;
     }
 
     // Take hash off
@@ -88,8 +84,12 @@ function _enforce_sessioned_url($url)
  */
 function create_session($member_id, $session_confirmed = 0, $invisible = false, $create_cookie = true)
 {
-    global $SESSION_CACHE, $MEMBER_CACHED;
+    global $SESSION_CACHE, $MEMBER_CACHED, $SITE_INFO;
     $MEMBER_CACHED = $member_id;
+
+    if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest($member_id))) {
+        return 'omni-guest'; // We should not even try and count/distinguish sessions for guests if the static cache is on
+    }
 
     if (($invisible) && (get_option('is_on_invisibility') == '0')) {
         $invisible = false;
@@ -347,12 +347,12 @@ function try_httpauth_login()
             }
 
             cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
-            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap');
+            $middle = cns_member_external_linker_ask(((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap', $_SERVER['PHP_AUTH_USER']);
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member_id = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap');
+            $member_id = cns_member_external_linker(((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap', $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER']);
         }
     }
 

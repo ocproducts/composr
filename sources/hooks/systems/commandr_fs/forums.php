@@ -200,6 +200,11 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
 
         if (substr($filename, 0, 6) == 'FORUM-') { // Must be defined first, to ensure prefix stripped
+            $test = parent::folder_convert_filename_to_id($filename, 'forum');
+            if ($test[1] !== null) {
+                return $test;
+            }
+
             return parent::folder_convert_filename_to_id(substr($filename, 6), 'forum');
         }
 
@@ -245,8 +250,19 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             $order = 'last_post';
         }
         $is_threaded = $this->_default_property_int($properties, 'is_threaded');
+        $allows_anonymous_posts = $this->_default_property_int($properties, 'allows_anonymous_posts');
 
-        return array($description, $forum_grouping_id, $access_mapping, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded);
+        $mail_email_address = $this->_default_property_str($properties, 'mail_email_address');
+        $mail_server_type = $this->_default_property_str($properties, 'mail_server_type');
+        $mail_server_host = $this->_default_property_str($properties, 'mail_server_host');
+        $mail_server_port = $this->_default_property_int_null($properties, 'mail_server_port');
+        $mail_folder = $this->_default_property_str($properties, 'mail_folder');
+        $mail_username = $this->_default_property_str($properties, 'mail_username');
+        $mail_password = $this->_default_property_str($properties, 'mail_password');
+        $mail_nonmatch_policy = $this->_default_property_str($properties, 'mail_nonmatch_policy');
+        $mail_unconfirmed_notice = $this->_default_property_int($properties, 'mail_unconfirmed_notice');
+
+        return array($description, $forum_grouping_id, $access_mapping, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded, $allows_anonymous_posts, $mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_notice);
     }
 
     /**
@@ -296,11 +312,11 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
             require_code('cns_forums_action');
 
-            list($description, $forum_grouping_id, $access_mapping, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded) = $this->__folder_read_in_properties_forum($path, $properties);
+            list($description, $forum_grouping_id, $access_mapping, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded, $allows_anonymous_posts, $mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_notice) = $this->__folder_read_in_properties_forum($path, $properties);
 
             $parent_forum = $this->_integer_category($category);
 
-            $id = cns_make_forum($label, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded);
+            $id = cns_make_forum($label, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded, $allows_anonymous_posts, $mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_notice);
 
             $this->_resource_save_extend('forum', strval($id), $filename, $label, $properties);
         } else {
@@ -412,6 +428,15 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 'redirection' => $row['f_redirection'],
                 'order' => $row['f_order'],
                 'is_threaded' => $row['f_is_threaded'],
+                'allows_anonymous_posts' => $row['f_allows_anonymous_posts'],
+                'mail_email_address' => $row['f_mail_email_address'],
+                'mail_server_type' => $row['f_mail_server_type'],
+                'mail_server_host' => $row['f_mail_server_host'],
+                'mail_server_port' => $row['f_mail_server_port'],
+                'mail_username' => $row['f_mail_username'],
+                'mail_password' => $row['f_mail_password'],
+                'mail_nonmatch_policy' => $row['f_mail_nonmatch_policy'],
+                'mail_unconfirmed_notice' => $row['f_mail_unconfirmed_notice'],
             );
             $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
             return $properties;
@@ -496,11 +521,11 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             require_code('cns_forums_action2');
 
             $label = $this->_default_property_str($properties, 'label');
-            list($description, $forum_grouping_id, $access_mapping, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded) = $this->__folder_read_in_properties_forum($path, $properties);
+            list($description, $forum_grouping_id, $access_mapping, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded, $allows_anonymous_posts, $mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_notice) = $this->__folder_read_in_properties_forum($path, $properties);
 
             $parent_forum = $this->_integer_category($category);
 
-            cns_edit_forum(intval($resource_id), $label, $description, $forum_grouping_id, $parent_forum, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded);
+            cns_edit_forum(intval($resource_id), $label, $description, $forum_grouping_id, $parent_forum, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded, $allows_anonymous_posts, $mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_notice);
 
             $this->_resource_save_extend('forum', $resource_id, $filename, $label, $properties);
         } else {

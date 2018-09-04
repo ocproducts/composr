@@ -359,18 +359,27 @@ function cdn_filter($url_path)
                 $sum_asc += ord($basename[$i]);
             }
 
-            $cdn_part = $cdn_parts[$sum_asc % count($cdn_parts)]; // To make a consistent but fairly even distribution we do some modular arithmetic against the total of the ascii values
+            $cdn_part = $cdn_parts[$sum_asc % count($cdn_parts)]; // To make a consistent but fairly even distribution we do some modular arithmetic against the total of the ASCII values
         }
 
-        static $normal_suffix = null;
-        if ($normal_suffix === null) {
-            $normal_suffix = '#(^https?://)' . str_replace('#', '#', preg_quote(get_domain())) . '(/)#';
+        static $normal_prefix = null;
+        static $bus = null;
+        if ($normal_prefix === null) {
+            $normal_prefix = '#(^https?://)' . preg_quote($_SERVER['HTTP_HOST'], '#') . '(/)#';
+            $bus = get_base_url() . '/';
         }
-        $out = preg_replace($normal_suffix, '${1}' . $cdn_part . '${2}', $url_path);
+        if (substr($url_path, 0, strlen($bus)) == $bus) {
+            $file_path = get_custom_file_base() . '/' . rawurldecode(substr($url_path, strlen($bus)));
+            $mtime = @filemtime($file_path);
+            if ($mtime !== false) {
+                $url_path .= '?' . strval($mtime);
+            }
+        }
+        $new_url = preg_replace($normal_prefix, '${1}' . $cdn_part . '${2}', $url_path);
 
-        $cdn_consistency_check[$url_path] = $out;
+        $cdn_consistency_check[$url_path] = $new_url;
 
-        return $out;
+        return $new_url;
     }
 
     return $url_path;

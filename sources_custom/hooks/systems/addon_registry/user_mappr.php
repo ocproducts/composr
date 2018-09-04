@@ -91,8 +91,9 @@ class Hook_addon_registry_user_mappr
 The addon adds extra Custom Profile Fields to store members coordinates to store their latitude and logitude. The addon can automatically populate the members when members visit the block page. Members can edit their locations in their profile.
 
 Before you can use the block you must first configure the API:
-1) Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API). If you do not you may get a "Oops! Something went wrong." error and a corresponding "MissingKeyMapError" error in the browser console.
+1) Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)
 2) Make sure that Google Maps JavaScript API is enabled on Google\'s end
+If you do not you may get a "Oops! Something went wrong." error and a corresponding "MissingKeyMapError" error in the browser console.
 
 Parameters:
  - Title -- The Name of the block which will appear on screen for example Store Locator.

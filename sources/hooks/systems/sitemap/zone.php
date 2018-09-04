@@ -39,9 +39,10 @@ class Hook_sitemap_zone extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         if (get_option('single_public_zone') == '0') {
             if ($page_link == ':') {
@@ -151,8 +152,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => ($icon === null) ? null : find_theme_image('icons/' . $icon),
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filectime($path) : null,
-                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filemtime($path) : null,
+                'add_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filectime($path) : null,
+                'edit_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filemtime($path) : null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -223,7 +224,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             }
         }
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 
@@ -318,7 +319,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     }
 
                     if ((!isset($pages_found[$_zone . ':' . $page])) && ($page != 'recommend_help'/*Special case*/) && ((strpos($page_type, 'comcode') === false/*not a Comcode page*/) || (isset($root_comcode_pages[$_zone . ':' . $page])))) {
-                        if ($this->_is_page_omitted_from_sitemap($_zone, $page)) {
+                        if ($this->_is_page_omitted_from_sitemap($_zone, $page, $options)) {
                             continue;
                         }
                         $orphaned_pages[$_zone . ':' . $page] = $page_type;

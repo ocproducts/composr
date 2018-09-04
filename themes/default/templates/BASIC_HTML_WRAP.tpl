@@ -3,7 +3,7 @@
 
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}">
 	<head>
 		{$,The character set of the page}
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />

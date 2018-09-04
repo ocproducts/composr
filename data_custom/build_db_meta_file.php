@@ -55,6 +55,8 @@ if (!addon_installed('meta_toolkit')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
 }
 
+header('X-Robots-Tag: noindex');
+
 require_code('make_release');
 make_database_manifest();
 echo 'Done';

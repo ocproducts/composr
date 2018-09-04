@@ -106,6 +106,7 @@ class Hook_addon_registry_cns_multi_moderations
             'sources/hooks/systems/addon_registry/cns_multi_moderations.php',
             'adminzone/pages/modules/admin_cns_multi_moderations.php',
             'lang/EN/cns_multi_moderations.ini',
+            'sources/hooks/systems/actionlog/cns_multi_moderations.php',
         );
     }
 }

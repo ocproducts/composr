@@ -118,12 +118,15 @@
      * @returns { string }
      */
     window.strVal = function strVal(val, defaultValue) {
-        var ret;
-
         if (defaultValue === undefined) {
             defaultValue = '';
         }
 
+        if (val == null) {
+            return defaultValue;
+        }
+
+        var ret;
         if (!val) {
             ret = (val === 0) ? '0' : '';
         } else if (val === true) {
@@ -139,7 +142,7 @@
             throw new TypeError('strVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to a string.');
         }
 
-        return (ret !== '') ? ret : defaultValue;
+        return ret;
     };
 
     /**@namespace $util*/
@@ -148,11 +151,6 @@
      * @returns {boolean}
      */
     $util.hasOwn = Function.bind.call(Function.call, Object.prototype.hasOwnProperty);
-    /**
-     * @method
-     * @returns { Array }
-     */
-    $util.forEach = Function.bind.call(Function.call, Array.prototype.forEach);
     /**
      * @method
      * @returns { Array }
@@ -173,11 +171,9 @@
         return ++_uniqueId;
     }
 
-    // Unique for every instance of $util
-    $util.id = 'util' + ('' + Math.random()).substr(2);
-
+    var _uids = new WeakMap();
     /**
-     * Used to uniquely identify objects/functions
+     * Provides a unique integer id to uniquely identify objects/functions
      * @param {object|function} obj
      * @returns {number}
      */
@@ -186,12 +182,13 @@
             throw new TypeError('$util.uid(): Parameter `obj` must be an object or a function.');
         }
 
-        if ($util.hasOwn(obj, $util.id)) {
-            return obj[$util.id];
+        var id = _uids.get(obj);
+
+        if (id === undefined) {
+            id = uniqueId();
+            _uids.set(obj, id);
         }
 
-        var id = uniqueId();
-        $util.properties(obj, $util.keyValue($util.id, id));
         return id;
     };
 
@@ -330,12 +327,12 @@
 
         // Observe the promise, saving the fulfilment in a closure scope.
         var result = promise.then(
-            function(v) {
+            function (v) {
                 isResolved = true;
                 isPending = false;
                 return v;
             },
-            function(e) {
+            function (e) {
                 isRejected = true;
                 isPending = false;
                 throw e;
@@ -445,12 +442,12 @@
         var len;
         minLength = Number(minLength) || 0;
 
-        return (obj != null)
-            && (typeof obj === 'object')
-            && ($util.internalName(obj) !== 'Window')
-            && (typeof (len = obj.length) === 'number')
-            && (len >= minLength)
-            && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
+        return (obj != null) &&
+            (typeof obj === 'object') &&
+            ($util.internalName(obj) !== 'Window') &&
+            (typeof (len = obj.length) === 'number') &&
+            (len >= minLength) &&
+            ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
     };
 
     /**
@@ -473,6 +470,7 @@
      */
     $util.decToHex = function decToHex(number) {
         var hexbase = '0123456789ABCDEF';
+        // eslint-disable-next-line no-bitwise
         return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
     };
 
@@ -504,33 +502,12 @@
         return obj;
     };
 
-    /**
-     * Iterates over iterable objects
-     * @param iterable
-     * @param callback
-     * @returns {*}
-     */
-    $util.eachIter = function eachIter(iterable, callback) {
-        var item, i = 0;
-
-        if (iterable == null) {
-            return iterable;
-        }
-
-        while (!(item = iterable.next()).done) {
-            if (callback.call(undefined, item.value, i++) === false) {
-                break;
-            }
-        }
-
-        return iterable;
-    };
-
     var EXTEND_DEEP = 1,
         EXTEND_TGT_OWN_ONLY = 2,
         EXTEND_SRC_OWN_ONLY = 4;
 
     function _extend(target, source, mask) {
+        /*eslint-disable no-bitwise*/
         var key, tgt, src, isSrcArr;
 
         mask = Number(mask) || 0;
@@ -540,9 +517,9 @@
             src = source[key];
 
             if (
-                (src === undefined)
-                || ((mask & EXTEND_TGT_OWN_ONLY) && !$util.hasOwn(target, key))
-                || ((mask & EXTEND_SRC_OWN_ONLY) && !$util.hasOwn(source, key))
+                (src === undefined) ||
+                ((mask & EXTEND_TGT_OWN_ONLY) && !$util.hasOwn(target, key)) ||
+                ((mask & EXTEND_SRC_OWN_ONLY) && !$util.hasOwn(source, key))
             ) {
                 continue;
             }
@@ -636,7 +613,7 @@
 
     /**
      * Less verbose alternative to Object.defineProperties()
-     * @param {string} [mask] - optional, assumed to be `obj` if not of type number.
+     * @param {string} [mask] - optional, assumed to be `obj` if not of type string.
      * @param {object} obj - the target object to define properties on.
      * @param {object|string} props - is a single property's name if `value` is passed.
      * @returns {Object}
@@ -755,7 +732,7 @@
      */
     $util.camelCase = function camelCase(str) {
         return ((str != null) && (str = strVal(str))) ?
-            str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
+            str.replace(/[-_]+/g, ' ') // Replaces any - or _ characters with a space
                 .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
                 .replace(/ (.)/g, function ($1) { // Upper cases the first character in each group immediately following a space (delimited by spaces)
                     return $1.toUpperCase();
@@ -785,7 +762,7 @@
             options = {};
         }
 
-        var later = function() {
+        var later = function () {
             previous = options.leading === false ? 0 : Date.now();
             timeout = null;
             result = func.apply(context, args);
@@ -834,7 +811,7 @@
     $util.debounce = function debounce(func, wait, immediate) {
         var timeout, args, context, timestamp, result;
 
-        var later = function() {
+        var later = function () {
             var last = Date.now() - timestamp;
 
             if (last < wait && last >= 0) {
@@ -867,7 +844,7 @@
         };
     };
 
-    var _onced = {};
+    var _onced = Object.create(null);
     /**
      * @param objects
      * @param flag
@@ -927,7 +904,7 @@
      * @param iterable
      * @returns { Array }
      */
-    $util.arrayFromIterable = function arrayFromIterable(iterable) {
+    $util.iterableToArray = function iterableToArray(iterable) {
         var item, array = [];
 
         if (iterable != null) {
@@ -979,7 +956,7 @@
         return new URL(window.location);
     };
 
-    var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i;
+    var rgxProtocol = /^[a-z0-9-.]+:(?=\/\/)/i;
     /**
      * Make a URL scheme-relative
      * 'http://example.com' -> '//example.com'
@@ -1007,6 +984,7 @@
 
     /**
      * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog in-between their click)
+     * LEGACY: Formerly click_link()
      * @param url
      * @param target
      */
@@ -1052,7 +1030,7 @@
         return window.JSON5.parse(strVal(source));
     };
 
-    $util.inform = function inform() {
+    $util.inform = $util.log = function inform() {
         if (window.$cms && window.$cms.isDevMode()) {
             return console.log.apply(undefined, arguments);
         }
@@ -1062,7 +1040,7 @@
         return console.warn.apply(undefined, arguments);
     };
 
-    $util.fatal = function fatal() {
+    $util.fatal = $util.error = function fatal() {
         return console.error.apply(undefined, arguments);
     };
 

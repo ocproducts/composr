@@ -27,23 +27,32 @@ class Hook_contact_forms_sugarcrm
 
         require_code('sugarcrm');
 
-        global $SUGARCRM;
-
-        if ($SUGARCRM === null) {
+        if (!sugarcrm_configured()) {
             return false;
         }
 
-        try {
-            $success = save_message_into_sugarcrm_as_configured(($subject == get_site_name()) ? '' : $subject, $body, $from_email, $from_name, $attachments, $body_parts, $_POST + $_GET + $_COOKIE);
-        }
-        catch (Exception $e) {
-            sugarcrm_failed($e->getMessage());
-            return false;
+        $sugarcrm_skip_string = get_option('sugarcrm_skip_string');
+        if (($sugarcrm_skip_string != '') && (strpos($body, $sugarcrm_skip_string) !== false)) {
+            return true;
         }
 
-        if (!$success) {
-            return false;
+        $_attachments = array();
+        foreach ($attachments as $path => $filename) {
+            if ((strpos($path, '://') === false) && (substr($path, 0, 5) != 'gs://')) {
+                $path_new = get_custom_file_base() . '/safe_mode_temp/mail_' . uniqid('', true) . '.txt';
+                copy($path, $path_new);
+                fix_permissions($path_new);
+                sync_file($path_new);
+
+                $_attachments[$path_new] = $filename;
+            } else {
+                $_attachments[$path] = $filename;
+            }
         }
+
+        require_code('tasks');
+        $_title = do_lang('SUGARCRM_MESSAGING_SYNC');
+        call_user_func_array__long_task($_title, null, 'sugarcrm_sync_message', array($subject, $body, $to_email, $to_name, $from_email, $from_name, $_attachments, $body_parts, $body_prefix, $body_suffix, $_GET, $_POST), false, false, false);
 
         return (get_option('sugarcrm_exclusive_messaging') == '1');
     }

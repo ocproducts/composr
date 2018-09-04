@@ -47,7 +47,7 @@ class Database_Static_mysql extends Database_super_mysql
     public function get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
         if (!function_exists('mysql_connect')) {
-            $error = 'The MySQL PHP extension not installed (anymore?). You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
+            $error = 'The \'mysql\' PHP extension is not installed (anymore?). This extension was removed in PHP 7, in favour of \'mysqli\'. You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
             if ($fail_ok) {
                 echo $error . "\n";
                 return null;

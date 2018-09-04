@@ -239,6 +239,12 @@ class Module_login
             }
         }
 
+        if (either_param_string('_lead_source_description', '') == '') {
+            global $METADATA;
+            $_lead_source_description = (isset($METADATA['real_page']) ? $METADATA['real_page'] : get_page_name()) . ' (' . get_self_url_easy() . ')';
+            $passion->attach(form_input_hidden('_lead_source_description', $_lead_source_description)); // Not specified, and we want the default for what the login screen is to be carried through (before real_page and get_self_url_easy is lost)
+        }
+
         // Lost password link
         if (get_forum_type() == 'cns' && !has_interesting_post_fields()) {
             require_lang('cns');
@@ -300,7 +306,7 @@ class Module_login
                 }
 
                 require_code('site2');
-                assign_refresh($url, 0.0);
+                assign_refresh($url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                 $post = new Tempcode();
                 $refresh = new Tempcode();
             } else {
@@ -359,7 +365,7 @@ class Module_login
 
         $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
-            $_url = build_url(array('page' => ''), '', array('keep_session' => 1));
+            $_url = build_url(array('page' => ''), '', array('keep_session' => true));
             $url = $_url->evaluate();
         }
         return redirect_screen($this->title, $url, do_lang_tempcode('_LOGGED_OUT'));

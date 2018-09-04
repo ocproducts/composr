@@ -197,7 +197,8 @@ function post_comment_script()
     // Check security
     $hash = either_param_string('hash');
     require_code('crypt');
-    if (ratchet_hash($options, get_site_salt()) != $hash) {
+
+    if (!ratchet_hash_verify($options, get_site_salt(), $hash)) {
         header('Content-Type: text/plain; charset=' . get_charset());
         exit();
     }
@@ -922,7 +923,8 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     if (($post != '') && ($forum_tie) && ($show_success_message)) {
         require_code('site2');
-        assign_refresh($GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id, do_lang('COMMENT')), $forum, true), 0.0);
+        $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id, do_lang('COMMENT')), $forum, true);
+        assign_refresh($topic_url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
     }
 
     if (($post != '') && ($show_success_message)) {
@@ -988,7 +990,7 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
         require_code('cns_posts_action3');
         cns_edit_post($post_id, 1, ($content_title === null) ? $spacer_title : $content_title, $spacer_post, 0, 0, null, false, false, '', false);
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, do_lang('COMMENT') . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, '', null, $home_link->evaluate(), false);
+        cns_edit_topic($topic_id, do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, '', null, $home_link->evaluate(), false);
     }
 }
 

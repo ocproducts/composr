@@ -453,6 +453,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 case '"BLOCK"':
                                 case '"LOAD_PAGE"':
                                 case '"LOAD_PANEL"':
+                                case '"METADATA"':
                                     foreach ($stack as $level_test) { // Make sure if it's a LOOP then we evaluate the parameters early, as these have extra bindings we don't know about
                                         if (($level_test[3] === PARSE_DIRECTIVE) && (isset($level_test[5][1])) && (isset($level_test[5][1][0])) && ($level_test[5][1][0] === '"LOOP"')) { // For a loop, we need to do full evaluation of symbol parameters as it may be bound to a loop variable
                                             $eval_openers = tc_eval_opener_params($_opener_params);
@@ -479,7 +480,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         }
 
                         // Special case: Needed to ensure correct binding
-                        if (($first_param === '"IMG"') && (strpos($_opener_params, ',') === false)) {
+                        if ((($first_param === '"IMG"') || ($first_param === '"IMG_INLINE"')) && (strpos($_opener_params, ',') === false)) { // Needed to ensure correct binding
                             $_opener_params .= ',"0","' . php_addslashes($theme) . '"';
                         }
 
@@ -818,7 +819,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')=="0"))?(' . $directive_internal . '):\'\')';
+                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')!="1"))?(' . $directive_internal . '):\'\')';
                                 break;
 
                             case 'WHILE':

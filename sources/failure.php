@@ -388,8 +388,12 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
 
     cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
+    global $HTTP_STATUS_CODE;
+
     if ($template == 'FATAL_SCREEN') {
-        set_http_status_code(500);
+        if ($HTTP_STATUS_CODE == 200) {
+            set_http_status_code(500);
+        }
     }
 
     if (is_object($text)) {
@@ -469,10 +473,12 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
 
     require_code('global3');
 
-    global $WANT_TEXT_ERRORS;
+    global $WANT_TEXT_ERRORS, $HTTP_STATUS_CODE;
     if ($WANT_TEXT_ERRORS) {
         @header('Content-type: text/plain; charset=' . get_charset());
-        set_http_status_code(500);
+        if ($HTTP_STATUS_CODE == 200) {
+            set_http_status_code(500);
+        }
         cms_ini_set('ocproducts.xss_detect', '0');
         @debug_print_backtrace();
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
@@ -495,7 +501,9 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
             }
         } elseif ($template == 'WARN_SCREEN') {
             if (!headers_sent()) {
-                set_http_status_code(500);
+                if ($HTTP_STATUS_CODE == 200) {
+                    set_http_status_code(500);
+                }
             }
         }
     }
@@ -704,8 +712,8 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             }
         }
 
-        $dns = @gethostbyaddr($alt_ip ? $ip2 : $ip);
-        if ((php_function_allowed('gethostbyname')) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
+        $dns = cms_gethostbyaddr($alt_ip ? $ip2 : $ip);
+        if (cms_gethostbyname($dns) === ($alt_ip ? $ip2 : $ip)) { // Verify it's not faking the DNS
             $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
             foreach ($se_domain_names as $domain_name) {
                 if (substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) {
@@ -962,7 +970,7 @@ function get_webservice_result($error_message)
     }
 
     require_code('version2');
-    $http_result = cms_http_request('https://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), array('trigger_error' => false));
+    $http_result = cms_http_request('https://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand), array('trigger_error' => false));
     $result = $http_result->data;
     if ($http_result->download_mime_type != 'text/plain') {
         return null;
@@ -1070,6 +1078,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Query execution was interrupted') === false) &&
         (strpos($text, 'The MySQL server is running with the --read-only option so it cannot execute this statement') === false) &&
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
+        (strpos($text, 'Can\'t find record in') === false) &&
         (strpos($text, 'connect to') === false) &&
         (strpos($text, 'Access denied for') === false) &&
         (strpos($text, 'command denied for') === false) && // MySQL
@@ -1321,7 +1330,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
                 if (preg_match('#^https?://#', $message_raw) != 0) { // Looks like a URL
                     $url = $message_raw;
                     require_code('site2');
-                    assign_refresh($url, 0.0);
+                    assign_refresh($url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                     $message = do_lang_tempcode('_REDIRECTING');
                 } elseif (preg_match('#^[' . URL_CONTENT_REGEXP . ']*:[' . URL_CONTENT_REGEXP . ']*#', $message_raw) != 0) { // Looks like a page-link
                     list($zone, $map, $hash) = page_link_decode($message_raw);
@@ -1330,7 +1339,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
                     }
                     $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
                     require_code('site2');
-                    assign_refresh($url, 0.0);
+                    assign_refresh($url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                     $message = do_lang_tempcode('_REDIRECTING');
                 }
             }
@@ -1400,7 +1409,12 @@ function _access_denied($class, $param, $force_login)
 
         cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
-        $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        $real_page = get_page_name();
+        $redirect = get_self_url(true, false, array('page' => $real_page)); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        set_extra_request_metadata(array(
+            'real_page' => $real_page,
+        ));
+        ecv_CANONICAL_URL(user_lang(), array(), array()); // Cause this to be pre-cached with the correct value
         $_GET['redirect'] = $redirect;
         $_GET['page'] = 'login';
         $_GET['type'] = 'browse';
@@ -1409,7 +1423,7 @@ function _access_denied($class, $param, $force_login)
 
         $middle = load_module_page(_get_module_path('', 'login'), 'login');
         require_code('site');
-        if (get_value('no_tech_login_messages') !== '1') {
+        if ((get_value('no_tech_login_messages') !== '1') && (!is_guest())) {
             attach_message($message, 'warn');
         }
         $echo = globalise($middle, null, '', true);

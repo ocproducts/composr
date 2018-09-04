@@ -94,9 +94,9 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $meta_description = null;
         $matches = array();
-        if (preg_match('#<meta\s+[^<>]*name="description"[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
+        if (preg_match('#<meta\s+[^<>]*name="?description"?[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
             $meta_description = html_entity_decode($matches[1], ENT_QUOTES);
-        } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="description"#is', $data, $matches) != 0) {
+        } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="?description"?#is', $data, $matches) != 0) {
             $meta_description = html_entity_decode($matches[1], ENT_QUOTES);
         }
 
@@ -133,9 +133,9 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $meta_keywords = null;
         $matches = array();
-        if (preg_match('#<meta\s+[^<>]*name="keywords"[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
+        if (preg_match('#<meta\s+[^<>]*name="?keywords"?[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
             $meta_keywords = array_map('trim', explode(',', $matches[1]));
-        } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="keywords"#is', $data, $matches) != 0) {
+        } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="?keywords"?#is', $data, $matches) != 0) {
             $meta_keywords = array_map('trim', explode(',', $matches[1]));
         }
 

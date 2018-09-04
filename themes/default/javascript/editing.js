@@ -195,6 +195,7 @@
                 if (typeof window.rebuildAttachmentButtonForNext === 'function') { // NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove.
                     window.rebuildAttachmentButtonForNext(id, 'js-attachment-upload-button');
                 }
+
                 // Unload editor
                 var wysiwygData = window.wysiwygEditors[id].getData();
                 try {
@@ -239,7 +240,7 @@
                     $dom.html('#toggle-wysiwyg-' + textarea.id, '<img width="16" height="16" src="' + $util.srl('{$IMG*;^,icons/editor/wysiwyg_on}') + '" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
-                try {  // Unload editor
+                try { // Unload editor
                     window.wysiwygEditors[textarea.id].destroy();
                 } catch (ignore) {}
             }
@@ -386,7 +387,7 @@
             document.body.appendChild(testDiv);
             testDiv.className = 'wysiwyg-toolbar-color-finder';
             var matches,
-                wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');  // NB: Used by WYSIWYG_SETTINGS.js
+                wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color'); // NB: Used by WYSIWYG_SETTINGS.js
             testDiv.parentNode.removeChild(testDiv);
             matches = wysiwygColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
             if (matches) {
@@ -418,7 +419,7 @@
             }
 
             var editorSettings = {};
-            /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}*//*{+END}*/
+            /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
 
             if (window.CKEDITOR.instances[element.id]) {
                 // Workaround "The instance "xxx" already exists" error in Google Chrome
@@ -457,6 +458,11 @@
             });
             if (document.getElementById('js-attachment-store')) {
                 window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;^}';
+                window.lang_INPUTSYSTEM_RAW_IMAGE='{!javascript:INPUTSYSTEM_RAW_IMAGE;^}';
+                window.lang_INPUTSYSTEM_ATTACHMENT='{!javascript:INPUTSYSTEM_ATTACHMENT;^}';
+                window.lang_INPUTSYSTEM_MEDIA='{!javascript:INPUTSYSTEM_MEDIA;^}';
+                window.lang_IMAGE_EDITING_TYPE='{!javascript:IMAGE_EDITING_TYPE;^}';
+                window.lang_IMAGE_EDITING_QUESTION='{!javascript:IMAGE_EDITING_QUESTION;^}';
             }
             window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;^}';
             window.lang_SPELLCHECKER_DISABLED = '{!javascript:SPELLCHECKER_DISABLED;^}';
@@ -816,8 +822,6 @@
         }
 
         function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
-            //console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
-
             return new Promise(function (resolvePromise) {
                 var editor = window.wysiwygEditors[element.id],
                     insert = '';
@@ -837,7 +841,7 @@
                 var data = encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
 
                 $cms.doAjaxRequest(url, null, 'data=' + data).then(function (xhr) {
-                    var responseXML  = xhr.responseXML;
+                    var responseXML = xhr.responseXML;
                     if (responseXML && (responseXML.querySelector('result'))) {
                         var result = responseXML.querySelector('result');
                         insert = result.textContent.replace(/\s*$/, '');
@@ -860,9 +864,14 @@
                 if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
                     editor.document.getBody().appendHtml(insert);
                 } else {
-                    //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+                    // Ideally we use insertElement, as insertHtml may break up the parent tag (we want it to nest nicely)
                     var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
-                    editor.insertElement(elementForInserting);
+                    if (typeof elementForInserting.getName === 'undefined') {
+                        editor.insertHtml(insert);
+                    } else
+                    {
+                        editor.insertElement(elementForInserting);
+                    }
                 }
 
                 after = editor.getData();

@@ -129,7 +129,7 @@ You may find the best way to learn is through tutorials. Here are some sites fea
  - http://design.tutsplus.com/
 
 
-[title="2"]Tradeoff[/title]
+[title="2"]Trade-off[/title]
 
 It's important to be able to take in, and balance, multiple competing design viewpoints. Let's consider the front page of a website and the "hats you need to wear" from the point of viewpoints of experts in different fields at their most selfish.
 
@@ -170,7 +170,7 @@ Everything should feel natural and obvious. The interface should exactly meet co
 The web page must not take or track anything relating to browsing it. Otherwise my human rights are being violated.
 [/quote]
 
-All these experts are making great points, but are taking them to extremes. Therefore it's important to give them all consideration in the design. We can't just follow their advice though, because there are loads of conflicts -- the art of tradeoff is our tool.
+All these experts are making great points, but are taking them to extremes. Therefore it's important to give them all consideration in the design. We can't just follow their advice though, because there are loads of conflicts -- the art of trade-off is our tool.
 
 Let's consider a few of those conflicts:
  - The privacy and community advocates could argue forever, as they have completely opposing points of view. Privacy is to keep things secret, while community is to express.

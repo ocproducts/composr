@@ -27,9 +27,12 @@ function backend_cloud_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('syndication')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -86,6 +89,7 @@ function rss_backend_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (get_ip_address() != $_SERVER['SERVER_ADDR']) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -273,14 +277,20 @@ function get_enclosure_details($url, $enclosure_url)
 {
     $enclosure_length = '0';
     if ((url_is_local($url)) && (file_exists(get_custom_file_base() . '/' . rawurldecode($url)))) {
-        $enclosure_length = strval(@filesize(get_custom_file_base() . '/' . rawurldecode($url)));
+        $path = get_custom_file_base() . '/' . rawurldecode($url);
+        if (!is_file($path)) {
+            return array(null, null);
+        }
+        $enclosure_length = strval(filesize($path));
         require_code('mime_types');
         $enclosure_type = get_mime_type(get_file_extension($url), false);
     } else {
         $http_response = cms_http_request($enclosure_url, array('trigger_error' => false, 'byte_limit' => 0));
-        $enclosure_length = strval($http_response->download_size);
-        if ($enclosure_length === null) {
-            $enclosure_length = strval(strlen(http_get_contents($enclosure_url)));
+        if ($http_response->download_size === null) {
+            $_data = http_get_contents($enclosure_url, array('trigger_error' => false));
+            $enclosure_length = ($_data === null) ? '0' : strval(strlen($_data));
+        } else {
+            $enclosure_length = strval($http_response->download_size);
         }
         $enclosure_type = $http_response->download_mime_type;
     }

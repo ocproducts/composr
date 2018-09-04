@@ -27,9 +27,10 @@ class Hook_resource_meta_aware_newsletter_subscriber
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url)
      * @return ?array Map of award content-type info (null: disabled)
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         if (!addon_installed('newsletter')) {
             return null;
@@ -67,7 +68,7 @@ class Hook_resource_meta_aware_newsletter_subscriber
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_newsletter:import_subscribers',
             'view_category_page_link_pattern' => null,
-            'add_url' => (function_exists('get_member') && has_actual_page_access(get_member(), 'admin_newsletter')) ? (get_module_zone('admin_newsletter') . ':admin_newsletter:import_subscribers') : null,
+            'add_url' => ($get_extended_data && function_exists('get_member') && has_actual_page_access(get_member(), 'admin_newsletter')) ? (get_module_zone('admin_newsletter') . ':admin_newsletter:import_subscribers') : null,
             'archive_url' => null,
 
             'support_url_monikers' => false,

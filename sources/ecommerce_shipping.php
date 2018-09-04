@@ -261,7 +261,7 @@ function get_base_shipping_cost()
 /**
  * Get form fields for a shipping/invoice address.
  *
- * @param  string $shipping_email E-mail address
+ * @param  EMAIL $shipping_email E-mail address
  * @param  string $shipping_phone Phone number
  * @param  string $shipping_firstname First name
  * @param  string $shipping_lastname Last name
@@ -306,7 +306,7 @@ function get_shipping_name_fields($shipping_firstname, $shipping_lastname, $requ
 /**
  * Get form fields for shipping/invoice contact details.
  *
- * @param  string $shipping_email E-mail address
+ * @param  EMAIL $shipping_email E-mail address
  * @param  string $shipping_phone Phone number
  * @param  boolean $require_all_details Whether to require all details to be input
  * @return Tempcode Contact fields

@@ -552,7 +552,7 @@ class CMS_Topic
         $ret->attach(do_template('POST_CHILD_LOAD_LINK', array('_GUID' => '79e1f3feec7a6d48cd554b41e831b287', 'NUM_TO_SHOW_LIMIT' => strval($num_to_show_limit), 'OTHER_IDS' => $other_ids, 'ID' => '', 'CHILDREN' => (($other_ids === null) || (count($other_ids) == 0)) ? '' : '1')));
 
         if ($this->topic_id !== null) {
-            $serialized_options = serialize(array($this->topic_id, $num_to_show_limit, true, false, strval($forum_id), $this->reverse, $may_reply, $highlight_by_member, count($all_individual_review_ratings) != 0));
+            $serialized_options = json_encode(array($this->topic_id, $num_to_show_limit, true, false, strval($forum_id), $this->reverse, $may_reply, $highlight_by_member, count($all_individual_review_ratings) != 0));
             require_code('crypt');
             $hash = ratchet_hash($serialized_options, get_site_salt());
         } else {
@@ -795,11 +795,11 @@ class CMS_Topic
             $is_spacer_post = false;
             if (get_forum_type() == 'cns') {
                 // Spacer post fiddling
-                if (($this->first_post_id !== null) && ($this->topic_title !== null) && ($this->topic_description !== null) && ($this->topic_description_link !== null)) {
-                    $is_spacer_post = (($post['id'] == $this->first_post_id) && (substr($post['message_comcode'], 0, strlen('[semihtml]' . do_lang('SPACER_POST_MATCHER'))) == '[semihtml]' . do_lang('SPACER_POST_MATCHER')));
+                if (($this->first_post_id !== null) && ($post['id'] == $this->first_post_id) && ($this->topic_title !== null) && ($this->topic_description !== null) && ($this->topic_description_link !== null)) {
+                    $is_spacer_post = is_spacer_post($post['message_comcode']);
 
                     if ($is_spacer_post) {
-                        $c_prefix = do_lang('COMMENT') . ': #';
+                        $c_prefix = do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #';
                         if ((substr($this->topic_description, 0, strlen($c_prefix)) == $c_prefix) && ($this->topic_description_link != '')) {
                             list($linked_type, $linked_id) = explode('_', substr($this->topic_description, strlen($c_prefix)), 2);
                             $linked_url = $this->topic_description_link;

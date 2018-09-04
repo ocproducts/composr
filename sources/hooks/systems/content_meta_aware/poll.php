@@ -27,9 +27,10 @@ class Hook_content_meta_aware_poll
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url)
      * @return ?array Map of award content-type info (null: disabled)
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         if (!addon_installed('polls')) {
             return null;
@@ -67,8 +68,8 @@ class Hook_content_meta_aware_poll
             'view_page_link_pattern' => '_SEARCH:polls:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_polls:_edit:_WILD',
             'view_category_page_link_pattern' => null,
-            'add_url' => (function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_polls')) ? (get_module_zone('cms_polls') . ':cms_polls:add') : null,
-            'archive_url' => (($zone !== null) ? $zone : get_module_zone('polls')) . ':polls',
+            'add_url' => ($get_extended_data && function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_polls')) ? (get_module_zone('cms_polls') . ':cms_polls:add') : null,
+            'archive_url' => $get_extended_data ? ((($zone !== null) ? $zone : get_module_zone('polls')) . ':polls') : null,
 
             'support_url_monikers' => true,
 

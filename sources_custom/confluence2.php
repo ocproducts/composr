@@ -26,7 +26,7 @@ function confluence_proxy_script()
 
     global $CONFLUENCE_SUBDOMAIN;
 
-    $url = qualify_url(cms_srv('QUERY_STRING'), get_confluence_base_url());
+    $url = qualify_url($_SERVER['QUERY_STRING'], get_confluence_base_url());
 
     list($output, $mime_type) = confluence_call_url($url);
 
@@ -34,7 +34,7 @@ function confluence_proxy_script()
 
     if ((preg_match('#^image/#i', $mime_type) != 0) || (stripos($mime_type, 'svg') !== false)) {
         $mime_type = 'application/octet-stream';
-        header('Location: ' . $url);
+        header('Location: ' . $url); // assign_refresh not used, as no UI here
     }
 
     header('Content-Type: ' . $mime_type);

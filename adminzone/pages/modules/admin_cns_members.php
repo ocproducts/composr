@@ -307,10 +307,17 @@ class Module_admin_cns_members
      */
     public function step2()
     {
-        // Read in data
+        // Read in data...
+
         $username = trim(post_param_string('username'));
         $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
         $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
+
+        $primary_group = (has_privilege(get_member(), 'assume_any_member')) ? post_param_integer('primary_group') : null;
+        if (!array_key_exists('secondary_groups', $_POST)) {
+            $_POST['secondary_groups'] = array();
+        }
+
         require_code('temporal2');
         list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
         if (($dob_year === null) || ($dob_month === null) || ($dob_day === null)) {
@@ -322,22 +329,27 @@ class Module_admin_cns_members
             $dob_month = null;
             $dob_year = null;
         }
-        $reveal_age = post_param_integer('reveal_age', 0);
-        $timezone = post_param_string('timezone', get_site_timezone());
-        $language = post_param_string('language', get_site_default_lang());
-        $allow_emails = post_param_integer('allow_emails', 0);
-        $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0);
+
         $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true));
         $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
-        $validated = post_param_integer('validated', 0);
-        $primary_group = (has_privilege(get_member(), 'assume_any_member')) ? post_param_integer('primary_group') : null;
+
+        $timezone = post_param_string('timezone', get_site_timezone());
+        $language = post_param_string('language', get_site_default_lang());
         $theme = post_param_string('theme', '');
-        $views_signatures = post_param_integer('views_signatures', 0);
+
         $preview_posts = post_param_integer('preview_posts', 0);
+        $reveal_age = post_param_integer('reveal_age', 0);
+        $views_signatures = post_param_integer('views_signatures', 0);
         $auto_monitor_contrib_content = post_param_integer('auto_monitor_contrib_content', 0);
-        $pt_allow = array_key_exists('pt_allow', $_POST) ? implode(',', $_POST['pt_allow']) : '';
-        $tmp_groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
+        $smart_topic_notification = post_param_integer('smart_topic_notification', 0);
+        $mailing_list_style = post_param_integer('mailing_list_style', 0);
+        $auto_mark_read = post_param_integer('auto_mark_read', 0);
+        $sound_enabled = post_param_integer('sound_enabled', 0);
+        $allow_emails = post_param_integer('allow_emails', 0);
+        $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0);
+
         $all_pt_allow = '';
+        $tmp_groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
         foreach (array_keys($tmp_groups) as $key) {
             if ($key != db_get_first_id()) {
                 if ($all_pt_allow != '') {
@@ -346,14 +358,16 @@ class Module_admin_cns_members
                 $all_pt_allow .= strval($key);
             }
         }
+        $pt_allow = array_key_exists('pt_allow', $_POST) ? implode(',', $_POST['pt_allow']) : '';
         if ($pt_allow == $all_pt_allow) {
             $pt_allow = '*';
         }
         $pt_rules_text = post_param_string('pt_rules_text', '');
-        $auto_mark_read = post_param_integer('auto_mark_read', 0);
+
+        $validated = post_param_integer('validated', 0);
 
         // Secondary groups
-        $members_groups = array();
+        $secondary_groups = array();
         if (array_key_exists('secondary_groups', $_POST)) {
             $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
             $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : array()));
@@ -368,18 +382,58 @@ class Module_admin_cns_members
                     continue;
                 }
 
-                $members_groups[] = $group['id'];
+                $secondary_groups[] = $group['id'];
             }
         }
 
         // Add member
         $password_compatibility_scheme = ((post_param_integer('temporary_password', 0) == 1) ? 'temporary' : '');
-        $id = cns_make_member($username, $password, $email_address, $members_groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), null, '', null, '', 0, $preview_posts, $reveal_age, '', '', '', $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, '', '', true, $password_compatibility_scheme, '', null, null, post_param_integer('highlighted_name', 0), $pt_allow, $pt_rules_text, null, $auto_mark_read);
+        $id = cns_make_member(
+            $username, // username
+            $password, // password
+            $email_address, // email_address
+            $primary_group, // primary_group
+            $secondary_groups, // secondary_groups
+            $dob_day, // dob_day
+            $dob_month, // dob_month
+            $dob_year, // dob_year
+            $actual_custom_fields, // custom_fields
+            $timezone, // timezone
+            $language, // language
+            $theme, // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            null, // avatar_url
+            '', // signature
+            $preview_posts, // preview_posts
+            $reveal_age, // reveal_age
+            $views_signatures, // views_signatures
+            $auto_monitor_contrib_content, // auto_monitor_contrib_content
+            $smart_topic_notification, // smart_topic_notification
+            $mailing_list_style, // mailing_list_style
+            $auto_mark_read, // auto_mark_read
+            $sound_enabled, // sound_enabled
+            $allow_emails, // allow_emails
+            $allow_emails_from_staff, // allow_emails_from_staff
+            post_param_integer('highlighted_name', 0), // highlighted_name
+            $pt_allow, // pt_allow
+            $pt_rules_text, // pt_rules_text
+            $validated, // validated
+            '', // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            true, // check_correctness
+            '', // ip_address
+            $password_compatibility_scheme // password_compatibility_scheme
+        );
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
             content_review_set('member', strval($id));
         }
+
+        log_it('ADD_MEMBER', strval($id), $username);
 
         $special_links = array();
 
@@ -741,6 +795,8 @@ class Module_admin_cns_members
         $usergroups = isset($_POST['usergroups']) ? $_POST['usergroups'] : array();
         $order_by = post_param_string('order_by');
 
+        log_it('EXPORT_MEMBERS');
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('EXPORT_MEMBERS'), $this->title, 'export_members', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by));
     }
@@ -813,6 +869,8 @@ class Module_admin_cns_members
         } else {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
+
+        log_it('IMPORT_MEMBERS');
 
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('IMPORT_MEMBERS'), $this->title, 'import_members', array($default_password, $use_temporary_passwords, $target_path));

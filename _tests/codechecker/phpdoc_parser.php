@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    code_quality
+ * @package    testing_platform
  */
 
 /*
@@ -63,7 +63,7 @@ foreach ($files as $filename) {
     $TO_USE = $filename;
 
     $_filename = ($COMPOSR_PATH == '') ? $filename : substr($filename, strlen($COMPOSR_PATH) + 1);
-    if ($_filename == 'sources' . DIRECTORY_SEPARATOR . 'minikernel.php') {
+    if ($_filename == 'sources/minikernel.php') {
         continue;
     }
     //echo 'SIGNATURES-DOING ' . $_filename . cnl();
@@ -71,7 +71,7 @@ foreach ($files as $filename) {
 
     foreach ($result as $i => $r) {
         if ($r['name'] == '__global') {
-            if (($_filename != 'sources' . DIRECTORY_SEPARATOR . 'global.php') && ($_filename != 'phpstub.php')) {
+            if (($_filename != 'sources/global.php') && ($_filename != 'phpstub.php')) {
                 foreach (array_keys($r['functions']) as $f) {
                     if ((isset($global[$f])) && (!in_array($f, array('do_lang', 'mixed', 'qualify_url', 'http_get_contents', 'get_forum_type', 'mailto_obfuscated', 'get_custom_file_base')))) {
                         echo 'DUPLICATE-FUNCTION ' . $f . ' (in ' . $filename . ')' . cnl();

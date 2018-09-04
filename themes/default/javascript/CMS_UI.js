@@ -272,7 +272,7 @@
                 $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function (e) {
+            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function () {
                 if ($dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
                     $cms.ui.deactivateTooltip(el);
                 }
@@ -307,7 +307,7 @@
             if (el.className.startsWith('tt-')) {
                 tooltipEl.className += ' ' + el.className;
             }
-            if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
+            if (tooltip.length < 50) { // Only break words on long tooltips. Otherwise it messes with alignment.
                 tooltipEl.style.wordWrap = 'normal';
             }
             if (forceWidth) {
@@ -406,7 +406,7 @@
             }
 
             if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
-                el.parentElement.title = '';  // Do not want second tooltips that are not useful
+                el.parentElement.title = '';// Do not want second tooltips that are not useful
             }
         }
 
@@ -442,14 +442,18 @@
                 x = (event.type === 'focus') ? (win.pageXOffset + $dom.getWindowWidth(win) / 2) : (window.currentMouseX + styleOffsetX);
                 y = (event.type === 'focus') ? (win.pageYOffset + $dom.getWindowHeight(win) / 2 - 40) : (window.currentMouseY + styleOffsetY);
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+            // continue
+        }
         // Maybe mouse position actually needs to be in parent document?
         try {
             if (event.target && (event.target.ownerDocument !== win.document)) {
                 x = win.currentMouseX + styleOffsetX;
                 y = win.currentMouseY + styleOffsetY;
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+            // continue
+        }
 
         // Work out which direction to render in
         var width = $dom.contentWidth(tooltipElement);
@@ -1025,9 +1029,9 @@
             return;
         }
 
-        var realWidth = isVideo ? img.videoWidth : img.width,
+        var realWidth = isVideo ? img.videoWidth : img.naturalWidth,
             width = realWidth,
-            realHeight = isVideo ? img.videoHeight : img.height,
+            realHeight = isVideo ? img.videoHeight : img.naturalHeight,
             height = realHeight,
             lightboxImage = modal.topWindow.$dom.$id('lightbox-image'),
             lightboxMeta = modal.topWindow.$dom.$id('lightbox-meta'),

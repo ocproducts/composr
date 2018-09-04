@@ -39,7 +39,7 @@
 
     function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
         wasDoubleClick = Boolean(wasDoubleClick);
-        type = strVal(type, 'line');
+        type = strVal(type) || 'line';
 
         if (rawText.length > 255) {
             // Cannot process this

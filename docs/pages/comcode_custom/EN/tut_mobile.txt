@@ -113,7 +113,7 @@ On mobile mode perform this will perform some basic conversions on the enclosed 
 At the time of writing this covers the following:
  - Converting tables into [tt]div[/tt]s, or making them responsive
  - Wrapping a [tt]div[/tt] with a [tt]mobile_mode[/tt] class (so targeted CSS can be applied)
- - Extending any [tt]<img>[/tt] tag with a File/Media Library path to use a wrapping [tt]<picture>[/tt] tag and responsive source sets, [i]if[/i] the File/Media library has a [tt]file-mobile.ext[/tt] equivalent image to the [tt]file.ext[/tt] referenced by the image.
+ - Extending any [tt]<img>[/tt] tag with a File/Media Library path to use a wrapping [tt]<picture>[/tt] tag and responsive source sets, [i]if[/i] the File/Media library has a [tt]file-mobile.ext[/tt] equivalent image to the [tt]file.ext[/tt] referenced by the image [i]or[/i] a [tt]data-src-mobile[/tt] attribute is defined.
  - Make any [tt]<details>[/tt] elements that are open by default, closed by default
  - Decentering text
 

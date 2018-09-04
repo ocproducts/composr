@@ -716,6 +716,9 @@ class Module_admin_themes
 
         // Theme date
         $date = $this->_get_theme_date($theme);
+        if ($date === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
 
         require_javascript('core_themeing');
         return do_template('FORM_SCREEN', array(
@@ -736,11 +739,15 @@ class Module_admin_themes
      * Find a theme date.
      *
      * @param  ID_TEXT $theme The theme codename
-     * @return Tempcode The theme date
+     * @return ?Tempcode The theme date (null: theme not found)
      */
     protected function _get_theme_date($theme)
     {
-        $date = filemtime((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme);
+        $path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme;
+        if (!is_file($path)) {
+            return null;
+        }
+        $date = filemtime($path);
         return ($theme == 'default' || $theme == 'admin') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($date)));
     }
 
@@ -772,6 +779,8 @@ class Module_admin_themes
             actual_copy_theme($theme, $to);
 
             $this->save_theme_changes($to);
+
+            log_it('EDIT_THEME', $to, post_param_string('title'));
         } else {
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme != $to) {
@@ -1432,7 +1441,7 @@ class Module_admin_themes
             case 'templates':
                 $add_one = null;
                 $edit_this = array('_SELF', array('type' => 'edit_templates', 'f0file' => file_exists(get_custom_file_base() . '/' . str_replace('/templates/', '/templates_custom/', $file)) ? str_replace('/templates/', '/templates_custom/', $file) : $file, 'theme' => $theme), '_SELF');
-                $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
+                $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF', do_lang_tempcode('EDIT_THIS_TEMPLATE'));
                 $section_title = do_lang_tempcode('TEMPLATES');
                 break;
 

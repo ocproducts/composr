@@ -67,19 +67,18 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
 {
     list($minify, $https, $mobile) = _get_web_resources_env();
 
+    if (($allow_defer) && (function_exists('can_static_cache')) && (can_static_cache())) {
+        $allow_defer = false;
+    }
+
     global $SITE_INFO;
 
     // Make sure the JavaScript exists
     if ($theme === null) {
         $theme = @method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
-    $js_cache_stem = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
-    if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-        if (!is_dir($js_cache_stem)) {
-            require_code('files2');
-            make_missing_directory($js_cache_stem);
-        }
-    }
+    $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
+    $js_cache_stem = $dir;
     $js_cache_stem .= '/';
     $js_cache_stub = '';
     if (!$minify) {
@@ -135,9 +134,9 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
 
     if (
         ($support_smart_decaching &&
-            ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) <= time()))
-            || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path))))
-            || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))
+            (!is_file($js_cache_path)) ||
+            ((filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) <= time())) ||
+            ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path))))
         ) || (!$is_cached)
     ) {
         if (@filesize($full_path) == 0) {
@@ -146,6 +145,13 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
 
         if ($allow_defer) {
             return 'defer';
+        }
+
+        if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
+            if (!is_dir($dir)) {
+                require_code('files2');
+                make_missing_directory($dir);
+            }
         }
 
         require_code('web_resources2');
@@ -219,9 +225,18 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
     $temp = $do_enforce ? javascript_enforce($j, null, (!running_script('script')) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
     if (($temp != '') || (!$do_enforce)) {
         if ($temp == 'defer') {
+            $GLOBALS['STATIC_CACHE_ENABLED'] = false;
+
+            if ((function_exists('debugging_static_cache')) && (debugging_static_cache())) {
+                error_log('SC: No static cache due to deferred JavaScript compilation, ' . $j);
+            }
+
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $keep = symbol_tempcode('KEEP');
-            $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme);
+            if (get_param_string('keep_theme', null) !== $_theme) {
+                $url .= '&keep_theme=' . urlencode($_theme);
+            }
             if (!$minify) {
                 $url .= '&keep_minify=0';
             }
@@ -290,6 +305,10 @@ function css_enforce($c, $theme = null, $allow_defer = false)
 {
     list($minify, $https, $mobile) = _get_web_resources_env();
 
+    if (($allow_defer) && (function_exists('can_static_cache')) && (can_static_cache())) {
+        $allow_defer = false;
+    }
+
     global $SITE_INFO;
 
     // Make sure the CSS file exists
@@ -298,12 +317,6 @@ function css_enforce($c, $theme = null, $allow_defer = false)
     }
     $active_theme = $theme;
     $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
-    if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-        if (!is_dir($dir)) {
-            require_code('files2');
-            make_missing_directory($dir);
-        }
-    }
     $css_cache_path = $dir . '/' . filter_naughty($c);
     if (!$minify) {
         $css_cache_path .= '_non_minified';
@@ -338,7 +351,13 @@ function css_enforce($c, $theme = null, $allow_defer = false)
         }
     }
 
-    if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time()) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($css_cache_path))))))))) {
+    if (
+        ($support_smart_decaching &&
+            (!is_file($css_cache_path)) ||
+            ((filemtime($css_cache_path) < filemtime($full_path)) && (@filemtime($full_path) <= time())) ||
+            ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($css_cache_path))))
+        ) || (!$is_cached)
+    ) {
         if (@filesize($full_path) == 0) {
             return '';
         }
@@ -351,6 +370,13 @@ function css_enforce($c, $theme = null, $allow_defer = false)
             $deferred_one = true;
 
             return 'defer';
+        }
+
+        if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
+            if (!is_dir($dir)) {
+                require_code('files2');
+                make_missing_directory($dir);
+            }
         }
 
         require_code('web_resources2');
@@ -448,9 +474,18 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
         $temp = $do_enforce ? css_enforce($c, $theme, (!running_script('sheet')) && ($context === null) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
 
         if ($temp == 'defer') {
+            $GLOBALS['STATIC_CACHE_ENABLED'] = false;
+
+            if ((function_exists('debugging_static_cache')) && (debugging_static_cache())) {
+                error_log('SC: No static cache due to deferred CSS compilation, ' . $c);
+            }
+
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
             $keep = symbol_tempcode('KEEP');
-            $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme);
+            if (get_param_string('keep_theme', null) !== $_theme) {
+                $url .= '&keep_theme=' . urlencode($_theme);
+            }
             if (!$minify) {
                 $url .= '&keep_minify=0';
             }

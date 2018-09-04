@@ -226,7 +226,7 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
 
 
 
-For a demo, see this video tutorial: https://www.youtube.com/watch?v=SAGuj2mgkRo
+For a demo, see this [url="video tutorial"]https://www.youtube.com/watch?v=SAGuj2mgkRo[/url].
 ';
     }
 

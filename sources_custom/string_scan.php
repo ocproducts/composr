@@ -143,6 +143,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INSTALL_TEST_CONTENT
         DESCRIPTION_INSTALL_TEST_CONTENT
         WARNING_SERVER_SOFTWARE
+        WARNING_ISSUE_WITH_ALWAYS_POPULATE_RAW_POST_DATA
         WARNING_NON_MAINTAINED
         CONFIG_OPTION_reported_times
         REPORTED_TIMES
@@ -227,6 +228,21 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_TRANSACTION_FEES
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
+        POST_BY_X_IN_Y
+        SOMETHING_TO
+        SOMETHING_FROM
+        SOMETHING_IN
+        SOMETHING_ON
+        ALL_USERS
+        INCLUDE_DUPLICATES
+        INCLUDE_USER_ACTIVITIES
+        ME_ONLY
+        SHOW_ACTIONS_FOR
+        MEMBER_BEFRIENDED
+        MEMBER_UNFRIENDED
+        MEMBER_BLOCKED
+        MEMBER_UNBLOCKED
+        BACKUP_WITH_TYPE
         DEEPER_CONFIGURATION
         TRANSCODING
         LOST_DISK_CONTENT
@@ -269,6 +285,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CACHE_CATALOGUES
         CHECKLIST_HEALTH_CHECK
         CLEAR_LOG
+        REVERSE_DNS_AND_WHOIS
+        SESSION_ID
+        BROWSING_ENVIRONMENT
+        PAGES_SEEN
         CMD_FS_SEARCH_HELP
         CMD_FS_SEARCH_HELP_PARAM_0
         CMD_FS_SEARCH_HELP_PARAM_1
@@ -384,6 +404,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MOVE_PAGES
         NO_CNS
         DOCS
+        ACTION_WHEN
+        ACTION_WHEN_LAST
         EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
         CONFIG_OPTION_complex_lists
@@ -1939,18 +1961,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_hc_compound_requests_per_second_threshold
         HC_COMPOUND_REQUESTS_WINDOW_SIZE
         CONFIG_OPTION_hc_compound_requests_window_size
-        HC_MAIL_ADDRESS
-        CONFIG_OPTION_hc_mail_address
-        HC_MAIL_SERVER
-        CONFIG_OPTION_hc_mail_server
-        HC_MAIL_SERVER_TYPE
-        CONFIG_OPTION_hc_mail_server_type
-        HC_MAIL_SERVER_PORT
-        CONFIG_OPTION_hc_mail_server_port
-        HC_MAIL_USERNAME
-        CONFIG_OPTION_hc_mail_username
-        HC_MAIL_PASSWORD
-        CONFIG_OPTION_hc_mail_password
         HC_MAIL_WAIT_TIME
         CONFIG_OPTION_hc_mail_wait_time
         HC_CRON_SECTIONS_TO_RUN
@@ -2077,6 +2087,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHMOD_FAIL
         CHMOD_PASS
         CHOICE
+        CDN_REGEXPS
+        CONFIG_OPTION_cdn_regexps
+        CONFIG_OPTION_ipstack_api_key
+        CONFIG_OPTION_noindex_comcode_pages
+        CONFIG_OPTION_use_monochrome_icons
+        IPSTACK_API_KEY
+        NOINDEX_COMCODE_PAGES
+        TOO_MANY_PAGES_LOGGED
         CHOOSE_A_CONFIG_CATEGORY
         CHOOSE_CATALOGUE
         CHOOSE_CRITICISE_LIST_LANG_FILE
@@ -2304,6 +2322,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_PAGE_DEFAULT_REVIEW_FREQ
         COMCODE_PAGE_EDIT
         COMCODE_PAGE_EDIT_THIS
+        DELETE_BACKUP
+        COMMANDR_COMMAND
         COMCODE_PAGE_MANAGEMENT
         COMCODE_PAGE_OWN_EDIT
         COMCODE_PAGE_VIEW_THIS
@@ -3048,11 +3068,19 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_honeypot_url
         CONFIG_OPTION_hot_topic_definition
         CONFIG_OPTION_httpauth_is_enabled
-        CONFIG_OPTION_imap_folder
-        CONFIG_OPTION_imap_host
-        CONFIG_OPTION_imap_password
-        CONFIG_OPTION_imap_port
-        CONFIG_OPTION_imap_username
+        CONFIG_OPTION_mail_folder
+        CONFIG_OPTION_mail_server_type
+        CONFIG_OPTION_mail_server_host
+        CONFIG_OPTION_mail_server_port
+        CONFIG_OPTION_mail_password
+        MAIL_NONMATCH_POLICY
+        DESCRIPTION_MAIL_NONMATCH_POLICY
+        MAIL_NONMATCH_POLICY_block
+        MAIL_NONMATCH_POLICY_post_as_guest
+        MAIL_NONMATCH_POLICY_create_account
+        MAIL_UNCONFIRMED_NOTICE
+        DESCRIPTION_MAIL_UNCONFIRMED_NOTICE
+        CONFIG_OPTION_mail_username
         CONFIG_OPTION_immediate_downloads
         CONFIG_OPTION_implied_spammer_confidence
         CONFIG_OPTION_important_groups_per_page
@@ -3339,6 +3367,41 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_spam_check_level_VALUE_NEVER
         CONFIG_OPTION_spam_check_usernames
         CONFIG_OPTION_spam_stale_threshold
+        CONFIG_OPTION_mail_server_type_VALUE_imap
+        CONFIG_OPTION_mail_server_type_VALUE_imaps
+        CONFIG_OPTION_mail_server_type_VALUE_imaps_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_imapt
+        CONFIG_OPTION_mail_server_type_VALUE_imapt_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_pop3
+        CONFIG_OPTION_mail_server_type_VALUE_pop3s
+        CONFIG_OPTION_mail_server_type_VALUE_pop3s_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_pop3t
+        CONFIG_OPTION_mail_server_type_VALUE_pop3t_nocert
+        CONFIG_OPTION_mailing_list_style_default
+        CONFIG_OPTION_smart_topic_notification_default
+        CONFIG_OPTION_sound_enabled_default
+        CONFIG_OPTION_ticket_mail_nonmatch_policy
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_block
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_create_account
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_post_as_guest
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imap
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imaps
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imaps_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imapt
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imapt_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3s
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3s_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3t
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3t_nocert
+        TICKET_MAIL_EMAIL_ADDRESS
+        TICKET_MAIL_NONMATCH_POLICY
+        FORUM_MAIL_INCOMPLETE_CONFIGURATION
+        FORUM_MAIL_USERNAME_AND_EMAIL_ADDRESS_BOTH
+        FORUM_MAIL_USER_CANNOT_BE_SHARED
+        MAILING_LIST
+        MEMBER_DEFAULT_SETTINGS
+        DESCRIPTION_MAILING_LIST
         CONFIG_OPTION_ssw
         CONFIG_OPTION_staff_address
         CONFIG_OPTION_stats_store_time
@@ -3357,11 +3420,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_threaded_topics_default
         CONFIG_OPTION_thumb_width
         CONFIG_OPTION_ticket_auto_assign
-        CONFIG_OPTION_ticket_email_from
+        CONFIG_OPTION_ticket_mail_email_address
         CONFIG_OPTION_ticket_forum_name
         CONFIG_OPTION_ticket_mail_on
+        CONFIG_OPTION_ticket_mail_folder
         CONFIG_OPTION_ticket_mail_password
-        CONFIG_OPTION_ticket_mail_server
+        CONFIG_OPTION_ticket_mail_server_host
         CONFIG_OPTION_ticket_mail_server_port
         CONFIG_OPTION_ticket_mail_server_type
         CONFIG_OPTION_ticket_mail_username
@@ -3421,6 +3485,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_wiki_enable_content_posts
         CONFIG_OPTION_wysiwyg
         CONFIG_OPTION_yeehaw
+        CONFIG_OPTION_mail_delete_after
+        MAIL_DELETE_AFTER
+        BLOCK_main_staff_actions_PARAM_filter_by_member
+        BLOCK_main_staff_actions_PARAM_filter_by_member_TITLE
+        BLOCK_main_staff_actions_PARAM_include_duplicates
+        BLOCK_main_staff_actions_PARAM_include_duplicates_TITLE
+        BLOCK_main_staff_actions_PARAM_include_user_activities
+        BLOCK_main_staff_actions_PARAM_include_user_activities_TITLE
+        BLOCK_main_staff_actions_PARAM_sort
+        BLOCK_main_staff_actions_PARAM_sort_TITLE
         CONFIRM
         CONFIRM_CODE
         CONFIRM_DELETE_ALL_CHATROOMS
@@ -4602,6 +4676,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_QUIZ
         EDIT_SELECTED_FIELD
         EDIT_TEMPLATES
+        EDIT_TEMPLATE
         EDIT_TEXT
         EDIT_THEME
         EDIT_THEME_IMAGE
@@ -4633,6 +4708,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_USERGROUP_SUBSCRIPTION
         EDIT_VIDEO
         EDIT_WARNING
+        DELETE_WARNING
         EDIT_WELCOME_EMAIL
         EDIT_WIKI_PAGE_BODY
         EDIT_WIKI_PAGE_SUBJECT
@@ -4862,6 +4938,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FILEDUMP_EDIT
         FILEDUMP_EMBED
         FILEDUMP_EXISTING_COUNT
+        CHOICE_FILEDUMP_EXISTING
+        CHOICE_FILEDUMP_UPLOAD
         FILEDUMP_FOLDER_MATCHING
         FILEDUMP_FOLDER_NON_MATCHING
         FILEDUMP_IMAGE_URLS
@@ -5726,6 +5804,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_admin_setupwizard
         MODULE_TRANS_NAME_admin_sitemap
         MODULE_TRANS_NAME_admin_ssl
+        MODULE_TRANS_NAME_admin_svg_sprites
         MODULE_TRANS_NAME_admin_stats
         MODULE_TRANS_NAME_admin_themes
         MODULE_TRANS_NAME_admin_themewizard
@@ -6200,6 +6279,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POP3_DESCRIPTION
         POP3_MAINTAIN_URL
         PORT
+        SERVER_TYPE
         PORTFOLIO
         POSTING_RATES
         POSTING_TICKET_AS
@@ -6477,7 +6557,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PURCHASE_ORDER
         PUT_IN_CATEGORY
         PUT_IN_SEARCH
-        PUT_ON_PROBATION
         QUERIES_WITHOUT_CACHE
         QUERY
         QUERY_FAILED
@@ -6549,7 +6628,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RELEVANCE_LEVEL
         REMEMBER_ME_BY_DEFAULT
         REMEMBER_PASSWORD
-        REMOVE_FROM_PROBATION
         REMOVE_PERIODIC
         REMOVE_PERIODIC_NEWSLETTER
         REMOVE_PROBATION_DAYS
@@ -7116,15 +7194,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKET_AUTO_ASSIGN
         TICKET_CANNOT_BIND_MAIL
         TICKET_CANNOT_BIND_SUBJECT
-        TICKET_EMAIL_FROM
         TICKET_FORUM_NAME
         TICKET_GUEST_EMAILS_MANDATORY
         TICKET_MAIL_ON
-        TICKET_MAIL_PASSWORD
-        TICKET_MAIL_SERVER
-        TICKET_MAIL_SERVER_PORT
-        TICKET_MAIL_SERVER_TYPE
-        TICKET_MAIL_USERNAME
         TICKET_NEW_MESSAGE_FOR_STAFF
         TICKET_NEW_STAFF
         TICKET_OTHERS_HACK
@@ -7706,6 +7778,18 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPAM
         DESCRIPTION_DELETE_CONTENT
         DESCRIPTION_DELETE_THIS
+        USE_MONOCHROME_ICONS
+        SVG_SPRITES
+        PREVIEW_SVG_SPRITE
+        PREVIEW_SPRITE
+        GENERATE_SVG_SPRITE
+        GENERATE_SPRITE
+        CHOOSE_THEME
+        MONOCHROME_ICONS
+        PLEASE_GENERATE_SPRITE
+        ADDED_ICON
+        GENERATING_SPRITE
+        PREVIEWING_SPRITE
     ')));
 
     $non_admin_files = array(
@@ -7739,6 +7823,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         AVATARS_THEMATIC
         AVATARS_MISC
         ADD_AUTHOR
+        EDIT_THIS_AUTHOR
         ADD_CALENDAR_EVENT
         ADD_CATALOGUE_ENTRY
         ADD_CLUB
@@ -7805,6 +7890,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TOPIC_PINNED_FOR
         USERGROUP_SUBSCRIPTION_DESCRIPTION
         _SUBSCRIPTION
+        IMAGE_EDITING_QUESTION
+        IMAGE_EDITING_TYPE
+        INPUTSYSTEM_ATTACHMENT
+        INPUTSYSTEM_MEDIA
+        INPUTSYSTEM_RAW_IMAGE
         TASK_COMPLETED
         TASK_COMPLETED_BODY
         TASK_COMPLETED_BODY_ATTACHMENT
@@ -7830,6 +7920,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAGE_VIEWS_THIS_WEEK
         PAGE_VIEWS_TODAY
         PAGES
+        MAILING_LIST_ADVERTISE
         COUNT_CHATPOSTS
         COUNT_CHATTERS
         COUNT_FILES
@@ -7898,8 +7989,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADDRESS_CURRENT
         ADDRESS_DESIRED
         ADDRESS_DESIRED_STUB
-        ADD_ATTACHMENT
-        ADD_ATTACHMENTS_MEDIA_LIBRARY
         ADD_DATE
         ADD_FRIEND_ACTION_DESCRIPTION
         ADD_IMAGES
@@ -7915,7 +8004,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TO_CART
         CHECKOUT
         ADD_TO_FACEBOOK
-        ADD_TO_STUMBLEUPON
         ADD_TO_TWITTER
         ADD_TO_LINKEDIN
         ADD_TO_PINTEREST
@@ -7970,6 +8058,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ASSIGNED_TO
         ASSIGN_TO
         ATOZ
+        DESCRIPTION_MAILING_LIST_STYLE
+        DESCRIPTION_MAILING_LIST_STYLE_CAVEAT
+        DESCRIPTION_SOUND_ENABLED
+        MAILING_LIST_STYLE
+        SOUND_ENABLED
         ATTACHMENT
         ATTACHMENTS
         ATTACHMENTS_OF
@@ -8176,6 +8269,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CLUBS
         CLUB_WITH_MEMBERS_APPROVAL
         CLUB_WITH_MEMBERS_OPEN
+        MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT
+        MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_MAIL
         CMS
         CMS_COMMUNITY_HELP
         CNS_DESCRIPTION_PUBLICATION_TIME
@@ -8302,7 +8397,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HOURS
         DAY
         DAYS
-        DAYS_AGO
         JANUARY
         FEBRUARY
         MARCH
@@ -8417,8 +8511,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_stack_exchange_DESCRIPTION
         DEFAULT_CPF_stack_overflow_NAME
         DEFAULT_CPF_stack_overflow_DESCRIPTION
-        DEFAULT_CPF_sn_stumbleupon_NAME
-        DEFAULT_CPF_sn_stumbleupon_DESCRIPTION
         DEFAULT_CPF_im_telegram_NAME
         DEFAULT_CPF_im_telegram_DESCRIPTION
         DEFAULT_CPF_sn_tumblr_NAME
@@ -8593,7 +8685,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD
         DISABLE_COMMENT_NOTIFICATIONS
         DISABLE_NOTIFICATIONS
-        DISABLE_NOTIFICATION_SOUND
         DISABLE_WYSIWYG
         DISALLOW_LIST
         DISALLOW_LIST_GROUPS
@@ -8664,7 +8755,21 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_PAGE
         EDIT_POST
         EDIT_TICKET
+        EDIT_THIS_TICKET_TYPE
+        EDIT_THIS_CATALOGUE
+        EDIT_THIS_CATALOGUE_CATEGORY
+        EDIT_THIS_CATALOGUE_ENTRY
+        EDIT_THIS_NEWS_CATEGORY
+        EDIT_THIS_NEWS
+        EDIT_THIS_PERIODIC_NEWSLETTER
+        EDIT_THIS_IMAGE
+        EDIT_THIS_VIDEO
+        EDIT_THIS_DOWNLOAD_CATEGORY
+        EDIT_THIS_DOWNLOAD
+        EDIT_THIS_DOWNLOAD_LICENCE
         EDIT_TICKET_TYPE
+        EDIT_THIS_ZONE
+        EDIT_THIS_TEMPLATE
         EDIT_TOPIC
         EDIT_TOPIC_POLL
         EMAIL
@@ -8701,7 +8806,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENABLE_NOTIFICATIONS_WEEKLY_EMAIL_DIGEST
         ENABLE_NOTIFICATIONS__CHOICE
         ENABLE_NOTIFICATIONS__STATISTICAL
-        ENABLE_NOTIFICATION_SOUND
         ENABLE_POPUPS
         ENABLE_WYSIWYG
         END_CHAT
@@ -8907,7 +9011,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HIGHLIGHTED_NAME
         HOME
         HOUR
-        HOURS_AGO
+        _AGO
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
         TAP_MOUSE_IMPORTANT
@@ -9102,6 +9206,24 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAY_LEAVE_BLANK_ADVANCED
         MEC_NOTIFICATION_MAIL
         MEC_NOTIFICATION_MAIL_SUBJECT
+        POST_FROM_MAILING_LIST
+        MAILING_LIST_CANNOT_BIND_SUBJECT
+        MAILING_LIST_CANNOT_BIND_MAIL
+        MAILING_LIST_ACCESS_DENIED_SUBJECT
+        MAILING_LIST_ACCESS_DENIED_MAIL
+        MAIL_INTEGRATION_ATTACHMENT_ERRORS_SUBJECT
+        MAIL_INTEGRATION_ATTACHMENT_ERRORS_MAIL
+        MAIL_INTEGRATION_ATTACHMENT_TOO_MANY
+        MAIL_INTEGRATION_ATTACHMENT_TOO_BIG
+        MAIL_INTEGRATION_ATTACHMENT_OVER_QUOTA
+        MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE
+        MAILING_LIST_SIMPLE_SUBJECT_new
+        MAILING_LIST_SIMPLE_SUBJECT_reply
+        MAILING_LIST_SIMPLE_SUBJECT_new_regexp
+        MAILING_LIST_SIMPLE_SUBJECT_reply_regexp
+        MAILING_LIST_SIMPLE_MAIL_new
+        MAILING_LIST_SIMPLE_MAIL_reply
+        MAILING_LIST_SIMPLE_MAIL_regexp
         MEDIA
         MEDIA_FEATURES
         MEDIA_SET
@@ -9174,7 +9296,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MINIMUM_SELECTIONS
         MINUTE
         MINUTES
-        MINUTES_AGO
         MISSING_RESOURCE
         MISSING_RESOURCE_SUBSTRING
         MJG_NOTIFICATION_MAIL
@@ -9352,7 +9473,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_PT_MESSAGE_WRAP_DIRECT_REPLY
         NOTIFICATION_PT_SUBJECT_WRAP
         NOTIFICATION_SMS_COMPLETE_WRAP
-        NOTIFICATION_SOUND
         NOTIFICATION_SUBJECT_invited_content
         NOTIFICATION_TYPE_calendar_event
         NOTIFICATION_TYPE_calendar_reminder
@@ -9947,7 +10067,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPECIAL_CPF__cms_post_code
         SPECIAL_CPF__cms_role
         SPECIAL_CPF__cms_sites
-        SPECIAL_CPF__cms_smart_topic_notification
         SPECIAL_CPF__cms_state
         SPECIAL_CPF__cms_street_address
         SPECIAL_REGISTRATION_FIELDS

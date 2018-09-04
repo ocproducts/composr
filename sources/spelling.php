@@ -31,6 +31,9 @@ function init__spelling()
         define('WORD_REGEXP', '#([a-zA-Z0-9\']+)#');
         define('WORD_REGEXP_UNICODE', '#([\w\']+)#u');
     }
+
+    global $SPELL_LINKS;
+    $SPELL_LINKS = array();
 }
 
 /**
@@ -315,9 +318,9 @@ function spellcheck_initialise($lang = null)
     }
     $lang = function_exists('do_lang') ? do_lang('dictionary') : 'en_GB'; // Default to UK English (as per Composr)
 
-    static $spell_links = array();
-    if (isset($spell_links[$lang])) {
-        return $spell_links[$lang];
+    global $SPELL_LINKS;
+    if (isset($SPELL_LINKS[$lang])) {
+        return $SPELL_LINKS[$lang];
     }
 
     $charset = function_exists('do_lang') ? do_lang('charset') : 'utf-8';
@@ -377,9 +380,34 @@ function spellcheck_initialise($lang = null)
             break;
     }
 
-    $spell_links[$lang] = &$spell_link;
+    $SPELL_LINKS[$lang] = &$spell_link;
 
     return $spell_link;
+}
+
+/**
+ * Shutdown the spellchecker.
+ */
+function spellchecker_shutdown()
+{
+    $spell_checker = _find_spell_checker();
+
+    if ($spell_checker === null) {
+        return null;
+    }
+
+    global $SPELL_LINKS;
+    foreach ($SPELL_LINKS as $spell_link) {
+        switch ($spell_checker) {
+            case 'pspell':
+                pspell_clear_session($spell_link);
+                break;
+
+            case 'enchant':
+                enchant_broker_free($spell_link[0]);
+                break;
+        }
+    }
 }
 
 /**

@@ -38,7 +38,7 @@ function reprocess_url($url, $operation_base_url)
     $val = null;
 
     // Cookie relaying from client through to server
-    $url_bits = @parse_url($url) or warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)), false, true);
+    $url_bits = @parse_url(normalise_idn_url($url)) or warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)), false, true);
     $url_bits_2 = parse_url(get_base_url());
     $cookies_relayed = null;
     if (!array_key_exists('host', $url_bits)) {
@@ -97,7 +97,7 @@ function reprocess_url($url, $operation_base_url)
     $document = convert_to_internal_encoding($http_result->data, $http_result->charset);
 
     if (($http_result->download_mime_type != 'text/html') && ($http_result->download_mime_type != 'application/xhtml+xml')) {
-        header('Location: ' . escape_header($url));
+        header('Location: ' . escape_header($url)); // assign_refresh not used, as no UI here
         return '';
     }
 
@@ -161,7 +161,7 @@ function reprocess_url($url, $operation_base_url)
             if (($m_type == 'src') || ($m_type == 'data') || ($is_non_local)) {
                 $new_url = $m_url;
             } else {
-                $new_url = $self_url . '&url=' . rawurlencode(static_evaluate_tempcode(protect_url_parameter($m_url)));
+                $new_url = $self_url . '&url=' . urlencode(static_evaluate_tempcode(protect_url_parameter($m_url)));
             }
 
             if ((strtolower($m_type) == 'action') && (strpos($new_url, '?') !== false)) {

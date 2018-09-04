@@ -62,7 +62,7 @@ class Hook_syndication_twitter
         if (get_param_integer('oauth_in_progress', 0) == 0) {
             $response = $twitter->oAuthRequestToken($oauth_url->evaluate());
             require_code('site2');
-            smart_redirect(Twitter::SECURE_API_URL . '/oauth/authorize?oauth_token=' . urlencode($response['oauth_token']));
+            redirect_exit(Twitter::SECURE_API_URL . '/oauth/authorize?oauth_token=' . urlencode($response['oauth_token']));
             exit();
         }
 

@@ -22,7 +22,7 @@
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$GET,skip_content_box_title}}}
-		<h3><a class="subtle-link" href="{FULL_URL*}">{$GET,content_box_title}</a></h3>
+		<h3>{+START,IF_NON_EMPTY,{FULL_URL}}<a class="subtle-link" href="{FULL_URL*}">{+END}{$GET,content_box_title}{+START,IF_NON_EMPTY,{FULL_URL}}</a>{+END}</h3>
 	{+END}
 
 	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,IMG}}}{+START,IF,{$DESKTOP}}
@@ -84,6 +84,6 @@
 	{+END}
 
 	<ul class="horizontal-links associated-links-block-group">
-		<li><a title="{!READ_MORE}: #{ID*}" href="{FULL_URL*}">{!READ_MORE}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview,forum:forumview}}} {+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment-count">{$COMMENT_COUNT,news,{ID}}</span>{+END}{+END}</li>
+		<li><a title="{!READ_MORE}: {NEWS_TITLE}" href="{FULL_URL*}">{!READ_MORE}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview,forum:forumview}}} {+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment-count">{$COMMENT_COUNT,news,{ID}}</span>{+END}{+END}</li>
 	</ul>
 </div></div>

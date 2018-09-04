@@ -31,15 +31,15 @@ class Hook_config_ticket_mail_server_port
     public function get_details()
     {
         return array(
-            'human_name' => 'TICKET_MAIL_SERVER_PORT',
+            'human_name' => 'PORT',
             'type' => 'integer',
             'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_server_port',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
-            'required' => true,
+            'order_in_category_group' => 8,
+            'required' => false,
 
             'public' => false,
 
@@ -54,6 +54,10 @@ class Hook_config_ticket_mail_server_port
      */
     public function get_default()
     {
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
         if (!addon_installed('tickets')) {
             return null;
         }
@@ -62,6 +66,6 @@ class Hook_config_ticket_mail_server_port
             return null;
         }
 
-        return '143';
+        return '';
     }
 }

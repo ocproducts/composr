@@ -184,6 +184,7 @@ class Hook_addon_registry_core_comcode_pages
      */
     public function tpl_preview__administrative__comcode_page_manage_screen()
     {
+        require_lang('zones');
         return array(
             lorem_globalise(do_lorem_template('COMCODE_PAGE_MANAGE_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -198,6 +199,7 @@ class Hook_addon_registry_core_comcode_pages
                     'LINK_TEXT' => lorem_phrase(),
                 )),
                 'FILTER' => '',
+                'HAS_PAGINATION' => true,
             )), null, '', true)
         );
     }

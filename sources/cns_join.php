@@ -63,7 +63,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     require_code('cns_members_action2');
     require_code('form_templates');
 
-    $_lead_source_description = either_param_string('_lead_source_description', '');
+    $_lead_source_description = either_param_string('_lead_source_description', do_lang('JOINED'));
 
     $hidden = new Tempcode();
     $hidden->attach(build_keep_post_fields(($_lead_source_description == '') ? array() : array('_lead_source_description')));
@@ -87,7 +87,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     }
 
     url_default_parameters__enable();
-    list($fields, $_hidden) = cns_get_member_fields(true, null, $groups, '', 0, null, null, null, null, null, null, 1, 1, null, null, 1, 1, 1, null, '', 0, '', 0, '*', '', null, $adjusted_config_options);
+    list($fields, $_hidden, $added_section) = cns_get_member_fields(true, '', null, '', '', null, $groups, null, null, null, null, null, null, null, 0, 1, 1, null, null, null, 1, null, 1, 1, 0, '*', '', 1, null, 0, $adjusted_config_options);
     url_default_parameters__disable();
     $hidden->attach($_hidden);
 
@@ -100,7 +100,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         }
     }
 
-    if (($captcha_if_enabled) && (get_option('recaptcha_site_key') == '')) {
+    if (($captcha_if_enabled) && (get_option('recaptcha_site_key') == '') && ($added_section)) {
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
     }
 
@@ -235,7 +235,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     $timezone = post_param_string('timezone', get_users_timezone());
 
-    $language = post_param_string('language', get_site_default_lang());
+    $language = post_param_string('language', user_lang());
 
     if (get_option_with_overrides('member_email_receipt_configurability', $adjusted_config_options) == '0') {
         $allow_emails = 1;
@@ -309,10 +309,46 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     require_code('crypt');
     $validated_email_confirm_code = $email_validation ? strval(get_secure_random_number()) : '';
     $staff_validation = (get_option_with_overrides('require_new_member_validation', $adjusted_config_options) == '1');
-    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
+    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && ($dob_year !== null) && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
     $validated = ($staff_validation || $coppa) ? 0 : 1;
     if ($member_id === null) {
-        $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), time(), '', null, '', 0, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', '', '', 1, (get_option('allow_auto_notifications') == '0') ? 0 : 1, $language, $allow_emails, $allow_emails_from_staff, get_ip_address(), $validated_email_confirm_code, true, '', '');
+        $member_id = cns_make_member(
+            $username, // username
+            $password, // password
+            $email_address, // email_address
+            $primary_group, // primary_group
+            $groups, // secondary_groups
+            $dob_day, // dob_day
+            $dob_month, // dob_month
+            $dob_year, // dob_year
+            $actual_custom_fields, // custom_fields
+            $timezone, // timezone
+            $language, // language
+            '', // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            null, // avatar_url
+            '', // signature
+            null, // preview_posts
+            $reveal_age, // reveal_age
+            1, // views_signatures
+            null, // auto_monitor_contrib_content
+            null, // smart_topic_notification
+            null, // mailing_list_style
+            1, // auto_mark_read
+            null, // sound_enabled
+            $allow_emails, // allow_emails
+            $allow_emails_from_staff, // allow_emails_from_staff
+            0, // highlighted_name
+            '*', // pt_allow
+            '', // pt_rules_text
+            $validated, // validated
+            $validated_email_confirm_code, // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            false // check_correctness
+        );
     } else {
         attach_message(do_lang_tempcode('ALREADY_EXISTS', escape_html($username)), 'notice');
     }

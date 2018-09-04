@@ -1,14 +1,27 @@
-Do not:
- - spam this website, or members that use it
- - hack this website
- - commit or incite crimes on this website
- - intentionally disrupt the enjoyment of this website for a majority of other members
+Welcome to our community. We are an open community and aim to be welcoming to all.
 
-The staff may:
- - ban a member for any reason, without warning or explanation
- - view any content that is stored-on, or transferred-through, this website
+Please follow these simple rules...
 
-The staff are not responsible for any content posted on this website by members, accept no liability, and provide no warranty.
+Decorum:
+1) No profanity (swearing) or sexualised language. Some people will be offended by it, and the forums are designed to be a comfortable environment for everybody.
+2) Stay polite and don't intimidate. If someone is not being polite, report the post, don't escalate the situation.
+3) Do not spoil the experience of others for your own petty reasons.
+
+The obvious:
+1) Do not try and impersonate anybody else.
+2) Do not try and hack anybody, or spread viruses.
+3) Do not intentionally undermine the privacy of other users, e.g. doxxing.
+4) Do not do any kind of illegal activity, such as promoting illicit drug use, grooming children, or any kind of criminal incitement.
+
+Regarding moderation:
+ - These rules may be enforced at the discretion of the moderators, with whatever punitive actions considered appropriate (warnings, post deletions, post edits, closing topics, bans, etc).
+ - Moderators also have the right to intercede for any reason if they feel it is important to maintain a quality experience for the users.
+ - Moderators have the ability to read private content, such as private topics and inline personal posts.
+
+Liability:
+1) It is user's own responsibility to scan content for viruses, etc.
+2) Any user breaking intellectual property laws is personally liable for it.
+3) No warranties are provided.
 
 [title="2"]Privacy[/title]
 

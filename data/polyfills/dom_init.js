@@ -76,5 +76,12 @@
     };
 
     window.addEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
+    
+    window.addEventListener('load', function () {
+        if ($dom.preventFormSubmissionUntilDomReadyListener !== undefined) {
+            // Should have been removed on DOM ready, something is wrong.
+            window.alert('Error: Looks like important JavaScript files failed to load. Reload the page or see console for debug info.');
+        }
+    });
 
 }(window.$dom || (window.$dom = {})));

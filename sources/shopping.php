@@ -545,6 +545,10 @@ function copy_shopping_cart_to_order()
         $GLOBALS['SITE_DB']->query_insert('shopping_order_details', $map + array('p_order_id' => $order_id));
     }
 
+    // Clear out any previous unpaid & empty cart orders...
+
+    delete_pending_orders_for_current_user($order_id, 'cart');
+
     return $order_id;
 }
 
@@ -665,21 +669,38 @@ function delete_incomplete_orders()
 
 /**
  * Delete any pending orders for the current user. E.g. if cart purchase was cancelled, or cart was changed.
+ *
+ * @param  ?AUTO_LINK $keep_order_id ID of order to not keep (null: none)
+ * @param  ?string $purchase_through Only delete orders of this origin (null: no filter)
  */
-function delete_pending_orders_for_current_user()
+function delete_pending_orders_for_current_user($keep_order_id = null, $purchase_through = null)
 {
-    $where = array('order_status' => 'ORDER_STATUS_awaiting_payment');
+    $where = array(
+        'order_status' => 'ORDER_STATUS_awaiting_payment',
+    );
+    if ($purchase_through !== null) {
+        $where['purchase_through'] = $purchase_through;
+    }
     if (is_guest()) {
         $where['session_id'] = get_session_id();
     } else {
         $where['member_id'] = get_member();
     }
 
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('id'), $where);
+    $extra = ' AND add_date<' . strval(time() - 60 * 60 * 24 * 7); // If a week old, as otherwise a transaction may still come through
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('id', 'notes'), $where, $extra);
 
     foreach ($order_rows as $order_row) {
-        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_order_id' => $order_row['id']));
-        $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $order_row['id']), '', 1);
+        if ($order_row['id'] !== $keep_order_id) {
+            if ($order_row['notes'] == '') {
+                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $order_row['id']));
+                $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $order_row['id']), '', 1);
+            } else {
+                // Set to cancelled, as there are some notes on this order to be preserved
+                $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('order_status' => 'ORDER_STATUS_cancelled'), array('order_id' => $order_row['id']));
+                $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $order_row['id']), '', 1);
+            }
+        }
     }
 }
 

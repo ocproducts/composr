@@ -131,6 +131,7 @@ class Module_search
 
         require_lang('search');
         require_code('database_search');
+        require_code('search');
 
         if ($type == 'browse' || $type == 'results') {
             inform_non_canonical_parameter('search_under');
@@ -262,6 +263,7 @@ class Module_search
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
             $info = $ob->info();
             if ($info === null) {
+                set_http_status_code(404);
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
             }
 
@@ -687,6 +689,8 @@ class Module_search
                 's_num_results' => count($results),
             ));
         }
+
+        spellchecker_shutdown();
 
         return array($out, $pagination, $GLOBALS['TOTAL_SEARCH_RESULTS']);
     }

@@ -2,7 +2,7 @@
 
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="in-minikernel-version">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="in-minikernel-version">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 		<meta name="GENERATOR" content="Composr" />
@@ -43,7 +43,7 @@
 			<p>
 				{!VERSION_NUM,{VERSION}}
 				<br />
-				Composr, {!CREATED_BY,ocProducts}
+				Composr, {!version:CREATED_BY,ocProducts}
 			</p>
 			<p>
 				<a target="_blank" title="compo.sr {!LINK_NEW_WINDOW}" href="{$BRAND_BASE_URL*}">{$BRAND_BASE_URL*}</a>

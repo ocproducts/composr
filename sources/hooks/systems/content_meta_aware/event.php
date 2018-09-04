@@ -27,9 +27,10 @@ class Hook_content_meta_aware_event
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url)
      * @return ?array Map of award content-type info (null: disabled)
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         if (!addon_installed('calendar')) {
             return null;
@@ -67,8 +68,8 @@ class Hook_content_meta_aware_event
             'view_page_link_pattern' => '_SEARCH:calendar:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_calendar:_edit:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:calendar:browse:_WILD',
-            'add_url' => (function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_calendar')) ? (get_module_zone('cms_calendar') . ':cms_calendar:add') : null,
-            'archive_url' => (($zone !== null) ? $zone : get_module_zone('calendar')) . ':calendar',
+            'add_url' => ($get_extended_data && function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_calendar')) ? (get_module_zone('cms_calendar') . ':cms_calendar:add') : null,
+            'archive_url' => $get_extended_data ? ((($zone !== null) ? $zone : get_module_zone('calendar')) . ':calendar') : null,
 
             'support_url_monikers' => true,
 

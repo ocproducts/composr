@@ -10,17 +10,24 @@
 
 		{HIDDEN}
 
-		<p>
-			<label for="filter">{!FILTER}:</label>
-			<input type="text" id="filter" class="form-control form-control-inline" name="filter" value="{FILTER*}" data-submit-on-enter="true" />
-			<button class="btn btn-primary btn-sm buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
-		</p>
+		{+START,IF,{HAS_PAGINATION}}
+			<p>
+				<label for="filter">{!FILTER}:</label>
+				<input type="text" id="filter" class="form-control form-control-inline" name="filter" value="{FILTER*}" data-submit-on-enter="1" />
+				<button class="btn btn-primary btn-sm buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
+			</p>
+		{+END}
 	</form>
 
-	{+START,IF_PASSED,EXTRA}
-		{+START,IF_PASSED,SUB_TITLE}<h2 class="force-margin">{SUB_TITLE*}</h2>{+END}
+	<h2 class="force_margin">{!COMCODE_PAGE_ADD}</h2>
 
+	<a id="comcode_page_add"></a>
+
+	{+START,IF_PASSED,EXTRA}
 		{EXTRA}
+	{+END}
+	{+START,IF_NON_PASSED,EXTRA}
+		<p>{!ACCESS_DENIED}</p>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{LINKS}}

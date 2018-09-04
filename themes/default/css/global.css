@@ -2231,14 +2231,14 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box-inner>h1, 
-.box-inner>h2, 
-.box-inner>h3, 
-.box-inner>h4, 
-.box-inner>h5, 
-.box-inner>h6, 
-.toggleable-tray-title, 
-#standalone-html-wrap .box .box .box-inner>h2, 
+.box-inner>h1,
+.box-inner>h2,
+.box-inner>h3,
+.box-inner>h4,
+.box-inner>h5,
+.box-inner>h6,
+.toggleable-tray-title,
+#standalone-html-wrap .box .box .box-inner>h2,
 #standalone-html-wrap .box .box .box-inner>h3 {
 	border-top-left-radius: {$GET,border_radius};
 	border-top-right-radius: {$GET,border_radius};
@@ -2255,12 +2255,12 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 0.5em 0.8em 0.5em 0.3em;
 	border-bottom: 1px solid {$GET,standard_border};
 }
-.box-inner>h1 + *, 
-.box-inner>h2 + *, 
-.box-inner>h3 + *, 
-.box-inner>h4 + *, 
-.box-inner>h5 + *, 
-.box-inner>h6 + *, 
+.box-inner>h1 + *,
+.box-inner>h2 + *,
+.box-inner>h3 + *,
+.box-inner>h4 + *,
+.box-inner>h5 + *,
+.box-inner>h6 + *,
 .toggleable-tray-title + * {
 	margin-top: 5px;
 }
@@ -2277,19 +2277,19 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	font-size: 1.15em;
 }
 
-.box-inner>h1 a, 
-.box-inner>h2 a, 
-.box-inner>h3 a, 
-.box-inner>h4 a, 
-.box-inner>h5 a, 
-.box-inner>h6 a, 
-.toggleable-tray-title a, 
-.box-inner>h1 a:visited, 
-.box-inner>h2 a:visited, 
-.box-inner>h3 a:visited, 
-.box-inner>h4 a:visited, 
-.box-inner>h5 a:visited, 
-.box-inner>h6 a:visited, 
+.box-inner>h1 a,
+.box-inner>h2 a,
+.box-inner>h3 a,
+.box-inner>h4 a,
+.box-inner>h5 a,
+.box-inner>h6 a,
+.toggleable-tray-title a,
+.box-inner>h1 a:visited,
+.box-inner>h2 a:visited,
+.box-inner>h3 a:visited,
+.box-inner>h4 a:visited,
+.box-inner>h5 a:visited,
+.box-inner>h6 a:visited,
 .toggleable-tray-title a:visited {
 	color: inherit;
 	text-decoration: underline;
@@ -2297,21 +2297,21 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
-.box-inner>h1 a:hover, 
-.box-inner>h2 a:hover, 
-.box-inner>h3 a:hover, 
-.box-inner>h4 a:hover, 
-.box-inner>h5 a:hover, 
-.box-inner>h6 a:hover, 
+.box-inner>h1 a:hover,
+.box-inner>h2 a:hover,
+.box-inner>h3 a:hover,
+.box-inner>h4 a:hover,
+.box-inner>h5 a:hover,
+.box-inner>h6 a:hover,
 .toggleable-tray-title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless-space .box-inner>h1 a:hover, 
-.boxless-space .box-inner>h2 a:hover, 
-.boxless-space .box-inner>h3 a:hover, 
-.boxless-space .box-inner>h4 a:hover, 
-.boxless-space .box-inner>h5 a:hover, 
-.boxless-space .box-inner>h6 a:hover, 
+.boxless-space .box-inner>h1 a:hover,
+.boxless-space .box-inner>h2 a:hover,
+.boxless-space .box-inner>h3 a:hover,
+.boxless-space .box-inner>h4 a:hover,
+.boxless-space .box-inner>h5 a:hover,
+.boxless-space .box-inner>h6 a:hover,
 .boxless-space .toggleable-tray-title a:hover {
 	color: inherit;
 }
@@ -2347,12 +2347,12 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .box>.box-inner {
 	margin: 0;
 }
-.boxless-space .box>.box-inner>h1, 
-.boxless-space .box>.box-inner>h2, 
-.boxless-space .box>.box-inner>h3, 
-.boxless-space .box>.box-inner>h4, 
-.boxless-space .box>.box-inner>h5, 
-.boxless-space .box>.box-inner>h6, 
+.boxless-space .box>.box-inner>h1,
+.boxless-space .box>.box-inner>h2,
+.boxless-space .box>.box-inner>h3,
+.boxless-space .box>.box-inner>h4,
+.boxless-space .box>.box-inner>h5,
+.boxless-space .box>.box-inner>h6,
 .boxless-space .box>.toggleable-tray-title {
 	text-align: left;
 	text-transform: uppercase;
@@ -2409,28 +2409,28 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box-inner>h1, 
-.box .box .box-inner>h2, 
-.box .box .box-inner>h3, 
-.box .box .box-inner>h4, 
-.box .box .box-inner>h5, 
-.box .box .box-inner>h6, 
-.box .box .toggleable-tray-title, 
-#standalone-html-wrap .box .box .box .box-inner>h2, 
+.box .box .box-inner>h1,
+.box .box .box-inner>h2,
+.box .box .box-inner>h3,
+.box .box .box-inner>h4,
+.box .box .box-inner>h5,
+.box .box .box-inner>h6,
+.box .box .toggleable-tray-title,
+#standalone-html-wrap .box .box .box .box-inner>h2,
 #standalone-html-wrap .box .box .box .box-inner>h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone-html-wrap) as those should show verbatim */
-.box .box .box-inner>h1 a, 
-.box .box .box-inner>h2 a, 
-.box .box .box-inner>h3 a, 
-.box .box .box-inner>h4 a, 
-.box .box .box-inner>h5 a, 
-.box .box .box-inner>h6 a, 
-.box .box .toggleable-tray-title a, 
-#standalone-html-wrap .box .box .box .box-inner>h2 a, 
+.box .box .box-inner>h1 a,
+.box .box .box-inner>h2 a,
+.box .box .box-inner>h3 a,
+.box .box .box-inner>h4 a,
+.box .box .box-inner>h5 a,
+.box .box .box-inner>h6 a,
+.box .box .toggleable-tray-title a,
+#standalone-html-wrap .box .box .box .box-inner>h2 a,
 #standalone-html-wrap .box .box .box .box-inner>h3 a {
 	color: {$GET,a.hover};
 }
@@ -3840,7 +3840,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 }
 
 .comments-captcha {
-	width: 210px;
+	display: inline-block;
 	font-size: 0.85em;
 	text-align: center;
 }
@@ -3852,8 +3852,18 @@ div .post-buttons>*, div .buttons-group-faded>* {
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.comments-captcha img, .comments-captcha iframe, .comments-captcha input {
-		margin: 0 5px 2px 5px;
 		vertical-align: middle;
+	}
+
+	input#captcha {
+		font-family: Courier;
+		font-size: 16px;
+		vertical-align: middle;
+		margin-left: 0.5em;
+		padding: 8px 5px;
+		letter-spacing: 3px;
+		text-transform: uppercase;
+		min-width: 6.2em;
 	}
 /*{+END}*/
 
@@ -3919,13 +3929,13 @@ ul.actions-list {
 	padding: 0;
 	margin: 0;
 }
-ul.actions-list > li, 
+ul.actions-list > li,
 .attachment ul.actions-list > li /*for higher precedence for attachments within docs zone*/ {
 	padding: 2px 0 !important;
 	margin: 0 !important;
 }
-ul.actions-list > li, 
-ul.actions-list-compact > li, 
+ul.actions-list > li,
+ul.actions-list-compact > li,
 ul.actions-list-super-compact > li {
 	margin: 0;
 	list-style-type: none;
@@ -4356,18 +4366,16 @@ ul.buttons-group, ul.associated-links-block-group {
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.captcha-frame {
-		width: 100px;
-		height: 42px;
-	}
+		vertical-align: middle;
 
-	.captcha {
-		font-size: 0.8em;
-		margin-bottom: 3px;
+		/*1px tolerance for rounding errors during zooming*/
+		width: 85px;
+		height: 37px;
 	}
 
 	.captcha a {
 		float: right;
-		margin: 10px 0 0 5px;
+		margin: 0px 10px 0 5px;
 	}
 /*{+END}*/
 

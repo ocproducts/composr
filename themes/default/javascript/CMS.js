@@ -157,19 +157,7 @@
      * @method
      * @returns {string}
      */
-    $cms.getBaseUrlNohttp = $util.constant(strVal('{$BASE_URL_NOHTTP;}'));
-    /**
-     * @memberof $cms
-     * @method
-     * @returns {string}
-     */
     $cms.getCustomBaseUrl = $util.constant(strVal('{$CUSTOM_BASE_URL;}'));
-    /**
-     * @memberof $cms
-     * @method
-     * @returns {string}
-     */
-    $cms.getCustomBaseUrlNohttp = $util.constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}'));
     /**
      * @memberof $cms
      * @method
@@ -301,7 +289,7 @@
     $cms.pageKeepSearchParams = function pageKeepSearchParams(forceSession) {
         var keepSp = new window.URLSearchParams();
 
-        $util.eachIter($cms.pageUrl().searchParams.entries(), function (entry) {
+        $util.iterableToArray($cms.pageUrl().searchParams.entries()).forEach(function (entry) {
             var name = entry[0],
                 value = entry[1];
 
@@ -729,9 +717,9 @@
         url = strVal(url);
         newBlockParams = strVal(newBlockParams);
         scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
-        postParams = (postParams !== undefined) ? postParams : null;
+        postParams = (postParams != null) ? strVal(postParams) : null;
         inner = Boolean(inner);
-        showLoadingAnimation = (showLoadingAnimation !== undefined) ? Boolean(showLoadingAnimation) : true;
+        showLoadingAnimation = (showLoadingAnimation != null) ? Boolean(showLoadingAnimation) : true;
 
         if ((_blockDataCache[url] === undefined) && (newBlockParams !== '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank newBlockParams if returning to fresh state
@@ -759,6 +747,10 @@
         return new Promise(function (resolvePromise) {
             // Make AJAX call
             $cms.doAjaxRequest(ajaxUrl + $cms.keep(), null, postParams).then(function (xhr) { // Show results when available
+                if (!targetDiv.parentNode) {
+                    return; // A prior AJAX result came in and did a set_outer_html, wiping the container
+                }
+
                 callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
                     resolvePromise();
                 }, scrollToTopOfWrapper, inner);
@@ -785,6 +777,7 @@
                 try {
                     window.scrollTo(0, $dom.findPosY(targetDiv));
                 } catch (e) {
+                    // continue
                 }
             }
 
@@ -796,7 +789,7 @@
 
         function showBlockHtml(newHtml, targetDiv, append, inner) {
             var rawAjaxGrowSpot = targetDiv.querySelector('.raw-ajax-grow-spot');
-            if ((rawAjaxGrowSpot != null) && append) {  // If we actually are embedding new results a bit deeper
+            if ((rawAjaxGrowSpot != null) && append) { // If we actually are embedding new results a bit deeper
                 targetDiv = rawAjaxGrowSpot;
             }
             if (append) {
@@ -860,7 +853,7 @@
 
         var keepSp = $cms.pageKeepSearchParams(true);
 
-        $util.eachIter(keepSp.entries(), function (entry) {
+        $util.iterableToArray(keepSp.entries()).forEach(function (entry) {
             var name = entry[0],
                 value = entry[1];
 
@@ -931,12 +924,13 @@
      * Used by audio CAPTCHA.
      * @memberof $cms
      * @param ob
+     * @param soundObject
      */
     $cms.playSelfAudioLink = function playSelfAudioLink(ob, soundObject) {
         if (soundObject) {
             // Some browsers will block the below, because the timer makes it think it is 'autoplay'; even this may fail on Safari
             $util.inform('Playing .wav fully natively');
-            soundObject.play().catch(function(error) {
+            soundObject.play().catch(function () {
                 $util.inform('Audio playback blocked, reverting to opening .wav in new window');
                 window.open(ob.href);
             });
@@ -1020,11 +1014,11 @@
             }
             iconEl.src = newSrc;
         }
-        
+
         // Replace the existing icon-* class with the new one
         newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
         // Using setAttribute() because the className property on <svg> elements is a "SVGAnimatedString" object rather than a string
-        iconEl.setAttribute('class', iconEl.getAttribute('class').replace(/(^| )icon-[\w\-]+($| )/, ' icon-' + newClass + ' ').trim().replace(/ +/g, ' '));
+        iconEl.setAttribute('class', iconEl.getAttribute('class').replace(/(^| )icon-[\w-]+($| )/, ' icon-' + newClass + ' ').trim().replace(/ +/g, ' '));
     };
 
     /**
@@ -1035,13 +1029,13 @@
      */
     $cms.isIcon = function isIcon(iconEl, iconName) {
         var src;
-        
+
         if (iconEl.localName === 'svg') {
             return iconEl.querySelector('use').getAttribute('xlink:href').endsWith('#' + iconName.replace(/\//g, '__'));
         }
-        
+
         src = $util.url(iconEl.src);
-        
+
         if (src.pathname.includes('/themewizard.php')) {
             return (src.searchParams.get('show') === 'icons/' + iconName) || (src.searchParams.get('show') === 'icons_monochrome/' + iconName);
         }
@@ -1105,6 +1099,7 @@
                 return window.parent.$cms.getMainCmsWindow();
             }
         } catch (ignore) {
+            // continue
         }
 
         try {
@@ -1112,6 +1107,7 @@
                 return window.opener.$cms.getMainCmsWindow();
             }
         } catch (ignore) {
+            // continue
         }
 
         return window;
@@ -1266,9 +1262,9 @@
                 // XML result. Handle with a potentially complex call
                 var responseXML = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : null;
 
-                if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
-                    //$cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
-                }
+                // if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
+                //     $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
+                // }
 
                 if (ajaxCallback != null) {
                     ajaxCallback(responseXML, xhr);
@@ -1399,7 +1395,7 @@
     $cms.filter.url = function url(urlPart, canTryUrlSchemes) {
         urlPart = strVal(urlPart);
         var urlPartEncoded = urlencode(urlPart);
-        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? Boolean(canTryUrlSchemes) : $cms.canTryUrlSchemes();
+        canTryUrlSchemes = (canTryUrlSchemes != null) ? Boolean(canTryUrlSchemes) : $cms.canTryUrlSchemes();
 
         if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
             // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
@@ -1451,10 +1447,10 @@
                 ascii = character.charCodeAt(0);
 
                 if (
-                    ((i !== 0) && (character === '_'))
-                    || ((ascii >= 48) && (ascii <= 57))
-                    || ((ascii >= 65) && (ascii <= 90))
-                    || ((ascii >= 97) && (ascii <= 122))
+                    ((i !== 0) && (character === '_')) ||
+                    ((ascii >= 48) && (ascii <= 57)) ||
+                    ((ascii >= 65) && (ascii <= 90)) ||
+                    ((ascii >= 97) && (ascii <= 122))
                 ) {
                     out += character;
                 } else {
@@ -1480,16 +1476,16 @@
      */
     $cms.filter.html = function html(str) {
         return ((str != null) && (str = strVal(str))) ?
-            str.replace(/&/g, '&amp;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&apos;')
-                .replace(new RegExp('/<' + '/', 'g'), '&lt;')
-                .replace(/>/g, '&gt;')
+            str.replaceAll('&', '&amp;')
+                .replaceAll('"', '&quot;')
+                .replaceAll('\'', '&apos;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
             : '';
     };
 
     /**
-     * JS port of the escape_comcode()
+     * JS port of the comcode_escape() PHP function
      * @memberof $cms.filter
      * @param {string} str
      * @returns {string}

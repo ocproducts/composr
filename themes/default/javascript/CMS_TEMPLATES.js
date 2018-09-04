@@ -21,18 +21,20 @@
         if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
-            } catch (ignore) {}
+            } catch (ignore) {
+                // continue
+            }
         }
     };
 
     $cms.templates.blockMainScreenActions = function blockMainScreenActions(params, container) {
         var easySelfUrl = strVal(params.easySelfUrl);
 
-        $dom.on(container, 'click', '.js-click-action-print-screen', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-print-screen', function () {
             $cms.gaTrack(null,'{!recommend:PRINT_THIS_SCREEN;}');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-facebook', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-facebook', function () {
             $cms.gaTrack(null,'social__facebook');
         });
 
@@ -42,39 +44,35 @@
             $cms.gaTrack(null,'social__twitter');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-stumbleupon', function (e, link) {
-            $cms.gaTrack(null,'social__stumbleupon');
-        });
-
-        $dom.on(container, 'click', '.js-click-action-add-to-digg', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-digg', function () {
             $cms.gaTrack(null,'social__digg');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-linkedin', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-linkedin', function () {
             $cms.gaTrack(null,'social__linkedin');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-pinterest', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-pinterest', function () {
             $cms.gaTrack(null,'social__pinterest');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-tumblr', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-tumblr', function () {
             $cms.gaTrack(null,'social__tumblr');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-vk', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-vk', function () {
             $cms.gaTrack(null,'social__vk');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-sina-weibo', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-sina-weibo', function () {
             $cms.gaTrack(null,'social__sina_weibo');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-tencent-weibo', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-tencent-weibo', function () {
             $cms.gaTrack(null,'social__tencent_weibo');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-qzone', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-qzone', function () {
             $cms.gaTrack(null,'social__qzone');
         });
     };
@@ -105,12 +103,16 @@
 
                 try {
                     $dom.triggerResize();
-                } catch (e) {}
+                } catch (e) {
+                    // continue
+                }
 
                 setTimeout(function () { // Needed for IE10
                     try {
                         $dom.triggerResize();
-                    } catch (e) {}
+                    } catch (e) {
+                        // continue
+                    }
                 }, 1000);
             });
         }
@@ -120,7 +122,7 @@
         }
     };
 
-    $cms.templates.jsRefresh = function (params){
+    $cms.templates.jsRefresh = function (params) {
         if (!window.location.hash.includes('redirected_once')) {
             window.location.hash = 'redirected_once';
             $dom.submit(document.getElementById(params.formName));
@@ -208,7 +210,9 @@
         if ((document.activeElement != null) || (document.activeElement !== $dom.$('#password'))) {
             try {
                 $dom.$('#login_username').focus();
-            } catch (ignore) {}
+            } catch (ignore) {
+                // continue
+            }
         }
 
         $dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
@@ -445,7 +449,7 @@
         }
     };
 
-    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
+    $cms.templates.internalisedAjaxScreen = function internalisedAjaxScreen(params, element) {
         var url = strVal(params.url),
             changeDetectionUrl = strVal(params.changeDetectionUrl),
             refreshTime = Number(params.refreshTime) || 0,
@@ -462,41 +466,18 @@
                 });
             }, refreshTime * 1000);
         }
-
-        $dom.internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
     };
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
-        var wrapperEl = $dom.$id(params.wrapperId),
-            blockCallUrl = params.blockCallUrl,
-            infiniteScrollCallUrl = params.infiniteScrollCallUrl,
-            infiniteScrollFunc;
+        var wrapperEl = $dom.elArg('#' + params.wrapperId),
+            infiniteScrollCallUrl = params.infiniteScrollCallUrl;
 
-        if (wrapperEl) {
-            $dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
-
-            if (infiniteScrollCallUrl) {
-                infiniteScrollFunc = $dom.internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
-
-                $dom.on(window, {
-                    scroll: infiniteScrollFunc,
-                    touchmove: infiniteScrollFunc,
-                    keydown: $dom.infiniteScrollingBlock,
-                    mousedown: $dom.infiniteScrollingBlockHold,
-                    mousemove: function () {
-                        // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                        $dom.infiniteScrollingBlockUnhold(infiniteScrollFunc);
-                    }
-                });
-
-                infiniteScrollFunc();
-            }
-        } else {
-            $util.inform('$cms.templates.ajaxPagination(): Wrapper element not found.');
+        if (infiniteScrollCallUrl) {
+            $dom.enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
         }
     };
 
-    $cms.templates.confirmScreen = function confirmScreen(params) {};
+    $cms.templates.confirmScreen = function confirmScreen() {};
 
     $cms.templates.warnScreen = function warnScreen() {
         if (window.top !== window) {
@@ -525,7 +506,9 @@
             } else {
                 try {
                     window.$cms.getMainCmsWindow().focus();
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
 
                 window.close();
             }
@@ -538,34 +521,38 @@
 
         if (onclickCallFunctions != null) {
             $dom.on(btn, 'click', function (e) {
+                var funcs = onclickCallFunctions.slice();
+
                 e.preventDefault();
 
-                onclickCallFunctions.forEach(function (func) {
+                funcs.forEach(function (func) {
                     func.push(e);
                 });
 
-                $cms.executeJsFunctionCalls(onclickCallFunctions, btn);
+                $cms.executeJsFunctionCalls(funcs, btn);
             });
         }
 
         if (onmousedownCallFunctions != null) {
             $dom.on(btn, 'mousedown', function (e) {
+                var funcs = onmousedownCallFunctions.slice();
+
                 e.preventDefault();
 
-                onmousedownCallFunctions.forEach(function (func) {
+                funcs.forEach(function (func) {
                     func.push(e);
                 });
 
-                $cms.executeJsFunctionCalls(onmousedownCallFunctions, btn);
+                $cms.executeJsFunctionCalls(funcs, btn);
             });
         }
     };
 
     $cms.functions.spamWarning = function (e) {
-        if (e.which == 2/*middle button*/) {
+        if (e.which === 2/*middle button*/) {
             this.href += '&spam=1';
         }
-    }
+    };
 
     $cms.templates.cropTextMouseOver = function (params, el) {
         var textLarge = $cms.filter.nl(params.textLarge);
@@ -587,6 +574,7 @@
     $cms.templates.handleConflictResolution = function (params) {
         var pingUrl = strVal(params.pingUrl);
 
+        // eslint-disable-next-line no-constant-condition
         if ('{$VALUE_OPTION;,disable_handle_conflict_resolution}' === '1') {
             return;
         }
@@ -606,7 +594,7 @@
         }
     };
 
-    $cms.templates.doNextScreen = function doNextScreen(params) {};
+    $cms.templates.doNextScreen = function doNextScreen() {};
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
         $cms.doAjaxRequest(changeDetectionUrl, null, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged)).then(function (xhr) {
@@ -624,10 +612,12 @@
 
         try {
             window.focus();
-        } catch (e) {}
+        } catch (e) {
+            // continue
+        }
 
         var soundUrl = 'data/sounds/message_received.mp3',
-            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp(),
+            baseUrl = $util.rel((!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.getBaseUrl() : $cms.getCustomBaseUrl()),
             soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
         if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
@@ -641,21 +631,19 @@
         if (els.length === undefined) {
             els = [els];
         }
-        for (var i = 0; i < els.length; i++) {
-            els[i].addEventListener('click', (function (el) {
-                return function () {
-                    var selected = false;
-                    if (el.type === 'checkbox') {
-                        selected = (el.checked && (el.value === value)) || (!el.checked && ('' === value));
-                    } else {
-                        selected = (el.value === value);
-                    }
-                    if (selected) {
-                        $cms.ui.alert(notice, noticeTitle, true);
-                    }
-                };
-            }(els[i])));
-        }
+        $util.toArray(els).forEach(function (el) {
+            el.addEventListener('click', function () {
+                var selected = false;
+                if (el.type === 'checkbox') {
+                    selected = (el.checked && (el.value === value)) || (!el.checked && ('' === value));
+                } else {
+                    selected = (el.value === value);
+                }
+                if (selected) {
+                    $cms.ui.alert(notice, noticeTitle, true);
+                }
+            });
+        });
     };
 
     function confirmDelete(form, multi, callback) {

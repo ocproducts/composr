@@ -30,6 +30,26 @@ function init__global4()
 }
 
 /**
+ * Find whether a page is indexable.
+ *
+ * @param  ID_TEXT $zone Zone name
+ * @param  ID_TEXT $codename Page name
+ * @return boolean Whether it is indexable
+ */
+function comcode_page_is_indexable($zone, $codename)
+{
+    if (
+        (substr($codename, 0, 6) == 'panel_') ||
+        ($codename[0] == '_') ||
+        ($zone . ':' . $codename == ':404') ||
+        (in_array($zone . ':' . $codename, explode("\n", get_option('noindex_comcode_pages'))))
+    ) {
+        return false;
+    }
+    return true;
+}
+
+/**
  * Attach a message mentioning how the site is closed.
  *
  * @param  Tempcode $messages_bottom Where to place the message
@@ -485,6 +505,10 @@ function _log_it($type, $a = null, $b = null)
         delete_cache_entry('main_awards');
         delete_cache_entry('main_multi_content');
         delete_cache_entry('menu'); // Due to the content counts in the CMS/Admin Zones, and Sitemap menus
+
+        if (get_value('flush_cache_on_action') === '1') {
+            erase_static_cache();
+        }
     }
 
     // No more logging if site closed (possibly)

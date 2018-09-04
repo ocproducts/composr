@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_language_editing}
 
-<tr data-tpl="translateLine" data-tpl-params="{+START,PARAMS_JSON,TRANSLATE_AUTO}{_*}{+END}">
+<tr data-tpl="translateLine">
 	<th class="translate-line-first">
 		<a id="jmp-{NAME*}"></a>
 
@@ -22,7 +22,7 @@
 
 		<div class="accessibility-hidden"><label for="trans-{NAME*}">{NAME*}</label></div>
 		<div>
-			<textarea {+START,IF,{$EQ,{OLD},{CURRENT}}} disabled="disabled"{+END} class="form-control translate-field js-textarea-translate-field {+START,IF_PASSED,TRANSLATE_AUTO}js-textarea-click-set-value{+END}" cols="60" rows="{+START,IF,{$EQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}{+END}{+START,IF,{$NEQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{CURRENT}},80},1}{+END}" id="trans-{NAME*}" name="{NAME*}">{CURRENT*}</textarea>
+			<textarea {+START,IF,{$EQ,{OLD},{CURRENT}}} disabled="disabled"{+END} class="form-control translate-field js-textarea-translate-field" cols="60" rows="{+START,IF,{$EQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}{+END}{+START,IF,{$NEQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{CURRENT}},80},1}{+END}" id="trans-{NAME*}" name="trans_{NAME*}">{CURRENT*}</textarea>
 		</div>
 	</td>
 	{+START,IF_NON_EMPTY,{ACTIONS}}

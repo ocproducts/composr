@@ -22,6 +22,8 @@ function init__password_censor()
 
 function password_censor($auto = false, $display = true, $days_ago = 30)
 {
+    @header('X-Robots-Tag: noindex');
+
     if ($display) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
             exit('Permission denied');

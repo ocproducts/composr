@@ -104,7 +104,6 @@ function member_get_csv_headings()
         'Language' => 'm_language',
         'Accept member e-mails' => '!m_allow_emails',
         'Opt-in' => '!m_allow_emails_from_staff',
-        'Auto mark read' => 'm_auto_mark_read',
     );
     return $headings;
 }
@@ -155,9 +154,9 @@ function get_username_from_human_name($username)
 /**
  * Get a form for finishing off a member profile (such as for LDAP or httpauth, where a partial profile is automatically made, but needs completion).
  *
- * @param  SHORT_TEXT $username The username for the member profile
  * @param  ID_TEXT $type The type of member profile we are finishing off
- * @param  string $email_address Auto-detected e-mail address (blank: none)
+ * @param  SHORT_TEXT $username The username for the member profile
+ * @param  EMAIL $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)
@@ -165,7 +164,7 @@ function get_username_from_human_name($username)
  * @param  ?ID_TEXT $language Auto-detected Language (null: unknown)
  * @return Tempcode The form
  */
-function cns_member_external_linker_ask($username, $type, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null)
+function cns_member_external_linker_ask($type, $username, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null)
 {
     require_lang('cns');
 
@@ -180,7 +179,7 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
         $username = get_username_from_human_name($username);
     }
 
-    list($fields, $hidden) = cns_get_member_fields(true, null, null, $email_address, 1, $dob_day, $dob_month, $dob_year, $timezone, null, null, 1, 0, null, $language, 1, 1, 1, null, $username, 0, $type);
+    list($fields, $hidden) = cns_get_member_fields(true, $type, null, $username, $email_address, null, null, $dob_day, $dob_month, $dob_year, null, $timezone, $language);
     $hidden->attach(build_keep_post_fields());
     $hidden->attach(form_input_hidden('finishing_profile', '1'));
 
@@ -204,11 +203,11 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
 /**
  * Finishing off of a member profile (such as for LDAP or httpauth, where a partial profile is automatically made, but needs completion).
  *
+ * @param  ID_TEXT $type The type of member profile we are finishing off
  * @param  SHORT_TEXT $username The username for the member profile
  * @param  SHORT_TEXT $password The password for the member profile
- * @param  ID_TEXT $type The type of member profile we are finishing off
  * @param  boolean $email_check Whether to check for duplicated email addresses
- * @param  string $email_address Auto-detected e-mail address (blank: none)
+ * @param  EMAIL $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)
@@ -219,39 +218,23 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
  * @param  URLPATH $photo_thumb_url The URL to the member's photo thumbnail (blank: none)
  * @return MEMBER The member ID for the finished off profile
  */
-function cns_member_external_linker($username, $password, $type, $email_check = true, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $avatar_url = null, $photo_url = '', $photo_thumb_url = '')
+function cns_member_external_linker($type, $username, $password, $email_check = true, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $avatar_url = null, $photo_url = '', $photo_thumb_url = '')
 {
-    // Read in data
-    $email_address = trim(post_param_string('email_address', $email_address));
-    require_code('temporal2');
-    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob', $dob_year, $dob_month, $dob_day);
-    $reveal_age = post_param_integer('reveal_age', 0); // For default privacy, default off
+    // Read in data...
+
     require_code('temporal');
-    if ($timezone === null) {
-        $timezone = get_site_timezone();
-    }
-    $timezone = post_param_string('timezone', $timezone);
-    if ($language === null) {
-        $language = get_site_default_lang();
-    }
-    $language = post_param_string('language', $language);
-    $allow_emails = post_param_integer('allow_emails', 0); // For default privacy, default off
-    $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0); // For default privacy, default off
+    require_code('temporal2');
     require_code('cns_groups');
-    $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, 0, true);
-    $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
-    foreach ($actual_custom_fields as $key => $val) {
-        if ($val == STRING_MAGIC_NULL) {
-            $actual_custom_fields[$key] = '';
-        }
-    }
-    $groups = cns_get_all_default_groups(true); // $groups will contain the built-in default primary group too (it is not $secondary_groups)
+
+    $email_address = trim(post_param_string('email_address', $email_address));
+
+    $groups = cns_get_all_default_groups(true); // $groups will contain the built in default primary group too (it is not $secondary_groups)
     $primary_group = post_param_integer('primary_group', null);
-    if (($primary_group !== null) && (!in_array($primary_group, $groups)/*= not built-in default, which is automatically ok to join without extra security*/)) {
+    if (($primary_group !== null) && (!in_array($primary_group, $groups)/*= not built in default, which is automatically ok to join without extra security*/)) {
         // Check security
         $test = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_is_presented_at_install', array('id' => $primary_group));
         if ($test == 1) {
-            $groups = cns_get_all_default_groups(false); // Get it so it does not include the built-in default primary group
+            $groups = cns_get_all_default_groups(false); // Get it so it does not include the built in default primary group
             $groups[] = $primary_group; // And add in the *chosen* primary group
         } else {
             $primary_group = null;
@@ -259,9 +242,27 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
     } else {
         $primary_group = null;
     }
-    if ($primary_group === null) { // Security error, or built-in default (which will already be in $groups)
+    if ($primary_group === null) { // Security error, or built in default (which will already be in $groups)
         $primary_group = get_first_default_group();
     }
+
+    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob', $dob_year, $dob_month, $dob_day);
+
+    $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, 0, true);
+    $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
+    foreach ($actual_custom_fields as $key => $val) {
+        if ($val == STRING_MAGIC_NULL) {
+            $actual_custom_fields[$key] = '';
+        }
+    }
+
+    $timezone = post_param_string('timezone', $timezone);
+    $language = post_param_string('language', $language);
+
+    $allow_emails = post_param_integer('allow_emails', 0); // For default privacy, default off
+    $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0); // For default privacy, default off
+
+    $reveal_age = post_param_integer('reveal_age', 0); // For default privacy, default off
 
     // Check that the given address isn't already used (if one_per_email_address on)
     if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_check)) {
@@ -283,7 +284,45 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
 
     // Add member
     require_code('cns_members_action');
-    $ret = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, null, $validated, time(), time(), '', $avatar_url, '', 0, 1, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, get_ip_address(), '', false, $type, '');
+    $ret = cns_make_member(
+        $username, // username
+        $password, // password
+        $email_address, // email_address
+        null, // primary_group
+        $groups, // secondary_groups
+        $dob_day, // dob_day
+        $dob_month, // dob_month
+        $dob_year, // dob_year
+        $actual_custom_fields, // custom_fields
+        $timezone, // timezone
+        $language, // language
+        '', // theme
+        '', // title
+        $photo_url, // photo_url
+        $photo_thumb_url, // photo_thumb_url
+        $avatar_url, // avatar_url
+        '', // signature
+        1, // preview_posts
+        $reveal_age, // reveal_age
+        1, // views_signatures
+        null, // auto_monitor_contrib_content
+        null, // smart_topic_notification
+        null, // mailing_list_style
+        1, // auto_mark_read
+        null, // sound_enabled
+        $allow_emails, // allow_emails
+        $allow_emails_from_staff, // allow_emails_from_staff
+        0, // highlighted_name
+        '*', // pt_allow
+        '', // pt_rules_text
+        $validated, // validated
+        '', // validated_email_confirm_code
+        null, // on_probation_until
+        0, // is_perm_banned
+        false, // check_correctness
+        null, // ip_address
+        $type // password_compatibility_scheme
+    );
     return $ret;
 }
 
@@ -324,96 +363,124 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
  * Get form fields for adding/editing/finishing a member account.
  *
  * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
+ * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type)
  * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
- * @param  ?array $groups A list of usergroups (null: default/current usergroups)
+ * @param  SHORT_TEXT $username The username
  * @param  SHORT_TEXT $email_address The e-mail address
- * @param  BINARY $preview_posts Whether posts are previewed before they are made
+ * @param  ?GROUP $primary_group The member's primary usergroup (null: not known)
+ * @param  ?array $groups A list of usergroups (null: default/current usergroups)
  * @param  ?integer $dob_day Day of date of birth (null: not known)
  * @param  ?integer $dob_month Month of date of birth (null: not known)
  * @param  ?integer $dob_year Year of date of birth (null: not known)
- * @param  ?ID_TEXT $timezone The member timezone (null: site default)
  * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known)
- * @param  ?ID_TEXT $theme The members default theme (null: not known)
- * @param  BINARY $reveal_age Whether the members age may be shown
+ * @param  ?ID_TEXT $timezone The member timezone (null: site default)
+ * @param  ?LANGUAGE_NAME $language The member's language (null: auto detect)
+ * @param  ?ID_TEXT $theme The member's default theme (null: not known)
+ * @param  BINARY $preview_posts Whether posts are previewed before they are made
+ * @param  BINARY $reveal_age Whether the member's age may be shown
  * @param  BINARY $views_signatures Whether the member sees signatures in posts
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
- * @param  ?LANGUAGE_NAME $language The members language (null: auto detect)
+ * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: global configured default)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: global configured default)
+ * @param  BINARY $auto_mark_read Mark topics as read automatically
+ * @param  ?BINARY $sound_enabled Whether sound is enabled (null: global configured default)
  * @param  BINARY $allow_emails Whether the member allows e-mails via the site
  * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site
- * @param  BINARY $validated Whether the profile has been validated
- * @param  ?GROUP $primary_group The members primary (null: not known)
- * @param  SHORT_TEXT $username The username
- * @param  BINARY $is_perm_banned Whether the member is permanently banned
- * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type)
  * @param  BINARY $highlighted_name Whether the member username will be highlighted
  * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member
  * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member
+ * @param  BINARY $validated Whether the account has been validated
  * @param  ?TIME $on_probation_until When the member is on probation until (null: just finished probation / or effectively was never on it)
+ * @param  BINARY $is_perm_banned Whether the member is permanently banned
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode)
+ * @return array A tuple: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
-function cns_get_member_fields($mini_mode = true, $member_id = null, $groups = null, $email_address = '', $preview_posts = 0, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $custom_fields = null, $theme = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $validated = 1, $primary_group = null, $username = '', $is_perm_banned = 0, $special_type = '', $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $adjusted_config_options = null)
+function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $preview_posts = 0, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0, $adjusted_config_options = null)
 {
     $fields = new Tempcode();
     $hidden = new Tempcode();
 
-    list($_fields, $_hidden) = cns_get_member_fields_settings($mini_mode, $member_id, $groups, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $primary_group, $username, $is_perm_banned, $special_type, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $adjusted_config_options);
+    list($_fields, $_hidden, $added_section_1) = cns_get_member_fields_settings($mini_mode, $special_type, $member_id, $username, $email_address, $primary_group, $groups, $dob_day, $dob_month, $dob_year, $timezone, $language, $theme, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $on_probation_until, $is_perm_banned, $adjusted_config_options);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
 
     if (!$mini_mode) {
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '14205f6bf83c469a1404d24967d7b6f6', 'TITLE' => do_lang_tempcode('PROFILE'))));
+        $added_section_1 = true;
     }
 
-    list($_fields, $_hidden) = cns_get_member_fields_profile($mini_mode, $member_id, $groups, $custom_fields, $adjusted_config_options);
+    list($_fields, $_hidden, $added_section_2) = cns_get_member_fields_profile($mini_mode, $member_id, $groups, $custom_fields, $adjusted_config_options);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
 
-    return array($fields, $hidden);
+    return array($fields, $hidden, $added_section_1 || $added_section_2);
 }
 
 /**
- * Get form fields for adding/editing/finishing a member profile: settings only.
+ * Get form fields for adding/editing/finishing a member account: settings only.
  *
  * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
+ * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type)
  * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
- * @param  ?array $groups A list of usergroups (null: default/current usergroups)
+ * @param  SHORT_TEXT $username The username
  * @param  SHORT_TEXT $email_address The e-mail address
- * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate statistically)
+ * @param  ?GROUP $primary_group The member's primary usergroup (null: not known)
+ * @param  ?array $groups A list of usergroups (null: default usergroups)
  * @param  ?integer $dob_day Day of date of birth (null: not known)
  * @param  ?integer $dob_month Month of date of birth (null: not known)
  * @param  ?integer $dob_year Year of date of birth (null: not known)
  * @param  ?ID_TEXT $timezone The member timezone (null: site default)
- * @param  ?ID_TEXT $theme The members default theme (null: not known)
- * @param  BINARY $reveal_age Whether the members age may be shown
+ * @param  ?LANGUAGE_NAME $language The member's language (null: auto detect)
+ * @param  ?ID_TEXT $theme The member's default theme (null: not known)
+ * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate statistically)
+ * @param  BINARY $reveal_age Whether the member's age may be shown
  * @param  BINARY $views_signatures Whether the member sees signatures in posts
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
- * @param  ?LANGUAGE_NAME $language The members language (null: auto detect)
+ * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: global configured default)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: global configured default)
+ * @param  BINARY $auto_mark_read Mark topics as read automatically
+ * @param  ?BINARY $sound_enabled Whether sound is enabled (null: global configured default)
  * @param  BINARY $allow_emails Whether the member allows e-mails via the site
  * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site
- * @param  BINARY $validated Whether the profile has been validated
- * @param  ?GROUP $primary_group The members primary (null: not known)
- * @param  SHORT_TEXT $username The username
- * @param  BINARY $is_perm_banned Whether the member is permanently banned
- * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type)
  * @param  BINARY $highlighted_name Whether the member username will be highlighted
  * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member
  * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member
+ * @param  BINARY $validated Whether the account has been validated
  * @param  ?TIME $on_probation_until When the member is on probation until (null: just finished probation / or effectively was never on it)
+ * @param  BINARY $is_perm_banned Whether the member is permanently banned
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode)
+ * @return array A pair: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
-function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $groups = null, $email_address = '', $preview_posts = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $theme = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $validated = 1, $primary_group = null, $username = '', $is_perm_banned = 0, $special_type = '', $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $adjusted_config_options = null)
+function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $theme = null, $preview_posts = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0, $adjusted_config_options = null)
 {
     require_code('form_templates');
     require_code('cns_members_action');
-
-    $preview_posts = take_param_int_modeavg($preview_posts, 'm_preview_posts', 'f_members', 0);
-
     require_code('cns_field_editability');
+    require_code('form_templates');
+    require_code('encryption');
 
+    $added_section = false;
+
+    if (($special_type == '') && ($member_id !== null)) {
+        $special_type = get_member_special_type($member_id);
+    }
+
+    $default_primary_group = get_first_default_group();
+    if ($groups === null) {
+        $groups = cns_get_all_default_groups(true);
+    }
+    $preview_posts = take_param_int_modeavg($preview_posts, 'm_preview_posts', 'f_members', 0);
     if ($auto_monitor_contrib_content === null) {
-        $auto_monitor_contrib_content = (get_option('allow_auto_notifications') == '0') ? 0 : 1;
+        $auto_monitor_contrib_content = (get_option_with_overrides('allow_auto_notifications', $adjusted_config_options) == '0') ? 0 : 1;
+    }
+    if ($smart_topic_notification === null) {
+        $smart_topic_notification = (get_option_with_overrides('smart_topic_notification_default', $adjusted_config_options) == '1') ? 1 : 0;
+    }
+    if ($mailing_list_style === null) {
+        $mailing_list_style = (get_option_with_overrides('mailing_list_style_default', $adjusted_config_options) == '1') ? 1 : 0;
+    }
+    if ($sound_enabled === null) {
+        $sound_enabled = (get_option_with_overrides('sound_enabled_default', $adjusted_config_options) == '1') ? 1 : 0;
     }
 
     $hidden = new Tempcode();
@@ -421,22 +488,13 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     if ($member_id === $GLOBALS['CNS_DRIVER']->get_guest_id()) {
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    require_code('form_templates');
-    require_code('encryption');
-    if (($special_type == '') && ($member_id !== null)) {
-        $special_type = get_member_special_type($member_id);
-    }
-
-    if ($groups === null) {
-        $groups = ($member_id === null) ? cns_get_all_default_groups(true) : $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);
-    }
 
     $fields = new Tempcode();
 
     // Username
     if (cns_field_editable('username', $special_type)) {
         if (($member_id === null) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self'))) {
-            $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
+            $prohibit_username_whitespace = get_option_with_overrides('prohibit_username_whitespace', $adjusted_config_options);
             if ($prohibit_username_whitespace == '1') {
                 $fields->attach(form_input_codename(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_USERNAME'), ($member_id === null) ? 'username' : 'edit_username', $username, true));
             } else {
@@ -528,6 +586,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     if (!$mini_mode) {
         if (($doing_timezones) || ($doing_langs) || ($doing_email_option) || ($doing_wide_option) || ($doing_theme_option) || ($doing_local_forum_options)) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3cd79bbea084ec1fe148edddad7d52b4', 'FORCE_OPEN' => ($member_id === null) ? true : null, 'TITLE' => do_lang_tempcode('SETTINGS'))));
+            $added_section = true;
         }
     }
     */
@@ -566,37 +625,51 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
         // Various forum options
         if (addon_installed('cns_forum')) {
-            if (get_option('forced_preview_option') == '1') {
+            if (get_option_with_overrides('forced_preview_option', $adjusted_config_options) == '1') {
                 $fields->attach(form_input_tick(do_lang_tempcode('PREVIEW_POSTS'), do_lang_tempcode('DESCRIPTION_PREVIEW_POSTS'), 'preview_posts', $preview_posts == 1));
             }
             if (addon_installed('cns_signatures')) {
-                if (get_option('enable_views_sigs_option', true) === '1') {
+                if (get_option_with_overrides('enable_views_sigs_option', $adjusted_config_options) === '1') {
                     $fields->attach(form_input_tick(do_lang_tempcode('VIEWS_SIGNATURES'), do_lang_tempcode('DESCRIPTION_VIEWS_SIGNATURES'), 'views_signatures', $views_signatures == 1));
                 } else {
                     $hidden->attach(form_input_hidden('views_signatures', '1'));
                 }
             }
-            //$fields->attach(form_input_tick(do_lang_tempcode('AUTO_NOTIFICATION_CONTRIB_CONTENT'), do_lang_tempcode('DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT'), 'auto_monitor_contrib_content', $auto_monitor_contrib_content == 1));  Now on notifications tab, even though it is technically an account setting
+
+            /*
+            Actually managed on the notifications tab, even though technically account settings
+            $fields->attach(form_input_tick(do_lang_tempcode('AUTO_NOTIFICATION_CONTRIB_CONTENT'), do_lang_tempcode('DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT'), 'auto_monitor_contrib_content', $auto_monitor_contrib_content == 1));
+            $fields->attach(form_input_tick(do_lang_tempcode('SMART_TOPIC_NOTIFICATION'), do_lang_tempcode('DESCRIPTION_SMART_TOPIC_NOTIFICATION'), 'smart_topic_notification', $smart_topic_notification == 1));
+            if (addon_installed('cns_forum')) {
+                require_code('cns_forums2');
+                $test = cns_has_mailing_list_style();
+                if ($test[0] > 0) {
+                    $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_CAVEAT');
+                    $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', $mlsn_description_caveat);
+                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE'), $mlsn_description, 'mailing_list_style', $mailing_list_style == 1));
+                }
+            }
+            */
+
+            if (get_option_with_overrides('is_on_automatic_mark_topic_read', $adjusted_config_options) == '0') {
+                $fields->attach(form_input_tick(do_lang_tempcode('ENABLE_AUTO_MARK_READ'), do_lang_tempcode('DESCRIPTION_ENABLE_AUTO_MARK_READ'), 'auto_mark_read', $auto_mark_read == 1));
+            } else {
+                $hidden->attach(form_input_hidden('auto_mark_read', '1'));
+            }
+            $fields->attach(form_input_tick(do_lang_tempcode('SOUND_ENABLED'), do_lang_tempcode('DESCRIPTION_SOUND_ENABLED'), 'sound_enabled', $sound_enabled == 1));
             $usergroup_list = new Tempcode();
-            $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
+            $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true, false, null, null, true);
             foreach ($lgroups as $key => $val) {
                 if ($key != db_get_first_id()) {
                     $usergroup_list->attach(form_input_list_entry(strval($key), ($pt_allow == '*') || count(array_intersect(array(strval($key)), explode(',', $pt_allow))) != 0, $val));
                 }
             }
-            if (get_option('enable_pt_restrict') == '1') {
+
+            if (get_option_with_overrides('enable_pt_restrict', $adjusted_config_options) == '1') {
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '7e5deb351a7a5214fbff10049839e258', 'TITLE' => do_lang_tempcode('PRIVATE_TOPICS'))));
                 $fields->attach(form_input_multi_list(do_lang_tempcode('PT_ALLOW'), addon_installed('chat') ? do_lang_tempcode('PT_ALLOW_DESCRIPTION_CHAT') : do_lang_tempcode('PT_ALLOW_DESCRIPTION'), 'pt_allow', $usergroup_list));
                 $fields->attach(form_input_text_comcode(do_lang_tempcode('PT_RULES_TEXT'), do_lang_tempcode('PT_RULES_TEXT_DESCRIPTION'), 'pt_rules_text', $pt_rules_text, false));
-            }
-
-            if (get_option('is_on_automatic_mark_topic_read') == '0') {
-                require_code('users');
-                $auto_mark_read = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_auto_mark_read');
-
-                $fields->attach(form_input_tick(do_lang_tempcode('ENABLE_AUTO_MARK_READ'), do_lang_tempcode('DESCRIPTION_ENABLE_AUTO_MARK_READ'), 'auto_mark_read', $auto_mark_read == 1));
-            } else {
-                $hidden->attach(form_input_hidden('auto_mark_read', '1'));
+                $added_section = true;
             }
         }
 
@@ -604,7 +677,6 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_hidden', 'g_open_membership'), ($group_count > 200) ? array('g_is_private_club' => 0) : array(), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
         $_groups = new Tempcode();
-        $default_primary_group = get_first_default_group();
         $current_primary_group = null;
         foreach ($rows as $group) {
             if ($group['id'] != db_get_first_id()) {
@@ -619,6 +691,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         // Some admin options...
         if (has_privilege(get_member(), 'member_maintenance')) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '04422238c372edd0b11c11a05feb6267', 'TITLE' => do_lang_tempcode('MEMBER_ACCESS'))));
+            $added_section = true;
 
             // Probation
             if (has_privilege(get_member(), 'probate_members')) {
@@ -640,7 +713,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
         // Secondary usergroups
         if (cns_field_editable('secondary_groups', $special_type)) {
             $_groups2 = new Tempcode();
-            $members_groups = ($member_id === null) ? array() : cns_get_members_groups($member_id, false, false, false);
+            $members_groups = ($member_id === null) ? array() : cns_get_members_groups($member_id, false, false, false); // We can't use $groups because it isn't tuned for a form
             foreach ($rows as $group) {
                 if (($group['g_hidden'] == 1) && (!array_key_exists($group['id'], $members_groups)) && (!has_privilege(get_member(), 'see_hidden_groups'))) {
                     continue;
@@ -665,35 +738,39 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                     attach_message(do_lang_tempcode('WILL_BE_VALIDATED_WHEN_SAVING'));
                 }
             }
+            if (get_option_with_overrides('enable_highlight_name', $adjusted_config_options) == '1') {
+                $fields->attach(form_input_tick(do_lang_tempcode('HIGHLIGHTED_NAME'), do_lang_tempcode(addon_installed('ecommerce') ? 'DESCRIPTION_HIGHLIGHTED_NAME_P' : 'DESCRIPTION_HIGHLIGHTED_NAME'), 'highlighted_name', $highlighted_name == 1));
+            }
             if (addon_installed('unvalidated')) {
                 $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode('DESCRIPTION_MEMBER_VALIDATED'), 'validated', $validated == 1));
             }
-            if (get_option('enable_highlight_name') == '1') {
-                $fields->attach(form_input_tick(do_lang_tempcode('HIGHLIGHTED_NAME'), do_lang_tempcode(addon_installed('ecommerce') ? 'DESCRIPTION_HIGHLIGHTED_NAME_P' : 'DESCRIPTION_HIGHLIGHTED_NAME'), 'highlighted_name', $highlighted_name == 1));
-            }
-            if (($member_id !== null) && ($member_id != get_member())) { // Can't ban someone new, and can't ban yourself
+            if (($member_id !== null) && ($member_id != get_member())) {// Can't ban someone new, and can't ban yourself
                 $fields->attach(form_input_tick(do_lang_tempcode('BANNED'), do_lang_tempcode('DESCRIPTION_MEMBER_BANNED'), 'is_perm_banned', $is_perm_banned == 1));
             }
         }
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
-            $fields->attach(content_review_get_fields('member', ($member_id === null) ? null : strval($member_id)));
+            $content_review_fields = content_review_get_fields('member', ($member_id === null) ? null : strval($member_id));
+            if (!$content_review_fields->is_empty()) {
+                $fields->attach($content_review_fields);
+                $added_section = true;
+            }
         }
     }
 
-    return array($fields, $hidden);
+    return array($fields, $hidden, $added_section);
 }
 
 /**
- * Get form fields for adding/editing/finishing a member profile: profile fields only.
+ * Get form fields for adding/editing/finishing a member account: profile fields only.
  *
  * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
  * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
  * @param  ?array $groups A list of usergroups (null: default/current usergroups)
  * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode)
+ * @return array A tuple: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
 function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $groups = null, $custom_fields = null, $adjusted_config_options = null)
 {
@@ -701,6 +778,8 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
 
     $fields = new Tempcode();
     $hidden = new Tempcode();
+
+    $added_section = false;
 
     if ($groups === null) {
         $groups = ($member_id === null) ? cns_get_all_default_groups(true) : $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);
@@ -715,7 +794,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         null, // show in posts
         null, // show in post previews
         0, // special start
-        $mini_mode ? true : null, // show on join form
+        $mini_mode ? true : null, // show on join form,
         $adjusted_config_options
     );
     $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
@@ -726,7 +805,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
         $ob = get_fields_hook($custom_field['cf_type']);
         list(, , $storage_type) = $ob->get_field_value_row_bits($custom_field);
 
-        $existing_field = (!is_null($custom_fields)) && (array_key_exists($custom_field['trans_name'], $custom_fields));
+        $existing_field = ($custom_fields !== null) && (array_key_exists($custom_field['trans_name'], $custom_fields));
         if ($existing_field) {
             $value = $custom_fields[$custom_field['trans_name']]['RAW'];
 
@@ -787,59 +866,64 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
 
         if ($field_group_title != '') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'af91e3c040a0a18a4d9cc1143c0d2007', 'TITLE' => $field_group_title)));
+            $added_section = true;
         }
         $fields->attach($extra_fields);
     }
     $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = false;
 
-    return array($fields, $hidden);
+    return array($fields, $hidden, $added_section);
 }
 
 /**
  * Edit a member.
  *
  * @param  AUTO_LINK $member_id The ID of the member
- * @param  ?SHORT_TEXT $email_address The e-mail address. (null: don't change)
- * @param  ?BINARY $preview_posts Whether posts are previewed before they are made. (null: don't change)
- * @param  ?integer $dob_day Day of date of birth. (null: don't change) (-1: deset)
- * @param  ?integer $dob_month Month of date of birth. (null: don't change) (-1: deset)
- * @param  ?integer $dob_year Year of date of birth. (null: don't change) (-1: deset)
- * @param  ?ID_TEXT $timezone The member timezone. (null: don't change)
- * @param  ?GROUP $primary_group The members primary (null: don't change)
- * @param  array $custom_fields A map of custom fields values (field-id=>value)
- * @param  ?ID_TEXT $theme The members default theme. (null: don't change)
- * @param  ?BINARY $reveal_age Whether the members age may be shown. (null: don't change)
- * @param  ?BINARY $views_signatures Whether the member sees signatures in posts. (null: don't change)
- * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to. (null: don't change)
- * @param  ?LANGUAGE_NAME $language The members language. (null: don't change)
- * @param  ?BINARY $allow_emails Whether the member allows e-mails via the site. (null: don't change)
- * @param  ?BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site. (null: don't change)
- * @param  ?BINARY $validated Whether the profile has been validated (null: do not change this). (null: don't change)
- * @param  ?string $username The username. (null: don't change)
- * @param  ?string $password The password. (null: don't change)
- * @param  ?BINARY $highlighted_name Whether the member username will be highlighted. (null: don't change)
- * @param  ?SHORT_TEXT $pt_allow Usergroups that may PT the member. (null: don't change)
- * @param  ?LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member. (null: don't change)
- * @param  ?TIME $on_probation_until When the member is on probation until (null: don't change)
- * @param  ?BINARY $auto_mark_read Mark topics as read automatically (null: don't change)
- * @param  ?TIME $join_time When the member joined (null: don't change)
- * @param  ?URLPATH $avatar_url Avatar (null: don't change)
- * @param  ?LONG_TEXT $signature Signature (null: don't change)
- * @param  ?BINARY $is_perm_banned Banned status (null: don't change)
+ * @param  ?string $username The username (null: don't change)
+ * @param  ?string $password The password (null: don't change)
+ * @param  ?SHORT_TEXT $email_address The e-mail address (null: don't change)
+ * @param  ?GROUP $primary_group The member's primary usergroup (null: don't change)
+ * @param  ?integer $dob_day Day of date of birth (null: don't change) (-1: deset)
+ * @param  ?integer $dob_month Month of date of birth (null: don't change) (-1: deset)
+ * @param  ?integer $dob_year Year of date of birth (null: don't change) (-1: deset)
+ * @param  ?array $custom_fields A map of custom fields values, things specified are not  (field-id=>value) (null: don't change)
+ * @param  ?ID_TEXT $timezone The member timezone (null: don't change)
+ * @param  ?LANGUAGE_NAME $language The member's language (null: don't change)
+ * @param  ?ID_TEXT $theme The member's default theme (null: don't change)
+ * @param  ?SHORT_TEXT $title The member's title (blank: get from primary) (null: don't change)
  * @param  ?URLPATH $photo_url Photo URL (null: don't change)
  * @param  ?URLPATH $photo_thumb_url URL of thumbnail of photo (null: don't change)
- * @param  ?SHORT_TEXT $salt Password salt (null: don't change)
+ * @param  ?URLPATH $avatar_url Avatar (null: don't change)
+ * @param  ?LONG_TEXT $signature Signature (null: don't change)
+ * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: don't change)
+ * @param  ?BINARY $reveal_age Whether the member's age may be shown (null: don't change)
+ * @param  ?BINARY $views_signatures Whether the member sees signatures in posts (null: don't change)
+ * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: don't change)
+ * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: don't change)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: don't change)
+ * @param  ?BINARY $auto_mark_read Mark topics as read automatically (null: don't change)
+ * @param  ?BINARY $sound_enabled Whether sound is enabled (null: don't change)
+ * @param  ?BINARY $allow_emails Whether the member allows e-mails via the site (null: don't change)
+ * @param  ?BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site (null: don't change)
+ * @param  ?BINARY $highlighted_name Whether the member username will be highlighted (null: don't change)
+ * @param  ?SHORT_TEXT $pt_allow Usergroups that may PT the member (null: don't change)
+ * @param  ?LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member (null: don't change)
+ * @param  ?BINARY $validated Whether the account has been validated (null: do not change this) (null: don't change)
+ * @param  ?TIME $on_probation_until When the member is on probation until (null: don't change)
+ * @param  ?BINARY $is_perm_banned Banned status (null: don't change)
+ * @param  boolean $check_correctness Whether to check details for correctness and do most of the change-triggered e-mails
  * @param  ?ID_TEXT $password_compatibility_scheme Password compatibility scheme (null: don't change)
- * @param  boolean $skip_checks Whether to skip security checks and most of the change-triggered emails
+ * @param  ?SHORT_TEXT $salt Password salt (null: don't change)
+ * @param  ?TIME $join_time When the member joined (null: don't change)
  */
-function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated = null, $username = null, $password = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = null, $join_time = null, $avatar_url = null, $signature = null, $is_perm_banned = null, $photo_url = null, $photo_thumb_url = null, $salt = null, $password_compatibility_scheme = null, $skip_checks = false)
+function cns_edit_member($member_id, $username = null, $password = null, $email_address = null, $primary_group = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $title = null, $photo_url = null, $photo_thumb_url = null, $avatar_url = null, $signature = null, $preview_posts = null, $reveal_age = null, $views_signatures = null, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = null, $sound_enabled = null, $allow_emails = null, $allow_emails_from_staff = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $validated = null, $on_probation_until = null, $is_perm_banned = null, $check_correctness = true, $password_compatibility_scheme = null, $salt = null, $join_time = null)
 {
     require_code('type_sanitisation');
     require_code('cns_members_action');
 
     $update = array();
 
-    if (!$skip_checks) {
+    if ($check_correctness) {
         $old_email_address = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_email_address');
 
         $email_address_required = member_field_is_required($member_id, 'email_address');
@@ -848,7 +932,8 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != STRING_MAGIC_NULL)) {
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != $old_email_address) && ($email_address != STRING_MAGIC_NULL))
+        {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if (($test !== null) && ($test != $member_id)) {
                 warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
@@ -857,7 +942,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
 
     if ($username !== null) {
-        if (!$skip_checks) {
+        if ($check_correctness) {
             cns_check_name_valid($username, $member_id, $password);
 
             require_code('urls2');
@@ -892,48 +977,51 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         if (intval($password_change_days) > 0) {
             if ($password_compatibility_scheme == '') {
                 require_code('password_rules');
-                bump_password_change_date($member_id, $password, $update['m_pass_hash_salted'], $salt, $skip_checks);
+                bump_password_change_date($member_id, $password, $update['m_pass_hash_salted'], $salt, $check_correctness);
 
                 $update['m_last_visit_time'] = time(); // Needed when an admin changing another password (but okay always): So that the password isn't assumed auto-expired, forcing them to reset it again
             }
         }
     }
 
-    // Supplement custom field values given with defaults, and check constraints
-    $all_fields = cns_get_all_custom_fields_match($GLOBALS['CNS_DRIVER']->get_members_groups($member_id));
-    foreach ($all_fields as $field) {
-        $field_id = $field['id'];
+    $changes = array();
 
-        if (array_key_exists($field_id, $custom_fields)) {
-            if (!$skip_checks) {
-                if (($field['cf_public_view'] == 0) && ($member_id != get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                    access_denied('I_ERROR');
-                }
-                if (($field['cf_owner_view'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                    access_denied('I_ERROR');
-                }
-                if (($field['cf_owner_set'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                    access_denied('I_ERROR');
+    if ($custom_fields !== null) {
+        // Check constraints
+        $all_fields = cns_get_all_custom_fields_match($GLOBALS['CNS_DRIVER']->get_members_groups($member_id));
+        foreach ($all_fields as $field) {
+            $field_id = $field['id'];
+
+            if (array_key_exists($field_id, $custom_fields)) {
+                if ($check_correctness) {
+                    if (($field['cf_public_view'] == 0) && ($member_id != get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
+                        access_denied('I_ERROR');
+                    }
+                    if (($field['cf_owner_view'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
+                        access_denied('I_ERROR');
+                    }
+                    if (($field['cf_owner_set'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
+                        access_denied('I_ERROR');
+                    }
                 }
             }
         }
-    }
 
-    // Set Custom Profile Field values
-    $all_fields_types = collapse_2d_complexity('id', 'cf_type', $all_fields);
-    $changes = array();
-    foreach ($custom_fields as $field_id => $value) {
-        if (!array_key_exists($field_id, $all_fields_types)) {
-            continue; // Trying to set a field we're not allowed to (doesn't apply to our group)
-        }
+        // Set Custom Profile Field values
+        $all_fields_types = collapse_2d_complexity('id', 'cf_type', $all_fields);
+        foreach ($custom_fields as $field_id => $value) {
+            if (!array_key_exists($field_id, $all_fields_types)) {
+                continue; // Trying to set a field we're not allowed to (doesn't apply to our group)
+            }
 
-        $change = cns_set_custom_field($member_id, $field_id, $value, $all_fields_types[$field_id], true);
-        if ($change !== null) {
-            $changes = array_merge($changes, $change);
+            $change = cns_set_custom_field($member_id, $field_id, $value, $all_fields_types[$field_id], true);
+            if ($change !== null) {
+                $changes = array_merge($changes, $change);
+            }
         }
-    }
-    if (count($changes) != 0) {
-        $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $changes, array('mf_member_id' => $member_id), '', 1);
+        if (count($changes) != 0) {
+            $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $changes, array('mf_member_id' => $member_id), '', 1);
+        }
     }
 
     $old_primary_group = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
@@ -941,11 +1029,8 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     $_pt_rules_text = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_pt_rules_text');
     $_signature = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_signature');
 
-    if ($theme !== null) {
-        $update['m_theme'] = $theme;
-    }
-    if ($preview_posts !== null) {
-        $update['m_preview_posts'] = $preview_posts;
+    if ($email_address !== null) {
+        $update['m_email_address'] = $email_address;
     }
     if ($dob_day !== null) {
         $update['m_dob_day'] = ($dob_day == -1) ? null : $dob_day;
@@ -959,11 +1044,32 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     if ($timezone !== null) {
         $update['m_timezone_offset'] = $timezone;
     }
+    if ($language !== null) {
+        $update['m_language'] = $language;
+    }
+    if ($theme !== null) {
+        $update['m_theme'] = $theme;
+    }
+    if ($photo_url !== null) {
+        $update['m_photo_url'] = $photo_url;
+    }
+    if ($photo_thumb_url !== null) {
+        $update['m_photo_thumb_url'] = $photo_thumb_url;
+    }
+    if ($title !== null) {
+        $update['m_title'] = $title;
+    }
+    if ($avatar_url !== null) {
+        $update['m_avatar_url'] = $avatar_url;
+    }
+    if ($signature !== null) {
+        $update += lang_remap_comcode('m_signature', $_signature, $signature, $GLOBALS['FORUM_DB']);
+    }
+    if ($preview_posts !== null) {
+        $update['m_preview_posts'] = $preview_posts;
+    }
     if ($reveal_age !== null) {
         $update['m_reveal_age'] = $reveal_age;
-    }
-    if ($email_address !== null) {
-        $update['m_email_address'] = $email_address;
     }
     if ($views_signatures !== null) {
         $update['m_views_signatures'] = $views_signatures;
@@ -971,8 +1077,17 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     if ($auto_monitor_contrib_content !== null) {
         $update['m_auto_monitor_contrib_content'] = $auto_monitor_contrib_content;
     }
-    if ($language !== null) {
-        $update['m_language'] = $language;
+    if ($smart_topic_notification !== null) {
+        $update['m_smart_topic_notification'] = $smart_topic_notification;
+    }
+    if ($mailing_list_style !== null) {
+        $update['m_mailing_list_style'] = $mailing_list_style;
+    }
+    if ($auto_mark_read !== null) {
+        $update['m_auto_mark_read'] = $auto_mark_read;
+    }
+    if ($sound_enabled !== null) {
+        $update['m_sound_enabled'] = $sound_enabled;
     }
     $doing_email_option = (get_option('member_email_receipt_configurability') != '0') && (addon_installed('cns_contact_member'));
     if (($allow_emails !== null) && ($doing_email_option)) {
@@ -988,33 +1103,18 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     if ($pt_rules_text !== null) {
         $update += lang_remap_comcode('m_pt_rules_text', $_pt_rules_text, $pt_rules_text, $GLOBALS['FORUM_DB']);
     }
-    if (($skip_checks) || (has_privilege(get_member(), 'probate_members'))) {
+    if ((!$check_correctness) || (has_privilege(get_member(), 'probate_members'))) {
         $update['m_on_probation_until'] = $on_probation_until;
-    }
-    if ($auto_mark_read !== null) {
-        $update['m_auto_mark_read'] = $auto_mark_read;
-    }
-    if ($join_time !== null) {
-        $update['m_join_time'] = $join_time;
-    }
-    if ($avatar_url !== null) {
-        $update['m_avatar_url'] = $avatar_url;
-    }
-    if ($signature !== null) {
-        $update += lang_remap_comcode('m_signature', $_signature, $signature, $GLOBALS['FORUM_DB']);
     }
     if ($is_perm_banned !== null) {
         $update['m_is_perm_banned'] = $is_perm_banned;
     }
-    if ($photo_url !== null) {
-        $update['m_photo_url'] = $photo_url;
-    }
-    if ($photo_thumb_url !== null) {
-        $update['m_photo_thumb_url'] = $photo_thumb_url;
+    if ($join_time !== null) {
+        $update['m_join_time'] = $join_time;
     }
 
     $old_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
-    if (($username !== null) && ($old_username !== null) && ($username != $old_username) && (($skip_checks) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self')))) { // Username change
+    if (($username !== null) && ($old_username !== null) && ($username != $old_username) && ((!$check_correctness) || (has_actual_page_access(get_member(), 'admin_cns_members')) || (has_privilege($member_id, 'rename_self')))) { // Username change
         $update['m_username'] = $username;
 
         // Reassign personal galleries
@@ -1050,7 +1150,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         // Security, clear out sessions from other people on this user - just in case the reset is due to suspicious activity
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'sessions WHERE member_id=' . strval($member_id) . ' AND ' . db_string_not_equal_to('the_session', get_session_id()));
 
-        if (!$skip_checks) {
+        if ($check_correctness) {
             if (($member_id == get_member()) || (get_value('disable_password_change_notifications_for_staff') !== '1')) {
                 if (get_page_name() != 'admin_cns_members') {
                     require_code('notifications');
@@ -1106,8 +1206,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         require_code('mail');
         $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), array(), false, false, true);
         $login_url = $_login_url->evaluate();
+        $_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
         // NB: Same mail also sent in settings.php (quick-validate feature)
-        dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
+        $vm_subject = do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id));
+        $vm_body = do_lang('MEMBER_VALIDATED', get_site_name(), $_username, $login_url, get_lang($member_id));
+        dispatch_mail($vm_subject, $vm_body, array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
     }
 
     $old_email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
@@ -1135,9 +1238,16 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
 
     delete_cache_entry('main_members');
+    if (($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) && ($old_email_address == '')) {
+        delete_cache_entry('main_staff_checklist'); // As it tracks whether admin have e-mail address set
+    }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:members:view:' . strval($member_id), true);
+    if ($validated == 1) {
+        notify_sitemap_node_edit('_SEARCH:members:view:' . strval($member_id));
+    } else {
+        notify_sitemap_node_delete('_SEARCH:members:view:' . strval($member_id));
+    }
 }
 
 /**
@@ -1221,7 +1331,7 @@ function cns_delete_member($member_id)
     delete_cache_entry('main_members');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:members:view:' . strval($member_id));
+    notify_sitemap_node_delete('_SEARCH:members:view:' . strval($member_id));
 }
 
 /**

@@ -45,12 +45,14 @@ function init__site()
     if (function_exists('get_value')) {
         $is_non_canonical = false;
         $canonical_keep_params = explode(',', (get_value('canonical_keep_params') === null) ? 'keep_devtest' : get_value('canonical_keep_params'));
-        foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
+        foreach (array_merge(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
                 $NON_CANONICAL_PARAMS[$key] = true;
                 $is_non_canonical = true;
             }
         }
+        /*
+        Doing this redirect is too risky. Some code (including user code) may redirect back to inject missing parameters.
         if (($is_non_canonical) && (get_bot_type() !== null)) { // Force bots onto the canonical URL if there were non-standard keep parameters, as they may ignore even the canonical meta tag.
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {
@@ -60,9 +62,10 @@ function init__site()
             }
             set_http_status_code(301);
             require_code('urls');
-            header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
+            header('Location: ' . escape_header(get_self_url(true, false, $non_canonical))); // assign_refresh not used, as it is a pre-page situation
             exit();
         }
+        */
     }
 
     global $PAGE_STRING, $LAST_COMCODE_PARSED_TITLE;
@@ -95,7 +98,7 @@ function init__site()
             ) {
                 require_code('permissions');
                 set_http_status_code(301);
-                header('Location: ' . escape_header(get_self_url(true)));
+                header('Location: ' . escape_header(get_self_url(true))); // assign_refresh not used, as it is a pre-page situation
                 exit();
             }
         }
@@ -103,9 +106,10 @@ function init__site()
 
     // Search engine having session in URL, we don't like this
     if ((get_bot_type() !== null) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_string('keep_session', null) !== null)) {
-        set_http_status_code(301);
-        header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null))));
-        exit();
+        //Too risky, what if something sets it at run-time. Relying on canonical URL is better.
+        //set_http_status_code(301);
+        //header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)))); // assign_refresh not used, as it is a pre-page situation
+        //exit();
     }
 
     if ((running_script('index')) && (!is_cli())) {
@@ -123,7 +127,7 @@ function init__site()
                     }
 
                     set_http_status_code(301);
-                    header('Location: ' . escape_header(get_self_url(true, false)));
+                    header('Location: ' . escape_header(get_self_url(true, false))); // assign_refresh not used, as it is a pre-page situation
                     exit();
                 }
             }
@@ -132,7 +136,7 @@ function init__site()
         // Detect bad access protocol
         if ((get_value('access_protocol_redirect') === '1') && ((substr(get_base_url(), 0, 8) == 'https://') && (!tacit_https()) || (substr(get_base_url(), 0, 7) == 'http://') && (tacit_https()))) {
             set_http_status_code(301);
-            header('Location: ' . escape_header(get_self_url(true, false)));
+            header('Location: ' . escape_header(get_self_url(true, false))); // assign_refresh not used, as it is a pre-page situation
             exit();
         }
 
@@ -147,7 +151,7 @@ function init__site()
 
             // Detect bad cookie path
             $cookie_path = get_cookie_path();
-            $access_path = '/' . $_SERVER['SCRIPT_NAME'];
+            $access_path = $_SERVER['SCRIPT_NAME'];
             if (!empty($cookie_path) && !empty($access_path)) {
                 if (substr($access_path, 0, strlen($cookie_path)) != $cookie_path) {
                     attach_message(do_lang_tempcode('INCORRECT_COOKIE_PATH', escape_html($cookie_path), escape_html($access_path)), 'warn');
@@ -800,7 +804,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                             set_http_status_code(301);
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                             $new_url = $_new_url->evaluate();
-                            header('Location: ' . escape_header($new_url));
+                            header('Location: ' . escape_header($new_url)); // assign_refresh not used, as it is a pre-page situation
                             exit();
                         }
                     } else {
@@ -825,7 +829,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                                 set_http_status_code(301);
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                                 $new_url = $_new_url->evaluate();
-                                header('Location: ' . escape_header($new_url));
+                                header('Location: ' . escape_header($new_url)); // assign_refresh not used, as it is a pre-page situation
                                 exit();
                             }
                         }
@@ -1093,86 +1097,155 @@ function do_site()
  */
 function save_static_caching($out, $mime_type = 'text/html')
 {
+    require_code('static_cache');
+    $debugging = debugging_static_cache();
+
+    // Initial assessments of whether we can cache...
+
     global $SITE_INFO;
-    if (($_SERVER['REQUEST_METHOD'] != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
-        $bot_type = get_bot_type();
-        $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
-        $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
-        require_code('static_cache');
-        if ((($bot_type !== null) || ($supports_failover_mode) || ($supports_guest_caching)) && (can_static_cache())) {
-            $url = static_cache_current_url();
-            $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
-            $fast_cache_path_failover_mode = $fast_cache_path;
-            if ($bot_type === null) {
-                $fast_cache_path .= '__non-bot';
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($debugging) {
+            error_log('SC save: No, POST request on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+    if ((!isset($SITE_INFO['fast_spider_cache'])) || ($SITE_INFO['fast_spider_cache'] == '0')) {
+        if ($debugging) {
+            error_log('SC save: No, not enabled on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+    if (!is_guest()) {
+        if ($debugging) {
+            error_log('SC save: No, logged in on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+    if ($GLOBALS['IS_ACTUALLY_ADMIN']) {
+        if ($debugging) {
+            error_log('SC save: No, using SU to Guest on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+
+    $bot_type = get_bot_type();
+    $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
+    $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
+    require_code('static_cache');
+    if (($bot_type === null) && (!$supports_failover_mode) && (!$supports_guest_caching)) {
+        error_log('SC save: No, not a bot and no failover mode or guest caching enabled, on ' . get_self_url_easy());
+    }
+
+    if (!can_static_cache()) {
+        if ($debugging) {
+            error_log('SC save: No, static cache not available according to can_static_cache() on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+
+    // Work out what to cache...
+
+    if (is_object($out)) {
+        $out_evaluated = $out->evaluate(null);
+        $static_cache = $out_evaluated;
+    } else {
+        $static_cache = $out;
+    }
+
+    // Deeper assessments about what we can cache...
+
+    if (strpos($static_cache, '<meta name="robots" content="noindex') !== false) {
+        if ($debugging) {
+            error_log('SC save: No, page had set noindex on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+
+    if (!$GLOBALS['STATIC_CACHE_ENABLED']) {
+        if ($debugging) {
+            error_log('SC save: No, internal signal to not cache on ' . get_self_url_easy());
+        }
+
+        return; // Something in the output tree decided this was not cacheable
+    }
+
+    // Cache...
+
+    $url = static_cache_current_url();
+
+    // Log
+    if ($debugging) {
+        error_log('SC save: Yes, on ' . get_self_url_easy());
+    }
+
+    // Remove any sessions etc
+    $static_cache = preg_replace('#(&|&amp;|&amp;amp;|%3Aamp%3A|\?)?(keep_session|keep_devtest|keep_failover)(=|%3D)\w+#', '', $static_cache);
+
+    // Add URL identifier
+    $static_cache .= "\n\n" . '<!-- Cached URL ' . htmlentities($url) . ' -->';
+
+    // Add mime type
+    $static_cache .= "\n\n" . '<!-- Mime type ' . htmlentities($mime_type) . ' -->';
+    $file_extension = ($mime_type == 'text/xml') ? '.xml' : '.htm';
+
+    // Work out cache path on disk
+    $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
+    $fast_cache_path_failover_mode = $fast_cache_path;
+    if ($bot_type === null) {
+        $fast_cache_path .= '__non-bot';
+    }
+    if (!array_key_exists('js_on', $_COOKIE)) {
+        $fast_cache_path .= '__no-js';
+    }
+    if (is_mobile()) {
+        $fast_cache_path .= '__mobile';
+        $fast_cache_path_failover_mode .= '__mobile';
+    }
+    $fast_cache_path_failover_mode .= '__failover_mode';
+
+    // Save
+    if (!is_file($fast_cache_path . $file_extension) || filemtime($fast_cache_path . $file_extension) < time() - 60 * 60 * 5) {
+        write_static_cache_file($fast_cache_path . $file_extension, $static_cache, true);
+    }
+
+    // Save for failover mode
+    if ($supports_failover_mode) {
+        if (!is_file($fast_cache_path_failover_mode . $file_extension) || filemtime($fast_cache_path_failover_mode . $file_extension) < time() - 60 * 60 * 5) {
+            // Add failover messages
+            if (!empty($SITE_INFO['failover_message_place_after'])) {
+                $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
             }
-            if (!array_key_exists('js_on', $_COOKIE)) {
-                $fast_cache_path .= '__no-js';
-            }
-            if (is_mobile()) {
-                $fast_cache_path .= '__mobile';
-                $fast_cache_path_failover_mode .= '__mobile';
-            }
-            $fast_cache_path_failover_mode .= '__failover_mode';
-
-            if (is_object($out)) {
-                $out_evaluated = $out->evaluate(null);
-                $static_cache = $out_evaluated;
-            } else {
-                $static_cache = $out;
+            if (!empty($SITE_INFO['failover_message_place_before'])) {
+                $static_cache = str_replace($SITE_INFO['failover_message_place_before'], $SITE_INFO['failover_message'] . $SITE_INFO['failover_message_place_before'], $static_cache);
             }
 
-            // Remove any sessions etc
-            $static_cache = preg_replace('#(&|&amp;|&amp;amp;|%3Aamp%3A|\?)?(keep_session|keep_devtest|keep_failover)(=|%3D)\w+#', '', $static_cache);
+            // Disable all form controls
+            $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
 
-            // Add URL identifier
-            $static_cache .= "\n\n" . '<!-- Cached URL ' . htmlentities($url) . ' -->';
+            write_static_cache_file($fast_cache_path_failover_mode . $file_extension, $static_cache, false);
+        }
 
-            // Add mime type
-            $static_cache .= "\n\n" . '<!-- Mime type ' . htmlentities($mime_type) . ' -->';
-            $file_extension = ($mime_type == 'text/xml') ? '.xml' : '.htm';
-
-            // Cache, but only if we want to
-            //  If it's a noindex page we don't (to limit cache size). That is a deep page a bot took a look at, and we even told the bot it was not important.
-            if (strpos($static_cache, '<meta name="robots" content="noindex') === false) {
-                if (!is_file($fast_cache_path . $file_extension) || filemtime($fast_cache_path . $file_extension) < time() - 60 * 60 * 5) {
-                    write_static_cache_file($fast_cache_path . $file_extension, $static_cache, true);
+        if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
+            $url_stem = $url;
+            $url_stem = str_replace(get_base_url(true) . '/', '', $url_stem);
+            $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
+            if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
+                if (is_mobile()) {
+                    $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
+                } else {
+                    $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
                 }
-
-                if ($supports_failover_mode) {
-                    if (!is_file($fast_cache_path_failover_mode . $file_extension) || filemtime($fast_cache_path_failover_mode . $file_extension) < time() - 60 * 60 * 5) {
-                        // Add failover messages
-                        if (!empty($SITE_INFO['failover_message_place_after'])) {
-                            $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
-                        }
-                        if (!empty($SITE_INFO['failover_message_place_before'])) {
-                            $static_cache = str_replace($SITE_INFO['failover_message_place_before'], $SITE_INFO['failover_message'] . $SITE_INFO['failover_message_place_before'], $static_cache);
-                        }
-
-                        // Disable all form controls
-                        $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
-
-                        write_static_cache_file($fast_cache_path_failover_mode . $file_extension, $static_cache, false);
-                    }
-
-                    if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
-                        $url_stem = $url;
-                        $url_stem = str_replace(get_base_url(true) . '/', '', $url_stem);
-                        $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
-                        if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
-                            if (is_mobile()) {
-                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
-                            } else {
-                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
-                            }
-                            $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
-                            if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
-                                require_code('files');
-                                $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode' . $file_extension;
-                                cms_file_put_contents_safe($rewritemap_file, $rewritemap_file_contents, FILE_WRITE_FIX_PERMISSIONS);
-                            }
-                        }
-                    }
+                $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
+                if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
+                    require_code('files');
+                    $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode' . $file_extension;
+                    cms_file_put_contents_safe($rewritemap_file, $rewritemap_file_contents, FILE_WRITE_FIX_PERMISSIONS);
                 }
             }
         }
@@ -1343,10 +1416,9 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
                     return $ret;
                 }
             } else {
-                $title = get_screen_title('REDIRECTING');
                 $url = build_url($bits[1], $redirect['r_to_zone'], array(), true);
                 set_http_status_code(301);
-                $ret = redirect_screen($title, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
+                $ret = redirect_screen(null, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;
             }
@@ -1746,24 +1818,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         set_http_status_code(404);
     }
 
+    require_code('global4');
     if (
-        (
-            ($is_panel) ||
-            ($codename[0] == '_') ||
-            ($zone . ':' . $codename == ':404') ||
-
-            // FUDGE. Sculpt what comes up in search engines a bit. We don't want really meta contextual help muddying search results
-            ($codename == 'rules') ||
-            ($zone . ':' . $codename == ':recommend_help') ||
-            ($zone . ':' . $codename == ':popup_blockers') ||
-            ($zone . ':' . $codename == ':help') ||
-            ($zone . ':' . $codename == ':userguide_chatcode') ||
-            ($zone . ':' . $codename == ':userguide_comcode') ||
-            ($zone . ':' . $codename == 'site:popup_blockers') ||
-            ($zone . ':' . $codename == 'site:help') ||
-            ($zone . ':' . $codename == 'site:userguide_chatcode') ||
-            ($zone . ':' . $codename == 'site:userguide_comcode')
-        ) &&
+        (!comcode_page_is_indexable($zone, $codename)) &&
         (get_page_name() == $codename/*Top-level*/)
     ) {
         attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML

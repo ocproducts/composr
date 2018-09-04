@@ -98,7 +98,7 @@ The gifts are configurable by the admin section:
 When a gift is sent to a member it creates a Private Topic that describes the gift. Also, it places the gift in the list of gifts received by the member in the profile section. Gifts also could be sent anonymously to members.
 
 Creating new Gifts:
-When creating new gifts please only use images which are free to use, we suggest http://www.openclipart.org/ which has a good selection of free to use images. Go to the set up section and click "Manage Gifts". Click Add Gift. Upload the image and give it a title, choose the price and click save. You can edit the standard gifts or ones you have created in the same section.';
+When creating new gifts please only use images which are free to use, we suggest [url="http://www.openclipart.org/"]Open Clipart[/url] which has a good selection of free to use images. Go to the set up section and click "Manage Gifts". Click Add Gift. Upload the image and give it a title, choose the price and click save. You can edit the standard gifts or ones you have created in the same section.';
     }
 
     /**
@@ -186,6 +186,7 @@ When creating new gifts please only use images which are free to use, we suggest
             'data_custom/images/giftr/index.html',
             'themes/default/templates_custom/BLOCK_MAIN_BOTTOM_BAR.tpl',
             'themes/default/templates_custom/CNS_USER_MEMBER.tpl',
+            'sources_custom/hooks/systems/actionlog/giftr.php',
         );
     }
 }

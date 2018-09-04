@@ -1,6 +1,6 @@
-/*
- Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
- For licensing, see LICENSE.md or http://ckeditor.com/license
+﻿/*
+ Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 (function(){function v(a){for(var f=0,n=0,m=0,p,e=a.$.rows.length;m<e;m++){p=a.$.rows[m];for(var d=f=0,c,b=p.cells.length;d<b;d++)c=p.cells[d],f+=c.colSpan;f>n&&(n=f)}return n}function r(a){return function(){var f=this.getValue(),f=!!(CKEDITOR.dialog.validate.integer()(f)&&0<f);f||(alert(a),this.select());return f}}function q(a,f){var n=function(e){return new CKEDITOR.dom.element(e,a.document)},q=a.editable(),p=a.plugins.dialogadvtab;return{title:a.lang.table.title,minWidth:310,minHeight:CKEDITOR.env.ie?
 310:280,onLoad:function(){var e=this,a=e.getContentElement("advanced","advStyles");if(a)a.on("change",function(){var a=this.getStyle("width",""),b=e.getContentElement("info","txtWidth");b&&b.setValue(a,!0);a=this.getStyle("height","");(b=e.getContentElement("info","txtHeight"))&&b.setValue(a,!0)})},onShow:function(){var e=a.getSelection(),d=e.getRanges(),c,b=this.getContentElement("info","txtRows"),h=this.getContentElement("info","txtCols"),t=this.getContentElement("info","txtWidth"),g=this.getContentElement("info",
