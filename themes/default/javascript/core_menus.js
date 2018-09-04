@@ -460,7 +460,7 @@
                         $dom.hide(ul);
                         $dom.append(expand, '{$GET;^,expand_icon}');
                     }
-                    
+
                     $dom.append(span, expand);
 
                     // Show children...

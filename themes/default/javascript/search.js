@@ -84,7 +84,7 @@
             $dom.toggle(this.booleanOptionsEl, checkbox.checked);
         }
     });
-    
+
     $cms.templates.blockTopSearch = function (params, container) {
         var searchType = $cms.filter.nl(params.searchType);
 
@@ -105,7 +105,7 @@
         $dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e, searchType);
         });
-        
+
         $dom.on(container, 'click', '.js-click-toggle-top-search', function (e) {
             e.preventDefault();
             window.$coreNotifications.toggleMessagingBox('top-search');

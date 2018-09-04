@@ -909,14 +909,14 @@
             });
         }
     };
-    
+
     // Implementation for [data-sticky-navbar]
     // Hides navbar when scrolling downwards, shows it again when scrolled upwards
     // Adds .is-scrolled class when the navbar is scrolled along
     $cms.behaviors.stickyNavbar = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-sticky-navbar]'), 'behavior.stickyNavbar');
-            
+
             els.forEach(function (stickyNavbar) {
                 var lastScrollY = 0,
                     navbarHeight = $dom.height(stickyNavbar),
@@ -929,8 +929,8 @@
                         stickyNavbar.style.marginTop = '';
                         return;
                     }
-                    
-                    if ($cms.isCssMode('mobile')) { 
+
+                    if ($cms.isCssMode('mobile')) {
                         // Mobile: hide navbar on scroll down and re-show on scroll up
                         var margin;
 
@@ -1180,7 +1180,7 @@
             }
         }
     };
-    
+
     // Implementation for [data-cms-carousel]
     // Port of Bootstrap 4 Carousel http://getbootstrap.com/docs/4.1/components/carousel/
     // Disables itself if Bootstrap version detected
@@ -1200,13 +1200,13 @@
             });
         }
     };
-    
+
     (function () {
-        var DATA_KEY               = 'cms.carousel';
-        var EVENT_KEY              = '.' + DATA_KEY;
-        var DATA_API_KEY           = '.data-api';
-        var ARROW_LEFT_KEYCODE     = 37; // KeyboardEvent.which value for left arrow key
-        var ARROW_RIGHT_KEYCODE    = 39; // KeyboardEvent.which value for right arrow key
+        var DATA_KEY = 'cms.carousel';
+        var EVENT_KEY = '.' + DATA_KEY;
+        var DATA_API_KEY = '.data-api';
+        var ARROW_LEFT_KEYCODE = 37; // KeyboardEvent.which value for left arrow key
+        var ARROW_RIGHT_KEYCODE = 39; // KeyboardEvent.which value for right arrow key
         var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
 
         var Default = {
@@ -1261,25 +1261,25 @@
          * @constructor Carousel
          */
         function Carousel(element, config) {
-            this._items              = null;
-            this._interval           = null;
-            this._intervalStartedAt  = null;
-            this._activeElement      = null;
+            this._items = null;
+            this._interval = null;
+            this._intervalStartedAt = null;
+            this._activeElement = null;
 
-            this._isPaused           = false;
-            this._isSliding          = false;
+            this._isPaused = false;
+            this._isSliding = false;
 
-            this.touchTimeout        = null;
+            this.touchTimeout = null;
 
-            this._config             = this._getConfig(config);
-            this._element            = element;
-            this._indicatorsElement  = this._element.querySelector(Selector.INDICATORS);
-            this._scrollDownElement  = this._element.querySelector('.cms-carousel-scroll-button');
+            this._config = this._getConfig(config);
+            this._element = element;
+            this._indicatorsElement = this._element.querySelector(Selector.INDICATORS);
+            this._scrollDownElement = this._element.querySelector('.cms-carousel-scroll-button');
 
             this._addEventListeners();
             this._setProgressBar();
         }
-        
+
         Carousel.Default = Default;
 
         $util.properties(Carousel.prototype, /**@lends Carousel#*/{
@@ -1313,7 +1313,7 @@
                     $dom.trigger(this._element, 'transitionend');
                     this.cycle(true);
                 }
-                
+
                 clearInterval(this._interval);
                 this._interval = null;
                 this._intervalStartedAt = null;
@@ -1329,7 +1329,7 @@
                     this._interval = null;
                     this._intervalStartedAt = null;
                 }
-                
+
                 if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-carousel-item').length > 1)) {
                     var self = this;
                     self._intervalStartedAt = Date.now();
@@ -1370,13 +1370,13 @@
                 $dom.off(this._element, EVENT_KEY);
                 $dom.removeData(this._element, DATA_KEY);
 
-                this._items             = null;
-                this._config            = null;
-                this._element           = null;
-                this._interval          = null;
-                this._isPaused          = null;
-                this._isSliding         = null;
-                this._activeElement     = null;
+                this._items = null;
+                this._config = null;
+                this._element = null;
+                this._interval = null;
+                this._isPaused = null;
+                this._isSliding = null;
+                this._activeElement = null;
                 this._indicatorsElement = null;
             },
 
@@ -1389,7 +1389,7 @@
 
             _addEventListeners: function _addEventListeners() {
                 var self = this;
-                
+
                 if (self._scrollDownElement) {
                     // Hide "Scroll Down" button when carousel is larger than viewport or it's mobile mode
                     $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
@@ -1398,7 +1398,7 @@
                         $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
                     });
                 }
-                
+
                 $dom.on(this._element, 'click' + EVENT_KEY, '.cms-carousel-scroll-button', function () {
                     $dom.smoothScroll(self._element.nextElementSibling);
                 });
@@ -1456,16 +1456,16 @@
             _getItemByDirection: function _getItemByDirection(direction, activeElement) {
                 var isNextDirection = direction === Direction.NEXT;
                 var isPrevDirection = direction === Direction.PREV;
-                var activeIndex     = this._getItemIndex(activeElement);
-                var lastItemIndex   = this._items.length - 1;
-                var isGoingToWrap   = isPrevDirection && activeIndex === 0 ||
+                var activeIndex = this._getItemIndex(activeElement);
+                var lastItemIndex = this._items.length - 1;
+                var isGoingToWrap = isPrevDirection && activeIndex === 0 ||
                     isNextDirection && activeIndex === lastItemIndex;
 
                 if (isGoingToWrap && !this._config.wrap) {
                     return activeElement;
                 }
 
-                var delta     = direction === Direction.PREV ? -1 : 1;
+                var delta = direction === Direction.PREV ? -1 : 1;
                 var itemIndex = (activeIndex + delta) % this._items.length;
 
                 return itemIndex === -1 ? this._items[this._items.length - 1] : this._items[itemIndex];
@@ -1480,7 +1480,7 @@
                     from: fromIndex,
                     to: targetIndex
                 });
-                
+
                 return $dom.trigger(this._element, slideEvent);
             },
 
@@ -1511,10 +1511,10 @@
 
             _slide: function _slide(direction, element) {
                 var self = this;
-                
+
                 var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
                 var activeElementIndex = this._getItemIndex(activeElement);
-                var nextElement   = element || activeElement && this._getItemByDirection(direction, activeElement);
+                var nextElement = element || activeElement && this._getItemByDirection(direction, activeElement);
                 var nextElementIndex = this._getItemIndex(nextElement);
                 var isCycling = Boolean(this._interval);
 
@@ -1538,7 +1538,7 @@
                 }
 
                 var isDefaultPrevented = !this._triggerSlideEvent(nextElement, eventDirectionName);
-                
+
                 if (isDefaultPrevented) {
                     return;
                 }
@@ -1578,7 +1578,7 @@
                             duration: this._config.animateHeight
                         });
                     }
-                    
+
                     $dom.one(activeElement, 'transitionend', function () {
                         nextElement.classList.remove(directionalClassName);
                         nextElement.classList.remove(orderClassName);
@@ -1589,7 +1589,7 @@
                         activeElement.classList.remove(directionalClassName);
 
                         self._isSliding = false;
-                        
+
                         setTimeout(function () { $dom.trigger(self._element, slidEvent); }, 0);
                     });
                 } else {
@@ -1680,7 +1680,7 @@
         function reflow(element) {
             return element.offsetHeight;
         }
-        
+
         /**
          * ------------------------------------------------------------------------
          * Data Api implementation

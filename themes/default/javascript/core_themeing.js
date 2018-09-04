@@ -155,7 +155,7 @@
 
         cssEquationHelper: function (e) {
             e.preventDefault();
-            
+
             var params = this.params,
                 url = 'themewizard_equation';
 

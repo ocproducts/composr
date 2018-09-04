@@ -76,7 +76,7 @@
             e.preventDefault();
             $coreNotifications.toggleMessagingBox('web-notifications');
         });
-        
+
         $dom.on(container, 'clickout', '.js-clickout-hide-top-web-notifications', function () {
             $coreNotifications.toggleMessagingBox('web-notifications', true);
         });
@@ -312,7 +312,7 @@
 
         var popupEl = document.getElementById(name + '-rel'),
             buttonEl = document.getElementById(name + '-button');
-        
+
         buttonEl.title = '';
 
         if ((popupEl.style.display === 'none') && !forceHide) {

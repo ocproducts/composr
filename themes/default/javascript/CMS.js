@@ -1039,7 +1039,7 @@
         if (src.pathname.includes('/themewizard.php')) {
             return (src.searchParams.get('show') === 'icons/' + iconName) || (src.searchParams.get('show') === 'icons_monochrome/' + iconName);
         }
-        
+
         return src.pathname.includes('icons/' + iconName) || src.pathname.includes('icons_monochrome/' + iconName);
     };
 

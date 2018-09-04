@@ -1934,7 +1934,7 @@
         } else if (typeof destY === 'string') {
             destY = $dom.findPosY($dom.$id(destY), true);
         }
-        
+
         if (!_recursing && document.querySelector('header.with-sticky-navbar')) {
             destY -= document.querySelector('header.with-sticky-navbar').offsetHeight;
         }

@@ -32,7 +32,7 @@
     // Are we dealing with a touch device?
     document.documentElement.classList.toggle('is-touch-enabled', 'ontouchstart' in document.documentElement);
     document.documentElement.classList.toggle('is-not-touch-enabled', 'ontouchstart' in document.documentElement);
-    
+
     document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
     document.documentElement.classList.toggle('is-not-scrolled', window.scrollY === 0);
 
