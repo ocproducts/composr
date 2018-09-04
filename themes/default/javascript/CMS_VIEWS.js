@@ -224,7 +224,7 @@
             id = $dom.id(this.el, 'tray-');
             this.cookie = id.startsWith('tray') ? id : 'tray-' + id;
         }
-        
+
         this.contentEl = this.$('.js-tray-content');
 
         if (this.cookie) {
@@ -465,8 +465,8 @@
             this.buttonContainerEl = $dom.create('p', {
                 'className': 'proceed-button cms-modal-button-container'
             });
-            
-            const self = this;
+
+            var self = this;
 
             $dom.on(this.overlayEl, 'click', function () {
                 if ($cms.isMobile() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
@@ -658,7 +658,7 @@
             } else if (this.el.querySelector('button')) {
                 this.el.querySelector('button').focus();
             }
-            
+
             // Enforce focus to stay inside the overlay
             $dom.on(document, 'focusin.modalWindow' + this.uid, function (e) {
                 if ((document !== e.target) && (self.el !== e.target) && !self.el.contains(e.target)) {
@@ -1719,9 +1719,9 @@
             var desktopEvents = {
                 'mouseover .menu-dropdown-item': 'mouseoverMenuItem',
                 'mouseout .menu-dropdown-item': 'mouseoutMenuItem',
-                
+
                 'focus .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'focusMenuItemAnchor',
-                
+
                 'clickout': 'unsetActiveMenuInstantly',
             };
 
@@ -1747,25 +1747,25 @@
             if (target.contains(e.relatedTarget)) {
                 return;
             }
-            
+
             // if ((getActiveMenu() == null)) {
             var misHovered = $dom.parent(target, '.menu-dropdown-items');
             setActiveMenu($dom.id(misHovered), this.menuId);
             // }
-            
+
             if (target.classList.contains('has-children')) {
                 popupMenu(target.querySelector('.menu-dropdown-items'), target.classList.contains('toplevel') ? 'below' : 'right', this.menuId);
             }
-            
+
         },
-        
+
         mouseoutMenuItem: function (e, target) {
             if (target.contains(e.relatedTarget)) {
                 return;
             }
-            
+
             var isMisHovered = $dom.matches($dom.parent(target, '.menu-dropdown-items'), ':hover');
-            
+
             if (isMisHovered) {
                 return;
             }
@@ -2061,10 +2061,6 @@
         cleanMenusTimeout,
         lastActiveMenu;
 
-    function setMenuHoldTime(milliseconds) {
-        menuHoldTime = milliseconds;
-    }
-
     function setActiveMenu(id, menu) {
         activeMenu = id;
         if (menu != null) {
@@ -2081,12 +2077,12 @@
             clearTimeout(cleanMenusTimeout);
             cleanMenusTimeout = null;
         }
-        
+
         if (instant) {
             cleanMenus();
             return;
         }
-        
+
         cleanMenusTimeout = setTimeout(cleanMenus, menuHoldTime);
     }
 
@@ -2201,7 +2197,7 @@
         cleanMenusTimeout = null;
 
         var menuEl = document.getElementById(lastActiveMenu);
-        
+
         if (!menuEl) {
             return;
         }
