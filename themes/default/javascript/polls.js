@@ -30,7 +30,7 @@
         }
     });
 
-    $cms.templates.blockMainPoll = function blockMainPoll(params) {};
+    $cms.templates.blockMainPoll = function blockMainPoll() {};
 
     $cms.templates.pollAnswer = function pollAnswer(params, container) {
         var pollId = strVal(params.pid);

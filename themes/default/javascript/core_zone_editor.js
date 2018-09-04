@@ -7,7 +7,7 @@
      * @class
      * @extends $cms.View
      */
-    function ZoneEditorScreen(params) {
+    function ZoneEditorScreen() {
         ZoneEditorScreen.base(this, 'constructor', arguments);
     }
 
@@ -198,7 +198,7 @@
             zone.addEventListener('blur', function () {
                 var title = document.getElementById('title');
                 if (title.value === '') {
-                    title.value = zone.value.substr(0, 1).toUpperCase() + zone.value.substring(1, zone.value.length).replace(/\_/g, ' ');
+                    title.value = zone.value.substr(0, 1).toUpperCase() + zone.value.substring(1, zone.value.length).replace(/_/g, ' ');
                 }
             });
         }

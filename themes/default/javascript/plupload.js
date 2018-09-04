@@ -1,3 +1,4 @@
+/* eslint-disable */
 ;var MXI_DEBUG = false;
 /**
  * mOxie - multi-runtime File API & XMLHttpRequest L2 Polyfill
@@ -14200,7 +14201,8 @@
     }(this, moxie));
 
 }));
-
+/* eslint-enable */
+/* global plupload:false */
 
 /*
  Composr integration follows.
@@ -14404,7 +14406,7 @@
             file.hasError = true;
         }
 
-        if (!file && (error.code == plupload.INIT_ERROR)) {
+        if (!file && (error.code === plupload.INIT_ERROR)) {
             return;
         }
 
@@ -14670,8 +14672,6 @@
 
         files = arrVal(files);
 
-        var count = files.length;
-
         if (files.length > 0) {
             event.preventDefault();
         }
@@ -14760,7 +14760,7 @@
         return function () {
             switch (request.readyState) {
                 case 4:
-                    if (request.responseText == '') {
+                    if (request.responseText === '') {
                         // We should have got an ID back
                         var progress = new FileProgress(fileProgress, 'container-for-' + fieldName);
                         progress.setProgress(100);
@@ -14919,7 +14919,7 @@
         disappear: function () {
             var reduceOpacityBy = 15;
             var reduceHeightBy = 4;
-            var rate = 30;	// 15 fps
+            var rate = 30; // 15 fps
 
             if (this.opacity > 0) {
                 this.opacity -= reduceOpacityBy;

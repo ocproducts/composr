@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom) {
+(function ($cms) {
     'use strict';
 
     $cms.functions.hookProfilesTabsEditSignatureRenderTab = function hookProfilesTabsEditSignatureRenderTab(size) {
@@ -17,4 +17,4 @@
             }
         });
     };
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms));

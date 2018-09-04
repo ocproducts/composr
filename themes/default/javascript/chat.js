@@ -269,7 +269,7 @@
         });
     };
 
-    $cms.templates.chatSiteWideImPopup = function (params) {
+    $cms.templates.chatSiteWideImPopup = function () {
         window.detectIfChatWindowClosedChecker = setInterval(function () {
             detectIfChatWindowClosed();
         }, 5);
@@ -344,7 +344,7 @@
     };
 
     $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
-        $dom.on(container, 'click', '.js-onsubmit-check-message-not-blank', function (e, clicked) {
+        $dom.on(container, 'click', '.js-onsubmit-check-message-not-blank', function (e) {
             if (!$cms.form.checkFieldForBlankness(document.getElementById('shoutbox_message'))) {
                 e.preventDefault();
             }
@@ -550,7 +550,7 @@
             window.topWindow.currentlySendingMessage = true;
             var fullUrl = $util.rel($cms.maintainThemeInLink(url + window.topWindow.$cms.keep()));
             var postData = 'room_id=' + encodeURIComponent(currentRoomId) + '&message=' + encodeURIComponent(messageText) + '&font=' + encodeURIComponent(fontName) + '&colour=' + encodeURIComponent(fontColour) + '&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId);
-            $cms.doAjaxRequest(fullUrl, function (responseXML, xhr) {
+            $cms.doAjaxRequest(fullUrl, function (responseXML) {
                 if (responseXML != null) {
                     window.topWindow.currentlySendingMessage = false;
                     element.disabled = false;
@@ -645,7 +645,7 @@
     function chatCheckTimeout(backlog, messageId, eventId) {
         var theDate = new Date();
         if ((window.messageChecking) && (window.messageChecking <= theDate.getTime() - window.MESSAGE_CHECK_INTERVAL * 1.2) && (!window.currentlySendingMessage)) { // If we are awaiting a response (messageChecking is not false, and that response was made more than 12 seconds ago
-            indow.topWindow.$util.inform('(Guard) Making sure our last actioned chat check completed and was on time - and it did not! (' + new Date().getTime() + ')');
+            window.topWindow.$util.inform('(Guard) Making sure our last actioned chat check completed and was on time - and it did not! (' + new Date().getTime() + ')');
 
             // Our response is tardy - presume we've lost our scheduler / AJAX request, so fire off a new AJAX request and reset the chatCheckTimeout timer
             chatCheck(backlog, messageId, eventId);
@@ -666,7 +666,7 @@
             }
 
             var temp = processChatXmlMessages(ajaxResult, skipIncomingSound);
-            if (temp == -2) {
+            if (Number(temp) === -2) {
                 return false;
             }
         } else {
@@ -704,8 +704,7 @@
             username, roomName, roomId, eventType, memberId, tmpElement, rooms, avatarUrl, participants,
             id, timestamp,
             firstSet = false,
-            newestIdHere = null, newestTimestampHere = null,
-            cannotProcessAll = false;
+            newestIdHere = null, newestTimestampHere = null;
 
         // Look through our messages
         for (var i = 0; i < messages.length; i++) {
@@ -737,7 +736,6 @@
                 }
 
                 if (!messageContainer) {
-                    cannotProcessAll = true;
                     continue; // Still no luck
                 }
 
@@ -751,7 +749,6 @@
                 if (window.openedPopups['room_' + currentRoomId] !== undefined) {
                     var popupWin = window.openedPopups['room_' + currentRoomId];
                     if (!popupWin.document) { // We have nowhere to put the message
-                        cannotProcessAll = true;
                         continue;
                     }
                     doc = popupWin.document;
@@ -820,7 +817,7 @@
 
                 switch (eventType) {
                     case 'BECOME_ACTIVE':
-                        if (window.TRANSITORY_ALERT_TIME != 0) {
+                        if (window.TRANSITORY_ALERT_TIME !== 0) {
                             flashableAlert = true;
                             tmpElement = document.getElementById('online-' + memberId);
                             if (tmpElement) {
@@ -860,14 +857,14 @@
                         rooms = findImConvoRoomIds();
                         for (var r in rooms) {
                             roomId = rooms[r];
-                            var doc = document;
+                            var doc2 = document;
                             if ((window.openedPopups['room_' + roomId] !== undefined) && (!window.openedPopups['room_' + roomId].isShutdown)) {
                                 if (!window.openedPopups['room_' + roomId].document) {
                                     continue;
                                 }
-                                doc = window.openedPopups['room_' + roomId].document;
+                                doc2 = window.openedPopups['room_' + roomId].document;
                             }
-                            tmpElement = doc.getElementById('participant-online--' + roomId + '--' + memberId);
+                            tmpElement = doc2.getElementById('participant-online--' + roomId + '--' + memberId);
                             if (tmpElement) {
                                 $dom.html(tmpElement, '{!chat:ACTIVE;^}');
                             }
@@ -888,16 +885,16 @@
                         }
 
                         rooms = findImConvoRoomIds();
-                        for (var r in rooms) {
-                            roomId = rooms[r];
-                            var doc = document;
+                        for (var k in rooms) {
+                            roomId = rooms[k];
+                            var doc3 = document;
                             if (window.openedPopups['room_' + roomId] !== undefined) {
                                 if (!window.openedPopups['room_' + roomId].document) {
                                     continue;
                                 }
-                                doc = window.openedPopups['room_' + roomId].document;
+                                doc3 = window.openedPopups['room_' + roomId].document;
                             }
-                            tmpElement = doc.getElementById('participant-online--' + roomId + '--' + memberId);
+                            tmpElement = doc3.getElementById('participant-online--' + roomId + '--' + memberId);
                             if (tmpElement) {
                                 $dom.html(tmpElement, '{!chat:INACTIVE;^}');
                             }
@@ -912,14 +909,14 @@
                         break;
 
                     case 'JOIN_IM':
-                        addImMember(roomId, memberId, username, messages[i].getAttribute('away') == '1', avatarUrl);
+                        addImMember(roomId, memberId, username, messages[i].getAttribute('away') === '1', avatarUrl);
 
-                        var doc = document;
+                        var doc4 = document;
                         if ((window.openedPopups['room_' + roomId] !== undefined) && (!window.openedPopups['room_' + roomId].isShutdown)) {
                             if (!window.openedPopups['room_' + roomId].document) break;
-                            doc = window.openedPopups['room_' + roomId].document;
+                            doc4 = window.openedPopups['room_' + roomId].document;
                         }
-                        tmpElement = doc.getElementById('participant-online--' + roomId + '--' + memberId);
+                        tmpElement = doc4.getElementById('participant-online--' + roomId + '--' + memberId);
                         if (tmpElement) {
                             if ($dom.html(tmpElement).toLowerCase() === '{!chat:ACTIVE;^}'.toLowerCase()) {
                                 break;
@@ -934,19 +931,19 @@
                         break;
 
                     case 'PREINVITED_TO_IM':
-                        addImMember(roomId, memberId, username, messages[i].getAttribute('away') == '1', avatarUrl);
+                        addImMember(roomId, memberId, username, messages[i].getAttribute('away') === '1', avatarUrl);
                         break;
 
                     case 'DEINVOLVE_IM':
-                        var doc = document;
+                        var doc5 = document;
                         if (window.openedPopups['room_' + roomId] !== undefined) {
                             if (!window.openedPopups['room_' + roomId].document) {
                                 break;
                             }
-                            doc = window.openedPopups['room_' + roomId].document;
+                            doc5 = window.openedPopups['room_' + roomId].document;
                         }
 
-                        tmpElement = doc.getElementById('participant__' + roomId + '__' + memberId);
+                        tmpElement = doc5.getElementById('participant__' + roomId + '__' + memberId);
                         if ((tmpElement) && (tmpElement.parentNode)) {
                             var parent = tmpElement.parentNode;
                             /*Actually prefer to let them go away it's cleaner if (parent.childNodes.length == 1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
@@ -981,7 +978,6 @@
                     roomName = messages[i].getAttribute('room_name');
                     avatarUrl = messages[i].getAttribute('avatar_url');
                     participants = messages[i].getAttribute('participants');
-                    var isNew = (messages[i].getAttribute('num_posts') === '0');
                     var byYou = (messages[i].getAttribute('inviter') === messages[i].getAttribute('you'));
 
                     if ((!byYou) && (!window.instantGo) && (!document.getElementById('chat-lobby-convos-tabs'))) {
@@ -1065,14 +1061,14 @@
                     return;
                 }
                 var newParticipant = doc.createElement('div');
-                var newParticipantInner = window.imParticipantTemplate.replace(/\_\_username\_\_/g, username);
-                newParticipantInner = newParticipantInner.replace(/\_\_id\_\_/g, memberId);
-                newParticipantInner = newParticipantInner.replace(/\_\_room\_id\_\_/g, roomId);
-                newParticipantInner = newParticipantInner.replace(/\_\_avatar\_url\_\_/g, avatarUrl);
-                if (avatarUrl == '') {
+                var newParticipantInner = window.imParticipantTemplate.replace(/__username__/g, username);
+                newParticipantInner = newParticipantInner.replace(/__id__/g, memberId);
+                newParticipantInner = newParticipantInner.replace(/__room_id__/g, roomId);
+                newParticipantInner = newParticipantInner.replace(/__avatar_url__/g, avatarUrl);
+                if (avatarUrl === '') {
                     newParticipantInner = newParticipantInner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
                 }
-                newParticipantInner = newParticipantInner.replace(/\_\_online\_\_/g, away ? '{!chat:INACTIVE;^}' : '{!chat:ACTIVE;^}');
+                newParticipantInner = newParticipantInner.replace(/__online__/g, away ? '{!chat:INACTIVE;^}' : '{!chat:ACTIVE;^}');
                 $dom.html(newParticipant, newParticipantInner);
                 newParticipant.id = 'participant__' + roomId + '__' + memberId;
                 var element = doc.getElementById('participants__' + roomId);
@@ -1120,7 +1116,7 @@
             var post = 'room_id=' + encodeURIComponent(roomId);
 
             // Add in
-            var newOne = window.imAreaTemplate.replace(/\_\_room_id\_\_/g, roomId).replace(/\_\_room\_name\_\_/g, roomName);
+            var newOne = window.imAreaTemplate.replace(/__room_id__/g, roomId).replace(/__room_name__/g, roomName);
             if (lobby) {
                 var newDiv;
                 newDiv = document.createElement('div');
@@ -1404,6 +1400,9 @@
         return count;
     }
 
+    /**
+     * @returns { Array }
+     */
     function findImConvoRoomIds() {
         var chatLobbyConvosTabs = document.getElementById('chat-lobby-convos-tabs');
         var rooms = [], i;
@@ -1450,10 +1449,10 @@
     function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
         if (isPopup && document.body) {
             document.body.classList.add('site-unloading');
-            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            $dom.html(document.body, '<div class="spaced"><div aria-busy="true" class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}</span></div></div>');
         }
 
-        var element, participants = null;
+        var element, participants = null, tabEl;
         var tabs = document.getElementById('chat-lobby-convos-tabs');
         if (tabs) {
             element = document.getElementById('room-' + roomId);
@@ -1461,7 +1460,7 @@
                 return;
             }
 
-            var tabEl = document.getElementById('tab_' + roomId);
+            tabEl = document.getElementById('tab_' + roomId);
             element.style.display = 'none';
             tabEl.style.display = 'none';
 

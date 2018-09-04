@@ -75,7 +75,7 @@
             }
 
             if (cluster) {
-                var markerCluster = new MarkerClusterer(map, markers);
+                /*var markerCluster = */new MarkerClusterer(map, markers);
             }
             // Fit the map around the markers, but only if we want the map centered
             if (params.center) {
@@ -137,7 +137,7 @@
                         var content = xhr.responseXML && xhr.responseXML.querySelector('result').textContent;
 
                         if (content) {
-                            infoWindow.setContent('<div class="global-middle-faux clearfix">' + content + '<\/div>');
+                            infoWindow.setContent('<div class="global-middle-faux clearfix">' + content + '</div>');
                             infoWindow.open(map, argMarker);
                         }
                     });

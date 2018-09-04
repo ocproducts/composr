@@ -476,7 +476,7 @@
         return $util.promiseSequence(calls);
     };
 
-    $cms.hasJavascript = function hasJavascriptLoaded(scriptNameOrSrc) {
+    $cms.hasJavascript = function hasJavascript(scriptNameOrSrc) {
         return (validIdRE.test(scriptNameOrSrc) ? _findScriptByName(scriptNameOrSrc) : _findScriptBySrc(scriptNameOrSrc)) != null;
     };
 

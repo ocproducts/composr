@@ -2,8 +2,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var $checking = window.$checking = {};
-
     /**
      * @memberof $cms.form
      * @param radios
@@ -81,7 +79,7 @@
             var errorMsgElement = document.getElementById('error-' + id);
 
             if (!errorMsgElement) {
-                errorMsgElement = document.getElementById('error-' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errorMsgElement = document.getElementById('error-' + id.replace(/_day$/, '').replace(/_month$/, '').replace(/_year$/, '').replace(/_hour$/, '').replace(/_minute$/, ''));
             }
             return errorMsgElement;
         }
@@ -380,9 +378,9 @@
 
                     case 'radio':
                         value = '';
-                        for (var i = 0; i < form.elements.length; i++) {
-                            if ((form.elements[i].name === element.name) && (form.elements[i].checked)) {
-                                value = form.elements[i].value;
+                        for (var j = 0; j < form.elements.length; j++) {
+                            if ((form.elements[j].name === element.name) && (form.elements[j].checked)) {
+                                value = form.elements[j].value;
                             }
                         }
                         break;
@@ -520,7 +518,7 @@
                 }
 
                 if (!recursing && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
-                    var preid = theElement.id.replace(/\_(day|month|year)$/, ''),
+                    var preid = theElement.id.replace(/_(day|month|year)$/, ''),
                         el = $dom.$id(preid + '_day');
                     if (el !== theElement) {
                         autoResetError(el, true);
@@ -619,7 +617,7 @@
             } else {
                 // Standard field-type checks
                 if ((theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/)) && (myValue !== '')) {
-                    var prename = theElement.name.replace(/\_(day|month|year)$/, ''),
+                    var prename = theElement.name.replace(/_(day|month|year)$/, ''),
                         _day = theForm.elements[prename + '_day'],
                         _month = theForm.elements[prename + '_month'],
                         _year = theForm.elements[prename + '_year'];
@@ -651,9 +649,9 @@
                             errorMsg = $util.format('{!javascript:NOT_USERNAME;^}', [myValue]);
                         }
                     });
-                } else if ((theElement.classList.contains('input-email') || theElement.classList.contains('input-email-required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                } else if ((theElement.classList.contains('input-email') || theElement.classList.contains('input-email-required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+$/))) {
                     errorMsg = $util.format('{!javascript:NOT_A_EMAIL;^}', [myValue]);
-                } else if ((theElement.classList.contains('input-codename') || theElement.classList.contains('input-codename-required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
+                } else if ((theElement.classList.contains('input-codename') || theElement.classList.contains('input-codename-required')) && (myValue !== '') && (!myValue.match(/^[a-zA-Z0-9._-]*$/))) {
                     errorMsg = $util.format('{!javascript:NOT_CODENAME;^}', [myValue]);
                 } else if ((theElement.classList.contains('input-integer') || theElement.classList.contains('input-integer-required')) && (myValue !== '') && (parseInt(myValue, 10) !== Number(myValue))) {
                     errorMsg = $util.format('{!javascript:NOT_INTEGER;^}', [myValue]);
@@ -685,7 +683,7 @@
         function getErrorMsgElement(id) {
             var errorMsgElement = $dom.$id('error_' + id);
             if (!errorMsgElement) {
-                errorMsgElement = $dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errorMsgElement = $dom.$id('error_' + id.replace(/_day$/, '').replace(/_month$/, '').replace(/_year$/, '').replace(/_hour$/, '').replace(/_minute$/, ''));
             }
             return errorMsgElement;
         }
@@ -700,7 +698,7 @@
     $cms.form.setLocked = function setLocked(field, isLocked, chosenOb) {
         var radioButton = $dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
         if (!radioButton) {
-            radioButton = $dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
+            radioButton = $dom.$id('choose_' + field.name.replace(/_\d+$/, '_'));
         }
 
         // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever

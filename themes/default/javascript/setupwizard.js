@@ -1,7 +1,7 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    $cms.templates.setupWizard7 = function setupWizard7(params, container) {
+    $cms.templates.setupWizard7 = function setupWizard7() {
         $dom.on('#rules', 'click', function () {
             $dom.smoothScroll($dom.findPosY('#rules-set'));
         });

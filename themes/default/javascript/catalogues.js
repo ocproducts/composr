@@ -127,7 +127,9 @@
         if (fn) {
             var form = fn.form;
             fn.onchange = function () {
-                if ((form.elements['name']) && (form.elements['name'].value == '')) form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/\_+$/, '').substr(0, 80);
+                if ((form.elements['name']) && (form.elements['name'].value === '')) {
+                    form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/_+$/, '').substr(0, 80);
+                }
             };
         }
     };
@@ -142,8 +144,8 @@
             }
         }
         // Assign generated change function to all ordering fields (generated so as to avoid JS late binding problem)
-        for (var i = 0; i < allOrderers.length; i++) {
-            allOrderers[i].onchange = catalogueFieldReindexAround(allOrderers, allOrderers[i]);
+        for (var j = 0; j < allOrderers.length; j++) {
+            allOrderers[j].onchange = catalogueFieldReindexAround(allOrderers, allOrderers[j]);
         }
     }
 
@@ -163,13 +165,13 @@
             }
 
             // Go through all fields, assigning them the order (into selectedIndex). We are reordering *around* the field that has just had it's order set.
-            for (var i = 0; i < allOrderers.length; i++) {
-                if (nextIndex == ob.selectedIndex) {
+            for (var k = 0; k < allOrderers.length; k++) {
+                if (nextIndex === ob.selectedIndex) {
                     nextIndex++;
                 }
 
-                if (allOrderers[i] != ob) {
-                    allOrderers[i].selectedIndex = nextIndex;
+                if (allOrderers[k] !== ob) {
+                    allOrderers[k].selectedIndex = nextIndex;
                     nextIndex++;
                 }
             }

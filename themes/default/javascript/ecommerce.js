@@ -45,7 +45,7 @@
                 'click .js-click-do-form-submit': 'doPurchaseFormSubmit'
             };
         },
-        doPurchaseFormSubmit: function (e) {
+        doPurchaseFormSubmit: function () {
             $cms.form.doFormSubmit(this.formEl);
         }
     });
@@ -112,7 +112,7 @@
         });
     };
 
-    $cms.templates.ecomLogosAuthorize = function ecomLogosAuthorize(params, container) {
+    $cms.templates.ecomLogosAuthorize = function ecomLogosAuthorize(params) {
         window.ANS_customer_id = strVal(params.customerId);
         $cms.requireJavascript('https://verify.authorize.net/anetseal/seal.js');
     };

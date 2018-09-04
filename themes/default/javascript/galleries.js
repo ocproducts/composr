@@ -170,7 +170,7 @@
             var form = fn.form;
             fn.addEventListener('change', function () {
                 if ((form.elements['name']) && (form.elements['name'].value === '')) {
-                    form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/\_+$/, '').substr(0, 80);
+                    form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/_+$/, '').substr(0, 80);
                 }
             });
         }
@@ -202,8 +202,7 @@
     $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params) {
         var container = this,
             carouselId = params.carouselId ? (String(params.carouselId)) : '',
-            blockCallUrl = params.blockCallUrl ? (String(params.blockCallUrl)) : '',
-            currentLoadingFromPos = Number(params.start) || 0;
+            blockCallUrl = params.blockCallUrl ? (String(params.blockCallUrl)) : '';
 
         if (!carouselId|| !blockCallUrl) {
             return;
@@ -215,8 +214,6 @@
             if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
                 return; // Not close enough to need more results
             }
-
-            currentLoadingFromPos += Number(params.max) || 0;
 
             $cms.callBlock(blockCallUrl, 'raw=1,cache=0', ob, true);
         });
@@ -231,12 +228,12 @@
 
         for (i = 0; i < files.options.length; i++) {
             $dom.on(files[i], 'mouseover', function (event) {
-                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($util.rel($cms.getBaseUrl())) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($util.rel($cms.getBaseUrl())) + '/uploads/galleries/' + encodeURI(this.value) + '" />', 'auto');
             });
             $dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);
             });
-            $dom.on(files[i], 'mouseout', function (event) {
+            $dom.on(files[i], 'mouseout', function () {
                 $cms.ui.deactivateTooltip(this);
             });
         }
@@ -248,7 +245,7 @@
                 window.slideshowTime--;
                 showCurrentSlideshowTime();
 
-                if (window.slideshowTime == 0) {
+                if (window.slideshowTime === 0) {
                     slideshowForward();
                 }
             }, 1000);
@@ -272,7 +269,7 @@
 
         showCurrentSlideshowTime();
 
-        if (window.slideshowCurrentPosition == window.slideshowTotalSlides - 1) {
+        if (window.slideshowCurrentPosition === window.slideshowTotalSlides - 1) {
             window.slideshowTime = 0;
         }
     }
@@ -335,12 +332,12 @@
             return;
         }
 
-        if ((slide == window.slideshowCurrentPosition - 1) || (slide == window.slideshowCurrentPosition + 1)) {
+        if ((slide === window.slideshowCurrentPosition - 1) || (slide === window.slideshowCurrentPosition + 1)) {
             var url;
-            if (slide == window.slideshowCurrentPosition + 1) {
+            if (slide === window.slideshowCurrentPosition + 1) {
                 url = document.getElementById('next_slide').value;
             }
-            if (slide == window.slideshowCurrentPosition - 1) {
+            if (slide === window.slideshowCurrentPosition - 1) {
                 url = document.getElementById('previous_slide').value;
             }
 
@@ -409,7 +406,7 @@
                 $galleries.stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             }
 
-            if (window.slideshowCurrentPosition != window.slideshowTotalSlides - 1) {
+            if (window.slideshowCurrentPosition !== window.slideshowTotalSlides - 1) {
                 slideshowEnsureLoaded(slide + 1);
             } else {
                 document.getElementById('gallery-entry-screen').style.cursor = '';

@@ -27,7 +27,7 @@
                 $dom.$('#schedule_time')
             ];
             hideFunc = function () {
-                $dom.$('#recurrance_days').disabled = ((dOb[0].value != '') || (dOb[1].value != ''));
+                $dom.$('#recurrance_days').disabled = ((dOb[0].value !== '') || (dOb[1].value !== ''));
             };
             dOb[0].addEventListener('change', hideFunc);
             dOb[1].addEventListener('change', hideFunc);
@@ -43,7 +43,7 @@
             return;
         }
 
-        submitButton.addEventListener('click', function (event) {
+        submitButton.addEventListener('click', function () {
             submitButton.disabled = true;
         });
 

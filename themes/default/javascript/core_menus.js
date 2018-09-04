@@ -99,7 +99,7 @@
         }
 
         adjustPaneHeights();
-        $dom.on(window, 'resize', function (e) {
+        $dom.on(window, 'resize', function () {
             adjustPaneHeights();
         });
     };
@@ -118,7 +118,7 @@
             makeFieldSelected(focused);
         });
 
-        $dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
+        $dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function () {
             if (!document.getElementById('menu-editor-wrap').classList.contains('docked')) {
                 $dom.smoothScroll($dom.findPosY(document.getElementsByTagName('h2')[2]));
             }
@@ -176,7 +176,7 @@
             // Find the parent
             var parentNum = $dom.$('#parent_' + index).value,
                 i, b, bindex,
-                best = -1, bestindex = -1;
+                best = -1;
 
             if (upwards) { // Up
                 // Find previous branch with same parent (if exists)
@@ -186,7 +186,6 @@
                         b = parseInt(form.elements['order_' + bindex].value) || 0;
                         if ((b < num) && (b > best)) {
                             best = b;
-                            bestindex = bindex;
                         }
                     }
                 }
@@ -198,7 +197,6 @@
                         b = parseInt(form.elements['order_' + bindex].value);
                         if ((b > num) && ((b < best) || (best === -1))) {
                             best = b;
-                            bestindex = bindex;
                         }
                     }
                 }
@@ -330,13 +328,13 @@
                 template = $dom.$id('template').value,
                 before = $dom.$id(insertBeforeId),
                 newId = 'm_' + Math.floor(Math.random() * 10000),
-                template2 = template.replace(/replace\_me\_with\_random/gi, newId),
+                template2 = template.replace(/replace_me_with_random/gi, newId),
                 highestOrderElement = $dom.$id('highest_order'),
                 newOrder = highestOrderElement.value + 1;
 
             highestOrderElement.value++;
-            template2 = template2.replace(/replace\_me\_with\_order/gi, newOrder);
-            template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
+            template2 = template2.replace(/replace_me_with_order/gi, newOrder);
+            template2 = template2.replace(/replace_me_with_parent/gi, parentId);
 
             // Backup form branches
             var form = $dom.$id('edit-form'),
@@ -620,7 +618,7 @@
         }
 
         form.elements['include_sitemap'].selectedIndex = $dom.$id('include_sitemap_' + i).value;
-        form.elements['include_sitemap'].addEventListener('change', function (event) {
+        form.elements['include_sitemap'].addEventListener('change', function () {
             $dom.$('#include_sitemap_' + i).value = this.selectedIndex;
             $dom.$('#include_sitemap_' + i).disabled = (this.selectedIndex === 0);
         });

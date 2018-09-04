@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom) {
+(function ($cms) {
     'use strict';
 
     /**
@@ -35,4 +35,4 @@
             });
         });
     };
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms));

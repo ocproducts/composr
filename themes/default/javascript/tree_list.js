@@ -138,7 +138,7 @@
 
         renderTree: function renderTree(xml, html, element) {
             var that = this, colour, newHtml, escapedTitle, initiallyExpanded,
-                selectable, extra, func, masterHtml;
+                selectable, extra, func;
 
             element || (element = $dom.$id(this.name));
 
@@ -233,7 +233,7 @@
                         if (node.getAttribute('description')) {
                             description = $cms.filter.html('. ' + node.getAttribute('description'));
                         }
-                        descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
+                        descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') === '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
                     var imgUrl = $util.srl('{$IMG;,icons/tree_field/category}');
                     if (node.getAttribute('img_url')) {
@@ -243,7 +243,7 @@
                         '<div>' +
                         '    <a class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp-c-' + node.getAttribute('id') + '"><img width="11" height="11" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" src="' + $util.srl(!initiallyExpanded ? '{$IMG*;,icons/tree_field/expand}' : '{$IMG*;,icons/tree_field/collapse}') + '"></a>' +
                         '    <img class="ajax-tree-cat-icon" alt="{!CATEGORY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" />' +
-                        '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax-tree-magic-button ' + colour + '">\ <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
+                        '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax-tree-magic-button ' + colour + '"> <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
                         '    <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span>' +
                         '</div>');
                     var expandButton = nodeSelf.querySelector('.ajax-tree-expand-icon');
@@ -336,26 +336,26 @@
                         escapedTitle = '{!NA_EM;^}';
                     }
 
-                    var description = '',
-                        descriptionInUse = '';
+                    var description2 = '',
+                        descriptionInUse2 = '';
                     if (node.getAttribute('description_html')) {
-                        description = node.getAttribute('description_html');
-                        descriptionInUse = $cms.filter.html(description);
+                        description2 = node.getAttribute('description_html');
+                        descriptionInUse2 = $cms.filter.html(description2);
                     } else {
                         if (node.getAttribute('description')) {
-                            description = $cms.filter.html('. ' + node.getAttribute('description'));
+                            description2 = $cms.filter.html('. ' + node.getAttribute('description'));
                         }
-                        descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
+                        descriptionInUse2 = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description2 + ((node.getAttribute('serverid') === '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
 
                     // Render self
                     initiallyExpanded = false;
-                    var imgUrl = $util.srl('{$IMG;,icons/tree_field/entry}');
+                    var imgUrl2 = $util.srl('{$IMG;,icons/tree_field/entry}');
                     if (node.getAttribute('img_url')) {
-                        imgUrl = node.getAttribute('img_url');
+                        imgUrl2 = node.getAttribute('img_url');
                     }
-                    $dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" /> ' +
-                        '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax-tree-magic-button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
+                    $dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl2) + '" /> ' +
+                        '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax-tree-magic-button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse2.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
                         '<input' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' id="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" />' + escapedTitle + '</label>' + extra + '</div>');
 
                     label = nodeSelf.querySelector('label');
@@ -377,15 +377,14 @@
                         }
                     });
                     html.appendChild(nodeSelfWrap);
-                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') === 'yes';
-                    if ((that.multiSelection) && !selected) {
-                        selected = (',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') !== -1;
+                    var selected2 = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) === element.value) || node.getAttribute('selected') === 'yes';
+                    if ((that.multiSelection) && !selected2) {
+                        selected2 = (',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') !== -1;
                     }
-                    that.makeElementLookSelected($dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
+                    that.makeElementLookSelected($dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected2);
                 }
 
                 if (node.getAttribute('draggable') && (node.getAttribute('draggable') !== 'false')) {
-                    masterHtml = $dom.$id('tree-list--root-' + that.name);
                     fixUpNodePosition(nodeSelf);
                     nodeSelf.cmsDraggable = node.getAttribute('draggable');
                     nodeSelf.draggable = true;
@@ -576,10 +575,10 @@
                     this.lastClicked = allLabels[0];
                 }
                 for (i = 0; i < allLabels.length; i++) {
-                    if (allLabels[i] == target || allLabels[i] === target.parentNode) {
+                    if (allLabels[i] === target || allLabels[i] === target.parentNode) {
                         posUs = i;
                     }
-                    if (allLabels[i] == this.lastClicked || allLabels[i] === this.lastClicked.parentNode) {
+                    if (allLabels[i] === this.lastClicked || allLabels[i] === this.lastClicked.parentNode) {
                         posLast = i;
                     }
                 }
@@ -636,9 +635,9 @@
                 if (!this.multiSelection || ((!event.ctrlKey && !event.metaKey && !event.altKey) && !assumeCtrl)) {
                     selectedAfter = [];
                 }
-                if ((selectedBefore.indexOf(selectedId) !== -1) && (((selectedBefore.length === 1) && (selectedBefore[0] != selectedId)) || ((event.ctrlKey) || (event.metaKey) || (event.altKey)) || (assumeCtrl))) {
+                if ((selectedBefore.indexOf(selectedId) !== -1) && (((selectedBefore.length === 1) && (selectedBefore[0] !== selectedId)) || ((event.ctrlKey) || (event.metaKey) || (event.altKey)) || (assumeCtrl))) {
                     for (var key in selectedAfter) {
-                        if (selectedAfter[key] == selectedId) {
+                        if (selectedAfter[key] === selectedId) {
                             selectedAfter.splice(key, 1);
                         }
                     }
@@ -731,7 +730,7 @@
             }
         }
 
-        if (node.getAttribute('droppable') == element.cmsDraggable) {
+        if (node.getAttribute('droppable') === element.cmsDraggable) {
             childNodeElement = $dom.$id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
             y = $dom.findPosY(childNodeElement.parentNode.parentNode, true);
             height = childNodeElement.parentNode.parentNode.offsetHeight;

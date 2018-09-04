@@ -146,8 +146,8 @@
         div.style.position = 'absolute';
         div.className = 'ghost';
         $dom.html(div, htmlMessage);
-        var limit = 36;
-        for (var counter = 0; counter < limit; counter++) {
+        var limit = 36, counter;
+        for (counter = 0; counter < limit; counter++) {
             setTimeout(buildGhostFunc(div, counter, limit), counter * 100);
         }
         setTimeout(function () {

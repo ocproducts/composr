@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom) {
+(function () {
     'use strict';
 
     $cms.views.AddonInstallConfirmScreen = AddonInstallConfirmScreen;
@@ -49,4 +49,4 @@
             }
         }
     });
-}(window.$cms, window.$util, window.$dom));
+}());

@@ -7,7 +7,7 @@
      * @class
      * @extends $cms.View
      */
-    function BlockMainSearch(params) {
+    function BlockMainSearch() {
         BlockMainSearch.base(this, 'constructor', arguments);
     }
 
