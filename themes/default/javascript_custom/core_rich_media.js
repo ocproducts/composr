@@ -1,8 +1,10 @@
 /*{+START,INCLUDE,core_rich_media,.js,javascript,,1}{+END}*/
 
 (function ($cms) {
+    /* global MediaElementPlayer:false */
+    'use strict';
     $cms.templates.mediaAudioWebsafe = function mediaAudioWebsafe(params) {
-        var playerId = strVal(params.playerId),
+        var playerId = strVal(params.playerId), player,
             width = strVal(params.width),
             height = strVal(params.height),
             url = strVal(params.url),
@@ -35,11 +37,12 @@
             options.videoHeight = Math.min(height * (950 / width), height);
         }
 
-        var player = new MediaElementPlayer('#' + playerId, options);
+        player = new MediaElementPlayer('#' + playerId, options);
     };
 
     $cms.templates.mediaVideoWebsafe = function mediaVideoWebsafe(params) {
         var playerId = strVal(params.playerId),
+            player,
             width = strVal(params.width),
             height = strVal(params.height),
             url = strVal(params.url),
@@ -74,6 +77,6 @@
             options.videoHeight = Math.min(height * (950 / width), height);
         }
 
-        var player = new MediaElementPlayer('#' + playerId, options);
+        player = new MediaElementPlayer('#' + playerId, options);
     };
 }(window.$cms));

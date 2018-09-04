@@ -74,6 +74,7 @@
 
         if (params.supportAutosave && params.formName) {
             setTimeout(function () {
+                // eslint-disable-next-line no-constant-condition
                 if ('{$VALUE_OPTION;,disable_form_auto_saving}' !== '1') {
                     window.$posting.initFormSaving(params.formName);
                 }
@@ -91,7 +92,7 @@
             };
         },
 
-        doFormCancel: function (e) {
+        doFormCancel: function () {
             var that = this;
             $cms.ui.confirm(
                 '{!Q_SURE;*}',
@@ -103,13 +104,13 @@
             );
         },
 
-        doStandardFormPreview: function (e) {
+        doStandardFormPreview: function () {
             var form = this.form;
 
             $cms.form.doFormPreview(form, window.formPreviewUrl, window.separatePreview);
         },
 
-        doStandardFormSubmit: function (e) {
+        doStandardFormSubmit: function () {
             $cms.form.doFormSubmit(this.form, this.analyticEventCategory);
         },
 
@@ -238,15 +239,15 @@
                     }
                     var selectsTo = toRow.getElementsByTagName('select');
                     var selectsFrom = fromRow.getElementsByTagName('select');
-                    for (var i = 0; i < selectsTo.length; i++) {
-                        while (selectsTo[i].options.length > 0) {
-                            selectsTo[i].remove(0);
+                    for (var x = 0; x < selectsTo.length; x++) {
+                        while (selectsTo[x].options.length > 0) {
+                            selectsTo[x].remove(0);
                         }
-                        for (var j = 0; j < selectsFrom[i].options.length; j++) {
-                            selectsTo[i].add(selectsFrom[i].options[j].cloneNode(true), null);
+                        for (var j = 0; j < selectsFrom[x].options.length; j++) {
+                            selectsTo[x].add(selectsFrom[x].options[j].cloneNode(true), null);
                         }
-                        selectsTo[i].selectedIndex = selectsFrom[i].selectedIndex;
-                        selectsTo[i].disabled = selectsFrom[i].disabled;
+                        selectsTo[x].selectedIndex = selectsFrom[x].selectedIndex;
+                        selectsTo[x].disabled = selectsFrom[x].disabled;
                     }
                 }
             }
@@ -366,7 +367,7 @@
         var postingField = strVal(params.postingField);
 
         $dom.on(container, 'click', '.js-click-do-input-font-posting-field', function () {
-            doInputFont(postingField);
+            window.doInputFont(postingField);
         });
     };
 
@@ -571,7 +572,7 @@
                         if (stateList == null) {
                             stateList = input.selectedIndex;
                         }
-                        input.selectedIndex = ((stateList != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
+                        input.selectedIndex = ((stateList !== (input.options.length - 1)) ? (input.options.length - 1) : (input.options.length - 2));
                         input.disabled = false;
 
                         permissionsOverridden(table.rows[i].id.replace(/-privilege-container$/, ''));
@@ -639,7 +640,7 @@
                             if (result) {
                                 var form = el.form;
                                 if (!form.action.includes('_post')) { // Remove redirect if redirecting back, IF it's not just deleting an on-page post (Wiki+)
-                                    form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
+                                    form.action = form.action.replace(/([&?])redirect=[^&]*/, '$1');
                                 }
                             } else {
                                 el.checked = false;
@@ -701,7 +702,7 @@
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {
-                    return '<span class="vertical-alignment inline-lined-up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + $cms.filter.html(opt.text) + '</span>';
+                    return '<span class="vertical-alignment inline-lined-up"><img style="width: 24px;" src="' + imageSources[imageName] + '" /> ' + $cms.filter.html(opt.text) + '</span>';
                 }
             }
 
@@ -824,9 +825,7 @@
             postEl = $dom.$('#' + name),
             // Container elements:
             labelRow = $dom.$('#field-' + id +'-label'),
-            inputRow = $dom.$('#field-' + id +'-input'),
-            attachmentsUiRow = $dom.$('#field-' + id +'-attachments-ui'),
-            attachmentsUiInputRow = $dom.$('#field-' + id +'-attachments-ui-input');
+            inputRow = $dom.$('#field-' + id +'-input');
 
         if (params.class.includes('wysiwyg')) {
             if (window.$editing && window.$editing.wysiwygOn()) {
@@ -1092,7 +1091,7 @@
             }
         });
 
-        $dom.on(container, 'click', '.js-click-clear-name-stub-input', function (e) {
+        $dom.on(container, 'click', '.js-click-clear-name-stub-input', function () {
             var input = $dom.$('#' + nameStub + '_' + index);
             $dom.changeValue(input, '');
         });
@@ -1148,7 +1147,7 @@
                                 if (el2) {
                                     if (result) {
                                         var form = el2.form;
-                                        form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
+                                        form.action = form.action.replace(/([&?])redirect=[^&]*/, '$1');
                                     } else {
                                         el2.checked = true; // Check first radio
                                     }
@@ -1166,8 +1165,8 @@
             $coreFormInterfaces.ensureNextField2(e, input);
         });
 
-        $dom.on(container, 'keyup', function (e, input) {
-            TODO
+        $dom.on(container, 'keyup', function () {
+            //TODO
         });
     };
 
@@ -1256,14 +1255,14 @@
 
         if (get) {
             for (i = 0; i < form.elements.length; i++) {
-                if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
+                if ((new RegExp('&' + prefix + '\\d+=1$', 'g')).test(form.elements[i].name)) {
                     form.elements[i].parentNode.removeChild(form.elements[i]);
                 }
             }
         } else {
             // Strip old marks out of the URL
             form.action = form.action.replace('?', '&')
-                .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
+                .replace(new RegExp('&' + prefix + '\\d+=1$', 'g'), '')
                 .replace('&', '?'); // will just do first due to how JS works
         }
 
@@ -1510,8 +1509,8 @@
                                 field = document.getElementById(fieldName);
                                 if (field.localName === 'select') {
                                     field.value = parsed[j + 1];
-                                    if (jQuery.fn.select2 !== undefined) {
-                                        jQuery(field).trigger('change');
+                                    if (window.jQuery && window.jQuery.fn.select2 !== undefined) {
+                                        window.jQuery(field).trigger('change');
                                     }
                                 } else {
                                     field.value = parsed[j + 1];
@@ -1646,11 +1645,11 @@
         for (var i = 0; i < fields.length; i++) {
             if (fields[i][0] === undefined) {
                 if (fields[i].id.startsWith('choose_')) {
-                    fieldNames.push(fields[i].id.replace(/^choose\_/, ''));
+                    fieldNames.push(fields[i].id.replace(/^choose_/, ''));
                 }
             } else { // RadioNodeList
                 if (fields[i][0].id.startsWith('choose_')) {
-                    fieldNames.push(fields[i][0].id.replace(/^choose\_/, ''));
+                    fieldNames.push(fields[i][0].id.replace(/^choose_/, ''));
                 }
             }
         }
@@ -1708,7 +1707,7 @@
 
             function _standardAlternateFieldUpdateEditability(chosen, choices, somethingRequired) {
                 for (var i = 0; i < choices.length; i++) {
-                    __standardAlternateFieldUpdateEditability(choices[i], chosen, (choices[i] != chosen), (choices[i] == chosen), somethingRequired);
+                    __standardAlternateFieldUpdateEditability(choices[i], chosen, (choices[i] !== chosen), (choices[i] === chosen), somethingRequired);
                 }
             }
 
@@ -1733,7 +1732,7 @@
 
                 var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
                 if (!radioButton) {
-                    radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                    radioButton = document.getElementById('choose_' + field.name.replace(/_\d+$/, '_'));
                 }
 
                 $cms.form.setLocked(field, isLocked, chosenField);
@@ -1773,7 +1772,7 @@
                             continue;
                         }
 
-                        if ((el.name.replace(/\[\]$/, '') === fieldName) || (el.name.replace(/\_\d+$/, '_') === fieldName)) {
+                        if ((el.name.replace(/\[\]$/, '') === fieldName) || (el.name.replace(/_\d+$/, '_') === fieldName)) {
                             radioButtons.push(el);
                             if (el.checked) {// This is the checked radio equivalent to our text field, copy the value through to the text field
                                 radioButtons['value'] = el.value;
@@ -1801,7 +1800,7 @@
 
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
                 if (!radioButton) {
-                    radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                    radioButton = document.getElementById('choose_' + field.name.replace(/_\d+$/, '_'));
                 }
                 if (secondRun) {
                     if (radioButton) {
@@ -1834,7 +1833,7 @@
             function __standardAlternateFieldCreateListeners(field, refreshFunction) {
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
                 if (!radioButton) {
-                    radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                    radioButton = document.getElementById('choose_' + field.name.replace(/_\d+$/, '_'));
                 }
                 if (radioButton) { // Radio button handles field alternation
                     radioButton.addEventListener('change', refreshFunction);
@@ -1895,7 +1894,7 @@
                 nextField = document.createElement('input');
                 nextField.size = thisField.size;
             }
-            nextField.className = thisField.className.replace(/\_required/g, '');
+            nextField.className = thisField.className.replace(/_required/g, '');
             if (thisField.form.elements['label_for__' + nameStub + '0']) {
                 var nextLabel = document.createElement('input');
                 nextLabel.type = 'hidden';

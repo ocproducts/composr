@@ -51,7 +51,7 @@
                 return;
             }
 
-            if (!form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)) {
+            if (!form.elements['address' + nid].value.match(/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+$/)) {
                 e.preventDefault();
                 $cms.ui.alert('{!javascript:NOT_A_EMAIL;}');
                 return;

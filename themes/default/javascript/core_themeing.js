@@ -45,12 +45,12 @@
         if (window.location.hash) {
             setTimeout(function () {
                 var hash = window.location.hash.substr(1, window.location.hash.length - 1);
-                editareaDoSearch('e_' + params.fileId, hash);
+                window.editareaDoSearch('e_' + params.fileId, hash);
             }, 2000);
         }
 
         if ($cms.configOption('editarea')) {
-            aceComposrLoader('e_' + params.fileId, params.highlighterType, false);
+            window.aceComposrLoader('e_' + params.fileId, params.highlighterType, false);
         }
 
         if (params.includeCssEditing && window.opener && window.opener.document) {
@@ -88,7 +88,7 @@
                 url += '&file=' + encodeURIComponent(file);
                 url += '&theme=' + encodeURIComponent(window.templateEditorTheme);
 
-                editareaReverseRefresh('e_' + fileToFileId(file));
+                window.editareaReverseRefresh('e_' + fileToFileId(file));
 
                 var post = 'contents=' + encodeURIComponent(getFileTextbox(file).value);
                 $cms.loadSnippet(url, post).then(function (ajaxResult) {
@@ -124,7 +124,7 @@
         editareaSearch: function (e, target) {
             var regexp = target.dataset.eaSearch;
 
-            editareaDoSearch('e_' + this.params.fileId, regexp);
+            window.editareaDoSearch('e_' + this.params.fileId, regexp);
         },
 
         insertGuid: function (e, target) {
@@ -135,13 +135,13 @@
             function insertGuid(file, guid) {
                 var textbox = getFileTextbox(file);
 
-                var hasEditarea = editareaIsLoaded(textbox.name);
+                var hasEditarea = window.editareaIsLoaded(textbox.name);
 
-                editareaReverseRefresh('e_' + fileToFileId(file));
+                window.editareaReverseRefresh('e_' + fileToFileId(file));
 
                 window.$editing.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}').then(function () {
                     if (hasEditarea) {
-                        editareaRefresh(textbox.id);
+                        window.editareaRefresh(textbox.id);
                     }
                 });
             }
@@ -182,10 +182,10 @@
 
             // Set up background compiles
             var textareaId = 'e_' + fileId;
-            if (editareaIsLoaded(textareaId)) {
+            if (window.editareaIsLoaded(textareaId)) {
                 var editor = window.aceEditors[textareaId];
 
-                var lastCss = editareaGetValue(textareaId);
+                var lastCss = window.editareaGetValue(textareaId);
 
                 editor.cssRecompilerTimer = setInterval(function () {
                     if ((window.opener) && (window.opener.document)) {
@@ -204,8 +204,8 @@
                             /*force new CSS to apply*/
                         }
 
-                        var newCss = editareaGetValue(textareaId);
-                        if (newCss == lastCss) {// Not changed
+                        var newCss = window.editareaGetValue(textareaId);
+                        if (newCss === lastCss) {// Not changed
                             return;
                         }
 
@@ -307,7 +307,7 @@
                     } else { // IE
                         cssText = cssText.toLowerCase().replace(/; /, ';<br />\n');
                     }
-                    li.addEventListener('mouseout', function (event) {
+                    li.addEventListener('mouseout', function () {
                         $cms.ui.deactivateTooltip(this);
                     });
                     li.addEventListener('mousemove', function (event) {
@@ -322,7 +322,7 @@
                     // Jump-to
                     a.addEventListener('click', (function (selector) {
                         return function () {
-                            editareaDoSearch(
+                            window.editareaDoSearch(
                                 'e_' + fileId,
                                 '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
                             );
@@ -410,8 +410,8 @@
                     for (var i = 0; i < opener.frames.length; i++) {
                         if (opener.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
                             result2 = findSelectorsFor(opener.frames[i], selector);
-                            for (var j = 0; j < result2.length; j++) {
-                                result.push(result2[j]);
+                            for (var k = 0; k < result2.length; k++) {
+                                result.push(result2[k]);
                             }
                         }
                     }
@@ -463,9 +463,9 @@
             askForUrl = false;
         }
 
-        var hasEditarea = editareaIsLoaded('e_' + fileId);
+        var hasEditarea = window.editareaIsLoaded('e_' + fileId);
         if (hasEditarea) {
-            editareaReverseRefresh('e_' + fileId);
+            window.editareaReverseRefresh('e_' + fileId);
         }
 
         if (document.getElementById('mobile_preview_' + fileId).checked) {
@@ -846,13 +846,13 @@
                                 allDecoded.push(_decoded[j]);
                             }
                         }
-                        for (var i = 0; i < allDecoded.length; i++) {
-                            var decoded = allDecoded[i];
-                            var openerMatch = decoded.match('<(templates/.*)>');
+                        for (var k = 0; k < allDecoded.length; k++) {
+                            var decoded2 = allDecoded[k];
+                            var openerMatch = decoded2.match('<(templates/.*)>');
                             if (openerMatch != null) {
                                 inside.push(openerMatch[1]);
                             }
-                            var closerMatch = decoded.match('</(templates/.*)>');
+                            var closerMatch = decoded2.match('</(templates/.*)>');
                             if (closerMatch != null) {
                                 var at = inside.indexOf(closerMatch[1]);
                                 if (at !== -1) {
@@ -860,7 +860,7 @@
                                 }
                             }
 
-                            node.data = node.data.replace(matches[i], ''); // Strip it, to clean document
+                            node.data = node.data.replace(matches[k], ''); // Strip it, to clean document
                         }
                     }
                 } else if (node.nodeType === 1) { // Element node
@@ -880,9 +880,9 @@
 
             function invisibleOutputDecode(string) {
                 var ret = '';
-                var i, j, character, _bitsRep, bitsRep, _bit, bit;
+                var character, _bitsRep, bitsRep, _bit, bit;
                 var len = string.length;
-                for (i = 0; i < len / 8; i++) {
+                for (var i = 0; i < len / 8; i++) {
                     _bitsRep = '';
                     for (_bit = 0; _bit < 8; _bit++) {
                         character = string.substr(i * 8 + _bit, 1);
@@ -966,7 +966,7 @@
             event.stopPropagation(); // Required to prevent tab click listener from being fired too
 
             if (window.templateEditorOpenFiles[file].unsavedChanges) {
-                $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), null, '{!Q_SURE;^}', true).then(function (result) {
+                $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('{1}', file), null, '{!Q_SURE;^}', true).then(function (result) {
                     if (result) {
                         templateEditorTabUnloadContent(file);
                     }
@@ -1128,7 +1128,7 @@
             }
 
             window.jQuery('#e-' + fileId.replace(/\./g, '\\.') + '-wrap').resizable({
-                resize: function (event, ui) {
+                resize: function () {
                     var editor = window.aceEditors['e_' + fileId];
                     if (editor !== undefined) {
                         $dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').style.height = '100%';
@@ -1142,7 +1142,7 @@
 
         function fileIdToFile(fileId) {
             for (var file in window.templateEditorOpenFiles) {
-                if (fileToFileId(file) == fileId) {
+                if (fileToFileId(file) === fileId) {
                     return file;
                 }
             }

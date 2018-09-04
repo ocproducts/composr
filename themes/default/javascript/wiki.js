@@ -24,7 +24,7 @@
             cell.classList.toggle('cns-off', !checkbox.checked);
         });
 
-        $dom.on(container, 'click', '.js-click-show-wiki-merge-button', function (e, checkbox) {
+        $dom.on(container, 'click', '.js-click-show-wiki-merge-button', function () {
             var wikiMergeButton = $dom.$('#wiki-merge-button');
             wikiMergeButton.classList.remove('button-faded');
             $dom.show(wikiMergeButton);

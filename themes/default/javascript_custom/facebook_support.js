@@ -107,7 +107,7 @@
                     // If Composr is currently logging out, tell FB connect to disentangle
                     // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have auth'd due to FB_CONNECT_LOGGED_OUT being set
                     if (justLoggedOut) {
-                        window.FB.logout(function (response) {
+                        window.FB.logout(function () {
                             $util.inform('Facebook: Logged out.');
                         });
                     }
@@ -124,7 +124,7 @@
                     for (var i = 0; i < forms.length; i++) {
                         if (forms[i].action.includes(logoutPageUrl)) {
                             forms[i].addEventListener('submit', (function (logoutLink) {
-                                window.FB.logout(function (response) {
+                                window.FB.logout(function () {
                                     $util.inform('Facebook: Logged out.');
                                     window.location = logoutLink;
                                 });

@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom) {
+(function ($cms, $util) {
     'use strict';
 
     var $pulse = window.$pulse = {};
@@ -37,19 +37,19 @@
         var range = textNodes.length;
 
         // Apply colour wave
-        for (var i = 0; i < textNodes.length; i++) {
-            var distLeftwards = i - pos;
+        for (var k = 0; k < textNodes.length; k++) {
+            var distLeftwards = k - pos;
             if (distLeftwards < 0) {
-                distLeftwards = i + range - pos;
+                distLeftwards = k + range - pos;
             }
-            var distRightwards = pos - i;
+            var distRightwards = pos - k;
             if (distRightwards < 0) {
-                distRightwards = pos + range - i;
+                distRightwards = pos + range - k;
             }
 
             var diff = (distLeftwards < distRightwards) ? distLeftwards : distRightwards;
             var fraction = diff / (range / 2);
-            textNodes[i].style.color = '#' + colorInterpolation(maxColor, minColor, fraction);
+            textNodes[k].style.color = '#' + colorInterpolation(maxColor, minColor, fraction);
         }
 
         // Cycle around
@@ -88,4 +88,4 @@
             return found;
         }
     };
-}(window.$cms, window.$util, window.$dom));
+}(window.$cms, window.$util));

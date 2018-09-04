@@ -41,23 +41,23 @@
 
         var t = '';
         t += '<div class="css-colour-chooser">';
-        t += '	<div class="css-colour-chooser-name">';
-        t += '		<label class="field-name" for="' + name + '"> ' + label + '</label><br />';
-        t += '       <input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
-        t += '	</div>';
-        t += '	<div class="css-colour-chooser-fixed">';
-        t += '	<div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-source-' + name + '">';
-        t += '		{!themes:FROM_COLOUR^#}';
-        t += '	</div>';
-        t += '	<div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-target-' + name + '">';
-        t += '		{!themes:TO_COLOUR^#}';
-        t += '	</div>';
-        t += '	<div class="css-colour-chooser-colour">';
-        t += '		<div id="cc-0-' + name + '"></div>';
-        t += '		<div id="cc-1-' + name + '"></div>';
-        t += '		<div id="cc-2-' + name + '"></div>';
-        t += '	</div>';
-        t += '	</div>';
+        t += '    <div class="css-colour-chooser-name">';
+        t += '        <label class="field-name" for="' + name + '"> ' + label + '</label><br />';
+        t += '        <input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
+        t += '    </div>';
+        t += '    <div class="css-colour-chooser-fixed">';
+        t += '    <div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-source-' + name + '">';
+        t += '        {!themes:FROM_COLOUR^#}';
+        t += '    </div>';
+        t += '    <div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-target-' + name + '">';
+        t += '        {!themes:TO_COLOUR^#}';
+        t += '    </div>';
+        t += '    <div class="css-colour-chooser-colour">';
+        t += '        <div id="cc-0-' + name + '"></div>';
+        t += '        <div id="cc-1-' + name + '"></div>';
+        t += '        <div id="cc-2-' + name + '"></div>';
+        t += '    </div>';
+        t += '    </div>';
         t += '</div>';
 
         if (context !== '') {

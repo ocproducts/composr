@@ -1,4 +1,5 @@
 (function ($cms) {
+    /*global jQuery:false*/
     'use strict';
 
     // Assume that our activity feed needs updating to start with
@@ -17,7 +18,7 @@
      * @class
      * @extends $cms.View
      */
-    function BlockMainActivitiesState(params) {
+    function BlockMainActivitiesState() {
         BlockMainActivitiesState.base(this, 'constructor', arguments);
 
         this.form = this.$('form.js-form-status-updates');
@@ -63,7 +64,7 @@
             }
             this.maintainCharCount();
         },
-        textareaKeypress: function (e, textarea) {
+        textareaKeypress: function () {
             this.maintainCharCount();
         },
 
@@ -167,7 +168,7 @@
         }
     });
 
-    $cms.templates.cnsMemberProfileActivities = function cnsMemberProfileActivities(params, container) {
+    $cms.templates.cnsMemberProfileActivities = function cnsMemberProfileActivities(params) {
         var syndications = params.syndications,
             syndication;
 
@@ -215,7 +216,7 @@
                 url: $util.rel('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)),
                 data: {},
                 success: function (data) {
-                    if (parseInt(data) != window.latestActivity) {
+                    if (parseInt(data) !== window.latestActivity) {
                         // If not then remember the new value
                         window.latestActivity = parseInt(data);
 
@@ -338,7 +339,6 @@
     }
 
     function sUpdateRemoveShow(data, stat) {
-        var succeeded = false;
         var statusId = '';
 
         var animationSpeed = 1600;

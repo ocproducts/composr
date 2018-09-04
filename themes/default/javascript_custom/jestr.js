@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.templates.emoticonImgCodeThemedJestr = function emoticonImgCodeThemedJestr(params, container) {
+    $cms.templates.emoticonImgCodeThemedJestr = function emoticonImgCodeThemedJestr(params) {
         if (window.crazyCriters == null) {
             window.crazyCriters = [];
             setInterval(window.crazyTick, 300);

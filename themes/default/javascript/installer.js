@@ -26,7 +26,7 @@
                 timer = null;
             }
         });
-        button.addEventListener('mouseout', function (e) {
+        button.addEventListener('mouseout', function () {
             timer = window.setInterval(continueFunc, 1000);
         });
 
@@ -45,7 +45,7 @@
         }
     };
 
-    $cms.templates.installerHtmlWrap = function installerHtmlWrap(params, container) {
+    $cms.templates.installerHtmlWrap = function installerHtmlWrap(params) {
         var defaultForum = strVal(params.defaultForum);
 
         var none = document.getElementById(defaultForum);
@@ -144,7 +144,7 @@
         });
     };
 
-    $cms.templates.installerStep4 = function installerStep4(params, container) {
+    $cms.templates.installerStep4 = function installerStep4(params) {
         var passwordPrompt = strVal(params.passwordPrompt),
             domain = document.getElementById('domain');
 

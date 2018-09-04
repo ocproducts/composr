@@ -63,7 +63,7 @@
         });
     };
 
-    $cms.templates.realtimeRainBubble = function (params, container) {
+    $cms.templates.realtimeRainBubble = function (params) {
         window.pendingEvalFunction = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
             if (params.tickerText !== undefined) {
                 setTimeout(function () {
@@ -368,12 +368,12 @@
         window.bubbleGroups = [];
         window.totalLines = 0;
         var icons = document.getElementById('real-time-surround').parentNode.querySelectorAll('.special-icon');
-        for (var i = 0; i < icons.length; i++) {
-            if (icons[i].animationTimer) {
-                clearInterval(icons[i].animationTimer);
-                icons[i].animationTimer = null;
+        for (var j = 0; j < icons.length; j++) {
+            if (icons[j].animationTimer) {
+                clearInterval(icons[j].animationTimer);
+                icons[j].animationTimer = null;
             }
-            icons[i].parentNode.removeChild(icons[i]);
+            icons[j].parentNode.removeChild(icons[j]);
         }
     }
 

@@ -98,7 +98,7 @@
                 right = imgs[imgs.length - 1];
 
             if (left.style.position === 'absolute') { // Check it really is a fader (stops bugs in other areas making bigger weirdness)
-                left.style.visibility = (mainEl.scrollLeft == 0) ? 'hidden' : 'visible';
+                left.style.visibility = (mainEl.scrollLeft === 0) ? 'hidden' : 'visible';
             }
 
             if (right.style.position === 'absolute') { // Ditto
@@ -241,7 +241,7 @@
                 previousButton.width = '74';
                 previousButton.height = '74';
                 previousButton.addEventListener('click', clickPreviousButton);
-                function clickPreviousButton(e) {
+                function clickPreviousButton() {
                     var newPosition = modal.positionInSet - 1;
                     if (newPosition < 0) {
                         newPosition = imgs.length - 1;
@@ -259,7 +259,7 @@
                 nextButton.width = '74';
                 nextButton.height = '74';
                 nextButton.addEventListener('click', clickNextButton);
-                function clickNextButton(e) {
+                function clickNextButton() {
                     var newPosition = modal.positionInSet + 1;
                     if (newPosition >= imgs.length) {
                         newPosition = 0;
@@ -354,12 +354,12 @@
         form.elements['from_html'][2].addEventListener('click', refreshLockedInputs);
 
         function refreshLockedInputs() {
-            var value = $cms.form.radioValue(form.elements['from_html']);
-            $dom.$('#semihtml').disabled = (value != 0);
-            $dom.$('#is_semihtml').disabled = (value != 0);
-            $dom.$('#lax').disabled = (value != 0);
-            $dom.$('#fix_bad_html').disabled = (value == 1);
-            $dom.$('#force').disabled = (value != 1);
+            var value = Number($cms.form.radioValue(form.elements['from_html']));
+            $dom.$('#semihtml').disabled = (value !== 0);
+            $dom.$('#is_semihtml').disabled = (value !== 0);
+            $dom.$('#lax').disabled = (value !== 0);
+            $dom.$('#fix_bad_html').disabled = (value === 1);
+            $dom.$('#force').disabled = (value !== 1);
         }
     };
 
@@ -701,7 +701,7 @@
 
         window.tickPos[id] = params.width;
         $dom.html(container, '<div class="ticker" style="text-indent: ' + params.width + 'px; width: ' + params.width + 'px;" id="' + id + '"><span>' +
-            $cms.filter.nl(params.text) + '<\/span><\/div>'
+            $cms.filter.nl(params.text) + '</span></div>'
         );
 
         setInterval(function () {
@@ -719,7 +719,7 @@
             window.jumperParts[id].push(params.parts[i].part);
         }
 
-        $dom.html(container, '<span id="' + id + '">' + window.jumperParts[id][0] + '<\/span>');
+        $dom.html(container, '<span id="' + id + '">' + window.jumperParts[id][0] + '</span>');
 
         setInterval(function () {
             jumperTick(id);
@@ -760,7 +760,7 @@
                         },
                         onStateChange: function (newState) {
                             if (slideshowMode) {
-                                if (newState == 0) {
+                                if (Number(newState) === 0) {
                                     window.$galleries.playerStopped();
                                 }
                             }
@@ -783,7 +783,7 @@
                     var player = document.getElementById(params.playerId);
                     // WMP
                     player.addEventListener('playstatechange', function (newState) {
-                        if (newState == 1) {
+                        if (Number(newState) === 1) {
                             window.$galleries.playerStopped();
                         }
                     });
@@ -821,6 +821,7 @@
     // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
     // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
     $cms.templates.mediaAudioWebsafe = function (params) {
+        /* global jwplayer:false */
         var playerOptions = {
             width: params.width,
             height: params.height,
@@ -915,7 +916,7 @@
                 var wysiwygEditable = document.getElementById('wysiwyg_editable');
                 var thumb = document.getElementById('thumb');
 
-                if (framed.defaultChecked == framed.checked && wysiwygEditable.defaultChecked == wysiwygEditable.checked && thumb.defaultChecked == thumb.checked) {
+                if (framed.defaultChecked === framed.checked && wysiwygEditable.defaultChecked === wysiwygEditable.checked && thumb.defaultChecked === thumb.checked) {
                     framed.checked = false;
                     wysiwygEditable.checked = true;
                     thumb.checked = false;
@@ -929,7 +930,7 @@
             return;
         }
 
-        if (window.shockerPos[id] == window.shockerParts[id].length - 1) {
+        if (window.shockerPos[id] === window.shockerParts[id].length - 1) {
             window.shockerPos[id] = 0;
         }
         var eLeft = document.getElementById('comcodeshocker' + id + '-left');

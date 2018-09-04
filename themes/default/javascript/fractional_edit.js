@@ -10,7 +10,7 @@
 
         if (!explicitEditingLinks) {
             $dom.on(el, 'click', function (e) {
-                fractionalEdit(e, el, url, editText, editParamName, null, null, editType);
+                _fractionalEdit(e, el, url, editText, editParamName, null, null, editType);
             });
 
             $dom.on(el, 'mouseover mouseout', function (e, target) {
@@ -31,13 +31,13 @@
             });
         } else {
             $dom.on(el, 'click', function (e) {
-                fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName, null, null, editType);
+                _fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName, null, null, editType);
             });
         }
     };
 
 
-    function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
+    function _fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
         wasDoubleClick = Boolean(wasDoubleClick);
         type = strVal(type) || 'line';
 
@@ -81,7 +81,7 @@
         switch (type) {
             case 'line':
                 input = document.createElement('input');
-                if (raw_text.length > 255) {
+                if (rawText.length > 255) {
                     input.size = '30';
                 } else {
                     input.maxlength = '255';
@@ -100,14 +100,14 @@
                 for (var i = 0; i < listOptions.length; i++) {
                     listOption = document.createElement('option');
                     $dom.html(listOption, $cms.filter.html(listOptions[i]));
-                    listOption.selected = (populatedValue == listOptions[i]);
+                    listOption.selected = (populatedValue === listOptions[i]);
                     input.appendChild(listOption);
                 }
                 break;
         }
         input.style.position = 'absolute';
         input.style.left = $cms.isMobile() ? '0px' : (x + 'px');
-        if (raw_text.length <= 255) {
+        if (rawText.length <= 255) {
             input.style.width = $cms.isMobile() ? ($dom.getWindowWidth() + 'px') : (width + 'px');
         }
         input.style.top = (y + 8) + 'px';
@@ -122,10 +122,10 @@
             toCopy.push('border-left');
         }
 
-        for (var i = 0; i < toCopy.length; i++) {
-            var style = window.getComputedStyle(object.parentNode).getPropertyValue(toCopy[i]);
+        for (var j = 0; j < toCopy.length; j++) {
+            var style = window.getComputedStyle(object.parentNode).getPropertyValue(toCopy[j]);
             if (style !== undefined) {
-                input.style[toCopy[i]] = style;
+                input.style[toCopy[j]] = style;
             }
         }
         input.name = editParamName;
@@ -228,7 +228,7 @@
                     return null;
                 }
 
-                if ($dom.keyPressed(event, 'Enter') && (this.value != '')) { // Save
+                if ($dom.keyPressed(event, 'Enter') && (this.value !== '')) { // Save
                     return saveFunction();
                 }
 
@@ -236,7 +236,7 @@
             };
         }
         input.onblur = function () {
-            if (this.value != '' || rawText == '') {
+            if (this.value !== '' || rawText === '') {
                 saveFunction();
             } else {
                 cancelFunction();

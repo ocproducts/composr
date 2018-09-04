@@ -39,7 +39,7 @@
         // Add new file input, if we are using naked file inputs
         if (window.attachmentTemplate.trim() !== '') { // ATTACHMENT.tpl
             var newDiv = document.createElement('div');
-            $dom.html(newDiv, window.attachmentTemplate.replace(/\_\_num_attachments\_\_/g, window.numAttachments));
+            $dom.html(newDiv, window.attachmentTemplate.replace(/__num_attachments__/g, window.numAttachments));
             addTo.appendChild(newDiv);
         }
 
@@ -91,7 +91,7 @@
 
             if (done) {
                 // Add field for next one
-                addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments);
+                addAnotherField = (number === window.numAttachments) && (window.numAttachments < window.maxAttachments);
                 if (addAnotherField) {
                     addAttachment(window.numAttachments + 1, fieldName);
                 }
@@ -110,8 +110,8 @@
 
             var ext = filepath.replace(/^.*\./, '').toLowerCase(),
                 isImage = (',' + $cms.configOption('valid_images') + ',').includes(',' + ext + ','),
-                isVideo = (',' + $cms.configOption('valid_videos') + ',').includes(',' + ext + ','),
-                isAudio = (',' + $cms.configOption('valid_audios') + ',').includes(',' + ext + ','),
+                // isVideo = (',' + $cms.configOption('valid_videos') + ',').includes(',' + ext + ','),
+                // isAudio = (',' + $cms.configOption('valid_audios') + ',').includes(',' + ext + ','),
                 isArchive = (ext === 'tar') || (ext === 'zip'),
                 prefix = '', suffix = '';
 
@@ -176,7 +176,7 @@
 
                 return $util.promiseSequence(promiseCalls).then(function () {
                     // Add field for next one
-                    var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
+                    var addAnotherField = (number === window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
 
                     if (addAnotherField) {
                         addAttachment(window.numAttachments + 1, fieldName);
@@ -246,7 +246,7 @@
 
                     promise.then(function () {
                         // Add field for next one
-                        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
+                        var addAnotherField = (number === window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
 
                         if (addAnotherField) {
                             addAttachment(window.numAttachments + 1, fieldName);
@@ -273,7 +273,7 @@
         var form = postTextArea.form;
 
         for (var i = 0; i < form.elements.length; i++) {
-            if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '') && (((form.elements[i].type != 'radio') && (form.elements[i].type != 'checkbox')) || (form.elements[i].checked)) && (form.elements[i].name != 'captcha')) {
+            if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '') && (((form.elements[i].type !== 'radio') && (form.elements[i].type !== 'checkbox')) || (form.elements[i].checked)) && (form.elements[i].name !== 'captcha')) {
                 var name = form.elements[i].name,
                     value = $cms.form.cleverFindValue(form, form.elements[i]);
 
@@ -319,7 +319,7 @@
             '',
             function (va) {
                 if (va != null) {
-                    $editing.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
+                    $editing.insertTextboxWrapping(post, '[quote="' + va + '"]', '[/quote]');
                 }
             },
             '{!comcode:INPUT_COMCODE_quote;^}'
@@ -333,7 +333,7 @@
             '',
             function (va) {
                 if (va != null) {
-                    $editing.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
+                    $editing.insertTextboxWrapping(post, '[box="' + va + '"]', '[/box]');
                 }
             },
             '{!comcode:INPUT_COMCODE_box;^}'
@@ -356,7 +356,7 @@
 
                             var add;
                             var element = document.getElementById(fieldName);
-                            add = '[block=\"' + $cms.filter.comcode(va) + '\" caption=\"' + $cms.filter.comcode(vb) + '\" type=\"tree\"]menu[/block]';
+                            add = '[block="' + $cms.filter.comcode(va) + '" caption="' + $cms.filter.comcode(vb) + '" type="tree"]menu[/block]';
                             $editing.insertTextbox(element, add);
                         },
                         '{!comcode:INPUT_COMCODE_menu;^}'
@@ -500,7 +500,7 @@
                 var element = document.getElementById(fieldName);
 
                 if ($editing.getSelectedText(element) !== '') {
-                    $editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]', '[/hide]');
+                    $editing.insertTextbox(element, '[hide="' + $cms.filter.comcode(va) + '"]', '[/hide]');
                     return;
                 }
 
@@ -509,7 +509,7 @@
                     '',
                     function (vb) {
                         if (vb) {
-                            $editing.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
+                            $editing.insertTextbox(element, '[hide="' + $cms.filter.comcode(va) + '"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
                     '{!comcode:INPUT_COMCODE_hide;^}'
@@ -581,13 +581,13 @@
 
         /* Type checking */
         function isInteger(val) {
-            if (val == '') {
+            if (val === '') {
                 return false;
             }
             var c;
             for (var i = 0; i < val.length; i++) {
                 c = val.charAt(i);
-                if ((c != '0') && (c != '1') && (c != '2') && (c != '3') && (c != '4') && (c != '5') && (c != '6') && (c != '7') && (c != '8') && (c != '9')) {
+                if ((c !== '0') && (c !== '1') && (c !== '2') && (c !== '3') && (c !== '4') && (c !== '5') && (c !== '6') && (c !== '7') && (c !== '8') && (c !== '9')) {
                     return false;
                 }
             }
@@ -609,7 +609,7 @@
             $cms.ui.prompt('{!javascript:ENTER_LINK_NAME;^}', '', null, '{!comcode:INPUT_COMCODE_url;^}').then(function (linkName) {
                 var element = document.getElementById(fieldName);
                 if (linkName != null) {
-                    $editing.insertTextbox(element, '[url=\"' + $cms.filter.comcode(linkName) + '\"]' + $cms.filter.comcode(url) + '[/url]');
+                    $editing.insertTextbox(element, '[url="' + $cms.filter.comcode(linkName) + '"]' + $cms.filter.comcode(url) + '[/url]');
                 }
             });
         });
@@ -667,9 +667,9 @@
         function _doInputPage(fieldName, result, vc) {
             var element = document.getElementById(fieldName);
             if (vc === '') {
-                $editing.insertTextboxWrapping(element, '[page=\"' + $cms.filter.comcode(result) + '\"]', '[/page]');
+                $editing.insertTextboxWrapping(element, '[page="' + $cms.filter.comcode(result) + '"]', '[/page]');
             } else {
-                $editing.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+                $editing.insertTextbox(element, '[page="' + $cms.filter.comcode(result) + '"]' + $cms.filter.comcode(vc) + '[/page]');
             }
         }
     }
@@ -690,7 +690,7 @@
                     var element = document.getElementById(fieldName);
 
                     if ($editing.getSelectedText(element) !== '') {
-                        $editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(va) + '\"]', '[/email]');
+                        $editing.insertTextbox(element, '[email="' + $cms.filter.comcode(va) + '"]', '[/email]');
                         return;
                     }
 
@@ -699,7 +699,7 @@
                         '',
                         function (vb) {
                             if (vb !== null) {
-                                $editing.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
+                                $editing.insertTextbox(element, '[email="' + $cms.filter.comcode(vb) + '"]' + $cms.filter.comcode(va) + '[/email]');
                             }
                         },
                         '{!comcode:INPUT_COMCODE_email;^}'
@@ -730,7 +730,7 @@
             $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
             return;
         }
-        return $editing.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
+        return $editing.insertTextboxWrapping(document.getElementById(fieldName), '[font="' + $cms.filter.comcode(face.value) + '" color="' + $cms.filter.comcode(colour.value) + '" size="' + $cms.filter.comcode(size.value) + '"]', '[/font]', true);
     }
 
     // ==================
@@ -774,16 +774,15 @@
         if ((autosaveValue !== '') && (autosaveValue !== '0')) {
             if (window.localStorage !== undefined) {
                 var fieldsToDo = {}, fieldsToDoCounter = 0, biggestLengthData = '';
-                var key, value;
+                var value;
                 var elementName, autosaveName;
                 for (var j = 0; j < form.elements.length; j++) {
                     elementName = (form.elements[j].name === undefined) ? form.elements[0][j].name : form.elements[j].name;
                     autosaveName = getAutosaveName(elementName);
                     if (localStorage[autosaveName] !== undefined) {
-                        key = autosaveName;
                         value = localStorage[autosaveName];
 
-                        if (form.elements[j].value != undefined && form.elements[j].value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                        if (form.elements[j].value != null && form.elements[j].value.replace(/\s/g, '') === value.replace(/\s/g, '')) {
                             continue;
                         }
 
@@ -801,7 +800,7 @@
                     }
                 }
 
-                if ((fieldsToDoCounter != 0) && (biggestLengthData.length > 25)) {
+                if ((fieldsToDoCounter !== 0) && (biggestLengthData.length > 25)) {
                     _restoreFormAutosave(form, fieldsToDo, biggestLengthData);
                     return; // If we had it locally, we won't let it continue on to try via AJAX
                 } else {
@@ -887,7 +886,7 @@
                 for (var j = 0; j < form.elements.length; j++) {
                     elementName = (form.elements[j].name === undefined) ? form.elements[0][j].name : form.elements[j].name;
                     autosave_name = getAutosaveName(elementName);
-                    if (autosave_name == key) {
+                    if (autosave_name === key) {
                         element = form.elements[j];
                         break;
                     }
@@ -909,7 +908,7 @@
                 }
             }
 
-            if ((fieldsToDoCounter != 0) && (biggestLengthData.length > 25)) {
+            if ((fieldsToDoCounter !== 0) && (biggestLengthData.length > 25)) {
                 _restoreFormAutosave(form, fieldsToDo, biggestLengthData);
             } else {
                 //$util.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
@@ -927,7 +926,7 @@
 
             $cms.ui.confirm('{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggestLengthData, null, '{!javascript:AUTO_SAVING;^}').then(function (result) {
                 if (result) {
-                    for (key in fieldsToDo) {
+                    for (var key in fieldsToDo) {
                         if (typeof fieldsToDo[key] !== 'string') continue;
 
                         if (form.elements[key] !== undefined) {
@@ -941,10 +940,10 @@
                     $cms.setCookie(encodeURIComponent(getAutosaveUrlStem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
 
                     if (window.localStorage !== undefined) {
-                        for (var key in fieldsToDo) {
-                            if (typeof fieldsToDo[key] !== 'string') continue;
+                        for (var key2 in fieldsToDo) {
+                            if (typeof fieldsToDo[key2] !== 'string') continue;
 
-                            autosaveName = getAutosaveName(key);
+                            autosaveName = getAutosaveName(key2);
                             if (localStorage[autosaveName] !== undefined) {
                                 delete localStorage[autosaveName];
                             }
@@ -966,10 +965,10 @@
                     break;
                 case 'select':
                     for (var i = 0; i < element.options.length; i++) {
-                        if (element.options[i].value == value) {
+                        if (element.options[i].value === value) {
                             element.selectedIndex = i;
-                            if (jQuery.fn.select2 !== undefined) {
-                                jQuery(element).trigger('change');
+                            if (window.jQuery && window.jQuery.fn.select2 !== undefined) {
+                                window.jQuery(element).trigger('change');
                             }
                         }
                     }
@@ -977,14 +976,14 @@
                 case 'input':
                     switch (element.type) {
                         case 'checkbox':
-                            element.checked = (value != '');
+                            element.checked = (value !== '');
                             break;
 
                         case 'radio':
                             value = '';
-                            for (var i = 0; i < form.elements.length; i++) {
-                                if ((form.elements[i].name == element.name) && (form.elements[i].value == value)) {
-                                    form.elements[i].checked = true;
+                            for (var j = 0; j < form.elements.length; j++) {
+                                if ((form.elements[j].name === element.name) && (form.elements[j].value === value)) {
+                                    form.elements[j].checked = true;
                                 }
                             }
                             break;
@@ -1161,7 +1160,7 @@
     function getAutosaveUrlStem() {
         var name = 'cms_autosave_' + window.location.pathname;
         if ((window.location.search.indexOf('type=') !== -1) || (window.location.search.indexOf('page_link') !== -1)/*editing Comcode page*/) {
-            name += window.location.search.replace(/[\?&]redirect=.*/, '').replace(/[\?&]keep_\w+=.*/, '').replace(/[\?&]cat=.*/, '');
+            name += window.location.search.replace(/[?&]redirect=.*/, '').replace(/[?&]keep_\w+=.*/, '').replace(/[?&]cat=.*/, '');
         }
         name = name.replace(/\./, '_'); // PHP can't use dots in field names
         return name;

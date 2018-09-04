@@ -228,8 +228,8 @@
         }
 
         alerts = responseXml.getElementsByTagName('pt');
-        for (i = 0; i < alerts.length; i++) {
-            displayAlert(alerts[i]);
+        for (var j = 0; j < alerts.length; j++) {
+            displayAlert(alerts[j]);
         }
 
         // Show in the software directly, if possible
@@ -604,7 +604,7 @@
         }
         notificationWrapper = getWrapper(notification);
         //Auto-close notification
-        if (settings.autoClose != 0 && notification && !notification.ieVerification && notification.addEventListener) {
+        if (Number(settings.autoClose) !== 0 && notification && !notification.ieVerification && notification.addEventListener) {
             notification.addEventListener("show", function () {
                 var notification = notificationWrapper;
                 setTimeout(function () {

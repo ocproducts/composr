@@ -45,6 +45,7 @@
         var stdcommand = strVal(params.stdcommand);
 
         if (stdcommand) {
+            // eslint-disable-next-line no-eval
             eval(stdcommand);
         }
     };
@@ -72,7 +73,9 @@
 
     // Deal with Commandr history
     function commandrHandleHistory(element, keyCode, e) {
-        if ((keyCode == 38) && (window.previousCommands.length > 0)) { // Up button
+        keyCode = Number(keyCode);
+
+        if ((keyCode === 38) && (window.previousCommands.length > 0)) { // Up button
             e.preventDefault();
 
             if (window.currentCommand == null) {
@@ -84,7 +87,7 @@
                 element.value = window.previousCommands[window.currentCommand];
             }
             return false;
-        } else if ((keyCode == 40) && (window.previousCommands.length > 0)) { // Down button
+        } else if ((keyCode === 40) && (window.previousCommands.length > 0)) { // Down button
             if (e) {
                 e.preventDefault();
             }
@@ -107,7 +110,7 @@
     }
 
     // Submit an Commandr command
-    function commandrFormSubmission(command, form) {
+    function commandrFormSubmission(command) {
         // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
         // var command=document.getElementById('commandr-command').value;
         // Send it through XMLHttpRequest, and append the results.
@@ -145,7 +148,6 @@
         document.getElementById('commandr-command').focus();
 
         var command = document.getElementById('commandr-command');
-        var commandPrompt = document.getElementById('command-prompt');
         var cl = document.getElementById('commands-go-here');
         var newCommand = document.createElement('div');
         var pastCommandPrompt = document.createElement('p');
@@ -210,7 +212,7 @@
 
         if (stdcommand !== '') {
             // JavaScript commands; eval() them.
-            eval(stdcommand);
+            eval(stdcommand); // eslint-disable-line no-eval
 
             var stdcommandText = document.createTextNode('{!commandr:JAVASCRIPT_EXECUTED;^}');
             var stdcommandTextP = document.createElement('p');
@@ -219,27 +221,27 @@
             pastCommand.appendChild(stdcommandTextP);
         }
 
-        var stderrText, stderrTextP;
+        var stderrText2, stderrTextP2;
         if ((stdcommand === '') && (!stdhtmlEl.childNodes) && (stdout === '')) {
             // Exit with an error.
             if (stderr !== '') {
-                stderrText = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
+                stderrText2 = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
             } else {
-                stderrText = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
+                stderrText2 = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
             }
-            stderrTextP = document.createElement('p');
-            stderrTextP.className = 'error_output';
-            stderrTextP.appendChild(stderrText);
-            pastCommand.appendChild(stderrTextP);
+            stderrTextP2 = document.createElement('p');
+            stderrTextP2.className = 'error_output';
+            stderrTextP2.appendChild(stderrText2);
+            pastCommand.appendChild(stderrTextP2);
 
             return false;
         }
         else if (stderr !== '') {
-            stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n' + stderr);
-            stderrTextP = document.createElement('p');
-            stderrTextP.className = 'error_output';
-            stderrTextP.appendChild(stderrText);
-            pastCommand.appendChild(stderrTextP);
+            stderrText2 = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n' + stderr);
+            stderrTextP2 = document.createElement('p');
+            stderrTextP2.className = 'error_output';
+            stderrTextP2.appendChild(stderrText2);
+            pastCommand.appendChild(stderrTextP2);
         }
 
         newCommand.appendChild(pastCommand);

@@ -1,4 +1,5 @@
 (function ($cms) {
+    /*global google:false, MarkerClusterer:false */
     'use strict';
 
     $cms.templates.formScreenInputMapPosition = function formScreenInputMapPosition(params, container) {
@@ -27,8 +28,7 @@
         function googleMapUsersInitialize() {
             marker = new google.maps.Marker();
 
-            var bounds = new google.maps.LatLngBounds(),
-                center = new google.maps.LatLng(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
+            var center = new google.maps.LatLng(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
 
             map = new google.maps.Map(document.getElementById('map-position-' + name), {
                 zoom: (latitude !== '') ? 12 : 1,
@@ -149,7 +149,7 @@
             var infoWindow = new google.maps.InfoWindow();
 
             // Close InfoWindow when clicking anywhere on the map
-            google.maps.event.addListener(dataMap, 'click', function () {
+            google.maps.event.addListener(window.dataMap, 'click', function () {
                 infoWindow.close();
             });
 
@@ -168,10 +168,10 @@
             }
 
             // Show markers
-            var latLng, markerOptions, marker;
+            var latLng, markerOptions, marker, markers;
             var boundLength = 0;
             if (cluster) {
-                var markers = [];
+                markers = [];
             }
 
             if ((minLatitude !== maxLatitude) && (minLongitude !== maxLongitude)) {
@@ -188,7 +188,7 @@
                 }
             }
 
-            var boundByContents = (boundLength == 0);
+            var boundByContents = (boundLength === 0);
             for (var i = 0; i < data.length; i++) {
                 latLng = new google.maps.LatLng(data[i][1], data[i][2]);
                 if (boundByContents) {
@@ -204,7 +204,7 @@
                 /*{$,Reenable if you have put appropriate images in place
                  var categoryIcon = '{$BASE_URL;/}/themes/default/images_custom/icons/map/catalogue_category_'+data[i][3] + '.png';
                  marker_options.icon = categoryIcon;}*/
-                if (data[i][6] == 1) {
+                if (Number(data[i][6]) === 1) {
                     var starIcon = $cms.getBaseUrl() + '/themes/default/images_custom/maps/star_highlight.png';
                     markerOptions.icon = starIcon;
                 }
@@ -214,41 +214,41 @@
                 if (cluster) {
                     markers.push(marker);
                 } else {
-                    marker.setMap(dataMap);
+                    marker.setMap(window.dataMap);
                 }
 
                 google.maps.event.addListener(marker, 'click', (function (argMarker, entryTitle, entryId, entryContent) {
                     return function () {
                         // Dynamically load entry details only when their marker is clicked
                         var content = entryContent.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
-                        if (content != '') {
-                            infoWindow.setContent('<div class="global-middle-faux float-surrounder">' + content + '<\/div>');
-                            infoWindow.open(dataMap, argMarker);
+                        if (content !== '') {
+                            infoWindow.setContent('<div class="global-middle-faux float-surrounder">' + content + '</div>');
+                            infoWindow.open(window.dataMap, argMarker);
                         }
                     };
                 }(marker, data[i][0], data[i][4], data[i][5]))); // These are the args passed to the dynamic function above
             }
 
             if (cluster) {
-                var markerCluster = new MarkerClusterer(dataMap, markers);
+                /*var markerCluster = */new MarkerClusterer(window.dataMap, markers);
             }
 
             // Autofit the map around the markers
             if (center) {
-                if (boundLength == 0) { // We may have to center at given lat/long after all if there are no pins
-                    dataMap.setCenter(specifiedCenter);
-                } else if (boundLength == 1) { // Center around the only pin
-                    dataMap.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
+                if (boundLength === 0) { // We may have to center at given lat/long after all if there are no pins
+                    window.dataMap.setCenter(specifiedCenter);
+                } else if (boundLength === 1) { // Center around the only pin
+                    window.dataMap.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
                 } else { // Good - autofit lots of pins
-                    dataMap.fitBounds(bounds);
+                    window.dataMap.fitBounds(bounds);
                 }
             }
             // Sample code to grab clicked positions
             var lastPoint;
-            google.maps.event.addListener(dataMap, 'mousemove', function (point) {
+            google.maps.event.addListener(window.dataMap, 'mousemove', function (point) {
                 lastPoint = point.latLng;
             });
-            google.maps.event.addListener(dataMap, 'click', function () {
+            google.maps.event.addListener(window.dataMap, 'click', function () {
                 $util.inform(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }

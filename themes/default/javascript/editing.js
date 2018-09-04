@@ -76,7 +76,7 @@
             $cms.setCookie('use_wysiwyg', '1', 3000);
         }
 
-        function _toggleWysiwyg(name) {
+        function _toggleWysiwyg() {
             var isWysiwygOn = $editing.wysiwygOn(),
                 forms = document.getElementsByTagName('form'),
                 so = document.getElementById('post-special-options'),
@@ -85,11 +85,12 @@
             if (isWysiwygOn) {
                 // Find if the WYSIWYG has anything in it - if not, discard
                 var allEmpty = true,
-                    myregexp = new RegExp(/((\s)|(<p\d*\/>)|(<\/p>)|(<p>)|(&nbsp;)|(<br[^>]*>))*/);
+                    myregexp = new RegExp(/((\s)|(<p\d*\/>)|(<\/p>)|(<p>)|(&nbsp;)|(<br[^>]*>))*/),
+                    id;
 
                 for (var fid = 0; fid < forms.length; fid++) {
                     for (var counter = 0; counter < forms[fid].elements.length; counter++) {
-                        var id = forms[fid].elements[counter].id;
+                        id = forms[fid].elements[counter].id;
                         if (window.wysiwygEditors[id] !== undefined) {
                             if (window.wysiwygEditors[id].getData().replace(myregexp, '') !== '') {
                                 allEmpty = false;
@@ -129,7 +130,7 @@
             }
         }
 
-        function enableWysiwyg(forms, so, so2) {
+        function enableWysiwyg(forms) {
             forms = window.arrVal(forms);
 
             $editing.wysiwygOn = function () {
@@ -226,8 +227,8 @@
                         var result = xhr.responseXML.querySelector('result');
                         textarea.value = result.textContent.replace(/\s*$/, '');
                     }
-                    if (textarea.value.includes('{\$,page hint: no_wysiwyg}') && (textarea.value !== '')) {
-                        textarea.value += '{\$,page hint: no_wysiwyg}';
+                    if (textarea.value.includes('{\$,page hint: no_wysiwyg}') && (textarea.value !== '')) { // eslint-disable-line no-useless-escape
+                        textarea.value += '{\$,page hint: no_wysiwyg}'; // eslint-disable-line no-useless-escape
                     }
 
                     postWysiwygDisable(textarea);
@@ -342,7 +343,7 @@
 
                 window.wysiwygOriginalComcode[id] = textarea.value;
                 if (!ajaxCopy) {
-                    if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value !== '') && ((textarea.defaultValue === ''/*LEGACY IE bug*/) || (textarea.defaultValue == textarea.value))) {// The extra conditionals are for if back button used
+                    if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value !== '') && ((textarea.defaultValue === ''/*LEGACY IE bug*/) || (textarea.defaultValue === textarea.value))) {// The extra conditionals are for if back button used
                         textarea.value = postingForm.elements[id + '_parsed'].value;
                     }
 
@@ -436,8 +437,8 @@
             // CSS to run inside the CKEditor frame
             linkedSheets = document.getElementsByTagName('style');
             var css = '';
-            for (counter = 0; counter < linkedSheets.length; counter++) {
-                css += $dom.html(linkedSheets[counter]);
+            for (var counter2 = 0; counter2 < linkedSheets.length; counter2++) {
+                css += $dom.html(linkedSheets[counter2]);
             }
             window.CKEDITOR.addCss(css);
 
@@ -486,7 +487,7 @@
                 }
             });
 
-            editor.on('instanceReady', function (event) {
+            editor.on('instanceReady', function () {
                 editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
                 if (window.$jqueryAutocomplete !== undefined) {
@@ -533,7 +534,7 @@
         }
     }
 
-    function findTagsInEditor(editor, element) {
+    function findTagsInEditor(editor) {
         if (!editor.document || !editor.document.$ || !editor.document.$.querySelector('body')) {
             return;
         }
@@ -647,7 +648,7 @@
                     }
 
                     var selfOb = this;
-                    if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText != tagText)) {
+                    if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText !== tagText)) {
                         selfOb.tagText = tagText;
                         selfOb.isOver = true;
 
@@ -875,7 +876,7 @@
                 }
 
                 after = editor.getData();
-                if (after == before) {
+                if (after === before) {
                     throw new Error('Failed to insert');
                 }
 
@@ -910,7 +911,7 @@
             var editor = window.wysiwygEditors[element.id];
             return window.getWYSISWYGSelectedHtml(editor);
         }
-        return window.getTextareaSelectedText(element);
+        return getTextareaSelectedText(element);
     }
 
     /**
@@ -920,7 +921,7 @@
      */
     function getWYSISWYGSelectedHtml(editor) {
         var mySelection = editor.getSelection();
-        if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) {
+        if (!mySelection || mySelection.getType() === window.CKEDITOR.SELECTION_NONE) {
             return '';
         }
 
