@@ -569,7 +569,9 @@
             '{!javascript:ENTER_ATTACHMENT;^}',
             '',
             function (val) {
-                if (!isInteger(val)) {
+                val = Number(val);
+
+                if (!Number.isInteger(val)) {
                     $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
                 } else {
                     var element = document.getElementById(fieldName);
@@ -578,21 +580,6 @@
             },
             '{!comcode:INPUT_COMCODE_attachment;^}'
         );
-
-        /* Type checking */
-        function isInteger(val) {
-            if (val === '') {
-                return false;
-            }
-            var c;
-            for (var i = 0; i < val.length; i++) {
-                c = val.charAt(i);
-                if ((c !== '0') && (c !== '1') && (c !== '2') && (c !== '3') && (c !== '4') && (c !== '5') && (c !== '6') && (c !== '7') && (c !== '8') && (c !== '9')) {
-                    return false;
-                }
-            }
-            return true;
-        }
     }
 
     function doInputUrl(fieldName, va) {
