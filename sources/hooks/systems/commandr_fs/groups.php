@@ -326,7 +326,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $auto_mark_read = $this->_default_property_int($properties, 'auto_mark_read');
 
         require_code('cns_members');
-        $custom_fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 0, null);
+        $custom_fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, null, null);
         $actual_custom_fields = array();
         $props_already = array();
         foreach ($custom_fields as $i => $custom_field) {

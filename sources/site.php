@@ -59,7 +59,7 @@ function init__site()
                     $non_canonical[$n] = null;
                 }
             }
-            set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+            set_http_status_code('301');
             require_code('urls');
             header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
             exit();
@@ -97,7 +97,7 @@ function init__site()
                 ($ruri != '/')
             ) {
                 require_code('permissions');
-                set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+                set_http_status_code('301');
                 header('Location: ' . escape_header(get_self_url(true)));
                 exit();
             }
@@ -106,9 +106,10 @@ function init__site()
 
     // Search engine having session in URL, we don't like this
     if ((get_bot_type() !== null) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_string('keep_session', null) !== null)) {
-        set_http_status_code('301');
-        header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null))));
-        exit();
+        //Too risky, what if something sets it at run-time. Relying on canonical URL is better.
+        //set_http_status_code('301');
+        //header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null))));
+        //exit();
     }
 
     $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));

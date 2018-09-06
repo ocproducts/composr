@@ -175,7 +175,7 @@ function reprocess_url($url, $operation_base_url)
             if (($m_type == 'src') || ($m_type == 'data') || ($is_non_local)) {
                 $new_url = $m_url;
             } else {
-                $new_url = $self_url . '&url=' . rawurlencode($m_url);
+                $new_url = $self_url . '&url=' . urlencode($m_url);
             }
 
             if ((strtolower($m_type) == 'action') && (strpos($new_url, '?') !== false)) {

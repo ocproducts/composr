@@ -424,6 +424,48 @@ abstract class Resource_fs_base
     }
 
     /**
+     * Find an float default property, defaulting to 0.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?float The value (null: null value)
+     */
+    protected function _default_property_float($properties, $property)
+    {
+        if (!array_key_exists($property, $properties)) {
+            return 0;
+        }
+        if (is_null($properties[$property])) {
+            return 0;
+        }
+        if (is_float($properties[$property])) {
+            return $properties[$property];
+        }
+        return floatval($properties[$property]);
+    }
+
+    /**
+     * Find a default property, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?float The value (null: null value)
+     */
+    protected function _default_property_float_null($properties, $property)
+    {
+        if (!array_key_exists($property, $properties)) {
+            return null;
+        }
+        if (is_null($properties[$property])) {
+            return null;
+        }
+        if (is_float($properties[$property])) {
+            return $properties[$property];
+        }
+        return floatval($properties[$property]);
+    }
+
+    /**
      * Convert a category to an integer, defaulting to null if it is blank.
      *
      * @param  ?ID_TEXT $category The category value (blank: root) (null: root)
@@ -685,7 +727,7 @@ abstract class Resource_fs_base
             $name = 'unnamed';
         }
         require_code('urls2');
-        $max_moniker_length = intval(get_option('max_moniker_length'));
+        $max_moniker_length = min(80, intval(get_option('max_moniker_length')));
         return substr($name, 0, $max_moniker_length);
     }
 

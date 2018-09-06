@@ -26,6 +26,8 @@ class css_and_js_test_set extends cms_test_case
             @set_time_limit(0);
         }
 
+        disable_php_memory_limit();
+
         $_GET['keep_no_minify'] = '1';
 
         require_code('webstandards');

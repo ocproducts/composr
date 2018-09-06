@@ -2124,7 +2124,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     require_code('images');
                     is_plupload(true);
                     $enforce_type = CMS_UPLOAD_ANYTHING;
-                    if (((empty($attributes['type'])) || ($attributes['type'] == 'image_websafe')) && (array_key_exists('file' . $_id, $_FILES)) && (is_image($_FILES['file' . $_id]['name']))) {
+                    if (((empty($attributes['type'])) || ($attributes['type'] == 'image_websafe')) && (array_key_exists('file' . $_id, $_FILES)) && (is_saveable_image($_FILES['file' . $_id]['name']))) {
                         $enforce_type = CMS_UPLOAD_IMAGE; // Images cleanup pipeline
                     }
                     $urls = get_url('', 'file' . $_id, 'uploads/attachments', 2, $enforce_type, ((!array_key_exists('thumb', $attributes)) || ($attributes['thumb'] != '0')) && ($attributes['thumb_url'] == ''), '', '', true, true, true, true, $source_member);
@@ -2203,7 +2203,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                 // Thumbnail generation
                 if ($attributes['thumb_url'] == '') {
-                    if (is_image($original_filename)) {
+                    if (is_saveable_image($original_filename)) {
                         if (function_exists('imagetypes')) {
                             require_code('images');
                             if (!is_saveable_image($url)) {

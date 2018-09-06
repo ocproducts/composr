@@ -33,6 +33,8 @@
 
 	var block=document.getElementById('{$GET%,field_set_id}');
 	add_event_listener_abstract(block,'click',function() {
-		click_link(document.getElementById('choose_{NAME;/}'));
+		window.setTimeout(function() {
+			click_link(document.getElementById('choose_{NAME;/}'));
+		},0);
 	});
 //]]></script>

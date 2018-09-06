@@ -46,16 +46,16 @@ class geocoding_test_set extends cms_test_case
     {
         require_code('locations_geocoding');
 
-        $errormsg = '';
+        $errormsg = new Tempcode();
         $address = reverse_geocode(52.516667, 13.388889, $errormsg);
         if ((get_param_integer('debug', 0) == 1) || ($address === null))  {
-            var_dump($errormsg);
+            var_dump($errormsg->evaluate());
             var_dump($address);
         }
         $this->assertTrue($address[2] == 'Berlin');
         $this->assertTrue($address[6] == 'DE');
 
-        $errormsg = '';
+        $errormsg = new Tempcode();
         $address = reverse_geocode(64.133333, -21.933333, $errormsg);
         if ((get_param_integer('debug', 0) == 1) || ($address === null))  {
             var_dump($errormsg);

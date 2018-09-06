@@ -116,7 +116,7 @@ Be aware that feeds may be filtered or empty depending on access permissions. Pa
 [surround]
 [media width="150" description="Viewing an external RSS feed" float="right"]data_custom/images/docs/tut_adv_news/adv_news_rss_2.png[/media]
 [media width="150" description="Adding a [tt]main_rss[/tt] block via the Block construction assistant" float="right"]data_custom/images/docs/tut_adv_news/main_rss_add.png[/media]
-Composr itself provides two blocks that allow display of RSS and atom feeds in a news-like fashion (including feeds from other Composr sites, or any other site that provides them).
+Composr itself provides two blocks that allow display of RSS and atom feeds in a news-like fashion (including feeds from other Composr sites, or any other site that provides them). HTTP-authentication is supported in the URL syntax.
 
 The [page="_SEARCH:tut_comcode"]Comcode[/page] syntax you should use to place the main block in a page is as follows:
 [code="Comcode"][block="http://example.com/feed.xml"]main_rss[/block][/code]

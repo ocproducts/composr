@@ -39,7 +39,7 @@ class antispam_test_set extends cms_test_case
 
     public function testTornevallSubmit()
     {
-        $this->assertTrue(is_string(http_download_file('https://dnsbl.tornevall.org/soap/soapsubmit.php'))); // Very rough, at least tells us URL still exists
+        $this->assertTrue(is_string(http_download_file('https://www.tornevall.net/'))); // Very rough, at least tells us URL still exists
     }
 
     public function testStopForumSpamSubmit()

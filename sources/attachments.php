@@ -46,7 +46,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     require_code('images');
 
     // Make sure formal thumbnail still exists / create if missing
-    if (is_image($attachment_row['a_original_filename'])) {
+    if (is_saveable_image($attachment_row['a_original_filename'])) {
         $attachment_row['a_thumb_url'] = ensure_thumbnail($attachment_row['a_url'], $attachment_row['a_thumb_url'], 'attachments', 'attachments', $attachment_row['id'], 'a_thumb_url', null, true);
     }
 

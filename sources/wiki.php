@@ -1022,6 +1022,8 @@ function dispatch_wiki_post_notification($post_id, $type)
  */
 function dispatch_wiki_page_notification($page_id, $type)
 {
+    require_lang('wiki');
+
     $page_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $page_id)));
     $_the_message = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'description', array('id' => $page_id)));
 

@@ -27,16 +27,20 @@ class Hook_choose_composr_homesite_addon
      * This will get the XML file from compo.sr.
      *
      * @param  ?ID_TEXT $id The ID to do under (null: root)
+     * @param  ?ID_TEXT $default The ID to select by default (null: none)
      * @return string The XML file
      */
-    public function get_file($id)
+    protected function get_file($id, $default)
     {
         $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
         $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
         if (!is_null($id)) {
             $v = $id;
         }
-        $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar';
+        $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . urlencode($v) . '&file_type=tar';
+        if ($default !== null) {
+            $url .= '&default=' . urlencode($default);
+        }
         require_code('character_sets');
         $contents = http_download_file($url);
         $utf = ($GLOBALS['HTTP_CHARSET'] == 'utf-8'); // We have to use 'U' in the regexp to work around a Chrome parser bug (we can't rely on convert_to_internal_encoding being 100% correct)
@@ -59,7 +63,7 @@ class Hook_choose_composr_homesite_addon
      */
     public function run($id, $options, $default = null)
     {
-        return $this->get_file($id);
+        return $this->get_file($id, $default);
     }
 
     /**
@@ -73,18 +77,17 @@ class Hook_choose_composr_homesite_addon
      */
     public function simple($id, $options, $it = null, $prefix = '')
     {
-        $file = $this->get_file($id);
+        $file = $this->get_file($id, $it);
+
+        $it_exp = ($it === null) ? array() : explode(',', $it);
 
         $list = new Tempcode();
-        if (is_null($id)) {// Root, needs an NA option
-            $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
-        }
 
         $matches = array();
 
         $num_matches = preg_match_all('#<entry id="(\d+)"[^<>]* title="([^"]+)"#', $file, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $list->attach(form_input_list_entry('http://compo.sr/site/dload.php?id=' . urlencode($matches[1][$i]), false, $prefix . $matches[2][$i]));
+            $list->attach(form_input_list_entry('http://compo.sr/site/dload.php?id=' . urlencode($matches[1][$i]), in_array($matches[1][$i], $it_exp), $prefix . $matches[2][$i]));
         }
 
         $num_matches = preg_match_all('#<category id="(\d+)" title="([^"]+)"#', $file, $matches);

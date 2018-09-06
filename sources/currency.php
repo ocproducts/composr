@@ -247,7 +247,7 @@ function _currency_convert__currency_conv_api($amount, $from_currency, $to_curre
         if (isset($data[$rate_key]['val'])) {
             $rate = $data[$rate_key]['val'];
             set_value($cache_key, float_to_raw_string($rate, 10, false), true); // Will be de-cached in currency_convert
-            return (float)$rate * $amount;
+            return round((float)$rate * $amount, 2);
         }
     }
     return null;

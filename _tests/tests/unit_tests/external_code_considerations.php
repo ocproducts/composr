@@ -72,6 +72,7 @@ class external_code_considerations_test_set extends cms_test_case
             $skip = array(
                 'data_custom/latest_activity.txt',
                 'data_custom/permissioncheckslog.php',
+                'data_custom/execute_temp.php',
                 'docs/api',
                 '_old',
                 'nbproject',

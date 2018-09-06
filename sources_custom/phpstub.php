@@ -2210,8 +2210,9 @@ function krsort(&$array)
  * Sort an array by key.
  *
  * @param  array $array The array to sort.
+ * @param  integer $sort_flags Flags.
  */
-function ksort(&$array)
+function ksort(&$array, $sort_flags = 0)
 {
 }
 
@@ -2970,8 +2971,9 @@ function sin($arg)
  * Sort an array.
  *
  * @param  array $array The array.
+ * @param  integer $sort_flags Flags.
  */
-function sort(&$array)
+function sort(&$array, $sort_flags = 0)
 {
 }
 

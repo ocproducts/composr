@@ -17,7 +17,7 @@ find . -name "*.txt" -exec dos2unix {} \;
 find . -name "*.md" -exec dos2unix {} \;
 dos2unix .htaccess
 
-echo "Adding byte order marks"
+echo "Adding byte order marks (need https://code.google.com/archive/p/utf-bom-utils/downloads)"
 find . -name "*.js" -exec bom_add {} \;
 
 echo "Done!"

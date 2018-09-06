@@ -41,54 +41,25 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
     // Syndicate to dnsbl.tornevall.org
     // ================================
 
-    $can_do_torn = (class_exists('SoapClient')) && (get_option('tornevall_api_username') != '');
+    $can_do_torn = (get_option('tornevall_api_username') != '');
 
     if ($can_do_torn) {
-        $torn_url = 'http://dnsbl.tornevall.org/soap/soapsubmit.php';
+        $torn_url = 'https://api.tornevall.net/3.0/dnsbl/';
 
-        if (!class_exists('TornUserinfoClass')) {
-            /**
-             * Tornevall interfacing class (antispam).
-             *
-             * @package    core_database_drivers
-             */
-            class TornUserinfoClass
-            {
-                public $Username;
-                public $Password;
-            }
-        }
+        $username = get_option('tornevall_api_username');
+        $password = get_option('tornevall_api_password');
 
-        $soapconf = array(
-            'location' => $torn_url,
-            'uri' => $torn_url,
-            'trace' => 0,
-            'exceptions' => 0,
-            'connection_timeout' => 0
-        );
+        $payload = json_encode(array('ip' => array($ip_addr)));
 
-        $userinfo = new TornUserinfoClass();
-        $userinfo->Username = get_option('tornevall_api_username');
-        $userinfo->Password = get_option('tornevall_api_password');
-
-        $add = array();
-        $add['ip'] = $ip_addr;
-        if ($username != '') {
-            $add['username'] = $username;
-        }
-        if ($email != '') {
-            $add['mail'] = $email;
-        }
-
-        $client = new SoapClient(null, $soapconf);
-        $udata = array('userinfo' => $userinfo);
-        $result = $client->submit($udata, array('add' => $add));
+        $_result = http_download_file($torn_url, null, $trigger_error, false, 'Composr', array($payload), null, null, null, null, null, null, null, 6.0, true, null, null, 'PUT', 'application/json');
         if ($trigger_error) {
-            if (is_object($result)) {
-                attach_message('dnsbl.tornevall.org: ' . $result->getMessage(), 'warn');
-            }
-            if (isset($result['error'])) {
-                attach_message('dnsbl.tornevall.org: ' . $result['error']['message'], 'warn');
+            $result = @json_decode($_result);
+            if (isset($result['response'])) {
+                if (isset($result['errors'])) {
+                    attach_message('dnsbl.tornevall.org: ' . $result['errors']['faultstring'], 'warn');
+                }
+            } else {
+                attach_message('dnsbl.tornevall.org: ' . do_lang('INTERNAL_ERROR'), 'warn');
             }
         }
 

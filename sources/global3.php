@@ -1500,7 +1500,6 @@ function _multi_sort($a, $b)
             }
 
             if ($backwards) { // Flip around
-                $key = substr($key, 1);
                 if ((is_numeric($av)) && (is_numeric($bv))) {
                     $ret = -strnatcasecmp($av, $bv);
                 } else {

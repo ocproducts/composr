@@ -52,7 +52,7 @@ function translate_text($text, $context = 0, $from = null, $to = null)
         }
     } else {
         $_from = null;
-        if (($to === 'EN') && (preg_match('#^[\x00-\x7F]*$#', $text) != 0)) {
+        if (($to === 'EN') && (preg_match('#^[\x00-\x7F]*$#', ($context == TRANS_TEXT_CONTEXT_plain) ? $text : html_entity_decode($text, ENT_QUOTES, 'utf-8')) != 0)) {
             return null; // Looks like it's already in English (no other languages work well in ASCII): don't waste money on translation
         }
     }

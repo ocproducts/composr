@@ -383,6 +383,8 @@ function _notifications_build_category_tree($_notification_types, $notification_
 {
     $_notification_categories = $ob->create_category_tree($notification_code, $id);
 
+    $allowed_setting = $ob->allowed_settings($notification_code);
+
     $notification_categories = array();
     foreach ($_notification_categories as $c) {
         $notification_category = (is_integer($c['id']) ? strval($c['id']) : $c['id']);
@@ -405,6 +407,12 @@ function _notifications_build_category_tree($_notification_types, $notification_
                 }
 
                 $done_get_change = true;
+
+                // Need to reload setting
+                $current_setting = notifications_setting($notification_code, $notification_category);
+                if ($current_setting == A__STATISTICAL) {
+                    $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
+                }
             } else {
                 $force_change_children_to_children = false;
             }
@@ -412,19 +420,8 @@ function _notifications_build_category_tree($_notification_types, $notification_
             $force_change_children_to_children = $force_change_children_to;
         }
 
-        $current_setting = notifications_setting($notification_code, $notification_category);
-        if ($current_setting == A__STATISTICAL) {
-            $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
-        }
-
         $notification_types = array();
         foreach ($_notification_types as $possible => $ntype) {
-            $current_setting = notifications_setting($notification_code, $notification_category);
-            if ($current_setting == A__STATISTICAL) {
-                $current_setting = _find_member_statistical_notification_type(get_member(), $notification_code);
-            }
-            $allowed_setting = $ob->allowed_settings($notification_code);
-
             $available = (($possible & $allowed_setting) != 0);
 
             if (has_interesting_post_fields()) {

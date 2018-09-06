@@ -363,6 +363,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
     dispatch_member_mention_notifications('download_category', strval($id));
 
     require_code('sitemap_xml');
+    require_code('downloads');
     notify_sitemap_node_add('_SEARCH:downloads:browse:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $id));
 
     return $id;
@@ -434,6 +435,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     }
 
     require_code('sitemap_xml');
+    require_code('downloads');
     notify_sitemap_node_edit('_SEARCH:downloads:browse:' . strval($category_id), may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 }
 
@@ -939,7 +941,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         'out_mode_id' => $out_mode_id,
         'category_id' => $category_id,
         'url' => $url,
-        'author' => $author,
+        'author' => cms_mb_substr($author, 0, 80),
         'url_redirect' => $url_redirect,
         'validated' => $validated,
         'add_date' => $add_date,
@@ -1014,6 +1016,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     dispatch_member_mention_notifications('download', strval($id), $submitter);
 
     require_code('sitemap_xml');
+    require_code('downloads');
     notify_sitemap_node_add('_SEARCH:downloads:entry:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 
     return $id;
@@ -1156,7 +1159,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         'validated' => $validated,
         'category_id' => $category_id,
         'url' => $url,
-        'author' => $author,
+        'author' => cms_mb_substr($author, 0, 80),
         'url_redirect' => $url_redirect,
         'default_pic' => $default_pic,
         'out_mode_id' => $out_mode_id,
@@ -1228,6 +1231,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     );
 
     require_code('sitemap_xml');
+    require_code('downloads');
     notify_sitemap_node_edit('_SEARCH:downloads:entry:' . strval($id), may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 }
 

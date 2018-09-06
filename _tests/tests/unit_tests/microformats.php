@@ -66,6 +66,7 @@ class microformats_test_set extends cms_test_case
         $url = 'https://waterpigs.co.uk/php-mf2/';
         $post_params = array('html' => $data, 'convertClassic' => '1');
         $result = http_download_file($url, null, true, false, 'Composr', $post_params, null, 'application/json');
+        @var_dump($post_params);@exit($result);//TODO
         $_result = json_decode($result, true);
         return $_result;
     }

@@ -141,7 +141,6 @@ class Hook_addon_registry_testing_platform
             'sources_custom/phpstub.php',
             '_tests/codechecker/.htaccess',
             '_tests/codechecker/build.sh',
-            '_tests/codechecker/checker.ini',
             '_tests/codechecker/code_quality.php',
             '_tests/codechecker/codechecker.app/.htaccess',
             '_tests/codechecker/codechecker.app/Contents/.htaccess',

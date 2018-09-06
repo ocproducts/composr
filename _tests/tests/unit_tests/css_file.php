@@ -167,6 +167,10 @@ class css_file_test_set extends cms_test_case
             foreach ($directories as $dir => $to_use) {
                 $dh = opendir($dir);
                 while (($f = readdir($dh)) !== false) {
+					if ($f == '.' || $f == '..') {
+						continue;
+					}
+
                     // Exceptions
                     $exceptions = array(
                         'columns.css',
