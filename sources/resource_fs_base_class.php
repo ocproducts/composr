@@ -424,6 +424,48 @@ abstract class Resource_fs_base
     }
 
     /**
+     * Find an float default property, defaulting to 0.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?float The value (null: null value)
+     */
+    protected function _default_property_float($properties, $property)
+    {
+        if (!array_key_exists($property, $properties)) {
+            return 0;
+        }
+        if (is_null($properties[$property])) {
+            return 0;
+        }
+        if (is_float($properties[$property])) {
+            return $properties[$property];
+        }
+        return floatval($properties[$property]);
+    }
+
+    /**
+     * Find a default property, defaulting to null.
+     *
+     * @param  array $properties The properties
+     * @param  ID_TEXT $property The property
+     * @return ?float The value (null: null value)
+     */
+    protected function _default_property_float_null($properties, $property)
+    {
+        if (!array_key_exists($property, $properties)) {
+            return null;
+        }
+        if (is_null($properties[$property])) {
+            return null;
+        }
+        if (is_float($properties[$property])) {
+            return $properties[$property];
+        }
+        return floatval($properties[$property]);
+    }
+
+    /**
      * Find a float default property, defaulting to 0.
      *
      * @param  array $properties The properties
