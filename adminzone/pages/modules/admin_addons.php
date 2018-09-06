@@ -504,11 +504,11 @@ class Module_admin_addons
         $set_title = do_lang_tempcode('SOURCE');
         $field_set = alternate_fields_set__start($set_name);
 
-        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), 'file', false, null, null, true, 'tar'));
-
         $to_import = get_param_string('to_import', null);
 
         $field_set->attach(form_input_tree_list(do_lang_tempcode('DOWNLOAD'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_COMPOSR_HOMESITE', escape_html(get_brand_page_url(array('page' => 'community'), 'site'))), 'url', null, 'choose_composr_homesite_addon', array(), false, $to_import, false, null, true));
+
+        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD'), 'file', false, null, null, true, 'tar'));
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
 
@@ -1171,7 +1171,7 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', post_param_string('name'))) . date('-dmY-Hm', time()) . '.tar';
+        $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', post_param_string('name'))) . date('-dmY-Hi', time()) . '.tar';
 
         $files = array();
         foreach ($_POST as $key => $val) {
