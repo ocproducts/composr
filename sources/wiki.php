@@ -995,6 +995,8 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
  */
 function dispatch_wiki_post_notification($post_id, $type)
 {
+    require_lang('wiki');
+
     $page_id = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'page_id', array('id' => $post_id));
     $the_message = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'the_message', array('id' => $post_id));
     $page_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $page_id)));
