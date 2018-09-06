@@ -22,6 +22,8 @@ class microformats_test_set extends cms_test_case
     {
         require_code('lorem');
 
+        require_once(get_file_base() . '/_tests/libs/mf_parse.php');
+
         $this->establish_admin_session();
 
         parent::setUp();
@@ -63,10 +65,7 @@ class microformats_test_set extends cms_test_case
 
     protected function do_validation($data)
     {
-        $url = 'https://waterpigs.co.uk/php-mf2/';
-        $post_params = array('html' => $data, 'convertClassic' => '1');
-        $result = http_download_file($url, null, true, false, 'Composr', $post_params, null, 'application/json');
-        $_result = json_decode($result, true);
-        return $_result;
+        $output = Mf2\parse($data, 'https://waterpigs.co.uk/');
+        return $output;
     }
 }
