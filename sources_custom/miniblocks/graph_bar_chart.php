@@ -15,7 +15,9 @@ $color_pool = empty($map['color_pool']) ? array() : explode(',', $map['color_poo
 
 $file = empty($map['file']) ? 'uploads/website_specific/graph_test/bar_chart.csv' : $map['file'];
 
+cms_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
 $myfile = fopen(get_custom_file_base() . '/' . $file, 'rb');
+// TODO: #3032
 $data = array();
 while (($line = fgetcsv($myfile)) !== false) {
     if (implode('', $line) == '') {

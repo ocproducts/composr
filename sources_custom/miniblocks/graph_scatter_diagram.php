@@ -14,7 +14,9 @@ $color = empty($map['color']) ? null : $map['color'];
 
 $file = empty($map['file']) ? 'uploads/website_specific/graph_test/scatter_diagram.csv' : $map['file'];
 
+cms_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
 $myfile = fopen(get_custom_file_base() . '/' . $file, 'rb');
+// TODO: #3032
 $datapoints = array();
 while (($line = fgetcsv($myfile)) !== false) {
     if (implode('', $line) == '') {
