@@ -663,26 +663,28 @@ function set_up_comcode_autocomplete(name,wysiwyg)
 
 	register_mouse_listener();
 
-	$('#'+name).sew({
-		values: [],
-		token: '@',
-		elementFactory: autoCompleteElementFactory,
-		onFilterChanged: function(sew, token, expression) {
-			do_ajax_request(
-				'{$FIND_SCRIPT;,namelike}?id='+window.encodeURIComponent(token)+keep_stub(),
-				function(result,list_contents) {
-					var new_values = [];
-					for (var i=0;i<list_contents.childNodes.length;i++)
-					{
-						new_values.push({
-							val: list_contents.childNodes[i].getAttribute('value'),
-							meta: list_contents.childNodes[i].getAttribute('displayname')
-						});
+	$(document).ready(function() {
+		$('#'+name).sew({
+			values: [],
+			token: '@',
+			elementFactory: autoCompleteElementFactory,
+			onFilterChanged: function(sew, token, expression) {
+				do_ajax_request(
+					'{$FIND_SCRIPT;,namelike}?id='+window.encodeURIComponent(token)+keep_stub(),
+					function(result,list_contents) {
+						var new_values = [];
+						for (var i=0;i<list_contents.childNodes.length;i++)
+						{
+							new_values.push({
+								val: list_contents.childNodes[i].getAttribute('value'),
+								meta: list_contents.childNodes[i].getAttribute('displayname')
+							});
+						}
+						sew.setValues(new_values);
 					}
-					sew.setValues(new_values);
-				}
-			);
-		}
+				);
+			}
+		});
 	});
 }
 
