@@ -79,7 +79,7 @@ There is no direct way to request an invitation. Someone must know someone who i
 [media width="150" description="Adding members manually in the Admin Zone, highlighting how we can set the initial usergroup" float="right"]data_custom/images/docs/tut_members/members_add.png[/media]
 {!cns:DOC_ADD_MEMBER}
 
-A screen is provided (Admin Zone > Tools > Members > Add member account) to add a new member to the site, with support for detailing the full set of profile options, including ones not available normally during joining, and ones not available for members to set themselves.
+A screen is provided (Admin Zone > Security > Members > Add member account) to add a new member to the site, with support for detailing the full set of profile options, including ones not available normally during joining, and ones not available for members to set themselves.
 
 The most common situations where it is convenient to pre-join a member are:
  - if you want to add a member to the site before directing them to it, so that you don't have to make them go through the process themselves, or so that you can properly control or quickly set all their details, such as username and usergroup.
@@ -265,7 +265,7 @@ Titles are displayed alongside forum posts, in the section that is accessed by '
 
 If members are in a usergroup with the 'Delete own member account' privilege, they may delete themselves. This is provided for those members concerned about privacy or spam, who prefer not to leave old accounts around. You may choose to disallow privileges because often members will quickly return after 'getting over' some 'event' that caused them to 'leave', and cause administrative trouble when they start demanding control over their old content, as well as their old points.
 
-If an account needs deleting due to duplication, there's a merge feature (Admin Zone > Tools > Members > Merge members) to merge accounts which you may wish to use instead. That feature will reassign content from one account to the other.
+If an account needs deleting due to duplication, there's a merge feature (Admin Zone > Security > Members > Merge members) to merge accounts which you may wish to use instead. That feature will reassign content from one account to the other.
 
 There is also an admin feature that allows you to delete 'lurkers' (the definition of lurker is up to you, as the feature is quite flexible). You can access this feature from Admin Zone > Tools > Delete Lurkers.
 
