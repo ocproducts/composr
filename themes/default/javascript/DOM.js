@@ -1508,54 +1508,57 @@
 
     var _animationQueue = {};
     /**
+     * @param { Element } el
+     * @param { function } animationFactory
+     * @returns { Promise }
+     */
+    function queueAnimation(el, animationFactory) {
+        var uid = $util.uid(el);
+
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(animationFactory());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(animationFactory));
+        }
+
+        return _animationQueue[uid];
+    }
+
+    /**
      * @memberof $dom
      * @param el
      * @param duration
+     * @returns { Promise }
      */
     $dom.fadeIn = function fadeIn(el, duration) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeIn());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeIn));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doFadeIn);
 
         function doFadeIn() {
-            return new Promise(function (resolve) {
-                var target = /*Number($dom.css(el, 'opacity')) || */1;
+            var resolvePromise,
+                promise = new Promise(function (resolve) { resolvePromise = resolve; });
 
-                $dom.show(el);
+            var target = /*Number($dom.css(el, 'opacity')) || */1;
 
-                if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
-                    var keyFrames = [{ opacity: 0 }, { opacity: target }],
-                        options = { duration : duration },
-                        animation = el.animate(keyFrames, options);
+            $dom.show(el);
 
-                    animation.onfinish = function () {
-                        el.style.removeProperty('opacity');
+            var keyFrames = [{ opacity: 0 }, { opacity: target }],
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
+                animation = el.animate(keyFrames, options);
 
-                        if (Number($dom.css(el, 'opacity')) !== target) {
-                            el.style.opacity = target;
-                        }
-
-                        resolve();
-                    };
-                } else {
-                    el.style.removeProperty('opacity');
-
-                    if (Number($dom.css(el, 'opacity')) !== target) {
-                        el.style.opacity = target;
-                    }
-
-                    resolve();
+            animation.onfinish = function () {
+                animation.cancel(); // Remove fill
+                el.style.removeProperty('opacity');
+                if (Number($dom.css(el, 'opacity')) !== target) {
+                    el.style.opacity = target;
                 }
-            });
+
+                resolvePromise();
+            };
+
+            return promise;
         }
     };
 
@@ -1563,37 +1566,29 @@
      * @memberof $dom
      * @param el
      * @param duration
+     * @returns { Promise }
      */
     $dom.fadeOut = function fadeOut(el, duration) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeOut());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeOut));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doFadeOut);
 
         function doFadeOut() {
-            return new Promise(function (resolve) {
-                if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
-                    var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: 0 }],
-                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                        animation = el.animate(keyFrames, options);
+            var resolvePromise,
+                promise = new Promise(function (resolve) { resolvePromise = resolve; });
 
-                    animation.onfinish = function () {
-                        $dom.hide(el);
-                        resolve();
-                    };
-                } else {
-                    $dom.hide(el);
-                    resolve();
-                }
-            });
+            var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: 0 }],
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function () {
+                $dom.hide(el);
+                animation.cancel(); // Remove fill
+                resolvePromise();
+            };
+
+            return promise;
         }
     };
 
@@ -1602,40 +1597,32 @@
      * @param el
      * @param duration
      * @param opacity
+     * @returns { Promise }
      */
     $dom.fadeTo = function fadeTo(el, duration, opacity) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         opacity = numVal(opacity);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeTo());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeTo));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doFadeTo);
 
         function doFadeTo() {
-            return new Promise(function (resolve) {
-                $dom.show(el);
+            var resolvePromise,
+                promise = new Promise(function (resolve) { resolvePromise = resolve; });
 
-                if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
-                    var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: opacity }],
-                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                        animation = el.animate(keyFrames, options);
+            $dom.show(el);
 
-                    animation.onfinish = function () {
-                        el.style.opacity = opacity;
-                        resolve();
-                    };
-                } else {
-                    el.style.opacity = opacity;
-                    resolve();
-                }
-            });
+            var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: opacity }],
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function () {
+                el.style.opacity = opacity;
+                animation.cancel(); // Remove fill
+                resolvePromise();
+            };
+
+            return promise;
         }
     };
 
@@ -1643,31 +1630,22 @@
      * @memberof $dom
      * @param el
      * @param duration
+     * @returns { Promise }
      */
     $dom.fadeToggle = function fadeToggle(el, duration) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeToggle());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeToggle));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doFadeToggle);
 
         function doFadeToggle() {
-            return new Promise(function (resolve) {
-                var fadeIn = $dom.isHidden(el);
+            var fadeIn = $dom.isHidden(el);
 
-                if (fadeIn) {
-                    return $dom.fadeIn(el, duration).then(resolve);
-                } else {
-                    return $dom.fadeOut(el, duration).then(resolve);
-                }
-            });
+            if (fadeIn) {
+                return $dom.fadeIn(el, duration);
+            } else {
+                return $dom.fadeOut(el, duration);
+            }
         }
     };
 
@@ -1675,76 +1653,67 @@
      * @memberof $dom
      * @param el
      * @param duration
+     * @returns { Promise }
      */
     $dom.slideDown = function slideDown(el, duration) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doSlideDown());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doSlideDown));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doSlideDown);
 
         function doSlideDown() {
-            return new Promise(function (resolve) {
-                if ($dom.isVisible(el)) {
-                    resolve();
-                    return; // Nothing to do
-                }
+            var resolvePromise,
+                promise = new Promise(function (resolve) { resolvePromise = resolve; });
 
-                // Show element if it is hidden
-                $dom.show(el);
+            if ($dom.isVisible(el)) {
+                resolvePromise();
+                return promise; // Nothing to do
+            }
 
-                // Get the element position to restore it then
-                var prevPosition = el.style.position,
-                    prevVisibility = el.style.visibility;
+            // Show element if it is hidden
+            $dom.show(el);
 
-                // place it so it displays as usually but hidden
-                el.style.position = 'absolute';
-                el.style.visibility = 'hidden';
+            // Get the element position to restore it then
+            var prevPosition = el.style.position,
+                prevVisibility = el.style.visibility;
 
-                var startKeyframe = {
-                        height: 0,
-                        marginTop: 0,
-                        marginBottom: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0
-                    },
-                    // Fetch natural height, margin, padding
-                    endKeyframe = {
-                        height: $dom.css(el, 'height'),
-                        marginTop: $dom.css(el, 'margin-top'),
-                        marginBottom: $dom.css(el, 'margin-bottom'),
-                        paddingTop: $dom.css(el, 'padding-top'),
-                        paddingBottom: $dom.css(el, 'padding-bottom')
-                    };
+            // place it so it displays as usually but hidden
+            el.style.position = 'absolute';
+            el.style.visibility = 'hidden';
 
-                // Set initial css for animation
-                el.style.position = prevPosition;
-                el.style.visibility = prevVisibility;
+            var startKeyframe = {
+                    height: 0,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
+                },
+                // Fetch natural height, margin, padding
+                endKeyframe = {
+                    height: $dom.css(el, 'height'),
+                    marginTop: $dom.css(el, 'margin-top'),
+                    marginBottom: $dom.css(el, 'margin-bottom'),
+                    paddingTop: $dom.css(el, 'padding-top'),
+                    paddingBottom: $dom.css(el, 'padding-bottom')
+                };
 
-                var prevOverflow = el.style.overflow;
-                el.style.overflow = 'hidden';
+            // Set initial css for animation
+            el.style.position = prevPosition;
+            el.style.visibility = prevVisibility;
 
-                if ($dom.support.animation) { // Progressive enhancement using the web animations API
-                    var keyFrames = [startKeyframe, endKeyframe],
-                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                        animation = el.animate(keyFrames, options);
+            var prevOverflow = el.style.overflow;
+            el.style.overflow = 'hidden';
 
-                    animation.onfinish = function () {
-                        el.style.overflow = prevOverflow;
-                        resolve();
-                    };
-                } else {
-                    el.style.overflow = prevOverflow;
-                    resolve();
-                }
-            });
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function () {
+                el.style.overflow = prevOverflow;
+                resolvePromise();
+            };
+
+            return promise;
         }
     };
 
@@ -1752,63 +1721,54 @@
      * @memberof $dom
      * @param el
      * @param duration
+     * @returns { Promise }
      */
     $dom.slideUp = function slideUp(el, duration) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doSlideUp());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doSlideUp));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doSlideUp);
 
         function doSlideUp() {
-            return new Promise(function (resolve) {
-                if ($dom.isHidden(el)) {
-                    // Already hidden
-                    resolve();
-                    return;
-                }
+            var resolvePromise,
+                promise = new Promise(function (resolve) { resolvePromise = resolve; });
 
-                var prevOverflow = el.style.overflow;
-                el.style.overflow = 'hidden';
+            if ($dom.isHidden(el)) {
+                // Already hidden
+                resolvePromise();
+                return promise;
+            }
 
-                var startKeyframe = {
-                        height: $dom.css(el, 'height'),
-                        marginTop: $dom.css(el, 'marginTop'),
-                        marginBottom: $dom.css(el, 'marginBottom'),
-                        paddingTop: $dom.css(el, 'paddingTop'),
-                        paddingBottom: $dom.css(el, 'paddingBottom')
-                    },
-                    endKeyframe = {
-                        height: 0,
-                        marginTop: 0,
-                        marginBottom: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0
-                    };
+            var prevOverflow = el.style.overflow;
+            el.style.overflow = 'hidden';
 
-                if ($dom.support.animation) { // Progressive enhancement using the web animations API
-                    var keyFrames = [startKeyframe, endKeyframe],
-                        options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                        animation = el.animate(keyFrames, options);
+            var startKeyframe = {
+                    height: $dom.css(el, 'height'),
+                    marginTop: $dom.css(el, 'marginTop'),
+                    marginBottom: $dom.css(el, 'marginBottom'),
+                    paddingTop: $dom.css(el, 'paddingTop'),
+                    paddingBottom: $dom.css(el, 'paddingBottom')
+                },
+                endKeyframe = {
+                    height: 0,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
+                };
 
-                    animation.onfinish = function () {
-                        el.style.overflow = prevOverflow;
-                        $dom.hide(el);
-                        resolve();
-                    };
-                } else {
-                    el.style.overflow = prevOverflow;
-                    $dom.hide(el);
-                    resolve();
-                }
-            });
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function () {
+                el.style.overflow = prevOverflow;
+                $dom.hide(el);
+                animation.cancel(); // Remove fill
+                resolvePromise();
+            };
+
+            return promise;
         }
     };
 
@@ -1816,29 +1776,20 @@
      * @memberof $dom
      * @param el
      * @param duration
+     * @returns { Promise }
      */
     $dom.slideToggle = function slideToggle(el, duration) {
         el = $dom.elArg(el);
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(doSlideToggle());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doSlideToggle));
-        }
-
-        return _animationQueue[uid];
+        return queueAnimation(el, doSlideToggle);
 
         function doSlideToggle() {
-            return new Promise(function (resolve) {
-                if ($dom.isVisible(el)) {
-                    $dom.slideUp(el, duration).then(resolve);
-                } else {
-                    $dom.slideDown(el, duration).then(resolve);
-                }
-            });
+            if ($dom.isVisible(el)) {
+                return $dom.slideUp(el, duration);
+            } else {
+                return $dom.slideDown(el, duration);
+            }
         }
     };
 

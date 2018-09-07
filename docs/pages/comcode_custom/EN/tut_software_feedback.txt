@@ -243,6 +243,10 @@ Feedback is one of the most important signals for us when developing Composr. Co
 
 Most of the guidance for reporting bugs also counts for posting feature requests, so please review the advice above ("Rules to follow").
 
+Additionally:
+ - Make sure your posting is reasonably comprehensive and self-contained. For example, if you are suggesting integrating with an external system then don't ask developers to go and do further research just to see what you mean -- explain exactly what you want integrating, how, and why. Doing research ourselves can take hours, so if you ask for it you'll instead likely just find that the issue gets closed.
+ - Esoteric feature requests really aren't likely to be taken seriously, as Composr must not be allowed to become bloatware. Additionally big complex features/integrations need volunteers or funding, and when we see big esoteric requests like this it looks like a request for free work. Because otherwise such an esoteric thing wouldn't be brought to the tracker, they'd just be handled as some separate personal or commercial project. So such requests are not likely to receive a good response.
+
 Unfortunately, it is often not possible for the developers to comment on whether or not any certain feature will be developed.
 
 The reason the developers can't comment on user feedback is because whether they answer 'yes' or 'no' they end up in a difficult situation, as described below.
