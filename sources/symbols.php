@@ -132,9 +132,13 @@ function ecv($lang, $escaped, $type, $name, $param)
         }
 
         // Closure-based Tempcode parser may send in strings, so we need to adapt...
+        static $directive_tempcodified_params = array();
         foreach ($param as $key => $val) {
             if (is_string($val)) {
-                $param[$key] = make_string_tempcode($val);
+                if (!isset($directive_tempcodified_params[$val])) {
+                    $directive_tempcodified_params[$val] = make_string_tempcode($val);
+                }
+                $param[$key] = $directive_tempcodified_params[$val];
             }
         }
 
@@ -241,7 +245,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 if (isset($param[1])) {
                     unset($param['vars']);
                     global $TEMPCODE_SETGET;
-                    if (count($param) == 2) {
+                    if (isset($param[1])) {
                         $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = $param[1];
                     } else {
                         $param_copy = array();
@@ -311,7 +315,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     $key = $param[0]->evaluate();
                     $x = $param[1]->evaluate();
 
-                    $array = array_key_exists($key, $param['vars']) ? $param['vars'][$key] : array();
+                    $array = isset($param['vars'][$key]) ? $param['vars'][$key] : array();
                     if (is_array($array)) {
                         $x2 = is_numeric($x) ? intval($x) : $x;
                         if (is_integer($x2)) {
@@ -570,6 +574,11 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
 
                 // Easy responsive images
+                if ((isset($param[1])) && (is_numeric($param[0]))) {
+                    $viewport_switch = intval($param[0]);
+                } else {
+                    $viewport_switch = 983;
+                }
                 $new_value = '';
                 $matches = array();
                 $last_offset = 0;
@@ -632,12 +641,6 @@ function ecv($lang, $escaped, $type, $name, $param)
                             // Complex <picture> element...
 
                             $new_value .= '<picture>';
-
-                            if ((isset($param[1])) && (is_numeric($param[0]))) {
-                                $viewport_switch = intval($param[0]);
-                            } else {
-                                $viewport_switch = 983;
-                            }
 
                             // Responsive design code for desktop
                             $new_value .= '<source media="(min-width: ' . strval($viewport_switch) . 'px)" srcset="' . escape_html($url) . '" />';
@@ -1183,7 +1186,7 @@ function ecv_GET($lang, $escaped, $param)
         global $TEMPCODE_SETGET;
         if (isset($TEMPCODE_SETGET[$param[0]])) {
             if (isset($TEMPCODE_SETGET[$param[0]]->codename)/*faster than is_object*/) {
-                if ((array_key_exists(1, $param)) && (((is_string($param[1])) && ($param[1] == '1')) || ((is_object($param[1])) && ($param[1]->evaluate() == '1')))) { // no-cache
+                if ((isset($param[1])) && (((is_string($param[1])) && ($param[1] == '1')) || ((is_object($param[1])) && ($param[1]->evaluate() == '1')))) { // no-cache
                     $TEMPCODE_SETGET[$param[0]]->decache();
                     $value = $TEMPCODE_SETGET[$param[0]]->evaluate();
                     $TEMPCODE_SETGET[$param[0]]->decache();
@@ -1778,7 +1781,7 @@ function ecv_METADATA($lang, $escaped, $param)
 
                     // Special case
                     $matches = array();
-                    if (($param[0] == 'image') && (preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)#', $param[1], $matches) != 0)) {
+                    if (($param[0] == 'image') && (strpos($param[1], '?') !== false) && (preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)#', $param[1], $matches) != 0)) {
                         require_code('attachments');
                         if (!has_attachment_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), intval($matches[1]))) {
                             break;

@@ -223,17 +223,17 @@ function init__global2()
     }
 
     // Dev mode stuff
-    /** Whether the ocProducts version of PHP is running, and hence whether XSS-detection is enabled, and hence whether we may need to carry through additional metadata to make sure it operates correctly. Stored in a global for quick check (good performance).
-     *
-     * @global boolean $XSS_DETECT
-     */
-    $XSS_DETECT = function_exists('ocp_mark_as_escaped');
 
     /** Whether Composr is running in development mode
      *
      * @global boolean $DEV_MODE
      */
     $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_dev_mode', $_GET) || ($_GET['keep_dev_mode'] == '1'))));
+    /** Whether the ocProducts version of PHP is running, and hence whether XSS-detection is enabled, and hence whether we may need to carry through additional metadata to make sure it operates correctly. Stored in a global for quick check (good performance).
+     *
+     * @global boolean $XSS_DETECT
+     */
+    $XSS_DETECT = function_exists('ocp_mark_as_escaped') && $DEV_MODE;
     /** Whether Composr is running in a more limited development mode, which may make things a bit slower and more verbose, but won't run such severe standard enforcement tricks
      *
      * @global boolean $SEMI_DEV_MODE
@@ -1105,7 +1105,7 @@ function is_browser_decaching()
         return false; // Decaching by mistake is real-bad when Google Cloud Storage is involved
     }
 
-    if (defined('DO_PLANNED_DECACHE')) { // Used by decache.sh
+    if ((defined('DO_PLANNED_DECACHE')) && (is_writable(get_file_base() . '/_config.php'))) { // Used by decache.sh
         $config_file_orig = cms_file_get_contents_safe(get_file_base() . '/_config.php');
         $config_file = $config_file_orig;
         $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";

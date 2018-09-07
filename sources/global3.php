@@ -1631,11 +1631,14 @@ function _multi_sort($a, $b)
         $first_key = substr($first_key, 1);
     }
 
+    $key_cnt = count($keys);
+
     // String version
     if ((is_string($a[$first_key])) || (is_object($a[$first_key]))) {
         $ret = 0;
         do {
             $key = array_shift($keys);
+            $key_cnt--;
 
             $backwards = ($key[0] === '!');
             if ($backwards) {
@@ -1661,13 +1664,14 @@ function _multi_sort($a, $b)
             if ($backwards) {
                 $ret *= -1;
             }
-        } while ((count($keys) !== 0) && ($ret === 0));
+        } while (($key_cnt !== 0) && ($ret === 0));
         return $ret;
     }
 
     // Non-string version
     do {
         $key = array_shift($keys);
+        $key_cnt--;
 
         $backwards = ($key[0] === '!');
         if ($backwards) {
@@ -1682,7 +1686,7 @@ function _multi_sort($a, $b)
         if ($backwards) {
             $ret *= -1;
         }
-    } while ((count($keys) !== 0) && ($ret === 0));
+    } while (($key_cnt !== 0) && ($ret === 0));
     return $ret;
 }
 
@@ -4140,7 +4144,8 @@ function cms_gethostbyname($hostname)
     $ip_address = '';
 
     if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
-        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg_wrap($hostname)));
+        $shell_result = shell_exec('host ' . escapeshellarg($hostname));
+        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', $shell_result);
     }
 
     if ($ip_address == '') {
