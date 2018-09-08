@@ -2987,7 +2987,7 @@ function ecv2_COLOR_RGBA($lang, $escaped, $param)
     $red   = hexdec(substr($hex_color, 1, 2));
     $green = hexdec(substr($hex_color, 3, 2));
     $blue  = hexdec(substr($hex_color, 5, 2));
-    $alpha = floatval($param[1]);
+    $alpha = float_format(floatval($param[1]));
 
     $value = "rgba({$red}, {$green}, {$blue}, {$alpha})";
 
@@ -3025,7 +3025,7 @@ function ecv2_COLOR_DARKEN($lang, $escaped, $param)
 
     list($red, $green, $blue) = hsl_to_rgb($h, $s, $l);
 
-    $value = sprintf("#%02x%02x%02x", $red, $green, $blue);;
+    $value = sprintf("#%02x%02x%02x", $red, $green, $blue);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
