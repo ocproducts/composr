@@ -32,7 +32,7 @@ class Block_main_sortable_table
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform', 'stylings');
+        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform', 'stylings', 'classes');
         return $info;
     }
 
@@ -139,6 +139,7 @@ class Block_main_sortable_table
         $columns_tooltip = empty($map['columns_tooltip']) ? array() : array_map('intval', array_map('trim', explode(',', $map['columns_tooltip'])));
 
         $stylings = empty($map['stylings']) ? array() : array_map('trim', explode(',', $map['stylings']));
+        $classes = empty($map['classes']) ? array() : array_map('trim', explode(',', $map['classes']));
 
         if (empty($map['transform'])) {
             $transform = array();
@@ -411,6 +412,7 @@ class Block_main_sortable_table
                 'HEADERS' => $headers,
                 'VALUES' => $row,
                 'STYLINGS' => $stylings,
+                'CLASSES' => $classes,
                 'TOOLTIP_VALUES' => $tooltip_values,
                 'RAW_DATA' => json_encode($_rows_raw[$i]),
             )));
@@ -439,7 +441,7 @@ class Block_main_sortable_table
     }
 
     /**
-     * Find a field type for a row index.
+     * Find a field type for a column index.
      *
      * @param  array $_rows Rows
      * @param  integer $j Column offset

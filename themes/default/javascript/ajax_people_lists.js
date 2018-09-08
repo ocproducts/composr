@@ -113,6 +113,7 @@
             for (i = 0; i < listContents.children.length; i++) {
                 item = document.createElement('option');
                 item.value = listContents.children[i].getAttribute('value');
+                item.title = listContents.children[i].getAttribute('title');
                 displaytext = item.value;
                 if (listContents.children[i].getAttribute('displayname')) {
                     displaytext = listContents.children[i].getAttribute('displayname');

@@ -792,6 +792,17 @@ var SortableTable = (function(){
 
         if (!hasClass(row,'table-nofilter'))
           row.style.display = hideRow?"none":"";
+
+        if (row.className.replace(/^(\s*(first|last)\s*)*$/, '') == '') {
+            var classes = [];
+            if (unfilteredrowcount == pagestart) {
+                classes.push('first');
+            }
+            if (unfilteredrowcount == pageend) {
+                classes.push('last');
+            }
+            row.className = classes.join(' ');
+        }
       }
     }
 

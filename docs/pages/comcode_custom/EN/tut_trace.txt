@@ -50,7 +50,7 @@ Composr tracks IP addresses in a number of ways:
 [title="2"]Tools[/title]
 
 Composr provides modules (screenshots below) for working with the collected data, and settings:
- - The 'Investigate user' module is the main tool for finding information about an IP address (access it from Admin Zone > Tools > Members > Investigate user)
+ - The 'Investigate user' module is the main tool for finding information about an IP address (access it from Admin Zone > Security > Members > Investigate user)
  - The 'Action Logs' module (access it from the Admin Zone > Audit > Actions logs) can be used to quickly find out information from a submit that wasn't immediately available (for example, if a user submitted something without being logged-in and hence was not identified, but if by an IP address scan, they were in fact identifiable). The module can also be used to ban or unban a submitter, based on both member (prevents the member submitting again) and IP address (prevents the IP address being used to access the site)
  - The 'Banned IP addresses' (access it from Admin Zone > Security > Banned IP addresses) module can be used to enter IP addresses for banning, along with free-form notes
 

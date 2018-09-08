@@ -63,7 +63,7 @@ Side note: If you (as staff) edit the profile of another member then none of the
 [media width="150" description="Adding a Custom Profile Field" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf.png[/media]
 {!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' Custom Profile Field can not be edited or deleted, as it is used by Composr's own code.
 
-You can manage Custom Profile Fields from: Admin Zone > Tools > Members > Custom Profile Fields.
+You can manage Custom Profile Fields from: Admin Zone > Security > Members > Custom Profile Fields.
 You can delete a Custom Profile Field from the bottom of its edit form.
 
 There are a number of Custom Profile Field options that you may set that allow CPFs to function for a number of different purposes, including:
@@ -241,7 +241,7 @@ You can use [abbr="Comma-Separated-Values"]CSV[/abbr] files to put member data i
 [title="3"]Exporting[/title]
 
 This is very easy. Just go to...
-Admin Zone > Tools > Members > Download member spreadsheet (CSV)
+Admin Zone > Security > Members > Download member spreadsheet (CSV)
 
 There are a number of advanced filtering options you can use. Programmers can extend the export system to include "presets" for these options.
 
@@ -269,13 +269,13 @@ Load as normal, but check the "Quoted field as text" checkbox.
 [title="3"]Importing[/title]
 
 Follow this process to do an import:
-1) To know the format to import with, it's best to do an export first to get a conclusive input template. So, export your existing members (Admin Zone > Tools > Members > Download member spreadsheet (CSV))
+1) To know the format to import with, it's best to do an export first to get a conclusive input template. So, export your existing members (Admin Zone > Security > Members > Download member spreadsheet (CSV))
 2) Open the spreadsheet in some spreadsheet software (something like Microsoft Excel or LibreOffice)
 3) Blank out the existing rows in the spreadsheet (except the header row of course)
 4) Fill in new rows, as required
 5) Save back to a [tt].csv[/tt] file ([tt].xls[/tt] or [tt].xlsx[/tt] files are [b]not[/b] supported). Make sure that it is a true CSV file (i.e. comma-delimiters between fields, not tab-delimiters or semi-colon delimiters). Opening it in something like Windows Notepad is a good way to confirm this.
 6) Take a full database backup (you can never be too careful, a small typo such as a corruption of the header row, or a regular error in the new user rows, could result in proliferate errors after import)
-7) Import (Admin Zone > Tools > Members > Import member spreadsheet (CSV)). You'll be asked to upload the CSV file and optionally to give a default password. Click the button to run the import.
+7) Import (Admin Zone > Security > Members > Import member spreadsheet (CSV)). You'll be asked to upload the CSV file and optionally to give a default password. Click the button to run the import.
 
 Further notes follow...
 

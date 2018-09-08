@@ -86,14 +86,16 @@ class Hook_addon_registry_sortable_tables
      */
     public function get_description()
     {
-        return 'This addon creates a main_sortable_table block that shows the contents of a CSV file (or a database table) in a sortable and filterable table. To use, place the CSV file in uploads/website_specific, and place the block like:
+        return 'This addon creates a main_sortable_table block that shows the contents of a CSV file (or a database table) in a sortable and filterable table. To use, place the CSV file in [tt]uploads/website_specific[/tt], and place the block like:
 [code]
 [block=""example.csv""]main_sortable_table[/block]
 [/code]
 
-(example.csv is supplied with the addon)
+([tt]example.csv[/tt] is supplied with the addon)
 
-We will automatically detect what columns can be filtered, how to sort each column, and display numbers in an attractive way.';
+We will automatically detect what columns can be filtered, how to sort each column, and display numbers in an attractive way.
+
+Additionally, there are blocks for rendering graphs and maps from CSV files. This is not currently documented, although sample CSV files are provided under [tt]uploads/website_specific/graph_test/[/tt].';
     }
 
     /**
@@ -148,12 +150,34 @@ We will automatically detect what columns can be filtered, how to sort each colu
             'themes/default/css_custom/sortable_tables.css',
             'sources_custom/blocks/main_sortable_table.php',
             'uploads/website_specific/example.csv',
+            'uploads/website_specific/graph_test/bar_chart.csv',
+            'uploads/website_specific/graph_test/countries_on_map.csv',
+            'uploads/website_specific/graph_test/line_chart.csv',
+            'uploads/website_specific/graph_test/pie_chart.csv',
+            'uploads/website_specific/graph_test/pins_on_map.csv',
+            'uploads/website_specific/graph_test/scatter_diagram.csv',
+            'uploads/website_specific/graph_test/index.html',
             'themes/default/images_custom/icons/sortable_tables/index.html',
             'themes/default/images_custom/icons/sortable_tables/sorted_down.svg',
             'themes/default/images_custom/icons/sortable_tables/sorted_up.svg',
             'themes/default/images_custom/icons_monochrome/sortable_tables/index.html',
             'themes/default/images_custom/icons_monochrome/sortable_tables/sorted_down.svg',
             'themes/default/images_custom/icons_monochrome/sortable_tables/sorted_up.svg',
+            'sources_custom/graphs.php',
+            'sources_custom/maps.php',
+            'sources_custom/miniblocks/countries_on_map.php',
+            'sources_custom/miniblocks/graph_bar_chart.php',
+            'sources_custom/miniblocks/graph_line_chart.php',
+            'sources_custom/miniblocks/graph_pie_chart.php',
+            'sources_custom/miniblocks/graph_scatter_diagram.php',
+            'sources_custom/miniblocks/pins_on_map.php',
+            'themes/default/javascript_custom/charts.js',
+            'themes/default/templates_custom/COUNTRIES_ON_MAP.tpl',
+            'themes/default/templates_custom/GRAPH_BAR_CHART.tpl',
+            'themes/default/templates_custom/GRAPH_LINE_CHART.tpl',
+            'themes/default/templates_custom/GRAPH_PIE_CHART.tpl',
+            'themes/default/templates_custom/GRAPH_SCATTER_DIAGRAM.tpl',
+            'themes/default/templates_custom/PINS_ON_MAP.tpl',
         );
     }
 }
