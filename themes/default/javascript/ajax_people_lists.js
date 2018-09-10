@@ -209,52 +209,48 @@
             currentListForEl = null;
 
             function handleArrowUsage(event) {
-                var temp;
+                if (event.shiftKey) {
+                    return;
+                }
 
-                if (!event.shiftKey && $dom.keyPressed(event, 'ArrowDown')) { // DOWN
-                    currentListForCopy.disabled = true;
-                    setTimeout(function () {
-                        currentListForCopy.disabled = false;
-                    }, 1000);
-
-                    temp = currentListForCopy.onblur;
-                    currentListForCopy.onblur = function () {};
-                    list.focus();
-                    currentListForCopy.onblur = temp;
-                    if (!currentListForCopy.downOnce) {
-                        currentListForCopy.downOnce = true;
-                        list.selectedIndex = 0;
-                    } else {
-                        if (list.selectedIndex < list.options.length - 1) {
-                            list.selectedIndex++;
-                        }
-                    }
-                    list.options[list.selectedIndex].selected = true;
+                if (event.key === 'ArrowDown') { // DOWN
+                    _handleArrowUsage('down');
                     return true;
                 }
 
-                if (!event.shiftKey && $dom.keyPressed(event, 'ArrowUp')) { // UP
-                    currentListForCopy.disabled = true;
-                    setTimeout(function () {
-                        currentListForCopy.disabled = false;
-                    }, 1000);
+                if (event.key === 'ArrowUp') { // UP
+                    _handleArrowUsage('up');
+                    return true;
+                }
+            }
 
-                    temp = currentListForCopy.onblur;
-                    currentListForCopy.onblur = function () {};
-                    list.focus();
-                    currentListForCopy.onblur = temp;
-                    if (!currentListForCopy.downOnce) {
-                        currentListForCopy.downOnce = true;
-                        list.selectedIndex = 0;
-                    } else {
+            function _handleArrowUsage(direction) {
+                currentListForCopy.disabled = true;
+                setTimeout(function () {
+                    currentListForCopy.disabled = false;
+                }, 1000);
+
+                var temp = currentListForCopy.onblur;
+                currentListForCopy.onblur = function () {};
+                list.focus();
+                currentListForCopy.onblur = temp;
+
+                if (!currentListForCopy.downOnce) {
+                    currentListForCopy.downOnce = true;
+                    list.selectedIndex = 0;
+                } else {
+                    if (direction === 'down') {
+                        if (list.selectedIndex < (list.options.length - 1)) {
+                            list.selectedIndex++;
+                        }
+                    } else if (direction === 'up') {
                         if (list.selectedIndex > 0) {
                             list.selectedIndex--;
                         }
                     }
-                    list.options[list.selectedIndex].selected = true;
-                    return true;
                 }
-                return null;
+
+                list.options[list.selectedIndex].selected = true;
             }
 
             function makeSelection(e) {

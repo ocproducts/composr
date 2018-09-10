@@ -690,11 +690,19 @@
         return (a > b) ? a : b;
     };
 
+    function findRelative(el) {
+        while (el) {
+            if ($dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
+                return el;
+            }
+            el = el.parentElement;
+        }
+    }
     /**
      * @memberof $dom
      * @deprecated
-     * @param el
-     * @param {boolean} notRelative - If true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree.
+     * @param { Element } el
+     * @param {boolean} notRelative - If true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative/fixed going up the element tree.
      * @returns {number}
      */
     $dom.findPosX = function findPosX(el, notRelative) {
@@ -703,17 +711,13 @@
         }
 
         el = $dom.elArg(el);
-        notRelative = Boolean(notRelative);
 
         var left = el.getBoundingClientRect().left + window.scrollX;
 
         if (!notRelative) {
-            while (el) {
-                if ($dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                    left -= $dom.findPosX(el, true);
-                    break;
-                }
-                el = el.parentElement;
+            var relative = findRelative(el);
+            if (relative != null) {
+                left -= $dom.findPosX(relative, true);
             }
         }
 
@@ -723,8 +727,8 @@
     /**
      * @memberof $dom
      * @deprecated
-     * @param el
-     * @param {boolean} notRelative - If true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree.
+     * @param { Element } el
+     * @param {boolean} notRelative - If true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative/fixed going up the element tree.
      * @returns {number}
      */
     $dom.findPosY = function findPosY(el, notRelative) {
@@ -733,19 +737,16 @@
         }
 
         el = $dom.elArg(el);
-        notRelative = Boolean(notRelative);
 
         var top = el.getBoundingClientRect().top + window.scrollY;
 
         if (!notRelative) {
-            while (el != null) {
-                if ($dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                    top -= $dom.findPosY(el, true);
-                    break;
-                }
-                el = el.parentElement;
+            var relative = findRelative(el);
+            if (relative != null) {
+                top -= $dom.findPosY(relative, true);
             }
         }
+
         return top;
     };
 
@@ -1677,7 +1678,7 @@
             var prevPosition = el.style.position,
                 prevVisibility = el.style.visibility;
 
-            // place it so it displays as usually but hidden
+            // Place it so it displays as usually but hidden
             el.style.position = 'absolute';
             el.style.visibility = 'hidden';
 
@@ -1689,15 +1690,9 @@
                     paddingBottom: 0
                 },
                 // Fetch natural height, margin, padding
-                endKeyframe = {
-                    height: $dom.css(el, 'height'),
-                    marginTop: $dom.css(el, 'margin-top'),
-                    marginBottom: $dom.css(el, 'margin-bottom'),
-                    paddingTop: $dom.css(el, 'padding-top'),
-                    paddingBottom: $dom.css(el, 'padding-bottom')
-                };
+                endKeyframe = $dom.css(el, ['height', 'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom']);
 
-            // Set initial css for animation
+            // Undo now
             el.style.position = prevPosition;
             el.style.visibility = prevVisibility;
 
@@ -1742,13 +1737,7 @@
             var prevOverflow = el.style.overflow;
             el.style.overflow = 'hidden';
 
-            var startKeyframe = {
-                    height: $dom.css(el, 'height'),
-                    marginTop: $dom.css(el, 'marginTop'),
-                    marginBottom: $dom.css(el, 'marginBottom'),
-                    paddingTop: $dom.css(el, 'paddingTop'),
-                    paddingBottom: $dom.css(el, 'paddingBottom')
-                },
+            var startKeyframe = $dom.css(el, ['height', 'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom']),
                 endKeyframe = {
                     height: 0,
                     marginTop: 0,
