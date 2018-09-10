@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom, $corePermissionManagement) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var $coreFormInterfaces = window.$coreFormInterfaces = {};
@@ -166,6 +166,20 @@
 
     $util.inherits(FromScreenInputUpload, $cms.View);
 
+    function setAccessPresetsSelectedOption(prefix) {
+        var list = document.getElementById(prefix + '_presets');
+        // Test to see what we wouldn't have to make a change to get - and that is what we're set at
+        if (!window.$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
+            list.selectedIndex = list.options.length - 4;
+        } else if (!window.$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
+            list.selectedIndex = list.options.length - 3;
+        } else if (!window.$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
+            list.selectedIndex = list.options.length - 2;
+        } else if (!window.$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
+            list.selectedIndex = list.options.length - 1;
+        }
+    }
+
     $cms.views.FormScreenInputPermission = FormScreenInputPermission;
     /**
      * @memberof $cms.views
@@ -180,17 +194,7 @@
         var prefix = this.prefix;
 
         if (!params.allGlobal) {
-            var list = document.getElementById(prefix + '_presets');
-            // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
-                list.selectedIndex = list.options.length - 4;
-            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
-                list.selectedIndex = list.options.length - 3;
-            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
-                list.selectedIndex = list.options.length - 2;
-            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
-                list.selectedIndex = list.options.length - 1;
-            }
+            setAccessPresetsSelectedOption(prefix);
         }
     }
 
@@ -204,8 +208,8 @@
         },
 
         copyPresets: function (e, select) {
-            $corePermissionManagement.copyPermissionPresets(this.prefix, select.value);
-            $corePermissionManagement.cleanupPermissionList(this.prefix);
+            window.$corePermissionManagement.copyPermissionPresets(this.prefix, select.value);
+            window.$corePermissionManagement.cleanupPermissionList(this.prefix);
         },
 
         permissionRepeating: function (e, button) {
@@ -269,20 +273,10 @@
         this.groupId = params.groupId;
         this.prefix = prefix;
 
-        $corePermissionManagement.setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, Boolean(params.allGlobal));
+        window.$corePermissionManagement.setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, Boolean(params.allGlobal));
 
         if (!params.allGlobal) {
-            var list = document.getElementById(prefix + '_presets');
-            // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!$corePermissionManagement.copyPermissionPresets(prefix, '0', true)) {
-                list.selectedIndex = list.options.length - 4;
-            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '1', true)) {
-                list.selectedIndex = list.options.length - 3;
-            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '2', true)) {
-                list.selectedIndex = list.options.length - 2;
-            } else if (!$corePermissionManagement.copyPermissionPresets(prefix, '3', true)) {
-                list.selectedIndex = list.options.length - 1;
-            }
+            setAccessPresetsSelectedOption(prefix);
         }
     }
 
@@ -301,7 +295,7 @@
 
         showPermSetting: function (e, select) {
             if (select.value === '-1') {
-                $corePermissionManagement.showPermissionSetting(select);
+                window.$corePermissionManagement.showPermissionSetting(select);
             }
         }
     });
@@ -1932,4 +1926,4 @@
         }
     }
 
-}(window.$cms, window.$util, window.$dom, window.$corePermissionManagement));
+}(window.$cms, window.$util, window.$dom));
