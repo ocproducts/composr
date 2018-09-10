@@ -206,6 +206,22 @@
 
     $cms.templates.blockMainComcodePageChildren = function blockMainComcodePageChildren() {};
 
+    function onclickConfirmRememberMe(e, checkbox) {
+        var checkboxWasFocused = (document.activeElement === checkbox);
+
+        if (checkbox.checked) {
+            $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
+                if (!answer) {
+                    checkbox.checked = false;
+                }
+
+                if (checkboxWasFocused) {
+                    checkbox.focus();
+                }
+            });
+        }
+    }
+
     $cms.templates.loginScreen = function loginScreen(params, container) {
         if ((document.activeElement != null) || (document.activeElement !== $dom.$('#password'))) {
             try {
@@ -215,21 +231,7 @@
             }
         }
 
-        $dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
-            var checkboxWasFocused = (document.activeElement === checkbox);
-
-            if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
-                    if (!answer) {
-                        checkbox.checked = false;
-                    }
-
-                    if (checkboxWasFocused) {
-                        checkbox.focus();
-                    }
-                });
-            }
-        });
+        $dom.on(container, 'click', '.js-click-confirm-remember-me', onclickConfirmRememberMe);
 
         $dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
             if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
@@ -249,21 +251,7 @@
             }
         });
 
-        $dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
-            var checkboxWasFocused = (document.activeElement === checkbox);
-
-            if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
-                    if (!answer) {
-                        checkbox.checked = false;
-                    }
-
-                    if (checkboxWasFocused) {
-                        checkbox.focus();
-                    }
-                });
-            }
-        });
+        $dom.on(container, 'click', '.js-click-confirm-remember-me', onclickConfirmRememberMe);
     };
 
     $cms.templates.ipBanScreen = function (params, container) {
@@ -307,21 +295,7 @@
             }
         });
 
-        $dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
-            var checkboxWasFocused = (document.activeElement === checkbox);
-
-            if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}').then(function (answer) {
-                    if (!answer) {
-                        checkbox.checked = false;
-                    }
-
-                    if (checkboxWasFocused) {
-                        checkbox.focus();
-                    }
-                });
-            }
-        });
+        $dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', onclickConfirmRememberMe);
     };
 
     $cms.templates.memberTooltip = function (params, container) {

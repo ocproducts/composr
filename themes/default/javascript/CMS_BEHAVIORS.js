@@ -272,15 +272,17 @@
         }
     };
 
-    // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
-    // Toggle classes based on mouse location
-    $cms.behaviors.mouseoverClass = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-mouseover-class]'), 'behavior.mouseoverClass');
+    /**
+     * @param { string } type - 'mouseover' or 'mouseout'
+     * @returns { Function }
+     */
+    function hoverClassBehaviorFn(type) {
+        return function (context) {
+            var els = $util.once($dom.$$$(context, '[data-' + type + '-class]'), 'behavior.' + type + 'Class');
 
             els.forEach(function (el) {
-                $dom.on(el, 'mouseover', function mouseoverClass(e) {
-                    var classes = objVal($dom.data(el, 'mouseoverClass')), key, bool;
+                $dom.on(el, type, function (e) {
+                    var classes = objVal($dom.data(el, type + 'Class')), key, bool;
 
                     if (!e.relatedTarget || !el.contains(e.relatedTarget)) {
                         for (key in classes) {
@@ -290,28 +292,19 @@
                     }
                 });
             });
-        }
+        };
+    }
+
+    // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
+    // Toggle classes based on mouse location
+    $cms.behaviors.mouseoverClass = {
+        attach: hoverClassBehaviorFn('mouseover')
     };
 
     // Implementation for [data-mouseout-class="{ 'some-class' : 1|0 }"]
     // Toggle classes based on mouse location
     $cms.behaviors.mouseoutClass = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-mouseout-class]'), 'behavior.mouseoutClass');
-
-            els.forEach(function (el) {
-                $dom.on(el, 'mouseout', function mouseoutClass(e) {
-                    var classes = objVal($dom.data(el, 'mouseoutClass')), key, bool;
-
-                    if (!e.relatedTarget || !el.contains(e.relatedTarget)) {
-                        for (key in classes) {
-                            bool = Boolean(classes[key]) && (classes[key] !== '0');
-                            el.classList.toggle(key, bool);
-                        }
-                    }
-                });
-            });
-        }
+        attach: hoverClassBehaviorFn('mouseout')
     };
 
     // Implementation for [data-cms-confirm-click="<Message>"]
@@ -741,56 +734,43 @@
         }
     };
 
-    // Implementation for [data-mouseover-activate-tooltip]
-    $cms.behaviors.onmouseoverActivateTooltip = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-mouseover-activate-tooltip]'), 'behavior.onmouseoverActivateTooltip');
+    /**
+     * @param { string} type - 'mouseover' or 'focus'
+     * @returns { Function }
+     */
+    function activateTooltipBehaviorFn(type) {
+        return function (context) {
+            var els = $util.once($dom.$$$(context, '[data-' + type + '-activate-tooltip]'), 'behavior.on' + type + 'ActivateTooltip');
 
             els.forEach(function (el) {
-                $dom.on(el, 'mouseover', function (e) {
-                    if (!Array.isArray($dom.data(el, 'mouseoverActivateTooltip'))) {
+                $dom.on(el, type, function (e) {
+                    if (!Array.isArray($dom.data(el, type + 'ActivateTooltip'))) {
                         return;
                     }
 
-                    var args = arrVal($dom.data(el, 'mouseoverActivateTooltip'));
+                    var args = arrVal($dom.data(el, type + 'ActivateTooltip'));
 
                     args.unshift(el, e);
 
                     try {
-                        //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
+                        //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
                         $cms.ui.activateTooltip.apply(undefined, args);
                     } catch (ex) {
-                        $util.fatal('$cms.behaviors.onmouseoverActivateTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                        $util.fatal('$cms.behaviors.on' + type + 'ActivateTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
                     }
                 });
             });
-        }
+        };
+    }
+
+    // Implementation for [data-mouseover-activate-tooltip]
+    $cms.behaviors.onmouseoverActivateTooltip = {
+        attach: activateTooltipBehaviorFn('mouseover')
     };
 
     // Implementation for [data-focus-activate-tooltip]
     $cms.behaviors.onfocusActivateTooltip = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-focus-activate-tooltip]'), 'behavior.onfocusActivateTooltip');
-
-            els.forEach(function (el) {
-                $dom.on(el, 'focus', function (e) {
-                    if (!Array.isArray($dom.data(el, 'focusActivateTooltip'))) {
-                        return;
-                    }
-
-                    var args = arrVal($dom.data(el, 'focusActivateTooltip'));
-
-                    args.unshift(el, e);
-
-                    try {
-                        //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, haveLinks
-                        $cms.ui.activateTooltip.apply(undefined, args);
-                    } catch (ex) {
-                        $util.fatal('$cms.behaviors.onfocusActivateTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
-                    }
-                });
-            });
-        }
+        attach: activateTooltipBehaviorFn('focus')
     };
 
     // Implementation for [data-blur-deactivate-tooltip]
