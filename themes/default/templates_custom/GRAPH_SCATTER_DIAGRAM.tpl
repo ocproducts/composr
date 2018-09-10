@@ -7,11 +7,6 @@
 		var ctx = document.getElementById('chart_{ID%}').getContext('2d');
 
 		var data = {
-			labels: [
-				{+START,LOOP,DATAPOINTS}
-					'{LABEL;/}',
-				{+END}
-			],
 			datasets: [{
 				data: [
 					{+START,LOOP,DATAPOINTS}
@@ -27,6 +22,12 @@
 					{+END}
 				],
 			}],
+
+			tooltips: [
+				{+START,LOOP,DATAPOINTS}
+					'{TOOLTIP;/}',
+				{+END}
+			],
 		};
 
 		var options = {
@@ -62,16 +63,17 @@
 			tooltips: {
 				callbacks: {
 					label: function(tooltipItem, data) {
-						var label = data.labels[tooltipItem.index];
+						var tooltip = data.tooltips[tooltipItem.index];
 						var ret = '';
-						if (label != '') {
-							ret += label + ': ';
+						if (tooltip != '') {
+							ret += tooltip + ': ';
 						}
 						ret += '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
 						return ret;
-					}
+					},
 				},
 			},
+
 			plugins: {
 				datalabels: false,
 			},

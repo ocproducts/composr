@@ -31,9 +31,24 @@ while (($line = fgetcsv($myfile)) !== false) {
     }
 
     $label = array_shift($line);
+    $datapoints = array();
+    $i = 0;
+    foreach ($line as $x) {
+        if (is_numeric($x)) {
+            $datapoints[$i] = array(
+                'value' => $x,
+            );
+            $i++;
+        } elseif ($i > 0) {
+            $datapoints[$i - 1] += array(
+                'tooltip' => $x,
+            );
+        }
+    }
+
     $datasets[] = array(
         'label' => $label,
-        'data' => $line,
+        'datapoints' => $datapoints,
     );
 }
 fclose($myfile);

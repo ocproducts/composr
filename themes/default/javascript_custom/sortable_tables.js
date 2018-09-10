@@ -962,7 +962,7 @@ var SortableTable = (function(){
       var type = classValue(c,table.SortableColumnPrefix);
       if (type!=null) {
         type = type || "default";
-        c.title =c.title || table.AutoSortTitle;
+        c.title = c.title || table.AutoSortTitle;
         addClass(c,table.SortableClassName);
         c.onclick = function () {
             SortableTable.sort(this, {'sorttype': SortableTableSort[type]})
