@@ -95,7 +95,7 @@ class Hook_addon_registry_sortable_tables
 
 We will automatically detect what columns can be filtered, how to sort each column, and display numbers in an attractive way.
 
-Additionally, there are blocks for rendering graphs and maps from CSV files. This is not currently documented, although sample CSV files are provided under [tt]uploads/website_specific/graph_test/[/tt].';
+Additionally, there are blocks for rendering graphs and maps from CSV files. This is not currently documented, although sample CSV files are provided under [tt]uploads/website_specific/graph_test/[/tt] and a page of sample usage is provided at [tt]site:_graph_test[/tt].';
     }
 
     /**
@@ -175,6 +175,7 @@ Additionally, there are blocks for rendering graphs and maps from CSV files. Thi
             'themes/default/templates_custom/GRAPH_PIE_CHART.tpl',
             'themes/default/templates_custom/GRAPH_SCATTER_DIAGRAM.tpl',
             'themes/default/templates_custom/PINS_ON_MAP.tpl',
+            'site/pages/comcode_custom/EN/_graph_test.txt',
         );
     }
 }

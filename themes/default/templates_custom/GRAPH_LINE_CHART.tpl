@@ -7,11 +7,6 @@
 		var ctx = document.getElementById('chart_{ID%}').getContext('2d');
 
 		var data = {
-			labels : [
-				{+START,LOOP,X_LABELS}
-					'{_loop_var;/}',
-				{+END}
-			],
 			datasets: [
 				{+START,LOOP,DATASETS}
 					{
@@ -20,11 +15,22 @@
 						backgroundColor: '{COLOR;/}',
 						borderColor: '{COLOR;/}',
 						data: [
-							{+START,LOOP,DATA}
-								{_loop_var%},
+							{+START,LOOP,DATAPOINTS}
+								{VALUE%},
+							{+END}
+						],
+						tooltips: [
+							{+START,LOOP,DATAPOINTS}
+								'{TOOLTIP;/}',
 							{+END}
 						],
 					},
+				{+END}
+			],
+
+			labels : [
+				{+START,LOOP,X_LABELS}
+					'{_loop_var;/}',
 				{+END}
 			],
 		};
@@ -55,6 +61,24 @@
 						},
 					{+END}
 				}],
+			},
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data) {
+						var tooltip = data.datasets[tooltipItem.datasetIndex].tooltips[tooltipItem.index];
+						var ret = '';
+						if (tooltip != '') {
+							ret += tooltip;
+							{+START,IF,{$NOT,{SHOW_DATA_LABELS}}}
+								ret += ': ';
+							{+END}
+						}
+						{+START,IF,{$NOT,{SHOW_DATA_LABELS}}}
+							ret += tooltipItem.yLabel;
+						{+END}
+						return ret;
+					},
+				},
 			},
 
 			plugins: {

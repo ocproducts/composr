@@ -30,7 +30,7 @@ while (($line = fgetcsv($myfile)) !== false) {
     $datapoints[] = array(
         'x' => $line[0],
         'y' => $line[1],
-        'label' => implode(',', array_slice($line, 2)),
+        'tooltip' => implode(',', array_slice($line, 2)),
     );
 }
 fclose($myfile);

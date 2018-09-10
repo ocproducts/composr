@@ -9,20 +9,25 @@
 		var data = {
 			datasets: [{
 				data: [
-					{+START,LOOP,DATA}
+					{+START,LOOP,DATAPOINTS}
 						{VALUE%},
 					{+END}
 				],
 				backgroundColor: [
-					{+START,LOOP,DATA}
+					{+START,LOOP,DATAPOINTS}
 						'{COLOR;/}',
 					{+END}
 				],
 			}],
 
 			labels: [
-				{+START,LOOP,DATA}
+				{+START,LOOP,DATAPOINTS}
 					'{LABEL;/}',
+				{+END}
+			],
+			tooltips: [
+				{+START,LOOP,DATAPOINTS}
+					'{TOOLTIP;/}',
 				{+END}
 			],
 		};
@@ -31,6 +36,25 @@
 			{+START,IF_NON_EMPTY,{WIDTH}{HEIGHT}}
 				responsive: false,
 			{+END}
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data) {
+						var tooltip = data.tooltips[tooltipItem.index];
+						var ret = '';
+						{+START,IF,{$NOT,{SHOW_DATA_LABELS}}}
+							ret += data.labels[tooltipItem.index] + ' = ' + data.datasets[0].data[tooltipItem.index];
+						{+END}
+						if (tooltip != '') {
+							if (ret != '') {
+								ret += ': ';
+							}
+							ret += tooltip;
+						}
+						return ret;
+					},
+				},
+			},
+
 			plugins: {
 				{+START,IF,{$NOT,{SHOW_DATA_LABELS}}}
 					datalabels: false,
