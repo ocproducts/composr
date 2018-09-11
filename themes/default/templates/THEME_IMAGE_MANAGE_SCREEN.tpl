@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_themeing}
 <div data-tpl="themeImageManageScreen">
 	{TITLE}
 
