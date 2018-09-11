@@ -25,8 +25,7 @@
 							{$,The main logo}
 							<h1 class="logo-outer">
 								<a target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}" class="logo">
-									{$SITE_NAME*}
-									<!--<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />-->
+									<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
 								</a>
 							</h1>
 						</div>
