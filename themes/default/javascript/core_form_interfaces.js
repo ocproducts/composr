@@ -591,7 +591,7 @@
             }
 
             window.setTimeout(function () {
-                radioBtn.click();
+                $dom.trigger(radioBtn, 'click');
             }, 0);
         });
     };
