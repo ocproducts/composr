@@ -577,16 +577,21 @@
     };
 
     $cms.templates.formScreenFieldsSetItem = function formScreenFieldsSetItem(params) {
-        var el = $dom.$('#form-table-field-input--' + params.name);
+        var el = document.getElementById('form-table-field-input--' + params.name);
 
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
-        var block = document.getElementById('field_set_' + params.name);
-        block.addEventListener('click', function () {
+        var block = document.getElementById('field_set_' + params.name),
+            radioBtn = document.getElementById('choose-' + params.name);
+        block.addEventListener('click', function (e) {
+            if (e.target === radioBtn) {
+                return; // Prevent infinite loop
+            }
+
             window.setTimeout(function () {
-                $dom.trigger(document.getElementById('choose-' + params.name), 'click');
+                $dom.trigger(radioBtn, 'click');
             }, 0);
         });
     };
