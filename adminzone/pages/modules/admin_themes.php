@@ -744,7 +744,7 @@ class Module_admin_themes
     protected function _get_theme_date($theme)
     {
         $path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme;
-        if (!is_file($path)) {
+        if (!is_dir($path)) {
             return null;
         }
         $date = filemtime($path);

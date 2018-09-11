@@ -545,6 +545,7 @@ class Module_admin_themewizard
 
         // Do it
         require_code('themes2');
+        require_code('themes3');
         require_code('images');
         foreach (array($theme, 'default') as $logo_save_theme) {
             // Save -logo
