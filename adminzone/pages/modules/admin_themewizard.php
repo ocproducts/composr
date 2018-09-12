@@ -372,6 +372,9 @@ class Module_admin_themewizard
         $contents .= 'description=' . do_lang('NA') . "\n";
         $contents .= 'seed=' . $seed . "\n";
         $contents .= 'author=' . $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true) . "\n";
+        if (($algorithm === 'equations') && (get_theme_option('supports_themewizard_equations', null, $source_theme) === '1')) {
+            $contents .= 'supports_themewizard_equations=1' . "\n";
+        }
         cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($themename) . '/theme.ini', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         // We're done
