@@ -744,7 +744,7 @@ class Module_admin_themes
     protected function _get_theme_date($theme)
     {
         $path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme;
-        if (!is_file($path)) {
+        if (!is_dir($path)) {
             return null;
         }
         $date = filemtime($path);
@@ -1015,6 +1015,7 @@ class Module_admin_themes
 
         $skip = array(
             'icons', // Too many of these to show
+            'icons_monochrome',
         );
         $ids = get_all_image_ids_type('', true, $GLOBALS['SITE_DB'], $theme, false, true, $skip); // The final 'true' stops new theme images being detected, as we know regen_theme_images did that (and more conservatively - it won't scan images_custom dirs for NEW codes which an unbridled get_all_image_ids_type call would)
 

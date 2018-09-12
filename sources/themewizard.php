@@ -129,7 +129,7 @@ function find_theme_seed($theme)
         }
         $css_file_contents = cms_file_get_contents_safe($css_path);
         $matches = array();
-        if (preg_match('#\{\$THEME_WIZARD_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
+        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
             $THEME_SEED_CACHE[$theme] = $matches[1];
         } else {
             /*if ($no_easy_anchor)
@@ -171,7 +171,7 @@ function find_theme_dark($theme)
     }
     $css_file_contents = cms_file_get_contents_safe($css_path);
     $matches = array();
-    if (preg_match('#\{\$THEME_WIZARD_COLOR,\#(.{6}),WB,.*\}#', $css_file_contents, $matches) != 0) {
+    if (preg_match('#\{\$THEMEWIZARD_COLOR,\#(.{6}),WB,.*\}#', $css_file_contents, $matches) != 0) {
         $THEME_DARK_CACHE[$theme] = (strtoupper($matches[1]) != 'FFFFFF');
     } else {
         $THEME_DARK_CACHE[$theme] = false;

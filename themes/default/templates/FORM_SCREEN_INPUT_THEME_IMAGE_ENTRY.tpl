@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 <div class="radio-list-picture{+START,IF,{CHECKED}} selected{+END}{+START,IF_EMPTY,{CODE}} radio-list-picture-na{+END}{+START,IF_PASSED_AND_TRUE,LINEAR} linear{+END}" id="w-{NAME|*}-{CODE|*}" data-tpl="formScreenInputThemeImageEntry" data-tpl-params="{+START,PARAMS_JSON,NAME,CODE}{_*}{+END}">
 	<img
 		class="selectable-theme-image" src="{URL*}"

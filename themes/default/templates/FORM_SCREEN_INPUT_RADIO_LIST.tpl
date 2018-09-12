@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$SET,early_description,1}
 
 {+START,IF_PASSED,NAME}

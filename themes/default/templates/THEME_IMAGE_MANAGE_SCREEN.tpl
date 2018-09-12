@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_themeing}
 <div data-tpl="themeImageManageScreen">
 	{TITLE}
 
@@ -6,7 +7,7 @@
 	{FORM}
 
 	<div class="box box---theme-image-manage-screen"><div class="box-inner">
-		<h2 class="force-margin">{!ADD} ({!ADVANCED})</h2>
+		<h2>{!ADD} ({!ADVANCED})</h2>
 
 		<p>{!ADDING_THEME_IMAGE}</p>
 
