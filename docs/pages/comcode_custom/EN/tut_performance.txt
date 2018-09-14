@@ -92,6 +92,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
  - MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
+ - If you use [tt]www[/tt] in your base URL, set an explicit cookie domain in [tt]_config.php[/tt] to include that. This will cause Google Analytics cookies to be set on the [tt]www[/tt] subdomain, reducing the cookie volume on other domains.
 
 [title="2"]Merging JavaScript or CSS files[/title]
 

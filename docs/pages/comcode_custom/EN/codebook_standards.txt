@@ -2219,7 +2219,7 @@ Use relative font sizes
 [color="red"]Front-end designs should work on mobile mode[/color]
 | Mobile, Compatibility with user computers
 | Composr development +
-| Manually
+| Manually, Mobile Usability tests in Google Search Console
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
