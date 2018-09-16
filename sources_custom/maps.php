@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2018
+
+ See text/EN/licence.txt for full licensing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    sortable_tables
+ */
 
 function init__maps()
 {
@@ -53,7 +66,7 @@ function _search_map_color_pool($intensity, $max_intensity, $color_pool)
     }
 
     //$color_index = @intval(($intensity / $max_intensity) * (count($color_pool) - 1));  Logarithmic better
-    $color_index = @intval(round((log($intensity, 10) / log($max_intensity, 10)) * (count($color_pool) - 1)));
+    $color_index = @intval(round((log($intensity, 10.0) / log($max_intensity, 10.0)) * (count($color_pool) - 1)));
 
     return $color_pool[$color_index];
 }

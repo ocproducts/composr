@@ -3504,12 +3504,13 @@ function levenshtein($str1, $str2)
 }
 
 /**
- * Natural logarithm.
+ * Logarithm.
  *
  * @param  float $arg Number to find log of
+ * @param  float $base Base
  * @return float Log of given number
  */
-function log($arg)
+function log($arg, $base = 2.718281828459)
 {
     return 0.0;
 }
@@ -4826,6 +4827,19 @@ function fputcsv($handle, $fields, $delimiter = ',', $enclosure = '"', $escape =
 }
 
 /**
+ * Match filename against a pattern.
+ *
+ * @param  string $pattern The shell wildcard pattern
+ * @param  string $string The tested string
+ * @param  integer $flags FNM_* flags
+ * @return boolean Answer
+ */
+function fnmatch($pattern, $string, $flags = 0)
+{
+    return false;
+}
+
+/**
  * Finds whether a value is not a number.
  *
  * @param  float $val The value to check
@@ -5200,7 +5214,6 @@ getrusage
 getmyinode
 getmygid
 get_current_user
-fnmatch
 money_format
 ftok
 mime_content_type

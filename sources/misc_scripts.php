@@ -219,7 +219,7 @@ function preview_script()
     require_code('preview');
 
     $result = build_preview(true);
-    list($output, $validation, $keyword_density, $spelling, $has_device_preview_modes) = $result;
+    list($output, $validation, $keyword_density, $spelling, $health_check, $has_device_preview_modes) = $result;
 
     if (get_param_integer('js_only', 0) == 0) {
         $output = do_template('PREVIEW_SCRIPT', array(
@@ -228,6 +228,7 @@ function preview_script()
             'WEBSTANDARDS' => $validation,
             'KEYWORD_DENSITY' => $keyword_density,
             'SPELLING' => $spelling,
+            'HEALTH_CHECK' => $health_check,
             'HIDDEN' => build_keep_post_fields(),
             'HAS_DEVICE_PREVIEW_MODES' => $has_device_preview_modes,
         ));

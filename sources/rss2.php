@@ -207,6 +207,9 @@ function rss_backend_script()
         return;
     }
 
+    // Firefox (and probably other browsers, but I didn't test) doesn't want to display Atom feeds inline if they're sent as text/xml+atom, even if the Content-Disposition is sent to inline :(
+    header('Content-Type: text/xml'); // application/rss+xml ?
+
     require_code('hooks/systems/rss/' . filter_naughty_harsh($mode), true);
     $object = object_factory('Hook_rss_' . filter_naughty_harsh($mode));
     require_code('selectcode');
@@ -242,9 +245,6 @@ function rss_backend_script()
     } else {
         $rss_cloud = new Tempcode();
     }
-
-    // Firefox (and probably other browsers, but I didn't test) doesn't want to display Atom feeds inline if they're sent as text/xml+atom, even if the Content-Disposition is sent to inline :(
-    header('Content-Type: text/xml'); // application/rss+xml ?
 
     if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;

@@ -1242,15 +1242,17 @@ class Module_cms_comcode_pages
             save_form_custom_fields('comcode_page', $zone . ':' . $new_file, $zone . ':' . $file);
         }
 
-        // Look for bad title semantics
-        $_text['html'] = $_text['tempcode']->evaluate();
-        if ((substr($file, 0, 1) != '_') && (substr($file, 0, 6) != 'panel_') && (trim($_text['html']) != '')) {
-            if ((strpos($_text['html'], '<h1') === false) && (strpos($_text['comcode'], '[title]') === false) && (strpos($_text['comcode'], '[title="1"]') === false)) {
-                attach_message(do_lang_tempcode('NO_LEVEL_1_HEADERS'), 'notice');
-            }
-            $matches = array();
-            if ((strpos($_text['html'], '<h2') === false) && (preg_match_all('#\n\[(b|font|size)\][^\.]+\[/(b|font|size)\]\r?\n#', $_text['comcode'], $matches) >= 2)) {
-                attach_message(do_lang_tempcode('NO_LEVEL_2_HEADERS'), 'inform');
+        // Health Check
+        if (addon_installed('health_check')) {
+            require_code('health_check');
+            $has_fails = false;
+            $categories = run_health_check($has_fails, null, false, false, false, false, null, array($zone . ':' . $new_file), null, CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
+            foreach ($categories as $category_label => $sections) {
+                foreach ($sections['SECTIONS'] as $section_label => $results) {
+                    foreach ($results['RESULTS'] as $result) {
+                        attach_message($result['MESSAGE'], 'warn');
+                    }
+                }
             }
         }
 

@@ -114,6 +114,22 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        LEVEL_1_HEADERS_PROBLEM
+        LEVEL_2_HEADERS_PROBLEM
+        PAGE_INTEGRITY_PROBLEM
+        PAGE_SIZE_PROBLEM
+        HTTPS_EMBED_PROBLEM
+        HTTPS_LINKING_PROBLEM
+        BROKEN_LINK_PROBLEM
+        INCOMPLETE_CONTENT_PROBLEM
+        LOCAL_LINKING_PROBLEM
+        FORM_ELEMENT_PROBLEM
+        WEB_STANDARDS_PROBLEM
+        SPELLING_PROBLEM
+        HC_VERSION_CHECK
+        CONFIG_OPTION_hc_version_check
+        CONFIG_OPTION_hc_version_check_VALUE_deprecated
+        CONFIG_OPTION_hc_version_check_VALUE_uptodate
         THEME_NOT_SUPPORTING_THEMEWIZARD
         THEME_NOT_SUPPORTING_LOGOWIZARD
         EQUATIONS_NOT_SUPPORTED
@@ -6050,8 +6066,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_HELP
         NO_INTEGERS_TEMPLATE
         NO_LAST_BACKUP
-        NO_LEVEL_1_HEADERS
-        NO_LEVEL_2_HEADERS
         NO_LURKERS_FOUND
         NO_MYSQL_QUERY_CHANGES_MAKE
         NO_NOTE_GUEST

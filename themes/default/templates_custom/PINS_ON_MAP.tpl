@@ -78,7 +78,7 @@
 		}
 
 		{+START,LOOP,DATA}
-			addMarker(map, { lat: {LATITUDE*}, lng: {LONGITUDE*} }, '{COLOR;*/}', {$?,{$IS_EMPTY,{INTENSITY}},null,{INTENSITY%}}, '{LABEL;*/}', '{DESCRIPTION;*/}');
+			addMarker(map, { lat: {LATITUDE/}, lng: {LONGITUDE/} }, '{COLOR;/}', {$?,{$IS_EMPTY,{INTENSITY}},null,{INTENSITY%}}, '{LABEL;/}', '{DESCRIPTION;/}');
 		{+END}
 	}
 

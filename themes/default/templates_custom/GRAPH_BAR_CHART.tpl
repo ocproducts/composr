@@ -37,7 +37,7 @@
 				responsive: false,
 			{+END}
 			legend: {
-			    display: false,
+				display: false,
 			},
 			scales: {
 				{+START,IF_NON_EMPTY,{X_AXIS_LABEL}}

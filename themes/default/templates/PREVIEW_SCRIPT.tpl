@@ -10,6 +10,7 @@
 			</div>
 		</div></div>
 	{+END}
+
 	{+START,IF_NON_EMPTY,{KEYWORD_DENSITY}}
 		<div class="box box---preview-script"><div class="box-inner">
 			<h2>{!KEYWORDCHECK}</h2>
@@ -19,6 +20,7 @@
 			</div>
 		</div></div>
 	{+END}
+
 	{+START,IF_NON_EMPTY,{WEBSTANDARDS}}
 		<div class="box box---preview-script"><div class="box-inner">
 			<h2>{!WEBSTANDARDS}</h2>
@@ -28,6 +30,21 @@
 			</div>
 		</div></div>
 	{+END}
+
+	{+START,IF_NON_EMPTY,{HEALTH_CHECK}}
+		<div class="box box---preview-script"><div class="box-inner">
+			<h2>{!HEALTH_CHECK}</h2>
+
+			<div>
+				{+START,LOOP,HEALTH_CHECK}
+					<p class="red_alert">
+						{_loop_var}
+					</p>
+				{+END}
+			</div>
+		</div></div>
+	{+END}
+
 	{+START,IF_EMPTY,{WEBSTANDARDS}}
 		<section class="box box---preview-script global-middle-faux"><div class="box-inner">
 			<h2>{!PREVIEW}</h2>

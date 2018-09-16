@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2018
+
+ See text/EN/licence.txt for full licensing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    sortable_tables
+ */
 
 function _generate_graph_id()
 {
@@ -83,7 +96,7 @@ function graph_line_chart($datasets, $x_labels = null, $x_axis_label = '', $y_ax
     }
 
     if ($x_labels === null) {
-        $x_labels = range(0, count($dataset[0]['data']));
+        $x_labels = range(0, count($datasets[0]['datapoints']));
     }
 
     $_datasets = array();

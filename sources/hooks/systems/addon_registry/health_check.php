@@ -197,6 +197,7 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/config/hc_cron_sections_to_run.php',
             'sources/hooks/systems/config/hc_is_test_site.php',
             'sources/hooks/systems/config/hc_transfer_speed_threshold.php',
+            'sources/hooks/systems/config/hc_version_check.php',
             'sources/hooks/systems/cron/_health_check.php',
             'sources/hooks/systems/notifications/health_check.php',
             'themes/default/templates/HEALTH_CHECK_RESULTS.tpl',

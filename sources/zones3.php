@@ -21,6 +21,68 @@
 /*EXTRA FUNCTIONS: fileinode*/
 
 /**
+ * Expand wildcarded page-links into a list of real page-links.
+ *
+ * @param  string $wildcarded_page_link The wildcarded page-links
+ * @return array A list of page-links
+ */
+function expand_wildcarded_page_links($wildcarded_page_link)
+{
+    $wildcarded_page_link = str_replace('_WILD', '*', $wildcarded_page_link);
+
+    $page_links = array();
+
+    $parts = explode(':', $wildcarded_page_link, 3);
+    $page_links = array();
+    foreach ($parts as $i => $part) {
+        switch ($i) {
+            case 0: // Zone
+                if ((strpos($part, '*') !== false) || (strpos($part, '?') !== false)) {
+                    $start = 0;
+                    do {
+                        $zones = find_all_zones(true, false, false, $start, 50);
+                        foreach ($zones as $zone) {
+                            if (fnmatch($part, $zone)) {
+                                $page_links[] = $zone;
+                            }
+                        }
+                        $start += 50;
+                    }
+                    while (count($zones) > 0);
+                } else {
+                    $page_links[] = $part;
+                }
+                break;
+            case 1: // Page
+                if ((strpos($part, '*') !== false) || (strpos($part, '?') !== false)) {
+                    $_page_links = array();
+                    foreach ($page_links as &$page_link) {
+                        $pages = find_all_pages_wrap($page_link, false, false, FIND_ALL_PAGES__ALL);
+                        foreach (array_keys($pages) as $page) {
+                            if (fnmatch($part, $page)) {
+                                $_page_links[] = $page_link . ':' . $page;
+                            }
+                        }
+                    }
+                    $page_links = $_page_links;
+                } else {
+                    foreach ($page_links as &$page_link) {
+                        $page_link .= ':' . $part;
+                    }
+                }
+                break;
+            case 2: // Anything else
+                foreach ($page_links as &$page_link) {
+                    $page_link .= ':' . $part;
+                }
+                break;
+        }
+    }
+
+    return $page_links;
+}
+
+/**
  * Define a Comcode page structure programmatically.
  * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
  *

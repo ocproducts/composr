@@ -1483,7 +1483,7 @@ function check_url_exists($url, $test_freq_secs)
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 0));
-        if (($test2 !== null) && (($test2->message == '401') || ($test2->message == '403') || ($test2->message == '405') || ($test2->message == '416') || ($test2->message == '500') || ($test2->message == '503') || ($test2->message == '520'))) {
+        if (($test2 !== null) && (in_array($test2->message, array('401', '403', '405', '416', '500', '501', '503', '520')))) {
             $test2 = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 1)); // Try without HEAD, sometimes it's not liked
         }
         $exists = ($test2->data === null) ? 0 : 1;

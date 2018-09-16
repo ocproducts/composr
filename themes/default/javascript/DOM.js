@@ -476,7 +476,7 @@
 
                 // if (event.type === 'load') {
                 //     $util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
-                // } 
+                // }
 
                 if (event.type === 'error') {
                     $util.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);

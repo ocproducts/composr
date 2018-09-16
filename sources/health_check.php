@@ -30,6 +30,7 @@ function init__health_check()
         define('CHECK_CONTEXT__TEST_SITE', 1);
         define('CHECK_CONTEXT__LIVE_SITE', 2);
         define('CHECK_CONTEXT__PROBING_FOR_SECTIONS', 3);
+        define('CHECK_CONTEXT__SPECIFIC_PAGE_LINKS', 4);
 
         define('HEALTH_CHECK__FAIL', 'FAIL');
         define('HEALTH_CHECK__PASS', 'PASS');
@@ -42,8 +43,9 @@ function init__health_check()
     global $HEALTH_CHECK_LOG_FILE;
     $HEALTH_CHECK_LOG_FILE = null;
 
-    global $HEALTH_CHECK_PAGE_RESPONSE_CACHE, $HEALTH_CHECK_PAGE_URLS_CACHE;
+    global $HEALTH_CHECK_PAGE_RESPONSE_CACHE, $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE, $HEALTH_CHECK_PAGE_URLS_CACHE;
     $HEALTH_CHECK_PAGE_RESPONSE_CACHE = array();
+    $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE = array();
     $HEALTH_CHECK_PAGE_URLS_CACHE = array();
 }
 
@@ -130,13 +132,26 @@ function health_check_script()
     header('Content-type: text/plain; charset=' . get_charset());
     cms_ini_set('ocproducts.xss_detect', '0');
 
+    $out = display_health_check_results_as_text($categories);
+}
+
+/**
+ * Take Health Check results and convert into a simple text output.
+ *
+ * @param  array $categories Results
+ * @return string Output
+ */
+function display_health_check_results_as_text($categories)
+{
+    $out = '';
     foreach ($categories as $category_label => $sections) {
         foreach ($sections['SECTIONS'] as $section_label => $results) {
             foreach ($results['RESULTS'] as $result) {
-                echo $result['RESULT'] . ': ' . strip_html($result['MESSAGE']->evaluate()) . "\n";
+                $out .= $result['RESULT'] . ': ' . strip_html($result['MESSAGE']->evaluate()) . "\n";
             }
         }
     }
+    return $out;
 }
 
 /**
@@ -149,21 +164,26 @@ function health_check_script()
  * @param  boolean $manual_checks Mention manual checks
  * @param  boolean $automatic_repair Do automatic repairs where possible
  * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+ * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+ * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+ * @param  ?integer $check_context The current state of the website (a CHECK_CONTEXT__* constant) (null: auto-decide)
  * @return array List of result categories with results, template-ready
  */
-function run_health_check(&$has_fails, $sections_to_run = null, $passes = false, $skips = false, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+function run_health_check(&$has_fails, $sections_to_run = null, $passes = false, $skips = false, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null, $check_context = null)
 {
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(180);
     }
 
-    if (running_script('install')) {
-        $check_context = CHECK_CONTEXT__INSTALL;
-    } else {
-        if ((get_option('hc_is_test_site') == '1') || ((get_option('hc_is_test_site') == '-1') && (get_option('site_closed') == '1'))) {
-            $check_context = CHECK_CONTEXT__TEST_SITE;
+    if ($check_context === null) {
+        if (running_script('install')) {
+            $check_context = CHECK_CONTEXT__INSTALL;
         } else {
-            $check_context = CHECK_CONTEXT__LIVE_SITE;
+            if ((get_option('hc_is_test_site') == '1') || ((get_option('hc_is_test_site') == '-1') && (get_option('site_closed') == '1'))) {
+                $check_context = CHECK_CONTEXT__TEST_SITE;
+            } else {
+                $check_context = CHECK_CONTEXT__LIVE_SITE;
+            }
         }
     }
 
@@ -179,7 +199,7 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
 
     $hook_obs = find_all_hook_obs('systems', 'health_checks', 'Hook_health_check_');
     foreach ($hook_obs as $ob) {
-        list($category_label, $sections) = $ob->run($sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        list($category_label, $sections) = $ob->run($sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         $_sections = array();
         foreach ($sections as $section_label => $results) {
@@ -287,8 +307,10 @@ abstract class Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    protected function process_checks_section($method, $section_label, $sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    protected function process_checks_section($method, $section_label, $sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if (($sections_to_run !== null) && (!in_array($this->category_label . ' \\ ' . $section_label, $sections_to_run)) && (!in_array($method, $sections_to_run))) {
             return;
@@ -301,7 +323,7 @@ abstract class Hook_Health_Check
             if ($HEALTH_CHECK_LOG_FILE !== null) {
                 fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  STARTING ' . $this->category_label . ' \\ ' . $section_label . "\n");
             }
-            call_user_func(array($this, $method), $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+            call_user_func(array($this, $method), $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
             if ($HEALTH_CHECK_LOG_FILE !== null) {
                 fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  FINISHED ' . $this->category_label . ' \\ ' . $section_label . "\n");
             }
@@ -404,15 +426,18 @@ abstract class Hook_Health_Check
             }
         }
 
-        $urls_or_page_links = array();
+        require_code('zones3');
+
+        $page_links = array();
         foreach ($_urls_or_page_links as $url_or_page_link) {
             if (looks_like_url($url_or_page_link)) {
-                $urls_or_page_links[] = url_to_page_link($url_or_page_link);
+                $page_links[] = url_to_page_link($url_or_page_link);
             } else {
-                $urls_or_page_links[] = $url_or_page_link;
+                $page_links = array_merge($page_links, expand_wildcarded_page_links($url_or_page_link));
             }
         }
-        return $urls_or_page_links;
+
+        return $page_links;
     }
 
     /**
@@ -491,16 +516,24 @@ abstract class Hook_Health_Check
      * Download a page by page-link.
      *
      * @param  string $page_link Page-link
+     * @param  boolean $inner_screen_only Whether to try and restrict to just an inner Comcode screen
      * @return string Page content
      */
-    protected function get_page_content($page_link = ':')
+    protected function get_page_content($page_link = ':', $inner_screen_only = false)
     {
-        $http_result = $this->get_page_http_content($page_link, array('timeout' => 20.0));
+        if ($inner_screen_only) {
+            $test = $this->get_comcode_page_content($page_link);
+            if ($test !== null) {
+                return $test[1];
+            }
+        }
+
+        $http_result = $this->get_page_http_content($page_link);
         return $http_result->data;
     }
 
     /**
-     * Download a page by page-link with all HTTP headers etc in an object.
+     * Download a page by page-link.
      *
      * @param  string $page_link Page-link
      * @return object Response data
@@ -509,7 +542,7 @@ abstract class Hook_Health_Check
     {
         global $HEALTH_CHECK_PAGE_RESPONSE_CACHE;
         if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_RESPONSE_CACHE)) {
-            $HEALTH_CHECK_PAGE_RESPONSE_CACHE[$page_link] = cms_http_request($this->get_page_url($page_link), array('trigger_error' => false, 'no_redirect' => true));
+            $HEALTH_CHECK_PAGE_RESPONSE_CACHE[$page_link] = cms_http_request($this->get_page_url($page_link), array('timeout' => 20.0, 'trigger_error' => false, 'no_redirect' => true));
 
             // Server blocked to access itself
             if ($page_link == ':') {
@@ -517,6 +550,34 @@ abstract class Hook_Health_Check
             }
         }
         return $HEALTH_CHECK_PAGE_RESPONSE_CACHE[$page_link];
+    }
+
+    /**
+     * Get a Comcode page-link's Comcode and HTML.
+     *
+     * @param  string $page_link Page-link
+     * @return ?array A tuple: Comcode, HTML, Zone name, Page name (null: not a Comcode page or not a page at all)
+     */
+    protected function get_comcode_page_content($page_link)
+    {
+        global $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE;
+        if (!array_key_exists($page_link, $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE)) {
+            require_code('site');
+
+            list($zone, $attributes) = page_link_decode($page_link);
+            $page = $attributes['page'];
+            $path_details = find_comcode_page(user_lang(), $page, $zone);
+            if ($path_details[2] != '') {
+                $comcode = cms_file_get_contents_safe($path_details[2]);
+                $html = load_comcode_page($path_details[1], $zone, $page, $path_details[0], true);
+                $ret = array($comcode, $html->evaluate(), $zone, $page);
+                $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE[$page_link] = $ret;
+                return $ret;
+            }
+            $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE[$page_link] = null;
+            return null;
+        }
+        return $HEALTH_CHECK_COMCODE_PAGE_CONTENT_CACHE[$page_link];
     }
 
     /*
@@ -532,6 +593,9 @@ abstract class Hook_Health_Check
     protected function get_embed_urls_from_data($data)
     {
         $urls = array();
+
+        require_code('xhtml');
+        $data = xhtmlise_html($data, true);
 
         $matches = array();
 
@@ -574,6 +638,9 @@ abstract class Hook_Health_Check
     protected function get_link_urls_from_data($data)
     {
         $urls = array();
+
+        require_code('xhtml');
+        $data = xhtmlise_html($data, true);
 
         $matches = array();
 

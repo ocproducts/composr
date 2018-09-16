@@ -33,15 +33,17 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      * @return array A pair: category label, list of results
      */
-    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
-        $this->process_checks_section('testSSLIsOn', 'SSL on', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testManualSSLGrading', 'SSL grading', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testIncorrectHTTPSEmbedding', 'Insecure embedding', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testIncorrectHTTPSLinking', 'Insecure linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testSSLCorrectness', 'SSL correctness', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSSLIsOn', 'SSL on', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testManualSSLGrading', 'SSL grading', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testIncorrectHTTPSEmbedding', 'Insecure embedding', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testIncorrectHTTPSLinking', 'Insecure linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testSSLCorrectness', 'SSL correctness', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -53,9 +55,15 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testSSLIsOn($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testSSLIsOn($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         $is_http = (substr(get_base_url(), 0, 7) == 'http://');
         $this->assertTrue(!$is_http, do_lang('WARNING_SSL'));
     }
@@ -67,10 +75,15 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testManualSSLGrading($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testManualSSLGrading($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -89,15 +102,18 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testIncorrectHTTPSEmbedding($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testIncorrectHTTPSEmbedding($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links();
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
+        $html_segments = array();
         foreach ($page_links as $page_link) {
             $url = page_link_to_url($page_link);
             $protocol = parse_url($url, PHP_URL_SCHEME);
@@ -105,18 +121,28 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
                 continue;
             }
 
-            $data = $this->get_page_content($page_link);
-            if ($data === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
+            if ($html === null) {
+                $this->stateCheckSkipped('Could not download page from website');
                 continue;
             }
 
-            $urls = $this->get_embed_urls_from_data($data);
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($html_segments as $field_title => $html) {
+            $urls = $this->get_embed_urls_from_data($html);
 
             foreach ($urls as $url) {
                 // Check
-                $this->assertTrue(preg_match('#^http://#', $url) == 0, 'Embedding HTTP resources on HTTPS page: [url="' . $url . '"]' . $url . '[/url] (on "' . $page_link . '")');
+                $this->assertTrue(preg_match('#^http://#', $url) == 0, do_lang('HTTPS_EMBED_PROBLEM', $url, $field_title));
             }
         }
     }
@@ -128,8 +154,10 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testIncorrectHTTPSLinking($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testIncorrectHTTPSLinking($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
@@ -149,17 +177,28 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
         $domains = $this->get_domains();
 
-        $page_links = $this->process_urls_into_page_links();
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
+        $html_segments = array();
         foreach ($page_links as $page_link) {
-            $data = $this->get_page_content($page_link);
-            if ($data === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
+            if ($html === null) {
+                $this->stateCheckSkipped('Could not download page from website');
                 continue;
             }
 
-            $urls = $this->get_link_urls_from_data($data, false);
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($html_segments as $field_title => $html) {
+            $urls = $this->get_link_urls_from_data($html, false);
 
             foreach ($urls as $url) {
                 // Check
@@ -171,7 +210,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
                     $regexp .= preg_quote($domain, '#');
                 }
                 $regexp .= ')[:/]#';
-                $this->assertTrue(preg_match($regexp, $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: [url="' . $url . '"]' . $url . '[/url] (on "' . $page_link . '")');
+                $this->assertTrue(preg_match($regexp, $url) == 0, do_lang('HTTPS_LINKING_PROBLEM', $url, $field_title));
             }
         }
     }
@@ -183,8 +222,10 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testSSLCorrectness($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testSSLCorrectness($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
