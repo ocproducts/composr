@@ -513,7 +513,7 @@ abstract class Hook_Health_Check
     */
 
     /**
-     * Download a page by page-link.
+     * Download a page by page-link, but with support for directly accessing Comcode pages without needing HTTP.
      *
      * @param  string $page_link Page-link
      * @param  boolean $inner_screen_only Whether to try and restrict to just an inner Comcode screen
