@@ -369,7 +369,7 @@ function _render_google_analytics_chart($metric, $id, $days, $under_tab, $access
     if (!isset($LOADED_GA_JS)) {
         $LOADED_GA_JS = true;
 
-        // TODO: Move to external JS file somehow in v11
+        // TODO: Move to .js file #2960
         attach_to_screen_header("
         <script nonce=\"" . $GLOBALS['CSP_NONCE'] . "\">
             (function(w,d,s,g,js,fjs){

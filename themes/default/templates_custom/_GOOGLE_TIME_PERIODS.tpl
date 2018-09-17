@@ -1,4 +1,4 @@
-{$,TODO: Move JS for v11}
+{$,TODO: Move to .js file #2960}
 
 <p>
 	<label for="time-period-{ID*}">Period to show:</label>

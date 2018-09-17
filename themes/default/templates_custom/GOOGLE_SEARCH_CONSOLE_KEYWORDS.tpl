@@ -1,4 +1,4 @@
-{$,TODO: Move JS for v11}
+{$,TODO: Move to .js file #2960}
 
 <div id="ga_{ID*}">
 	{+START,INCLUDE,_GOOGLE_TIME_PERIODS}{+END}

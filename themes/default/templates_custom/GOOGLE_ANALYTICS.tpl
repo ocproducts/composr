@@ -1,4 +1,4 @@
-{$,TODO: Move JS for v11}
+{$,TODO: Move to .js file #2960}
 
 <div id="ga-{ID*}">
 	<div id="auth-button-{ID*}"></div>

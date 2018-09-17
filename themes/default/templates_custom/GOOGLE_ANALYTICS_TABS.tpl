@@ -1,4 +1,4 @@
-{$,TODO: Move JS for v11}
+{$,TODO: Move to .js file #2960}
 
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 {$REQUIRE_CSS,big_tabs}
