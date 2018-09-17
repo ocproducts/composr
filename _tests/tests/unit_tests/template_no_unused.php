@@ -190,6 +190,7 @@ class template_no_unused_test_set extends cms_test_case
             'W_MESSAGE_TO',
             'RATING_INLINE_STATIC',
             'ADMIN_ZONE_SEARCH',
+            '_GOOGLE_TIME_PERIODS',
         );
 
         $themes = find_all_themes();

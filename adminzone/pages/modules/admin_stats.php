@@ -262,6 +262,10 @@ class Module_admin_stats
             $this->title = get_screen_title('INSTALL_GEOLOCATION_DATA');
         }
 
+        if (!in_array($type, array('browse', 'overview', 'users_online', 'submission_rates', 'referrers', '_page', 'load_times', 'clear', '_clear', 'install_data', 'page'))) {
+            $GLOBALS['OUTPUT_STREAMING'] = false;
+        }
+
         return null;
     }
 
@@ -281,11 +285,15 @@ class Module_admin_stats
 
         if (get_param_integer('csv', 0) == 1) {
             require_code('files2');
-        } else {
-            send_http_output_ping();
         }
 
         $type = get_param_string('type', 'browse');
+
+        if (in_array($type, array('browse', 'overview', 'users_online', 'submission_rates', 'referrers', '_page', 'load_times', 'clear', '_clear', 'install_data', 'page'))) {
+            if (get_param_integer('csv', 0) == 0) {
+                send_http_output_ping();
+            }
+        }
 
         if (!file_exists(get_custom_file_base() . '/data_custom/modules/admin_stats')) {
             require_code('files2');

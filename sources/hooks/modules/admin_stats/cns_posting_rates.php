@@ -26,7 +26,7 @@ class Hook_admin_stats_cns_posting_rates
     /**
      * Define stats screens implemented in this hook.
      *
-     * @return ?array List of screens, each being a map written as do-next icon specification style (null: hook is disabled)
+     * @return ?array A pair: entry-point, do-next information (null: hook is disabled)
      */
     public function info()
     {
