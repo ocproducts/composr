@@ -1104,6 +1104,10 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Find the height of the theme image/URL (particularly useful for making web pages render faster). Uses the persistent cache to remember values, if possible.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>{$FAVICON}</td>
+			<td>Find the URL to the favicon.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 			<td>{$THUMBNAIL,http://example.com/pic.png,40x60,galleries}</td>
 			<td>Generate a thumbnail URL from another image URL</td>
 		</tr>

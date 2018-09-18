@@ -3192,7 +3192,7 @@ function get_loaded_tags($limit_to = null, $the_tags = null)
  * @param  ID_TEXT $zone_name Zone name
  * @return ID_TEXT Default page
  */
-function get_zone_default_page($zone_name)
+function get_zone_default_page($zone_name, &$zone_missing = false)
 {
     if ($zone_name == '_SELF') {
         $zone_name = get_zone_name();
@@ -3223,9 +3223,12 @@ function get_zone_default_page($zone_name)
             if ($_zone_default_page === null) {
                 $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), array()/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
-            $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = DEFAULT_ZONE_PAGE_NAME;
             foreach ($_zone_default_page as $zone_row) {
                 $ZONE_DEFAULT_PAGES_CACHE[$zone_row['zone_name']] = $zone_row['zone_default_page'];
+            }
+            if (!isset($ZONE_DEFAULT_PAGES_CACHE[$zone_name])) {
+                $zone_missing = true;
+                $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = DEFAULT_ZONE_PAGE_NAME;
             }
         }
 

@@ -1050,7 +1050,12 @@ function page_link_decode($page_link)
         }
         unset($bits[1]);
     } else {
-        $attributes = array('page' => get_zone_default_page($zone));
+        $zone_missing = false;
+        $attributes = array('page' => get_zone_default_page($zone, $zone_missing));
+
+        if (($GLOBALS['SEMI_DEV_MODE']) && ($zone_missing)) {
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($zone), 'zone'));
+        }
     }
     unset($bits[0]);
     $i = 0;

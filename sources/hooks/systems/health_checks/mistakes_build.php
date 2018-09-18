@@ -280,11 +280,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        if (!$manual_checks) {
-            $this->stateCheckSkipped('Will not check automatically because we do not know intent, a live site could be pointing to an Intranet');
-            return;
-        }
-
         $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
         $html_segments = array();
@@ -306,8 +301,27 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         }
 
         foreach ($html_segments as $field_title => $html) {
-            $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
-            $this->assertTrue(preg_match($c, $html) == 0, do_lang('LOCAL_LINKING_PROBLEM', $field_title));
+            $problematic_host_prefixes = array(
+                '127\.0\.0\.1($|:|/)',
+                '192\.168\.',
+                '10\.',
+                'localhost($|:|/)',
+            );
+
+            if (!health_check__is_test_site()) {
+                $problematic_host_prefixes[] = '(staging|sandbox)\.' . preg_quote(preg_replace('#^www\.#', '', get_domain()), '#') . '($|:|/)';
+            }
+
+            $regexp = '#https?://(';
+            foreach ($problematic_host_prefixes as $i => $host_prefix) {
+                if ($i != 0) {
+                    $regexp .= '|';
+                }
+                $regexp .= $host_prefix;
+            }
+            $regexp .= ')#';
+
+            $this->assertTrue(preg_match($regexp, $html) == 0, do_lang('LOCAL_LINKING_PROBLEM', $field_title));
         }
     }
 
@@ -717,7 +731,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $_comcode_segments['[tt]' . $page_link . '[/tt]'] = array($comcode, $html, $page);
         }
 
-        if ($comcode_segments !== null) {
+        if (($comcode_segments !== null) && (get_page_name() == 'cms_comcode_pages')) {
             foreach ($comcode_segments as $comcode_segment) {
                 $_comcode_segments[do_lang('PREVIEW')] = array($comcode_segment, static_evaluate_tempcode(comcode_to_tempcode($comcode_segment)), get_param_string('page', ''));
             }

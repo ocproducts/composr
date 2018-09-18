@@ -6742,3 +6742,33 @@ function ecv_HAS_EDIT_PERMISSION($lang, $escaped, $param)
     }
     return $value;
 }
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_FAVICON($lang, $escaped, $param)
+{
+    $default = find_theme_image('favicon');
+    $value = $default;
+
+    if (addon_installed('health_check')) {
+        if (get_option('hc_is_test_site') == '1') {
+            $value = find_theme_image((parse_url(get_base_url(),  PHP_URL_HOST) == 'localhost') ? 'favicon_dev' : 'favicon_staging', true);
+            if ($value == '') {
+                $value = $default;
+            }
+        }
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}

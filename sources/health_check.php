@@ -179,7 +179,7 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
         if (running_script('install')) {
             $check_context = CHECK_CONTEXT__INSTALL;
         } else {
-            if ((get_option('hc_is_test_site') == '1') || ((get_option('hc_is_test_site') == '-1') && (get_option('site_closed') == '1'))) {
+            if (health_check__is_test_site()) {
                 $check_context = CHECK_CONTEXT__TEST_SITE;
             } else {
                 $check_context = CHECK_CONTEXT__LIVE_SITE;
@@ -700,4 +700,14 @@ abstract class Hook_Health_Check
         }
         return @json_decode(http_get_contents($url, array('trigger_error' => false)), true);
     }
+}
+
+/**
+ * Find whether this is a test site.
+ *
+ * @return boolean Whether it is
+ */
+function health_check__is_test_site()
+{
+    return (get_option('hc_is_test_site') == '1') || ((get_option('hc_is_test_site') == '-1') && (get_option('site_closed') == '1'));
 }

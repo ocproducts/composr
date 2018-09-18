@@ -57,6 +57,11 @@ class Hook_config_hc_is_test_site
             return null;
         }
 
+        $bu = get_base_url();
+        if ((strpos($bu, 'staging.') !== false) || (strpos($bu, 'sandbox.') !== false)) {
+            return '1';
+        }
+
         return '-1';
     }
 }
