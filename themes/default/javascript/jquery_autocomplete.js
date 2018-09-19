@@ -658,7 +658,7 @@ function autoCompleteElementFactory(element,e) {
 
 function set_up_comcode_autocomplete(name,wysiwyg)
 {
-	if (typeof wysiwyg!='undefined' && wysiwyg && wysiwyg_on() && (typeof CKEDITOR=='undefined' || typeof CKEDITOR.instances[name]=='undefined'))
+	if (typeof wysiwyg!='undefined' && wysiwyg && wysiwyg_on() && (typeof window.CKEDITOR=='undefined' || window.CKEDITOR===null || typeof window.CKEDITOR.instances[name]=='undefined'))
 		return;
 
 	register_mouse_listener();
