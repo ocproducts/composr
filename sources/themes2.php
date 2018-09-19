@@ -60,7 +60,7 @@ function autoprobe_cdns()
         }
 
         if (preg_match('#^' . preg_quote($t, '#') . '($|\.|/|:)#', $domain_name) == 0) { // Don't use it if it is in the base URL
-            $test_url = 'http://' . $t . $parsed['path'] . '/themes/default/images/icons/editor/comcode.svg';
+            $test_url = (tacit_https() ? 'https://' : 'http://') . $t . $parsed['path'] . '/themes/default/images/icons/editor/comcode.svg';
 
             $test_result = http_get_contents($test_url, array('trigger_error' => false, 'timeout' => 0.25));
 

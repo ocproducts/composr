@@ -86,6 +86,9 @@ class Hook_fields_url
         if ($ev == 'http://') {
             return '';
         }
+        if ($ev == 'https://') {
+            return '';
+        }
 
         require_code('http');
         $meta_details = get_webpage_meta_details($ev);
@@ -138,7 +141,7 @@ class Hook_fields_url
         $value = post_param_string($tmp_name, $editing ? STRING_MAGIC_NULL : '');
         if ($value != STRING_MAGIC_NULL) {
             $value = fixup_protocolless_urls($value);
-            if ($value == 'http://') {
+            if (($value == 'http://') || ($value == 'https://')) {
                 $value = '';
             }
         }

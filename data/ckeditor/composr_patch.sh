@@ -10,6 +10,8 @@ echo 'Manually download and extract codemirror, dialogadvtab and emojione plugin
 
 echo 'Manually apply the new lines that were put in the old plugins/table/dialogs/table.js (11-30)';
 
+echo 'Manually replace "http://" with (window.location.protocol+"//")';
+
 echo "Removing unneeded files"
 rm -rf CHANGES.md samples _source ckeditor.pack config.js adapters
 
