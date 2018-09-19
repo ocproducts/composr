@@ -309,7 +309,7 @@ function page_not_found($codename, $zone)
     $redirect_access = addon_installed('redirects_editor') && has_actual_page_access(get_member(), 'admin_redirects');
     require_lang('zones');
     $add_url = $add_access ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'may_choose_template' => '1', 'page_link' => $zone . ':' . $codename), get_module_zone('cms_comcode_pages')) : new Tempcode();
-    $add_redirect_url = $redirect_access ? build_url(array('page' => 'admin_redirects', 'type' => 'browse', 'page_link' => $zone . ':' . $codename), get_module_zone('admin_redirects')) : new Tempcode();
+    $add_redirect_url = $redirect_access ? build_url(array('page' => 'admin_redirects', 'type' => 'page', 'page_link' => $zone . ':' . $codename), get_module_zone('admin_redirects')) : new Tempcode();
     return do_template('MISSING_SCREEN', array(
         '_GUID' => '22f371577cd2ba437e7b0cb241931575',
         'TITLE' => $title,

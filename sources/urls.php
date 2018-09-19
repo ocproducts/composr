@@ -1054,7 +1054,8 @@ function page_link_decode($page_link)
         $attributes = array('page' => get_zone_default_page($zone, $zone_missing));
 
         if (($GLOBALS['SEMI_DEV_MODE']) && ($zone_missing)) {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($zone), 'zone'));
+            require_code('site');
+            attach_message(do_lang_tempcode('_MISSING_RESOURCE', escape_html($zone), 'zone'), 'warn');
         }
     }
     unset($bits[0]);

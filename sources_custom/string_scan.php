@@ -4520,6 +4520,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_QUOTES
         DOC_REALTIME_RAIN
         DOC_REDIRECTS
+        DOC_PAGE_REDIRECTS
+        DOC_URL_REDIRECTS
         DOC_REVISIONS
         DOC_SECONDARY_GROUP_MEMBERSHIP
         DOC_SECURITY
@@ -5960,7 +5962,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NON_RECOGNISED_CSS_FILE
         NORMAL_GROUPS_PER_PAGE
         NOTE
-        NOTES_ABOUT_REDIRECTS
+        NOTES_ABOUT_PAGE_REDIRECTS
+        URL_REDIRECT_ERROR_MISSING_HTACCESS
+        URL_REDIRECT_ERROR_CORRUPT_HTACCESS
+        URL_REDIRECT_ERROR_UNWRITABLE_HTACCESS
+        URL_REDIRECT_ERROR_NOT_APACHE
+        URL_REDIRECT_full
+        URL_REDIRECT_prefix
+        URL_REDIRECT_prefix_with_append
+        URL_REDIRECT_ERROR_BAD_BASE_URL
         NOTE_DESCRIPTION
         NOTHING_TO_INVOICE_FOR
         NOTHING_TO_TRANSLATE
@@ -6623,6 +6633,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         REDIRECTED_TO_CACHE_MODULES
         REDIRECTING
         REDIRECTS
+        PAGE_REDIRECTS
+        URL_REDIRECTS
         REDIRECT_FROM_PAGE
         REDIRECT_FROM_ZONE
         REDIRECT_PAGE_TO
@@ -6767,7 +6779,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SETUPWIZARD_SAFE_MODE
         SETUPWIZARD_STEP
         SET_ALL_PERMISSIONS_ON_ROW
-        SET_REDIRECTS
+        SET_PAGE_REDIRECTS
+        SET_URL_REDIRECTS
         SHARED_INSTALL_PROHIBIT
         SHIPPING_COST_FACTOR
         SHIPPING_COST_BASE
@@ -7169,7 +7182,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TEXTUAL_TAG
         TEXT_ABSTRACT_FILE_MANAGEMENT
         TEXT_PRIOR_TO_REVISION
-        TEXT_REDIRECTS
         TEXT_VERSION
         THANKS
         THEME

@@ -832,7 +832,7 @@ class Module_cms_comcode_pages
         if (addon_installed('redirects_editor')) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('redirects', 'r_to_zone', array('r_from_page' => $file, 'r_from_zone' => $zone));
             if ($test !== null) {
-                $redirect_url = build_url(array('page' => 'admin_redirects'), get_module_zone('admin_redirects'));
+                $redirect_url = build_url(array('page' => 'admin_redirects', 'type' => 'page'), get_module_zone('admin_redirects'));
                 attach_message(do_lang_tempcode('BLOCKING_REDIRECT_IN_PLACE', escape_html($redirect_url->evaluate())), 'notice');
             }
         }

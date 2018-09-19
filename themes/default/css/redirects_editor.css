@@ -3,18 +3,30 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.redirect-table td, .redirect-table th {
+.page-redirect-table td, .page-redirect-table th {
 	vertical-align: middle;
 }
 
-.redirect-table-input-column {
+.page-redirect-table-input-column {
 	width: 25%;
 }
 
-.redirect-table-sup-column {
+.page-redirect-table-sup-column {
 	width: 3em;
 }
 
-.redirect-table td:last-child {
+.page-redirect-table td:last-child {
 	text-align: center;
+}
+
+.url-redirect-table-input-column {
+	width: 40%;
+}
+
+.url-redirect-table-type-column {
+	width: 7em;
+}
+
+.url-redirect-table-tick-column {
+	width: 2em;
 }

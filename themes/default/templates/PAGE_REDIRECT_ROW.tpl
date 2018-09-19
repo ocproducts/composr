@@ -13,7 +13,7 @@
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="from_page_{I*}">{!REDIRECT_FROM_PAGE}</label></div>
-		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="quite-wide-field" type="text" id="from_page_{I*}" name="from_page_{I*}" value="{FROM_PAGE*}" />
+		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="quite-wide-field" id="from_page_{I*}" name="from_page_{I*}" value="{FROM_PAGE*}" type="text" />
 		&rarr;
 	</td>
 	<td>
@@ -28,11 +28,11 @@
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="to_page_{I*}">{!REDIRECT_TO_PAGE}</label></div>
-		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="quite-wide-field" type="text" id="to_page_{I*}" name="to_page_{I*}" value="{TO_PAGE*}" />
+		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="quite-wide-field" id="to_page_{I*}" name="to_page_{I*}" value="{TO_PAGE*}" type="text" />
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="is_transparent_{I*}">{!IS_TRANSPARENT_REDIRECT}</label></div>
-		<input data-mouseover-activate-tooltip="['{!IS_TRANSPARENT_REDIRECT;^=}','40%']" title="{!IS_TRANSPARENT_REDIRECT}" class="input-tick" type="checkbox" id="{NAME*}" name="{NAME*}"{+START,IF,{TICKED}} checked="checked"{+END} value="1" />
+		<input data-mouseover-activate-tooltip="['{!IS_TRANSPARENT_REDIRECT;^=}','40%']" title="{!IS_TRANSPARENT_REDIRECT}" class="input-tick" type="checkbox" id="is_transparent_{I*}" name="is_transparent_{I*}"{+START,IF,{IS_TRANSPARENT}} checked="checked"{+END} value="1" />
 	</td>
 	<td>
 		{+START,IF,{$NEQ,{I},new}}

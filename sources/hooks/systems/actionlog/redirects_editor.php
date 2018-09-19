@@ -37,13 +37,22 @@ class Hook_actionlog_redirects_editor extends Hook_actionlog
         require_lang('redirects');
 
         return array(
-            'SET_REDIRECTS' => array(
+            'SET_PAGE_REDIRECTS' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'REDIRECTS' => '_SEARCH:admin_redirects',
+                    'PAGE_REDIRECTS' => '_SEARCH:admin_redirects:page',
+                ),
+            ),
+            'SET_URL_REDIRECTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'PAGE_REDIRECTS' => '_SEARCH:admin_redirects:url',
                 ),
             ),
         );

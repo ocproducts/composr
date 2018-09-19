@@ -1107,6 +1107,8 @@ class Module_admin_version
             $GLOBALS['FORUM_DB']->add_table_field('logged_mail_messages', 'm_plain_subject', 'BINARY');
 
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'actionlogs SET param_a=param_b,param_b=param_a WHERE ' . db_string_equal_to('the_type', 'UNSILENCE_TOPIC') . ' OR ' . db_string_equal_to('the_type', 'UNSILENCE_FORUM'));
+
+            $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'SET_PAGE_REDIRECTS'), array('the_type' => 'SET_REDIRECTS'));
         }
     }
 

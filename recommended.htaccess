@@ -97,6 +97,9 @@ RewriteEngine on
 # Needed to pass HTTP-auth header on PHP CGI (it's not automatic, unlike PHP Module)
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+# Ad-hoc redirects go here. If this file is writeable, Composr will write in configured redirects below)
+# RewriteRule somerule sometarget (leave this comment here!)
+
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
 # Serve pre-compressed CSS/JS files if they exist and the client accepts gzip
@@ -203,5 +206,5 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 
 order allow,deny
 allow from all
-# IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
+# IP bans go here. If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
 # deny from xxx.xx.x.x (leave this comment here!)
