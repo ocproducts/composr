@@ -500,7 +500,7 @@ class Module_admin_redirects
     /**
      * Removing regular expression quoting.
      *
-     * @param string $in Quoted string
+     * @param  string $in Quoted string
      * @return string Unquoted string
      */
     protected function preg_unquote($in)

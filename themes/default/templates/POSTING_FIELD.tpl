@@ -87,6 +87,17 @@
 			<div id="container-for-{NAME*}" class="container-for-wysiwyg">
 				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting-required{+END} wide-field posting-field-textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
+				{+START,IF_PASSED,COMCODE_PAGE_HINTS}{+START,IF_NON_EMPTY,{COMCODE_PAGE_HINTS}}
+					<p class="vertical-alignment left">
+						{+START,LOOP,COMCODE_PAGE_HINTS}
+							<span{+START,IF,{$NEQ,{_loop_key},0}} class="mini-indent"{+END}>
+								<label for="comcode_page_hint__{NAME*}__{HINT_CODENAME*}">{HINT_LABEL*}<label>
+								<input title="{HINT_DESCRIPTION*}" type="checkbox" name="comcode_page_hint__{NAME*}__{HINT_CODENAME*}" id="comcode_page_hint__{NAME*}__{HINT_CODENAME*}" value="1"{+START,IF,{HINT_SELECTED}} checked="checked"{+END} />
+							</span>
+						{+END}
+					</p>
+				{+END}{+END}
+
 				{+START,IF_PASSED,WORD_COUNTER}
 					{$SET,word_count_id,{$RAND}}
 					<div class="word-count" id="word-count-{$GET*,word_count_id}"></div>
@@ -120,7 +131,7 @@
 			{+START,IF,{$VALUE_OPTION,download_associated_media}}
 				<p class="vertical-alignment">
 					<label for="{NAME*}_download_associated_media">{!comcode:DOWNLOAD_ASSOCIATED_MEDIA}</label>
-					<input title="{!comcode:DESCRIPTION_DOWNLOAD_ASSOCIATED_MEDIA}" checked="checked" type="checkbox" name="{NAME*}_download_associated_media" id="{NAME*}_download_associated_media" value="1" />
+					<input title="{!comcode:DESCRIPTION_DOWNLOAD_ASSOCIATED_MEDIA}" type="checkbox" name="{NAME*}_download_associated_media" id="{NAME*}_download_associated_media" value="1" checked="checked" />
 				</p>
 			{+END}
 		{+END}

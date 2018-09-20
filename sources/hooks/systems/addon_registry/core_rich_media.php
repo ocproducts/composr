@@ -305,6 +305,11 @@ class Hook_addon_registry_core_rich_media
             'themes/default/images/icons/media_set/next.svg',
             'themes/default/images/icons/media_set/previous.svg',
             'themes/default/images/icons/media_set/index.html',
+            'sources/hooks/systems/comcode_page_hints/make_mobile.php',
+            'sources/hooks/systems/comcode_page_hints/no_smart_conversion.php',
+            'sources/hooks/systems/comcode_page_hints/no_wysiwyg.php',
+            'sources/hooks/systems/comcode_page_hints/index.html',
+            'sources/hooks/systems/comcode_page_hints/.htaccess',
         );
     }
 

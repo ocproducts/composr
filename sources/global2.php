@@ -1706,10 +1706,13 @@ function post_param_string($name, $default = false, $filters = INPUT_FILTER_DEFA
     if ($ret !== null) {
         $ret = unixify_line_format($ret);
 
+        require_code('comcode_cleanup');
+
         if ((($filters & INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA) != 0) && (post_param_integer($name . '_download_associated_media', 0) === 1)) {
-            require_code('comcode_cleanup');
             download_associated_media($ret);
         }
+
+        comcode_page_hints_post($name, $ret);
     }
 
     if ((($filters & INPUT_FILTER_WYSIWYG_TO_COMCODE) != 0) && (isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] === '1')) {

@@ -182,10 +182,14 @@ Where HTML cannot be fully eliminated, Composr will encapsulate it with Comcode 
 
 Sometimes the Comcode conversion is imperfect. For example, line breaks can be introduced, or some custom formatting can be lost.
 
-If you do not want Comcode conversion, you can disable the Composr "Convert XHTML to Comcode" configuration option (Admin Zone > Setup > Configuration > Feature options > Comcode) or include this hint in your content:
+If you do not want Comcode conversion, you can either:[list="1"]
+[*] Disable the Composr "Convert XHTML to Comcode" configuration option (Admin Zone > Setup > Configuration > Feature options > Comcode)
+[*] Un-tick (un-check) "Aggressive HTML conversion" under the Comcode posting field (if it's a posting field)
+[*] Include this hint in your content:
 [code="Comcode"]
 {$,page hint: no_smart_conversion}
 [/code]
+[/list]
 
 [title="2"]Problem areas, and turning the editor off[/title]
 

@@ -908,7 +908,6 @@ Considerations for design and themeing:
  - If you are adding new functionality and write new templates, it is best to save these into the default theme's [tt]templates_custom[/tt]/[tt]javascript_custom[/tt]/[tt]xml_custom[/tt]/[tt]text_custom[/tt]/[tt]css_custom[/tt] directories, so that your functionality works on all themes. If you are overriding default theme templates/CSS, it is then that you save them into your site's theme. A similar rule applies for custom images.
 
 Take particular care with Comcode pages:
- - If you have to hand code a Comcode page with HTML then include the following hint in it: [tt]{$,page hint: no_smart_conversion}[/tt]. This will stop the WYSIWYG editor trying to convert the HTML back into Comcode, which can mess up hand-crafted markup and CSS (normally WYSIWYG only guarantees to preserve style/structure created within itself).
  - If for some reason you don't want the WYSIWYG editor to run for a page (e.g. if it has a Google ad on, that can cause the editor to malfunction) then include the following hint in it: [tt]{$,page hint: no_wysiwyg}[/tt]
  - Remember when uploading to a live site that you do not want to overwrite customised Comcode pages, or other files that may have since been changed. Be careful what you upload, and keep backups.
 

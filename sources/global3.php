@@ -3190,10 +3190,13 @@ function get_loaded_tags($limit_to = null, $the_tags = null)
  * Get the default page for a zone.
  *
  * @param  ID_TEXT $zone_name Zone name
+ * @param  boolean $zone_missing Whether the zone is missing (returned by reference)
  * @return ID_TEXT Default page
  */
 function get_zone_default_page($zone_name, &$zone_missing = false)
 {
+    $zone_missing = false;
+
     if ($zone_name == '_SELF') {
         $zone_name = get_zone_name();
     }
@@ -3872,6 +3875,7 @@ function is_control_field($field_name, $include_email_metafields = false, $inclu
         'description_for__',
         'tick_on_form__',
         'require__',
+        'comcode_page_hint_',
 
         // Relating to uploads/attachments
         'hid_file_id_',

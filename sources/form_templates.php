@@ -357,6 +357,9 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
 
+    require_code('comcode_cleanup');
+    $comcode_page_hints = comcode_page_hints_ui('post', $post);
+
     $required = filter_form_field_required('post', $required);
 
     check_suhosin_request_size(strlen($post));
@@ -425,6 +428,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'CANCEL_URL' => $cancel_url,
         'DESCRIPTION' => $description,
         'MODSECURITY_WORKAROUND' => $MODSECURITY_WORKAROUND_ENABLED,
+        'COMCODE_PAGE_HINTS' => $comcode_page_hints,
     ));
 }
 
