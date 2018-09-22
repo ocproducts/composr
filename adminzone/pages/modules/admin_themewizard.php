@@ -571,7 +571,7 @@ class Module_admin_themewizard
             imagedestroy($img);
 
             // Save standalone_logo
-            $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, null, true);
+            $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, null, 'standalone');
             foreach (array_keys(find_all_langs()) as $lang) {
                 if (is_suexec_like()) {
                     $path = 'themes/' . $logo_save_theme . '/images_custom/' . $lang . '/logo/standalone_logo.png';
@@ -581,6 +581,34 @@ class Module_admin_themewizard
 
                 cms_imagesave($img, get_custom_file_base() . '/' . $path) or intelligent_write_error($path);
                 actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, $lang, 'logo/standalone_logo', $path);
+            }
+            imagedestroy($img);
+
+            // Save small_logo
+            $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, null, 'small');
+            foreach (array_keys(find_all_langs()) as $lang) {
+                if (is_suexec_like()) {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/' . $lang . '/logo/small_logo.png';
+                } else {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/small_logo.png';
+                }
+
+                cms_imagesave($img, get_custom_file_base() . '/' . $path) or intelligent_write_error($path);
+                actual_edit_theme_image('logo/small_logo', $logo_save_theme, $lang, 'logo/small_logo', $path);
+            }
+            imagedestroy($img);
+
+            // Save small_white_logo
+            $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, null, 'small_white');
+            foreach (array_keys(find_all_langs()) as $lang) {
+                if (is_suexec_like()) {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/' . $lang . '/logo/small_white_logo.png';
+                } else {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/small_white_logo.png';
+                }
+
+                cms_imagesave($img, get_custom_file_base() . '/' . $path) or intelligent_write_error($path);
+                actual_edit_theme_image('logo/small_white_logo', $logo_save_theme, $lang, 'logo/small_white_logo', $path);
             }
             imagedestroy($img);
         }
