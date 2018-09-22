@@ -312,7 +312,7 @@ function zone_black_magic_filterer($path, $relative = false)
 }
 
 /**
- * Find the path of a Comcode page.
+ * Find the path to a Comcode page on disk.
  *
  * @param  LANGUAGE_NAME $lang The language most preferable
  * @param  ID_TEXT $file The page name
@@ -787,6 +787,10 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
     $single_public_zone = (get_option('single_public_zone') == '1');
 
     if ($search) {
+        if ($start > 0) { // No pagination currently in search mode
+            return array();
+        }
+
         $out = array('');
 
         $dh = opendir(get_file_base());

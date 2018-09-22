@@ -19,6 +19,93 @@
  */
 
 /**
+ * Take Comcode page-hint comments out of some Comcode, preparing a UI instead.
+ *
+ * @param  string $name Input field name
+ * @param  string $post The Comcode
+ * @return array A list of template-ready maps specifying checkboxes
+ */
+function comcode_page_hints_ui($name, &$post)
+{
+    $hints = array();
+
+    $hooks = find_all_hooks('systems', 'comcode_page_hints'); // TODO: Change in v11
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/comcode_page_hints/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_comcode_page_hints_' . filter_naughty_harsh($hook), true);
+        if (is_null($object)) {
+            continue;
+        }
+
+        $details = $object->get_details(true);
+        if ($details !== null) {
+            $hint_comment = '{$,page hint: ' . $hook . '}';
+            $present = (strpos($post, $hint_comment) !== false);
+
+            if ($present) {
+                $post = str_replace($hint_comment, '', $post);
+            }
+
+            if ($details['inverted']) {
+                $selected = !$present;
+            } else {
+                $selected = $present;
+            }
+
+            $hints[] = array(
+                'HINT_CODENAME' => $hook,
+                'HINT_LABEL' => $details['label'],
+                'HINT_DESCRIPTION' => $details['description'],
+                'HINT_SELECTED' => $selected,
+            );
+        }
+    }
+
+    return $hints;
+}
+
+/**
+ * Put Comcode page-hint comments into some Comcode, based on UI choices.
+ *
+ * @param  string $name Input field name
+ * @param  string $post The Comcode
+ */
+function comcode_page_hints_post($name, &$post)
+{
+    $hooks = find_all_hooks('systems', 'comcode_page_hints'); // TODO: Change in v11
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/comcode_page_hints/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_comcode_page_hints_' . filter_naughty_harsh($hook), true);
+        if (is_null($object)) {
+            continue;
+        }
+
+        $details = $object->get_details(true);
+        if ($details !== null) {
+            $selected = post_param_integer('comcode_page_hint__' . $name . '__' . $hook, null);
+            if ($selected !== null) {
+                if ($details['inverted']) {
+                    $present = ($selected === 0);
+                } else {
+                    $present = ($selected === 1);
+                }
+
+                $hint_comment = '{$,page hint: ' . $hook . '}';
+
+                $post = str_replace($hint_comment, '', $post);
+
+                if ($present) {
+                    $post .= $hint_comment;
+
+                    // If possible, put it before [/semihtml], it's neater
+                    $post = str_replace('[/semihtml]' . $hint_comment, $hint_comment . '[/semihtml]', $post);
+                }
+            }
+        }
+    }
+}
+
+/**
  * Censor some Comcode raw code so that another user can see it.
  * This function isn't designed to be perfectly secure, and we don't guarantee it's always run, but as a rough thing we prefer to do it.
  *

@@ -898,8 +898,8 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
         }
 
         // Cleanup other nestings / close then reopen patterns
-        foreach (array('b', 'i', 'u', 'tt', 'font size="[^"]*"') as $tag) {
-            $tagx = (strpos($tag, ' ') !== false) ? substr($tag, 0, strpos($tag, ' ')) : $tag;
+        foreach (array('b', 'i', 'u', 'tt', 'font size="[^"]*"', 'font face="[^"]*"', 'url="[^"]*"') as $tag) {
+            $tagx = preg_replace('#[= ].*$#', '', $tag);
 
             if (stripos($semihtml, '[' . $tagx) !== false) {
                 $semihtml = comcode_preg_replace($tagx, '#^(\[' . $tag . '\])(.*)\\1(.*)\[/' . $tagx . '\](.*)\[/' . $tagx . '\]$#si', '${1}${2}${3}${4}[/' . $tagx . ']', $semihtml);

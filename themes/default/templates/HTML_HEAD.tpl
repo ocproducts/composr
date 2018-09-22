@@ -81,7 +81,7 @@
 {$,NB: We also support standard metadata, schema.org, semantic HTML5, ARIA, OpenSearch, and CMSCORE}
 
 {$,Favicon and app icon for site, managed as theme images}
-<link rel="icon" href="{$IMG*,favicon}" type="image/x-icon" sizes="48x48 32x32 24x24 16x16" />
+<link rel="icon" href="{$FAVICON*}" type="image/x-icon" sizes="48x48 32x32 24x24 16x16" />
 <link rel="apple-touch-icon" href="{$IMG*,webclipicon}?v={$IMG_MTIME%,webclipicon}" type="image/x-icon" sizes="152x152 120x120" /> {$,Used on speed dials and phone home screens and not downloaded automatically}
 
 {$,Inclusion of search semantic data, so smart browsers can automatically allow native-browser searching of the site}

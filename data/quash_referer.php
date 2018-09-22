@@ -54,7 +54,8 @@ $target = str_replace(array("\r", "\n"), array('', ''), $target);
 
 // Only allows redirections from our own server
 $domain = qr_get_domain();
-$OUR_SERVER = 'http://' . $domain;
-if (substr($_SERVER['HTTP_REFERER'], 0, strlen($OUR_SERVER)) == $OUR_SERVER) {
+$our_server_http = 'http://' . $domain;
+$our_server_https = 'https://' . $domain;
+if ((substr($_SERVER['HTTP_REFERER'], 0, strlen($our_server_http)) == $our_server_http) || (substr($_SERVER['HTTP_REFERER'], 0, strlen($our_server_https)) == $our_server_https)) {
     header('Location: ' . $target); // assign_refresh not used, as no UI here
 }

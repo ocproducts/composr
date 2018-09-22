@@ -1064,7 +1064,7 @@ function _download_latest_data_ip_country()
 
     $tmp_name_gzip = cms_tempnam();
     $myfile = fopen($tmp_name_gzip, 'wb');
-    cms_http_request('http://download.db-ip.com/free/dbip-country-' . date('Y-m') . '.csv.gz', array('write_to_file' => $myfile, 'timeout' => 30.0));
+    cms_http_request('http://download.db-ip.com/free/dbip-country-lite-' . date('Y-m') . '.csv.gz', array('write_to_file' => $myfile, 'timeout' => 30.0));
     fclose($myfile);
 
     $tmp_name_tar = cms_tempnam();
@@ -1081,6 +1081,11 @@ function _download_latest_data_ip_country()
 
         $from = ip2long($x[0]);
         $to = ip2long($x[1]);
+
+        if (($from < 0) || ($to < 0)) {
+            attach_message('Running on 32 bit PHP, will not regenerate IP_Country.txt', 'warn');
+            return;
+        }
 
         if (empty($from)) {
             continue;

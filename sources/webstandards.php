@@ -555,6 +555,7 @@ function init__webstandards()
     );
     $TAGS_BLOCK += array(
         'video' => true,
+        'picture' => true,
         'details' => true,
         'summary' => true,
         'section' => true,

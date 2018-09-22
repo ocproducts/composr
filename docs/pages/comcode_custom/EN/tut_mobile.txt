@@ -120,7 +120,8 @@ At the time of writing this covers the following:
 And the following running opposite, making mobile better for desktop:
  - Make any [tt]<details>[/tt]/[tt]<summary>[/tt] elements with a [tt]only-on-mobile[/tt] class turn into regular [tt]div[/tt]s on desktop
 
-You can also append [tt]{$,page hint: make_mobile}[/tt] to some Comcode for that Comcode to automatically be wrapped within a [tt]MAKE_MOBILE[/tt] directive. This may be a bit friendlier to content editors as it is less intrusive within the editor. The marker doesn't have to be at the end, that's just usually the best place to put it.
+You can also tick (check) the "Mobile-friendly conversion" setting under a posting field editor for that Comcode to automatically be wrapped within a [tt]MAKE_MOBILE[/tt] directive. This may be a bit friendlier to content editors as it is less intrusive within the editor.
+Or finally, you can add [tt]{$,page hint: make_mobile}[/tt] anywhere within the Comcode, which is the code equivalent to the above setting (and your only choice if the Comcode is not in a posting field editor).
 
 [title="2"]Using responsive design techniques directly[/title]
 

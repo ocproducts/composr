@@ -84,13 +84,20 @@ function get_oauth_refresh_token($service_name)
  * Gets the oAuth access token for a particular service by doing a refresh.
  *
  * @param  string $service_name The name of the service
+ * @param  boolean $trigger_error Whether to throw a Composr error, on error
  * @return ?string Access token (null: none)
  */
-function refresh_oauth2_token($service_name)
+function refresh_oauth2_token($service_name, $trigger_error = true)
 {
+    static $cache = array();
+    if (array_key_exists($service_name, $cache)) {
+        return $cache[$service_name];
+    }
+
     $refresh_token = get_oauth_refresh_token($service_name);
 
     if ($refresh_token === null) {
+        $cache[$service_name] = null;
         return null;
     }
 
@@ -108,12 +115,22 @@ function refresh_oauth2_token($service_name)
         'grant_type' => 'refresh_token',
     );
 
-    $result = http_get_contents($endpoint . '/token', array('post_params' => $post_params));
+    $result = http_get_contents($endpoint . '/token', array('trigger_error' => false, 'post_params' => $post_params));
+    if ($result === null) {
+        if (!$trigger_error) {
+            return null;
+        }
+        warn_exit(do_lang_tempcode('ERROR_OBTAINING_ACCESS_TOKEN'));
+    }
     $parsed_result = json_decode($result, true);
 
     if (!array_key_exists('access_token', $parsed_result)) {
+        if (!$trigger_error) {
+            return null;
+        }
         warn_exit(do_lang_tempcode('ERROR_OBTAINING_ACCESS_TOKEN'));
     }
 
-    return $parsed_result['access_token'];
+    $cache[$service_name] = $parsed_result['access_token'];
+    return $cache[$service_name];
 }

@@ -33,14 +33,16 @@ class Hook_health_check_stability extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      * @return array A pair: category label, list of results
      */
-    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
-        $this->process_checks_section('testManualLogs', 'Manual stability checks', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testPageIntegrity', 'Page integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testBlockIntegrity', 'Block integrity (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testErrorLog', 'Error log', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testManualLogs', 'Manual stability checks', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testPageIntegrity', 'Page integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testBlockIntegrity', 'Block integrity (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testErrorLog', 'Error log', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -52,10 +54,15 @@ class Hook_health_check_stability extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testManualLogs($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testManualLogs($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -78,30 +85,21 @@ class Hook_health_check_stability extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testPageIntegrity($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testPageIntegrity($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
-        }
-
-        $page_links = $this->process_urls_into_page_links();
-
-        foreach ($page_links as $page_link) {
-            $data = $this->get_page_content($page_link);
-            if ($data === null) {
-                $this->stateCheckSkipped('Could not download page from website');
-
-                continue;
-            }
-
-            $this->assertTrue(strpos($data, '</html>') !== false, '"' . $page_link . '" page appears broken, missing closing HTML tag');
         }
 
         $threshold_page_size = intval(get_option('hc_page_size_threshold')) * 1024;
 
         require_code('files');
 
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
@@ -110,8 +108,12 @@ class Hook_health_check_stability extends Hook_Health_Check
                 continue;
             }
 
+            // Check HTML closes
+            $this->assertTrue(strpos($data, '</html>') !== false, do_lang('PAGE_INTEGRITY_PROBLEM', '[tt]' . $page_link . '[/tt]'));
+
+            // Check page sizes
             $size = strlen($data);
-            $this->assertTrue($size < $threshold_page_size, '"' . $page_link . '" page is very large @ ' . clean_file_size($size));
+            $this->assertTrue($size < $threshold_page_size, do_lang('PAGE_SIZE_PROBLEM', clean_file_size($size), '[tt]' . $page_link . '[/tt]'));
         }
     }
 
@@ -122,10 +124,15 @@ class Hook_health_check_stability extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testBlockIntegrity($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testBlockIntegrity($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -148,10 +155,15 @@ class Hook_health_check_stability extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testErrorLog($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testErrorLog($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 

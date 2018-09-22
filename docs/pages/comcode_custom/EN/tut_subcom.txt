@@ -154,12 +154,16 @@ Here are some step-by-step instructions:
 [title="2"]Redirects[/title]
 
 [surround]
-[media width="150" description="Managing redirects" float="right"]data_custom/images/docs/tut_subcom/subcom_redirects.png[/media]
 {!redirects:DOC_REDIRECTS}
 
-Redirections are useful for a number of reasons, including:
+[title="3"]Page Redirects[/title]
+
+[media width="150" description="Managing redirects" float="right"]data_custom/images/docs/tut_subcom/subcom_redirects.png[/media]
+{!redirects:DOC_PAGE_REDIRECTS}
+
+Page Redirects are useful for a number of reasons, including:
  - Sharing modules between zones
- - Making short-cuts to zone/page combinations
+ - Making short-cuts to longer zone+page URLs
  - Making it so obvious URL mistakes can be automatically corrected
  - When moving pages, a redirect may be placed so that links are not broken
 
@@ -167,13 +171,13 @@ To reach the Redirects module go to Admin Zone > Structure > Redirects.
 
 The source page codenames of redirects are case-insensitive. This aligns with the basic sanity check that you shouldn't have pages with names that are the same except for case.
 
-[title="3"]Using redirects to virtually move a module (rename a module)[/title]
+[title="4"]Using redirects to virtually move a module (rename a module)[/title]
 
 If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location.
 
 Composr will sense your intent, so when you do something that searches for that module (e.g. for the Wiki+ module, doing a Wiki+ link) it will go to where you want.
 
-[title="3"]Example: Changing your front page to a module in another zone[/title]
+[title="4"]Example: Changing your front page to a module in another zone[/title]
 
 [media width="150" description="Adding our redirect" float="right"]data_custom/images/docs/tut_subcom/redirect_forum_simple_example.png[/media]
 Let's say you want to redirect website visitors who go to your site straight to the "Forums" zone.
@@ -193,7 +197,7 @@ Now let's try the same for a transparent redirect and see the results. To make o
 
 When you visit the home page you are redirected to the Forums page just like earlier with the normal redirect, but take a look at the URL now: it doesn't reveal that the [tt]forumview[/tt] page was called. The redirect happened within Composr, not your web browser.
 
-[title="3"]Example: Moving a module (renaming a module)[/title]
+[title="4"]Example: Moving a module (renaming a module)[/title]
 
 If you wanted to move the [tt]downloads[/tt] module from the Site Zone to the Example zone (with a new module name), you could set up these redirects:
 1) [tt]example:downloads[/tt]-->[tt]site:downloads[/tt] [i]transparent[/i]
@@ -203,7 +207,7 @@ Composr will see the transparent redirect as an indication the [tt]downloads[/tt
 Note that while almost all front-end modules support moving, not all modules support renaming because it may break references between different parts of Composr (including within the module itself in some cases).
 [/surround]
 
-[title="3"]Example: Moving multiple modules[/title]
+[title="4"]Example: Moving multiple modules[/title]
 
 [media width="150" description="Our redirects" float="right"]data_custom/images/docs/tut_subcom/redirect_forum_complex_example.png[/media]
 Some users may prefer to have the forums run directly from the Welcome zone, rather than a separate Forums zone. This example is just like the "moving a module" example except it redirects 3 modules rather than only 1.
@@ -222,7 +226,7 @@ And then we set up non-transparent redirects in the opposite direction to [b]for
 
 Tada, all the forum modules are moved.
 
-[title="3"]Example: Making a module run in multiple zones (advanced)[/title]
+[title="4"]Example: Making a module run in multiple zones (advanced)[/title]
 
 Let's imagine you want separate download databases in separate zones. In this example we'll have a separate database in a [tt]staff[/tt] zone using a series of tricks.
 
@@ -246,9 +250,24 @@ And there we go :)!
 
 An alternative to using the breadcrumbs XML file would have been to use virtual roots. Composr is packed with power-tools you can use!
 
+[title="3"]URL Redirects[/title]
+
+{!redirects:DOC_URL_REDIRECTS}
+ 
+URL Redirects are a thin wrapper around [tt]RewriteRule[/tt] lines in your [tt].htaccess[/tt] file, which we will read and write directly. Therefore this functionality only works if:
+1) you have the Apache server and the [tt]mod_rewrite[/tt] extension enabled in it; it is possible other servers may provide compatible support, but we can't speak to this
+2) you have a [tt].htaccess[/tt] file based on the Composr default ([tt]recommended.htaccess[/tt])
+3) the [tt].htaccess[/tt] file is writable
+
+Tolerances:
+ - Redirects will not be case sensitive (e.g. [tt]http://example.com/foo[/tt] and [tt]http://example.com/FoO[/tt] would  both match a redirect from [tt]http://example.com/foo[/tt])
+ - Redirects will accept a final slash being either there or not (e.g. [tt]http://example.com/foo[/tt] and [tt]http://example.com/foo/[/tt] would  both match a redirect from [tt]http://example.com/foo[/tt])
+ - You may choose to specify a query string (the [tt]?[/tt]... portion of the URL) or not; if not then any query string will automatically carry over with the redirect
+
 [concepts
  1_key="Virtual root"       1_value="Virtual roots allow you to split a Composr tree based content system (such as the download system) so it appears to have multiple databases"
- 2_key="Redirection page"   2_value="Allows pages to be redirected to from different zone/page combinations, either transparently, or with a redirection message"
+ 2_key="Page Redirect"      2_value="Allows pages to be redirected to from different zone+page URLs, either transparently, or with a redirection message"
+ 3_key="URL Redirect"       3_value="Allows redirecting any arbitrary URL you configure to be redirected"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

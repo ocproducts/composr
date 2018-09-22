@@ -33,19 +33,21 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      * @return array A pair: category label, list of results
      */
-    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
-        $this->process_checks_section('testMemoryLimits', 'Memory limit', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testMbstringOverload', 'mbstring overload', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testMaxInputVars', 'max_input_vars', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testSuhosin', 'Suhosin', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testMaxExecutionTime', 'max_execution_time', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testNeededFunctions', 'Needed functions', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testFileUploads', 'File uploads', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testOpenBasedir', 'open_basedir', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testDeprecatedOptionsDisabled', 'Deprecated options in php.ini', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testMemoryLimits', 'Memory limit', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testMbstringOverload', 'mbstring overload', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testMaxInputVars', 'max_input_vars', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testSuhosin', 'Suhosin', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testMaxExecutionTime', 'max_execution_time', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testNeededFunctions', 'Needed functions', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testFileUploads', 'File uploads', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testOpenBasedir', 'open_basedir', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testDeprecatedOptionsDisabled', 'Deprecated options in php.ini', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -57,9 +59,15 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testMemoryLimits($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testMemoryLimits($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         $setting = get_cfg_var('memory_limit');
         $low_memory = (!empty($setting)) && ($setting != '-1') && ($setting != '0') && (intval(trim(str_replace('M', '', $setting))) < 128);
         $this->assertTrue(!$low_memory, do_lang('LOW_MEMORY_LIMIT'));
@@ -72,9 +80,15 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testMbstringOverload($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testMbstringOverload($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         $test = ini_get('mbstring.func_overload');
         $func_overload_set = (($test !== false) && ($test !== '') && ($test !== '0'));
         $this->assertTrue(!$func_overload_set, do_lang('WARNING_MBSTRING_FUNC_OVERLOAD'));
@@ -87,9 +101,15 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testMaxInputVars($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testMaxInputVars($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         // .user.ini should set this correctly, but let's be sure it's not been force-lowered
 
         foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
@@ -109,9 +129,15 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testSuhosin($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testSuhosin($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         $this->assertTrue(ini_get('suhosin.executor.disable_eval') !== '1', do_lang('DISABLED_FUNCTION', 'eval'));
 
         $setting_minimums = array(
@@ -165,9 +191,15 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testMaxExecutionTime($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testMaxExecutionTime($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         // .user.ini should set this correctly, but let's be sure it's not been force-lowered
 
         $low_met = (is_numeric(ini_get('max_execution_time'))) && (intval(ini_get('max_execution_time')) > 0) && (intval(ini_get('max_execution_time')) < 10);
@@ -181,9 +213,15 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testNeededFunctions($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testNeededFunctions($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         // These aren't all actually needed. But we can't reasonably expect developers to work if arbitrary stuff may be disabled:
         // so we allow everything that we could reasonably assume will be there.
         $baseline_functions = <<<END
@@ -229,7 +267,7 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
             file_get_contents str_word_count html_entity_decode
             array_combine array_walk_recursive header_remove
             str_split strpbrk substr_compare file_put_contents get_headers headers_list
-            http_build_query scandir str_shuffle
+            http_build_query scandir str_shuffle fnmatch
             ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set sha1
             array_diff_key inet_pton array_product json_encode json_decode
             inet_ntop fputcsv is_nan is_finite is_infinite ob_flush array_chunk array_fill
@@ -282,9 +320,15 @@ END;
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testFileUploads($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testFileUploads($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         $this->assertTrue(ini_get('file_uploads') != '0', do_lang('NO_UPLOAD'));
 
         foreach (array('post_max_size', 'upload_max_filesize') as $setting) {
@@ -304,9 +348,15 @@ END;
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testOpenBasedir($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testOpenBasedir($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         require_code('files2');
         if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
             $files = get_directory_contents('/home', '', null, false);
@@ -323,9 +373,15 @@ END;
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testDeprecatedOptionsDisabled($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testDeprecatedOptionsDisabled($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
         $ret = ini_get('always_populate_raw_post_data');
         $this->assertTrue(($ret === false) || ($ret === '-1'), do_lang('WARNING_ISSUE_WITH_ALWAYS_POPULATE_RAW_POST_DATA'));
     }

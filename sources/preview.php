@@ -395,6 +395,21 @@ function build_preview($multi_return = false)
         }
     }
 
+    // Health Check
+    $health_check = array();
+    if ((addon_installed('health_check')) && ($new_post_value !== null)) {
+        require_code('health_check');
+        $has_fails = false;
+        $categories = run_health_check($has_fails, null, false, false, false, false, null, array(), array(do_lang('PREVIEW') => $new_post_value), CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
+        foreach ($categories as $category_label => $sections) {
+            foreach ($sections['SECTIONS'] as $section_label => $results) {
+                foreach ($results['RESULTS'] as $result) {
+                    $health_check[] = $result['MESSAGE'];
+                }
+            }
+        }
+    }
+
     // ---
 
     if ($spellcheck) {
@@ -402,7 +417,7 @@ function build_preview($multi_return = false)
     }
 
     if ($multi_return) {
-        return array($output, $webstandards, $keyword_density, $spelling, $has_device_preview_modes);
+        return array($output, $webstandards, $keyword_density, $spelling, $health_check, $has_device_preview_modes);
     }
     return $output;
 }

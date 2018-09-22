@@ -35,7 +35,7 @@
 				responsive: false,
 			{+END}
 			legend: {
-			    display: false,
+				display: false,
 			},
 			scales: {
 				xAxes: [{

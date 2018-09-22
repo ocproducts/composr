@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class copyright_test_set extends cms_test_case
+class _copyright_test_set extends cms_test_case
 {
     public function testCodeCopyrightDates()
     {

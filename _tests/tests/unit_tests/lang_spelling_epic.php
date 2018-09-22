@@ -37,6 +37,18 @@ class lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'abbas',
+            'bitwise',
+            'eslint',
+            'gruntfile',
+            'isaudio',
+            'isvideo',
+            'markercluster',
+            'markerclusterer',
+            'mediaelementplayer',
+            'responsexml',
+            'uptodate',
+            'viewoptions',
             'ajaxify',
             'ajaxified',
             'regexes',
@@ -3056,6 +3068,7 @@ class lang_spelling_epic_test_set extends cms_test_case
                             'themes/default/javascript_custom/skitter.js',
                             'themes/default/javascript_custom/jquery_flip.js',
                             'themes/default/javascript_custom/sortable_tables.js',
+                            'themes/default/javascript_custom/charts.js',
                             'sources_custom/geshi.php',
                             'sources_custom/twitter.php',
                             'sources_custom/hooks/modules/chat_bots/trickstr.php',

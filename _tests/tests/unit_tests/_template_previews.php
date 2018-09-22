@@ -20,7 +20,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class template_previews_test_set extends cms_test_case
+class _template_previews_test_set extends cms_test_case
 {
     protected $template_id;
 

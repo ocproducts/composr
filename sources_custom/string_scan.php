@@ -114,6 +114,22 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        LEVEL_1_HEADERS_PROBLEM
+        LEVEL_2_HEADERS_PROBLEM
+        PAGE_INTEGRITY_PROBLEM
+        PAGE_SIZE_PROBLEM
+        HTTPS_EMBED_PROBLEM
+        HTTPS_LINKING_PROBLEM
+        BROKEN_LINK_PROBLEM
+        INCOMPLETE_CONTENT_PROBLEM
+        LOCAL_LINKING_PROBLEM
+        FORM_ELEMENT_PROBLEM
+        WEB_STANDARDS_PROBLEM
+        SPELLING_PROBLEM
+        HC_VERSION_CHECK
+        CONFIG_OPTION_hc_version_check
+        CONFIG_OPTION_hc_version_check_VALUE_deprecated
+        CONFIG_OPTION_hc_version_check_VALUE_uptodate
         THEME_NOT_SUPPORTING_THEMEWIZARD
         THEME_NOT_SUPPORTING_LOGOWIZARD
         EQUATIONS_NOT_SUPPORTED
@@ -4504,6 +4520,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_QUOTES
         DOC_REALTIME_RAIN
         DOC_REDIRECTS
+        DOC_PAGE_REDIRECTS
+        DOC_URL_REDIRECTS
         DOC_REVISIONS
         DOC_SECONDARY_GROUP_MEMBERSHIP
         DOC_SECURITY
@@ -5944,7 +5962,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NON_RECOGNISED_CSS_FILE
         NORMAL_GROUPS_PER_PAGE
         NOTE
-        NOTES_ABOUT_REDIRECTS
+        NOTES_ABOUT_PAGE_REDIRECTS
+        URL_REDIRECT_ERROR_MISSING_HTACCESS
+        URL_REDIRECT_ERROR_CORRUPT_HTACCESS
+        URL_REDIRECT_ERROR_UNWRITABLE_HTACCESS
+        URL_REDIRECT_ERROR_NOT_APACHE
+        URL_REDIRECT_full
+        URL_REDIRECT_prefix
+        URL_REDIRECT_prefix_with_append
+        URL_REDIRECT_ERROR_BAD_BASE_URL
         NOTE_DESCRIPTION
         NOTHING_TO_INVOICE_FOR
         NOTHING_TO_TRANSLATE
@@ -6050,8 +6076,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_HELP
         NO_INTEGERS_TEMPLATE
         NO_LAST_BACKUP
-        NO_LEVEL_1_HEADERS
-        NO_LEVEL_2_HEADERS
         NO_LURKERS_FOUND
         NO_MYSQL_QUERY_CHANGES_MAKE
         NO_NOTE_GUEST
@@ -6609,6 +6633,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         REDIRECTED_TO_CACHE_MODULES
         REDIRECTING
         REDIRECTS
+        PAGE_REDIRECTS
+        URL_REDIRECTS
         REDIRECT_FROM_PAGE
         REDIRECT_FROM_ZONE
         REDIRECT_PAGE_TO
@@ -6753,7 +6779,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SETUPWIZARD_SAFE_MODE
         SETUPWIZARD_STEP
         SET_ALL_PERMISSIONS_ON_ROW
-        SET_REDIRECTS
+        SET_PAGE_REDIRECTS
+        SET_URL_REDIRECTS
         SHARED_INSTALL_PROHIBIT
         SHIPPING_COST_FACTOR
         SHIPPING_COST_BASE
@@ -7155,7 +7182,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TEXTUAL_TAG
         TEXT_ABSTRACT_FILE_MANAGEMENT
         TEXT_PRIOR_TO_REVISION
-        TEXT_REDIRECTS
         TEXT_VERSION
         THANKS
         THEME

@@ -2261,6 +2261,7 @@ class Hook_addon_registry_core_form_interfaces
                 'WEBSTANDARDS' => lorem_phrase(),
                 'KEYWORD_DENSITY' => lorem_phrase(),
                 'SPELLING' => lorem_phrase(),
+                'HEALTH_CHECK' => array(lorem_phrase()),
                 'HAS_DEVICE_PREVIEW_MODES' => true,
             )), null, '', true)
         );

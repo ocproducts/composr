@@ -43,8 +43,8 @@ class geocoding_test_set extends cms_test_case
             require_lang('stats');
             call_user_func_array__long_task(do_lang('INSTALL_GEOLOCATION_DATA'), get_screen_title('INSTALL_GEOLOCATION_DATA'), 'install_geolocation_data', array(), false, true);
         }
-        require_code('locations');
 
+        require_code('locations');
         $this->assertTrue(geolocate_ip('217.160.72.6') == 'DE');
     }
 

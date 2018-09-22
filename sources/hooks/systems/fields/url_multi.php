@@ -86,6 +86,9 @@ class Hook_fields_url_multi
         if ($ev == 'http://') {
             return '';
         }
+        if ($ev == 'https://') {
+            return '';
+        }
 
         $out = array();
         $evs = explode("\n", $ev);
@@ -161,7 +164,7 @@ class Hook_fields_url_multi
                 if ($_value != STRING_MAGIC_NULL) {
                     $_value = fixup_protocolless_urls($_value);
                 }
-                if ($_value == 'http://') {
+                if (($_value == 'http://') || ($_value == 'https://')) {
                     $_value = '';
                 }
                 if ($value != '') {

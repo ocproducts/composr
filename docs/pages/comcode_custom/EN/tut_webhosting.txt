@@ -106,7 +106,7 @@ We require:
 
 We require:
  - A web server running Apache (the common Linux web server), {$IS_MAINTAINED,platform_litespeed,LiteSpeed} [an Apache drop-in replacement], or {$IS_MAINTAINED,platform_iis,IIS7+} [the Microsoft web server]. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working);
- - If you want URL Schemes on Apache, [tt]mod_rewrite[/tt] must be enabled.
+ - If you want URL Schemes or URL Redirects on Apache, [tt]mod_rewrite[/tt] must be enabled.
  - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache).
  - That the web server is not overloaded with too many users, or has very poor performance.
  - Either a suEXEC-style web server (strongly recommended) &dagger;, or a working FTP connection from PHP back to the hosting (so the server has to be running FTP, and PHP has to be running the PHP [tt]ftp[/tt] extension).

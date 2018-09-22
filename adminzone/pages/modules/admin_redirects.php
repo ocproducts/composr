@@ -23,6 +23,11 @@
  */
 class Module_admin_redirects
 {
+    const URL_REDIRECT_HTACCESS_REF_LINE = "\n# RewriteRule somerule sometarget (leave this comment here!)\n";
+    const URL_REDIRECT_HTACCESS_COMMENT_LINE = '#^\#(.*)$#';
+    const URL_REDIRECT_HTACCESS_REDIRECT_LINE = '#^RewriteRule ([^ ]+) ([^ ]+) \[L,R(,NC)?(,QSA)?(,QSD)?\]$#';
+    const URL_REDIRECT_HTACCESS_QUERY_STRING_LINE = '#^RewriteCond %\{QUERY_STRING\} \^(.*)$#';
+
     /**
      * Find details of the module.
      *
@@ -120,6 +125,8 @@ class Module_admin_redirects
 
         return array(
             'browse' => array('REDIRECTS', 'menu/adminzone/structure/redirects'),
+            'page' => array('PAGE_REDIRECTS', 'content_types/page'),
+            'url' => array('URL_REDIRECTS', 'buttons/redirect'),
         );
     }
 
@@ -142,8 +149,29 @@ class Module_admin_redirects
         $type = get_param_string('type', 'browse');
 
         require_lang('redirects');
+        require_css('redirects_editor');
 
-        $this->title = get_screen_title('REDIRECTS');
+        set_helper_panel_tutorial('tut_subcom');
+
+        if ($type == 'browse') {
+            $this->title = get_screen_title('REDIRECTS');
+        }
+
+        if (($type == 'page') || ($type == '_page')) {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('REDIRECTS'))));
+
+            $this->title = get_screen_title('PAGE_REDIRECTS');
+
+            set_helper_panel_text(comcode_lang_string('DOC_PAGE_REDIRECTS'));
+        }
+
+        if (($type == 'url') || ($type == '_url')) {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('REDIRECTS'))));
+
+            $this->title = get_screen_title('URL_REDIRECTS');
+
+            set_helper_panel_text(comcode_lang_string('DOC_URL_REDIRECTS'));
+        }
 
         return null;
     }
@@ -158,26 +186,52 @@ class Module_admin_redirects
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
-            return $this->gui();
+            return $this->browse();
         }
-        if ($type == 'actual') {
-            return $this->actual();
+
+        if ($type == 'page') {
+            return $this->page();
+        }
+        if ($type == '_page') {
+            return $this->_page();
+        }
+
+        if ($type == 'url') {
+            return $this->url();
+        }
+        if ($type == '_url') {
+            return $this->_url();
         }
 
         return new Tempcode();
     }
 
     /**
-     * The UI for managing redirects.
+     * The do-next manager for before content management.
      *
      * @return Tempcode The UI
      */
-    public function gui()
+    public function browse()
     {
-        require_css('redirects_editor');
+        require_code('templates_donext');
+        return do_next_manager(get_screen_title('REDIRECTS'), comcode_lang_string('DOC_REDIRECTS'),
+            array(
+                array('content_types/page', array('_SELF', array('type' => 'page'), '_SELF'), do_lang('PAGE_REDIRECTS')),
+                array('buttons/redirect', array('_SELF', array('type' => 'url'), '_SELF'), do_lang('URL_REDIRECTS')),
+            ),
+            do_lang('REDIRECTS')
+        );
+    }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');
-        $fields = new Tempcode();
+    /**
+     * The UI for managing Page Redirects.
+     *
+     * @return Tempcode The UI
+     */
+    public function page()
+    {
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_page'), '_SELF');
+        $existing = new Tempcode();
         $rows = $GLOBALS['SITE_DB']->query_select('redirects', array('*'));
         $num_zones = $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)');
         require_code('zones3');
@@ -189,7 +243,7 @@ class Module_admin_redirects
                 $from_zones->attach(form_input_list_entry('*', $row['r_from_zone'] == '*', do_lang_tempcode('_ALL')));
             }
             $to_zones = ($num_zones > 50) ? new Tempcode() : create_selection_list_zones($row['r_to_zone']);
-            $fields->attach(do_template('REDIRECTE_TABLE_REDIRECT', array(
+            $existing->attach(do_template('PAGE_REDIRECT_ROW', array(
                 '_GUID' => 'fd1ea392a98e588bb1f553464d315ef0',
                 'I' => strval($i),
                 'FROM_ZONE' => $row['r_from_zone'],
@@ -198,8 +252,7 @@ class Module_admin_redirects
                 'FROM_ZONES' => $from_zones,
                 'FROM_PAGE' => $row['r_from_page'],
                 'TO_PAGE' => $row['r_to_page'],
-                'TICKED' => $row['r_is_transparent'] == 1,
-                'NAME' => 'is_transparent_' . strval($i),
+                'IS_TRANSPARENT' => $row['r_is_transparent'] == 1,
             )));
         }
         $default = explode(':', get_param_string('page_link', '*:'), 2);
@@ -214,7 +267,7 @@ class Module_admin_redirects
             $from_zones->attach($zones);
             $from_zones->attach(form_input_list_entry('*', $default[0] == '*', do_lang_tempcode('_ALL')));
         }
-        $new = do_template('REDIRECTE_TABLE_REDIRECT', array(
+        $new = do_template('PAGE_REDIRECT_ROW', array(
             '_GUID' => 'cbf0eb4f745a6bf7b10e1f7d6d95d10f',
             'I' => 'new',
             'FROM_ZONE' => '',
@@ -223,8 +276,7 @@ class Module_admin_redirects
             'FROM_ZONES' => $from_zones,
             'FROM_PAGE' => $default[1],
             'TO_PAGE' => '',
-            'TICKED' => false,
-            'NAME' => 'is_transparent_new',
+            'IS_TRANSPARENT' => false,
         ));
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
@@ -234,24 +286,24 @@ class Module_admin_redirects
             $notes = '';
         }
 
-        return do_template('REDIRECTE_TABLE_SCREEN', array(
+        return do_template('PAGE_REDIRECT_SCREEN', array(
             '_GUID' => '2a9add73f6dd0b8288c0c84fc7242763',
             'NOTES' => $notes,
             'PING_URL' => $ping_url,
             'WARNING_DETAILS' => $warning_details,
             'TITLE' => $this->title,
-            'FIELDS' => $fields,
+            'EXISTING' => $existing,
             'NEW' => $new,
             'URL' => $post_url,
         ));
     }
 
     /**
-     * The actualiser for managing redirects.
+     * The actualiser for managing Page Redirects.
      *
      * @return Tempcode The UI
      */
-    public function actual()
+    public function _page()
     {
         $found = array();
         foreach ($_POST as $key => $val) {
@@ -291,7 +343,7 @@ class Module_admin_redirects
         require_code('caches3');
         erase_block_cache();
 
-        log_it('SET_REDIRECTS');
+        log_it('SET_PAGE_REDIRECTS');
 
         // Personal notes
         if (post_param_string('notes', null) !== null) {
@@ -300,7 +352,314 @@ class Module_admin_redirects
         }
 
         // Redirect them back to editing screen
-        $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+        $url = build_url(array('page' => '_SELF', 'type' => 'page'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS_SAVE'));
+    }
+
+    /**
+     * See if the URL Redirects feature is available.
+     *
+     * @return array A pair: Whether our redirect rules start in the file, the contents of the file
+     */
+    protected function check_url_redirect_availability()
+    {
+        if (!file_exists(get_file_base() . '/.htaccess')) {
+            warn_exit(do_lang_tempcode('URL_REDIRECT_ERROR_MISSING_HTACCESS'));
+        }
+
+        if (!cms_is_writable(get_file_base() . '/.htaccess')) {
+            warn_exit(do_lang_tempcode('URL_REDIRECT_ERROR_UNWRITABLE_HTACCESS'));
+        }
+
+        $c = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
+        $eng_enable_point = stripos($c, 'RewriteEngine on');
+        $ref_point = strpos($c, Module_admin_redirects::URL_REDIRECT_HTACCESS_REF_LINE);
+        if (($eng_enable_point === false) || ($ref_point === false)) {
+            warn_exit(do_lang_tempcode('URL_REDIRECT_ERROR_CORRUPT_HTACCESS'));
+        }
+
+        $ref_point_end = $ref_point + strlen(Module_admin_redirects::URL_REDIRECT_HTACCESS_REF_LINE);
+
+        return array($ref_point_end, $c);
+    }
+
+    /**
+     * The UI for managing URL Redirects.
+     *
+     * @return Tempcode The UI
+     */
+    public function url()
+    {
+        // Run some basic checks...
+
+        list($ref_point_end, $c) = $this->check_url_redirect_availability();
+
+        if (substr($_SERVER['SERVER_SOFTWARE'], 0, 6) != 'Apache') {
+            attach_message(do_lang_tempcode('URL_REDIRECT_ERROR_NOT_APACHE'), 'warn');
+        }
+
+        // Read in existing redirects...
+
+        $c = substr($c, $ref_point_end);
+        $c_lines = explode("\n", $c);
+        $redirects = array();
+        $query_string = '';
+        $note = '';
+        foreach ($c_lines as $c_line) {
+            $matches = array();
+            if (preg_match(Module_admin_redirects::URL_REDIRECT_HTACCESS_COMMENT_LINE, $c_line, $matches) != 0) {
+                $note = $matches[1];
+            } elseif (preg_match(Module_admin_redirects::URL_REDIRECT_HTACCESS_REDIRECT_LINE, $c_line, $matches) != 0) {
+                $from = $matches[1];
+                $to = $matches[2];
+                //$case_insensitive = ($matches[3] != ''); Not used
+                //$query_string_append = ($matches[4] != ''); Not used
+                $redirects[] = array($from, $to, $note, $query_string);
+                $note = '';
+                $query_string = '';
+            } elseif (preg_match(Module_admin_redirects::URL_REDIRECT_HTACCESS_QUERY_STRING_LINE, $c_line, $matches) != 0) {
+                $query_string = rtrim($matches[1], '$');
+            } else {
+                break;
+            }
+        }
+
+        // Editing UI...
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_url'), '_SELF');
+        $existing = new Tempcode();
+        require_code('zones3');
+        foreach ($redirects as $i => $row) {
+            list($_from, $to, $note, $query_string) = $row;
+
+            if (substr($_from, 0, 1) == '^') {
+                $_from = substr($_from, 1);
+            }
+            if (substr($_from, -3) == '.*$') {
+                $type = 'prefix';
+                $_from = substr($_from, 0, strlen($_from) - 3);
+            } elseif (substr($_from, -5) == '(.*)$') {
+                $type = 'prefix_with_append';
+                $_from = substr($_from, 0, strlen($_from) - 5);
+                if (substr($to, -2) == '$1') {
+                    $to = substr($to, 0, strlen($to) - 2);
+                }
+            } elseif (substr($_from, -1) == '$') {
+                $type = 'full';
+                $_from = substr($_from, 0, strlen($_from) - 1);
+                if (substr($_from, -2) == '/?') {
+                    $_from = substr($_from, 0, strlen($_from) - 2);
+                }
+            } else {
+                $type = 'full'; // Not how we write it, but tolerate this
+                if (substr($_from, -2) == '/?') {
+                    $_from = substr($_from, 0, strlen($_from) - 2);
+                }
+            }
+            $from = $this->preg_unquote($_from);
+
+            if ($query_string != '') {
+                $from .= '?' . $this->preg_unquote($query_string);
+            }
+
+            $from = get_base_url() . '/' . $from;
+            if (url_is_local($to)) {
+                $path = parse_url(get_base_url(),  PHP_URL_PATH);
+                $to = get_base_url() . $path . (($path == '') ? '/' : '') . $to;
+            }
+
+            $existing->attach(do_template('URL_REDIRECT_ROW', array(
+                'I' => strval($i),
+                'FROM' => $from,
+                'TO' => $to,
+                'NOTE' => $note,
+                'TYPE' => $type,
+            )));
+        }
+        $new = do_template('URL_REDIRECT_ROW', array(
+            'I' => 'new',
+            'FROM' => '',
+            'TO' => '',
+            'NOTE' => '',
+            'TYPE' => 'full',
+        ));
+
+        require_code('form_templates');
+        list($warning_details, $ping_url) = handle_conflict_resolution();
+
+        return do_template('URL_REDIRECT_SCREEN', array(
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'TITLE' => $this->title,
+            'EXISTING' => $existing,
+            'NEW' => $new,
+            'URL' => $post_url,
+        ));
+    }
+
+    /**
+     * Removing regular expression quoting.
+     *
+     * @param  string $in Quoted string
+     * @return string Unquoted string
+     */
+    protected function preg_unquote($in)
+    {
+        $reps = array(
+            '\\.'  => '.',
+            '\\\\' => '\\',
+            '\\+'  => '+',
+            '\\*'  => '*',
+            '\\?'  => '?',
+            '\\['  => '[',
+            '\\^'  => '^',
+            '\\]'  => ']',
+            '\\$'  => '$',
+            '\\('  => '(',
+            '\\)'  => ')',
+            '\\{'  => '{',
+            '\\}'  => '}',
+            '\\='  => '=',
+            '\\!'  => '!',
+            '\\<'  => '<',
+            '\\>'  => '>',
+            '\\|'  => '|',
+            '\\:'  => ':',
+            '\\-'  => '-',
+        );
+        return strtr($in, $reps);
+    }
+
+    /**
+     * The actualiser for managing URL Redirects.
+     *
+     * @return Tempcode The UI
+     */
+    public function _url()
+    {
+        list($ref_point_end, $c) = $this->check_url_redirect_availability();
+
+        // Read in new input...
+
+        $found = array();
+        foreach ($_POST as $key => $val) {
+            if (!is_string($val)) {
+                continue;
+            }
+
+            if (substr($key, 0, 5) == 'from_') {
+                $i = substr($key, 5);
+                $from = $val;
+                $to = post_param_string('to_' . $i);
+                $note = post_param_string('note_' . $i);
+                $type = post_param_string('type_' . $i);
+
+                $from = trim(str_replace("\n", ' ', $from));
+                $to = trim(str_replace("\n", ' ', $to));
+                $note = trim(str_replace("\n", ' ', $note));
+
+                if (($from != '') && ($to != '')) {
+                    $found[$i] = array($from, $to, $type, $note);
+                }
+            }
+        }
+
+        // Load up .htaccess parts to re-save...
+
+        $c_beginning = substr($c, 0, $ref_point_end);
+        $c = substr($c, $ref_point_end);
+        $c_lines = explode("\n", $c);
+        $redirects = array();
+        $len_passed = 0;
+        foreach ($c_lines as $c_line) {
+            $matches = array();
+            if (
+                (preg_match(Module_admin_redirects::URL_REDIRECT_HTACCESS_COMMENT_LINE, $c_line, $matches) != 0) ||
+                (preg_match(Module_admin_redirects::URL_REDIRECT_HTACCESS_REDIRECT_LINE, $c_line, $matches) != 0) ||
+                (preg_match(Module_admin_redirects::URL_REDIRECT_HTACCESS_QUERY_STRING_LINE, $c_line, $matches) != 0)
+            ) {
+                $len_passed += strlen($c_line) + 1;
+            } else {
+                break;
+            }
+        }
+        $c_ending = substr($c, $len_passed);
+
+        // Put together...
+
+        $out = $c_beginning;
+        foreach ($found as $parts) {
+            list($from, $to, $type, $note) = $parts;
+
+            if ($note != '') {
+                $out .= '# ' . $note . "\n";
+            }
+
+            if (!url_is_local($from)) {
+                $expected_prefix = get_base_url() . '/';
+                $prefix = substr($from, 0, strlen($expected_prefix));
+                if ($prefix != $expected_prefix) {
+                    warn_exit(do_lang_tempcode('URL_REDIRECT_ERROR_BAD_BASE_URL', escape_html($expected_prefix)));
+                }
+                $from = substr($from, strlen($expected_prefix));
+            }
+
+            $qs_parts = explode('?', $from, 2);
+
+            $_from = '^';
+            $_from .= preg_quote($qs_parts[0]);
+            switch ($type) {
+                case 'full':
+                    $_from .= '/?';
+                    $_from .= '$';
+                    break;
+                case 'prefix':
+                    $_from .= '.*$';
+                    break;
+                case 'prefix_with_append':
+                    $_from .= '(.*)$';
+                    $to .= '$1';
+                    break;
+            }
+
+            if (url_is_local($to)) {
+                $to = get_base_url() . ((substr($to, 0, 1) == '/') ? '' : '/') . $to;
+            }
+
+            $rewrite_rule_line = 'RewriteRule ';
+            $rewrite_rule_line .= $_from;
+            $rewrite_rule_line .= ' ';
+            $rewrite_rule_line .= $to;
+            $rewrite_rule_line .= ' ';
+            $rewrite_rule_line .= '[L,R';
+            $rewrite_rule_line .= ',NC';
+            if (count($qs_parts) == 1) {
+                $rewrite_rule_line .= ',QSA';
+            } else {
+                $rewrite_rule_line .= ($type == 'prefix_with_append') ? ',QSA'/*imperfect as all is copied but best we can do*/ : ',QSD';
+
+                $_from2 = preg_quote($qs_parts[1]);
+                if ($type == 'full') {
+                    $_from2 .= '$';
+                }
+                $out .= 'RewriteCond %{QUERY_STRING} ^' . $_from2 . "\n";
+            }
+            $rewrite_rule_line .= ']';
+            $out .= $rewrite_rule_line . "\n";
+        }
+        $out .= $c_ending;
+
+        // Save...
+
+        require_code('files');
+        cms_file_put_contents_safe(get_file_base() . '/.htaccess', $out);
+
+        // ---
+
+        log_it('SET_URL_REDIRECTS');
+
+        // Redirect them back to editing screen
+        $url = build_url(array('page' => '_SELF', 'type' => 'url'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS_SAVE'));
     }
 }

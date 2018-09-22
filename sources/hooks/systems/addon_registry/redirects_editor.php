@@ -51,7 +51,7 @@ class Hook_addon_registry_redirects_editor
      */
     public function get_description()
     {
-        return 'Manage redirects between pages.';
+        return 'Manage redirects between pages. On Apache servers this can also handle low-level redirects of any arbitrary URL to any other.';
     }
 
     /**
@@ -102,8 +102,10 @@ class Hook_addon_registry_redirects_editor
             'themes/default/images/icons/menu/adminzone/structure/redirects.svg',
             'sources/hooks/systems/addon_registry/redirects_editor.php',
             'sources/hooks/systems/commandr_fs_extended_config/redirects.php',
-            'themes/default/templates/REDIRECTE_TABLE_SCREEN.tpl',
-            'themes/default/templates/REDIRECTE_TABLE_REDIRECT.tpl',
+            'themes/default/templates/PAGE_REDIRECT_SCREEN.tpl',
+            'themes/default/templates/PAGE_REDIRECT_ROW.tpl',
+            'themes/default/templates/URL_REDIRECT_SCREEN.tpl',
+            'themes/default/templates/URL_REDIRECT_ROW.tpl',
             'adminzone/pages/modules/admin_redirects.php',
             'lang/EN/redirects.ini',
             'themes/default/css/redirects_editor.css',
@@ -120,8 +122,10 @@ class Hook_addon_registry_redirects_editor
     public function tpl_previews()
     {
         return array(
-            'templates/REDIRECTE_TABLE_REDIRECT.tpl' => 'administrative__redirecte_table_screen',
-            'templates/REDIRECTE_TABLE_SCREEN.tpl' => 'administrative__redirecte_table_screen',
+            'templates/PAGE_REDIRECT_ROW.tpl' => 'administrative__page_redirect_screen',
+            'templates/PAGE_REDIRECT_SCREEN.tpl' => 'administrative__page_redirect_screen',
+            'templates/URL_REDIRECT_ROW.tpl' => 'administrative__url_redirect_screen',
+            'templates/URL_REDIRECT_SCREEN.tpl' => 'administrative__url_redirect_screen',
         );
     }
 
@@ -132,37 +136,78 @@ class Hook_addon_registry_redirects_editor
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__redirecte_table_screen()
+    public function tpl_preview__administrative__page_redirect_screen()
     {
-        $fields = new Tempcode();
+        $existing = new Tempcode();
         foreach (placeholder_array() as $i => $row) {
-            $fields->attach(do_lorem_template('REDIRECTE_TABLE_REDIRECT', array(
+            $existing->attach(do_lorem_template('PAGE_REDIRECT_ROW', array(
                 'I' => strval($i),
                 'TO_ZONES' => placeholder_options(),
                 'FROM_ZONES' => placeholder_options(),
                 'FROM_PAGE' => lorem_word(),
                 'TO_PAGE' => lorem_word_2(),
-                'TICKED' => true,
-                'NAME' => 'is_transparent_' . strval($i),
+                'IS_TRANSPARENT' => true,
             )));
         }
 
-        $new = do_lorem_template('REDIRECTE_TABLE_REDIRECT', array(
+        $new = do_lorem_template('PAGE_REDIRECT_ROW', array(
             'I' => 'new',
             'TO_ZONES' => placeholder_options(),
             'FROM_ZONES' => placeholder_options(),
             'FROM_PAGE' => '',
             'TO_PAGE' => '',
-            'TICKED' => false,
-            'NAME' => 'is_transparent_new',
+            'IS_TRANSPARENT' => false,
         ));
 
-        $out = do_lorem_template('REDIRECTE_TABLE_SCREEN', array(
+        $out = do_lorem_template('PAGE_REDIRECT_SCREEN', array(
             'NOTES' => '',
             'PING_URL' => placeholder_url(),
             'WARNING_DETAILS' => '',
             'TITLE' => lorem_title(),
-            'FIELDS' => $fields,
+            'EXISTING' => $existing,
+            'NEW' => $new,
+            'URL' => placeholder_url(),
+        ));
+
+        return array(
+            lorem_globalise($out, null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__url_redirect_screen()
+    {
+        $existing = new Tempcode();
+        foreach (placeholder_array() as $i => $row) {
+            $existing->attach(do_lorem_template('URL_REDIRECT_ROW', array(
+                'I' => strval($i),
+                'FROM' => placeholder_url(),
+                'TO' => placeholder_url(),
+                'NOTE' => lorem_phrase(),
+                'TYPE' => 'full',
+            )));
+        }
+
+        $new = do_lorem_template('URL_REDIRECT_ROW', array(
+            'I' => 'new',
+            'FROM' => placeholder_url(),
+            'TO' => placeholder_url(),
+            'NOTE' => lorem_phrase(),
+            'TYPE' => 'full',
+        ));
+
+        $out = do_lorem_template('URL_REDIRECT_SCREEN', array(
+            'NOTES' => '',
+            'PING_URL' => placeholder_url(),
+            'WARNING_DETAILS' => '',
+            'TITLE' => lorem_title(),
+            'EXISTING' => $existing,
             'NEW' => $new,
             'URL' => placeholder_url(),
         ));

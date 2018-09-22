@@ -74,7 +74,7 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
 function remove_url_mistakes($url)
 {
     if (substr($url, 0, 4) == 'www.') {
-        $url = 'http://' . $url;
+        $url = 'https://' . $url;
     }
     $url = @html_entity_decode($url, ENT_NOQUOTES);
     $url = str_replace(' ', '%20', $url);
@@ -371,11 +371,11 @@ function _fixup_protocolless_urls($in)
 
     // Rule 1: // If we have a dot somewhere before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
     if (preg_match('#\..*/#', $in) != 0) {
-        return 'http://' . $in; // Fix it
+        return 'https://' . $in; // Fix it
     }
     // Rule 2: // If we have no slashes and we don't recognise a file type then they've probably just entered a domain name- thus we have an absolute URL.
     if ((preg_match('#^[^/]+$#', $in) != 0) && (preg_match('#\.(php|htm|asp|jsp|gif|png|jpg|jpe|txt|pdf|odt|ods|odp|doc|mdb|xls|ppt|xml|rss|ppt|svg|gif|psd|rtf|bmp|avi|mpg|mpe|webm|mp4|mov|wmv|ram|rm|asf|ra|wma|wav|mp3|ogg|torrent|csv|ttf|tar|gz|rar|bz2)#', $in) == 0)) {
-        return 'http://' . $in . '/'; // Fix it
+        return 'https://' . $in . '/'; // Fix it
     }
 
     return $in; // Relative

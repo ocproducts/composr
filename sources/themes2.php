@@ -60,7 +60,7 @@ function autoprobe_cdns()
         }
 
         if (preg_match('#^' . preg_quote($t, '#') . '($|\.|/|:)#', $domain_name) == 0) { // Don't use it if it is in the base URL
-            $test_url = 'http://' . $t . $parsed['path'] . '/themes/default/images/icons/editor/comcode.svg';
+            $test_url = (tacit_https() ? 'https://' : 'http://') . $t . $parsed['path'] . '/themes/default/images/icons/editor/comcode.svg';
 
             $test_result = http_get_contents($test_url, array('trigger_error' => false, 'timeout' => 0.25));
 
@@ -602,9 +602,10 @@ function find_images_do_dir($theme, $subdir, $langs)
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  boolean $db_only Whether to only return from the database (advanced option, rarely used)
  * @param  array $skip The list of files/directories to skip
+ * @param  boolean $include_missing Whether to include missing images in the list
  * @return array The list of image IDs
  */
-function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = array())
+function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = array(), $include_missing = false)
 {
     if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
@@ -676,7 +677,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
                 continue;
             }
 
-            if ((url_is_local($row['path'])) && (!file_exists(((substr($row['path'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['path'])))) {
+            if ((url_is_local($row['path'])) && (!$include_missing) && (!file_exists(((substr($row['path'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['path'])))) {
                 continue;
             }
             if ($row['path'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again

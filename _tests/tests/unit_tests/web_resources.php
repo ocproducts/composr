@@ -28,7 +28,7 @@ class web_resources_test_set extends cms_test_case
             @set_time_limit(1000);
         }
 
-        $_GET['keep_minify'] = '0';
+        $_GET['keep_minify'] = '0'; // Doesn't seem to actually work due to internal caching
 
         disable_php_memory_limit();
 
@@ -79,6 +79,7 @@ class web_resources_test_set extends cms_test_case
             'jquery.js',
             'sortable_tables.js',
             'unslider.js',
+            'charts.js',
             'tag_cloud.js',
             'mediaelement-and-player.js',
             'sound.js',

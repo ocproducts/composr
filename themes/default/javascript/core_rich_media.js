@@ -577,7 +577,6 @@
 
         doFlipPage: function doFlipPage(e, clicked) {
             var flipTo = clicked.dataset.vwFlipTo;
-
             flipPage(flipTo, this.passId, this.sections);
         }
     });
@@ -654,7 +653,7 @@
         ComcodeBigTabsController.base(this, 'constructor', arguments);
 
         var passId = this.passId = $cms.filter.id(params.passId),
-            id = this.id = passId + '_' + params.bigTabSets,
+            id = this.id = passId + ((typeof params.bigTabSets == 'undefined') ? '' : ('_' + params.bigTabSets)),
             sections = this.sections = params.tabs.map($cms.filter.id),
             switchTime = this.switchTime = params.switchTime;
 
@@ -678,7 +677,6 @@
 
         doFlipPage: function doFlipPage(e, clicked) {
             var flipTo = clicked.dataset.vwFlipTo;
-
             flipPage(flipTo, this.id, this.sections, this.switchTime);
         }
     });

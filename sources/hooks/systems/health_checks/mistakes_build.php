@@ -33,19 +33,26 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      * @return array A pair: category label, list of results
      */
-    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
-        $this->process_checks_section('testManualWebStandards', 'Manual checks for web standards', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testGuestAccess', 'Guest access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testBrokenLinks', 'Broken links', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testIncompleteContent', 'Incomplete content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testManualWebStandards', 'Manual checks for web standards', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testGuestAccess', 'Guest access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testBrokenLinks', 'Broken links', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testIncompleteContent', 'Incomplete content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testBrokenWebPostForms', 'Broken web POST forms', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testForgottenIcons', 'Default icons', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testSpellingComcodePages', 'Spellchecking of all Comcode pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testSpellingPages', 'Spellchecking of pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testSpellingContent', 'Spellchecking of miscellaneous content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testBrokenWebPostForms', 'Broken web POST forms', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testForgottenIcons', 'Default icons', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testSpellingComcodePages', 'Spellchecking of Comcode pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testSpellingContent', 'Spellchecking of miscellaneous content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testComcodePageHeadings', 'Comcode page headings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testComcodePageFormFields', 'Comcode page form fields', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testWebStandards', 'Web standards', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -57,10 +64,15 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testManualWebStandards($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testManualWebStandards($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -99,14 +111,19 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testGuestAccess($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testGuestAccess($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
         }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
 
-        $page_links = $this->process_urls_into_page_links();
+        $page_links = $this->process_urls_into_page_links(array(':', ':login'));
 
         foreach ($page_links as $page_link) {
             $http_result = $this->get_page_http_content($page_link);
@@ -122,26 +139,39 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testBrokenLinks($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testBrokenLinks($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links();
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
-        $urls = array();
+        $html_segments = array();
         foreach ($page_links as $page_link) {
-            $data = $this->get_page_content($page_link);
-            if ($data === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
+            if ($html === null) {
+                $this->stateCheckSkipped('Could not download page from website');
                 continue;
             }
 
-            $urls = array_merge($urls, $this->get_embed_urls_from_data($data));
-            $urls = array_merge($urls, $this->get_link_urls_from_data($data));
+            $html_segments[] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $comcode_segment) {
+                $html_segments[] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        $urls = array();
+        foreach ($html_segments as $html) {
+            $urls = array_merge($urls, $this->get_embed_urls_from_data($html));
+            $urls = array_merge($urls, $this->get_link_urls_from_data($html));
         }
         $urls = array_unique($urls);
 
@@ -177,7 +207,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                     break;
                 }
             }
-            $this->assertTrue($ok, 'Broken link: [tt]' . $url . '[/tt] (caching is 1 day on these checks)');
+            $this->assertTrue($ok, do_lang('BROKEN_LINK_PROBLEM', $url));
         }
     }
 
@@ -188,31 +218,44 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testIncompleteContent($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testIncompleteContent($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
         }
 
-        if (!$manual_checks) {
+        if ((!$manual_checks) && ($comcode_segments === null)) {
             $this->stateCheckSkipped('Will not check automatically because there could be false positives');
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links();
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
+        $html_segments = array();
         foreach ($page_links as $page_link) {
-            $data = $this->get_page_content($page_link);
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
-            if ($data === null) {
+            if ($html === null) {
                 $this->stateCheckSkipped('Could not download page from website');
-                return;
+                continue;
             }
 
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($html_segments as $field_title => $html) {
             $check_for = array('TODO', 'FIXME', 'Lorem Ipsum');
             foreach ($check_for as $c) {
-                $this->assertTrue(strpos($data, $c) === false, 'Found a suspicious "' . $c . '" on "' . $page_link . '" page');
+                $this->assertTrue(strpos($html, $c) === false, do_lang('INCOMPLETE_CONTENT_PROBLEM', $c, $field_title));
             }
         }
     }
@@ -224,8 +267,10 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testLocalLinking($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testLocalLinking($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
@@ -235,23 +280,48 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        if (!$manual_checks) {
-            $this->stateCheckSkipped('Will not check automatically because we do not know intent, a live site could be pointing to an Intranet');
-            return;
-        }
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
-        $page_links = $this->process_urls_into_page_links();
-
+        $html_segments = array();
         foreach ($page_links as $page_link) {
-            $data = $this->get_page_content($page_link);
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
-            if ($data === null) {
+            if ($html === null) {
                 $this->stateCheckSkipped('Could not download page from website');
-                return;
+                continue;
             }
 
-            $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
-            $this->assertTrue(preg_match($c, $data) == 0, 'Found links to a local URL on "' . $page_link . '" page');
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($html_segments as $field_title => $html) {
+            $problematic_host_prefixes = array(
+                '127\.0\.0\.1($|:|/)',
+                '192\.168\.',
+                '10\.',
+                'localhost($|:|/)',
+            );
+
+            if (!health_check__is_test_site()) {
+                $problematic_host_prefixes[] = '(staging|sandbox)\.' . preg_quote(preg_replace('#^www\.#', '', get_domain()), '#') . '($|:|/)';
+            }
+
+            $regexp = '#https?://(';
+            foreach ($problematic_host_prefixes as $i => $host_prefix) {
+                if ($i != 0) {
+                    $regexp .= '|';
+                }
+                $regexp .= $host_prefix;
+            }
+            $regexp .= ')#';
+
+            $this->assertTrue(preg_match($regexp, $html) == 0, do_lang('LOCAL_LINKING_PROBLEM', $field_title));
         }
     }
 
@@ -262,60 +332,54 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testBrokenWebPostForms($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testBrokenWebPostForms($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
         }
 
-        $zones = find_all_zones(false, false, true);
-        foreach ($zones as $zone) {
-            $pages = array();
-            $lang = user_lang();
-            if ($lang != get_site_default_lang()) {
-                $pages += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__ALL);
-                $pages += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__ALL);
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
+        $html_segments = array();
+        foreach ($page_links as $page_link) {
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
+
+            if ($html === null) {
+                $this->stateCheckSkipped('Could not download page from website');
+                continue;
             }
-            $pages += find_all_pages($zone, 'comcode_custom/' . $lang, 'txt', false, null, FIND_ALL_PAGES__ALL);
-            $pages += find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__ALL);
 
-            foreach ($pages as $page => $page_dir) {
-                if (!is_string($page)) {
-                    $page = strval($page);
-                }
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
 
-                $_path = (($zone == '') ? '' : ($zone . '/')) . 'pages/' . $page_dir . '/' . $page . '.txt';
-                $file_path = get_custom_file_base() . '/' . $_path;
-                if (!is_file($file_path)) {
-                    $file_path = get_file_base() . '/' . $_path;
-                }
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
 
-                if (is_file($file_path)) {
-                    $_c = cms_file_get_contents_safe($file_path);
+        foreach ($html_segments as $field_title => $html) {
+            if (stripos($html, '<form') !== false) {
+                $matches = array();
+                $num_matches = preg_match_all('#<form[^<>]*method="POST">#i', $html, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $match = $matches[0][$i];
 
-                    if (stripos($_c, '<form') !== false) {
-                        $c = static_evaluate_tempcode(comcode_to_tempcode($_c, null, true));
+                    $matches_action = array();
+                    $has_action = (preg_match('#action=["\']([^"\']*)["\']#i', $match, $matches_action) != 0);
+                    $this->assertTrue($has_action, 'Has a form action defined for web POST form');
 
-                        $matches = array();
-                        $num_matches = preg_match_all('#<form[^<>]*method="POST">#i', $c, $matches);
-                        for ($i = 0; $i < $num_matches; $i++) {
-                            $match = $matches[0][$i];
+                    if ($has_action) {
+                        $url = html_entity_decode($matches_action[1], ENT_QUOTES);
+                        $is_absolute_url = (strpos($url, '://') !== false);
+                        $this->assertTrue($is_absolute_url, 'Form action is absolute (i.e. robust)');
 
-                            $matches_action = array();
-                            $has_action = (preg_match('#action=["\']([^"\']*)["\']#i', $match, $matches_action) != 0);
-                            $this->assert_true($has_action, 'Has a form action defined for web POST form');
-
-                            if ($has_action) {
-                                $url = html_entity_decode($matches_action[1], ENT_QUOTES);
-                                $is_absolute_url = (strpos($url, '://') !== false);
-                                $this->assert_true($is_absolute_url, 'Form action is absolute (i.e. robust)');
-
-                                if ($is_absolute_url) {
-                                    $result = cms_http_request($url, array('trigger_error' => false));
-                                    $this->assert_true($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url . ' (got ' . $result->message . ')');
-                                }
-                            }
+                        if ($is_absolute_url) {
+                            $result = cms_http_request($url, array('trigger_error' => false));
+                            $this->assertTrue($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url . ' (got ' . $result->message . ')');
                         }
                     }
                 }
@@ -330,10 +394,15 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testForgottenIcons($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testForgottenIcons($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -351,10 +420,15 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testSpellingComcodePages($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testSpellingComcodePages($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -373,17 +447,19 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                 $paths[] = $zone . '/pages/comcode_custom/' . user_lang();
             }
         }
+        $all_files = array();
         foreach ($paths as $_path) {
             $files = get_directory_contents(get_file_base() . '/' . $_path, $_path, null, false, true, array('txt'));
+            $all_files = array_merge($all_files, $files);
+        }
 
-            foreach ($files as $path) {
-                $c = file_get_contents(get_file_base() . '/' . $path);
-                $c = clean_comcode_for_spellcheck($c);
+        foreach ($all_files as $path) {
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $text = clean_comcode_for_spellcheck($c);
 
-                $misspellings = run_spellcheck($c, null, true, false);
-                foreach (array_keys($misspellings) as $word) {
-                    $this->assertTrue(false, 'Misspelling: ' . $word . ' (' . $path . ')');
-                }
+            $misspellings = run_spellcheck($text, null, true, false);
+            foreach (array_keys($misspellings) as $word) {
+                $this->assertTrue(false, do_lang('SPELLING_PROBLEM', $word, $path));
             }
         }
 
@@ -397,10 +473,70 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
      */
-    public function testSpellingContent($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testSpellingPages($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        require_code('spelling');
+
+        if (_find_spell_checker() === null) {
+            $this->assertTrue(false, 'pspell/enchant required for this test');
+            return;
+        }
+
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
+        $html_segments = array();
+        foreach ($page_links as $page_link) {
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
+
+            if ($html === null) {
+                $this->stateCheckSkipped('Could not download page from website');
+                continue;
+            }
+
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($html_segments as $field_title => $html) {
+            $text = clean_html_for_spellcheck($html);
+
+            $misspellings = run_spellcheck($text, null, true, false);
+            foreach (array_keys($misspellings) as $word) {
+                $this->assertTrue(false, do_lang('SPELLING_PROBLEM', $word, $field_title));
+            }
+        }
+
+        spellchecker_shutdown();
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testSpellingContent($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -543,9 +679,9 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                     } else {
                         $c = $_c;
                     }
-                    $c = clean_comcode_for_spellcheck($c);
+                    $text = clean_comcode_for_spellcheck($c);
 
-                    $misspellings = run_spellcheck($c, null, true, false);
+                    $misspellings = run_spellcheck($text, null, true, false);
                     foreach (array_keys($misspellings) as $word) {
                         $this->assertTrue(false, 'Misspelling: ' . $word . ' (' . $table . ')');
                     }
@@ -561,5 +697,150 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         }
 
         spellchecker_shutdown();
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testComcodePageHeadings($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
+        $_comcode_segments = array();
+        foreach ($page_links as $page_link) {
+            $page_content = $this->get_comcode_page_content($page_link);
+
+            if ($page_content === null) {
+                $this->stateCheckSkipped('Could not download page from website');
+                continue;
+            }
+
+            list($comcode, $html, , $page) = $page_content;
+
+            $_comcode_segments['[tt]' . $page_link . '[/tt]'] = array($comcode, $html, $page);
+        }
+
+        if (($comcode_segments !== null) && (get_page_name() == 'cms_comcode_pages')) {
+            foreach ($comcode_segments as $comcode_segment) {
+                $_comcode_segments[do_lang('PREVIEW')] = array($comcode_segment, static_evaluate_tempcode(comcode_to_tempcode($comcode_segment)), get_param_string('page', ''));
+            }
+        }
+
+        foreach ($_comcode_segments as $field_title => $page_content) {
+            list($comcode, $html, $page) = $page_content;
+
+            if ((substr($page, 0, 1) != '_') && (substr($page, 0, 6) != 'panel_') && (trim($comcode) != '') && (trim($html) != '')) {
+                $found_l1 = ((strpos($html, '<h1') !== false) || (strpos($comcode, '[title]') !== false) || (strpos($comcode, '[title="1"]') !== false));
+                $this->assertTrue($found_l1, do_lang('LEVEL_1_HEADERS_PROBLEM', $field_title));
+
+                $matches = array();
+                $okay_l2 = (strpos($html, '<h2') !== false) || (preg_match_all('#\n\[(b|font|size)\][^\.]+\[/(b|font|size)\]\r?\n#', $comcode, $matches) < 2);
+                $this->assertTrue($okay_l2, do_lang('LEVEL_2_HEADERS_PROBLEM', $field_title));
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testComcodePageFormFields($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
+        $_comcode_segments = array();
+        foreach ($page_links as $page_link) {
+            $page_content = $this->get_comcode_page_content($page_link);
+
+            if ($page_content === null) {
+                $this->stateCheckSkipped('Could not download page from website');
+                continue;
+            }
+
+            list(, $html) = $page_content;
+
+            $_comcode_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $comcode_segment) {
+                $_comcode_segments[do_lang('PREVIEW')] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($_comcode_segments as $field_title => $html) {
+            $html = preg_replace('#<form.*</form>#Uis', '', $html);
+            $this->assertTrue(preg_match('#<(select|textarea|input|button)#i', $html) == 0, do_lang('FORM_ELEMENT_PROBLEM', $field_title));
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testWebStandards($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        if ((get_option('enable_markup_webstandards') == '0') || ($check_context != CHECK_CONTEXT__SPECIFIC_PAGE_LINKS)) {
+            return;
+        }
+
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
+        $html_segments = array();
+        foreach ($page_links as $page_link) {
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
+
+            if ($html === null) {
+                $this->stateCheckSkipped('Could not download page from website');
+                continue;
+            }
+
+            $html_segments['[tt]' . $page_link . '[/tt]'] = $html;
+        }
+
+        if ($comcode_segments !== null) {
+            foreach ($comcode_segments as $field_title => $comcode_segment) {
+                $html_segments[$field_title] = static_evaluate_tempcode(comcode_to_tempcode($comcode_segment));
+            }
+        }
+
+        foreach ($html_segments as $field_title => $html) {
+            require_lang('webstandards');
+            require_code('crypt');
+            require_code('webstandards');
+            $results = check_xhtml($html, false, true, true, true, true, true, false);
+            $this->assertTrue(($results === null) || (count($results['errors']) == 0), do_lang('WEB_STANDARDS_PROBLEM', $field_title));
+        }
     }
 }

@@ -1054,6 +1054,13 @@ No null strings
 | Product development only
 | Table creation code checks
 | You may not allow nullability of a string field, as some databases can't distinguish null from the empty string.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Don't assume case sensitivity[/color]
+| Portability
+| Product development only
+| 
+| It is up to the database layer whether database string comparisons are case sensitive or not. Usually you don't need to think about it because the sensitivity just maps straight to the application behaviour you'd expect, but there may be occasional issues to consider. The default supported MySQL driver is case insensitive as the default collation used is [tt]utf8mb4_general_ci[/tt].
 |}
 
 [title="4"]Templates and Interfaces[/title]
@@ -2219,7 +2226,7 @@ Use relative font sizes
 [color="red"]Front-end designs should work on mobile mode[/color]
 | Mobile, Compatibility with user computers
 | Composr development +
-| Manually
+| Manually, Mobile Usability tests in Google Search Console
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]

@@ -3190,10 +3190,13 @@ function get_loaded_tags($limit_to = null, $the_tags = null)
  * Get the default page for a zone.
  *
  * @param  ID_TEXT $zone_name Zone name
+ * @param  boolean $zone_missing Whether the zone is missing (returned by reference)
  * @return ID_TEXT Default page
  */
-function get_zone_default_page($zone_name)
+function get_zone_default_page($zone_name, &$zone_missing = false)
 {
+    $zone_missing = false;
+
     if ($zone_name == '_SELF') {
         $zone_name = get_zone_name();
     }
@@ -3223,9 +3226,12 @@ function get_zone_default_page($zone_name)
             if ($_zone_default_page === null) {
                 $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), array()/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
-            $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = DEFAULT_ZONE_PAGE_NAME;
             foreach ($_zone_default_page as $zone_row) {
                 $ZONE_DEFAULT_PAGES_CACHE[$zone_row['zone_name']] = $zone_row['zone_default_page'];
+            }
+            if (!isset($ZONE_DEFAULT_PAGES_CACHE[$zone_name])) {
+                $zone_missing = true;
+                $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = DEFAULT_ZONE_PAGE_NAME;
             }
         }
 
@@ -3869,6 +3875,7 @@ function is_control_field($field_name, $include_email_metafields = false, $inclu
         'description_for__',
         'tick_on_form__',
         'require__',
+        'comcode_page_hint_',
 
         // Relating to uploads/attachments
         'hid_file_id_',

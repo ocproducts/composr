@@ -34,7 +34,7 @@ class currency_test_set extends cms_test_case
     {
         $test_a = currency_convert(10.00, 'USD', 'GBP');
         $test_b = currency_convert(10, 'USD', 'GBP');
-        $this->assertTrue(gettype($test_a) == gettype($test_b) && $test_a == $test_b, 'Got ' . serialize($test_a) . ' and ' . serialize($test_b)); // Floats and integers should convert the same
+        $this->assertTrue(gettype($test_a) == gettype($test_b) && $test_a > $test_b - 0.005 && $test_b > $test_a - 0.005, 'Got ' . serialize($test_a) . ' and ' . serialize($test_b)); // Floats and integers should convert the same
     }
 
     public function testCurrencyViaConvAPI()
