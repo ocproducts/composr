@@ -234,10 +234,10 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  * @param  string $background_theme_image The background theme image
  * @param  boolean $raw Whether to output the logo to the browser, destroy then image, and exit the script (i.e. never returns)
  * @param  ?string $theme The theme to use the logo template from (null: default root zone theme)
- * @param  boolean $standalone_version Whether we are generating the standalone version (smaller, used in e-mails etc)
+ * @param  string $logo_type Logo type/size to generate. 'large' is for the bigger logo with background image, 'standalone' crops the background a bit, for use in e-mails etc., 'small' is the transparent logo without background, used for the small header type, and 'small_white' is used when the small header has a dark background
  * @return resource The image resource
  */
-function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/default_logos/1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $standalone_version = false)
+function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/default_logos/logo1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $logo_type = 'large')
 {
     if (!headers_sent()) {
         header('X-Robots-Tag: noindex');
@@ -254,6 +254,11 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         }
     }
 
+    if (!in_array($logo_type, array('large', 'standalone', 'small', 'small_white'))) {
+        // Invalid value for provided for `$logo_type`
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $logowizard_details = array(
         'logo_x_offset' => get_theme_option('logo_x_offset'),
         'logo_y_offset' => get_theme_option('logo_y_offset'),
@@ -263,100 +268,122 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         'site_name_font_size_small' => get_theme_option('site_name_font_size_small'),
         'site_name_font_size' => get_theme_option('site_name_font_size'),
         'site_name_font_size_small_non_ttf' => get_theme_option('site_name_font_size_small_non_ttf'),
+        // ^ Numeric font identifier: "Can be 1, 2, 3, 4, 5 for built-in fonts in latin2 encoding (where higher numbers corresponding to larger fonts) or any of your own font identifiers registered with imageloadfont()."
         'site_name_font_size_nonttf' => get_theme_option('site_name_font_size_nonttf'),
+        // ^ Numeric font identifier: "Can be 1, 2, 3, 4, 5 for built-in fonts in latin2 encoding (where higher numbers corresponding to larger fonts) or any of your own font identifiers registered with imageloadfont()."
         'site_name_x_offset' => get_theme_option('site_name_x_offset'),
         'site_name_y_offset' => get_theme_option('site_name_y_offset'),
         'site_name_y_offset_small' => get_theme_option('site_name_y_offset_small'),
     );
-
-    // Load background image
-    $imgs = array();
-    foreach (array('logo' => $logo_theme_image, 'background' => $background_theme_image, 'standalone' => 'logo/standalone_logo') as $id => $theme_image) {
-        $url = find_theme_image($theme_image, false, false, $theme, null, null, true);
-        $file_path_stub = convert_url_to_path($url);
-        if ($file_path_stub !== null) {
-            if (!file_exists($file_path_stub)) {
-                $file_path_stub = get_file_base() . '/themes/default/images/EN/logo/' . filter_naughty($theme_image) . '.png'; // Exceptional situation. Maybe theme got corrupted?
-            }
-            $data = cms_file_get_contents_safe($file_path_stub);
-        } else {
-            $data = http_get_contents($url);
-        }
-        $img = cms_imagecreatefromstring($data, get_file_extension($url));
-        if ($img === false) {
-            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)), false, true);
-        }
-        imagepalettetotruecolor($img);
-        $imgs[$id] = $img;
-    }
-    if ($standalone_version) {
-        // Based on 'background' image, but must be the size of 'standalone' image...
-        $canvas = imagecreatetruecolor(imagesx($imgs['standalone']), imagesy($imgs['standalone']));
-        imagecopy($canvas, $imgs['background'], 0, 0, 0, 0, imagesx($imgs['standalone']), imagesy($imgs['standalone']));
-
-        imagedestroy($imgs['background']);
-        imagedestroy($imgs['standalone']);
-    } else {
-        $canvas = $imgs['background'];
-        imagedestroy($imgs['standalone']);
-    }
-    imagealphablending($canvas, true);
-
-    // Add logo onto the canvas
-    imagecopy($canvas, $imgs['logo'], intval($logowizard_details['logo_x_offset']), intval($logowizard_details['logo_y_offset']), 0, 0, imagesx($imgs['logo']), imagesy($imgs['logo']));
-    imagedestroy($imgs['logo']);
 
     // Find font details
     $ttf_font = get_file_base() . '/data_custom/fonts/' . $font_choice . '.ttf';
     if (!is_file($ttf_font)) {
         $ttf_font = get_file_base() . '/data/fonts/' . $font_choice . '.ttf';
     }
-    if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (!file_exists($ttf_font)) || (@imagettfbbox(26.0, 0.0, $ttf_font, 'test') === false)) {
+
+    $have_tff_support = (function_exists('imagettftext')) && (array_key_exists('FreeType Support', gd_info())) && (file_exists($ttf_font)) && (@imagettfbbox($logowizard_details['site_name_font_size'], 0.0, $ttf_font, 'test') !== false);
+
+    if ($have_tff_support) {
+        list(, , $font_width, , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size']), 0.0, $ttf_font, convert_to_html_encoding($name));
+        $font_height = max($font_height, -$font_height);
+    } else {
         $font = intval($logowizard_details['site_name_font_size_small_non_ttf']);
         $font_width = imagefontwidth($font) * strlen($name);
         $font_height = imagefontheight($font);
-    } else {
-        list(, , $font_width, , , , , $font_height) = imagettfbbox(26.0, 0.0, $ttf_font, convert_to_html_encoding($name));
-        $font_height = max($font_height, -$font_height);
     }
 
-    // Declare colours
-    $white = imagecolorallocate($canvas, hexdec(substr($logowizard_details['site_name_colour'], 0, 2)), hexdec(substr($logowizard_details['site_name_colour'], 2, 2)), hexdec(substr($logowizard_details['site_name_colour'], 4, 2)));
-    $black = imagecolorallocate($canvas, 0, 0, 0);
-    if (file_exists(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css')) {
-        $css_file = cms_file_get_contents_safe(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css');
-    } else {
-        $css_file = cms_file_get_contents_safe(get_file_base() . '/themes/default/css/global.css');
+    // Load GD image resources
+    $im_logo = _generate_logo_get_image($logo_theme_image, $theme);
+    $im_background = _generate_logo_get_image($background_theme_image, $theme);
+
+    if ($logo_type === 'large') {
+        $im_canvas = $im_background;
+    } elseif ($logo_type === 'standalone') {
+        $im_standalone = _generate_logo_get_image('logo/standalone_logo', $theme);
+        // Based on 'background' image, but must be the size of 'standalone' image...
+        $im_canvas = imagecreatetruecolor(imagesx($im_standalone), imagesy($im_standalone));
+        imagecopy($im_canvas, $im_background, 0, 0, 0, 0, imagesx($im_standalone), imagesy($im_standalone));
+        imagedestroy($im_background);
+        imagedestroy($im_standalone);
+    } elseif (($logo_type === 'small') || ($logo_type === 'small_white')) {
+        $small_logo_width = imagesx($im_logo) + $font_width + 20;
+        $small_logo_height = imagesy($im_logo);
+        $im_canvas = imagecreatetruecolor($small_logo_width, $small_logo_height);
+
+        // Make the canvas transparent
+        imagefill($im_canvas, 0, 0, imagecolorallocatealpha($im_canvas, 0, 0, 0, 127));
+
+        // Vertically center the text
+        $logowizard_details['site_name_y_offset'] = ($small_logo_height / 2) - ($font_height / 2);
+
+        if ($logo_type === 'small_white') {
+            // Make the logo icon/image white:
+            $im_logo_width = imagesx($im_logo);
+            $im_logo_height = imagesy($im_logo);
+            $white_colors_by_alpha = array();
+            for ($x = 0; $x < $im_logo_width; $x++) {
+                for ($y = 0; $y < $im_logo_height; $y++) {
+                    $c = imagecolorsforindex($im_logo, imagecolorat($im_logo, $x, $y));
+
+                    if (($c['red'] + $c['green'] + $c['blue']) > 0) {
+                        if (!isset($white_colors_by_alpha[$c['alpha']])) {
+                            $white_colors_by_alpha[$c['alpha']] = imagecolorallocatealpha($im_logo, 255, 255, 255, $c['alpha']);
+                        }
+
+                        imagesetpixel($im_logo, $x, $y, $white_colors_by_alpha[$c['alpha']]);
+                    }
+                }
+            }
+
+            $logowizard_details['site_name_colour'] = 'FFFFFF';
+        }
     }
-    $matches = array();
-    if (preg_match('#\{\$THEMEWIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),box_title_background,#i', $css_file, $matches) != 0) {
-        $text_colour = imagecolorallocate($canvas, hexdec($matches[1]), hexdec($matches[2]), hexdec($matches[3]));
-    } else {
-        $text_colour = $white;
+
+    imagealphablending($im_canvas, true);
+
+    // Add logo onto the canvas
+    imagecopy($im_canvas, $im_logo, intval($logowizard_details['logo_x_offset']), intval($logowizard_details['logo_y_offset']), 0, 0, imagesx($im_logo), imagesy($im_logo));
+    imagedestroy($im_logo);
+
+    // Set user configured color
+    $text_colour = imagecolorallocate($im_canvas, hexdec(substr($logowizard_details['site_name_colour'], 0, 2)), hexdec(substr($logowizard_details['site_name_colour'], 2, 2)), hexdec(substr($logowizard_details['site_name_colour'], 4, 2)));
+
+    if ($logo_type !== 'small_white') {
+        // Override user configured color with $THEMEWIZARD_COLOR "box_title_background" if available
+        if (file_exists(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css')) {
+            $css_file = cms_file_get_contents_safe(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css');
+        } else {
+            $css_file = cms_file_get_contents_safe(get_file_base() . '/themes/default/css/global.css');
+        }
+        $matches = array();
+        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),box_title_background,#i', $css_file, $matches) != 0) {
+            $text_colour = imagecolorallocate($im_canvas, hexdec($matches[1]), hexdec($matches[2]), hexdec($matches[3]));
+        }
     }
 
     // Write text onto the canvas
     $do = array();
     if (($font_width > intval($logowizard_details['site_name_split'])) && (strpos($name, ' ') !== false)) { // Split in two
-        if ((function_exists('imagettftext')) && (array_key_exists('FreeType Support', gd_info())) && (file_exists($ttf_font)) && (@imagettfbbox(26.0, 0.0, $ttf_font, 'test') !== false)) {
-            list(, , $font_width, , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $ttf_font, convert_to_html_encoding($name));
-            $font_height = max($font_height, -$font_height);
+        if ($have_tff_support) {
+            list(, , , , , , , $small_font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $ttf_font, convert_to_html_encoding($name));
+            $small_font_height = max($small_font_height, -$small_font_height);
         }
         $bits = explode(' ', $name);
-        $a = '';
-        $b = '';
+        $text_line_1 = '';
+        $text_line_2 = '';
         foreach ($bits as $bit) {
-            if (strlen($a) < intval(round(floatval(strlen($name)) / 2.0))) {
-                $a .= $bit . ' ';
+            if (strlen($text_line_1) < intval(round(floatval(strlen($name)) / 2.0))) {
+                $text_line_1 .= $bit . ' ';
             } else {
-                $b .= $bit . ' ';
+                $text_line_2 .= $bit . ' ';
             }
         }
-        $do[] = array($a, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $font_height, intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
-        $do[] = array($b, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $font_height * 2 + intval($logowizard_details['site_name_split_gap']), intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
+        $do[] = array($text_line_1, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $small_font_height, intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
+        $do[] = array($text_line_2, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $small_font_height * 2 + intval($logowizard_details['site_name_split_gap']), intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
     } elseif ($font_width > intval($logowizard_details['site_name_split'])) { // Smaller font
-        if ((function_exists('imagettftext')) && (array_key_exists('FreeType Support', gd_info())) && (file_exists($ttf_font)) && (@imagettfbbox(26.0, 0.0, $ttf_font, 'test') !== false)) {
-            list(, , $font_width, , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $ttf_font, convert_to_html_encoding($name));
+        if ($have_tff_support) {
+            list(, , , , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $ttf_font, convert_to_html_encoding($name));
             $font_height = max($font_height, -$font_height);
         }
         $do[] = array($name, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset']) + $font_height, intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
@@ -364,17 +391,16 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         $do[] = array($name, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset']) + $font_height, floatval($logowizard_details['site_name_font_size']), $ttf_font, $text_colour);
     }
     foreach ($do as $i => $doing) {
-        if ((function_exists('imagettftext')) && (array_key_exists('FreeType Support', gd_info())) && (file_exists($doing[4])) && (@imagettfbbox(26.0, 0.0, $ttf_font, 'test') !== false)) {
-            imagettftext($canvas, (float)($doing[3]), 0.0, $doing[1], $doing[2], $doing[5], $doing[4], convert_to_html_encoding($doing[0]));
+        if ($have_tff_support) {
+            imagettftext($im_canvas, (float)($doing[3]), 0.0, $doing[1], $doing[2], $doing[5], $doing[4], convert_to_html_encoding($doing[0]));
         } else {
             // @ needed for bizarre reasons due to type juggling in PHP (brought up by ocProducts PHP only)
-            @imagestring($canvas, ($doing[3] == intval($logowizard_details['site_name_font_size_small'])) ? intval($logowizard_details['site_name_font_size_nonttf']) : $font, $doing[1], $doing[2] - 11, $doing[0], $doing[5]);
+            @imagestring($im_canvas, ($doing[3] == intval($logowizard_details['site_name_font_size_small'])) ? intval($logowizard_details['site_name_font_size_nonttf']) : $font, $doing[1], $doing[2] - 11, $doing[0], $doing[5]);
         }
     }
 
-    // Output direct?
-    imagesavealpha($canvas, true);
-    if ($raw) {
+    imagesavealpha($im_canvas, true);
+    if ($raw) { // Output direct?
         header('Content-type: image/png');
         //header('Content-Disposition: attachment; filename="-logo.png"');
 
@@ -382,13 +408,41 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
             return '';
         }
 
-        imagepng($canvas);
-        imagedestroy($canvas);
+        imagepng($im_canvas);
+        imagedestroy($im_canvas);
 
         exit();
     }
 
-    return $canvas;
+    return $im_canvas;
+}
+
+
+/**
+ * Generate a PHP GD resource for an image.
+ *
+ * @param  string $image_codename The image codename
+ * @param  string $theme The theme name
+ * @return resource The image resource
+ */
+function _generate_logo_get_image($image_codename, $theme)
+{
+    $url = find_theme_image($image_codename, false, false, $theme, null, null, true);
+    $file_path_stub = convert_url_to_path($url);
+    if ($file_path_stub !== null) {
+        if (!file_exists($file_path_stub)) {
+            // Exceptional situation. Maybe theme got corrupted?
+            $file_path_stub = get_file_base() . '/themes/default/images/EN/logo/' . filter_naughty($image_codename) . '.png';
+        }
+        $data = cms_file_get_contents_safe($file_path_stub);
+    } else {
+        $data = http_get_contents($url);
+    }
+    $im = cms_imagecreatefromstring($data, get_file_extension($url));
+    if ($im === false) {
+        warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)), false, true);
+    }
+    return $im;
 }
 
 /**
