@@ -15,7 +15,12 @@ Disallow: /temp
 Disallow: /crm
 
 # Version-specific docs
-Disallow: /docs10
+Disallow: /docs4
+Disallow: /docs5
+Disallow: /docs6
+Disallow: /docs7
+Disallow: /docs8
+Disallow: /docs9
 Disallow: /docs11
 Disallow: /docs12
 Disallow: /docs13
@@ -44,6 +49,15 @@ Disallow: *act_start*
 
 # Weird baidu
 Disallow: /chat/buddy_add.htm
+
+# Crawl errors
+Disallow: /tracker/excel_xml_report.php
+Disallow: /tracker/bug_monitor_add.php
+Disallow: /tracker/bug_revision_view_page.php
+Disallow: /tracker/set_project.php
+Disallow: /tracker/print_bug_page.php
+Disallow: /tracker/print_all_bug_page_word.php
+Disallow: /data/jwplayer.flash.swf
 
 Crawl-Delay: 10
 

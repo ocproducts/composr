@@ -3,8 +3,7 @@
 <p>
 	<strong>Web designer:</strong> {$COMCODE,[currency="GBP" bracket="1"]40[/currency]} per hour &nbsp;&nbsp;&middot;&nbsp;&nbsp;
 	<strong>Web developer:</strong> {$COMCODE,[currency="GBP" bracket="1"]60[/currency]} per hour &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-	<strong>Project manager:</strong> {$COMCODE,[currency="GBP" bracket="1"]40[/currency]} per hour<br />
-	(<a title="ocProducts rate card {!LINK_NEW_WINDOW}" target="_blank" href="{$BASE_URL*}/uploads/website_specific/compo.sr/ocproducts_rate_card.pdf">full rate card</a>)
+	<strong>Project manager:</strong> {$COMCODE,[currency="GBP" bracket="1"]40[/currency]} per hour
 </p>
 
 <p>Prices typically start from about {$COMCODE,[currency="GBP" bracket="1"]3000[/currency]} for a professionally designed website.</p>
