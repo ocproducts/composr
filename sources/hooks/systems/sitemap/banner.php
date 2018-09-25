@@ -82,7 +82,14 @@ class Hook_sitemap_banner extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), $consider_validation ? array('validated' => 1) : array(), 'ORDER BY name', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $where_map = array();
+            if ($consider_validation) {
+                $where_map['validated'] = 1;
+            }
+            if (!has_privilege(get_member(), 'view_anyones_banner_stats')) { // TODO: Change from get_member() in v11
+                $where_map['submitter'] = get_member(); // TODO: Change from get_member() in v11
+            }
+            $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), $where_map, 'ORDER BY name', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':source=' . $row['name'];
                 $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
