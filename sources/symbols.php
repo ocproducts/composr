@@ -789,7 +789,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 if ((get_option('cdn_regexps') != '') && (get_option('cdn') != '') && (get_param_integer('keep_minify', 1) == 1)) {
                     $matches = array();
                     $bu = get_base_url();
-                    $num_matches = preg_match_all('#(\s+(src|href))="' . preg_quote($bu, '#') . '/([^"]+)"#', $value, $matches);
+                    $num_matches = preg_match_all('#(\s+(src|srcset|href))="' . preg_quote($bu, '#') . '/([^"]+)"#', $value, $matches);
                     $cdn_regexps = str_replace("\n", '|', get_option('cdn_regexps'));
                     for ($i = 0; $i < $num_matches; $i++) {
                         $_url = $matches[3][$i];

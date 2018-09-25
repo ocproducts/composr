@@ -998,7 +998,27 @@
                 video.className = 'lightbox-image';
                 video.controls = 'controls';
                 video.autoplay = 'autoplay';
-                $dom.html(video, initialImgUrl);
+
+                var closedCaptionsUrl = '';
+                var videoUrl = initialImgUrl;
+                if ((initialImgUrl.indexOf('?') != -1) && (initialImgUrl.indexOf('vtt') != -1)) {
+                    var parts = videoUrl.split('?', 2);
+                    videoUrl = parts[0];
+                    closedCaptionsUrl = window.decodeURIComponent(parts[1]);
+                }
+
+                var source = document.createElement('source');
+                source.src = videoUrl;
+                video.appendChild(source);
+
+                if (closedCaptionsUrl != '') {
+                    var track = document.createElement('track');
+                    track.src = closedCaptionsUrl;
+                    track.kind = 'captions';
+                    track.label = '{!CLOSED_CAPTIONS;}';
+                    video.appendChild(track);
+                }
+
                 video.addEventListener('loadedmetadata', function () {
                     $cms.ui.resizeLightboxDimensionsImg(modal, video, hasFullButton, true);
                 });

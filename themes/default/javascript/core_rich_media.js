@@ -826,7 +826,6 @@
             autostart: false,
             file: params.url,
             type: params.type,
-            image: params.thumbUrl,
             flashplayer: params.flashplayer,
             events: {
                 onComplete: function () {
@@ -843,8 +842,24 @@
             }
         };
 
+        if (params.thumbUrl != '') {
+            playerOptions.image = $util.srl(params.thumbUrl);
+        }
+
         if (params.duration) {
             playerOptions.duration = params.duration;
+        }
+
+        playerOptions.autostart = (params.autostart === true);
+
+        if (params.closedCaptionsUrl != '') {
+            playerOptions.tracks = [
+                {
+                    file: $util.srl(params.closedCaptionsUrl),
+                    kind: 'captions',
+                    label: '{!CLOSED_CAPTIONS}'
+                }
+            ];
         }
 
         if (!($cms.configOption('show_inline_stats'))) {
@@ -863,7 +878,6 @@
             autostart: false,
             file: params.url,
             type: params.type,
-            image: params.thumbUrl,
             flashplayer: params.flashplayer,
             events: {
                 onComplete: function () {
@@ -880,19 +894,31 @@
             }
         };
 
+        if (params.thumbUrl != '') {
+            playerOptions.image = $util.srl(params.thumbUrl);
+        }
+
         if (params.duration) {
             playerOptions.duration = params.duration;
         }
 
-        if (params.playerWidth) {
-            //playerOptions.width = params.playerWidth;
+        if (params.responsive) {
+            playerOptions.aspectratio = params.playerWidth + ':' + params.playerHeight;
+        } else {
+            playerOptions.width = params.playerWidth;
+            playerOptions.height = params.playerHeight;
         }
-        playerOptions.width = '100%';
-        if (params.playerHeight) {
-            //playerOptions.height = params.playerHeight;
-        }
-        if (params.playerWidth && params.playerHeight) {
-            playerOptions = params.playerWidth + ':' + params.playerHeight;
+
+        playerOptions.autostart = (params.autostart === true);
+
+        if (params.closedCaptionsUrl != '') {
+            playerOptions.tracks = [
+                {
+                    file: $util.srl(params.closedCaptionsUrl),
+                    kind: 'captions',
+                    label: '{!CLOSED_CAPTIONS}'
+                }
+            ];
         }
 
         if (!$cms.configOption('show_inline_stats')) {

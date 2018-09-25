@@ -63,6 +63,11 @@ class file_naming_test_set extends cms_test_case
             '_tests/codechecker/codechecker.app/',
             '_tests/codechecker/netbeans/',
             'test-a',
+            'data_custom/mediaelement/mediaelement-flash-audio-ogg.swf',
+            'data_custom/mediaelement/mediaelement-flash-audio.swf',
+            'data_custom/mediaelement/mediaelement-flash-video-hls.swf',
+            'data_custom/mediaelement/mediaelement-flash-video-mdash.swf',
+            'data_custom/mediaelement/mediaelement-flash-video.swf',
         );
 
         $ignore_substrings = array(

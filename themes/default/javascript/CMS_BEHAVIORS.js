@@ -859,7 +859,7 @@
                     e.preventDefault();
 
                     if (el.querySelector('img, video')) {
-                        openImageIntoLightbox(el);
+                        openImageIntoLightbox(el, el.href.indexOf('.mp4') != -1 || el.href.indexOf('.m4v') != -1);
                     } else {
                         openLinkAsOverlay({ el: el });
                     }

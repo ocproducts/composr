@@ -134,23 +134,18 @@ class Hook_addon_registry_mediaelement
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/mediaelement.php',
-            'data_custom/mediaelement/flashmediaelement.swf',
-            'data_custom/mediaelement/silverlightmediaelement.xap',
+            'data_custom/mediaelement/index.html',
+            'data_custom/mediaelement/mediaelement-flash-audio-ogg.swf',
+            'data_custom/mediaelement/mediaelement-flash-audio.swf',
+            'data_custom/mediaelement/mediaelement-flash-video-hls.swf',
+            'data_custom/mediaelement/mediaelement-flash-video-mdash.swf',
+            'data_custom/mediaelement/mediaelement-flash-video.swf',
             'themes/default/css_custom/mediaelementplayer.css',
-            'themes/default/images_custom/mediaelement/background.png',
-            'themes/default/images_custom/mediaelement/bigplay.png',
-            'themes/default/images_custom/mediaelement/bigplay_svg.svg',
-            'themes/default/images_custom/mediaelement/controls.png',
-            'themes/default/images_custom/mediaelement/controls_svg.svg',
-            'themes/default/images_custom/mediaelement/jumpforward.png',
-            'themes/default/images_custom/mediaelement/loading.gif',
-            'themes/default/images_custom/mediaelement/skipback.png',
+            'themes/default/images_custom/mediaelement/index.html',
+            'themes/default/images_custom/mediaelement/mejs-controls.svg',
             'themes/default/javascript_custom/mediaelement-and-player.js',
             'themes/default/templates_custom/MEDIA_AUDIO_WEBSAFE.tpl',
             'themes/default/templates_custom/MEDIA_VIDEO_WEBSAFE.tpl',
-            'themes/default/javascript_custom/core_rich_media.js',
-            'data_custom/mediaelement/index.html',
-            'themes/default/images_custom/mediaelement/index.html',
         );
     }
 }

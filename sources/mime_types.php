@@ -132,6 +132,9 @@ function get_mime_types($as_admin)
         'rm' => 'audio/x-pn-realaudio',
         'asf' => 'video/x-ms-asf',
 
+        // Closed Captions
+        'vtt' => 'text/vtt',
+
         // Audio
         'mp3' => 'audio/mpeg',
         'aac' => 'audio/mpeg',

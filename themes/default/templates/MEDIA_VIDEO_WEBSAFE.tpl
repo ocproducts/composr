@@ -1,14 +1,8 @@
 {$REQUIRE_JAVASCRIPT,jwplayer}
 {$SET,player_id,player-{$RAND}}
 
-{$SET,player_width,}
-{+START,IF_NON_EMPTY,{WIDTH}}
-	{$SET,player_width,{$MIN,950,{WIDTH%}}},
-{+END}
-{$SET,player_height,}
-{+START,IF_NON_EMPTY,{HEIGHT}}
-	{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT%}}},
-{+END}
+{$SET,player_width,{$MIN,950,{WIDTH%}}},
+{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT%}}},
 
 {$SET,duration,}
 {+START,IF_NON_EMPTY,{LENGTH}}
@@ -33,8 +27,10 @@
 	{+START,IF_NON_EMPTY,{LENGTH}}
 		<meta itemprop="duration" content="T{LENGTH*}S" />
 	{+END}
-	<meta itemprop="thumbnailURL" content="{THUMB_URL*}" />
-	<meta itemprop="embedURL" content="{URL*}" />
+	{+START,IF_NON_EMPTY,{THUMB_URL}}
+		<meta itemprop="thumbnailURL" content="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}" />
+	{+END}
+	<meta itemprop="embedURL" content="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 
 	<div class="webstandards-checker-off" id="{$GET%,player_id}"></div>
 
@@ -47,10 +43,13 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 
-<div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
+<div data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,RESPONSIVE,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}">
 	{+START,IF,{$GET,raw_video}}
-		<video {+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
+		<video {+START,IF_NON_EMPTY,{THUMB_URL}} poster="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls"{+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END}>
 			<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
+			{+START,IF_PASSED,CLOSED_CAPTIONS_URL}{+START,IF_NON_EMPTY,{CLOSED_CAPTIONS_URL}}
+				<track src="{$ENSURE_PROTOCOL_SUITABILITY*,{CLOSED_CAPTIONS_URL}}" kind="captions" label="{!CLOSED_CAPTIONS}" />
+			{+END}{+END}
 			<span>{DESCRIPTION}</span>
 		</video>
 	{+END}

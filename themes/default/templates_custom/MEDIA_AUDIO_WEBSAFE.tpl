@@ -14,14 +14,13 @@
 		{+END}
 	{+END}
 
-	<audio controls="controls" preload="none" id="{$GET%,player_id}" data-tpl="mediaAudioWebsafe">
+	<audio style="display: none" controls="controls" preload="none" id="{$GET%,player_id}" data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}"{+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END}>
 		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
-		<object width="{WIDTH*}" height="{HEIGHT*}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
-			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
-			<param name="flashvars" value="controls=true&amp;file={URL&*}" />
+		{+START,IF_PASSED,CLOSED_CAPTIONS_URL}{+START,IF_NON_EMPTY,{CLOSED_CAPTIONS_URL}}
+			<track src="{$ENSURE_PROTOCOL_SUITABILITY*,{CLOSED_CAPTIONS_URL}}" kind="captions" label="{!CLOSED_CAPTIONS}" srclang="{$LCASE*,{$LANG}}" />
+		{+END}{+END}
 
-			<img src="{THUMB_URL*}" width="{WIDTH*}" height="{HEIGHT*}" alt="No audio playback capabilities" title="No audio playback capabilities" />
-		</object>
+		<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}" width="{WIDTH*}" height="{HEIGHT*}" alt="No audio playback capabilities" title="No audio playback capabilities" />
 	</audio>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}

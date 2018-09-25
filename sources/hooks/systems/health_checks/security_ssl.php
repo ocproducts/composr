@@ -111,6 +111,10 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
             return;
         }
 
+        if (substr(get_base_url(), 0, 8) != 'https://') {
+            return;
+        }
+
         $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
         $html_segments = array();

@@ -68,7 +68,7 @@ $g_file_upload_method = DISK; # or DISK
 $g_absolute_path_default_upload_folder = dirname(__FILE__).DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR ; # used with DISK, must contain trailing \ or /.
 $g_max_file_size = 25000000; # in bytes
 $g_preview_attachments_inline_max_size = 256 * 1024;
-$g_allowed_files = '1st,3g2,3gp,3gp2,3gpp,3p,7z,aac,ai,aif,aifc,aiff,asf,avi,bmp,bz2,csv,cur,dat,diff,doc,docx,dot,dotx,eml,f4v,gif,gz,ico,ics,ini,iso,jpe,jpeg,jpg,keynote,log,m2v,m4v,mdb,mid,mov,mp2,mp3,mp4,mpa,mpe,mpeg,mpg,mpv2,numbers,odb,odc,odg,odi,odp,ods,odt,ogg,ogv,otf,pages,patch,pdf,png,ppt,pptx,ps,psd,pub,qt,ra,ram,rar,rm,rtf,sql,tar,tga,tgz,tif,tiff,torrent,tpl,ttf,txt,vsd,wav,weba,webm,webp,wma,wmv,xls,xlsx,zip';
+$g_allowed_files = '1st,3g2,3gp,3gp2,3gpp,3p,7z,aac,ai,aif,aifc,aiff,asf,avi,bmp,bz2,csv,cur,dat,diff,doc,docx,dot,dotx,eml,f4v,gif,gz,ico,ics,ini,iso,jpe,jpeg,jpg,keynote,log,m2v,m4v,mdb,mid,mov,mp2,mp3,mp4,mpa,mpe,mpeg,mpg,mpv2,numbers,odb,odc,odg,odi,odp,ods,odt,ogg,ogv,otf,pages,patch,pdf,png,ppt,pptx,ps,psd,pub,qt,ra,ram,rar,rm,rtf,sql,tar,tga,tgz,tif,tiff,torrent,tpl,ttf,txt,vsd,vtt,wav,weba,webm,webp,wma,wmv,xls,xlsx,zip';
 $g_disallowed_files = ''; # extensions comma separated
 
 

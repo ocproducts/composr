@@ -338,6 +338,11 @@ function cdn_filter($url_path)
             return $url_path;
         }
 
+        // Can't run on a CDN due to CORS policies
+        if ((substr($url_path, -4) == '.vtt') || (strpos($url_path, '.vtt?') !== false)) {
+            return $url_path;
+        }
+
         static $cdn_consistency_check = array();
 
         if (isset($cdn_consistency_check[$url_path])) {

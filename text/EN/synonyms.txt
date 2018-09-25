@@ -1,6 +1,7 @@
 maximum	limit	total	max	increase	long	count	tally
 characters	words	bytes
 image	picture
+video	movie
 integer	number
 webclipicon	webclip	apple touch icon
 fault	error	bug	warning	notice	mistake	glitch	flaw	failure
@@ -89,11 +90,12 @@ html	xhtml
 knowledgebase	wiki
 wysiwyg	rte
 addon	add-on	mod	hack	extension	plugin	app	core_addon_management	module	system	package	install
-name	title	label	codename
+name	title	label	codename	caption
+description	caption	summary
+closed captions	captions	text track	subtitles	srt	vtt	ttml
 engagement	metric	kpi	analytics	statistics	hits	stats
 newsletter	mass-mail	mass-mailing	bulletin	mail-merge	announcement
 announcement	cascading
-description	caption	summary
 choose	set	specify	pick
 add	submit	create	make	publish	upload	build
 edit	modify	manage	change	control	moderate	update

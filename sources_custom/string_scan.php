@@ -2594,6 +2594,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_TAG_media_PARAM_width_TITLE
         COMCODE_TAG_media_PARAM_wysiwyg_editable
         COMCODE_TAG_media_PARAM_wysiwyg_editable_TITLE
+        COMCODE_TAG_media_PARAM_responsive_TITLE
+        COMCODE_TAG_media_PARAM_responsive
+        COMCODE_TAG_media_PARAM_autostart_TITLE
+        COMCODE_TAG_media_PARAM_autostart
+        COMCODE_TAG_media_PARAM_closed_captions_url_TITLE
+        COMCODE_TAG_media_PARAM_closed_captions_url
         COMCODE_TAG_media_set_DESCRIPTION
         COMCODE_TAG_media_set_EMBED
         COMCODE_TAG_media_set_PARAM_height
@@ -3909,6 +3915,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _OAUTH_TITLE
         URL_FIELDS
         TOP_LEVEL
+        PAGE_HINT_MAKE_MOBILE_DESCRIPTION
+        PAGE_HINT_MAKE_MOBILE_LABEL
+        PAGE_HINT_SMART_CONVERSION_DESCRIPTION
+        PAGE_HINT_SMART_CONVERSION_LABEL
         DESCRIPTION_ACCEPT_IMAGES
         DESCRIPTION_ACCEPT_VIDEOS
         DESCRIPTION_ACCESS_FOR
@@ -10283,6 +10293,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UNASSIGNED
         UNCASCADE_TOPIC
         UNDECLARE_EVENT_INTEREST
+        CLOSED_CAPTIONS
         UNKNOWN
         UNKNOWN_FORMAT
         UNLINK_EXISTING_UPLOAD

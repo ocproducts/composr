@@ -378,6 +378,9 @@ th.de-th {
 th.de-th a, th.de-th a:hover, th.de-th a:visited {
 	color: {$GET,slightly_seeded_text};
 }
+.content-wrap-auto-center .img-box>figure {
+	display: inline-block;
+}
 
 hr {
 	height: 0;
@@ -2158,6 +2161,9 @@ h3 .toggleable-tray-button .icon {
 }
 .box.overlay .associated-links-block-group {
 	margin: 1em;
+}
+.box.overlay.lightbox>.box_inner video {
+	display: block;
 }
 
 /* Boxes with arrows on the top */
