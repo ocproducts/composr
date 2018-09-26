@@ -970,7 +970,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
     // Work out what we'll be doing
     $url_parts = @parse_url(normalise_idn_url($url));
-    if ($url_parts === false || !isset($url_parts['host'])) {
+    if ($url_parts === false || !isset($url_parts['host']) || !isset($url_parts['scheme'])) {
         if ($trigger_error) {
             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)));
         } else {

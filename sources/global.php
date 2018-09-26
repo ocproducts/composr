@@ -394,7 +394,7 @@ function override_str_replace_exactly($search, $replace, $subject, $times = 1)
  */
 function appengine_is_live()
 {
-    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/index.php')));
+    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/sources/global.php')));
 }
 
 /**

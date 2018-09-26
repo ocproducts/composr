@@ -100,7 +100,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
                 'description' => null,
                 'image' => null,
                 'image_2x' => null,
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/index.php') : null,
+                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/sources/global.php') : null,
                 'edit_date' => null,
                 'submitter' => null,
                 'views' => null,

@@ -51,6 +51,6 @@ class Hook_config_leader_board_start_date
      */
     public function get_default()
     {
-        return strval(filemtime(get_file_base() . '/index.php'));
+        return strval(filemtime(get_file_base() . '/sources/global.php'));
     }
 }
