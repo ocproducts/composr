@@ -579,6 +579,12 @@ function _cns_predefined_custom_field_details()
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://steemit.com/@{RAW*}" rel="me">{NAME*}</a>',
         ),
+        'utopian' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/utopian',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://steemit.com/@{RAW*}" rel="me">{NAME*}</a>',
+        ),
         'dtube' => array(
             'type' => 'codename',
             'icon' => 'icons/links/dtube',

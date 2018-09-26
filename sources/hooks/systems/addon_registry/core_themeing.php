@@ -107,6 +107,7 @@ class Hook_addon_registry_core_themeing
         return array(
             'themes/default/images/icons/menu/adminzone/style/themes/themes.svg',
             'themes/default/images/icons/menu/adminzone/style/themes/templates.svg',
+            'themes/default/images/icons/menu/adminzone/style/themes/css.svg',
             'themes/default/images/icons/menu/adminzone/style/themes/theme_images.svg',
             'themes/default/css/themes_editor.css',
             'sources/hooks/systems/snippets/exists_theme.php',

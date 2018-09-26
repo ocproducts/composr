@@ -127,6 +127,7 @@ class Hook_addon_registry_realtime_rain
             'themes/default/images/icons/realtime_rain/news.svg',
             'themes/default/images/icons/realtime_rain/phone.svg',
             'themes/default/images/icons/realtime_rain/searchengine.svg',
+            'themes/default/images/icons/realtime_rain/index.html',
 
             'themes/default/images/icons/realtime_rain/next_but.svg',
             'themes/default/images/icons/realtime_rain/pause_but.svg',

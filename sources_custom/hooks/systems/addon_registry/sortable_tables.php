@@ -176,6 +176,9 @@ Additionally, there are blocks for rendering graphs and maps from CSV files. Thi
             'themes/default/templates_custom/GRAPH_SCATTER_DIAGRAM.tpl',
             'themes/default/templates_custom/PINS_ON_MAP.tpl',
             'site/pages/comcode_custom/EN/_graph_test.txt',
+            'themes/default/images/icons/sortable_tables/filter.svg',
+            'themes/default/images/icons/sortable_tables/sortable.svg',
+            'themes/default/images/icons/sortable_tables/index.html',
         );
     }
 }
