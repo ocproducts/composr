@@ -92,7 +92,7 @@ wysiwyg	rte
 addon	add-on	mod	hack	extension	plugin	app	core_addon_management	module	system	package	install
 name	title	label	codename	caption
 description	caption	summary
-closed captions	captions	text track	subtitles	srt	vtt	ttml
+closed captions	captions	text track	subtitles	srt	vtt	ttml	transcript
 engagement	metric	kpi	analytics	statistics	hits	stats
 newsletter	mass-mail	mass-mailing	bulletin	mail-merge	announcement
 announcement	cascading
