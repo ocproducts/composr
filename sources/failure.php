@@ -652,7 +652,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         if (cms_gethostbyname($dns) === ($alt_ip ? $ip2 : $ip)) { // Verify it's not faking the DNS
             $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
             foreach ($se_domain_names as $domain_name) {
-                if (substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) {
+                if ((substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) || (substr($dns, -strlen($domain_name) - 2) == '.' . $domain_name . '.')) {
                     $is_se = true;
                     break;
                 }

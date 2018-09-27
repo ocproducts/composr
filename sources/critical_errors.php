@@ -77,7 +77,11 @@ if (!function_exists('critical_error')) {
         if (!headers_sent()) {
             if ((function_exists('browser_matches')) && ((is_null($relay)) || (strpos($relay, 'Allowed memory') === false))) {
                 if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                    header('HTTP/1.0 500 Internal server error');
+                    if ($code == 'BANNED') {
+                        header('HTTP/1.0 403 Forbidden');
+                    } else {
+                        header('HTTP/1.0 500 Internal server error');
+                    }
                 }
             }
         }
@@ -273,7 +277,11 @@ END;
             file_put_contents($dir . '/' . $code . '.log', $contents);
             ob_end_clean();
 
-            @header('HTTP/1.0 500 Internal Server Error');
+            if ($code == 'BANNED') {
+                @header('HTTP/1.0 403 Forbidden');
+            } else {
+                @header('HTTP/1.0 500 Internal server error');
+            }
             global $RELATIVE_PATH, $SITE_INFO;
             if (isset($SITE_INFO['base_url'])) {
                 $back_path = $SITE_INFO['base_url'];
