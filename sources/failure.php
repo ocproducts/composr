@@ -824,10 +824,6 @@ function is_unbannable_bot_dns($ip)
                     if (substr($dns, -strlen($_dns_suffix) - 1) == '.' . $_dns_suffix) {
                         return true;
                     }
-
-                    if (substr($dns, -strlen($_dns_suffix) - 2) == '.' . $_dns_suffix . '.') {
-                        return true;
-                    }
                 }
             }
         }

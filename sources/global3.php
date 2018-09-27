@@ -4133,7 +4133,7 @@ function cms_gethostbyaddr($ip_address)
 
     if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
         if ($hostname == '') {
-            $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg_wrap($ip_address))));
+            $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . cms_escapeshellarg($ip_address))));
         }
     }
 
@@ -4147,7 +4147,7 @@ function cms_gethostbyaddr($ip_address)
         $hostname = $ip_address;
     }
 
-    return $hostname;
+    return rtrim($hostname, '.'); // Normalise with no trailing dot
 }
 
 /**
@@ -4163,19 +4163,30 @@ function cms_gethostbyname($hostname)
     if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
         if ($ip_address == '') {
             if (strpos(PHP_OS, 'Linux') !== false) {
-                $ip_address = trim(preg_replace('# .*$#', '', shell_exec('getent hosts ' . escapeshellarg($hostname))));
+                $ip_address = trim(preg_replace('# .*$#', '', shell_exec('getent hosts ' . cms_escapeshellarg($hostname))));
             }
         }
 
         if ($ip_address == '') {
-            $shell_result = shell_exec('host ' . escapeshellarg($hostname));
-            $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', $shell_result);
+            $shell_result = shell_exec('host ' . cms_escapeshellarg($hostname));
+
+            $ip_address = preg_replace('#^.*has IPv6 address [\da-f:]+.*#s', '$1', $shell_result);
+            if (preg_match('#^[\da-f:]+$#', $ip_address) == 0) {
+                $ip_address = '';
+            }
+
+            if ($ip_address == '') {
+                $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', $shell_result);
+                if (preg_match('#^[\d\.]+$#', $ip_address) == 0) {
+                    $ip_address = '';
+                }
+            }
         }
     }
 
     if ($ip_address == '') {
-        if (php_function_allowed('gethostbyaddr')) {
-            $ip_address = @gethostbyaddr($ip_address);
+        if (php_function_allowed('gethostbyname')) {
+            $ip_address = @gethostbyname($hostname);
         }
     }
 
