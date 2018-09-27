@@ -179,7 +179,7 @@ class basic_code_formatting_test_set extends cms_test_case
             }
 
             $exceptions = array(
-                'data/no_banning.txt',
+                'text/unbannable_ips.txt',
                 'sources_custom/twitter.php',
                 'user.sql',
                 'themes/default/javascript_custom/mediaelement-and-player.js',

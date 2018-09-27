@@ -648,10 +648,12 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     if ($ip2 !== null) {
         $count2 = @floatval($GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip2))) / 100.0;
         if ($count2 > $count) {
+            // Lots of hack-attacks through the proxy rather than client IP
             $count = $count2;
             $alt_ip = true;
         }
     }
+    $_ip = ($alt_ip ? $ip2 : $ip);
     $hack_threshold = intval(get_option('hack_ban_threshold'));
     if ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (function_exists('get_member')) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
         $count = 0.0;
@@ -673,60 +675,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     );
 
     $ip_ban_todo = null;
-    if ((($count >= floatval($hack_threshold)) || ($instant_ban)) && (get_option('autoban') != '0') && ($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip)) === null)) {
+    if ((($count >= floatval($hack_threshold)) || ($instant_ban)) && (get_option('autoban') != '0') && ($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $_ip)) === null)) {
         // Test we're not banning a good bot...
 
-        $se_ip_lists = array(
-            get_file_base() . '/custom/no_banning.txt',
-            get_file_base() . '/data_custom/no_banning.txt',
-        );
-
-        $ip_stack = array();
-        $ip_bits = explode((strpos($alt_ip ? $ip2 : $ip, '.') !== false) ? '.' : ':', $alt_ip ? $ip2 : $ip);
-        foreach ($ip_bits as $i => $ip_bit) {
-            $buildup = '';
-            for ($j = 0; $j <= $i; $j++) {
-                if ($buildup != '') {
-                    $buildup .= (strpos($alt_ip ? $ip2 : $ip, '.') !== false) ? '.' : ':';
-                }
-                $buildup .= $ip_bits[$j];
-            }
-            $ip_stack[] = $buildup;
-        }
-
-        $is_se = false;
-        foreach ($se_ip_lists as $ip_list) {
-            if (is_file($ip_list)) {
-                $ip_list_file = file_get_contents($ip_list);
-                $ip_list_array = explode("\n", $ip_list_file);
-                foreach ($ip_stack as $ip_s) {
-                    foreach ($ip_list_array as $_ip_list_array) {
-                        if (((strpos($ip_s, '/') !== false) && (function_exists('ip_cidr_check')) && (ip_cidr_check($ip_s, $_ip_list_array))) || ($ip_s == $_ip_list_array)) {
-                            $is_se = true;
-                        }
-                    }
-                }
-                if ($is_se) {
-                    break;
-                }
-            }
-        }
-
-        $dns = cms_gethostbyaddr($alt_ip ? $ip2 : $ip);
-        if (cms_gethostbyname($dns) === ($alt_ip ? $ip2 : $ip)) { // Verify it's not faking the DNS
-            $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
-            foreach ($se_domain_names as $domain_name) {
-                if (substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) {
-                    $is_se = true;
-                    break;
-                }
-            }
-        }
-
-        if ((!$is_se) && (($alt_ip ? $ip2 : $ip) != '127.0.0.1')) {
+        if ((!ip_address_is_local($_ip)) && (!is_unbannable_bot_dns($ip)) && (!is_unbannable_bot_ip($ip)) && ($ip2 === null) || ((!is_unbannable_bot_dns($ip2)) && (!is_unbannable_bot_ip($ip2)))) {
             // Prepare message about a ban...
 
-            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $alt_ip ? $ip2 : $ip), 'ORDER BY date_and_time');
+            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $_ip), 'ORDER BY date_and_time');
             $rows[] = $new_row;
 
             $summary = '[list]';
@@ -748,12 +703,12 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
 
             if ($is_spammer) {
                 require_code('failure_spammers');
-                syndicate_spammer_report($alt_ip ? $ip2 : $ip, is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), do_lang('SPAM_REPORT_TRIGGERED_SPAM_HEURISTICS'));
+                syndicate_spammer_report($_ip, is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), do_lang('SPAM_REPORT_TRIGGERED_SPAM_HEURISTICS'));
             }
 
             // Add ban...
 
-            $ban_happened = add_ip_ban($alt_ip ? $ip2 : $ip, $full_reason);
+            $ban_happened = add_ip_ban($_ip, $full_reason);
 
             // Prepare notification text...
 
@@ -761,7 +716,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             $ip_ban_url = $_ip_ban_url->evaluate();
 
             if ($ban_happened) {
-                $ip_ban_todo = do_lang('AUTO_BAN_HACK_MESSAGE', $alt_ip ? $ip2 : $ip, integer_format($hack_threshold), array($summary, $ip_ban_url), get_site_default_lang());
+                $ip_ban_todo = do_lang('AUTO_BAN_HACK_MESSAGE', $_ip, integer_format($hack_threshold), array($summary, $ip_ban_url), get_site_default_lang());
             }
         }
     }
@@ -834,6 +789,98 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         fatal_exit(do_lang('HACK_ATTACK'));
     }
     warn_exit(do_lang_tempcode('HACK_ATTACK_USER'));
+}
+
+/**
+ * Find if an IP is unbannable due to mapping to a known bot-DNS.
+ *
+ * @param  IP $ip The IP address
+ * @return boolean Whether it is unbannable
+ */
+function is_unbannable_bot_dns($ip)
+{
+    $dns = cms_gethostbyaddr($ip);
+    if ($dns == $ip) {
+        return false;
+    }
+
+    $resolved = cms_gethostbyname($dns);
+
+    if (($resolved === $ip) || ($resolved == $dns)) { // Verify it's not faking the DNS (either it resolves back, or there's no forward resolution on the domain name anyway)
+        $dns_lists = array(
+            get_file_base() . '/text/unbannable_dns.txt',
+            get_file_base() . '/text_custom/unbannable_dns.txt',
+        );
+
+        foreach ($dns_lists as $dns_list) {
+            if (is_file($dns_list)) {
+                $dns_list_file = file_get_contents($dns_list);
+                $dns_list_array = explode("\n", $dns_list_file);
+                foreach ($dns_list_array as $_dns_suffix) {
+                    if (trim($_dns_suffix) === '') {
+                        continue;
+                    }
+
+                    if (substr($dns, -strlen($_dns_suffix) - 1) == '.' . $_dns_suffix) {
+                        return true;
+                    }
+
+                    if (substr($dns, -strlen($_dns_suffix) - 2) == '.' . $_dns_suffix . '.') {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Find if an IP is unbannable due to being a known bot-IP.
+ *
+ * @param  IP $ip The IP address
+ * @return boolean Whether it is unbannable
+ */
+function is_unbannable_bot_ip($ip)
+{
+    $ip_lists = array(
+        get_file_base() . '/text/unbannable_ips.txt',
+        get_file_base() . '/text_custom/unbannable_ips.txt',
+    );
+
+    $ip_stack = array();
+    $ip_bits = explode((strpos($ip, '.') !== false) ? '.' : ':', $ip);
+    foreach ($ip_bits as $i => $ip_bit) {
+        $buildup = '';
+        for ($j = 0; $j <= $i; $j++) {
+            if ($buildup != '') {
+                $buildup .= (strpos($ip, '.') !== false) ? '.' : ':';
+            }
+            $buildup .= $ip_bits[$j];
+        }
+        $ip_stack[] = $buildup;
+    }
+
+    foreach ($ip_lists as $ip_list) {
+        if (is_file($ip_list)) {
+            $ip_list_file = file_get_contents($ip_list);
+            $ip_list_array = explode("\n", $ip_list_file);
+            foreach ($ip_stack as $ip_s) {
+                foreach ($ip_list_array as $_ip_list_array) {
+                    if (trim($_ip_list_array) === '') {
+                        continue;
+                    }
+
+                    if (((strpos($ip_s, '/') !== false) && (function_exists('ip_cidr_check')) && (ip_cidr_check($ip_s, $_ip_list_array))) || ($ip_s == $_ip_list_array)) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 /**

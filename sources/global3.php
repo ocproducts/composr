@@ -3608,16 +3608,24 @@ function cms_eval($code, $context, $trigger_error = true)
 }
 
 /**
+ * See if an IP address is local.
+ *
+ * @param  IP $user_ip IP address
+ * @return boolean Whether the IP address is local
+ */
+function ip_address_is_local($user_ip)
+{
+    return (($user_ip == '0000:0000:0000:0000:0000:0000:0000:0001') || ($user_ip == '::1') || ($user_ip == '127.0.0.1') || (substr($user_ip, 0, 3) == '10.') || (substr($user_ip, 0, 8) == '192.168.'));
+}
+
+/**
  * Find whether Composr is running on a local network, rather than a live-site.
  *
  * @return boolean If it is running locally
  */
 function running_locally()
 {
-    return
-        (substr(get_local_hostname(), 0, 8) == '192.168.') ||
-        (substr(get_local_hostname(), 0, 7) == '10.0.0.') ||
-        (in_array(get_local_hostname(), array('localhost')));
+    return (ip_address_is_local(get_local_hostname())) || (in_array(get_local_hostname(), array('localhost')));
 }
 
 /**

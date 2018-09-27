@@ -1,0 +1,6 @@
+googlebot.com
+google.com
+msn.com
+yahoo.com
+ask.com
+aol.com

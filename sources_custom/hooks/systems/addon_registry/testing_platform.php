@@ -572,7 +572,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/usergroup_subscriptions.php',
             '_tests/tests/unit_tests/warnings.php',
             '_tests/tests/unit_tests/welcome_emails.php',
-            '_tests/tests/unit_tests/bot_list_sync.php',
+            '_tests/tests/unit_tests/bot_detection.php',
             '_tests/tests/unit_tests/_installer.php',
             '_tests/tests/unit_tests/_installer_xml_db.php',
             '_tests/tests/unit_tests/_installer_forum_drivers.php',

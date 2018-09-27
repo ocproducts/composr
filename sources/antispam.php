@@ -95,17 +95,6 @@ function check_for_spam($username, $email, $page_level)
 }
 
 /**
- * See if an IP address is local.
- *
- * @param  IP $user_ip IP address
- * @return boolean Whether the IP address is local
- */
-function ip_address_is_local($user_ip)
-{
-    return (($user_ip == '0000:0000:0000:0000:0000:0000:0000:0001') || ($user_ip == '127.0.0.1') || (substr($user_ip, 0, 3) == '10.') || (substr($user_ip, 0, 8) == '192.168.'));
-}
-
-/**
  * Check RBLs to see if we need to block this user.
  *
  * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
