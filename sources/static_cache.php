@@ -91,7 +91,9 @@ function can_static_cache()
 
     if (isset($_GET['redirect'])) {
         if ($debugging) {
-            error_log('SC: No, redirect in URL on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC: No, redirect in URL on ' . get_self_url_easy());
+            }
         }
 
         return false;
@@ -101,7 +103,9 @@ function can_static_cache()
     if ($EXTRA_HEAD !== null) {
         if (strpos($EXTRA_HEAD->evaluate(), '<meta name="robots" content="noindex"') !== false) {
             if ($debugging) {
-                error_log('SC: No, robots blocking so obscure on ' . get_self_url_easy());
+                if (php_function_allowed('error_log')) {
+                    @error_log('SC: No, robots blocking so obscure on ' . get_self_url_easy());
+                }
             }
 
             return false; // Too obscure to waste cache space with
@@ -114,7 +118,9 @@ function can_static_cache()
             if (isset($_GET[$param])) {
                 if ($block_page_from_static_cache_if_present) {
                     if ($debugging) {
-                        error_log('SC: No, has ' . $param .' on ' . get_self_url_easy());
+                        if (php_function_allowed('error_log')) {
+                            @error_log('SC: No, has ' . $param . ' on ' . get_self_url_easy());
+                        }
                     }
 
                     return false; // Too parameterised
@@ -125,7 +131,9 @@ function can_static_cache()
 
     if ((isset($_GET['page'])) && ($_GET['page'] == '404')) {
         if ($debugging) {
-            error_log('SC: No, 404 page on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC: No, 404 page on ' . get_self_url_easy());
+            }
         }
 
         return false;
@@ -134,14 +142,18 @@ function can_static_cache()
     global $HTTP_STATUS_CODE;
     if ($HTTP_STATUS_CODE == 404) {
         if ($debugging) {
-            error_log('SC: No, 404 status on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC: No, 404 status on ' . get_self_url_easy());
+            }
         }
 
         return false;
     }
 
     if ($debugging) {
-        error_log('SC: Yes, on ' . get_self_url_easy());
+        if (php_function_allowed('error_log')) {
+            @error_log('SC: Yes, on ' . get_self_url_easy());
+        }
     }
 
     return true;

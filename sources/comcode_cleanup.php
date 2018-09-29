@@ -29,14 +29,8 @@ function comcode_page_hints_ui($name, &$post)
 {
     $hints = array();
 
-    $hooks = find_all_hooks('systems', 'comcode_page_hints'); // TODO: Change in v11
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/comcode_page_hints/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_comcode_page_hints_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
-
+    $hooks = find_all_hook_obs('systems', 'comcode_page_hints', 'Hook_comcode_page_hints_');
+    foreach ($hooks as $hook => $object) {
         $details = $object->get_details(true);
         if ($details !== null) {
             $hint_comment = '{$,page hint: ' . $hook . '}';
@@ -72,14 +66,8 @@ function comcode_page_hints_ui($name, &$post)
  */
 function comcode_page_hints_post($name, &$post)
 {
-    $hooks = find_all_hooks('systems', 'comcode_page_hints'); // TODO: Change in v11
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/comcode_page_hints/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_comcode_page_hints_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
-
+    $hooks = find_all_hook_obs('systems', 'comcode_page_hints', 'Hook_comcode_page_hints_');
+    foreach ($hooks as $hook => $object) {
         $details = $object->get_details(true);
         if ($details !== null) {
             $selected = post_param_integer('comcode_page_hint__' . $name . '__' . $hook, null);

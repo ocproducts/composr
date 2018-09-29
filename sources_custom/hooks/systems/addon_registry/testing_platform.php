@@ -170,6 +170,9 @@ We hope other users will appreciate your efforts and give you some gift points t
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/testing_platform.php',
+            '_tests/libs/mf_parse.php',
+            '_tests/libs/index.html',
+            '_tests/libs/.htaccess',
             'lang_custom/EN/phpdoc.ini',
             'sources_custom/php.php',
             'sources_custom/phpstub.php',

@@ -677,24 +677,26 @@ jQuery(function ($) {
             return;
         }
 
-        window.jQuery('#' + name).sew({
-            values: [],
-            token: '@',
-            elementFactory: autoCompleteElementFactory,
-            onFilterChanged: function (sew, token, expression) {
-                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keep()).then(function (responseXml) {
-                    var listContents = responseXml && responseXml.querySelector('result');
+        $(document).ready(function() {
+            window.jQuery('#' + name).sew({
+                values: [],
+                token: '@',
+                elementFactory: autoCompleteElementFactory,
+                onFilterChanged: function (sew, token, expression) {
+                    $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keep()).then(function (responseXml) {
+                        var listContents = responseXml && responseXml.querySelector('result');
 
-                    var newValues = [];
-                    for (var i = 0; i < listContents.childNodes.length; i++) {
-                        newValues.push({
-                            val: listContents.childNodes[i].getAttribute('value'),
-                            meta: listContents.childNodes[i].getAttribute('displayname')
-                        });
-                    }
-                    sew.setValues(newValues);
-                });
-            }
+                        var newValues = [];
+                        for (var i = 0; i < listContents.childNodes.length; i++) {
+                            newValues.push({
+                                val: listContents.childNodes[i].getAttribute('value'),
+                                meta: listContents.childNodes[i].getAttribute('displayname')
+                            });
+                        }
+                        sew.setValues(newValues);
+                    });
+                }
+            });
         });
     };
 }(window.$cms, window.$util, window.$dom));

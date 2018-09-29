@@ -83,9 +83,6 @@ class Hook_ajax_tree_choose_composr_homesite_addon
         $it_exp = ($it === null) ? array() : explode(',', $it);
 
         $list = new Tempcode();
-        if ($id === null) { // Root, needs an NA option
-            $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
-        }
 
         $matches = array();
 

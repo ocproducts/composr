@@ -974,7 +974,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
                 }
                 fatal_exit(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($directory . '/' . $codename . $suffix)));
             } else {
-                $result = do_template($fallback, $parameters, $lang);
+                $result = do_template($fallback, $parameters, $lang, $light_error, null, $suffix, $directory, $theme);
                 return $result;
             }
         } else {

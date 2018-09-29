@@ -606,6 +606,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             'mastodon',
             'diaspora',
             'bitcoin',
+            'utopian',
         );
 
         $spell_link = spellcheck_initialise();

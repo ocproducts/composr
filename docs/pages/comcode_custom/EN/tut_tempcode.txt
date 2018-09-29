@@ -1992,7 +1992,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_IN_ARRAY,PASSED_IN_ARRAY,example</td>
-			<td>Output something if something is in an array. This only works with arrays passed into templates (not something like a delimited-list). First parameter is a string to check for, second parameter is the name of an array, third parameter is what to output.</td>
+			<td>Output something if something is in an array. This only works with arrays passed into templates (not something like a delimited-list). First parameter is the name of an array, second parameter is a string to check for.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_NOT_IN_ARRAY,PASSED_IN_ARRAY,example</td>

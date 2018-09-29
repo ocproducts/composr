@@ -257,7 +257,12 @@ function metadata_get_fields($content_type, $content_id, $require_owner = true, 
                 $url_moniker = '';
                 $manually_chosen = false;
             }
-            $fields->attach(form_input_codename(do_lang_tempcode('URL_MONIKER'), do_lang_tempcode('DESCRIPTION_META_URL_MONIKER', escape_html($url_moniker)), 'meta_url_moniker', $manually_chosen ? $url_moniker : '', false, null, null, array('/')));
+            if ($url_moniker == '') {
+                $url_moniker_to_show = do_lang_tempcode('_UNSET');
+            } else {
+                $url_moniker_to_show = make_string_tempcode(escape_html($url_moniker));
+            }
+            $fields->attach(form_input_codename(do_lang_tempcode('URL_MONIKER'), do_lang_tempcode('DESCRIPTION_META_URL_MONIKER', $url_moniker_to_show), 'meta_url_moniker', $manually_chosen ? $url_moniker : '', false, null, null, array('/')));
         }
     } else {
         if ($show_header != METADATA_HEADER_FORCE) {

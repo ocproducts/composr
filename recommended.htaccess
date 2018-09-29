@@ -53,7 +53,7 @@ php_flag suhosin.upload.remove_binary off
 </IfModule>
 
 # Set Composr to handle 404 errors. Assume Composr is in the root
-<FilesMatch "(?<!\.jpg|\.jpeg|\.gif|\.png|\.ico|\.cur|\.svg)$">
+<FilesMatch "(?<!\.jpg|\.jpeg|\.gif|\.png|\.ico|\.cur|\.svg|\.css|\.js)$">
 ErrorDocument 404 /index.php?page=404
 </FilesMatch>
 
@@ -104,30 +104,6 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 # RewriteRule somerule sometarget (leave this comment here!)
 
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
-
-# Serve pre-compressed CSS/JS files if they exist and the client accepts gzip
-#  This may not work properly on Windows due to Apache bugs. The RewriteRule may redirect to contain the full file path, and also the most recent FilesMatch expression
-<IfModule mod_env.c>
-<IfModule mod_headers.c>
-<FilesMatch "\.js(\.gz)?($|\?)">
-ForceType application/javascript
-Header set Content-Encoding: gzip
-Header append Vary: Accept-Encoding
-SetEnv no-gzip
-</FilesMatch>
-<FilesMatch "\.css(\.gz)?($|\?)">
-ForceType text/css
-Header set Content-Encoding: gzip
-Header append Vary: Accept-Encoding
-SetEnv no-gzip
-</FilesMatch>
-<FilesMatch "\.(js|css)?($|\?)">
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{REQUEST_FILENAME}\.gz -s
-RewriteRule (.*/templates_cached/[^/]*/[^/]*\.(css|js)) $1.gz [QSA]
-</FilesMatch>
-</IfModule>
-</IfModule>
 
 # Rewrite .gif emoticons for browsers that support APNG (LEGACY; when possible we want to get rid of the gifs, but Edge does not yet support)
 RewriteCond %{HTTP_USER_AGENT} (Chrom|Firefox|Safari)

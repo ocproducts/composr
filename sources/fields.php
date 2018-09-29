@@ -75,7 +75,10 @@ function catalogue_file_script()
     if ($field_id_field !== null) {
         $where[$field_id_field] = $field_id;
     }
-    $ev_check = $GLOBALS['SITE_DB']->query_select_value($table, $url_field, $where, '', true); // Has to return a result, will give a fatal error if not -- i.e. it implicitly checks the schema variables given
+    $ev_check = $GLOBALS['SITE_DB']->query_select_value_if_there($table, $url_field, $where, '', true);
+    if ($ev_check === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
     if (!in_array($ev, explode("\n", preg_replace('#( |::).*$#m', '', $ev_check)))) {
         access_denied('I_ERROR'); // ID mismatch for the file requested, to give a security error
     }

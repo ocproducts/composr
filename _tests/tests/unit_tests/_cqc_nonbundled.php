@@ -71,6 +71,7 @@ class _cqc_nonbundled_test_set extends cms_test_case
                             'sources_custom/sugarcrm.php',
                             'data_custom/upload-crop/upload_crop_v1.2.php',
                             'sources_custom/hooks/systems/startup/tapatalk.php',
+                            '_tests/libs/mf_parse.php',
                         ))) {
                             continue;
                         }

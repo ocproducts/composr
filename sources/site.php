@@ -1105,28 +1105,36 @@ function save_static_caching($out, $mime_type = 'text/html')
     global $SITE_INFO;
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($debugging) {
-            error_log('SC save: No, POST request on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, POST request on ' . get_self_url_easy());
+            }
         }
 
         return;
     }
     if ((!isset($SITE_INFO['fast_spider_cache'])) || ($SITE_INFO['fast_spider_cache'] == '0')) {
         if ($debugging) {
-            error_log('SC save: No, not enabled on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, not enabled on ' . get_self_url_easy());
+            }
         }
 
         return;
     }
     if (!is_guest()) {
         if ($debugging) {
-            error_log('SC save: No, logged in on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, logged in on ' . get_self_url_easy());
+            }
         }
 
         return;
     }
     if ($GLOBALS['IS_ACTUALLY_ADMIN']) {
         if ($debugging) {
-            error_log('SC save: No, using SU to Guest on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, using SU to Guest on ' . get_self_url_easy());
+            }
         }
 
         return;
@@ -1137,12 +1145,16 @@ function save_static_caching($out, $mime_type = 'text/html')
     $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
     require_code('static_cache');
     if (($bot_type === null) && (!$supports_failover_mode) && (!$supports_guest_caching)) {
-        error_log('SC save: No, not a bot and no failover mode or guest caching enabled, on ' . get_self_url_easy());
+        if (php_function_allowed('error_log')) {
+            @error_log('SC save: No, not a bot and no failover mode or guest caching enabled, on ' . get_self_url_easy());
+        }
     }
 
     if (!can_static_cache()) {
         if ($debugging) {
-            error_log('SC save: No, static cache not available according to can_static_cache() on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, static cache not available according to can_static_cache() on ' . get_self_url_easy());
+            }
         }
 
         return;
@@ -1161,7 +1173,9 @@ function save_static_caching($out, $mime_type = 'text/html')
 
     if (strpos($static_cache, '<meta name="robots" content="noindex') !== false) {
         if ($debugging) {
-            error_log('SC save: No, page had set noindex on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, page had set noindex on ' . get_self_url_easy());
+            }
         }
 
         return;
@@ -1169,7 +1183,9 @@ function save_static_caching($out, $mime_type = 'text/html')
 
     if (!$GLOBALS['STATIC_CACHE_ENABLED']) {
         if ($debugging) {
-            error_log('SC save: No, internal signal to not cache on ' . get_self_url_easy());
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, internal signal to not cache on ' . get_self_url_easy());
+            }
         }
 
         return; // Something in the output tree decided this was not cacheable
@@ -1181,7 +1197,9 @@ function save_static_caching($out, $mime_type = 'text/html')
 
     // Log
     if ($debugging) {
-        error_log('SC save: Yes, on ' . get_self_url_easy());
+        if (php_function_allowed('error_log')) {
+            @error_log('SC save: Yes, on ' . get_self_url_easy());
+        }
     }
 
     // Remove any sessions etc

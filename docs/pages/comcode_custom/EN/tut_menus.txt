@@ -110,6 +110,7 @@ The only differences between a page-link and a match-key are:
  - Match-keys may use [tt]_WILD[/tt] as the zone or page in order to skip checking against zone/page
  - Related to the above, it makes no sense to use [tt]_SEARCH[/tt] or [tt]_SELF[/tt] as the zone/page in a match-key
  - While all specified components of a match-key enforce a match, the URL may also have additional parameters and the match-key does not need to state them -- i.e. the match-key may specify a subset of the parameters of a URL, broadening the match
+ - You can comma-separate different match-keys into one match-key
 
 An example match-key list is [tt]_WILD:cms_downloads:type=add,_WILD:cms_galleries:type=edit[/tt]. This would match URLs that were generated from the following page-links (whether these page-links points themselves actually work is irrelevant):
  - [tt]cms:cms_downloads:type=add[/tt]
@@ -125,7 +126,22 @@ It would not match URLs generated from the following page-links:
 
 In the menu editor, multiple match-keys may be entered in the "Restrict link visibility" field with commas to separate them.
 
-If you use match-keys, you must disable caching on your menu block.
+[title="3"]Major caveat: caching[/title]
+
+The menus default broad menu block caching works against the idea of menus varying by individual URL.
+
+If you use match-keys, you must either:
+ - disable caching on your menu block with [tt]cache=0[/tt]
+ - disable JavaScript highlighting with [tt]javascript_highlighting=0[/tt] (which makes the cache bucket work on a page & screen level, which is good enough if your match-keys go no deeper).
+
+For the default menu in the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template that may mean changing:
+[code="Tempcode"]
+{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type={$?,{$MOBILE},mobile,dropdown}}
+[/code]
+to:
+[code="Tempcode"]
+{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type={$?,{$MOBILE},mobile,dropdown},cache=0}
+[/code]
 
 [title="2"]Images[/title]
 

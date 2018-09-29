@@ -294,7 +294,7 @@ END;
 function ce_fix_permissions($path, $perms = 0666) // We call this function assuming we are giving world permissions
 {
     // If the file user is different to the FTP user, we need to make it world writeable
-    if ((!function_exists('posix_getuid')) || (strpos(ini_get('disable_functions'), 'posix_getuid') !== false) || (@posix_getuid() != @fileowner($GLOBALS['FILE_BASE'] . '/index.php'))) {
+    if ((!function_exists('posix_getuid')) || (strpos(ini_get('disable_functions'), 'posix_getuid') !== false) || (@posix_getuid() != @fileowner($GLOBALS['FILE_BASE'] . '/sources/global.php'))) {
         @chmod($path, $perms);
     } else { // Otherwise we do not
         if ($perms == 0666) {

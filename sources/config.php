@@ -498,7 +498,7 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
     }
 
     if ($SMART_CACHE !== null) {
-        $SMART_CACHE->append('VALUE_OPTIONS', $name); // Mark that we will need this in future, even if just null
+        $SMART_CACHE->append('VALUE_OPTIONS', $name, null); // Mark that we will need this in future, even if just null
     }
 
     global $VALUES_FULLY_LOADED;

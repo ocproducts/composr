@@ -92,6 +92,7 @@ class basic_code_formatting_test_set extends cms_test_case
         $exceptions = array(
             '_tests/tests/unit_tests/tempcode.php',
             '_tests/tests/unit_tests/xss.php',
+            '_tests/libs/mf_parse.php',
             'data_custom/sitemaps/news_sitemap.xml',
             'manifest.xml',
             'mobiquo/lib/xmlrpc.php',

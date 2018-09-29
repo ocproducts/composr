@@ -278,6 +278,16 @@ If you are getting actual errors you have probably narrowed it down and found th
 Edit the [tt].user.ini[/tt] file. This should work on virtually any PHP version. It is a newer technique than editing [tt]php.ini[/tt] or [tt].htaccess[/tt] files.
 Note that PHP does not allow all settings to be overridden.
 
+[title="3"]I have (or have had) multiple installs and I keep getting logged out[/title]
+
+You need to edit the base configuration ([tt]_config.php[/tt]) to make sure the cookie settings of the sites don't overlap. Generally you'd use the Composr [tt]cookie_path[/tt] setting to do this. For example, if you have a site [tt]http://example.com/foobar[/tt], you might set [tt]$SITE_INFO['cookie_path'] = '/foobar';[/tt].
+Additionally, if you have changed your configuration (before, or just now) then any existing cookies need to be manually deleted as they can stick around and take priority over new ones. This is because web browsers can store multiple cookies of the same name if those cookies are varying in domain and path -- and your site will be exposed to cookies of matching domains or paths via a precedence system.
+
+You can confirm the problem is due to conflicting cookies by testing your login using a new incognito/private window in your browser. This will start up a temporary fresh cookie state so that you can be sure of no conflicts. If everything works fine in there then you know the problem is indeed a cookie conflict (cookie under a different path/domain combination that is set in your web browser).
+Modern web browsers allow you to inspect and erase individual cookies via the developer tools (in Firefox it's under the developer tools Storage tab, then Cookies subsection). If you find this challenging then you can also erase all cookies from all sites if you don't mind logging back into all your other websites manually.
+
+If the problem isn't due to a cookie conflict, check the cookies really are saving by using the same developer tools in your browser mentioned above. They'll only save if you have your cookie settings correct in [tt]_config.php[/tt] and aren't somehow blocking cookies due to some kind of special browser configuration. It is also conceivable various other things could interfere with cookies.
+
 [title="3"]Why does the language pack I installed mess up the layout?[/title]
 
 Often people will accidentally translate these language strings:

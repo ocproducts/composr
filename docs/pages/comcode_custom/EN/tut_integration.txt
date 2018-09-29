@@ -93,7 +93,7 @@ To place an iframed system into Composr, the easiest way is to make a new Comcod
 
 Where the following are appropriately replaced:
  - whatever the embedded system is (e.g. 'Something web system')
- - whatever the system URL is (e.g. '{$BASE_URL}/somethingwebsystem/')
+ - whatever the system URL is (e.g. [tt]{$BASE_URL}/somethingwebsystem/[/tt])
  - whatever height you want (e.g. '900')
 
 If the embedded system has a non-predictable height, then under normal circumstances, an extra set of scroll-bars would be rendered around it when your pre-set height is exceeded. In order to avoid this without needing to choose an excessive default height, special code must be written that will regularly resize the iframe element placed in Composr so it has the same height as the actual contents of the frame -- hence eliminating the need for a vertical scrollbar. Note that if you do this, the embedded system must be on the exact same domain as Composr, or web browser security will prevent the height detection from working.
