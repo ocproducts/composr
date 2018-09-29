@@ -39,13 +39,23 @@
 			{+START,IF_NON_EMPTY,{WIDTH}{HEIGHT}}
 				responsive: false,
 			{+END}
+			{+START,IF,{$EQ,{DATASETS},1}}
+				legend: {
+					display: false,
+				},
+			{+END}
 			scales: {
 				{+START,IF_NON_EMPTY,{X_AXIS_LABEL}}
 					xAxes: [{
 						scaleLabel: {
 							display: true,
 							labelString: '{X_AXIS_LABEL;/}',
-						}
+						},
+						{+START,IF_IN_ARRAY,X_LABELS,}{$,If blank labels have been placed we can assume this is to space things out manually}
+							ticks: {
+								autoSkip: false,
+							},
+						{+END}
 					}],
 				{+END}
 				yAxes: [{

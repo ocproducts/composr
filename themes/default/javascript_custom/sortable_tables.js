@@ -254,6 +254,7 @@ var SortableTable = (function(){
     PageNumberPrefix:"table-page-number:",
     PageCountPrefix:"table-page-count:"
   };
+  window.sortable_table = table; // To allow external script access
 
   /**
    * A place to store browse table information, rather than in the table objects themselves
@@ -507,7 +508,7 @@ var SortableTable = (function(){
     tdata = this.tabledata[t.id];
 
     // If we are sorting on the same column as last time, flip the sort direction
-    if (def(tdata.lastcol) && tdata.lastcol==tdata.col && def(tdata.lastdesc)) {
+    if (!args.forcedirection && def(tdata.lastcol) && tdata.lastcol==tdata.col && def(tdata.lastdesc)) {
       tdata.desc = !tdata.lastdesc;
     }
     else {
