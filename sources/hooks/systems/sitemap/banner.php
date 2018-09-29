@@ -86,8 +86,8 @@ class Hook_sitemap_banner extends Hook_sitemap_content
             if ($consider_validation) {
                 $where_map['validated'] = 1;
             }
-            if (!has_privilege(get_member(), 'view_anyones_banner_stats')) { // TODO: Change from get_member() in v11
-                $where_map['submitter'] = get_member(); // TODO: Change from get_member() in v11
+            if (!has_privilege(get_member(), 'view_anyones_banner_stats')) {
+                $where_map['submitter'] = get_member();
             }
             $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), $where_map, 'ORDER BY name', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
