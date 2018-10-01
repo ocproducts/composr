@@ -16,6 +16,8 @@
 	var {$GET%,player_id};
 	var youtube_callback_{$GET%,player_id}=function()
 	{
+		if ((!slideshow_mode) && (typeof window.YT=='undefined')) return; {$,Should not be needed but in case the YouTube API somehow failed to load fully}
+
 		{$GET%,player_id}=new YT.Player('{$GET%,player_id}', {
 			width: '{WIDTH;/}',
 			height: '{HEIGHT;/}',
