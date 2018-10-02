@@ -349,7 +349,7 @@ class Module_cms_downloads extends Standard_crud_module
      * @param  SHORT_TEXT $author The name of the author
      * @param  LONG_TEXT $description Description for the download
      * @param  LONG_TEXT $additional_details Supplementary description for the download
-     * @param  ?AUTO_LINK $out_mode_id The ID of the download this download is out-moding (null: none)
+     * @param  ?AUTO_LINK $out_mode_id The ID of the download this download is out-modeing (null: none)
      * @param  BINARY $validated Whether the download is validated
      * @param  ?BINARY $allow_rating Whether rating is allowed (null: decide statistically, based on existing choices)
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)

@@ -603,7 +603,7 @@ class DebugFsStreamWrapper
      *
      * @param  PATH $path Path
      * @param  integer $option What to set on
-     * @param  mixed $value Vaue to set
+     * @param  mixed $value Value to set
      * @return boolean Success status
      */
     public function stream_metadata($path, $option, $value)

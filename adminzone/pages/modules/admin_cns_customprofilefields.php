@@ -200,7 +200,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  BINARY $owner_set Whether the owner may set the value of the field
      * @param  BINARY $encrypted Whether the field is encrypted
      * @param  ID_TEXT $type The type of the field
-     * @set short_text long_text short_trans long_trans integer upload picture url list tick
+     * @set short_text long_text short_trans long_trans integer upload picture URL list tick
      * @param  BINARY $required Whether the field is required to be filled in
      * @param  BINARY $show_on_join_form Whether the field is to be shown on the join form
      * @param  BINARY $show_in_posts Whether the field is shown in posts

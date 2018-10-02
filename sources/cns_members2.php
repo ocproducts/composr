@@ -177,7 +177,7 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
 /**
  * Find if a certain member may be PTd by a certain member.
  *
- * @param  MEMBER $target Member to be PT'd
+ * @param  MEMBER $target Member to be PTd
  * @param  ?MEMBER $member_id Member to PT. (null: current member)
  * @return boolean Whether the PT may be created
  */

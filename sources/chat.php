@@ -1097,7 +1097,7 @@ function chat_get_all_rooms()
  * @param  array $_rooms Rooms database rows that we'll need
  * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
  * @param  boolean $dereference Whether to dereference the returned messages (i.e. lookup the language strings)
- * @param  boolean $downloading Whether to return the messages in a downloadeable format (using the templates for log downloading)
+ * @param  boolean $downloading Whether to return the messages in a downloadable format (using the templates for log downloading)
  * @param  ?integer $start The datetime stamp to start gathering messages from (null: all)
  * @param  ?integer $finish The datetime stamp to stop gathering messages at (null: current time)
  * @param  ?integer $uptoid The lowest message ID to return (null: no special lowest number)

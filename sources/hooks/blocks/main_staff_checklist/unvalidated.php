@@ -58,7 +58,7 @@ class Hook_checklist_unvalidated
     }
 
     /**
-     * Get the number of unvalidated items.
+     * Get the number of non-validated items.
      *
      * @return array A pair: Number of major things, number of minor things
      */

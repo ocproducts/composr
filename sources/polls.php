@@ -21,7 +21,7 @@
 /**
  * Show an actual poll box.
  *
- * @param  boolean $results Whether to show results (if we've already voted, this'll be overridden)
+ * @param  boolean $results Whether to show results (if we've already voted, this will be overridden)
  * @param  array $myrow The poll row
  * @param  ID_TEXT $zone The zone our poll module is in
  * @param  boolean $include_manage_links Whether to include extra management links (e.g. editing, choosing, archive, etc)

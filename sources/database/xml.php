@@ -147,7 +147,7 @@ function _get_sql_keywords()
 class Database_Static_xml extends DatabaseDriver
 {
     /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions.
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECTed fields having to be represented in it or aggregate functions.
      *
      * @return boolean Whether it can
      */

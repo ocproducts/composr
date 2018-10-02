@@ -453,7 +453,7 @@ function cns_member_cnsid_to_ldapcn($id)
 /**
  * Get a list of usergroups on the LDAP server.
  *
- * @return array The list of user-groups (string)
+ * @return array The list of usergroups (string)
  */
 function cns_get_all_ldap_groups()
 {

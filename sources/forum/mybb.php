@@ -468,8 +468,8 @@ class Forum_driver_mybb extends Forum_driver_base
      * @param  ?URLPATH $content_url URL to the content (null: do not make spacer post)
      * @param  ?TIME $time The post time (null: use current time)
      * @param  ?IP $ip The post IP address (null: use current members IP address)
-     * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver.
-     * @param  ?BINARY $topic_validated Whether the topic is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver.
+     * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked non-validated initially). This only works with the Conversr driver.
+     * @param  ?BINARY $topic_validated Whether the topic is validated (null: unknown, find whether it needs to be marked non-validated initially). This only works with the Conversr driver.
      * @param  boolean $skip_post_checks Whether to skip post checks
      * @param  SHORT_TEXT $poster_name_if_guest The name of the poster
      * @param  ?AUTO_LINK $parent_id ID of post being replied to (null: N/A)
@@ -958,7 +958,7 @@ class Forum_driver_mybb extends Forum_driver_base
 
     /**
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
-     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
+     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readable name.
      *
      * @param  boolean $skip_member_specific Whether to avoid member-specific lookup (i.e. find via what forum theme is currently configured as the default)
      * @param  ?MEMBER $member The member to find for (null: current member)
@@ -1105,7 +1105,7 @@ class Forum_driver_mybb extends Forum_driver_base
     /**
      * Get a member ID from the given member's e-mail address.
      *
-     * @param  SHORT_TEXT $email_address The member email address
+     * @param  SHORT_TEXT $email_address The member e-mail address
      * @return ?MEMBER The member ID (null: not found)
      */
     public function get_member_from_email_address($email_address)

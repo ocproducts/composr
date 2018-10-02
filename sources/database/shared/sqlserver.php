@@ -377,7 +377,7 @@ class Database_super_sqlserver extends DatabaseDriver
     }
 
     /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+     * Encode a LIKE string comparison fragment for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
      *
      * @param  string $pattern The pattern
      * @return string The encoded pattern

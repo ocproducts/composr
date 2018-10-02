@@ -64,7 +64,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions.
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECTed fields having to be represented in it or aggregate functions.
      *
      * @return boolean Whether it can
      */
@@ -239,7 +239,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+     * Encode a LIKE string comparison fragment for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
      *
      * @param  string $pattern The pattern
      * @return string The encoded pattern

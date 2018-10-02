@@ -118,7 +118,7 @@ function get_first_default_group()
  * Get a list of the default usergroups (the usergroups a member is put in when they join).
  *
  * @param  boolean $include_primary Whether to include the default primary (at the end of the list)
- * @param  boolean $include_all_configured_default_groups The functionality does not usually consider configured default groups [unless there's just one], because this is a layer of uncertainity (the user PICKS one of these). If you want to return all configured default groups, set this parameter to true.
+ * @param  boolean $include_all_configured_default_groups The functionality does not usually consider configured default groups [unless there's just one], because this is a layer of uncertainty (the user PICKS one of these). If you want to return all configured default groups, set this parameter to true.
  * @return array The list of default IDs
  */
 function cns_get_all_default_groups($include_primary = false, $include_all_configured_default_groups = false)

@@ -174,7 +174,7 @@ function php_addslashes_twice($in)
 }
 
 /**
- * Create a unique identifer.
+ * Create a unique identifier.
  *
  * @return string Unique Identifier
  */
@@ -334,7 +334,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = array())
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed symbol.
+ * This will create a new Tempcode object that is containing a single specified symbol.
  *
  * @param  ID_TEXT $symbol The ID of the symbol to use
  * @param  array $parameters Symbol parameters
@@ -347,7 +347,7 @@ function symbol_tempcode($symbol, $parameters = array(), $escape = array())
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed directive.
+ * This will create a new Tempcode object that is containing a single specified directive.
  *
  * @param  ID_TEXT $directive The ID of the directive to use
  * @param  mixed $content The contents (Tempcode or string)
@@ -739,7 +739,7 @@ function apply_tempcode_escaping_inline($escaped, $value)
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed language string ID.
+ * This will create a new Tempcode object that is containing a single specified language string ID.
  *
  * @param  ID_TEXT $lang_string The ID of the language string to use
  * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
@@ -1595,7 +1595,7 @@ class Tempcode
     /**
      * Constructor of Tempcode.
      *
-     * @param  ?array $details Pair: Code to preexecute, Initialisation seq-parts (null: start as empty)
+     * @param  ?array $details Pair: Code to pre-execute, Initialisation seq-parts (null: start as empty)
      */
     public function __construct($details = null)
     {

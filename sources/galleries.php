@@ -986,11 +986,11 @@ function create_selection_list_gallery_content_tree($table, $it = null, $submitt
  * @param  ?AUTO_LINK $submitter Only show images/videos submitted by this member (null: no filter)
  * @param  ?ID_TEXT $gallery The gallery being at the root of our recursion (null: true root)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)
- * @param  ?ID_TEXT $title The name of the $gallery we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title
+ * @param  ?ID_TEXT $title The name of the $gallery we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the child's title
  * @param  ?integer $levels The number of recursive levels to search (null: all)
  * @param  boolean $use_compound_list Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return array A list of maps for all galleries. Each map entry containins the fields 'id' (gallery ID) and 'breadcrumbs' (path to the category, including the categories own title), and more. Or if $use_compound_list, the tree structure built with pairs containing the compound list in addition to the child branches
+ * @return array A list of maps for all galleries. Each map entry containing the fields 'id' (gallery ID) and 'breadcrumbs' (path to the category, including the categories own title), and more. Or if $use_compound_list, the tree structure built with pairs containing the compound list in addition to the child branches
  */
 function get_gallery_content_tree($table, $submitter = null, $gallery = null, $breadcrumbs = null, $title = null, $levels = null, $use_compound_list = false, $editable_filter = false)
 {

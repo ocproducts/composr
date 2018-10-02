@@ -1457,12 +1457,12 @@ function create_selection_list_catalogue_category_tree($catalogue_name, $it = nu
  * @param  ID_TEXT $catalogue_name The catalogue name
  * @param  ?AUTO_LINK $category_id The category being at the root of our recursion (null: true root category)
  * @param  string $breadcrumbs The breadcrumbs up to this point in the recursion
- * @param  ?array $category_details The category details of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs details
+ * @param  ?array $category_details The category details of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the child's details
  * @param  ?integer $levels The number of recursive levels to search (null: all)
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  boolean $use_compound_list Whether to make the list elements store comma-separated child lists instead of IDs
  * @param  boolean $do_stats Whether to collect entry counts with our tree information
- * @return array A list of maps for all subcategories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title), and 'entries_count' (the number of entries in the category).
+ * @return array A list of maps for all subcategories. Each map entry containing the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title), and 'entries_count' (the number of entries in the category).
  */
 function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs = '', $category_details = null, $levels = null, $addable_filter = false, $use_compound_list = false, $do_stats = false)
 {
@@ -1578,10 +1578,10 @@ function create_selection_list_catalogue_entries_tree($catalogue_name, $it = nul
  * @param  ?AUTO_LINK $submitter Only show entries submitted by this member (null: no filter)
  * @param  ?AUTO_LINK $category_id The category being at the root of our recursion (null: true root)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)
- * @param  ?ID_TEXT $title The name of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title
+ * @param  ?ID_TEXT $title The name of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the child's title
  * @param  ?integer $levels The number of recursive levels to search (null: all)
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @return array A list of maps for all categories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title), and more.
+ * @return array A list of maps for all categories. Each map entry containing the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title), and more.
  */
 function get_catalogue_entries_tree($catalogue_name, $submitter = null, $category_id = null, $breadcrumbs = null, $title = null, $levels = null, $editable_filter = false)
 {

@@ -877,8 +877,8 @@ Define: clean_csv_file();
 We should ideally be able to handle any of these scenarios, using a clean API:
 1) User accidentally uploads CSV with tab delimiter (TSV) not proper CSV
 2) User accidentally uploads CSV with semicolon delimiter not proper CSV
-3) User uploads a spreadsheet with no header row in a situation where we don't strictly need one (newsletter raw email list import comes to mind)
-4) User uploads a CSV with old-Mac-style line endings (this should not happen in 2016 but some ageing codebases export bizarre stuff; the PHP enable auto_detect_line_endings setting may help)
+3) User uploads a spreadsheet with no header row in a situation where we don't strictly need one (newsletter raw e-mail list import comes to mind)
+4) User uploads a CSV with old-Mac-style line endings (this should not happen in 2016 but some aging codebases export bizarre stuff; the PHP enable auto_detect_line_endings setting may help)
 5) User uploads a spreadsheet with a different character set, esp UTF-16 or ANSI (to solve this we'll probably need to have a character-set selector box and also support BOM markers)
 
 Define some automated tests

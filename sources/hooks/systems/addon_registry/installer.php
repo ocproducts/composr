@@ -364,7 +364,7 @@ class Hook_addon_registry_installer
     }
 
     /**
-     * Make the UI for an installer tick option.
+     * Make the UI for an installer tick (check) option.
      *
      * @param  Tempcode $nice_name The human readable name for the option
      * @param  Tempcode $description A description of the option
@@ -394,7 +394,7 @@ class Hook_addon_registry_installer
      * @param  Tempcode $description A description of the option
      * @param  ID_TEXT $name The name of the option
      * @param  string $value The default/current value of the option
-     * @param  boolean $hidden Whether the options value should be kept star'red out (e.g. it is a password)
+     * @param  boolean $hidden Whether the options value should be kept starred out (e.g. it is a password)
      * @param  boolean $required Whether the option is required
      * @return Tempcode The option
      */

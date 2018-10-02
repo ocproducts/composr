@@ -326,7 +326,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     }
 
     /**
-     * Fix club's permissons (in case e.g. forum was recreated).
+     * Fix club's permissions (in case e.g. forum was recreated).
      *
      * @param  AUTO_LINK $id Club (usergroup) ID
      * @param  AUTO_LINK $forum_id Forum ID

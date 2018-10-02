@@ -270,7 +270,7 @@ function db_string_not_equal_to($attribute, $compare)
 }
 
 /**
- * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+ * Encode a LIKE string comparison fragment for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
  *
  * @param  string $pattern The pattern
  * @return string The encoded pattern
@@ -308,7 +308,7 @@ function db_escape_string($string)
 
 /**
  * Call a database function that may be different on different database drivers.
- * We are using MySQL syntax as a de-facto standard. SQL does not standardise this stuff well.
+ * We are using MySQL syntax as a de facto standard. SQL does not standardise this stuff well.
  * Basic arithmetic and inequality operators are assumed supported without needing a function.
  *
  * @param  string $function Function name
@@ -643,7 +643,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions.
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECTed fields having to be represented in it or aggregate functions.
      *
      * @return boolean Whether it can
      */
@@ -830,7 +830,7 @@ class DatabaseDriver
     }
 
     /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+     * Encode a LIKE string comparison fragment for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
      *
      * @param  string $pattern The pattern
      * @return string The encoded pattern
@@ -915,7 +915,7 @@ class DatabaseDriver
 
     /**
      * Call a database function that may be different on different database drivers.
-     * We are using MySQL syntax as a de-facto standard. SQL does not standardise this stuff well.
+     * We are using MySQL syntax as a de facto standard. SQL does not standardise this stuff well.
      * Basic arithmetic and inequality operators are assumed supported without needing a function.
      *
      * Note that AVG may return an integer or float, depending on whether the DB engine auto-converts round numbers to integers. MySQL seems to.
@@ -1247,10 +1247,10 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  string $selected_value The field to select
-     * @param  array $where_map The WHERE map [will all be AND'd together]
+     * @param  array $where_map The WHERE map [will all be ANDed together]
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return mixed The first value of the first row returned
      */
     public function query_select_value($table, $selected_value, $where_map = array(), $end = '', $fail_ok = false, $lang_fields = null)
@@ -1286,10 +1286,10 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  string $select The field to select
-     * @param  array $where_map The WHERE map [will all be AND'd together]
+     * @param  array $where_map The WHERE map [will all be ANDed together]
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
     public function query_select_value_if_there($table, $select, $where_map = array(), $end = '', $fail_ok = false, $lang_fields = null)
@@ -1307,7 +1307,7 @@ class DatabaseConnector
      * @param  string $query The complete SQL query
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
     public function query_value_if_there($query, $fail_ok = false, $skip_safety_check = false, $lang_fields = null)
@@ -1345,12 +1345,12 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  array $select The SELECT map
-     * @param  array $where_map The WHERE map [will all be AND'd together]
+     * @param  array $where_map The WHERE map [will all be ANDed together]
      * @param  string $end Something to tack onto the end of the SQL query
      * @param  ?integer $max The maximum number of rows to select (null: get all)
      * @param  integer $start The starting row to select
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return array The results (empty array: empty result set)
      */
     public function query_select($table, $select = array('*'), $where_map = array(), $end = '', $max = null, $start = 0, $fail_ok = false, $lang_fields = null)
@@ -1370,9 +1370,9 @@ class DatabaseConnector
      * @param  string $table The table name
      * @param  string $full_table The table name, with prefix too
      * @param  array $select The SELECT map
-     * @param  array $where_map The WHERE map [will all be AND'd together]
+     * @param  array $where_map The WHERE map [will all be ANDed together]
      * @param  string $end Something to tack onto the end of the SQL query
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      */
     protected function _automatic_lang_fields(&$table, &$full_table, &$select, &$where_map, &$end, &$lang_fields)
     {
@@ -1456,7 +1456,7 @@ class DatabaseConnector
      * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
@@ -1495,7 +1495,7 @@ class DatabaseConnector
      * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
@@ -1550,7 +1550,7 @@ class DatabaseConnector
      * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get an insert ID
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
+     * @param  ?array $lang_fields Extra language fields to join in for cache pre-filling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
@@ -1985,7 +1985,7 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  array $update_map The UPDATE map
-     * @param  array $where_map The WHERE map [will all be AND'd together]
+     * @param  array $where_map The WHERE map [will all be ANDed together]
      * @param  string $end Something to tack onto the end of the statement
      * @param  ?integer $max The maximum number of rows to update (null: no limit)
      * @param  integer $start The starting row to update
@@ -2060,7 +2060,7 @@ class DatabaseConnector
      * Deletes rows from the specified table, that match the specified conditions (if any). It may be limited to a row range (it is likely, only a maximum, of 1, will be used, if any kind of range at all).
      *
      * @param  string $table The table name
-     * @param  array $where_map The WHERE map [will all be AND'd together]
+     * @param  array $where_map The WHERE map [will all be ANDed together]
      * @param  string $end Something to tack onto the end of the statement
      * @param  ?integer $max The maximum number of rows to delete (null: no limit)
      * @param  integer $start The starting row to delete
@@ -2204,7 +2204,7 @@ class DatabaseConnector
     }
 
     /**
-     * Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability.
+     * Change the type of a DB field in a table. Note: this function does not support ascension/descension of translatability.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name

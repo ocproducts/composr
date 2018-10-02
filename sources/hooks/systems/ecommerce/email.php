@@ -119,7 +119,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Add e-mail addresss from what was chosen in an interface.
+     * Add e-mail address from what was chosen in an interface.
      */
     protected function _add_config_forw()
     {
@@ -144,7 +144,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Update e-mail addresss from what was chosen in an interface; update or delete each price/product.
+     * Update e-mail address from what was chosen in an interface; update or delete each price/product.
      */
     protected function _edit_config_forw()
     {

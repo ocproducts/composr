@@ -148,7 +148,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
      * @range  1 5
      * @param  boolean $no_cc Whether to NOT CC to the CC address
      * @param  array $attachments An list of attachments (each attachment being a map, path=>filename)
-     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose e-mail addresses for this particular notification type (i.e. if it's a direct contact)
      * @return boolean New $no_cc setting
      */
     public function dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from)

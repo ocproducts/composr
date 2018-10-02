@@ -225,7 +225,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
  * @param  ?mixed $it The selected news category. Array or AUTO_LINK (null: personal)
  * @param  boolean $show_all_personal_categories Whether to add all personal categories into the list (for things like the adminzone, where all categories must be shown, regardless of permissions)
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
- * @param  boolean $only_existing Whether to limit to only existing cats (otherwise we dynamically add unstarted blogs)
+ * @param  boolean $only_existing Whether to limit to only existing cats (otherwise we dynamically add non-started blogs)
  * @param  ?boolean $only_blogs Whether to limit to only show blog categories (null: don't care, true: blogs only, false: no blogs)
  * @param  boolean $prefer_not_blog_selected Whether to prefer to choose a non-blog category as the default
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)

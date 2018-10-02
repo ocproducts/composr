@@ -394,7 +394,7 @@ class Hook_import_ipb2
     }
 
     /**
-     * Decode an IPB post to be plain-text (ala comcode).
+     * Decode an IPB post to be plain-text (a la Comcode).
      *
      * @param  LONG_TEXT $post IPB post
      * @return LONG_TEXT The cleaned post

@@ -805,7 +805,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
     /**
      * Standard CRUD-module entry function to get rows for selection from.
      *
-     * @param  boolean $recache Whether to force a recache
+     * @param  boolean $recache Whether to force a re-cache
      * @param  ?ID_TEXT $orderer Order to use (null: automatic)
      * @param  ?array $where Extra where clauses
      * @param  boolean $force_site_db Whether to always access using the site database

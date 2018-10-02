@@ -407,7 +407,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
 }
 
 /**
- * An image has been passed through by POST, either as a file (a new upload), a url, a reference to an existing theme image, or as a filedump reference.
+ * An image has been passed through by POST, either as a file (a new upload), a URL, a reference to an existing theme image, or as a filedump reference.
  * Used with form_input_upload_multi_source.
  * Get the image URL from the POST data.
  *

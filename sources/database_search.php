@@ -942,12 +942,12 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
  * @param  integer $start Maximum results to return in total
  * @param  boolean $only_titles Whether to only search titles (as opposed to both titles and content)
  * @param  ID_TEXT $table The table name
- * @param  array $fields The translateable fields to search over (or an ! which is skipped). The first of these must be the title field or an '!'; if it is '!' then the title field will be the first raw-field
+ * @param  array $fields The translatable fields to search over (or an ! which is skipped). The first of these must be the title field or an '!'; if it is '!' then the title field will be the first raw-field
  * @param  string $where_clause The WHERE clause
  * @param  string $content_where The WHERE clause that applies specifically for content (this will be duplicated to check against multiple fields). ? refers to the yet-unknown field name
  * @param  ID_TEXT $order What to order by
  * @param  string $select What to select
- * @param  array $raw_fields The non-translateable fields to search over
+ * @param  array $raw_fields The non-translatable fields to search over
  * @param  ?string $permissions_module The permission module to check category access for (null: none)
  * @param  ?string $permissions_field The field that specifies the permissions ID to check category access for (null: none)
  * @param  boolean $permissions_field_is_string Whether the permissions field is a string

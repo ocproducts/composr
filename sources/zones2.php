@@ -499,7 +499,7 @@ function uninstall_module($zone, $module)
 }
 
 /**
- * Get an array of all the blocks that are currently installed (miniblocks not included).
+ * Get an array of all the blocks that are currently installed (mini-blocks not included).
  *
  * @return array Map of all blocks (name->[sources/sources_custom])
  */

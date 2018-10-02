@@ -110,7 +110,7 @@ function _a_tag_link_fixup($matches)
 }
 
 /**
- * Used by semihtml_to_comcode to fix CSS colours aways from RGB notation. preg_replace_callback callback.
+ * Used by semihtml_to_comcode to fix CSS colours away from RGB notation. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -461,7 +461,7 @@ function wysiwygify_media_set($semihtml)
 }
 
 /**
- * Convert Semi-HTML into comcode. Cleanup where possible.
+ * Convert Semi-HTML into Comcode. Cleanup where possible.
  *
  * @param  LONG_TEXT $semihtml The Semi-HTML to be converted
  * @param  boolean $force Whether to force full conversion regardless of settings
@@ -1179,7 +1179,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
 
 /**
  * Do some regular expression matches, locked correctly to single HTML elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.
- * It is case-sensitive for performance reasons. But everyone uses lower-case tags for a long time now. Also assumes no tabs within tag definition.
+ * It is case-sensitive for performance reasons. But everyone uses lower case tags for a long time now. Also assumes no tabs within tag definition.
  *
  * @param  string $element The element name to replace over
  * @param  array $array A list of pairs: Pattern, Replacement

@@ -23,7 +23,7 @@ Notes:
  - We cannot/do-not fully recurse the Sitemap with arbitrary permissions or as an arbitrary user.
    We do collect permission data, but this is collected for the Permissions Tree Editor, not for node availability meta processing.
    Node availability (of view access) is checked automatically as a part of the sitemap crawl.
-   This isn't for no good reason - the Sitemap is intrinsicly variable on a user-to-user basis, it is not necessarily shared.
+   This isn't for no good reason - the Sitemap is intrinsically variable on a user-to-user basis, it is not necessarily shared.
  - When get_node is called, it is assumed that the node object really can handle the requested page-link.
    If it cannot, it is allowed to crash out in any way.
    This is why you should know what you are calling, or check with handles_page_link.

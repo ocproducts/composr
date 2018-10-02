@@ -296,7 +296,7 @@
      Originally...
 
      Script: modalwindow.js
-     ModalWindow - Simple javascript popup overlay to replace builtin alert, prompt and confirm, and more.
+     ModalWindow - Simple javascript pop-up overlay to replace builtin alert, prompt and confirm, and more.
 
      License:
      PHP-style license.

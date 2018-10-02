@@ -54,7 +54,7 @@ function incoming_bounced_email_script()
  * Add to the newsletter, in the simplest way.
  * No authorisation support here, checks it works only for non-subscribed or non-confirmed members.
  *
- * @param  EMAIL $email The email address of the subscriber
+ * @param  EMAIL $email The e-mail address of the subscriber
  * @param  ?LANGUAGE_NAME $language The language (null: users)
  * @param  boolean $get_confirm_mail Whether to require a confirmation mail
  * @param  ?AUTO_LINK $newsletter_id The newsletter to join (null: the first)
@@ -168,7 +168,7 @@ function newsletter_get_category_choices($cutoff_time, $lang)
  * Generate Comcode for a what's new newsletter.
  *
  * @param  LONG_TEXT $chosen_categories Category selection
- * @param  BINARY $in_full Whether to show artices in full (as opposed to summaries)
+ * @param  BINARY $in_full Whether to show articles in full (as opposed to summaries)
  * @param  LANGUAGE_NAME $lang Language to send in
  * @param  TIME $cutoff_time When to cut off content from
  * @return ?string The Comcode (null: no content)
@@ -374,12 +374,12 @@ function newsletter_wrap($_message, $lang, $subject = '')
  * @param  LANGUAGE_NAME $language The language
  * @param  array $send_details A map describing what newsletters the newsletter is being sent to
  * @param  BINARY $html_only Whether to only send in HTML format
- * @param  EMAIL $from_email Override the email address the mail is sent from (blank: staff address)
+ * @param  EMAIL $from_email Override the e-mail address the mail is sent from (blank: staff address)
  * @param  string $from_name Override the name the mail is sent from (blank: site name)
  * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
  * @range  1 5
  * @param  string $csv_data CSV data of extra subscribers in JSON format (blank: none). This is in the same Composr newsletter CSV format that we export elsewhere.
- * @param  ID_TEXT $mail_template The template used to show the email
+ * @param  ID_TEXT $mail_template The template used to show the e-mail
  * @return Tempcode UI
  */
 function send_newsletter($message, $subject, $language, $send_details, $html_only = 0, $from_email = '', $from_name = '', $priority = 3, $csv_data = '', $mail_template = 'MAIL')
@@ -613,7 +613,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
  * @param  SHORT_TEXT $forename Subscribers forename (blank: unknown)
  * @param  SHORT_TEXT $surname Subscribers surname (blank: unknown)
  * @param  SHORT_TEXT $name Subscribers name (or username)
- * @param  EMAIL $email_address Subscribers email address
+ * @param  EMAIL $email_address Subscribers e-mail address
  * @param  ID_TEXT $sendid Specially encoded ID of subscriber (begins either 'n' for newsletter subscriber, or 'm' for member - then has normal subscriber/member ID following)
  * @param  SHORT_TEXT $hash Double encoded password hash of subscriber (blank: can not unsubscribe by URL)
  * @return string The new newsletter message
@@ -750,7 +750,7 @@ function newsletter_preview($message, $subject, $html_only, $forename = null, $s
 /**
  * Work out newsletter block list.
  *
- * @return array List of blocked email addresses (actually a map)
+ * @return array List of blocked e-mail addresses (actually a map)
  */
 function newsletter_block_list()
 {
@@ -1004,7 +1004,7 @@ function delete_periodic_newsletter($id)
 /**
  * Add a newsletter subscriber to the system (not to any particular newsletters though).
  *
- * @param  EMAIL $email The email address of the subscriber
+ * @param  EMAIL $email The e-mail address of the subscriber
  * @param  TIME $join_time The join time
  * @param  integer $code_confirm Confirm code
  * @param  ID_TEXT $password Newsletter password (hashed)
@@ -1042,7 +1042,7 @@ function add_newsletter_subscriber($email, $join_time, $code_confirm, $password,
  * Edit a newsletter subscriber.
  *
  * @param  AUTO_LINK $id Subscriber ID
- * @param  ?EMAIL $email The email address of the subscriber (null: don't change)
+ * @param  ?EMAIL $email The e-mail address of the subscriber (null: don't change)
  * @param  ?TIME $join_time The join time (null: don't change)
  * @param  ?integer $code_confirm Confirm code (null: don't change)
  * @param  ?ID_TEXT $password Newsletter password (hashed) (null: don't change)

@@ -185,7 +185,7 @@ function file_size_to_tar_block_size($size)
 }
 
 /**
- * Add a folder to the TAR archive, however only store files modifed after a threshold time. It is incremental (incremental backup), by comparing against a threshold before adding a file (threshold being time of last backup).
+ * Add a folder to the TAR archive, however only store files modified after a threshold time. It is incremental (incremental backup), by comparing against a threshold before adding a file (threshold being time of last backup).
  *
  * @param  array $resource The TAR file handle
  * @param  ?resource $log_file The logfile to write to (null: no logging)

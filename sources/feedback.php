@@ -98,7 +98,7 @@ function find_overridden_comment_forum($feedback_code, $category_id = null)
  *
  * @param  ID_TEXT $content_type Content type
  * @param  ID_TEXT $content_id Content ID
- * @return array A tuple: Content title (null means unknown), Submitter (null means unknown), URL (for use within current browser session), URL (for use in emails / sharing), Content meta aware info array
+ * @return array A tuple: Content title (null means unknown), Submitter (null means unknown), URL (for use within current browser session), URL (for use in e-mails / sharing), Content meta aware info array
  */
 function get_details_behind_feedback_code($content_type, $content_id)
 {
@@ -689,7 +689,7 @@ function extract_topic_identifier($full_text)
  * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)
  * @param  ?string $forum The name of the forum to use (null: default comment forum)
  * @param  boolean $do_captcha Whether to require a captcha
- * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver (hence is the last parameter).
+ * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked non-validated initially). This only works with the Conversr driver (hence is the last parameter).
  * @param  boolean $explicit_allow Whether to force allowance
  * @param  boolean $show_success_message Whether to show a success message
  * @param  boolean $private Whether posts made should not be shared

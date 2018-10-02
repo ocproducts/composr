@@ -474,9 +474,9 @@ function placeholder_javascript_code()
 }
 
 /**
- * Get image url.
+ * Get image URL.
  *
- * @return string Image url
+ * @return string Image URL
  */
 function placeholder_image_url()
 {
@@ -947,8 +947,8 @@ function is_plain_text_template($temp_name)
 /**
  * Checks if the template is a full screen template.
  *
- * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-null)
- * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-null)
+ * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must itself be non-null)
+ * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must itself be non-null)
  * @return boolean Whether it is
  */
 function is_full_screen_template($temp_name = null, $tempcode = null)

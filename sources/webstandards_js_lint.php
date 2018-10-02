@@ -639,7 +639,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         $type_b = js_check_expression($e[2][1]);
         /*if (($type_a != 'Null') && ($type_b != 'Null'))
         {
-            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in ternary operator');    We are not so type-strict in JS
+            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symmetry error in ternary operator');    We are not so type-strict in JS
             //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2][1]);
         }*/
         return $type_a;

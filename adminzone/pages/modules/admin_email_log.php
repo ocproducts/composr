@@ -237,7 +237,7 @@ class Module_admin_email_log
     }
 
     /**
-     * Get a map table for an email.
+     * Get a map table for an e-mail.
      *
      * @return Tempcode The result of execution
      */
@@ -395,7 +395,7 @@ class Module_admin_email_log
     }
 
     /**
-     * Get a form to edit/send/delete an email.
+     * Get a form to edit/send/delete an e-mail.
      *
      * @return Tempcode The result of execution
      */
@@ -478,7 +478,7 @@ class Module_admin_email_log
     }
 
     /**
-     * Actualiser to edit/send/delete an email.
+     * Actualiser to edit/send/delete an e-mail.
      *
      * @return Tempcode The result of execution
      */

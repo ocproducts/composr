@@ -251,7 +251,7 @@ class Module_cms_polls extends Standard_crud_module
      * @param  SHORT_TEXT $a5 The fifth answer
      * @param  SHORT_TEXT $a6 The sixth answer
      * @param  SHORT_TEXT $a7 The seventh answer
-     * @param  SHORT_TEXT $a8 The eigth answer
+     * @param  SHORT_TEXT $a8 The eighth answer
      * @param  SHORT_TEXT $a9 The ninth answer
      * @param  SHORT_TEXT $a10 The tenth answer
      * @param  boolean $current Whether the poll is/will-be currently active

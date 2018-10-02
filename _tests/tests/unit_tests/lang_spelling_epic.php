@@ -2935,6 +2935,23 @@ class lang_spelling_epic_test_set extends cms_test_case
             'urlsearchparams',
             'targetable',
             'yandex',
+            'infinitum',
+            'algorithmically',
+            'overcomplex',
+            'specced',
+            'arity',
+            'translatability',
+            'directioning',
+            'evaluable',
+            'updatable',
+            'choosable',
+            'writability',
+            'disconsidering',
+            'actualise',
+            'unescape',
+            'unescaping',
+            'storable',
+            'determinative',
         );
 
         $spell_link = spellcheck_initialise('en_GB');

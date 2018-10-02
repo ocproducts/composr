@@ -557,7 +557,7 @@ function create_selection_list_event_types($it = null, $updated_since = null)
 }
 
 /**
- * Regenerate all the calendar jobs for reminders for next occurance of an event (because the event was added or edited).
+ * Regenerate all the calendar jobs for reminders for next recurrence of an event (because the event was added or edited).
  *
  * @param  AUTO_LINK $id The ID of the event
  * @param  boolean $force Force evaluation even if it's in the past. Only valid for code events
@@ -1177,7 +1177,7 @@ function normalise_time_array($arr, $zone)
  * @set day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards
  * @param  ?integer $hour Hour (null: start hour of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)
  * @param  ?integer $minute Minute (null: start minute of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)
- * @param  boolean $show_in_users_timezone Whether the time will be converted to the $timezone instead of UTC *later*. If not then the "UTC time" returned is actually guaged for $timezone, as that's how it was opted to be displayed.
+ * @param  boolean $show_in_users_timezone Whether the time will be converted to the $timezone instead of UTC *later*. If not then the "UTC time" returned is actually gauged for $timezone, as that's how it was opted to be displayed.
  * @return TIME Timestamp
  */
 function cal_get_start_utctime_for_event($timezone, $year, $month, $day, $monthly_spec_type, $hour, $minute, $show_in_users_timezone)
@@ -1214,7 +1214,7 @@ function cal_get_start_utctime_for_event($timezone, $year, $month, $day, $monthl
  * @set day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards
  * @param  ?integer $hour Hour (null: end hour of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)
  * @param  ?integer $minute Minute (null: end minute of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)
- * @param  boolean $show_in_users_timezone Whether the time will be converted to the $timezone instead of UTC *later*. If not then the "UTC time" returned is actually guaged for $timezone, as that's how it was opted to be displayed.
+ * @param  boolean $show_in_users_timezone Whether the time will be converted to the $timezone instead of UTC *later*. If not then the "UTC time" returned is actually gauged for $timezone, as that's how it was opted to be displayed.
  * @return TIME Timestamp
  */
 function cal_get_end_utctime_for_event($timezone, $year, $month, $day, $monthly_spec_type, $hour, $minute, $show_in_users_timezone)

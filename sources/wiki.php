@@ -19,7 +19,7 @@
  */
 
 /*
-The concept of a chain is crucial to proper understanding of the Wiki+ system. Pages in Wiki+ are not tied to any paticular hierarchical location, but rather may be found via a "chain" of links. For usability, a "bread crumb" trail is shown as you move through Wiki+, and this should reflect the path chosen to get to the current page - thus a chain is passed through the URLs to encode this.
+The concept of a chain is crucial to proper understanding of the Wiki+ system. Pages in Wiki+ are not tied to any particular hierarchical location, but rather may be found via a "chain" of links. For usability, a "bread crumb" trail is shown as you move through Wiki+, and this should reflect the path chosen to get to the current page - thus a chain is passed through the URLs to encode this.
 */
 
 /**
@@ -885,16 +885,16 @@ function _create_selection_list_wiki_page_tree(&$wiki_seen, $select, $id, $bread
 }
 
 /**
- * Get a list of maps containing all the subpages, and path information, of the specified page - and those beneath it, recursively.
+ * Get a list of maps containing all the sub-pages, and path information, of the specified page - and those beneath it, recursively.
  *
  * @param  array $wiki_seen A list of pages we've already seen (we don't repeat them in multiple list positions)
  * @param  ?AUTO_LINK $page_id The page being at the root of our recursion (null: true root page)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)
- * @param  ?array $page_details The details of the $page_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title
+ * @param  ?array $page_details The details of the $page_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the child's title
  * @param  boolean $do_stats Whether to collect post counts with our breadcrumbs information
  * @param  boolean $use_compound_list Whether to make a compound list (a pair of a comma-separated list of children, and the child array)
  * @param  ?integer $levels The number of recursive levels to search (null: all)
- * @return array A list of maps for all subcategories. Each map entry containins the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title). There is also an additional 'downloadcount' entry if stats were requested
+ * @return array A list of maps for all subcategories. Each map entry containing the fields 'id' (category ID) and 'breadcrumbs' (path to the category, including the categories own title). There is also an additional 'downloadcount' entry if stats were requested
  */
 function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $page_details = null, $do_stats = false, $use_compound_list = false, $levels = null)
 {

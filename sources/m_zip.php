@@ -279,7 +279,7 @@ function init__m_zip()
          * @param  array $zip_entry Directory entry resource returned by m_zip_read()
          * @param  string $mode The file access mode
          * @set rb
-         * @return boolean Whether the operation was succesful
+         * @return boolean Whether the operation was successful
          */
         function zip_entry_open($zip, $zip_entry, $mode = 'rb')
         {
@@ -297,7 +297,7 @@ function init__m_zip()
          * Closes a directory entry previously opened for reading.
          *
          * @param  array $zip_entry Directory entry resource returned by m_zip_read()
-         * @return boolean Whether the operation was succesful
+         * @return boolean Whether the operation was successful
          */
         function zip_entry_close($zip_entry)
         {

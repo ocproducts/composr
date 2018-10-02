@@ -19,7 +19,7 @@
 class Hook_comcode_encrypt
 {
     /**
-     * Run function for comcode hooks. They find the custom-comcode-row-like attributes of the tag.
+     * Run function for Comcode hooks. They find the custom-comcode-row-like attributes of the tag.
      *
      * @return ?array Fake Custom Comcode row (null: disabled)
      */

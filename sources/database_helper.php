@@ -718,7 +718,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
 }
 
 /**
- * Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability.
+ * Change the type of a DB field in a table. Note: this function does not support ascension/descension of translatability.
  *
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $table_name The table name
@@ -762,7 +762,7 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
 }
 
 /**
- * Get the SQL to change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability.
+ * Get the SQL to change the type of a DB field in a table. Note: this function does not support ascension/descension of translatability.
  *
  * @param  object $this_ref Link to the real database object
  * @param  ID_TEXT $table_name The table name

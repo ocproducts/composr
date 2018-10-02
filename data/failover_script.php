@@ -245,7 +245,7 @@ function is_failing($url)
 }
 
 /**
- * Send a failover email.
+ * Send a failover e-mail.
  *
  * @param  string $subject Subject
  * @param  string $message Body

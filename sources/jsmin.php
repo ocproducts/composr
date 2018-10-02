@@ -88,7 +88,7 @@ class JSMin
     /**
      * Constructor function.
      *
-     * @param    string $input Javascript to minimise
+     * @param    string $input JavaScript to minimise
      */
     function __construct($input)
     {
@@ -244,7 +244,7 @@ class JSMin
     /**
      * Do minification process.
      *
-     * @return    string        Minified Javascript
+     * @return    string        Minified JavaScript
      */
     function min()
     {

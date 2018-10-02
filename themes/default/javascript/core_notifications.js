@@ -431,7 +431,7 @@
             var isSupported = false;
             /*
              * Use try {} catch() {} because the check for IE may throws an exception
-             * if the code is run on browser that is not Safar/Chrome/IE or
+             * if the code is run on browser that is not Safari/Chrome/IE or
              * Firefox with html5notifications plugin.
              *
              * Also, we canNOT detect if msIsSiteMode method exists, as it is

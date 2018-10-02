@@ -56,7 +56,7 @@ function init__type_sanitisation()
  * Find whether the specified address is a well-formed e-mail address or not.
  *
  * @param  string $string The string to test (Note: This is typed string, not e-mail, because it has to function on failure + we could make an infinite loop)
- * @return boolean Whether the string is an email address or not
+ * @return boolean Whether the string is an e-mail address or not
  */
 function is_email_address($string)
 {

@@ -266,7 +266,7 @@ function render_activity($row, $use_inside_cms = true)
  *
  * @param  string $page_link The page-link
  * @param  boolean $external Whether the link is for putting out externally to the site (so no keep_* parameters)
- * @return array Tempcode url
+ * @return array Tempcode URL
  */
 function page_link_to_tempcode($page_link, $external = false)
 {

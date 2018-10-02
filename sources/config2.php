@@ -19,7 +19,7 @@
  */
 
 /**
- * An option has dissappeared somehow - find it via searching our code-base for it's install code. It doesn't get returned, just loaded up. This function will produce a fatal error if we cannot find it.
+ * An option has disappeared somehow - find it via searching our code-base for it's install code. It doesn't get returned, just loaded up. This function will produce a fatal error if we cannot find it.
  *
  * @return boolean Whether to run in multi-lang mode
  *

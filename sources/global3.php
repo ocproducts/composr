@@ -900,7 +900,7 @@ function set_http_status_code($code)
  * @param  string $directory Subdirectory type to look in
  * @set templates css
  * @param  boolean $non_custom_only Whether to only search in the default templates
- * @param  boolean $fallback_other_themes Allow fallback to other themes, in case it is defined only in a specific theme we would not noprmally look in
+ * @param  boolean $fallback_other_themes Allow fallback to other themes, in case it is defined only in a specific theme we would not normally look in
  * @return ?array List of parameters needed for the _do_template function to be able to load the template (null: could not find the template)
  */
 function find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only = false, $fallback_other_themes = true)
@@ -1127,7 +1127,7 @@ function cms_mb_ucwords($in)
 }
 
 /**
- * Make a string lowercase, with utf-8 awareness where possible/required.
+ * Make a string lower case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject
  * @return string Result
@@ -1146,7 +1146,7 @@ function cms_mb_strtolower($in)
 }
 
 /**
- * Make a string uppercase, with utf-8 awareness where possible/required.
+ * Make a string upper case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject
  * @return string Result
@@ -2358,7 +2358,7 @@ function compare_ip_address_ip6($wild, $full_parts)
  *
  * @param  string $ip The IP address to check for banning
  * @param  boolean $force_db Force check via database
- * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
+ * @param  boolean $handle_uncertainties Handle uncertainties (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
  */
 function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
@@ -2497,7 +2497,7 @@ function php_addslashes($in)
 }
 
 /**
- * Remove any duplication inside the list of rows (each row being a map). Duplication is defined by rows with correspinding IDs.
+ * Remove any duplication inside the list of rows (each row being a map). Duplication is defined by rows with corresponding IDs.
  *
  * @param  array $rows The rows to remove duplication of
  * @param  string $id_field The ID field
@@ -3345,7 +3345,7 @@ function propagate_filtercode_page_link()
 }
 
 /**
- * Make some text fractionably editable (i.e. inline editable).
+ * Make some text fractionally editable (i.e. inline editable).
  *
  * @param  ID_TEXT $content_type Content type
  * @param  mixed $id Content ID

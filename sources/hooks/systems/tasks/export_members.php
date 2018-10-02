@@ -213,7 +213,7 @@ class Hook_task_export_members
     }
 
     /**
-     * Get a CSV-outputtable row for a member.
+     * Get a CSV-outputable row for a member.
      *
      * @param  array $m Member row
      * @param  array $groups Map of usergroup details

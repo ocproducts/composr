@@ -1954,7 +1954,7 @@ class Hook_import_cms_merge
     }
 
     /**
-     * Imports ticket known emailers.
+     * Imports ticket known e-mailers.
      *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
@@ -3048,7 +3048,7 @@ class Hook_import_cms_merge
     }
 
     /**
-     * Import cpf premissions.
+     * Import CPF permissions.
      *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using

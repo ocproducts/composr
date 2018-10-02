@@ -1302,7 +1302,7 @@ abstract class Mail_dispatcher_base
     }
 
     /**
-     * Replace an HTML img tag such that it is cid'd. Callback for preg_replace_callback.
+     * Replace an HTML img tag such that it is CIDd. Callback for preg_replace_callback.
      *
      * @param  array $matches Matches
      * @return string Replacement
@@ -1321,7 +1321,7 @@ abstract class Mail_dispatcher_base
     }
 
     /**
-     * Replace CSS image references such that it is cid'd. Callback for preg_replace_callback.
+     * Replace CSS image references such that it is CIDed. Callback for preg_replace_callback.
      *
      * @param  array $matches Matches
      * @return string Replacement

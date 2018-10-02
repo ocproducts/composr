@@ -424,7 +424,7 @@ class BrokenURLScanner
     }
 
     /**
-     * Enumerate the backlinks Google has found and considered broken at last check: missing permisions.
+     * Enumerate the backlinks Google has found and considered broken at last check: missing permissions.
      *
      * @param  array $live_base_urls The live base URL(s)
      * @param  integer $maximum_api_results Maximum results to query from APIs

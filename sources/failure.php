@@ -81,7 +81,7 @@ function suggest_fatalistic()
 /**
  * Terminate with an error caused by unzipping.
  *
- * @param  integer $errno The zip error number
+ * @param  integer $errno The ZIP error number
  * @param  boolean $mzip Whether mzip was used
  * @return Tempcode Error message
  */

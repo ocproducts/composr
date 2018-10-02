@@ -117,12 +117,12 @@ abstract class EmailIntegration
     /**
      * Scan for new e-mails.
      *
-     * @param  string $type Server type (blank: get from glboal configuration)
-     * @param  string $host Server hostname (blank: get from glboal configuration)
-     * @param  ?integer $port Server port (null: get from glboal configuration)
-     * @param  string $folder Inbox folder (blank: get from glboal configuration)
-     * @param  string $username Username (blank: get from glboal configuration)
-     * @param  string $password Password (blank: get from glboal configuration)
+     * @param  string $type Server type (blank: get from global configuration)
+     * @param  string $host Server hostname (blank: get from global configuration)
+     * @param  ?integer $port Server port (null: get from global configuration)
+     * @param  string $folder Inbox folder (blank: get from global configuration)
+     * @param  string $username Username (blank: get from global configuration)
+     * @param  string $password Password (blank: get from global configuration)
      */
     protected function _incoming_scan($type, $host, $port, $folder, $username, $password)
     {

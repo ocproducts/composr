@@ -1969,7 +1969,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      * Get Tempcode for a gallery adding/editing form.
      *
      * @param  ID_TEXT $name The gallery codename (blank: new)
-     * @param  SHORT_TEXT $fullname The full human-readeable name of the gallery
+     * @param  SHORT_TEXT $fullname The full human-readable name of the gallery
      * @param  LONG_TEXT $description The description of the gallery
      * @param  LONG_TEXT $notes Hidden notes associated with the gallery
      * @param  ID_TEXT $parent_id The parent gallery (blank: no parent)

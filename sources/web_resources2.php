@@ -249,7 +249,7 @@ function _css_cms_include($matches)
  * @param  ID_TEXT $active_theme The theme the file is being loaded for
  * @param  string $theme Theme name
  * @param  string $c The CSS file required
- * @param  PATH $full_path Full path to CSS file (file is in uncompiled Tempcode format)
+ * @param  PATH $full_path Full path to CSS file (file is in non-compiled Tempcode format)
  * @param  boolean $minify Whether to also do minification
  * @return array A pair: success status, The text of the compiled file
  *

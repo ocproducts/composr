@@ -25,7 +25,7 @@
  *
  * @param  PATH $file_path The path to the video file
  * @param  string $filename The original filename of the video file (so we can find the file type from the file extension)
- * @param  boolean $delay_errors Whether to skip over errored files instead of dying. We don't currently make use of this as our readers aren't sophisticard enough to properly spot erroneous situations.
+ * @param  boolean $delay_errors Whether to skip over errored files instead of dying. We don't currently make use of this as our readers aren't sophisticated enough to properly spot erroneous situations.
  * @return ~array The triplet of width/height/length (possibly containing nulls for when we can't detect properties) (false: error)
  */
 function get_video_details($file_path, $filename, $delay_errors = false)
@@ -667,7 +667,7 @@ function delete_image($id, $delete_full = true)
 /**
  * Create a video thumbnail.
  *
- * @param  URLPATH $src_url Video to get thumbail from (must be local)
+ * @param  URLPATH $src_url Video to get thumbnail from (must be local)
  * @param  ?PATH $expected_output_path Where to save to (null: decide for ourselves)
  * @return URLPATH Thumbnail, only valid if expected_output_path was passed as null (blank: could not generate)
  */
@@ -1233,7 +1233,7 @@ function _watermark_corner($source, $watermark_url, $x, $y)
  * Add a gallery with the specified parameters.
  *
  * @param  ID_TEXT $name The gallery codename
- * @param  SHORT_TEXT $fullname The full human-readeable name of the gallery
+ * @param  SHORT_TEXT $fullname The full human-readable name of the gallery
  * @param  LONG_TEXT $description The description of the gallery
  * @param  LONG_TEXT $notes Hidden notes associated with the gallery
  * @param  ID_TEXT $parent_id The parent gallery (blank: no parent)
@@ -1343,7 +1343,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  *
  * @param  ID_TEXT $old_name The old gallery codename (in case we are renaming)
  * @param  ID_TEXT $name The gallery codename (maybe the same as the old one)
- * @param  SHORT_TEXT $fullname The full human-readeable name of the gallery
+ * @param  SHORT_TEXT $fullname The full human-readable name of the gallery
  * @param  LONG_TEXT $description The description of the gallery
  * @param  LONG_TEXT $notes Hidden notes associated with the gallery
  * @param  ?ID_TEXT $parent_id The parent gallery (null: no parent)
