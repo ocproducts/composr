@@ -50,7 +50,7 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
 }
 
 /**
- * Shows an HTML page of all authors clickably.
+ * Shows an HTML page of all authors, with links.
  */
 function authors_script()
 {

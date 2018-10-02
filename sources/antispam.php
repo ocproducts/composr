@@ -41,10 +41,10 @@ function init__antispam()
  *
  * Don't call this for less important stuff like quiz entries or newsletter subscription, it's too intensive on 3rd party resources.
  * Those will be picked up by the page level check if it is a POST request.
- * Do use it for anything that will result in publicly viewed content, or outbound emails.
+ * Do use it for anything that will result in publicly viewed content, or outbound e-mails.
  *
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular e-mail address that has just been supplied (null: none)
  */
 function inject_action_spamcheck($username = null, $email = null)
 {
@@ -59,7 +59,7 @@ function inject_action_spamcheck($username = null, $email = null)
  * Spam check call front-end.
  *
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular e-mail address that has just been supplied (null: none)
  * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
  */
 function check_for_spam($username, $email, $page_level)
@@ -399,7 +399,7 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
  * Check the stopforumspam service to see if we need to block this user.
  *
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular e-mail address that has just been supplied (null: none)
  */
 function check_stopforumspam($username = null, $email = null)
 {
@@ -436,7 +436,7 @@ function check_stopforumspam($username = null, $email = null)
  *
  * @param  string $user_ip Check this IP address
  * @param  ?string $username Check this particular username that has just been supplied (null: none)
- * @param  ?EMAIL $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?EMAIL $email Check this particular e-mail address that has just been supplied (null: none)
  * @return array Pair: Listed for potential blocking as a ANTISPAM_RESPONSE_* constant, confidence level if attainable (0.0 to 1.0) (else null)
  * @ignore
  */

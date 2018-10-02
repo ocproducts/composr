@@ -96,8 +96,8 @@ class Block_main_content_filtering
     /**
      * Execute the module.
      *
-     * @param  string $str Comma separated, equals separated, bits
-     * @param  string $separator Separarator between pairs
+     * @param  string $str Comma-separated, equals separated, bits
+     * @param  string $separator Separator between pairs
      * @return array Mapping
      */
     protected function interpret_pairs_from_string($str, $separator = ',')

@@ -591,7 +591,7 @@ END;
 }
 
 /**
- * Convert a normal path to an overriden save path.
+ * Convert a normal path to an overridden save path.
  *
  * @param  string $save_path The normal path
  * @return string The overridden save path

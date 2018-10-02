@@ -2941,6 +2941,7 @@ class lang_spelling_epic_test_set extends cms_test_case
         add_spellchecker_words_temp($spell_link, $okay_words);
 
         $only = get_param_string('only', null);
+        $debug = (get_param_integer('debug', 0) == 1);
 
         // Check disk files...
 
@@ -3096,7 +3097,7 @@ class lang_spelling_epic_test_set extends cms_test_case
                             }
                         }
 
-                        $num_matches = preg_match_all('#/\*(.*)\*/#Um', $c, $matches);
+                        $num_matches = preg_match_all('#/\*(.*)\*/#U' . ($debug ? 's' : '') . 'm', $c, $matches);
                         for ($i = 0; $i < $num_matches; $i++) {
                             $_c .= ' ' . $matches[1][$i];
                         }
