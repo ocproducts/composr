@@ -333,7 +333,13 @@ class Module_admin_svg_sprites
                     // whitespace?
                     continue;
                 }
-                $output .= $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
+                $child_xml = $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
+
+                if (preg_replace('/\s/', '', $child_xml) === '<defs></defs>') {
+                    continue; // Skip empty <defs> elements
+                }
+
+                $output .= $child_xml;
             }
             $output .= "</symbol>\n";
         }
