@@ -215,6 +215,7 @@ class Module_admin_svg_sprites
         $svg_xml = new CMS_simple_xml_reader(file_get_contents($sprite_path));
         $svg_xml_children = $svg_xml->gleamed[3];
         $sprite_url = find_theme_image('icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite', true, false, $theme);
+        $sprite_url .= '?t=' . microtime(true);
 
         $icons = new Tempcode();
         foreach ($svg_xml_children as $symbol) {
