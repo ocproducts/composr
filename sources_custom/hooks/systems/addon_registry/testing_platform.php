@@ -170,6 +170,9 @@ We hope other users will appreciate your efforts and give you some gift points t
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/testing_platform.php',
+            '_tests/libs/mf_parse.php',
+            '_tests/libs/index.html',
+            '_tests/libs/.htaccess',
             'lang_custom/EN/phpdoc.ini',
             'sources_custom/php.php',
             'sources_custom/phpstub.php',
@@ -383,6 +386,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/sorting.php',
             '_tests/tests/unit_tests/clean_reinstall.php',
             '_tests/tests/unit_tests/authors.php',
+            '_tests/tests/unit_tests/dns.php',
             '_tests/tests/unit_tests/awards.php',
             '_tests/tests/unit_tests/comcode_code.php',
             '_tests/tests/unit_tests/xml_sitemaps.php',
@@ -572,7 +576,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/usergroup_subscriptions.php',
             '_tests/tests/unit_tests/warnings.php',
             '_tests/tests/unit_tests/welcome_emails.php',
-            '_tests/tests/unit_tests/bot_list_sync.php',
+            '_tests/tests/unit_tests/bot_detection.php',
             '_tests/tests/unit_tests/_installer.php',
             '_tests/tests/unit_tests/_installer_xml_db.php',
             '_tests/tests/unit_tests/_installer_forum_drivers.php',

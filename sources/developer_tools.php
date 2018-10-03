@@ -364,7 +364,7 @@ function show_memory_points()
 }*/
 
 /**
- * Verify the parameters passed into the *calling* function match the phpdoc specification for that function.
+ * Verify the parameters passed into the *calling* function match the PHPDoc specification for that function.
  * Useful when testing robustness of APIs where the CQC and ocProducts PHP are not suitable.
  * For example, when web APIs are plumbed into Composr APIs and you need to ensure the types are coming in correctly.
  *

@@ -319,7 +319,7 @@ abbr.dtstart, abbr.dtend {
 	border: 1px solid {$GET,box_title_background}; /* Matches border above, but uses bg-color so invisible */
 }
 
-/* The following classes are for the varying degress of priority that
+/* The following classes are for the varying degrees of priority that
 	certain calendar events can hold. These can be used if, for example, you
 	want to design higher priority events to have a darker background or an
 	image. 1 is the highest priority, with 5 being the lowest. */

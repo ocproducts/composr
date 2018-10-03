@@ -32,7 +32,7 @@ class Hook_task_ios_notification
      * @range  1 5
      * @param  boolean $no_cc Whether to NOT CC to the CC address
      * @param  array $attachments An list of attachments (each attachment being a map, path=>filename)
-     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose e-mail addresses for this particular notification type (i.e. if it's a direct contact)
      *
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */

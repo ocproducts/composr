@@ -375,7 +375,7 @@ class DecisionTree
     }
 
     /**
-     * Process a step within the decision tree, making decisions and substitions based on the past step's input.
+     * Process a step within the decision tree, making decisions and substitutions based on the past step's input.
      *
      * @param  ID_TEXT $tree_position Tree position coming from
      * @return mixed Tree position going to or Tempcode URL

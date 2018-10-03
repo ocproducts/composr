@@ -21,9 +21,9 @@
 /*EXTRA FUNCTIONS: imap\_.+|proc\_.+|stream_set_blocking|stream_get_contents|stream_set_timeout*/
 
 /**
- * Spam check an email.
+ * Spam check an e-mail.
  *
- * @param  string $mime_email The email
+ * @param  string $mime_email The e-mail
  * @return array A pair: The spam report, and the spam score
  */
 function email_spam_check($mime_email)
@@ -173,7 +173,7 @@ function can_email_member($member_id, $host = null, $port = null, $type = null, 
 /**
  * Find if an e-mail address is bounced.
  *
- * @param  EMAIL $email The email address
+ * @param  EMAIL $email The e-mail address
  * @param  ?string $host The server hostname (null: use configured)
  * @param  ?integer $port The port (null: use configured)
  * @param  ?string $type The protocol (null: use configured / autodetect)

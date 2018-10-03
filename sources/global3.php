@@ -900,7 +900,7 @@ function set_http_status_code($code)
  * @param  string $directory Subdirectory type to look in
  * @set templates css
  * @param  boolean $non_custom_only Whether to only search in the default templates
- * @param  boolean $fallback_other_themes Allow fallback to other themes, in case it is defined only in a specific theme we would not noprmally look in
+ * @param  boolean $fallback_other_themes Allow fallback to other themes, in case it is defined only in a specific theme we would not normally look in
  * @return ?array List of parameters needed for the _do_template function to be able to load the template (null: could not find the template)
  */
 function find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only = false, $fallback_other_themes = true)
@@ -1127,7 +1127,7 @@ function cms_mb_ucwords($in)
 }
 
 /**
- * Make a string lowercase, with utf-8 awareness where possible/required.
+ * Make a string lower case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject
  * @return string Result
@@ -1146,7 +1146,7 @@ function cms_mb_strtolower($in)
 }
 
 /**
- * Make a string uppercase, with utf-8 awareness where possible/required.
+ * Make a string upper case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject
  * @return string Result
@@ -2358,7 +2358,7 @@ function compare_ip_address_ip6($wild, $full_parts)
  *
  * @param  string $ip The IP address to check for banning
  * @param  boolean $force_db Force check via database
- * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
+ * @param  boolean $handle_uncertainties Handle uncertainties (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
  */
 function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
@@ -2497,7 +2497,7 @@ function php_addslashes($in)
 }
 
 /**
- * Remove any duplication inside the list of rows (each row being a map). Duplication is defined by rows with correspinding IDs.
+ * Remove any duplication inside the list of rows (each row being a map). Duplication is defined by rows with corresponding IDs.
  *
  * @param  array $rows The rows to remove duplication of
  * @param  string $id_field The ID field
@@ -2912,6 +2912,7 @@ function get_bot_type($agent = null)
             $BOT_MAP_CACHE = array(
                 'zyborg' => 'Looksmart',
                 'googlebot' => 'Google',
+                'mediapartners-google' => 'Google Adsense',
                 'teoma' => 'Teoma',
                 'jeeves' => 'Ask Jeeves',
                 'ultraseek' => 'Infoseek',
@@ -2929,6 +2930,7 @@ function get_bot_type($agent = null)
                 'ahrefsbot' => 'Ahrefs',
                 'mj12bot' => 'Majestic-12',
                 'blexbot' => 'webmeup',
+                'duckduckbot' => 'DuckDuckGo',
             );
         }
     }
@@ -3343,7 +3345,7 @@ function propagate_filtercode_page_link()
 }
 
 /**
- * Make some text fractionably editable (i.e. inline editable).
+ * Make some text fractionally editable (i.e. inline editable).
  *
  * @param  ID_TEXT $content_type Content type
  * @param  mixed $id Content ID
@@ -3608,16 +3610,24 @@ function cms_eval($code, $context, $trigger_error = true)
 }
 
 /**
+ * See if an IP address is local.
+ *
+ * @param  IP $user_ip IP address
+ * @return boolean Whether the IP address is local
+ */
+function ip_address_is_local($user_ip)
+{
+    return (($user_ip == '0000:0000:0000:0000:0000:0000:0000:0001') || ($user_ip == '::1') || ($user_ip == '127.0.0.1') || (substr($user_ip, 0, 3) == '10.') || (substr($user_ip, 0, 8) == '192.168.'));
+}
+
+/**
  * Find whether Composr is running on a local network, rather than a live-site.
  *
  * @return boolean If it is running locally
  */
 function running_locally()
 {
-    return
-        (substr(get_local_hostname(), 0, 8) == '192.168.') ||
-        (substr(get_local_hostname(), 0, 7) == '10.0.0.') ||
-        (in_array(get_local_hostname(), array('localhost')));
+    return (ip_address_is_local(get_local_hostname())) || (in_array(get_local_hostname(), array('localhost')));
 }
 
 /**
@@ -4125,7 +4135,7 @@ function cms_gethostbyaddr($ip_address)
 
     if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
         if ($hostname == '') {
-            $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg_wrap($ip_address))));
+            $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . cms_escapeshellarg($ip_address))));
         }
     }
 
@@ -4139,7 +4149,7 @@ function cms_gethostbyaddr($ip_address)
         $hostname = $ip_address;
     }
 
-    return $hostname;
+    return rtrim($hostname, '.'); // Normalise with no trailing dot
 }
 
 /**
@@ -4155,19 +4165,30 @@ function cms_gethostbyname($hostname)
     if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
         if ($ip_address == '') {
             if (strpos(PHP_OS, 'Linux') !== false) {
-                $ip_address = trim(preg_replace('# .*$#', '', shell_exec('getent hosts ' . escapeshellarg($hostname))));
+                $ip_address = trim(preg_replace('# .*$#', '', shell_exec('getent hosts ' . cms_escapeshellarg($hostname))));
             }
         }
 
         if ($ip_address == '') {
-            $shell_result = shell_exec('host ' . escapeshellarg($hostname));
-            $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', $shell_result);
+            $shell_result = shell_exec('host ' . cms_escapeshellarg($hostname));
+
+            $ip_address = preg_replace('#^.*has IPv6 address [\da-f:]+.*#s', '$1', $shell_result);
+            if (preg_match('#^[\da-f:]+$#', $ip_address) == 0) {
+                $ip_address = '';
+            }
+
+            if ($ip_address == '') {
+                $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', $shell_result);
+                if (preg_match('#^[\d\.]+$#', $ip_address) == 0) {
+                    $ip_address = '';
+                }
+            }
         }
     }
 
     if ($ip_address == '') {
-        if (php_function_allowed('gethostbyaddr')) {
-            $ip_address = @gethostbyaddr($ip_address);
+        if (php_function_allowed('gethostbyname')) {
+            $ip_address = @gethostbyname($hostname);
         }
     }
 

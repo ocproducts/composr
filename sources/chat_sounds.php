@@ -41,7 +41,7 @@ function get_effect_set($only_overridable = false)
 }
 
 /**
- * Get a list of template mappings for the current member, between sound effect IDs and the URLs to the mp3 fiels.
+ * Get a list of template mappings for the current member, between sound effect IDs and the URLs to the mp3 files.
  *
  * @param  boolean $full_urls Whether to use full URLs in the mappings
  * @param  ?MEMBER $for_member Get settings overridden for this specific member (null: global settings)

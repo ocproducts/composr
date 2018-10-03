@@ -493,7 +493,7 @@ function apply_comcode_page_substitutions(&$comcode)
  * @param  ID_TEXT $zone The zone the page is being loaded from
  * @param  ID_TEXT $codename The codename of the page
  * @param  PATH $file_base The file base to load from
- * @param  array $new_comcode_page_row New row for database, used if nesessary (holds submitter etc)
+ * @param  array $new_comcode_page_row New row for database, used if necessary (holds submitter etc)
  * @param  boolean $being_included Whether the page is being included from another
  * @return array A tuple: The page HTML (as Tempcode), New Comcode page row, Title, Raw Comcode
  *

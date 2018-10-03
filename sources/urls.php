@@ -169,7 +169,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
 }
 
 /**
- * Encode a URL component in such a way that it won't get nuked by Apache %2F blocking security and url encoded '&' screwing. The get_param_string function will map it back. Hackerish but necessary.
+ * Encode a URL component in such a way that it won't get nuked by Apache %2F blocking security and URL encoded '&' mangling. The get_param_string function will map it back. Hackerish but necessary.
  *
  * @param  URLPATH $url_part The URL to encode
  * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
@@ -954,7 +954,7 @@ function looks_like_url($value, $lax = false)
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  array $exclude A list of parameters to exclude
- * @return Tempcode The builtup hidden form fields
+ * @return Tempcode The built-up hidden form fields
  */
 function build_keep_form_fields($page = '', $keep_all = false, $exclude = array())
 {
@@ -967,7 +967,7 @@ function build_keep_form_fields($page = '', $keep_all = false, $exclude = array(
  *
  * @param  array $exclude A list of parameters to exclude
  * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
- * @return Tempcode The builtup hidden form fields
+ * @return Tempcode The built-up hidden form fields
  */
 function build_keep_post_fields($exclude = array(), $force_everything = false)
 {
@@ -991,8 +991,8 @@ function url_to_filename($url_full)
  * Take a URL and base URL, and fully qualify the URL according to it.
  *
  * @param  URLPATH $url The URL to fully qualified
- * @param  URLPATH $url_base The base-URL
- * @param  boolean $base_is_full_url Whether the base-URL is actually a full URL which needs stripping back
+ * @param  URLPATH $url_base The base URL
+ * @param  boolean $base_is_full_url Whether the base URL is actually a full URL which needs stripping back
  * @return URLPATH Fully qualified URL
  */
 function qualify_url($url, $url_base, $base_is_full_url = false)

@@ -60,7 +60,7 @@ class Hook_cron_downloads_followup_email
     {
         /*
         If we just installed, reinstalled after uninstalling more than 2 days ago, or if the system scheduler
-        stopped working for more than 2 days we will not generate emails for downloads prior to the previous
+        stopped working for more than 2 days we will not generate e-mails for downloads prior to the previous
         48 hours to prevent sending stale notifications for download actions that are not recent.
         */
         $time_now = time();

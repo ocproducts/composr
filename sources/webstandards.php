@@ -890,6 +890,7 @@ function init__webstandards()
         'link.rev' => '.+',
         'link.sizes' => '.+',
         'link.type' => '.+',
+        'link.as' => '\w+',
         'map.name' => $enforce_name,
         'menu.label' => '.*',
         'menu.type' => '(context|toolbar|list)',

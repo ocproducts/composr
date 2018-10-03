@@ -92,7 +92,7 @@ class auth_test_set extends cms_test_case
 
         $ips = array();
         $server_addr = get_ip_address(3, $_SERVER['SERVER_ADDR']);
-        /*This now breaks the test rather than fixes it, on MacOSX if (($server_addr == '0000:0000:0000:0000:0000:0000:*:*') && (get_local_hostname() == 'localhost')) {
+        /*This now breaks the test rather than fixes it, on Mac OS X if (($server_addr == '0000:0000:0000:0000:0000:0000:*:*') && (get_local_hostname() == 'localhost')) {
             $server_addr = '127.0.0.*'; // DNS will resolve localhost using ipv4, regardless of what Apache self-reports, at least on my current dev machine -- ChrisG
         }*/
         $ips[$server_addr] = true;

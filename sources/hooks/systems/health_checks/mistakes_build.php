@@ -305,6 +305,8 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                 '127\.0\.0\.1($|:|/)',
                 '192\.168\.',
                 '10\.',
+                '0000:0000:0000:0000:0000:0000:0000:0001($|:|/)',
+                '::1($|:|/)',
                 'localhost($|:|/)',
             );
 
@@ -604,6 +606,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             'mastodon',
             'diaspora',
             'bitcoin',
+            'utopian',
         );
 
         $spell_link = spellcheck_initialise();

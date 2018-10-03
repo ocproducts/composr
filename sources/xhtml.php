@@ -547,18 +547,18 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
 }
 
 /**
- * XHTML-aware helper function to try and get to a nice grammatical point to call our substring termius.
+ * XHTML-aware helper function to try and get to a nice grammatical point to call our substring terminus.
  *
- * @param  integer $nieve_end_pos The nieve position where we'd end on
+ * @param  integer $naive_end_pos The naive position where we'd end on
  * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing)
  * @param  integer $real_offset Current offset in the text
  * @param  string $html The text to perform on
- * @param  integer $desired_length Desired (nieve) substring length
+ * @param  integer $desired_length Desired (naive) substring length
  * @return boolean Whether to keep continuing
  *
  * @ignore
  */
-function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length)
+function _smart_grammar_says_futile($naive_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length)
 {
     // See if we're starting a paragraph
     $look_out = array(
@@ -596,24 +596,24 @@ function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolera
 
     // Work it out, based on looking-ahead into this paragraph. If we can't get through 0.3 (hard-coded) then it's considered a futile paragraph.
     $jump_ahead = intval(round(0.3 * floatval($length_of_paragraph)));
-    $check = _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tolerance, $real_offset + $jump_ahead, $html, $desired_length, true);
+    $check = _smart_grammar_says_continue($naive_end_pos, $grammar_completeness_tolerance, $real_offset + $jump_ahead, $html, $desired_length, true);
     return !$check;
 }
 
 /**
- * XHTML-aware helper function to try and get to a nice grammatical point to call our substring termius.
+ * XHTML-aware helper function to try and get to a nice grammatical point to call our substring terminus.
  *
- * @param  integer $nieve_end_pos The nieve position where we'd end on
+ * @param  integer $naive_end_pos The naive position where we'd end on
  * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing)
  * @param  integer $real_offset Current offset in the text
  * @param  string $html The text to perform on
- * @param  integer $desired_length Desired (nieve) substring length
+ * @param  integer $desired_length Desired (naive) substring length
  * @param  boolean $testing_ahead Whether this is a cursory look-ahead rather than a byte-by-byte callback (therefore skip fine-grained checks which would interfere with a cursory result)
  * @return boolean Whether to keep continuing
  *
  * @ignore
  */
-function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length, $testing_ahead = false)
+function _smart_grammar_says_continue($naive_end_pos, $grammar_completeness_tolerance, $real_offset, $html, $desired_length, $testing_ahead = false)
 {
     // NOTE: This algorithm isn't perfect. Grammar is exceptionally complex and it does not do a parse as such.
 
@@ -643,7 +643,7 @@ function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tole
         return false; // Just finished paragraph
     }
     // Decide, is it worth maintaining the paragraph?
-    if ($para_end_pos - $nieve_end_pos <= intval(round($grammar_completeness_tolerance * $desired_length))) {
+    if ($para_end_pos - $naive_end_pos <= intval(round($grammar_completeness_tolerance * $desired_length))) {
         return true;
     }
 
@@ -669,7 +669,7 @@ function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tole
         return false; // Just finished sentence
     }
     // Decide, is it worth maintaining the sentence?
-    if ($sentence_end_pos - $nieve_end_pos <= intval(round($grammar_completeness_tolerance * $desired_length))) {
+    if ($sentence_end_pos - $naive_end_pos <= intval(round($grammar_completeness_tolerance * $desired_length))) {
         return true;
     }
 

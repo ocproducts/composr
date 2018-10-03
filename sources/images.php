@@ -199,7 +199,7 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
 }
 
 /**
- * Take some image/thumbnail info, and if needed make and caches a thumbnail, and return a thumb url whatever the situation.
+ * Take some image/thumbnail info, and if needed make and caches a thumbnail, and return a thumb URL whatever the situation.
  *
  * @param  URLPATH $full_url The full URL to the image which will-be/is thumbnailed
  * @param  URLPATH $thumb_url The URL to the thumbnail (blank: no thumbnail yet)

@@ -437,7 +437,7 @@ class Hook_payment_gateway_authorize
         $data = unserialize($temp);
         $authorize_subscription_id = $data['id'];
 
-        $this->_set_cancelation_api_parameters($authorize_subscription_id);
+        $this->_set_cancellation_api_parameters($authorize_subscription_id);
 
         $response = http_get_contents($this->url, array('trigger_error' => false, 'post_params' => $this->api_parameters, 'timeout' => 12.0));
 
@@ -452,11 +452,11 @@ class Hook_payment_gateway_authorize
     }
 
     /**
-     * This function defines the parameters needed to make a cancelation API call.
+     * This function defines the parameters needed to make a cancellation API call.
      *
      * @param  AUTO_LINK $subscription_id Subscription ID
      */
-    protected function _set_cancelation_api_parameters($subscription_id)
+    protected function _set_cancellation_api_parameters($subscription_id)
     {
         list($login_id, $transaction_key) = $this->_get_access_details();
 

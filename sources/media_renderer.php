@@ -248,13 +248,17 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
  * @param  ?MEMBER $source_member Member to run as (null: current member)
  * @param  boolean $prefer_natural_size Let the media size itself rather than detecting a size
+ * @param  ?URLPATH $url_direct_filesystem Direct URL (not via a script) (null: just use the normal URL)
  * @return array Template-ready parameters
  *
  * @ignore
  */
-function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null, $prefer_natural_size = false)
+function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null, $prefer_natural_size = false, $url_direct_filesystem = null)
 {
     $_url = is_object($url) ? $url->evaluate() : $url;
+    if ($url_direct_filesystem === null) {
+        $url_direct_filesystem = $_url;
+    }
 
     if ($source_member === null) {
         $source_member = get_member();
@@ -334,7 +338,23 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
 
     $wysiwyg_editable = ((array_key_exists('wysiwyg_editable', $attributes)) && ($attributes['wysiwyg_editable'] != '0'));
 
+    // For media in the File/Media library we will find a thumbnail automatically if there's a corresponding one
     $use_thumb = (!array_key_exists('thumb', $attributes)) || ($attributes['thumb'] == '1');
+    $blank_thumbnail = (!array_key_exists('thumb_url', $attributes)) || ((is_object($attributes['thumb_url'])) && ($attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] == ''));
+    if ($use_thumb && $blank_thumbnail) {
+        $__url = rawurldecode($url_direct_filesystem);
+        if (substr($__url, 0, 17) == 'uploads/filedump/') {
+            $ext = get_file_extension($__url);
+            $base_path = substr($__url, 0, strlen($__url) - strlen($ext) - 1);
+            $image_types = array_map('trim', explode(',', get_option('valid_images')));
+            foreach ($image_types as $image_type) {
+                if (is_file(get_custom_file_base() . '/' . $base_path . '.' . $image_type)) {
+                    $attributes['thumb_url'] = get_custom_base_url() . '/' . $base_path . '.' . $image_type;
+                    break;
+                }
+            }
+        }
+    }
 
     if (($_url != '') && (url_is_local($_url))) {
         if (is_file(get_custom_file_base() . '/' . urldecode($_url))) {

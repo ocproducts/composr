@@ -52,4 +52,4 @@ if (!addon_installed('themewizard')) {
 }
 
 require_code('themewizard');
-generate_logo(get_param_string('name'), get_param_string('font'), get_param_string('logo_theme_image'), get_param_string('background_theme_image'), true, get_param_string('theme'), get_param_integer('standalone_version', 0) == 1);
+generate_logo(get_param_string('name'), get_param_string('font'), get_param_string('logo_theme_image'), get_param_string('background_theme_image'), true, get_param_string('theme'), get_param_string('logo_type', 'large'));

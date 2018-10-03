@@ -9,6 +9,7 @@
             height = strVal(params.height),
             url = strVal(params.url),
             options = {
+                pluginPath: '{$BASE_URL;}/data_custom/mediaelement/',
                 enableKeyboard: true,
                 success: function (media) {
                     if (!$cms.isInlineStats()) {
@@ -29,15 +30,10 @@
             };
 
         // Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this
-        if (width !== '') {
-            options.videoWidth = Math.min(950, width);
-        }
+        options.videoWidth = Math.min(950, width);
+        options.videoHeight = Math.min(height * (950 / width), height);
 
-        if (height !== '') {
-            options.videoHeight = Math.min(height * (950 / width), height);
-        }
-
-        player = new MediaElementPlayer('#' + playerId, options);
+        player = new MediaElementPlayer(playerId, options);
     };
 
     $cms.templates.mediaVideoWebsafe = function mediaVideoWebsafe(params) {
@@ -47,6 +43,7 @@
             height = strVal(params.height),
             url = strVal(params.url),
             options = {
+                pluginPath: '{$BASE_URL;}/data_custom/mediaelement/',
                 enableKeyboard: true,
                 success: function (media) {
                     if (!$cms.isInlineStats()) {
@@ -69,14 +66,12 @@
             };
 
         // Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this
-        if (width !== '') {
-            options.videoWidth = Math.min(950, width);
+        options.videoWidth = Math.min(950, width);
+        options.videoHeight = Math.min(height * (950 / width), height);
+        if (params.responsive) {
+            options.stretching = 'responsive';
         }
 
-        if (height !== '') {
-            options.videoHeight = Math.min(height * (950 / width), height);
-        }
-
-        player = new MediaElementPlayer('#' + playerId, options);
+        player = new MediaElementPlayer(playerId, options);
     };
 }(window.$cms));

@@ -206,7 +206,7 @@ function cns_member_external_linker_ask($type, $username, $email_address = '', $
  * @param  ID_TEXT $type The type of member profile we are finishing off
  * @param  SHORT_TEXT $username The username for the member profile
  * @param  SHORT_TEXT $password The password for the member profile
- * @param  boolean $email_check Whether to check for duplicated email addresses
+ * @param  boolean $email_check Whether to check for duplicated e-mail addresses
  * @param  EMAIL $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
@@ -883,9 +883,9 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
  * @param  ?string $password The password (null: don't change)
  * @param  ?SHORT_TEXT $email_address The e-mail address (null: don't change)
  * @param  ?GROUP $primary_group The member's primary usergroup (null: don't change)
- * @param  ?integer $dob_day Day of date of birth (null: don't change) (-1: deset)
- * @param  ?integer $dob_month Month of date of birth (null: don't change) (-1: deset)
- * @param  ?integer $dob_year Year of date of birth (null: don't change) (-1: deset)
+ * @param  ?integer $dob_day Day of date of birth (null: don't change) (-1: unset)
+ * @param  ?integer $dob_month Month of date of birth (null: don't change) (-1: unset)
+ * @param  ?integer $dob_year Year of date of birth (null: don't change) (-1: unset)
  * @param  ?array $custom_fields A map of custom fields values, things specified are not  (field-id=>value) (null: don't change)
  * @param  ?ID_TEXT $timezone The member timezone (null: don't change)
  * @param  ?LANGUAGE_NAME $language The member's language (null: don't change)
@@ -1659,7 +1659,7 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
  * @param  ?SHORT_TEXT $username The username (may get altered) (null: nothing to check)
  * @param  ?MEMBER $member_id The member (null: member not actually added yet; this ID is only given for the duplication check, to make sure it doesn't think we are duplicating with ourself)
  * @param  ?SHORT_TEXT $password The password (null: nothing to check)
- * @param  boolean $return_errors Whether to return errors instead of dieing on them
+ * @param  boolean $return_errors Whether to return errors instead of dying on them
  * @return ?Tempcode Error (null: none)
  */
 function cns_check_name_valid(&$username, $member_id = null, $password = null, $return_errors = false)

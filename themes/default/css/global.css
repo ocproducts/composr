@@ -473,6 +473,9 @@ button::-moz-focus-inner,
 	padding: 0;
 	border-style: none;
 }
+.content-wrap-auto-center .img-box>figure {
+	display: inline-block;
+}
 
 input[type="radio"],
 input[type="checkbox"] {
@@ -2588,6 +2591,9 @@ h3 .toggleable-tray-button .icon {
 }
 .box.overlay .associated-links-block-group {
 	margin: 1em;
+}
+.box.overlay.lightbox>.box_inner video {
+	display: block;
 }
 
 /* Boxes with arrows on the top */

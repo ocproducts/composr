@@ -87,6 +87,10 @@ function graph_line_chart($datasets, $x_labels = null, $x_axis_label = '', $y_ax
 {
     _generate_graph_color_pool($color_pool);
 
+    if (is_mobile()) {
+        $show_data_labels = false;
+    }
+
     $id = _generate_graph_id();
 
     _normalise_graph_dims($width, $height);
@@ -145,6 +149,10 @@ function graph_pie_chart($datapoints, $show_data_labels = true, $color_pool = ar
 {
     _generate_graph_color_pool($color_pool);
 
+    if (is_mobile()) {
+        $show_data_labels = false;
+    }
+
     $id = _generate_graph_id();
 
     _normalise_graph_dims($width, $height);
@@ -183,6 +191,10 @@ function graph_pie_chart($datapoints, $show_data_labels = true, $color_pool = ar
 function graph_bar_chart($datapoints, $x_axis_label = '', $y_axis_label = '', $begin_at_zero = true, $show_data_labels = true, $color_pool = array(), $width = null, $height = null)
 {
     _generate_graph_color_pool($color_pool);
+
+    if (is_mobile()) {
+        $show_data_labels = false;
+    }
 
     $id = _generate_graph_id();
 

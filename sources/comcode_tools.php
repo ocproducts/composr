@@ -63,7 +63,7 @@ function comcode_convert_script()
         $fields->attach(form_input_tick('Fix bad output HTML', '', 'fix_bad_html', false));
 
         $fields->attach(form_input_tick('Raw text output', '', 'raw_output', true));
-        $fields->attach(form_input_tick('Reindent output', '', 'reindent', false));
+        $fields->attach(form_input_tick('Re-indent output', '', 'reindent', false));
         $fields->attach(form_input_tick('Do intensive conversion', '', 'force', false));
 
         require_javascript('core_rich_media');
@@ -182,9 +182,9 @@ function comcode_convert_script()
 /**
  * Turn a triple of emoticon parameters into some actual tempcode.
  *
- * @param  string $text Code to reindent
+ * @param  string $text Code to re-indent
  * @param  boolean $is_comcode Whether the code is Comcode
- * @return string Reindented code
+ * @return string Re-indented code
  */
 function reindent_code($text, $is_comcode)
 {

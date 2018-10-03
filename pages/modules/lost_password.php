@@ -172,7 +172,7 @@ class Module_lost_password
     }
 
     /**
-     * The UI and actualisation for sending out the confirm email.
+     * The UI and actualisation for sending out the confirm e-mail.
      *
      * @return Tempcode The UI
      */
@@ -211,7 +211,7 @@ class Module_lost_password
     }
 
     /**
-     * The UI and actualisation for: accepting code if it is correct (and not ''), and setting password to something random, emailing it.
+     * The UI and actualisation for: accepting code if it is correct (and not ''), and setting password to something random, e-mailing it.
      *
      * @return Tempcode The UI
      */

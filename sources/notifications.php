@@ -33,7 +33,7 @@ There are RSS feeds in Composr. These are completely unrelated to notifications,
 Similarly, there is "realtime rain".
 There is "what's new" and the newsletter, where again are separate.
 
-Any notifications are CC'd to the configured CC email address (if there is one). This is like having that address get notifications for everything, even if they shouldn't normally be able to receive that notification (i.e. was targeted to a specific member(s)). But it's not really considered parts of the notifications system.
+Any notifications are CC'd to the configured CC e-mail address (if there is one). This is like having that address get notifications for everything, even if they shouldn't normally be able to receive that notification (i.e. was targeted to a specific member(s)). But it's not really considered parts of the notifications system.
 */
 
 /**
@@ -416,7 +416,7 @@ class Notification_dispatcher
      * @range  1 5
      * @param  boolean $no_cc Whether to NOT CC to the CC address
      * @param  array $attachments An list of attachments (each attachment being a map, path=>filename)
-     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose e-mail addresses for this particular notification type (i.e. if it's a direct contact)
      * @return boolean New $no_cc setting
      *
      * @ignore
@@ -1075,7 +1075,7 @@ class Hook_Notification
     }
 
     /**
-     * Find a bitmask of settings (email, SMS, etc) a notification code supports for listening on.
+     * Find a bitmask of settings (e-mail, SMS, etc) a notification code supports for listening on.
      *
      * @param  ID_TEXT $notification_code Notification code
      * @return integer Allowed settings

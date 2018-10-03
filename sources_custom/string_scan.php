@@ -134,7 +134,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         THEME_NOT_SUPPORTING_LOGOWIZARD
         EQUATIONS_NOT_SUPPORTED
         INSTALLPROFILE_WITH_THEME
-        SUPPORTS_WIDE
         CONFIG_OPTION_supports_wide
         MOBILE_PAGES
         EMPTY_CODENAME
@@ -212,7 +211,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_credit_card_cleanup_days
         STORE_CREDIT_CARD_NUMBERS
         CONFIG_OPTION_store_credit_card_numbers
-        PAYMENT_GATEWAY_CALLBACK_PASSWORD
         CONFIG_OPTION_payment_gateway_callback_password
         CONFIG_OPTION_payment_gateway_username
         CONFIG_OPTION_payment_gateway_digest
@@ -224,10 +222,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_INVOICE_TAX_CODE
         RISK
         PURCHASE_ID
-        PAYMENT_GATEWAY_USERNAME
-        PAYMENT_GATEWAY_TEST_USERNAME
-        PAYMENT_GATEWAY_DIGEST
-        PAYMENT_GATEWAY_PASSWORD
         DESCRIPTION_MANUAL_PURCHASE_ID
         DESCRIPTION_MANUAL_PURCHASE_USERNAME
         ECOM_PRODUCTS_ADD_MAIL_FORWARDER
@@ -239,11 +233,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_PRODUCTS_MANAGE_INVENTORY
         ECOM_PRODUCTS_MANAGE_SALES
         ECOM_PRODUCTS_PRICE_PAGE_TEXT
-        PAYMENT_GATEWAY_VPN_USERNAME
-        PAYMENT_GATEWAY_VPN_PASSWORD
         CONFIG_CATEGORY_TRANSACTION_FEES
-        PAYMENT_GATEWAY_authorize
-        PAYMENT_GATEWAY_ccbill
         POST_BY_X_IN_Y
         SOMETHING_TO
         SOMETHING_FROM
@@ -261,8 +251,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BACKUP_WITH_TYPE
         DEEPER_CONFIGURATION
         TRANSCODING
-        LOST_DISK_CONTENT
-        DESCRIPTION_LOST_DISK_CONTENT
         ADVANCED_EMAIL_SEND_SETTINGS
         BLOCK_bottom_forum_news_PARAM_check
         BLOCK_bottom_forum_news_PARAM_check_TITLE
@@ -452,7 +440,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WORDFILTER
         AUDIT
         DESCRIPTION_REORGANISE_UPLOADS
-        REORGANISE_UPLOADS
         KA_CHING
         PLEASE_STATE
         VIDEO_WAS_AUTO_IMPORTED
@@ -468,12 +455,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAIL_TEST_UNKNOWN
         EDIT_LIVE_POLL
         DESCRIPTION_MAIL_DOMAIN
-        CREDIT_CARD_CLEANUP_DAYS
-        CONFIG_OPTION_credit_card_cleanup_days
-        STORE_CREDIT_CARD_NUMBERS
         DESCRIPTION_CPF_CODE
         DESCRIPTION_CPF_SECTION
-        CONFIG_OPTION_store_credit_card_numbers
         RSS
         PGE_M
         PGE_B
@@ -1003,7 +986,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PUNISH_FORM
         NOTIFICATION_WITH_AUTO_TICKET_WRAPPER
         TICKETS_STAFF
-        TICKET_ACTIVITY_BODY
         MEMBER_HAS_SUBSCRIPTIONS
         BLOCK_TRANS_NAME_side_forum_news
         BLOCK_TRANS_NAME_side_friends
@@ -2594,6 +2576,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_TAG_media_PARAM_width_TITLE
         COMCODE_TAG_media_PARAM_wysiwyg_editable
         COMCODE_TAG_media_PARAM_wysiwyg_editable_TITLE
+        COMCODE_TAG_media_PARAM_responsive_TITLE
+        COMCODE_TAG_media_PARAM_responsive
+        COMCODE_TAG_media_PARAM_autostart_TITLE
+        COMCODE_TAG_media_PARAM_autostart
+        COMCODE_TAG_media_PARAM_closed_captions_url_TITLE
+        COMCODE_TAG_media_PARAM_closed_captions_url
         COMCODE_TAG_media_set_DESCRIPTION
         COMCODE_TAG_media_set_EMBED
         COMCODE_TAG_media_set_PARAM_height
@@ -2902,7 +2890,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_brute_force_login_minutes
         CONFIG_OPTION_brute_force_threshold
         CONFIG_OPTION_call_home
-        CONFIG_OPTION_payment_gateway_callback_password
         CONFIG_OPTION_captcha_noise
         CONFIG_OPTION_captcha_on_feedback
         CONFIG_OPTION_captcha_single_guess
@@ -3108,10 +3095,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_invites_per_day
         CONFIG_OPTION_ip_forwarding
         CONFIG_OPTION_ip_strict_for_sessions
-        CONFIG_OPTION_payment_gateway_username
-        CONFIG_OPTION_payment_gateway_digest
-        CONFIG_OPTION_payment_gateway_password
-        CONFIG_OPTION_payment_gateway_test_username
         CONFIG_OPTION_is_on_anonymous_posts
         CONFIG_OPTION_is_on_automatic_mark_topic_read
         CONFIG_OPTION_is_on_banner_buy
@@ -3484,8 +3467,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_video_height_setting
         CONFIG_OPTION_video_width_setting
         CONFIG_OPTION_vote_member_ip_restrict
-        CONFIG_OPTION_payment_gateway_vpn_username
-        CONFIG_OPTION_payment_gateway_vpn_password
         CONFIG_OPTION_web_notifications_enabled
         CONFIG_OPTION_website_email
         CONFIG_OPTION_webstandards_compat
@@ -3909,6 +3890,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _OAUTH_TITLE
         URL_FIELDS
         TOP_LEVEL
+        PAGE_HINT_MAKE_MOBILE_DESCRIPTION
+        PAGE_HINT_MAKE_MOBILE_LABEL
+        PAGE_HINT_SMART_CONVERSION_DESCRIPTION
+        PAGE_HINT_SMART_CONVERSION_LABEL
         DESCRIPTION_ACCEPT_IMAGES
         DESCRIPTION_ACCEPT_VIDEOS
         DESCRIPTION_ACCESS_FOR
@@ -5724,7 +5709,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MINIMUM_PASSWORD_STRENGTH
         MINIMUM_USERNAME_LENGTH
         MINUTES_BETWEEN_SENDS
-        MISSING_ADDON
         BROKEN_ADDON_REMEDIES
         OUTDATED_ADDON_REMEDIES
         MISSING_MODULE
@@ -5771,7 +5755,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MM_TOOLTIP_STRUCTURE
         MM_TOOLTIP_STYLE
         MM_TOOLTIP_TOOLS
-        MOBILE_PAGES
         MOBILE_SUPPORT
         MODAL_USER
         MODERATE_CHATROOMS
@@ -6142,7 +6125,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ORDER_PLACED_MAIL_SUBJECT
         ORDER_PLACED_ON
         ORDER_STATUS
-        ORDER_STATUS_FILTER_DESCRIPTION
         ORDER_STATUS_awaiting_payment
         ORDER_STATUS_cancelled
         ORDER_STATUS_dispatched
@@ -6442,7 +6424,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVILEGE_may_choose_custom_title
         PRIVILEGE_may_download_gallery
         PRIVILEGE_may_enable_staff_notifications
-        PRIVILEGE_may_report_content
         PRIVILEGE_may_unblind_own_poll
         PRIVILEGE_member_maintenance
         PRIVILEGE_moderate_my_private_rooms
@@ -6992,7 +6973,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_error_handling_warnings_VALUE_FATAL
         CONFIG_OPTION_error_handling_warnings_VALUE_LOG
         CONFIG_OPTION_error_handling_warnings_VALUE_SKIP
-        CONFIG_OPTION_error_handling_warnings_VALUE_SKIP
         CONFIG_OPTION_csp_allow_eval_js
         CONFIG_OPTION_csp_allow_insecure_resources
         CONFIG_OPTION_csp_allowed_iframe_ancestors
@@ -7043,7 +7023,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_SEARCH_VIDEOS
         DEFAULT_SEARCH_WIKI_PAGES
         DEFAULT_SEARCH_WIKI_POSTS
-        DESCRIPTION_META_TREE_REBUILD
         DIRECTIVE__IF_NON_PASSED
         DIRECTIVE__IF_PASSED
         DOC_TEMPLATES_BY_ADDON
@@ -7055,7 +7034,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_TEMPLATE_EDITOR_SCREENS
         EDITED_AT
         EDITED_BY
-        EDIT_TEMPLATE
         EMPTY_QUEUE
         ERROR_HANDLING
         ERROR_HANDLING_DATABASE_STRICT
@@ -7093,7 +7071,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LIVE_PREVIEW
         LOREM_PREVIEW
         MEMBER_NEWSLETTER_UNSUBSCRIBED
-        META_TREE_REBUILD
         MISC_SYMBOL__AVATAR
         MISC_SYMBOL__BROWSER_MATCHES
         MISC_SYMBOL__DISPLAYED_USERNAME
@@ -8172,7 +8149,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BY_SIMPLE
         BY_SIMPLE_LOWER
         SAVE_TO_ACCOUNT
-        PURCHASE_FINISHED_SIMPLE
         CALENDAR
         CALENDAR_EVENT
         CALENDAR_EVENT_NOTIFICATION_MAIL
@@ -8193,7 +8169,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CANNOT_BEFRIEND_ONESELF
         CANNOT_REUSE_PASSWORD
         CANNOT_WILDCARD_START
-        CANT_AFFORD
         CAPTCHA
         CAPTCHA_NO_SESSION
         CAPTION
@@ -8573,6 +8548,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_steam_DESCRIPTION
         DEFAULT_CPF_sn_steemit_NAME
         DEFAULT_CPF_sn_steemit_DESCRIPTION
+        DEFAULT_CPF_utopian_NAME
+        DEFAULT_CPF_utopian_DESCRIPTION
         DEFAULT_CPF_dtube_NAME
         DEFAULT_CPF_dtube_DESCRIPTION
         DEFAULT_CPF_sn_mastodon_NAME
@@ -10283,6 +10260,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UNASSIGNED
         UNCASCADE_TOPIC
         UNDECLARE_EVENT_INTEREST
+        CLOSED_CAPTIONS
         UNKNOWN
         UNKNOWN_FORMAT
         UNLINK_EXISTING_UPLOAD
@@ -10606,6 +10584,21 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         links__CATALOGUE_INDEX
         locale
     ')));
+
+    if ($GLOBALS['DEV_MODE']) {
+        $duplicates = array();
+        foreach (array($lang_strings_admin_initial, $lang_strings_non_admin_initial) as $arr) {
+            $test = array_count_values($arr);
+            foreach ($test as $key => $cnt) {
+                if ($cnt > 1) {
+                    $duplicates[] = $key;
+                }
+            }
+        }
+        if (count($duplicates) > 0) {
+            warn_exit('Duplicated lines in string_scan: ' . implode(', ', $duplicates));
+        }
+    }
 
     // Start with what we know
     $lang_strings_admin = array_diff($lang_strings_admin_initial, $lang_strings_non_admin_initial);

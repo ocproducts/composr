@@ -62,7 +62,7 @@
     }
 
     /**
-     * Adds attachment comcode to the provided input (e.g., [attachment]new_1[/attachment])
+     * Adds attachment Comcode to the provided input (e.g., [attachment]new_1[/attachment])
      * @param fieldName
      * @param number
      * @param filename

@@ -242,7 +242,7 @@ function _currency_convert__currency_conv_api($amount, $from_currency, $to_curre
 
     $test = get_value($cache_key, null, true);
     if ($test !== null) {
-        return floatval($test) * $amount;
+        return round(floatval($test) * $amount, 2);
     }
 
     $conv_api_url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $rate_key . '&compact=y';
@@ -254,7 +254,9 @@ function _currency_convert__currency_conv_api($amount, $from_currency, $to_curre
 
             set_value($cache_key, float_to_raw_string($rate, 10, false), true); // Will be de-cached in currency_convert
 
-            return round((float)$rate * $amount, 2);
+            $ret = round((float)$rate * $amount, 2);
+
+            return $ret;
         }
     }
     return null;

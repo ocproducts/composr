@@ -27,7 +27,7 @@
  * @param  integer $max The total number of results to show per-page
  * @param  ID_TEXT $max_name The parameter name used to store the total number of results to show per-page (usually, 'max')
  * @param  integer $max_rows The maximum number of rows in the entire dataset
- * @param  Tempcode $header_row The titles of the fields we are showing in our table, presented in preprepared Tempcode
+ * @param  Tempcode $header_row The titles of the fields we are showing in our table, presented in pre-prepared Tempcode
  * @param  Tempcode $result_entries The entry rows we are showing in our table
  * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
  * @param  ?ID_TEXT $sortable The current sortable (null: none)

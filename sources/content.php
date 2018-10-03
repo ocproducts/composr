@@ -210,7 +210,7 @@ function convert_composr_type_codes_multiple($type_has, $type_id)
  * @param  ID_TEXT $content_type Content type
  * @param  ID_TEXT $content_id Content ID
  * @param  boolean $resource_fs_style Whether to use the content API as resource-fs requires (may be slightly different)
- * @return array Tuple: title, submitter, content hook info, the content row, URL (for use within current browser session), URL (for use in emails / sharing)
+ * @return array Tuple: title, submitter, content hook info, the content row, URL (for use within current browser session), URL (for use in e-mails / sharing)
  */
 function content_get_details($content_type, $content_id, $resource_fs_style = false)
 {

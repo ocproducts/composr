@@ -20,7 +20,7 @@
 
 /*
 Note that all this code operates in "user time". That is, the timestamps being banded around are not as the server would recognise them, because they encode offsets to match the users timezone settings.
-time() should never be called here, either explicitly, or implictly by not giving the date function a second argument. Instead, utctime_to_usertime() should be used to get the timestamp.
+time() should never be called here, either explicitly, or implicitly by not giving the date function a second argument. Instead, utctime_to_usertime() should be used to get the timestamp.
 Any times that go-in-to or come-in-from the calendar backend API are also in "user time".
 To complicate matters further "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in GMT. "user time" is offsetted to compensate, a virtual construct.
 */

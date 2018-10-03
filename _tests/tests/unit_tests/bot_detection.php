@@ -21,20 +21,45 @@
 /**
  * Composr test case class (unit testing).
  */
-class bot_list_sync_test_set extends cms_test_case
+class bot_detection_test_set extends cms_test_case
 {
-    public function testBotListInSync()
+    public function testUADetect()
     {
         $_SERVER['HTTP_USER_AGENT'] = 'aaaa';
         $GLOBALS['BOT_TYPE_CACHE'] = false;
-        get_bot_type();
+        $this->assertTrue(get_bot_type() === null);
 
+        $_SERVER['HTTP_USER_AGENT'] = 'Some Googlebot running';
+        $GLOBALS['BOT_TYPE_CACHE'] = false;
+        $this->assertTrue(get_bot_type() !== null);
+    }
+
+    public function testDNSDetect()
+    {
+        require_code('failure');
+
+        $this->assertTrue(!is_unbannable_bot_dns('93.184.216.34')); // example.com
+
+        $this->assertTrue(is_unbannable_bot_dns('64.68.90.26')); // Google
+    }
+
+    public function testIPDetect()
+    {
+        require_code('failure');
+
+        $this->assertTrue(!is_unbannable_bot_ip('93.184.216.34')); // example.com
+
+        $this->assertTrue(is_unbannable_bot_ip('64.68.90.26')); // Google
+    }
+
+    public function testBotListInSync()
+    {
         require_code('files');
         $file_bots = better_parse_ini_file(get_file_base() . '/text/bots.txt');
         ksort($file_bots);
 
-        $_SERVER['HTTP_USER_AGENT'] = '';    // Force away optimisation
-        get_bot_type();
+        $_SERVER['HTTP_USER_AGENT'] = ''; // Force away optimisation
+        get_bot_type(); // Force $BOT_MAP_CACHE to load
         global $BOT_MAP_CACHE;
         ksort($BOT_MAP_CACHE);
 

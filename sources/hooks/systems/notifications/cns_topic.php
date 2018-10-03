@@ -129,7 +129,7 @@ class Hook_notification_cns_topic extends Hook_Notification
     }
 
     /**
-     * Find a bitmask of settings (email, SMS, etc) a notification code supports for listening on.
+     * Find a bitmask of settings (e-mail, SMS, etc) a notification code supports for listening on.
      *
      * @param  ID_TEXT $notification_code Notification code
      * @return integer Allowed settings
@@ -185,7 +185,7 @@ class Hook_notification_cns_topic extends Hook_Notification
     }
 
     /**
-     * Find whether someone has permisson to view any notifications (yes) and possibly if they actually are.
+     * Find whether someone has permission to view any notifications (yes) and possibly if they actually are.
      *
      * @param  ?ID_TEXT $only_if_enabled_on__notification_code Notification code (null: don't check if they are)
      * @param  ?SHORT_TEXT $only_if_enabled_on__category The category within the notification code (null: none)

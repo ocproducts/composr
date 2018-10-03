@@ -19,7 +19,7 @@
  * See the 'build_new_workflow' function to define a new workflow.
  * Note: If passing a approval point already in the given workflow, its position will be updated to the new value (or the end if not specified).
  * NOTE: Positions do not need to be contiguous, as long as they are in an order. For example, approval points at positions 12, 34 and 852 will
- * behave the same way as approval points pointnts at positions 1, 2 and 3 (except when adding approval points at defined positions of course, since
+ * behave the same way as approval points at positions 1, 2 and 3 (except when adding approval points at defined positions of course, since
  * position 4 will appear at the start of the former list but at the end of the latter)
  *
  * @param  array $bits Language string bits
@@ -47,9 +47,9 @@ function add_approval_point_to_workflow($bits, $workflow_id, $position = null)
 }
 
 /**
- * Deleting a workflow will remove the workflow, leaving the validated/unvalidated system to handle content, ie. content which has passed
+ * Deleting a workflow will remove the workflow, leaving the validation system to handle content, ie. content which has passed
  * completely through the workflow will have its validated bit set and will thus remain live. Those not completely through will not have
- * theirs set yet and will thus remain unvalidated and not live.
+ * theirs set yet and will thus remain non-validated and not live.
  * NOTE: Approval points can be reused, so they will stay behind.
  *
  * @param  AUTO_LINK $id The ID of the workflow to delete

@@ -1092,7 +1092,7 @@ function require_javascript($css)
  *
  * @param  string $context The haystack
  * @param  string $word The needle (a wildcard expression)
- * @param  boolean $full_cover Whether full-coverance is required
+ * @param  boolean $full_cover Whether full-coverage is required
  * @return boolean Whether we have a match
  */
 function simulated_wildcard_match($context, $word, $full_cover = false)

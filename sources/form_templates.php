@@ -140,7 +140,7 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
 /**
  * Ensure Suhosin is not going to break a request due to request size.
  *
- * @param  integer $size Most determinitve size within wider request size (we'll assume we actually need 500 more bytes than this)
+ * @param  integer $size Most determinative size within wider request size (we'll assume we actually need 500 more bytes than this)
  */
 function check_suhosin_request_size($size)
 {
@@ -790,7 +790,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
 }
 
 /**
- * Get the Tempcode for a email-address input line.
+ * Get the Tempcode for a e-mail-address input line.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1195,7 +1195,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 }
 
 /**
- * Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit.
+ * Get the Tempcode for a huge Comcode-enabled text input (textarea). These need extra space to fit.
  * This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too).
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
@@ -1332,9 +1332,9 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  boolean $ticked Whether this is ticked by default
+ * @param  boolean $ticked Whether this is ticked (checked) by default
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @param  ID_TEXT $value The value the checkbox passes when ticked
+ * @param  ID_TEXT $value The value the checkbox passes when ticked (checked)
  * @param  boolean $read_only Whether this box should be disabled
  * @param  boolean $disabled Whether this box should be disabled
  * @return Tempcode The input field
@@ -1358,13 +1358,13 @@ function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex =
 }
 
 /**
- * Get the Tempcode for a bank of tick boxes.
+ * Get the Tempcode for a bank of tick (check) boxes.
  *
  * @param  array $options A list of tuples: (prettyname, name, value, description)
  * @param  mixed $description A description for this input field
  * @param  ?integer $_tabindex The tab index of the field (null: not specified)
  * @param  mixed $_pretty_name A human intelligible name for this input field (blank: use default)
- * @param  boolean $simple_style Whether to place each tick on a new line
+ * @param  boolean $simple_style Whether to place each tick (check) on a new line
  * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
  * @param  ?mixed $custom_value Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)
  * @return Tempcode The input field
@@ -1912,7 +1912,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  string $base The base name which this input field is for
- * @param  Tempcode $list A list culmulation to select against
+ * @param  Tempcode $list A list accumulation to select against
  * @param  string $type The current type of partial selection
  * @set + - *
  * @param  ?integer $tabindex The tab index of the field (null: not specified)

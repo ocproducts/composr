@@ -174,7 +174,7 @@ class CMSAccountWrite
      * @param  EMAIL $email E-mail address
      * @param  string $password Password
      * @param  array $custom_fields Map of custom fields
-     * @param  boolean $confirm_if_enabled Whether we need to do an email confirm
+     * @param  boolean $confirm_if_enabled Whether we need to do an e-mail confirm
      * @return array Details of join status, containing status/member_id/data
      */
     private function join($username, $email, $password, $custom_fields, $confirm_if_enabled)

@@ -80,7 +80,7 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
  * @set click ""
  * @param  ?string $dest Specific banner to display (null: get from URL param) (blank: randomise)
  * @param  ?string $b_type Banner type to display (null: get from URL param)
- * @param  ?string $source The banner advertisor who is actively displaying the banner (calling up this function) and hence is rewarded (null: get from URL param) (blank: our own site)
+ * @param  ?string $source The banner advertiser who is actively displaying the banner (calling up this function) and hence is rewarded (null: get from URL param) (blank: our own site)
  * @param  ?integer $width The width (null: standard for banner type)
  * @param  ?integer $height The height (null: standard for banner type)
  * @param  ?string $region Region to show for (null: auto-detect)

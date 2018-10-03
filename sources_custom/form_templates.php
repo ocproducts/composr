@@ -14,13 +14,13 @@
  */
 
 /**
- * Get the Tempcode for a bank of tick boxes.
+ * Get the Tempcode for a bank of tick (check) boxes.
  *
  * @param  array $options A list of tuples: (prettyname, name, value, description)
  * @param  mixed $description A description for this input field
  * @param  ?integer $_tabindex The tab index of the field (null: not specified)
  * @param  mixed $_pretty_name A human intelligible name for this input field (blank: use default)
- * @param  boolean $simple_style Whether to place each tick on a new line
+ * @param  boolean $simple_style Whether to place each tick (check) on a new line
  * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
  * @param  ?string $custom_value Value for custom value (null: no custom value known)
  * @return Tempcode The input field

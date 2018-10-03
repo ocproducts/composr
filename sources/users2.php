@@ -225,7 +225,7 @@ function get_members_viewing_wrap($page = null, $type = null, $id = null, $forum
 /**
  * Get a map of members viewing the specified Composr location.
  *
- * @param  ?ID_TEXT $page The page they need to be viewing (null: environment current) (blank: blank't care)
+ * @param  ?ID_TEXT $page The page they need to be viewing (null: environment current) (blank: don't care)
  * @param  ?ID_TEXT $type The page-type they need to be viewing (null: environment current) (blank: don't care)
  * @param  ?SHORT_TEXT $id The type-id they need to be viewing (null: environment current) (blank: don't care)
  * @param  boolean $forum_layer Whether this has to be done over the forum driver (multi site network)

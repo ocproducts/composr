@@ -707,7 +707,7 @@
     };
 
     /**
-     * Upper-case the first letter of a string
+     * Upper case the first letter of a string
      * @param str
      * @returns {string}
      */
@@ -716,7 +716,7 @@
     };
 
     /**
-     * Lower-case the first letter of a string
+     * Lower case the first letter of a string
      * @param str
      * @returns {string}
      */

@@ -1916,7 +1916,7 @@ function is_writable($path)
 }
 
 /**
- * Finds whether a variable exists / is not null / is an actually derefereable array element. Do not use this for the null case, and otherwise ONLY when for efficiency reasons.
+ * Finds whether a variable exists / is not null / is an actually dereferencable array element. Do not use this for the null case, and otherwise ONLY when for efficiency reasons.
  *
  * @param  mixed $path The variable
  * @return boolean Whether it is set
@@ -1970,7 +1970,7 @@ function mail($to, $subject, $message, $additional_headers = '', $additional_fla
  * @param  ?mixed $arg2 Second argument (null: no second argument) (if array, then each treated as a separate parameter)
  * @param  ?mixed $arg3 Third argument (null: no third argument) (if array, then each treated as a separate parameter)
  * @param  ?mixed $arg4 Fourth argument (null: no fourth argument) (if array, then each treated as a separate parameter)
- * @param  ?mixed $arg5 Fifth argument (null: no fith argument) (if array, then each treated as a separate parameter)
+ * @param  ?mixed $arg5 Fifth argument (null: no fifth argument) (if array, then each treated as a separate parameter)
  * @param  ?mixed $arg6 Sixth argument (null: no sixth argument) (if array, then each treated as a separate parameter)
  * @param  ?mixed $arg7 Seventh argument (null: no seventh argument) (if array, then each treated as a separate parameter)
  * @param  ?mixed $arg8 Eighth argument (null: no eighth argument) (if array, then each treated as a separate parameter)
@@ -2009,10 +2009,10 @@ function method_exists($object, $method_name)
 /**
  * Return current UNIX timestamp with microseconds.
  *
- * @param  boolean $as_float Whether to return a float result. ALWAYS PASS THIS IN AS *FALSE* - FOR COMPATIBILITY WITH OLD VERSIONS OF PHP THAT DO NOT HAVE IT, WHILST PHP 6 DEFAULTS IT TO TRUE.
+ * @param  boolean $as_float Whether to return a float result.
  * @return mixed Micro-time
  */
-function microtime($as_float)
+function microtime($as_float = false)
 {
     return '';
 }
@@ -2459,7 +2459,7 @@ function rewinddir($dir_handle)
 }
 
 /**
- * Returns canonicalized absolute pathname.
+ * Returns canonicalised absolute pathname.
  *
  * @param  PATH $path (Possibly) perceived path
  * @return PATH Actual path
@@ -2888,19 +2888,19 @@ function stristr($haystack, $needle, $before_needle = false)
 }
 
 /**
- * Tokenize string.
+ * Tokenise string.
  *
- * @param  string $subject String to tokenise. EXCEPT if $deliminators=null, then this has actual deliminators.
- * @param  ?string $deliminators Deliminators (null: continue with previous tokenisation)
+ * @param  string $subject String to tokenise. EXCEPT if $delimiters=null, then this has actual delimiters.
+ * @param  ?string $delimiters Delimiters (null: continue with previous tokenisation)
  * @return ~string Next token (false: could not return a token, no more tokens to return)
  */
-function strtok($subject, $deliminators = null)
+function strtok($subject, $delimiters = null)
 {
     return '';
 }
 
 /**
- * Make a string lowercase.
+ * Make a string lower case.
  *
  * @param  string $str Subject
  * @return string Result
@@ -2915,7 +2915,7 @@ function strtolower($str)
  *
  * @param  string $time The subject
  * @param  ?TIME $now The timestamp to find times relative to (null: now)
- * @return TIME The timetamp (-1: failed)
+ * @return TIME The timestamp (-1: failed)
  */
 function strtotime($time, $now = null)
 {
@@ -2923,7 +2923,7 @@ function strtotime($time, $now = null)
 }
 
 /**
- * Make a string uppercase.
+ * Make a string upper case.
  *
  * @param  string $str Subject
  * @return string Result
@@ -3017,7 +3017,7 @@ function trigger_error($error_msg, $error_type)
 }
 
 /**
- * Make a string's first character lowercase.
+ * Make a string's first character lower case.
  *
  * @param  string $str Subject
  * @return string Result
@@ -3028,7 +3028,7 @@ function lcfirst($str)
 }
 
 /**
- * Make a string's first character uppercase.
+ * Make a string's first character upper case.
  *
  * @param  string $str Subject
  * @return string Result
@@ -3039,7 +3039,7 @@ function ucfirst($str)
 }
 
 /**
- * Uppercase the first character of each word in a string.
+ * Upper case the first character of each word in a string.
  *
  * @param  string $str Subject
  * @return string Result
@@ -3077,8 +3077,8 @@ function unlink($filename, $context = null)
 /**
  * Creates a PHP value from a stored representation.
  *
- * @param  string $str Serialized string
- * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized)
+ * @param  string $str Serialised string
+ * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialised)
  */
 function unserialize($str)
 {
@@ -3860,7 +3860,7 @@ function unpack($format, $data)
 }
 
 /**
- * Compares two "PHP-standardized" version number strings.
+ * Compares two "PHP-standardsedd" version number strings.
  *
  * @param  string $version1 First version number
  * @param  string $version2 Second version number
@@ -3897,7 +3897,7 @@ function var_dump($expression)
  *
  * @param  string $format Formatting string
  * @param  array $args Arguments
- * @return integer Length of outputed string
+ * @return integer Length of outputted string
  */
 function vprintf($format, $args)
 {
@@ -4440,7 +4440,7 @@ function eval($code)
 /**
  * Get or Set the HTTP response code.
  *
- * @param  ?integer $response_code Response codee to set (null: don't set)
+ * @param  ?integer $response_code Response code to set (null: don't set)
  * @return mixed The previous response code if $response_code was set / current response mode if $response_code is not set / false if CLI / true if CLI but $response_code was set
  */
 function http_response_code($response_code = null)
@@ -4557,7 +4557,7 @@ function str_word_count($input, $format = 0, $chars = '')
 }
 
 /**
- * Decode the HTML entitity encoded input string.
+ * Decode the HTML entity encoded input string.
  *
  * @param  string $input The text to decode
  * @param  integer $quote_style The quote style code
@@ -4801,9 +4801,9 @@ function inet_pton($address)
 }
 
 /**
- * Converts a packed internet address to a human readable representation.
+ * Converts a packed Internet address to a human readable representation.
  *
- * @param  string $in_addr Converts a packed internet address to a human readable representation
+ * @param  string $in_addr Converts a packed Internet address to a human readable representation
  * @return ~string A string representation of the address (false: error)
  */
 function inet_ntop($in_addr)
@@ -5252,7 +5252,7 @@ socket_getopt
 stream_register_wrapper
 socket_set_blocking
 
-Disabed due to being effectively aliases...
+Disabled due to being effectively aliases...
 
 natcasesort
 natsort

@@ -77,7 +77,11 @@ if (!function_exists('critical_error')) {
         if (!headers_sent()) {
             if ((function_exists('browser_matches')) && (($relay === null) || (strpos($relay, 'Allowed memory') === false))) {
                 if ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
-                    http_response_code(500);
+                    if ($code == 'BANNED') {
+                        http_response_code(403);
+                    } else {
+                        http_response_code(500);
+                    }
                 }
             }
         }
@@ -269,7 +273,11 @@ END;
             file_put_contents($dir . '/' . $code . '.log', $contents);
             ob_end_clean();
 
-            http_response_code(500);
+            if ($code == 'BANNED') {
+                http_response_code(403);
+            } else {
+                http_response_code(500);
+            }
             global $RELATIVE_PATH, $SITE_INFO;
             if (isset($SITE_INFO['base_url'])) {
                 $back_path = $SITE_INFO['base_url'];

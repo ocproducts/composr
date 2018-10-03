@@ -1831,7 +1831,7 @@ function __param($array, $name, $default, $integer = false, $posted = false)
  *
  * @param  string $context The haystack
  * @param  string $word The needle (a wildcard expression)
- * @param  boolean $full_cover Whether full-coverance is required
+ * @param  boolean $full_cover Whether full-coverage is required
  * @return boolean Whether we have a match
  */
 function simulated_wildcard_match($context, $word, $full_cover = false)
@@ -1961,7 +1961,7 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
 }
 
 /**
- * Make sure that lines are seperated by "\n", with no "\r"'s there at all. For Mac data, this will be a flip scenario. For Linux data this will be a null operation. For windows data this will be change from "\r\n" to just "\n". For a realistic scenario, data could have originated on all kinds of platforms, with some editors converting, some situations being inter-platform, and general confusion. Don't make blind assumptions - use this function to clean data, then write clean code that only considers "\n"'s.
+ * Make sure that lines are separated by "\n", with no "\r"'s there at all. For Mac data, this will be a flip scenario. For Linux data this will be a null operation. For windows data this will be change from "\r\n" to just "\n". For a realistic scenario, data could have originated on all kinds of platforms, with some editors converting, some situations being inter-platform, and general confusion. Don't make blind assumptions - use this function to clean data, then write clean code that only considers "\n"'s.
  *
  * @param  string $in The data to clean
  * @param  ?ID_TEXT $desired_charset The character set it should be in. We don't do any real conversions using this, only make sure that common problems with fed ISO-8859-1 data are resolved (null: output character set)

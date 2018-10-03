@@ -45,6 +45,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         $this->process_checks_section('testPageTitle', 'Page titles', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testH1Tags', 'H1 tags', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testXMLSitemap', 'XML Sitemap', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testBotBanning', 'Crawlers incorrectly banned', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -290,5 +291,38 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
                 $this->stateCheckSkipped('Nothing queued to go into the XML Sitemap old enough to know it should be there');
             }
         }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testBotBanning($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('failure');
+
+        $start = 0;
+        do {
+            $rows = $GLOBALS['SITE_DB']->query('SELECT ip,i_descrip,i_ban_until FROM ' . get_table_prefix() . 'banned_ip WHERE i_ban_positive=1 AND (i_ban_until IS NULL' . ' OR i_ban_until>' . strval(time()) . ')', 100, $start);
+            foreach ($rows as $row) {
+                $this->assertTrue(!is_unbannable_bot_dns($row['ip']), 'Accidentally banned a web crawler (according to DNS): ' . $row['ip']);
+                $this->assertTrue(!is_unbannable_bot_ip($row['ip']), 'Accidentally banned a web crawler (according to IP address): ' . $row['ip']);
+            }
+            $start += 100;
+        }
+        while (count($rows) > 0);
     }
 }

@@ -20,7 +20,9 @@
 	{+START,IF_NON_EMPTY,{LENGTH}}
 		<meta itemprop="duration" content="T{LENGTH*}S" />
 	{+END}
-	<meta itemprop="thumbnailURL" content="{THUMB_URL*}" />
+	{+START,IF_NON_EMPTY,{THUMB_URL}}
+		<meta itemprop="thumbnailURL" content="{THUMB_URL*}" />
+	{+END}
 	<meta itemprop="embedURL" content="{URL*}" />
 
 	<div class="webstandards-checker-off" id="{$GET%,player_id}"></div>
@@ -34,7 +36,7 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 
-<div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
+<div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}">
 	{+START,IF_PASSED_AND_TRUE,FRAMED}
 		<figure>
 			{$GET,media}

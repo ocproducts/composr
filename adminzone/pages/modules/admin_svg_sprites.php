@@ -215,6 +215,7 @@ class Module_admin_svg_sprites
         $svg_xml = new CMS_simple_xml_reader(file_get_contents($sprite_path));
         $svg_xml_children = $svg_xml->gleamed[3];
         $sprite_url = find_theme_image('icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite', true, false, $theme);
+        $sprite_url .= '?t=' . microtime(true);
 
         $icons = new Tempcode();
         foreach ($svg_xml_children as $symbol) {
@@ -333,7 +334,13 @@ class Module_admin_svg_sprites
                     // whitespace?
                     continue;
                 }
-                $output .= $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
+                $child_xml = $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
+
+                if (preg_replace('/\s/', '', $child_xml) === '<defs></defs>') {
+                    continue; // Skip empty <defs> elements
+                }
+
+                $output .= $child_xml;
             }
             $output .= "</symbol>\n";
         }

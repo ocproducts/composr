@@ -128,9 +128,9 @@ function cns_create_selection_list_topic_tree($it = null)
  *
  * @param  ?AUTO_LINK $forum_id The forum being at the root of our recursion (null: true root forum)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)
- * @param  ?ID_TEXT $title The forum name of the $forum_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs title
+ * @param  ?ID_TEXT $title The forum name of the $forum_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the child's title
  * @param  ?integer $levels The number of recursive levels to search (null: all)
- * @return array A list of maps for all forums. Each map entry containins the fields 'id' (forum ID) and 'breadcrumbs' (path to the forum, including the forums own title), and more.
+ * @return array A list of maps for all forums. Each map entry containing the fields 'id' (forum ID) and 'breadcrumbs' (path to the forum, including the forums own title), and more.
  */
 function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null, $levels = null)
 {

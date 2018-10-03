@@ -22,7 +22,7 @@ class SugarWrapper
     private $rest_url;
 
     /**
-     * A SugarCRM Username. It's recommended that you create a seperate SugarCRM
+     * A SugarCRM Username. It's recommended that you create a separate SugarCRM
      * User account to make REST calls.
      *
      * @var string
@@ -812,7 +812,7 @@ class SugarWrapper
      * SELECT SQL statement, given a base module, any number of related of modules,
      * and respective fields for each module.
      *
-     * @param string $id     the SugarCRM id to retreive
+     * @param string $id     the SugarCRM id to retrieve
      *
      *
      * @param string $module the SugarCRM module name. Usually first letter

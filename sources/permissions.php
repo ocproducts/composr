@@ -89,7 +89,7 @@ function handle_permission_check_logging($member_id, $op, $params, $result)
             }
             flock($PERMISSION_CHECK_LOGGER, LOCK_EX);
             fseek($PERMISSION_CHECK_LOGGER, 0, SEEK_END);
-            fwrite($PERMISSION_CHECK_LOGGER, "\n\n" . date('Y/m/d h:m:i') . ' -- ' . $self_url . ' -- ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . "\n");
+            fwrite($PERMISSION_CHECK_LOGGER, "\n\n" . date('Y/m/d h:i:s') . ' -- ' . $self_url . ' -- ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . "\n");
             flock($PERMISSION_CHECK_LOGGER, LOCK_UN);
         } else {
             $PERMISSION_CHECK_LOGGER = false;
@@ -118,7 +118,7 @@ function handle_permission_check_logging($member_id, $op, $params, $result)
  * Show a helpful access-denied page. Has a login ability if it senses that logging in could curtail the error.
  *
  * @param  ID_TEXT $class The class of error (e.g. PRIVILEGE). This is a language string.
- * @param  string $param The parameteter given to the error message
+ * @param  string $param The parameter given to the error message
  * @param  boolean $force_login Force the user to login (even if perhaps they are logged in already)
  */
 function access_denied($class = 'ACCESS_DENIED', $param = '', $force_login = false)

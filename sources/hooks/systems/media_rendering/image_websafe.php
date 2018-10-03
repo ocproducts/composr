@@ -139,6 +139,6 @@ class Hook_media_rendering_image_websafe
             'URL_SAFE' => $_url_safe,
             'URL_DIRECT_FILESYSTEM' => $url_direct_filesystem,
             'HOOK' => 'image_websafe'
-        ) + _create_media_template_parameters($url, $attributes, $as_admin, $source_member, true));
+        ) + _create_media_template_parameters($url, $attributes, $as_admin, $source_member, true, $url_direct_filesystem));
     }
 }

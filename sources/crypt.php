@@ -135,7 +135,7 @@ function get_secure_random_number()
 }
 
 /**
- * Get obfuscate version of 'mailto:' (which'll hopefully fool e-mail scavengers to not pick up these e-mail addresses).
+ * Get obfuscate version of 'mailto:' (which will hopefully fool e-mail scavengers to not pick up these e-mail addresses).
  *
  * @return string The obfuscated 'mailto:' string
  */

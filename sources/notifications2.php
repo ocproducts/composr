@@ -387,7 +387,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
  *
  * @param  array $_notification_types Notification types
  * @param  ID_TEXT $notification_code The notification code to work with
- * @param  object $ob Notificiation hook object
+ * @param  object $ob Notification hook object
  * @param  ?ID_TEXT $id Category we're looking under (null: root)
  * @param  integer $depth Recursion depth
  * @param  ?boolean $force_change_children_to Value to change setting to (null: do not change)

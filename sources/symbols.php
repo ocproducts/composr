@@ -789,7 +789,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 if ((get_option('cdn_regexps') != '') && (get_option('cdn') != '') && (get_param_integer('keep_minify', 1) == 1)) {
                     $matches = array();
                     $bu = get_base_url();
-                    $num_matches = preg_match_all('#(\s+(src|href))="' . preg_quote($bu, '#') . '/([^"]+)"#', $value, $matches);
+                    $num_matches = preg_match_all('#(\s+(src|srcset|href))="' . preg_quote($bu, '#') . '/([^"]+)"#', $value, $matches);
                     $cdn_regexps = str_replace("\n", '|', get_option('cdn_regexps'));
                     for ($i = 0; $i < $num_matches; $i++) {
                         $_url = $matches[3][$i];
@@ -4831,7 +4831,11 @@ function ecv_SUBSTR_COUNT($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = strval(substr_count($param[0], $param[1]));
+        if ($param[0] == '') {
+            $value = '0';
+        } else {
+            $value = strval(substr_count($param[0], $param[1]));
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {

@@ -30,11 +30,11 @@ function init__web_resources()
 }
 
 /**
- * Make sure that the given javascript file is loaded up.
+ * Make sure that the given JavaScript file is loaded up.
  *
  * @sets_output_state
  *
- * @param  ID_TEXT $javascript The javascript file required
+ * @param  ID_TEXT $javascript The JavaScript file required
  */
 function require_javascript($javascript)
 {
@@ -58,10 +58,10 @@ function require_javascript($javascript)
 /**
  * Force a JavaScript file to be cached (ordinarily we can rely on this to be automated by require_javascript/javascript_tempcode).
  *
- * @param  string $j The javascript file required
+ * @param  string $j The JavaScript file required
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
  * @param  boolean $allow_defer Allow the compilation to be deferred through a PHP call (useful for parallelising compilation)
- * @return string The path to the javascript file in the cache (blank: no file) (defer: defer compilation through a script; only possible if $allow_defer is set)
+ * @return string The path to the JavaScript file in the cache (blank: no file) (defer: defer compilation through a script; only possible if $allow_defer is set)
  */
 function javascript_enforce($j, $theme = null, $allow_defer = false)
 {
@@ -210,7 +210,7 @@ function javascript_tempcode()
 /**
  * Get Tempcode to tie in (to the HTML, in <head>) for an individual JavaScript file.
  *
- * @param  ID_TEXT $j The javascript file required
+ * @param  ID_TEXT $j The JavaScript file required
  * @param  Tempcode $js Tempcode object (will be written into if appropriate)
  * @param  ?boolean $_minify Whether minifying (null: from what is cached)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
@@ -228,7 +228,9 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
             $GLOBALS['STATIC_CACHE_ENABLED'] = false;
 
             if ((function_exists('debugging_static_cache')) && (debugging_static_cache())) {
-                error_log('SC: No static cache due to deferred JavaScript compilation, ' . $j);
+                if (php_function_allowed('error_log')) {
+                    @error_log('SC: No static cache due to deferred JavaScript compilation, ' . $j);
+                }
             }
 
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
@@ -477,7 +479,9 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
             $GLOBALS['STATIC_CACHE_ENABLED'] = false;
 
             if ((function_exists('debugging_static_cache')) && (debugging_static_cache())) {
-                error_log('SC: No static cache due to deferred CSS compilation, ' . $c);
+                if (php_function_allowed('error_log')) {
+                    @error_log('SC: No static cache due to deferred CSS compilation, ' . $c);
+                }
             }
 
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
@@ -574,7 +578,7 @@ function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, 
 }
 
 /**
- * Add some Comcode that does resource-inclusion for CSS and Javascript files that are currently loaded.
+ * Add some Comcode that does resource-inclusion for CSS and JavaScript files that are currently loaded.
  *
  * @param  string $message_raw Comcode
  */

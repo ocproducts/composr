@@ -42,7 +42,7 @@ function autoprobe_cdns()
     $server_ip = $_SERVER['REMOTE_ADDR'];
     $try = array(
         'cdn' . '.' . $domain_name,
-        ($server_ip == '127.0.0.1' || substr($server_ip, 0, 8) == '192.168.' || substr($server_ip, 0, 5) == '10.0.') ? null : $server_ip,
+        ip_address_is_local($server_ip) ? null : $server_ip,
         (substr($domain_name, 0, 4) == 'www.') ? preg_replace('#^www\.#', '', $domain_name) : ('www' . '.' . $domain_name),
         'ftp' . '.' . $domain_name,
         'mail' . '.' . $domain_name,
@@ -407,7 +407,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
 }
 
 /**
- * An image has been passed through by POST, either as a file (a new upload), a url, a reference to an existing theme image, or as a filedump reference.
+ * An image has been passed through by POST, either as a file (a new upload), a URL, a reference to an existing theme image, or as a filedump reference.
  * Used with form_input_upload_multi_source.
  * Get the image URL from the POST data.
  *

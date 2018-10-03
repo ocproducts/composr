@@ -88,7 +88,7 @@ function remove_url_mistakes($url)
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
  * @param  array $exclude A list of parameters to exclude
- * @return Tempcode The builtup hidden form fields
+ * @return Tempcode The built-up hidden form fields
  *
  * @ignore
  */
@@ -132,11 +132,11 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = array
 }
 
 /**
- * Recurser helper function for _build_keep_post_fields.
+ * Recursion helper function for _build_keep_post_fields.
  *
  * @param  ID_TEXT $key Key name to put value under
  * @param  mixed $value Value (string or array)
- * @return string The builtup hidden form fields
+ * @return string The built-up hidden form fields
  *
  * @ignore
  */
@@ -168,7 +168,7 @@ function _fixed_post_parser($key, $value)
  *
  * @param  array $exclude A list of parameters to exclude
  * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
- * @return Tempcode The builtup hidden form fields
+ * @return Tempcode The built-up hidden form fields
  *
  * @ignore
  */
@@ -236,8 +236,8 @@ function _url_to_filename($url_full)
  * Take a URL and base URL, and fully qualify the URL according to it.
  *
  * @param  URLPATH $url The URL to fully qualified
- * @param  URLPATH $url_base The base-URL
- * @param  boolean $base_is_full_url Whether the base-URL is actually a full URL which needs stripping back
+ * @param  URLPATH $url_base The base URL
+ * @param  boolean $base_is_full_url Whether the base URL is actually a full URL which needs stripping back
  * @return URLPATH Fully qualified URL
  *
  * @ignore
@@ -578,7 +578,7 @@ function _page_path_to_page_link($page)
 }
 
 /**
- * Called from 'find_id_moniker'. We tried to lookup a moniker, found a hook, but found no stored moniker. So we'll try and autogenerate one.
+ * Called from 'find_id_moniker'. We tried to lookup a moniker, found a hook, but found no stored moniker. So we'll try and auto-generate one.
  *
  * @param  array $ob_info The hooks info profile
  * @param  array $url_parts The URL component map (must contain 'page', 'type', and 'id' if this function is to do anything)

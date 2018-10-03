@@ -91,6 +91,7 @@ class css_file_test_set extends cms_test_case
                         $exceptions = array(
                             'svg.css',
                             'confluence.css',
+                            'mediaelementplayer.css',
                         );
                         if (in_array($e, $exceptions)) {
                             continue;
@@ -298,6 +299,8 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'responsive-video',
+            'content-wrap-auto-center',
             'table-header-sorted',
             'comcode-button',
             'back-to-top-by-buttons',

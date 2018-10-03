@@ -50,11 +50,11 @@ class Hook_notification_ticket_new_staff extends Hook_Notification
 
         $page_links = array();
 
-        $types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'ticket_type_title'));
+        $types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'ticket_type_name'));
         foreach ($types as $type) {
             $page_links[] = array(
                 'id' => $type['id'],
-                'title' => get_translated_text($type['ticket_type_title']),
+                'title' => get_translated_text($type['ticket_type_name']),
             );
         }
         sort_maps_by($page_links, 'title', false, true);

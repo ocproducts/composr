@@ -37,6 +37,8 @@ function init__notification_poller()
  */
 function notification_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $type = get_param_string('type');
     switch ($type) {
         case 'mark_all_read':

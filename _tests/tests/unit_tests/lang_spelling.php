@@ -63,7 +63,10 @@ class lang_spelling_test_set extends cms_test_case
             $files = get_directory_contents(get_file_base() . '/' . $dir, get_file_base() . '/' . $dir, null, false, true, array('txt'));
             foreach ($files as $path) {
                 // Exceptions
-                if (basename($path) == 'synonyms.txt') {
+                if (in_array(basename($path), array(
+                    'synonyms.txt',
+                    'unbannable_ips.txt',
+                ))) {
                     continue;
                 }
 

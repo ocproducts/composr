@@ -88,7 +88,7 @@ function system_gift_transfer($reason, $amount, $member_id, $include_in_log = tr
  * @param  MEMBER $sender_id The member sending the points
  * @param  SHORT_TEXT $reason The reason for the gift
  * @param  boolean $anonymous Does the sender want to remain anonymous?
- * @param  boolean $send_email Whether to send out an email about it
+ * @param  boolean $send_email Whether to send out an e-mail about it
  */
 function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = false, $send_email = true)
 {

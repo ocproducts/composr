@@ -171,6 +171,12 @@ You may wish to deny access to the usergroup and member directories when using t
             'sources_custom/hooks/systems/config/bookings_show_warnings_for_months.php',
             'sources_custom/hooks/systems/config/member_booking_only.php',
             'sources_custom/hooks/systems/actionlog/booking.php',
+            'themes/default/images/icons/booking/book.svg',
+            'themes/default/images/icons/booking/blacked.svg',
+            'themes/default/images/icons/booking/bookable.svg',
+            'themes/default/images/icons/booking/booking.svg',
+            'themes/default/images/icons/booking/supplement.svg',
+            'themes/default/images/icons/booking/index.html',
         );
     }
 }

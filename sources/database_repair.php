@@ -584,7 +584,7 @@ class DatabaseRepair
      * Convert a MySQL field type to something we can compare against.
      *
      * @param  ID_TEXT $raw_type Field type
-     * @return ID_TEXT Field tpye
+     * @return ID_TEXT Field type
      */
     private function cleanup_mysql_field_type($raw_type)
     {
@@ -725,7 +725,7 @@ class DatabaseRepair
     }
 
     /**
-     * Table is exixtent but meta details missing.
+     * Table is existent but meta details missing.
      *
      * @param  string $table_name Table name
      * @param  array $table Table details

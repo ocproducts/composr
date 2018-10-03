@@ -252,7 +252,7 @@ class Breadcrumb_substitution_loader
                 $page_link = trim(str_replace('\n', "\n", $this->text_so_far));
                 $this->substitution_current_links[] = array(
                     $page_link,
-                    isset($tag_attributes['label']) ? static_evaluate_tempcode(comcode_to_tempcode($tag_attributes['label'])) : ''
+                    isset($tag_attributes['label']) ? protect_from_escaping(comcode_to_tempcode($tag_attributes['label'])) : new Tempcode()
                 );
                 break;
         }

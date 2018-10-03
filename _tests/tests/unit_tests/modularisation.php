@@ -58,10 +58,42 @@ class modularisation_test_set extends cms_test_case
                 $this->assertTrue(((!array_key_exists($path, $seen)) || (strpos($path, '_custom') !== false)), 'Double referenced: ' . $path);
                 $seen[$path] = true;
 
-                if (preg_match('#^themes/default/images/icons/#', $path) != 0) {
+                if (preg_match('#^themes/default/images/(icons|icons_monochrome)/#', $path) != 0) {
                     $this->assertTrue(in_array($path, $addon_data['all_icons']), 'All icons must be in all_icons addon: ' . $path);
+
+                    $matches = array();
+                    if (preg_match('#^themes/default/images/icons/(.*)$#', $path, $matches) != 0) {
+                        $this->assertTrue(in_array('themes/default/images/icons_monochrome/' . $matches[1], $d), 'Missing icons_monochrome equivalent to: ' . $path);
+                    } else {
+                        $this->assertTrue(in_array('themes/default/images/icons/' . $matches[1], $d), 'Missing icons equivalent to: ' . $path);
+                    }
                 }
             }
+        }
+
+        // Check all_icons files also in other addons
+        foreach ($addon_data['all_icons'] as $path) {
+            if ($path == 'sources/hooks/systems/addon_registry/all_icons.php') {
+                continue;
+            }
+            if (preg_match('#^themes/default/images/(icons|icons_monochrome)/spare/#', $path) != 0) {
+                continue;
+            }
+
+            $ok = false;
+
+            foreach ($addon_data as $addon_name => $d) {
+                if ($addon_name == 'all_icons') {
+                    continue;
+                }
+
+                if (in_array($path, $d)) {
+                    $ok = true;
+                    break;
+                }
+            }
+
+            $this->assertTrue($ok, 'Files in all_icons generally must also be distributed in exactly one other addon [the owner addon of that icon]]: ' . $path);
         }
 
         // Check declared packages in files against the addon they're supposed to be within, and for files not including in any addon...

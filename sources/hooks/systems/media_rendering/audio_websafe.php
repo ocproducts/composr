@@ -92,14 +92,41 @@ class Hook_media_rendering_audio_websafe extends Media_renderer_with_fallback
      * @param  array $attributes Attributes (e.g. width, height, length)
      * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
      * @param  ?MEMBER $source_member Member to run as (null: current member)
+     * @param  ?URLPATH $url_direct_filesystem Direct URL (not via a script) (null: just use the normal URL)
      * @return Tempcode Rendered version
      */
-    public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null)
+    public function render($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $url_direct_filesystem = null)
     {
+        $_url = is_object($url) ? $url->evaluate() : $url;
+        $_url_safe = is_object($url_safe) ? $url_safe->evaluate() : $url_safe;
+        if ($url_direct_filesystem === null) {
+            $url_direct_filesystem = $_url;
+        }
+
         $ret = $this->fallback_render($url, $url_safe, $attributes, $as_admin, $source_member, $url);
         if ($ret !== null) {
             return $ret;
         }
+
+        $closed_captions_url = null;
+        if (array_key_exists('closed_captions_url', $attributes)) {
+            $closed_captions_url = $attributes['closed_captions_url'];
+        }
+        if (empty($closed_captions_url)) {
+            $__url = rawurldecode($url_direct_filesystem);
+            if (substr($__url, 0, 17) == 'uploads/filedump/') {
+                $ext = get_file_extension($__url);
+                $base_path = substr($__url, 0, strlen($__url) - strlen($ext) - 1);
+                foreach (array('vtt') as $subtitle_type) {
+                    if (is_file(get_custom_file_base() . '/' . $base_path . '.' . $subtitle_type)) {
+                        $closed_captions_url = get_custom_base_url() . '/' . $base_path . '.' . $subtitle_type;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $autostart = ((array_key_exists('autostart', $attributes)) && ($attributes['autostart'] == '1'));
 
         // Put in defaults
         if ((!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']))) {
@@ -109,6 +136,6 @@ class Hook_media_rendering_audio_websafe extends Media_renderer_with_fallback
             $attributes['height'] = '30';
         }
 
-        return do_template('MEDIA_AUDIO_WEBSAFE', array('_GUID' => '474dfa6766d809141bb6ef800bf22636', 'HOOK' => 'audio_websafe') + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
+        return do_template('MEDIA_AUDIO_WEBSAFE', array('_GUID' => '474dfa6766d809141bb6ef800bf22636', 'HOOK' => 'audio_websafe', 'CLOSED_CAPTIONS_URL' => $closed_captions_url, 'AUTOSTART' => $autostart) + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
     }
 }

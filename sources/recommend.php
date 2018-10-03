@@ -27,7 +27,7 @@
  * @param  boolean $is_invite Whether this is an invitation
  * @param  ?EMAIL $recommender_email Email address of the recommender (null: current user's)
  * @param  ?string $subject The subject (null: default)
- * @param  ?array $names List of names (null: use email addresses as names)
+ * @param  ?array $names List of names (null: use e-mail addresses as names)
  */
 function send_recommendation_email($name, $email_address, $message, $is_invite = false, $recommender_email = null, $subject = null, $names = null)
 {

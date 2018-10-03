@@ -542,7 +542,7 @@ function page_link_redirect_script()
 }
 
 /**
- * Outputs the page-link chooser popup.
+ * Outputs the page-link chooser pop-up.
  *
  * @ignore
  */

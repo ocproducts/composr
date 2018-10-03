@@ -29,7 +29,7 @@ function init__mail_forms()
 }
 
 /**
- * Entry script to process a form that needs to be emailed.
+ * Entry script to process a form that needs to be e-mailed.
  */
 function form_to_email_entry_script()
 {
@@ -112,7 +112,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
 }
 
 /**
- * Worker funtion for form_to_email.
+ * Worker function for form_to_email.
  *
  * @param  array $extra_boring_fields Fields to skip in addition to the normal skipped ones
  * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter)
@@ -240,8 +240,8 @@ function _form_to_email($extra_boring_fields = array(), $subject = null, $subjec
 /**
  * Append a value to a text e-mail.
  *
- * @param  string $body Text-email (altered by reference)
- * @param  boolean $is_tick Whether it is a tick field
+ * @param  string $body Text e-mail (altered by reference)
+ * @param  boolean $is_tick Whether it is a tick (check) field
  * @param  string $field_name Field name
  * @param  string $field_title Field title
  * @param  string $field_val Field value

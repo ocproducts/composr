@@ -437,7 +437,7 @@ function is_httpauth_login()
 
 /**
  * Make sure that the given URL contains a session if cookies are disabled.
- * NB: This is used for login redirection. It had to add the session ID into the redirect url.
+ * NB: This is used for login redirection. It had to add the session ID into the redirect URL.
  *
  * @param  URLPATH $url The URL to enforce results in session persistence for the user
  * @return URLPATH The fixed URL (potentially nothing was done, depending on cookies)

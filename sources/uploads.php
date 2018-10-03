@@ -66,7 +66,7 @@ function set_images_cleanup_pipeline_settings($recompress_mode = 0, $maximum_dim
 }
 
 /**
- * An upload has been passed through by POST, either as a file (a new upload), a url, or as a filedump reference.
+ * An upload has been passed through by POST, either as a file (a new upload), a URL, or as a filedump reference.
  * For images use post_param_image instead.
  * Used with form_input_upload_multi_source.
  * Get the file URL from the POST data.

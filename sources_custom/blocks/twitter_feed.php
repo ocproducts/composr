@@ -350,7 +350,7 @@ class Block_twitter_feed
     }
 
     /**
-     * Used to convert a full url (i.e. http://www.twitter.com/) into a clickable link. preg_replace_callback callback
+     * Used to convert a full URL (i.e. http://www.twitter.com/) into a clickable link. preg_replace_callback callback
      *
      * @param  array $matches Array of matches
      * @return string Substituted text

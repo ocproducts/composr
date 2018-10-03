@@ -419,7 +419,7 @@ function _box_callback($matches)
 }
 
 /**
- * Make page tags into url tags. Callback for preg_replace_callback.
+ * Make 'page' tags into 'url' tags. Callback for preg_replace_callback.
  *
  * @param  array $matches Matches
  * @return string Replacement

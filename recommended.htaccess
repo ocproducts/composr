@@ -53,7 +53,7 @@ php_flag suhosin.upload.remove_binary off
 </IfModule>
 
 # Set Composr to handle 404 errors. Assume Composr is in the root
-<FilesMatch "(?<!\.jpg|\.jpeg|\.gif|\.png|\.ico|\.cur|\.svg)$">
+<FilesMatch "(?<!\.jpg|\.jpeg|\.gif|\.png|\.ico|\.cur|\.svg|\.css|\.js)$">
 ErrorDocument 404 /index.php?page=404
 </FilesMatch>
 
@@ -87,6 +87,9 @@ SetEnvIfNoCase Request_URI \.tar$ no-gzip dont-vary
 #ExpiresByType application/javascript "access plus 1 month"
 #</IfModule>
 
+# Exotic file types we may want
+AddType text/vtt .vtt
+
 <IfModule mod_rewrite.c>
 
 # Needed for mod_rewrite. Disable this line if your server does not have AllowOverride permission (can be one cause of Internal Server Errors)
@@ -102,37 +105,13 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
-# Serve pre-compressed CSS/JS files if they exist and the client accepts gzip
-#  This may not work properly on Windows due to Apache bugs. The RewriteRule may redirect to contain the full file path, and also the most recent FilesMatch expression
-<IfModule mod_env.c>
-<IfModule mod_headers.c>
-<FilesMatch "\.js(\.gz)?($|\?)">
-ForceType application/javascript
-Header set Content-Encoding: gzip
-Header append Vary: Accept-Encoding
-SetEnv no-gzip
-</FilesMatch>
-<FilesMatch "\.css(\.gz)?($|\?)">
-ForceType text/css
-Header set Content-Encoding: gzip
-Header append Vary: Accept-Encoding
-SetEnv no-gzip
-</FilesMatch>
-<FilesMatch "\.(js|css)?($|\?)">
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{REQUEST_FILENAME}\.gz -s
-RewriteRule (.*/templates_cached/[^/]*/[^/]*\.(css|js)) $1.gz [QSA]
-</FilesMatch>
-</IfModule>
-</IfModule>
-
 # Rewrite .gif emoticons for browsers that support APNG (LEGACY; when possible we want to get rid of the gifs, but Edge does not yet support)
 RewriteCond %{HTTP_USER_AGENT} (Chrom|Firefox|Safari)
 RewriteRule ^(themes/default/images/cns_emoticons/.*\.gif)$ $1.png [L,QSA]
 
 # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
 RewriteCond $1 ^\d+.shtml [OR]
-RewriteCond $1 \.(1st|3g2|3gp|3gp2|3gpp|3p|7z|aac|ai|aif|aifc|aiff|asf|atom|avi|bmp|bz2|css|csv|cur|dat|diff|dmg|doc|docx|dot|dotx|eml|exe|f4v|gif|gz|html|ico|ics|ini|iso|jpe|jpeg|jpg|js|json|keynote|log|m2v|m4v|mdb|mid|mov|mp2|mp3|mp4|mpa|mpe|mpeg|mpg|mpv2|numbers|odb|odc|odg|odi|odp|ods|odt|ogg|ogv|otf|pages|patch|pdf|php|png|ppt|pptx|ps|psd|pub|qt|ra|ram|rar|rm|rss|rtf|sql|svg|swf|tar|tga|tgz|tif|tiff|torrent|tpl|ttf|txt|vsd|wav|weba|webm|webp|wma|wmv|woff|xls|xlsx|xml|xsd|xsl|zip) [OR]
+RewriteCond $1 \.(1st|3g2|3gp|3gp2|3gpp|3p|7z|aac|ai|aif|aifc|aiff|asf|atom|avi|bmp|bz2|css|csv|cur|dat|diff|dmg|doc|docx|dot|dotx|eml|exe|f4v|gif|gz|html|ico|ics|ini|iso|jpe|jpeg|jpg|js|json|keynote|log|m2v|m4v|mdb|mid|mov|mp2|mp3|mp4|mpa|mpe|mpeg|mpg|mpv2|numbers|odb|odc|odg|odi|odp|ods|odt|ogg|ogv|otf|pages|patch|pdf|php|png|ppt|pptx|ps|psd|pub|qt|ra|ram|rar|rm|rss|rtf|sql|svg|swf|tar|tga|tgz|tif|tiff|torrent|tpl|ttf|txt|vsd|vtt|wav|weba|webm|webp|wma|wmv|woff|xls|xlsx|xml|xsd|xsl|zip) [OR]
 RewriteCond %{DOCUMENT_ROOT}/$1 -f [OR]
 RewriteCond %{DOCUMENT_ROOT}/$1 -l [OR]
 RewriteCond %{DOCUMENT_ROOT}/$1 -d [OR]

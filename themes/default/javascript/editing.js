@@ -721,7 +721,7 @@
     }
 
     /**
-     * Insert attachment comcode
+     * Insert attachment Comcode
      * @param fieldName
      * @param id
      * @param description

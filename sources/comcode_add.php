@@ -88,7 +88,7 @@ function _get_details_comcode_tags()
         'hide' => array('param'),
         'tooltip' => array('param'),
         'if_in_group' => array('param', 'type'),
-        'media' => array('description', 'thumb_url', 'float', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url'),
+        'media' => array('description', 'thumb_url', 'float', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'responsive', 'autostart', 'closed_captions_url'),
         'img' => array('align', 'float', 'param', 'title', 'rollover', 'refresh_time', 'width', 'height'),
         'thumb' => array('align', 'param', 'caption', 'float'),
         'media_set' => array('width', 'height'),
