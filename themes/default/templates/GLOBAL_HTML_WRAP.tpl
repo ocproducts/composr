@@ -25,7 +25,16 @@
 				{+END}
 
 				{$,The main logo}
-				<h1 class="logo-outer"><a target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
+				<h1 class="logo-outer">
+					<a target="_self" href="{$PAGE_LINK*,:}" rel="home">
+						{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
+						<img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" />
+						{+END}
+						{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
+						<span class="logo" title="{!HOME}">{$SITE_NAME*}</span>
+						{+END}
+					</a>
+				</h1>
 
 				{$,Main menu}
 				<div class="global-navigation">
