@@ -26,12 +26,12 @@
 
 				{$,The main logo}
 				<h1 class="logo-outer">
-					<a target="_self" href="{$PAGE_LINK*,:}" rel="home">
+					<a target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
 						{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
-						<img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" />
+						<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
 						{+END}
 						{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
-						<span class="logo" title="{!HOME}">{$SITE_NAME*}</span>
+						<span class="logo">{$SITE_NAME*}</span>
 						{+END}
 					</a>
 				</h1>
