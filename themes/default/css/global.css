@@ -935,18 +935,30 @@ input.input-username::-webkit-calendar-picker-indicator {
 
 /*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 	/*{+START,CSS_MODE,desktop}*/
-		#main-website-inner {
+		html>body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
+			/* Want to change the tiled background?
+				Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
+				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
+			*/
+			background-image: url('{$IMG_INLINE;,outer_background}');
+			background-size: 220px 220px;
+		}
+		#main-website #main-website-inner {
+			width: 980px;
 			position: relative;
+			margin: 15px auto 15px auto;
+			border: 1px solid {$GET,fixed_width_border};
+			box-shadow: 0 0 20px {$GET,standard_border};
 		}
 		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			#main-website-inner {
+			#main-website #main-website-inner {
 				margin: 15px;
 			}
 		/*{+END}*/
 	/*{+END}*/
 
 	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
-		#main-website-inner {
+		#main-website #main-website-inner {
 			margin: 0 0 0 0.5em;
 			border: 0;
 			box-shadow: none;
@@ -1057,6 +1069,10 @@ header h1 {
 	}
 /*{+END}*/
 
+.global-banner {
+	text-align: center;
+}
+
 .text-banner {
 	width: 13.5em;
 	font-family: 'Arial', sans-serif;
@@ -1077,14 +1093,35 @@ header h1 {
 }
 
 .logo-outer .logo {
-	/*width: 100%;*/
 	height: auto;
 	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
 }
 
-.logo-outer .logo,
-.logo-outer .logo:hover {
+.header-classic .logo-outer .logo {
+	width: 100%;
+}
+
+.header-classic .global-navigation-inner {
+	display: flex;
+	min-height: 60px;
+}
+
+.header-modern .logo-outer .logo {
+	max-width: 200px;
+}
+
+.logo-outer a,
+.logo-outer a:hover {
+	display: block;
 	text-decoration: none;
+}
+
+html.is-not-scrolled .logo-outer .logo-color {
+	display: none;
+}
+
+html.is-scrolled .logo-outer .logo-white {
+	display: none;
 }
 
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar {
@@ -1094,12 +1131,8 @@ html.has-hero-carousel.is-not-scrolled header.with-white-navbar {
 	transition: background-color 0.15s ease-in-out, border-bottom 0.15s ease-in-out;
 }
 
-html.has-sticky-navbar {
-	padding-top: 70px;
-}
-
-html:not(.has-hero-carousel) header,
-html.is-scrolled header {
+html:not(.has-hero-carousel) header.with-white-navbar,
+html.is-scrolled header.with-white-navbar {
 	color: {$GET,a.link};
 	background-color: {$GET,WB};
 	border-bottom: 1px solid {$GET,standard_border};
@@ -1129,6 +1162,14 @@ header.with-sticky-navbar {
 	right: 0;
 	top: 0;
 	z-index: 100;
+}
+
+header.with-sticky-navbar + .sticky-navbar-placeholder {
+	padding-top: 82px;
+}
+
+header.with-sticky-navbar + .sticky-navbar-placeholder + .cms-carousel-home-hero {
+	margin-top: -82px;
 }
 
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar .logo,
@@ -1166,6 +1207,10 @@ header.with-seed-navbar .top-button:hover {
 	background: rgba(0, 0, 0, 0.05);
 }
 
+.global-navigation-inner {
+	min-height: 70px;
+}
+
 .global-navigation .menu-dropdown {
 	display: flex;
 	margin-right: 20px;
@@ -1174,6 +1219,7 @@ header.with-seed-navbar .top-button:hover {
 .global-navigation .top-buttons, 
 .global-navigation .top-form {
 	display: flex;
+	margin-left: auto;
 }
 
 .top-button-wrapper {
@@ -1213,10 +1259,6 @@ header.with-seed-navbar .top-button:hover {
 }
 .global-navigation .top-form {
 	padding: 16px 0 16px 10px;
-}
-
-.global-navigation .top-form * {
-	vertical-align: middle;
 }
 
 .global-navigation .top-login-controls {
@@ -6854,17 +6896,16 @@ NB: Form buttons are wrapped in either:
 	/*transition: width 0.15s linear*/
 }
 
-.cms-carousel-full-screen {
-	min-height: 100vmin;
-}
-
 .cms-carousel-home-hero {
 	background: #555;
 	overflow: hidden;
 	position: relative;
-	margin-top: -70px;
 	color: {$GET,WB};
 	/*padding-top: 70px;*/
+}
+
+html.with-header-modern .cms-carousel-home-hero {
+	min-height: 100vmin;
 }
 
 .cms-carousel-home-hero .cms-carousel-inner {
@@ -6882,9 +6923,11 @@ NB: Form buttons are wrapped in either:
 	min-height: inherit;
 	overflow: hidden;
 	background: rgba(0, 0, 0, 0.3); 
-	padding-top: 190px; 
+	padding-top: 50px; 
 	padding-bottom: 50px; 
 	text-align: center;
+	display: flex;
+	align-items: center;
 }
 
 /*{+START,CSS_MODE,mobile}*/

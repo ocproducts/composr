@@ -596,7 +596,7 @@
                     if (this.yes) {
                         button = $dom.create('button', {
                             'type': 'button',
-                            'html': this.yesButton,
+                            'html': '{$GET;^,icon_yes} ' + this.yesButton,
                             'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes'
                         });
                         this.buttonContainerEl.appendChild(button);

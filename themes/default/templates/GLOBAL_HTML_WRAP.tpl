@@ -3,7 +3,7 @@
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-sticky-navbar {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-hero-carousel} is-not-scrolled">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="with-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-hero-carousel} is-not-scrolled">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -12,61 +12,17 @@
 <body class="website-body zone-running-{$REPLACE*,_,-,{$ZONE}} page-running-{$REPLACE*,_,-,{$PAGE}}" id="main-website" itemscope="itemscope" itemtype="http://schema.org/WebPage" data-tpl="globalHtmlWrap">
 	<div id="main-website-inner">
 		{+START,IF,{$SHOW_HEADER}}
-		{$,Add CSS class .with-white-navbar for a white navbar, .with-seed-navbar for seed-colored navbar}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="with-white-navbar with-sticky-navbar" data-sticky-navbar="{}">
-			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
-			<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
-
-			{$,Main menu}
-			<div class="global-navigation">
-				<div class="global-navigation-inner container">
-					<div class="row">
-						<div class="col-auto col-logo">
-							{$,The main logo}
-							<h1 class="logo-outer">
-								<a target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
-									{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
-									<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
-									{+END}
-									{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
-									<span class="logo">{$SITE_NAME*}</span>
-									{+END}
-								</a>
-							</h1>
-						</div>
-						<div class="col-auto col-navigation">
-							{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}
-
-							{$,Login form for guests}
-							{+START,IF,{$IS_GUEST}}{+START,IF,{$CONFIG_OPTION,block_top_login}}
-							<div class="top-form top-login">
-								{$BLOCK,block=top_login}
-							</div>
-							{+END}{+END}
-
-							{+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$OR,{$CONFIG_OPTION,block_top_notifications},{$CONFIG_OPTION,block_top_personal_stats}}}
-							<div class="top-buttons">
-								{+START,IF,{$CONFIG_OPTION,block_top_notifications}}{$BLOCK,block=top_notifications}{+END}
-
-								{+START,IF,{$CONFIG_OPTION,block_top_personal_stats}}{$BLOCK,block=top_personal_stats}{+END}
-
-								{$,Search box for logged in users [could show to guests, except space is lacking]}
-								{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$DESKTOP},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search,1}}
-								{$BLOCK,block=top_search,block_id=desktop,failsafe=1,limit_to={$?,{$MATCH_KEY_MATCH,forum:_WILD},cns_posts,all_defaults}}
-								{+END}{+END}
-							</div>
-							{+END}{+END}
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
+			{+START,IF,{$EQ,{$THEME_OPTION,theme_header_type},modern}}
+				{+START,INCLUDE,HEADER_MODERN}{+END}
+			{+END}
+			{+START,IF,{$EQ,{$THEME_OPTION,theme_header_type},classic}}
+				{+START,INCLUDE,HEADER_CLASSIC}{+END}
+			{+END}
 		{+END}
 
 		{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
 			{$,You can use a "cms-carousel-fade" class to make the carousel use fade effect instead of sliding}
-			{$,You can use a "cms-carousel-full-screen" class to make the carousel full-screen}
-			<div id="hero-carousel" class="slide cms-carousel cms-carousel-full-screen cms-carousel-home-hero has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
+			<div id="hero-carousel" class="slide cms-carousel cms-carousel-home-hero has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
 				<!--<ol class="cms-carousel-indicators">-->
 					<!--<li data-target="#hero-carousel" data-slide-to="0" class="active"></li>-->
 					<!--<li data-target="#hero-carousel" data-slide-to="1"></li>-->

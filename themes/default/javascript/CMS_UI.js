@@ -102,7 +102,7 @@
 
         function _confirmSession(callback, username) {
             $cms.ui.prompt(
-                $cms.configOption('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}', '', null, '{!_LOGIN;^}', 'password'
+                ($cms.configOption('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}'), '', null, '{!_LOGIN;^}', 'password'
             ).then(function (prompt) {
                 if (prompt != null) {
                     $cms.doAjaxRequest(scriptUrl, null, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt)).then(function (xhr) {

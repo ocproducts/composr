@@ -122,9 +122,17 @@ For example:
 	.menu-dropdown-toggle-btn {
 		display: none;
 	}
+	
+	.menu-dropdown-content {
+		display: flex;
+	}
 
+	.menu-dropdown-items-main {
+		display: flex;
+	}
+	
 	.menu-dropdown-item.toplevel {
-		float: left;
+		display: flex;
 	}
 
 	.menu-dropdown-item-a {
@@ -139,13 +147,16 @@ For example:
 	}
 
 	.menu-dropdown-item-a.toplevel-link {
-		padding: 24px 16px;
+		display: flex;
+		align-items: center;
+		padding: 0 16px;
 	}
 
 	.menu-dropdown-item.toplevel.has-children > a::after {
 		font-family: sans-serif;
 		content: "\025BC"; /* Downward triangle */
 		vertical-align: middle;
+		padding-top: 0.5em;
 		padding-left: 0.5em;
 		font-size: 0.7em;
 		display: inline-block;
