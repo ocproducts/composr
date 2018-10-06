@@ -14,7 +14,23 @@
 	<meta name="robots" content="noindex, nofollow" />
 {+END}
 
-<meta name="viewport" content="width=device-width" />
+{$,iPhone/Android/etc should know they have an optimised design heading to them}
+{+START,IF,{$MOBILE}}
+	{+START,IF,{$NOT,{$_GET,overlay}}}
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	{+END}
+	{+START,IF,{$_GET,overlay}}
+		<meta name="viewport" content="width=280, initial-scale=1, user-scalable=yes" />
+	{+END}
+{+END}
+{+START,IF,{$DESKTOP}}
+	{+START,IF,{$THEME_OPTION,fixed_width}}
+		<meta name="viewport" content="width=982, user-scalable=yes" />
+	{+END}
+	{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}
+		<meta name="viewport" content="width=device-width, user-scalable=yes" />
+	{+END}
+{+END}
 
 {$,Metadata for the page: standard metadata, Dublin Core metadata, Facebook Open Graph, and Composr metadata extensions [CMSCORE]}
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}

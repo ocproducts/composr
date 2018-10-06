@@ -21,8 +21,8 @@
 		{+END}
 
 		{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
-			{$,You can use a "cms-carousel-fade" class to make the carousel use fade effect instead of sliding}
-			<div id="hero-carousel" class="slide cms-carousel cms-carousel-home-hero has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
+			{$,Replace the "cms-carousel-slide" class with "cms-carousel-fade" to make the carousel use fade effect instead of sliding}
+			<div id="hero-carousel" class="cms-carousel cms-carousel-slide cms-carousel-home-hero has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
 				<!--<ol class="cms-carousel-indicators">-->
 					<!--<li data-target="#hero-carousel" data-slide-to="0" class="active"></li>-->
 					<!--<li data-target="#hero-carousel" data-slide-to="1"></li>-->

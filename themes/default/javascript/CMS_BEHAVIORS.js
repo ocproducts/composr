@@ -1219,7 +1219,7 @@
         var ClassName = {
             CAROUSEL : 'cms-carousel',
             ACTIVE   : 'active',
-            SLIDE    : 'slide',
+            SLIDE    : 'cms-carousel-slide',
             RIGHT    : 'cms-carousel-item-right',
             LEFT     : 'cms-carousel-item-left',
             NEXT     : 'cms-carousel-item-next',

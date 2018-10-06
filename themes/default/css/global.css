@@ -933,43 +933,6 @@ input.input-username::-webkit-calendar-picker-indicator {
 	background-color: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
-/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-	/*{+START,CSS_MODE,desktop}*/
-		html>body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
-			/* Want to change the tiled background?
-				Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
-				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
-			*/
-			background-image: url('{$IMG_INLINE;,outer_background}');
-			background-size: 220px 220px;
-		}
-		#main-website #main-website-inner {
-			width: 980px;
-			position: relative;
-			margin: 15px auto 15px auto;
-			border: 1px solid {$GET,fixed_width_border};
-			box-shadow: 0 0 20px {$GET,standard_border};
-		}
-		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			#main-website #main-website-inner {
-				margin: 15px;
-			}
-		/*{+END}*/
-	/*{+END}*/
-
-	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
-		#main-website #main-website-inner {
-			margin: 0 0 0 0.5em;
-			border: 0;
-			box-shadow: none;
-		}
-
-		.global-banner {
-			top: 0 !important;
-		}
-	/*{+END}*/
-/*{+END}*/
-
 #wysiwyg-editor {
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
@@ -1035,6 +998,50 @@ input.input-username::-webkit-calendar-picker-indicator {
 	width: auto;
 	max-width: none;
 }
+
+
+/* Styles for fixed width mode */
+/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+	/*{+START,CSS_MODE,desktop}*/
+		html > body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
+			/* Want to change the tiled background?
+				Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
+				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
+			*/
+			background-image: url('{$IMG_INLINE;,outer_background}');
+			background-size: 220px 220px;
+		}
+		#main-website #main-website-inner {
+			width: 980px;
+			position: relative;
+			margin: 15px auto 15px auto;
+			border: 1px solid {$GET,fixed_width_border};
+			box-shadow: 0 0 20px {$GET,standard_border};
+		}
+		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+			#main-website #main-website-inner {
+				margin: 15px;
+			}
+		/*{+END}*/
+	/*{+END}*/
+
+	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
+		#main-website #main-website-inner {
+			margin: 0 0 0 0.5em;
+			border: 0;
+			box-shadow: none;
+		}
+
+		.global-banner {
+			top: 0 !important;
+		}
+	/*{+END}*/
+
+	.logo-outer {
+		padding-left: 0;
+		padding-right: 0;
+	}
+/*{+END}*/
 
 #main-website #main-website-inner .global-middle-outer {
 	min-height: 450px;
@@ -6621,7 +6628,6 @@ NB: Form buttons are wrapped in either:
 .cms-carousel-inner {
 	position: relative;
 	width: 100%;
-	overflow: hidden;
 }
 
 .cms-carousel-item {
@@ -6910,7 +6916,6 @@ html.with-header-modern .cms-carousel-home-hero {
 
 .cms-carousel-home-hero .cms-carousel-inner {
 	min-height: inherit;
-	overflow: hidden;
 }
 
 .cms-carousel-home-hero .cms-carousel-item {
