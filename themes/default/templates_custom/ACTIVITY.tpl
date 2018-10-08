@@ -14,7 +14,7 @@
 			<img width="36" height="36" src="{$THUMBNAIL*,{ADDON_ICON},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
 		{+START,IF_EMPTY,{ADDON_ICON}}
-			<img width="36" height="36" src="{$THUMBNAIL*,{$IMG,icons/admin/{$?,{IS_PUBLIC},edit_this,edit_one}},36x36,,,,pad,both,#FFFFFF00}" />
+			<img width="36" height="36" src="{$THUMBNAIL*,{$IMG,icons/admin/edit_this},36x36,,,,pad,both,#FFFFFF00}" />
 		{+END}
 
 		{+START,SET,commented_out}
