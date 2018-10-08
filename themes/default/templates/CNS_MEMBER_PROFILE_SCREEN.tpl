@@ -32,6 +32,10 @@
 						{+START,IF_PASSED,TAB_CONTENT}
 							{TAB_CONTENT}
 						{+END}
+
+						{+START,IF_NON_PASSED,TAB_CONTENT}
+							<p class="ajax-loading"><img class="vertical-alignment" src="{$IMG*,loading}" /></p>
+						{+END}
 					</div>
 				{+END}
 			</div>
