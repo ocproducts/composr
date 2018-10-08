@@ -2512,24 +2512,26 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	height: 24px;
 	width: 24px;
 }
-.box .toggleable-tray-button .icon {
-	margin-right: 0.5em;
-}
+
 .box .toggleable-tray-title .toggleable-tray-button .icon {
 	height: 20px;
 	width: 20px;
 }
+
 h3 .toggleable-tray-button .icon {
 	height: 18px;
 	width: 18px;
 }
+
 .ttb-left-spaced, .ttb-left-spaced div {
 	margin-top: 0.3em;
 }
+
 .toggleable-tray-button.ttb-left .icon {
 	float: left;
 	padding-left: 0 !important;
 }
+
 .toggleable-tray-button.ttb-light {
 	font-weight: normal;
 }
@@ -4407,16 +4409,13 @@ ul.buttons-group, ul.associated-links-block-group {
 }
 
 .simple-neat-checkbox {
-	overflow: hidden;
+	display: flex;
 }
 .simple-neat-checkbox input {
-	float: left;
+	margin-top: 0.3em;
 }
-.simple-neat-checkbox span {
-	float: right;
-	padding-left: 2em;
-	margin-top: -1.5em;
-	width: 100%;
+.simple-neat-checkbox label {
+	padding-left: 0.5em;
 }
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/

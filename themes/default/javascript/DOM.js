@@ -1682,6 +1682,8 @@
             el.style.position = 'absolute';
             el.style.visibility = 'hidden';
 
+            el.offsetHeight; // Redraw
+
             var startKeyframe = {
                     height: 0,
                     marginTop: 0,

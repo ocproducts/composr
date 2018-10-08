@@ -842,6 +842,10 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	margin-bottom: 0.5em;
 }
 
+.radio-list {
+	position: relative;
+}
+
 .fields-set-contents::after {
 	display: block;
 	clear: both;
@@ -877,6 +881,10 @@ span.validated-checkbox+input[name="validated"].input-tick {
 
 .box---revisions-wrap {
 	margin-top: 3em;
+}
+
+.form-screen-input-multi-list .select2-container {
+	width: 100%;
 }
 
 /*

@@ -48,10 +48,11 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-tab-headers>div>a {
-	display: inline-block;
+	display: block;
 	padding: 1em;
 	cursor: pointer;
 	font-weight: 500;
+	text-align: center;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.modern-tab-headers>div>a {

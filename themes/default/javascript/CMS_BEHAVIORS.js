@@ -1554,9 +1554,7 @@
                         this._element.animate([
                             { height: activeElement.offsetHeight + 'px' },
                             { height: nextElement.offsetHeight + 'px' }
-                        ], {
-                            duration: this._config.animateHeight
-                        });
+                        ], Number(this._config.animateHeight));
                     }
 
                     $dom.one(activeElement, 'transitionend', function () {
