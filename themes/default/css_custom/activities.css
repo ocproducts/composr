@@ -46,24 +46,12 @@ form.activities-remove {
 }
 
 form.activities-remove .remove-button {
-	width: 14px;
-	height: 14px;
-	background: url('{$IMG;,icons/admin/delete}') transparent no-repeat;
-	background-size: 14px 14px;
 	opacity: 0.7;
-	font-size: 0;
-	border: none;
-	margin-top: 4px;
 	padding: 0;
 }
 
 form.activities-remove .remove-button:hover {
 	opacity: 1.0;
-	cursor: pointer;
-}
-
-form.activities-remove input.remove-button::-moz-focus-inner {
-	border: 0;
 }
 
 .activities-content {
@@ -123,7 +111,6 @@ form.activities-remove input.remove-button::-moz-focus-inner {
 	float: right;
 	text-align: right;
 	width: 14em;
-	margin-top: -2px;
 }
 
 #activities-update-notify {

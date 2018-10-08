@@ -811,8 +811,8 @@ img.icon {
 		width: auto !important;
 	}
 	* {
-		white-space: normal !important;
-		word-wrap: break-word !important;
+		white-space: normal;
+		word-wrap: break-word;
 	}
 
 	.display-desktop {

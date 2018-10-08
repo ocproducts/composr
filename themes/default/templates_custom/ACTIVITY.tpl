@@ -5,7 +5,12 @@
 		<form id="feed-remove-{LIID*}" class="activities-remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<button class="remove-button" type="submit">{!REMOVE}</button>
+			<button class="btn btn-link remove-button" type="submit" title="{!REMOVE}">
+				{+START,INCLUDE,ICON}
+					NAME=admin/delete
+					ICON_SIZE=14
+				{+END}
+			</button>
 		</form>
 	{+END}
 
