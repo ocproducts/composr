@@ -231,7 +231,7 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  * @param  string $name The site name
  * @param  string $font_choice The font name (in data/fonts)
  * @param  string $logo_theme_image The logo theme image
- * @param  string $background_theme_image The background theme image
+ * @param  string $background_theme_image The background theme image. Not used for 'small' and 'small_white' $logo_type.
  * @param  boolean $raw Whether to output the logo to the browser, destroy then image, and exit the script (i.e. never returns)
  * @param  ?string $theme The theme to use the logo template from (null: default root zone theme)
  * @param  string $logo_type Logo type/size to generate. 'large' is for the bigger logo with background image, 'standalone' crops the background a bit, for use in e-mails etc., 'small' is the transparent logo without background, used for the small header type, and 'small_white' is used when the small header has a dark background
@@ -324,14 +324,14 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
             $white_colors_by_alpha = array();
             for ($x = 0; $x < $im_logo_width; $x++) {
                 for ($y = 0; $y < $im_logo_height; $y++) {
-                    $c = imagecolorsforindex($im_logo, imagecolorat($im_logo, $x, $y));
+                    $alpha = imagecolorat($im_logo, $x, $y) >> 24;
 
-                    if (($c['red'] + $c['green'] + $c['blue']) > 0) {
-                        if (!isset($white_colors_by_alpha[$c['alpha']])) {
-                            $white_colors_by_alpha[$c['alpha']] = imagecolorallocatealpha($im_logo, 255, 255, 255, $c['alpha']);
+                    if ($alpha < 127) { // 127 = fully transparent
+                        if (!isset($white_colors_by_alpha[$alpha])) {
+                            $white_colors_by_alpha[$alpha] = imagecolorallocatealpha($im_logo, 255, 255, 255, $alpha);
                         }
 
-                        imagesetpixel($im_logo, $x, $y, $white_colors_by_alpha[$c['alpha']]);
+                        imagesetpixel($im_logo, $x, $y, $white_colors_by_alpha[$alpha]);
                     }
                 }
             }

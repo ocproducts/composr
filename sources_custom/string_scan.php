@@ -2086,6 +2086,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_ipstack_api_key
         CONFIG_OPTION_noindex_comcode_pages
         CONFIG_OPTION_use_monochrome_icons
+        CONFIG_OPTION_use_site_name_text_as_logo
         IPSTACK_API_KEY
         NOINDEX_COMCODE_PAGES
         TOO_MANY_PAGES_LOGGED

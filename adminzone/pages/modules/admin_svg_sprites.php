@@ -215,6 +215,7 @@ class Module_admin_svg_sprites
         $svg_xml = new CMS_simple_xml_reader(file_get_contents($sprite_path));
         $svg_xml_children = $svg_xml->gleamed[3];
         $sprite_url = find_theme_image('icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite', true, false, $theme);
+        $sprite_url .= '?t=' . microtime(true);
 
         $icons = new Tempcode();
         foreach ($svg_xml_children as $symbol) {
@@ -323,17 +324,23 @@ class Module_admin_svg_sprites
         ksort($icon_paths);
 
         $output = '<' . '?xml version="1.0" encoding="utf-8"?' . '>' . "\n";
-        $output .= '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
+        $output .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
 
         foreach ($icon_paths as $icon_name => $icon_path) {
             $xml = new CMS_simple_xml_reader(file_get_contents($icon_path));
-            $output .= '<symbol viewBox="' . $xml->gleamed[1]['viewBox'] . '" id="' . str_replace('/', '__', $icon_name) . '">' . "\n";
+            $output .= '<symbol viewBox="' . $xml->gleamed[1]['viewBox'] . '" id="icon_' . str_replace('/', '__', $icon_name) . '">' . "\n";
             foreach ($xml->gleamed[3] as $child) {
                 if (!is_array($child)) {
                     // whitespace?
                     continue;
                 }
-                $output .= $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
+                $child_xml = $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
+
+                if (preg_replace('/\s/', '', $child_xml) === '<defs></defs>') {
+                    continue; // Skip empty <defs> elements
+                }
+
+                $output .= $child_xml;
             }
             $output .= "</symbol>\n";
         }

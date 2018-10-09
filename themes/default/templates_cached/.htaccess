@@ -26,19 +26,19 @@ ExpiresByType text/css "now plus 1 months"
 <IfModule mod_rewrite.c>
 <IfModule mod_env.c>
 <IfModule mod_headers.c>
-<FilesMatch "\.js(\.gz)?($|\?)">
+<FilesMatch "\.js\.gz($|\?)">
 ForceType application/javascript
 Header set Content-Encoding: gzip
 Header append Vary: Accept-Encoding
 SetEnv no-gzip
 </FilesMatch>
-<FilesMatch "\.css(\.gz)?($|\?)">
+<FilesMatch "\.css\.gz($|\?)">
 ForceType text/css
 Header set Content-Encoding: gzip
 Header append Vary: Accept-Encoding
 SetEnv no-gzip
 </FilesMatch>
-<FilesMatch "\.(js|css)?($|\?)">
+<FilesMatch "\.(js|css)($|\?)">
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{REQUEST_FILENAME}\.gz -s
 RewriteRule (.*) $1.gz [QSA,L]

@@ -491,9 +491,10 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
                 $url .= '&keep_theme=' . urlencode($_theme);
             }
             if (!$minify) {
+                $c .= '_non_minified';
                 $url .= '&keep_minify=0';
             }
-            $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
+            $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'CODE' => $c, 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
         } else {
             if (!$minify) {
                 $c .= '_non_minified';

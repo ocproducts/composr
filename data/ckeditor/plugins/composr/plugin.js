@@ -24,7 +24,7 @@
 					editor.addCommand('composr_' + buttonName, func);
 					if (editor.ui.addButton) {
 						editor.ui.addButton('composr_' + buttonName, {
-							label: element.alt,
+                            label: element.title || element.cmsTooltipTitle,
 							command: 'composr_' + buttonName
 						});
 					}

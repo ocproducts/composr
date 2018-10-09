@@ -5,17 +5,7 @@
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 	 x="0px" y="0px" width="48px" height="48px" viewBox="-3.358 -8.711 48 48">
-<defs>
-</defs>
-<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="0.1055" y1="1.1558" x2="36.344" y2="22.943">
-	<stop  offset="0" style="stop-color:#009ACF"/>
-	<stop  offset="0.1017" style="stop-color:#2296CC"/>
-	<stop  offset="0.2811" style="stop-color:#4689C2"/>
-	<stop  offset="0.517" style="stop-color:#6475B2"/>
-	<stop  offset="0.7972" style="stop-color:#7F549E"/>
-	<stop  offset="1" style="stop-color:#912C8F"/>
-</linearGradient>
-<path fill="url(#SVGID_1_)" d="M36.593,9.22C31,4.586,23.129,1.574,15.146,0.42C7.165-0.733,0,0.854,0,0.854s4.928,0.25,9.607,1.73
+<path fill="#912C8F" d="M36.593,9.22C31,4.586,23.129,1.574,15.146,0.42C7.165-0.733,0,0.854,0,0.854s4.928,0.25,9.607,1.73
 	c5.78,1.828,7.849,2.935,10.108,4.088c1.566,0.8,2.692,1.622,3.237,2.052c-2.761,1.775-4.739,4.661-5.306,8.026
 	c-0.757-0.802-2.26-2.463-3.46-4.211c-1.683-2.454-2.597-5.098-2.597-5.098s-0.961,3.077-0.192,6.539
 	c0.667,3.003,2.212,6.973,4.905,9.906c2.629,2.862,5.696,5.28,9.408,6.229c1.38,0.318,2.116,0.456,3.68,0.463
