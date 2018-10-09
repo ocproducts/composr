@@ -139,7 +139,7 @@ class Hook_login_provider_openid
 
                         // Actually add member
                         require_code('config2');
-                        set_option('maximum_password_length', '1000');
+                        set_option('maximum_password_length', '255');
                         $member = cns_member_external_linker($username, $openid->identity, 'openid', false, $email, $dob_day, $dob_month, $dob_year, null, $language);
 
                         $avatar = '';
