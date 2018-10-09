@@ -1100,8 +1100,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_comments_DESCRIPTION
         BLOCK_main_comments_PARAM_explicit_allow
         BLOCK_main_comments_PARAM_explicit_allow_TITLE
-        BLOCK_main_comments_PARAM_extra_param_from
-        BLOCK_main_comments_PARAM_extra_param_from_TITLE
         BLOCK_main_comments_PARAM_forum
         BLOCK_main_comments_PARAM_forum_TITLE
         BLOCK_main_comments_PARAM_invisible_if_no_comments
@@ -1584,8 +1582,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_quotes_PARAM_title_TITLE
         BLOCK_main_quotes_USE
         BLOCK_main_rating_DESCRIPTION
-        BLOCK_main_rating_PARAM_extra_param_from
-        BLOCK_main_rating_PARAM_extra_param_from_TITLE
         BLOCK_main_rating_PARAM_page
         BLOCK_main_rating_PARAM_page_TITLE
         BLOCK_main_rating_PARAM_param

@@ -37,7 +37,7 @@ class Block_main_rating
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'page', 'extra_param_from', 'title');
+        $info['parameters'] = array('param', 'page', 'title');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_rating
     /*
     public function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
     {
-        $info['cache_on'] = 'array(has_privilege(get_member(),\'rate\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
+        $info['cache_on'] = 'array(has_privilege(get_member(),\'rate\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
         $info['ttl'] = 60 * 5;
         return $info;
     }*/
@@ -62,30 +62,23 @@ class Block_main_rating
      */
     public function run($map)
     {
-        if (!array_key_exists('param', $map)) {
-            $map['param'] = 'main';
-        }
-        if (!array_key_exists('page', $map)) {
-            $map['page'] = get_page_name();
-        }
-
-        if (array_key_exists('extra_param_from', $map)) {
-            $extra = '_' . $map['extra_param_from'];
-        } else {
-            $extra = '';
-        }
+        $content_type = 'block_main_rating';
+        $param = array_key_exists('param', $map) ? $map['param'] : 'main';
+        $page = array_key_exists('page', $map) ? $map['page'] : get_page_name();
+        $id = $page . '_' . $param;
 
         require_code('feedback');
 
         $self_url = get_self_url();
         $self_title = empty($map['title']) ? $map['page'] : $map['title'];
-        $id = $map['page'] . '_' . $map['param'] . $extra;
+
         $test_changed = post_param_string('rating_' . $id, '');
         if ($test_changed != '') {
             delete_cache_entry('main_rating');
         }
-        actualise_rating(true, 'block_main_rating', $id, $self_url, $self_title);
 
-        return get_rating_box($self_url, $self_title, 'block_main_rating', $id, true);
+        actualise_rating(true, $content_type, $id, $self_url, $self_title);
+
+        return get_rating_box($self_url, $self_title, $content_type, $id, true);
     }
 }
