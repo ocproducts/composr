@@ -34,11 +34,45 @@
         window.removeEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
         delete $dom.preventFormSubmissionUntilDomReadyListener;
 
-        if (typeof window.svg4everybody === 'function') { // Loaded only on IE
-            window.svg4everybody();
+        if ($cms.browserMatches('ie')) {
+            /*{+START,SET,icons_sprite_url}{$IMG,icons{$?,{$THEME_OPTION,use_monochrome_icons},_monochrome}_sprite}{+END}*/
+            loadSvgSprite('{$GET;,icons_sprite_url}');
         }
 
         // Start everything
         $cms.attachBehaviors(document);
     });
+
+    /**
+     * Workaround for IE not supporting external SVG with <use> elements.
+     * Loads an SVG sprite using AJAX and appends its contents to the body.
+     * Also looks for any <use> elements with external [xlink:href] attributes matching the sprite URL and replaces them with simple #IDs.
+     * @param spriteUrl
+     */
+    function loadSvgSprite(spriteUrl) {
+        spriteUrl = $util.url(spriteUrl);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', spriteUrl);
+        xhr.onload = function () {
+            var div = document.createElement('div');
+            div.style.cssText = 'position: absolute; width: 0; height: 0; visibility: hidden;';
+            div.innerHTML = xhr.responseText;
+            (document.body || document.documentElement).appendChild(div);
+
+            var uses = document.querySelectorAll('use');
+
+            for (var i = 0; i < uses.length; i++) {
+                var use = uses[i],
+                    hrefParts = strVal(use.getAttribute('xlink:href')).split('#'),
+                    hrefUrl = $util.url(hrefParts[0]),
+                    hrefId = hrefParts[1];
+
+                if (hrefUrl.toString() === spriteUrl.toString()) {
+                    use.setAttribute('xlink:href', '#' + hrefId);
+                }
+            }
+        };
+        xhr.send();
+    }
 }(window.$cms, window.$util, window.$dom));

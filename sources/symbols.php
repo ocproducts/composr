@@ -6682,7 +6682,7 @@ function ecv_IS_ICON_IN_SVG_SPRITE($lang, $escaped, $param)
     $icon_name = $param[0];
     $icon_id = str_replace('/', '__', $icon_name);
 
-    $value = (strpos($sprite, 'id="' . $icon_id . '"') !== false) ? '1' : '0';
+    $value = (strpos($sprite, 'id="icon_' . $icon_id . '"') !== false) ? '1' : '0';
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
