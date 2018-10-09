@@ -53,11 +53,18 @@
         spriteUrl = $util.url(spriteUrl);
 
         var xhr = new XMLHttpRequest();
+        xhr.overrideMimeType('text/xml');
         xhr.open('GET', spriteUrl);
         xhr.onload = function () {
+            var svg = xhr.responseXML && xhr.responseXML.querySelector('svg');
+
+            if (!svg) {
+                return;
+            }
+
             var div = document.createElement('div');
-            div.style.cssText = 'position: absolute; width: 0; height: 0; visibility: hidden;';
-            div.innerHTML = xhr.responseText;
+            div.style.cssText = 'position: absolute; width: 0; height: 0; visibility: hidden; overflow: hidden;';
+            div.appendChild(svg);
             (document.body || document.documentElement).appendChild(div);
 
             var uses = document.querySelectorAll('use');
