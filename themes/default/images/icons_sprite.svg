@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <symbol viewBox="0 0 28 28" id="admin__add">
 <rect opacity="0" fill="#FFFFFF" width="28" height="28"/>
 <path fill="#39B54A" d="M23.796,10.963h-6.76v-6.76c0-1.678-1.358-3.037-3.037-3.037s-3.038,1.359-3.038,3.037v6.76H4.203  c-1.678,0-3.038,1.359-3.038,3.037s1.36,3.037,3.038,3.037h6.759v6.76c0,1.678,1.359,3.037,3.038,3.037s3.037-1.359,3.037-3.037  v-6.76h6.76c1.678,0,3.037-1.359,3.037-3.037S25.474,10.963,23.796,10.963z"/>
