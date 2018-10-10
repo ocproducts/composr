@@ -199,7 +199,7 @@
      * @memberof $dom
      * @param context
      * @param selector
-     * @returns {*}
+     * @returns { Array }
      */
     $dom.$$ = function $$(context, selector) {
         var found;
@@ -213,7 +213,8 @@
         selector = strVal(selector);
 
         // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
-        if (rgxSimpleSelector.test(selector) && ($util.isDoc(context) || $util.isEl(context))) {
+        // <svg> is missing getElementsByClassName() in IE: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11729645/
+        if (rgxSimpleSelector.test(selector) && ($util.isDoc(context) || $util.isEl(context)) && (context.localName !== 'svg')) {
             switch (selector[0]) {
                 case '#': // selector is an ID
                     return ((found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector)))) ? [found] : [];
@@ -1141,7 +1142,16 @@
                         });
                     }
                 } else {
-                    match = $dom.closest(e.target, selector, el);
+                    var target = e.target;
+
+                    if (!target.nodeType && target.correspondingUseElement) {// SVGElementInstance?
+                        // Patch buggy behavior in IE for `event.target`s inside the shadow DOM in SVG <use> elements
+                        // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7998724/
+                        // https://bugs.jquery.com/ticket/13180
+                        target = target.correspondingUseElement;
+                    }
+
+                    match = $dom.closest(target, selector, el);
                     if (match) {
                         matches = [match];
                     }
