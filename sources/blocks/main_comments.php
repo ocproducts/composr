@@ -37,7 +37,7 @@ class Block_main_comments
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'page', 'extra_param_from', 'reverse', 'forum', 'invisible_if_no_comments', 'reviews', 'max', 'title', 'explicit_allow');
+        $info['parameters'] = array('param', 'page', 'reverse', 'forum', 'invisible_if_no_comments', 'reviews', 'max', 'title', 'explicit_allow');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_comments
     /*
     public function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
     {
-        $info['cache_on'] = 'array(((array_key_exists(\'max\',$map)) && ($map[\'max\']!='-1'))?intval($map[\'max\']):null,((!array_key_exists(\'reviews\',$map)) || ($map[\'reviews\']==\'1\')),has_privilege(get_member(),\'comment\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'forum\',$map)?$map[\'forum\']:null,((array_key_exists(\'invisible_if_no_comments\',$map)) && ($map[\'invisible_if_no_comments\']==\'1\')),((array_key_exists(\'reverse\',$map)) && ($map[\'reverse\']==\'1\')),array_key_exists(\'title\',$map)?$map[\'title\']:\'\',(array_key_exists(\'explicit_allow\', $map)) ? ($map[\'explicit_allow\'] == \'1\') : false)';
+        $info['cache_on'] = 'array(((array_key_exists(\'max\',$map)) && ($map[\'max\']!='-1'))?intval($map[\'max\']):null,((!array_key_exists(\'reviews\',$map)) || ($map[\'reviews\']==\'1\')),has_privilege(get_member(),\'comment\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'forum\',$map)?$map[\'forum\']:null,((array_key_exists(\'invisible_if_no_comments\',$map)) && ($map[\'invisible_if_no_comments\']==\'1\')),((array_key_exists(\'reverse\',$map)) && ($map[\'reverse\']==\'1\')),array_key_exists(\'title\',$map)?$map[\'title\']:\'\',(array_key_exists(\'explicit_allow\', $map)) ? ($map[\'explicit_allow\'] == \'1\') : false)';
         $info['ttl'] = 60 * 5;
         return $info;
     }*/
@@ -62,18 +62,10 @@ class Block_main_comments
      */
     public function run($map)
     {
-        if (!array_key_exists('param', $map)) {
-            $map['param'] = 'main';
-        }
-        if (!array_key_exists('page', $map)) {
-            $map['page'] = str_replace('-', '_', get_page_name());
-        }
-
-        if (array_key_exists('extra_param_from', $map)) {
-            $extra = '_' . $map['extra_param_from'];
-        } else {
-            $extra = '';
-        }
+        $content_type = 'block_main_comments';
+        $param = array_key_exists('param', $map) ? $map['param'] : 'main';
+        $page = array_key_exists('page', $map) ? $map['page'] : get_page_name();
+        $id = $page . '_' . $param;
 
         $explicit_allow = (array_key_exists('explicit_allow', $map)) ? ($map['explicit_allow'] == '1') : false;
 
@@ -88,7 +80,7 @@ class Block_main_comments
         if ($test_changed !== null) {
             delete_cache_entry('main_comments');
         }
-        $is_hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, true, null, $explicit_allow) : false;
+        $is_hidden = $submitted ? actualise_post_comment(true, $content_type, $id, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, true, null, $explicit_allow) : false;
 
         if ((array_key_exists('title', $_POST)) && ($is_hidden) && ($submitted)) {
             attach_message(do_lang_tempcode('MESSAGE_POSTED'), 'inform');
@@ -112,6 +104,6 @@ class Block_main_comments
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('_block_id', $block_id));
 
-        return get_comments('block_main_comments', true, $map['page'] . '_' . $map['param'] . $extra, $invisible_if_no_comments, array_key_exists('forum', $map) ? $map['forum'] : null, null, null, $explicit_allow, $reverse, null, $allow_reviews, $num_to_show_limit, $hidden);
+        return get_comments($content_type, true, $id, $invisible_if_no_comments, array_key_exists('forum', $map) ? $map['forum'] : null, null, null, $explicit_allow, $reverse, null, $allow_reviews, $num_to_show_limit, $hidden);
     }
 }
