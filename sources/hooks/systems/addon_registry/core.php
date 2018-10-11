@@ -662,7 +662,6 @@ class Hook_addon_registry_core
             'data/polyfills/class_list.js',
             'data/polyfills/promise.js',
             'data/polyfills/dom_init.js',
-            'data/polyfills/svg4everybody.js',
             'themes/default/templates/JAVASCRIPT_NEED.tpl',
             'themes/default/templates/JAVASCRIPT_NEED_FULL.tpl',
             'themes/default/templates/CSS_NEED.tpl',

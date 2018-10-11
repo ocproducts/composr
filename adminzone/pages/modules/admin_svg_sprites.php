@@ -324,11 +324,11 @@ class Module_admin_svg_sprites
         ksort($icon_paths);
 
         $output = '<' . '?xml version="1.0" encoding="utf-8"?' . '>' . "\n";
-        $output .= '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
+        $output .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
 
         foreach ($icon_paths as $icon_name => $icon_path) {
             $xml = new CMS_simple_xml_reader(file_get_contents($icon_path));
-            $output .= '<symbol viewBox="' . $xml->gleamed[1]['viewBox'] . '" id="' . str_replace('/', '__', $icon_name) . '">' . "\n";
+            $output .= '<symbol viewBox="' . $xml->gleamed[1]['viewBox'] . '" id="icon_' . str_replace('/', '__', $icon_name) . '">' . "\n";
             foreach ($xml->gleamed[3] as $child) {
                 if (!is_array($child)) {
                     // whitespace?

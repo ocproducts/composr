@@ -1434,8 +1434,7 @@
             /*
              THEME IMAGE CLICKING
              */
-            function handleImageMouseOver(event) {
-                var target = event.target;
+            function handleImageMouseOver(event, target) {
                 if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic-image-edit-link'))) {
                     return;
                 }
@@ -1544,11 +1543,6 @@
         /* Staff JS error display */
         initialiseErrorMechanism: function () {
             window.onerror = function (msg, file, code) {
-                if (document.readyState !== 'complete') {
-                    // Probably not loaded yet
-                    return null;
-                }
-
                 msg = strVal(msg);
 
                 if (
