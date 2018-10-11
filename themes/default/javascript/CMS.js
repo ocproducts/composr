@@ -1001,7 +1001,7 @@
     $cms.setIcon = function setIcon(iconEl, iconName, imageSrc) {
         var symbolId, use, newSrc, newClass;
         if (iconEl.localName === 'svg') {
-            symbolId = iconName.replace(/\//g, '__');
+            symbolId = 'icon_' + iconName.replace(/\//g, '__');
             use = iconEl.querySelector('use');
             use.setAttribute('xlink:href', use.getAttribute('xlink:href').replace(/#\w+$/, '#' + symbolId));
         } else {
@@ -1031,7 +1031,7 @@
         var src;
 
         if (iconEl.localName === 'svg') {
-            return iconEl.querySelector('use').getAttribute('xlink:href').endsWith('#' + iconName.replace(/\//g, '__'));
+            return iconEl.querySelector('use').getAttribute('xlink:href').endsWith('#icon_' + iconName.replace(/\//g, '__'));
         }
 
         src = $util.url(iconEl.src);
