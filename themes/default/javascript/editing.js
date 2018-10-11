@@ -714,9 +714,9 @@
         text = ' ' + title + ' ';
 
         if (isOpener) {
-            return insertTextboxOpener(element, text, true, $dom.html(callerEl), true);
+            return insertTextboxOpener(element, text, true, $dom.html(callerEl));
         } else {
-            return $editing.insertTextbox(element, text, true, $dom.html(callerEl), true);
+            return $editing.insertTextbox(element, text, true, $dom.html(callerEl));
         }
     }
 

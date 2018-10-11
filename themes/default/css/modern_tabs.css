@@ -39,21 +39,25 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	color: {$GET,text_dark};
 }
 
-.modern-tab-headers > div.tab-active > a {
-	border-bottom-color: transparent;
-}
-
-.modern-tab-headers>div * {
+.modern-tab-headers > div * {
 	vertical-align: middle;
 }
 
-.modern-tab-headers>div>a {
+.modern-tab-headers > div > a,
+.modern-tab-headers > div > a:hover {
 	display: block;
 	padding: 1em;
 	cursor: pointer;
 	font-weight: 500;
 	text-align: center;
+	text-decoration: none;
 }
+
+.modern-tab-headers > div.tab-active > a {
+	color: {$GET,body_color};
+	border-bottom-color: transparent;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	.modern-tab-headers>div>a {
 		border-right: 1px solid {$GET,standard_border};
@@ -61,12 +65,12 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.modern-tab-headers>div>a {
+	.modern-tab-headers > div > a {
 		display: block;
 	}
 /*{+END}*/
 
-.modern-tab-headers>div:last-child>a {
+.modern-tab-headers > div:last-child > a {
 	border-right: 0;
 }
 
@@ -84,11 +88,6 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 		padding-left: 3px;
 	}
 /*{+END}*/
-
-.modern-tab-headers>div>a, .modern-tab-headers>div>a:visited, .modern-tab-headers>div>a:active, .modern-tab-headers>div>a:hover {
-	text-decoration: none;
-	color: inherit;
-}
 
 .modern-tab-bodies {
 	overflow: hidden;

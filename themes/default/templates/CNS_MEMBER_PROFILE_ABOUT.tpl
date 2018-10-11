@@ -10,7 +10,7 @@
 
 		<h2>{!USERGROUPS}</h2>
 
-		<ul class="compact-list">
+		<ul class="cns-member-profile-usergroups">
 			<li><span class="role"{+START,IF_PASSED,ON_PROBATION} style="text-decoration: line-through"{+END}>{PRIMARY_GROUP}</span></li>
 			{+START,LOOP,SECONDARY_GROUPS}
 				<li {+START,IF_PASSED,ON_PROBATION}{+START,IF,{$NEQ,{$CONFIG_OPTION,probation_usergroup},{_loop_key},{_loop_var}}} style="text-decoration: line-through"{+END}{+END}><a href="{$PAGE_LINK*,_SEARCH:groups:view:{_loop_key}}">{_loop_var*}</a></li>

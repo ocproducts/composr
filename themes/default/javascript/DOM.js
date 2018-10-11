@@ -1684,13 +1684,12 @@
             // Show element if it is hidden
             $dom.show(el);
 
-            // Get the element position to restore it then
-            var prevPosition = el.style.position,
-                prevVisibility = el.style.visibility;
+            var prevVisibility = el.style.visibility;
+            var prevOverflow = el.style.overflow;
 
             // Place it so it displays as usually but hidden
-            el.style.position = 'absolute';
             el.style.visibility = 'hidden';
+            el.style.overflow = 'hidden';
 
             el.offsetHeight; // Redraw
 
@@ -1704,12 +1703,7 @@
                 // Fetch natural height, margin, padding
                 endKeyframe = $dom.css(el, ['height', 'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom']);
 
-            // Undo now
-            el.style.position = prevPosition;
             el.style.visibility = prevVisibility;
-
-            var prevOverflow = el.style.overflow;
-            el.style.overflow = 'hidden';
 
             var keyFrames = [startKeyframe, endKeyframe],
                 options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },

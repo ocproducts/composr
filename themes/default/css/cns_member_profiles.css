@@ -7,10 +7,15 @@
 	background-color: {$GET,area_background};
 	border: 1px solid {$GET,pale_border};
 	margin-top: 1em;
+	border-radius: {$GET,border_radius};
+}
+
+.cns-profile-main h2 {  
+	border-bottom: 1px solid {$GET,pale_border};
 }
 
 .cns-profile-about-field-name-column {
-	width: 13em;
+	width: 12em;
 }
 .cns-profile-about-field-value-column {
 	width: 100%;
@@ -42,7 +47,7 @@
 /*{+START,CSS_MODE,desktop}*/
 	.cns-profile-column {
 		float: right;
-		width: 14em;
+		width: 17em;
 		padding: 1em;
 		font-size: 0.9em;
 	}
@@ -57,13 +62,20 @@
 
 	.cns-member-profile-avatar {
 		text-align: center;
-		margin-top: 1.5em;
+		margin-bottom: 1em;
 	}
 /*{+END}*/
 
 .cns-member-profile-avatar img {
 	border: 1px solid {$GET,standard_border};
 	max-width: 100px;
+}
+
+.cns-member-profile-usergroups {
+	padding: 0;
+	padding-left: 17px;
+	margin-bottom: 0.5em;
+	text-align: left;
 }
 
 .cns-profile-column h2 {
@@ -117,6 +129,12 @@ table.cns-profile-about-section .associated-details {
 	background: {$GET,area_5_background};
 }
 
+.cns-account-links h2 {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid {$GET,pale_border};
+}
+
 .cns-account-links ul.nl li {
 	overflow: hidden;
 	margin-bottom: 0.5em;
@@ -126,6 +144,10 @@ table.cns-profile-about-section .associated-details {
 .cns-account-links .toggleable-tray-button .icon {
 	width: 15px;
 	height: 15px;
+}
+
+.cns-account-links .toggleable-tray {
+	border-bottom: 1px solid {$GET,pale_border};
 }
 
 .cns-account-links .toggleable-tray img {

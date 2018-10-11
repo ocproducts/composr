@@ -1254,10 +1254,14 @@
             this._config = this._getConfig(config);
             this._element = element;
             this._indicatorsElement = this._element.querySelector(Selector.INDICATORS);
+            this._progressBarFillElement = this._element.querySelector('.cms-carousel-progress-bar-fill');
             this._scrollDownElement = this._element.querySelector('.cms-carousel-scroll-button');
 
             this._addEventListeners();
-            this._setProgressBar();
+
+            if (this._progressBarFillElement != null) {
+                this._setProgressBar();
+            }
         }
 
         Carousel.Default = Default;
@@ -1481,10 +1485,10 @@
 
             _setProgressBar: function _setProgressBar() {
                 if (this._intervalStartedAt == null) {
-                    this._element.querySelector('.cms-carousel-progress-bar-fill').style.removeProperty('width');
+                    this._progressBarFillElement.style.removeProperty('width');
                 } else {
                     var progressPercentage = (Date.now() - this._intervalStartedAt) / this._config.interval;
-                    this._element.querySelector('.cms-carousel-progress-bar-fill').style.width = (progressPercentage * 100) + '%';
+                    this._progressBarFillElement.style.width = (progressPercentage * 100) + '%';
                 }
                 requestAnimationFrame(this._setProgressBar.bind(this));
             },

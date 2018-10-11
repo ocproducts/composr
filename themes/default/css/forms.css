@@ -846,6 +846,10 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	position: relative;
 }
 
+.radio-list h3 {
+	border-bottom: 1px solid {$GET,pale_border};
+}
+
 .fields-set-contents::after {
 	display: block;
 	clear: both;
@@ -892,6 +896,14 @@ span.validated-checkbox+input[name="validated"].input-tick {
 == WYSIWYG (CKEditor) styling ==
 ================================
 */
+
+.cke_chrome .cke_inner {
+	background: {$GET,area_background};
+}
+
+.cke_chrome .cke_toolgroup {
+	background: white;
+}
 
 /* Reset some Composr styles that impact CKEditor */
 .cke_reset_all div[role="tabpanel"] {
