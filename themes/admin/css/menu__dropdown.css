@@ -143,12 +143,12 @@ For example:
 	}
 	
 	.menu-dropdown-item.toplevel {
-		border-right: 1px solid {$GET,standard_border};
+		border-right: 1px solid #444;
 		flex-grow: 1;
 	}
 
 	.menu-dropdown-item.toplevel.first {
-		border-left: 1px solid {$GET,standard_border};
+		border-left: 1px solid #444;
 	}
 
    .menu-dropdown-item-a {
@@ -181,7 +181,7 @@ For example:
    .menu-dropdown-item.toplevel:hover > a,
    .menu-dropdown-item-a.toplevel-link:hover,
    .menu-dropdown-item-a.toplevel-link:focus {
-       background: {$GET,dropdown_menu_item_background};
+       background: rgba(255, 255, 255, 0.1);
    }
 
    .menu-dropdown-item.nlevel.has-children > a::after {

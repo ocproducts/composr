@@ -1714,7 +1714,9 @@
                 'mouseover .menu-dropdown-item': 'mouseoverMenuItem',
                 'mouseout .menu-dropdown-item': 'mouseoutMenuItem',
 
-                'focus .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'focusMenuItemAnchor',
+                'focusin .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'focusinMenuItemAnchor',
+                'focusin .menu-dropdown-item-a': 'toggleFocusClassOnMenuItems',
+                'focusout .menu-dropdown-item-a': 'toggleFocusClassOnMenuItems',
 
                 'clickout': 'unsetActiveMenuInstantly',
             };
@@ -1768,11 +1770,19 @@
             recreateCleanTimeout();
         },
 
-        focusMenuItemAnchor: function (e, target) {
+        focusinMenuItemAnchor: function (e, target) {
             var menuItem = $dom.parent(target, '.menu-dropdown-item'),
                 popupEl = menuItem.querySelector('.menu-dropdown-items');
 
             popupMenu(popupEl, menuItem.classList.contains('toplevel') ? 'below' : 'right', this.menuId, true);
+        },
+
+        toggleFocusClassOnMenuItems: function () {
+            var menuItems = this.$$('.menu-dropdown-item');
+
+            menuItems.forEach(function (mi) {
+                mi.classList.toggle('focus', Boolean(mi.querySelector('.menu-dropdown-item-a:focus')));
+            });
         },
 
         unsetActiveMenuInstantly: function () {
