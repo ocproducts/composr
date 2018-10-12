@@ -869,8 +869,7 @@
                     var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
                     if (typeof elementForInserting.getName === 'undefined') {
                         editor.insertHtml(insert);
-                    } else
-                    {
+                    } else {
                         editor.insertElement(elementForInserting);
                     }
                 }
