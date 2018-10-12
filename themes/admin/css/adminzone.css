@@ -14,12 +14,18 @@ header {
 	color: {$GET,WB};
 	margin-bottom: 1em;
 	display: flex;
-	border-bottom: 1px solid #444;
+	border-bottom: none;
 }
 
 .logo-outer {
 	align-self: center;
 	margin: 0 25px;
+}
+
+@media (max-width: 1355px) { /* Hide logo on small screens to conserve space */
+	.logo-outer {
+		display: none;
+	}
 }
 
 .logo,

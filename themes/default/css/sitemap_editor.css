@@ -70,8 +70,15 @@
 }
 
 /*{+START,CSS_MODE,desktop}*/
+	.pte-sitemap-and-help-box-wrapper {
+		display: flex;
+	}
+	
+	.pte-sitemap {
+		flex-grow: 1;
+	}
+
 	.pte-help-box {
-		float: right;
 		width: 24em;
 		margin-left: 1em;
 	}

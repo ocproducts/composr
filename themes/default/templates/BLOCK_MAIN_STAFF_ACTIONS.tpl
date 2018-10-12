@@ -21,7 +21,7 @@
 
 					<div class="action-log-filter-part">
 						<label for="filter_by_member">{!SHOW_ACTIONS_FOR}</label>:
-						<select name="filter_by_member" id="filter_by_member" class="js-onchange-submit-form">
+						<select name="filter_by_member" id="filter_by_member" class="form-control form-control-sm form-control-inline js-onchange-submit-form">
 							<option value="0"{+START,IF,{$NOT,{FILTER_BY_MEMBER}}} selected="selected"{+END}>{!ALL_USERS}</option>
 							<option value="1"{+START,IF,{FILTER_BY_MEMBER}} selected="selected"{+END}>{!ME_ONLY}</option>
 						</select>

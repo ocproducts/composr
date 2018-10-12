@@ -26,8 +26,9 @@ a.top-left-toggle .icon {
 .checklist-header {
 	color: {$GET,slightly_seeded_text};
 	font-size: 1.1em;
-	font-weight: bold;
 	border-bottom: 1px solid {$GET,pale_border};
+	margin-top: 15px;
+	margin-bottom: 10px;
 }
 
 .checklist-row {

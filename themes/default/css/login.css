@@ -4,7 +4,7 @@
 */
 
 .page-running-login #main-website-inner {
-	background-image: linear-gradient(to top right, {$GET,main_background}, {$GET,main_2_background});
+	background-color: {$GET,main_background};
 }
 
 /*{+START,CSS_MODE,desktop__overlay}*/

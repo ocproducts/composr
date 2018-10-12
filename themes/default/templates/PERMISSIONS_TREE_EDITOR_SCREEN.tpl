@@ -3,24 +3,8 @@
 
 	<p>{!PERMISSIONS_TREE_EDITOR_ABOUT_PRIVILEGE,{$PAGE_LINK*,adminzone:admin_permissions:specific}}</p>
 
-	<div class="clearfix">
-		<div class="pte-help-box">
-			<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
-				<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
-
-				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img width="6" height="6" src="{$IMG*,led/on}" alt="" />}</p>
-
-				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img width="29" height="17" src="{$IMG*,perm_levels/3}" alt="" />}</p>
-
-				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
-
-				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_HOVER_FOR_PERMISSIONS}</p>
-
-				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_INHERIT}</p>
-			</div></div>
-		</div>
-
-		<div>
+	<div class="pte-sitemap-and-help-box-wrapper">
+		<div class="pte-sitemap">
 			<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 				<h2>{!SITEMAP}</h2>
 
@@ -45,6 +29,22 @@
 						<!-- List put in here -->
 					</div>
 				</div>
+			</div></div>
+		</div>
+
+		<div class="pte-help-box">
+			<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
+				<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
+
+				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img width="6" height="6" src="{$IMG*,led/on}" alt="" />}</p>
+
+				<p class="vertical-alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img width="29" height="17" src="{$IMG*,perm_levels/3}" alt="" />}</p>
+
+				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
+
+				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_HOVER_FOR_PERMISSIONS}</p>
+
+				<p class="pte-tips">{!PERMISSIONS_TREE_EDITOR_INHERIT}</p>
 			</div></div>
 		</div>
 	</div>

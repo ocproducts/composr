@@ -213,7 +213,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
-{$SET,max_container_width,1366px}
+{$SET,max_container_width,1355px}
 {$SET,border_radius,4px}
 
 {$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.075}}
@@ -229,7 +229,7 @@ In mobile mode:
 *,
 *::before,
 *::after {
-	box-sizing: inherit;
+	box-sizing: border-box;
 }
 
 html {
@@ -239,7 +239,6 @@ html {
 	-ms-text-size-adjust: 100%;
 	-ms-overflow-style: scrollbar;
 	-webkit-tap-highlight-color: transparent;
-	box-sizing: border-box;
 	font-size: 14px;
 	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
 }
@@ -1311,7 +1310,7 @@ header.with-seed-navbar .top-button:hover {
 
 /* .hero-section is specially designed to wrap around a title and some text, to give a 'hero' introduction for the front page of a site (standard marketing technique) */
 .hero-section {
-	background-image: linear-gradient(to bottom right, {$GET,main_background}, {$GET,main_2_background});
+	background-color: {$GET,main_background};
 	font-size: 1.25em;
 	color: {$GET,slightly_seeded_text};
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Choose better font for larger text */
@@ -2024,7 +2023,7 @@ body button.button-hyperlink:hover {
 /* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */
 .trinav-wrap {
 	overflow: hidden;
-	background-image: linear-gradient(to bottom, {$GET,main_2_background}, {$GET,main_background});
+	background-color: {$GET,main_background};
 	border-radius: 20px;
 	color: {$GET,heading_text};
 }
@@ -3488,7 +3487,6 @@ div.ajax-loading, p.ajax-loading {
 	padding-bottom: 0.5em;
 }
 .tree-list-highlighted *, .tree-list-nonhighlighted * {
-	vertical-align: middle;
 	white-space: nowrap;
 }
 .tree-list-highlighted a, .tree-list-nonhighlighted a {
@@ -6986,7 +6984,7 @@ html.with-header-modern .cms-carousel-home-hero {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	padding: 0.5em;
-	background-image: linear-gradient(to bottom, {$GET,main_2_background}, {$GET,main_background});
+	background-color: {$GET,main_background};
 }
 
 .tab-surround>div>.box:first-child {
@@ -7576,6 +7574,7 @@ a[rel="lightbox"] {
 
 .fake-table-cell {
 	display: inline-block;
+	box-sizing: content-box;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.fake-table-cell {

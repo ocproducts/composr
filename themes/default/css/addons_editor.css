@@ -6,6 +6,7 @@
 .not-too-tall-addons {
 	/*overflow: scroll;	Actually, this annoys some users
 	height: 500px;*/
+	margin-bottom: 15px;
 }
 
 .addon-name {
