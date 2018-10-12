@@ -53,8 +53,9 @@ function get_future_version_information()
         require_code('http');
         $http_result = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), ($version_dotted == get_version_dotted()) ? 5/*5 minute cache*/ : 0);
     }
-    if (is_object($http_result) && ($http_result->data !== null)) {
-        $data = $http_result->data;
+
+    if (is_array($http_result) && isset($http_result[0])) {
+        $data = $http_result[0];
         $data = str_replace('"../upgrader.php"', '"' . get_base_url() . '/upgrader.php"', $data);
 
         if ($GLOBALS['XSS_DETECT']) {
