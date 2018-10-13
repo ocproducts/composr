@@ -293,6 +293,11 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         $font_height = imagefontheight($font);
     }
 
+    // If we're doing a white logo, check if we might have a monochrome logo symbol
+    if (($logo_type === 'small_white') && (preg_match('#^logo/default_logos/logo(1|2|3|4|5|6|7|8|9|10|11|12)\z#', $logo_theme_image) > 0)) {
+        $logo_theme_image = str_replace('logo/default_logos/', 'logo/default_logos_monochrome/', $logo_theme_image);
+    }
+
     // Load GD image resources
     $im_logo = _generate_logo_get_image($logo_theme_image, $theme);
     $im_background = _generate_logo_get_image($background_theme_image, $theme);
