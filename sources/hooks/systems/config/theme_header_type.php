@@ -34,11 +34,11 @@ class Hook_config_theme_header_type
             'human_name' => 'THEME_HEADER_TYPE',
             'type' => 'list',
             'category' => 'THEME',
-            'group' => 'DISPLAY_ELEMENTS',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_theme_header_type',
             'shared_hosting_restricted' => '0',
             'list_options' => 'modern|classic',
-            'order_in_category_group' => 0,
+            'order_in_category_group' => 2,
             'theme_override' => true,
 
             'required' => true,

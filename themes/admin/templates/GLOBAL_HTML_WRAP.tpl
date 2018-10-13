@@ -22,8 +22,12 @@
 			{$,The main logo}
 			<h1 class="logo-outer">
 				<a class="logo" target="_self" href="{$PAGE_LINK*,adminzone:}" rel="home">
-					<!--<img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" />-->
-					{$SITE_NAME*}
+					{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
+					<img class="logo" src="{$IMG*,logo/small_white_logo}" alt="{$SITE_NAME*}" />
+					{+END}
+					{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
+					<span class="logo">{$SITE_NAME*}</span>
+					{+END}
 				</a>
 			</h1>
 

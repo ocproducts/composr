@@ -1012,40 +1012,7 @@
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
         if (strVal($cms.configOption('google_analytics')).trim() && !$cms.isStaff() && !$cms.isAdmin()) {
-            (function () {
-                window['GoogleAnalyticsObject'] = 'ga';
-                window.ga || (window.ga = function () {
-                    window.ga.q || (window.ga.q = []);
-                    window.ga.q.push(arguments);
-                });
-                window.ga.l = Number(new Date());
-                var script = document.createElement('script'),
-                    newSibling = document.getElementsByTagName('script')[0];
-                script.async = true;
-                script.src = '//www.google-analytics.com/analytics.js';
-                newSibling.parentNode.insertBefore(script, newSibling);
-            }());
-
-            var aConfig = {};
-
-            if ($cms.getCookieDomain() !== '') {
-                aConfig.cookieDomain = $cms.getCookieDomain();
-            }
-            if (!$cms.configOption('long_google_cookies')) {
-                aConfig.cookieExpires = 0;
-            }
-
-            window.ga('create', strVal($cms.configOption('google_analytics')).trim(), aConfig);
-
-            if (!$cms.isGuest()) {
-                window.ga('set', 'userId', strVal($cms.getMember()));
-            }
-
-            if ($cms.pageUrl().searchParams.has('_t')) {
-                window.ga('send', 'event', 'tracking__' + strVal($cms.pageUrl().searchParams.get('_t')), window.location.href);
-            }
-
-            window.ga('send', 'pageview');
+            this.initializeGoogleAnalytics();
         }
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
@@ -1065,16 +1032,17 @@
         }
         /*END JS from HTML_HEAD.tpl*/
 
+        // Mouse/keyboard listening
         this.registerMousePositionListener();
 
-        if ($dom.$('#global-messages-2')) {
-            var m1 = $dom.$('#global-messages');
+        if (document.getElementById('global-messages-2')) {
+            var m1 = document.getElementById('global-messages');
             if (!m1) {
                 return;
             }
-            var m2 = $dom.$('#global-messages-2');
+            var m2 = document.getElementById('global-messages-2');
             $dom.append(m1, $dom.html(m2));
-            m2.parentNode.removeChild(m2);
+            m2.remove();
         }
 
         if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
@@ -1087,7 +1055,7 @@
 
         if (($cms.getZoneName() === 'adminzone') && $cms.configOption('background_template_compilation')) {
             var page = $cms.filter.url($cms.getPageName());
-            $cms.loadSnippet('background_template_compilation&page=' + page, '', true);
+            $cms.loadSnippet('background_template_compilation&page=' + page, '');
         }
 
         if (((window === window.top) && !window.opener) || (window.name === '')) {
@@ -1115,10 +1083,6 @@
                 $cms.setCookie('client_time_ref', (Date.now() / 1000), 120);
             }
         }
-
-        // Mouse/keyboard listening
-        window.currentMouseX = 0;
-        window.currentMouseY = 0;
 
         // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
         window.addEventListener('popstate', function () {
@@ -1205,6 +1169,43 @@
                 window.currentMouseX = e.pageX;
                 window.currentMouseY = e.pageY;
             });
+        },
+
+        initializeGoogleAnalytics: function () {
+            (function () {
+                window['GoogleAnalyticsObject'] = 'ga';
+                window.ga || (window.ga = function () {
+                    window.ga.q || (window.ga.q = []);
+                    window.ga.q.push(arguments);
+                });
+                window.ga.l = Number(new Date());
+                var script = document.createElement('script'),
+                    newSibling = document.getElementsByTagName('script')[0];
+                script.async = true;
+                script.src = '//www.google-analytics.com/analytics.js';
+                newSibling.parentNode.insertBefore(script, newSibling);
+            }());
+
+            var aConfig = {};
+
+            if ($cms.getCookieDomain() !== '') {
+                aConfig.cookieDomain = $cms.getCookieDomain();
+            }
+            if (!$cms.configOption('long_google_cookies')) {
+                aConfig.cookieExpires = 0;
+            }
+
+            window.ga('create', strVal($cms.configOption('google_analytics')).trim(), aConfig);
+
+            if (!$cms.isGuest()) {
+                window.ga('set', 'userId', strVal($cms.getMember()));
+            }
+
+            if ($cms.pageUrl().searchParams.has('_t')) {
+                window.ga('send', 'event', 'tracking__' + strVal($cms.pageUrl().searchParams.get('_t')), window.location.href);
+            }
+
+            window.ga('send', 'pageview');
         },
 
         /* Software Chat */

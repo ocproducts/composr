@@ -34,11 +34,11 @@ class Hook_config_use_monochrome_icons
             'human_name' => 'USE_MONOCHROME_ICONS',
             'type' => 'tick',
             'category' => 'THEME',
-            'group' => 'DISPLAY_ELEMENTS',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_use_monochrome_icons',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 3,
             'theme_override' => true,
 
             'required' => true,

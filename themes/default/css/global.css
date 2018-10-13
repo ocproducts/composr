@@ -1130,14 +1130,14 @@ html.is-scrolled .logo-outer .logo-white {
 	display: none;
 }
 
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar {
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar {
 	color: {$GET,WB};
 	background: rgba(0, 0, 0, 0.5);
 	border-bottom: 1px solid transparent;
 	transition: background-color 0.15s ease-in-out, border-bottom 0.15s ease-in-out;
 }
 
-html:not(.has-hero-carousel) header.with-white-navbar,
+html:not(.has-homepage-slider) header.with-white-navbar,
 html.is-scrolled header.with-white-navbar {
 	color: {$GET,a.link};
 	background-color: {$GET,WB};
@@ -1174,20 +1174,20 @@ header.with-sticky-navbar + .sticky-navbar-placeholder {
 	padding-top: 82px;
 }
 
-header.with-sticky-navbar + .sticky-navbar-placeholder + .cms-carousel-home-hero {
+header.with-sticky-navbar + .sticky-navbar-placeholder + .cms-carousel-homepage-slider {
 	margin-top: -82px;
 }
 
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .logo,
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .top-button {
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .logo,
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .top-button {
 	color: {$GET,WB};
 }
 
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
-html.has-hero-carousel.is-not-scrolled header.with-white-navbar .top-button:hover {
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
+html.has-homepage-slider.is-not-scrolled header.with-white-navbar .top-button:hover {
 	color: {$COLOR_RGBA,{$GET,WB},0.8};
 }
 
@@ -1979,6 +1979,7 @@ body button.button-hyperlink:hover {
 	background: none;
 	border: none;
 	cursor: pointer;
+	color: {$GET,seed};
 }
 
 .help-icon {
@@ -6529,7 +6530,7 @@ input[type="button"].btn-block {
 .proceed-button {
 	display: flex;
 	justify-content: center;
-	margin-left; -7px;
+	margin-left: -7px;
 	margin-right: -7px;
 }
 
@@ -6899,7 +6900,7 @@ NB: Form buttons are wrapped in either:
 	/*transition: width 0.15s linear*/
 }
 
-.cms-carousel-home-hero {
+.cms-carousel-homepage-slider {
 	background: #555;
 	overflow: hidden;
 	position: relative;
@@ -6907,20 +6908,20 @@ NB: Form buttons are wrapped in either:
 	/*padding-top: 70px;*/
 }
 
-html.with-header-modern .cms-carousel-home-hero {
+html.with-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {
 	min-height: 100vmin;
 }
 
-.cms-carousel-home-hero .cms-carousel-inner {
+.cms-carousel-homepage-slider .cms-carousel-inner {
 	min-height: inherit;
 }
 
-.cms-carousel-home-hero .cms-carousel-item {
+.cms-carousel-homepage-slider .cms-carousel-item {
 	min-height: inherit;
 	overflow: hidden;
 }
 
-.cms-carousel-home-hero .cms-carousel-item-inner {
+.cms-carousel-homepage-slider .cms-carousel-item-inner {
 	width: 100%;
 	min-height: inherit;
 	overflow: hidden;
@@ -6933,13 +6934,13 @@ html.with-header-modern .cms-carousel-home-hero {
 }
 
 /*{+START,CSS_MODE,mobile}*/
- .cms-carousel-home-hero .cms-carousel-item-inner {
+ .cms-carousel-homepage-slider .cms-carousel-item-inner {
 	 padding-top: 100px;
 	 padding-bottom: 0;
  }
 /*{+END}*/
 
-.cms-carousel-home-hero .cms-carousel-contrast-box {
+.cms-carousel-homepage-slider .cms-carousel-contrast-box {
 	display: table;
 	margin: 0 auto;
 	padding: 15px 30px;

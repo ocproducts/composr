@@ -432,8 +432,17 @@ class Module_admin_config
 
             $all_known_groups[$_group] = $group;
         }
-        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
+
         ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
+
+        $general_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('GENERAL'))));
+        if (isset($all_known_groups[$general_key])) { // General goes first
+            $temp = $all_known_groups[$general_key];
+            unset($all_known_groups[$general_key]);
+            array_unshift($all_known_groups, $temp);
+        }
+
+        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
         if (isset($all_known_groups[$advanced_key])) { // Advanced goes last
             $temp = $all_known_groups[$advanced_key];
             unset($all_known_groups[$advanced_key]);

@@ -34,11 +34,11 @@ class Hook_config_use_site_name_text_as_logo
             'human_name' => 'USE_SITE_NAME_TEXT_AS_LOGO',
             'type' => 'tick',
             'category' => 'THEME',
-            'group' => 'DISPLAY_ELEMENTS',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_use_site_name_text_as_logo',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 4,
             'theme_override' => true,
 
             'required' => true,

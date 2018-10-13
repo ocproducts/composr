@@ -28,11 +28,14 @@ header {
 	}
 }
 
-.logo,
-.logo:hover {
-	text-decoration: none;
+.logo-outer .logo {
 	font-size: 20px;	
 	color: white;
+	height: 82px;
+}
+
+.logo-outer .logo:hover {
+	text-decoration: none;
 }
 
 /*{+START,CSS_MODE,desktop}*/

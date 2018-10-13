@@ -3,7 +3,7 @@
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="with-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-hero-carousel} is-not-scrolled">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="with-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-homepage-slider} is-not-scrolled">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -22,11 +22,11 @@
 
 		{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
 			{$,Replace the "cms-carousel-slide" class with "cms-carousel-fade" to make the carousel use fade effect instead of sliding}
-			<div id="hero-carousel" class="cms-carousel cms-carousel-slide cms-carousel-home-hero has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
+			<div id="homepage-slider" class="cms-carousel cms-carousel-slide cms-carousel-homepage-slider has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
 				<!--<ol class="cms-carousel-indicators">-->
-					<!--<li data-target="#hero-carousel" data-slide-to="0" class="active"></li>-->
-					<!--<li data-target="#hero-carousel" data-slide-to="1"></li>-->
-					<!--<li data-target="#hero-carousel" data-slide-to="2"></li>-->
+					<!--<li data-target="#homepage-slider" data-slide-to="0" class="active"></li>-->
+					<!--<li data-target="#homepage-slider" data-slide-to="1"></li>-->
+					<!--<li data-target="#homepage-slider" data-slide-to="2"></li>-->
 				<!--</ol>-->
 				<a href="#!" class="cms-carousel-scroll-button">
 					<div class="cms-carousel-scroll-button-icon">
@@ -88,14 +88,15 @@
 						</div>
 					</div>
 				</div>
-				<a class="cms-carousel-control-prev" href="#hero-carousel" role="button" data-slide="prev">
+				<a class="cms-carousel-control-prev" href="#homepage-slider" role="button" data-slide="prev">
 					<span class="cms-carousel-control-prev-icon" aria-hidden="true"></span>
 					<span class="sr-only">Previous</span>
 				</a>
-				<a class="cms-carousel-control-next" href="#hero-carousel" role="button" data-slide="next">
+				<a class="cms-carousel-control-next" href="#homepage-slider" role="button" data-slide="next">
 					<span class="cms-carousel-control-next-icon" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a>
+				<!-- Slider progress bar becomes visible when the "interval" parameter is set -->
 				<div class="cms-carousel-progress-bar">
 					<div class="cms-carousel-progress-bar-fill"></div>
 				</div>
