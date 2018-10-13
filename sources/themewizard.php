@@ -357,7 +357,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
             $css_file = cms_file_get_contents_safe(get_file_base() . '/themes/default/css/global.css');
         }
         $matches = array();
-        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),box_title_background,#i', $css_file, $matches) != 0) {
+        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),site_name_text_color,#i', $css_file, $matches) != 0) {
             $text_colour = imagecolorallocate($im_canvas, hexdec($matches[1]), hexdec($matches[2]), hexdec($matches[3]));
         }
     }

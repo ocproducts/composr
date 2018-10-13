@@ -112,6 +112,9 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#ffffff,text_light,100% ffffff}
 {$THEMEWIZARD_COLOR,#212529,text_dark,100% 212529}
 
+/* Logo text color */
+{$THEMEWIZARD_COLOR,#2388ef,site_name_text_color,100% seed}
+
 /* Borders */
 {$THEMEWIZARD_COLOR,#dddddd,standard_border,100% dddddd}
 {$THEMEWIZARD_COLOR,#9b9b9b,dark_border,70% standard_border + 30% BW}
