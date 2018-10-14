@@ -16,7 +16,7 @@
 	margin: 2em auto;
 	text-align: center;
 	border: 1px dotted {$GET,standard_border};
-	border-radius: 15px;
+	border-radius: {$GET,border_radius_lg};
 	background-color: {$GET,area_background};
 	padding: 0.7em;
 	box-shadow: 0px 0px 20px {$GET,standard_border};

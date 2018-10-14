@@ -3,7 +3,7 @@
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="with-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-homepage-slider} is-not-scrolled">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="is-not-scrolled has-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-homepage-slider} {$?,{$THEME_OPTION,fullscreen_homepage_slider},has-fullscreen-homepage-slider}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -22,13 +22,13 @@
 
 		{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
 			{$,Replace the "cms-carousel-slide" class with "cms-carousel-fade" to make the carousel use fade effect instead of sliding}
-			<div id="homepage-slider" class="cms-carousel cms-carousel-slide cms-carousel-homepage-slider has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
+			<div id="homepage-slider" class="cms-carousel cms-carousel-slide {$?,{$THEME_OPTION,fullscreen_homepage_slider},cms-carousel-fullscreen} cms-carousel-homepage-slider has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
 				<!--<ol class="cms-carousel-indicators">-->
 					<!--<li data-target="#homepage-slider" data-slide-to="0" class="active"></li>-->
 					<!--<li data-target="#homepage-slider" data-slide-to="1"></li>-->
 					<!--<li data-target="#homepage-slider" data-slide-to="2"></li>-->
 				<!--</ol>-->
-				<a href="#!" class="cms-carousel-scroll-button">
+				<a href="#!" class="cms-carousel-scroll-button" style="display: none;">
 					<div class="cms-carousel-scroll-button-icon">
 						{+START,INCLUDE,ICON}NAME=results/sortablefield_desc{+END}
 					</div>

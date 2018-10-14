@@ -22,7 +22,7 @@ header {
 	margin: 0 25px;
 }
 
-@media (max-width: 1355px) { /* Hide logo on small screens to conserve space */
+@media (max-width: 1349px) { /* Hide admin logo on small screens to conserve space */
 	.logo-outer {
 		display: none;
 	}

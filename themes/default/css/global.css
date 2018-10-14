@@ -216,8 +216,11 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
-{$SET,max_container_width,1355px}
+{$SET,max_container_width,1349px} /* 1366px minus scrollbar */
+{$SET,modern_navbar_height,90px}
+{$SET,stickied_modern_navbar_height,70px}
 {$SET,border_radius,4px}
+{$SET,border_radius_lg,6px}
 
 {$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.075}}
 {$SET,box_shadow,0 7px 14px {$COLOR_RGBA,{$GET,BW},0.15}}
@@ -1101,9 +1104,21 @@ header h1 {
 	overflow: hidden;
 }
 
+.logo-outer a {
+	display: block;
+}
+
+.logo-outer a:hover {
+	text-decoration: none;
+}
+
 .logo-outer .logo {
 	height: auto;
 	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
+}
+
+.logo-outer .logo-white {
+	display: none;
 }
 
 .header-classic .logo-outer .logo {
@@ -1115,29 +1130,19 @@ header h1 {
 	min-height: 60px;
 }
 
-.header-modern .logo-outer .logo {
-	max-width: 200px;
+html.is-not-scrolled.has-homepage-slider .logo-outer .logo-color {
+	display: none;
 }
 
-.logo-outer a,
-.logo-outer a:hover {
+html.is-not-scrolled.has-homepage-slider .logo-outer .logo-white {
 	display: block;
-	text-decoration: none;
-}
-
-html.is-not-scrolled .logo-outer .logo-color {
-	display: none;
-}
-
-html.is-scrolled .logo-outer .logo-white {
-	display: none;
 }
 
 html.has-homepage-slider.is-not-scrolled header.with-white-navbar {
 	color: {$GET,WB};
 	background: rgba(0, 0, 0, 0.5);
 	border-bottom: 1px solid transparent;
-	transition: background-color 0.15s ease-in-out, border-bottom 0.15s ease-in-out;
+	transition: background-color 0.15s ease-in-out, height 0.15s ease-in-out;
 }
 
 html:not(.has-homepage-slider) header.with-white-navbar,
@@ -1147,22 +1152,54 @@ html.is-scrolled header.with-white-navbar {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-header .col-logo {
-	flex: 0 0 auto;
-	width: auto;
-	max-width: none;
-}
-
-header .logo,
-header .logo:hover {
+header .logo {
 	font-size: 25px;
 	line-height: 69px;
 	display: block;
 }
 
-header .col-navigation {
+.header-modern {
+	display: flex;
+	transition: height 0.15s ease-in-out;
+	height: 90px;
+}
+
+header.with-sticky-navbar ~ .sticky-navbar-placeholder {
+	height: {$GET,modern_navbar_height};
+}
+
+header.with-sticky-navbar ~ .cms-carousel-homepage-slider {
+	margin-top: -{$GET,modern_navbar_height};
+}
+
+header.with-sticky-navbar ~ .cms-carousel-homepage-slider .cms-carousel-item-inner {
+	padding-top: {$GET,modern_navbar_height};
+}
+
+html.is-scrolled .header-modern.with-sticky-navbar {
+	height: {$GET,stickied_modern_navbar_height};
+}
+
+.header-modern .global-navigation,
+.header-modern .logo-outer,
+.header-modern .logo-link,
+.header-modern .logo {
+	height: inherit;
+}
+
+.header-modern .global-navigation {
+	display: flex;
+}
+
+.header-modern .global-navigation-items {
 	display: flex;
 	margin-left: auto;
+}
+
+.header-modern .global-navigation .top-form {
+	padding: 0;
+	display: flex;
+	align-items: center;
 }
 
 header.with-sticky-navbar {
@@ -1171,14 +1208,6 @@ header.with-sticky-navbar {
 	right: 0;
 	top: 0;
 	z-index: 100;
-}
-
-header.with-sticky-navbar + .sticky-navbar-placeholder {
-	padding-top: 82px;
-}
-
-header.with-sticky-navbar + .sticky-navbar-placeholder + .cms-carousel-homepage-slider {
-	margin-top: -82px;
 }
 
 html.has-homepage-slider.is-not-scrolled header.with-white-navbar .logo,
@@ -1214,10 +1243,6 @@ header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:hover,
 header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:focus,
 header.with-seed-navbar .top-button:hover {
 	background: rgba(0, 0, 0, 0.05);
-}
-
-.global-navigation-inner {
-	min-height: 70px;
 }
 
 .global-navigation .menu-dropdown {
@@ -1811,7 +1836,8 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	border: 0;
 }
 
-.sr-only-focusable:active, .sr-only-focusable:focus {
+.sr-only-focusable:active, 
+.sr-only-focusable:focus {
 	position: static;
 	width: auto;
 	height: auto;
@@ -2221,6 +2247,146 @@ th.metadata-title {
 }
 .img-thumb-opaque .img-thumb {
 	transition: none !important;
+}
+
+.alert {
+	position: relative;
+	padding: 12px 20px;
+	margin-bottom: 16px;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+}
+
+.alert-heading {
+	color: inherit;
+}
+
+.alert-link {
+	font-weight: 700;
+}
+
+.alert-dismissible {
+	padding-right: 64px;
+}
+
+.alert-dismissible .close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 12px 20px;
+	color: inherit;
+}
+
+.alert-primary {
+	color: #004085;
+	background-color: #cce5ff;
+	border-color: #b8daff;
+}
+
+.alert-primary hr {
+	border-top-color: #9fcdff;
+}
+
+.alert-primary .alert-link {
+	color: #002752;
+}
+
+.alert-secondary {
+	color: #383d41;
+	background-color: #e2e3e5;
+	border-color: #d6d8db;
+}
+
+.alert-secondary hr {
+	border-top-color: #c8cbcf;
+}
+
+.alert-secondary .alert-link {
+	color: #202326;
+}
+
+.alert-success {
+	color: #155724;
+	background-color: #d4edda;
+	border-color: #c3e6cb;
+}
+
+.alert-success hr {
+	border-top-color: #b1dfbb;
+}
+
+.alert-success .alert-link {
+	color: #0b2e13;
+}
+
+.alert-info {
+	color: #0c5460;
+	background-color: #d1ecf1;
+	border-color: #bee5eb;
+}
+
+.alert-info hr {
+	border-top-color: #abdde5;
+}
+
+.alert-info .alert-link {
+	color: #062c33;
+}
+
+.alert-warning {
+	color: #856404;
+	background-color: #fff3cd;
+	border-color: #ffeeba;
+}
+
+.alert-warning hr {
+	border-top-color: #ffe8a1;
+}
+
+.alert-warning .alert-link {
+	color: #533f03;
+}
+
+.alert-danger {
+	color: #721c24;
+	background-color: #f8d7da;
+	border-color: #f5c6cb;
+}
+
+.alert-danger hr {
+	border-top-color: #f1b0b7;
+}
+
+.alert-danger .alert-link {
+	color: #491217;
+}
+
+.alert-light {
+	color: #818182;
+	background-color: #fefefe;
+	border-color: #fdfdfe;
+}
+
+.alert-light hr {
+	border-top-color: #ececf6;
+}
+
+.alert-light .alert-link {
+	color: #686868;
+}
+
+.alert-dark {
+	color: #1b1e21;
+	background-color: #d6d8d9;
+	border-color: #c6c8ca;
+}
+
+.alert-dark hr {
+	border-top-color: #b9bbbe;
+}
+
+.alert-dark .alert-link {
+	color: #040505;
 }
 
 /*
@@ -6908,12 +7074,8 @@ NB: Form buttons are wrapped in either:
 	overflow: hidden;
 	position: relative;
 	color: {$GET,WB};
-	/*padding-top: 70px;*/
 }
 
-html.with-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {
-	min-height: 100vmin;
-}
 
 .cms-carousel-homepage-slider .cms-carousel-inner {
 	min-height: inherit;
@@ -6925,22 +7087,22 @@ html.with-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {
 }
 
 .cms-carousel-homepage-slider .cms-carousel-item-inner {
-	width: 100%;
 	min-height: inherit;
 	overflow: hidden;
-	background: rgba(0, 0, 0, 0.3); 
-	padding-top: 50px; 
-	padding-bottom: 50px; 
+	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
-	display: flex;
-	align-items: center;
+}
+
+.cms-carousel-homepage-slider .cms-carousel-item-inner .container {
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 
 /*{+START,CSS_MODE,mobile}*/
- .cms-carousel-homepage-slider .cms-carousel-item-inner {
+.cms-carousel-homepage-slider .cms-carousel-item-inner {
 	 padding-top: 100px;
 	 padding-bottom: 0;
- }
+}
 /*{+END}*/
 
 .cms-carousel-homepage-slider .cms-carousel-contrast-box {
@@ -6950,6 +7112,15 @@ html.with-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: {$GET,border_radius};
 	margin-bottom: 40px;
+}
+
+html.has-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {
+	min-height: 100vmin;
+}
+
+html.has-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen .cms-carousel-item-inner {
+	display: flex;
+	align-items: center;
 }
 
 	/*

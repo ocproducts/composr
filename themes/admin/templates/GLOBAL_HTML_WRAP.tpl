@@ -21,7 +21,7 @@
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,The main logo}
 			<h1 class="logo-outer">
-				<a class="logo" target="_self" href="{$PAGE_LINK*,adminzone:}" rel="home">
+				<a class="logo-link" target="_self" href="{$PAGE_LINK*,adminzone:}" rel="home">
 					{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
 					<img class="logo" src="{$IMG*,logo/small_white_logo}" alt="{$SITE_NAME*}" />
 					{+END}

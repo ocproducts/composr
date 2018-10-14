@@ -12,7 +12,7 @@
 
 	{$,The main logo}
 	<h1 class="logo-outer container">
-		<a target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
+		<a class="logo-link" target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
 			{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
 			<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
 			{+END}
