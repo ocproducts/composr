@@ -2,12 +2,19 @@
     'use strict';
     /**
      * @param el
-     * @param property
      * @returns {*}
      */
-    function computedStyle(el, property) {
-        var cs = el.ownerDocument.defaultView.getComputedStyle(el);
-        return (property !== undefined) ? cs.getPropertyValue(dasherize(property)) : cs;
+    function getStyles(el) {
+        // Support: IE <=11 only, Firefox <=30 (#15098, #14150)
+        // IE throws on elements created in popups
+        // FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
+        var view = el.ownerDocument.defaultView;
+
+        if ( !view || !view.opener ) {
+            view = window;
+        }
+
+        return view.getComputedStyle( el );
     }
 
     var rgxIdSelector = /^#[\w-]+$/,
@@ -16,9 +23,6 @@
         // Special attributes that should be set via method calls
         methodAttributes = { value: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
-
-    var DOM_ANIMATE_DEFAULT_DURATION = 400, // Milliseconds
-        DOM_ANIMATE_DEFAULT_EASING = 'ease-in-out'; // Possible values: https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffectTimingProperties/easing
 
     setTimeout(function () {
         $dom._resolveInit();
@@ -54,6 +58,18 @@
         }
     }, 0);
 
+    var _privateData = new WeakMap();
+    function privateData(object) {
+        var data = _privateData.get(object);
+
+        if (data == null) {
+            data = Object.create(null);
+            _privateData.set(object, data);
+        }
+
+        return data;
+    }
+
     /**@namespace $dom*/
     /**
      * @param windowOrNodeOrSelector
@@ -71,14 +87,14 @@
                 el = $dom.$(windowOrNodeOrSelector);
 
                 if (el == null) {
-                    throw new Error('domArg(): No element found for selector "' + strVal(windowOrNodeOrSelector) + '".');
+                    throw new Error('$dom.domArg(): No element found for selector "' + strVal(windowOrNodeOrSelector) + '".');
                 }
 
                 return el;
             }
         }
 
-        throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + $util.typeName(windowOrNodeOrSelector) + '" provided.');
+        throw new TypeError('$dom.domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + $util.typeName(windowOrNodeOrSelector) + '" provided.');
     };
 
     /**
@@ -97,14 +113,14 @@
                 el = $dom.$(nodeOrSelector);
 
                 if (el == null) {
-                    throw new Error('nodeArg(): No element found for selector "' + strVal(nodeOrSelector) + '".');
+                    throw new Error('$dom.nodeArg(): No element found for selector "' + strVal(nodeOrSelector) + '".');
                 }
 
                 return el;
             }
         }
 
-        throw new TypeError('nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + $util.typeName(nodeOrSelector) + '" provided.');
+        throw new TypeError('$dom.nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + $util.typeName(nodeOrSelector) + '" provided.');
     };
 
     /**
@@ -130,7 +146,7 @@
             }
         }
 
-        throw new TypeError('elArg(): Argument 1 must be a {' + 'Element|string}, "' + $util.typeName(elementOrSelector) + '" provided.');
+        throw new TypeError('$dom.elArg(): Argument 1 must be a {' + 'Element|string}, "' + $util.typeName(elementOrSelector) + '" provided.');
     };
 
     /**
@@ -492,7 +508,7 @@
         });
     };
 
-    var domDataMap = new window.WeakMap();
+    var domDataMap = new WeakMap();
     /**
      * @param el
      * @return { object }
@@ -1309,15 +1325,65 @@
             .toLowerCase();
     }
 
-    var cssNumericProps = {'column-count': true, 'columns': true, 'font-weight': true, 'line-height': true, 'opacity': true, 'z-index': true, 'zoom': true};
 
+    // Don't automatically add "px" to these possibly-unitless properties
+    var cssNumber = {
+        "animationIterationCount": true,
+        "columnCount": true,
+        "fillOpacity": true,
+        "flexGrow": true,
+        "flexShrink": true,
+        "fontWeight": true,
+        "lineHeight": true,
+        "opacity": true,
+        "order": true,
+        "orphans": true,
+        "widows": true,
+        "zIndex": true,
+        "zoom": true
+    };
     /**
      * @param name
      * @param value
      * @returns {*}
      */
     function maybeAddPx(name, value) {
-        return ((typeof value === 'number') && !(name in cssNumericProps)) ? (value + 'px') : value;
+        return ((typeof value === 'number') && !(name in cssNumber)) ? (value + 'px') : value;
+    }
+
+    // Inspired by jQuery.cssHooks
+    function getCss(el, property) {
+        var cs = getStyles(el),
+            value = cs.getPropertyValue(property) || cs[property]; // getPropertyValue is needed for: '--customProperty'
+
+        if ((property === 'opacity') && (value === '')) {
+            // We should always get a number back from opacity
+            value = '1';
+        }
+
+        if (((property === 'width') || (property === 'height')) && (value === 'auto') && (cs.display === 'none')) { // 'auto' is returned when an element is display none
+            var oldPosition = el.style.position,
+                oldVisiblity = el.style.visibility,
+                oldDisplay = el.style.display;
+
+            el.style.position = 'absolute';
+            el.style.visibility = 'hidden';
+            el.style.display = $dom.initial(el, 'display');
+
+            el.offsetHeight; // Redraw
+
+            if (property === 'width') {
+                value = cs.width;
+            } else if (property === 'height') {
+                value = cs.height;
+            }
+
+            el.style.position = oldPosition;
+            el.style.visibility = oldVisiblity;
+            el.style.display = oldDisplay;
+        }
+
+        return value;
     }
 
     /**
@@ -1334,12 +1400,11 @@
 
         if (value === undefined) {
             if (typeof property === 'string') {
-                return el.style[camelize(property)] || computedStyle(el, property);
+                return getCss(el, property);
             } else if (Array.isArray(property)) {
-                var cs = computedStyle(el),
-                    props = {};
+                var props = {};
                 property.forEach(function (prop) {
-                    props[prop] = (el.style[camelize(prop)] || cs.getPropertyValue(dasherize(prop)));
+                    props[prop] = getCss(el, prop);
                 });
                 return props;
             }
@@ -1350,14 +1415,14 @@
             if (!value && (value !== 0)) {
                 el.style.removeProperty(dasherize(property));
             } else {
-                css = dasherize(property) + ':' + maybeAddPx(dasherize(property), value);
+                css = dasherize(property) + ':' + maybeAddPx(camelize(property), value);
             }
         } else {
             for (key in property) {
                 if (!property[key] && (property[key] !== 0)) {
                     el.style.removeProperty(dasherize(key));
                 } else {
-                    css += dasherize(key) + ':' + maybeAddPx(dasherize(key), property[key]) + ';';
+                    css += dasherize(key) + ':' + maybeAddPx(camelize(key), property[key]) + ';';
                 }
             }
         }
@@ -1434,45 +1499,559 @@
         return _initial[tag][property];
     };
 
+    /* NB: Following animation code is heavily inspired from jQuery (v3.3.2), so if you're confused, you know where to look. */
+    /* Unlike jQuery, this uses the cutting edge Web Animations API */
+
+    // Generate parameters to create a standard animation
+    function genFx( type, includeWidth ) {
+        var attrs = { height: type };
+
+        attrs.marginTop = attrs.marginBottom = attrs.paddingTop = attrs.paddingBottom = type;
+
+        if (includeWidth) {
+            attrs.marginLeft = attrs.marginRight = attrs.paddingLeft = attrs.paddingRight = type;
+            attrs.opacity = attrs.width = type;
+        }
+
+        return attrs;
+    }
+
+    function showHide( el, show ) {
+        var priv, display, newValue;
+
+        priv = privateData(el);
+
+        // Determine new display value for elements that need to change
+        display = el.style.display;
+        if (show) {
+            // Since we force visibility upon cascade-hidden elements, an immediate (and slow)
+            // check is required in this first loop unless we have a nonempty display value (either
+            // inline or about-to-be-restored)
+            if (display === 'none') {
+                newValue = priv.display || null;
+                if (!newValue) {
+                    el.style.display = '';
+                }
+            }
+            if ((el.style.display === '') && $dom.notDisplayed(el)) {
+                newValue = $dom.initial(el, 'display');
+            }
+        } else {
+            if (display !== 'none') {
+                newValue = 'none';
+
+                // Remember what we're overwriting
+                priv.display = display;
+            }
+        }
+
+        el.style.display = newValue;
+
+        return el;
+    }
+
+    function isHiddenWithinTree(el) {
+        // Inline style trumps all
+        return el.style.display === "none" ||
+            el.style.display === "" &&
+            // Otherwise, check computed style
+            // Support: Firefox <=43 - 45
+            // Disconnected elements can have computed display: none, so first confirm that elem is in the document.
+            el.ownerDocument && el.ownerDocument.contains(el) && $dom.css( el, "display" ) === "none";
+    }
+
+    var rfxtypes = /^(?:toggle|show|hide)$/;
+
+    function queueAnimation(el, props, duration, easing, callback) {
+        var priv = privateData(el);
+
+        priv.queue || (priv.queue = []);
+
+        var doAnimation = function () {
+            var done = [],
+                always = [],
+                empty = !$util.hasEnumerable(props),
+                computed = getStyles(el),
+                startKeyframe = {},
+                endKeyframe = {};
+
+            function defaultPrefilter() {
+                var isBox = (('width' in props) || ('height' in props)),
+                    hidden = isHiddenWithinTree(el),
+                    orig = {},
+                    prop, toggle, hasProps, origOverflow, restoreDisplay, display;
+
+                // Detect show/hide animations
+                for (prop in props) {
+                    var value = props[prop];
+
+                    if (!rfxtypes.test(value)) {
+                        continue;
+                    }
+
+                    delete props[prop];
+                    toggle = toggle || value === "toggle";
+                    if (value === ( hidden ? "hide" : "show") ) {
+
+                        // Pretend to be hidden if this is a "show" and
+                        // there is still data from a stopped show/hide
+                        if ( value === "show" && priv.show && priv.show[ prop ] !== undefined ) {
+                            hidden = true;
+
+                            // Ignore all other no-op show/hide data
+                        } else {
+                            continue;
+                        }
+                    }
+                    orig[prop] = priv.show && priv.show[ prop ] || el.style[prop];
+                }
+
+                // Bail out if this is a no-op like .hide().hide()
+                hasProps = $util.hasEnumerable( props );
+                if ( !hasProps && !$util.hasEnumerable( orig ) ) {
+                    return;
+                }
+
+                // Restrict "overflow" and "display" styles during box animations
+                if (isBox) {
+                    // Support: IE <=9 - 11, Edge 12 - 13
+                    // Record all 3 overflow attributes because IE does not infer the shorthand
+                    // from identically-valued overflowX and overflowY
+                    origOverflow = [el.style.overflow, el.style.overflowX, el.style.overflowY];
+                    // Identify a display type, preferring old show/hide data over the CSS cascade
+                    restoreDisplay = priv.fxshow && priv.fxshow.display;
+                    if ( restoreDisplay == null ) {
+                        restoreDisplay = priv.display;
+                    }
+                    display = $dom.css( el, "display" );
+                    if ( display === "none" ) {
+                        if ( restoreDisplay ) {
+                            display = restoreDisplay;
+                        } else {
+                            // Get nonempty value(s) by temporarily forcing visibility
+                            showHide(el, true);
+                            restoreDisplay = el.style.display || restoreDisplay;
+                            display = $dom.css( el, "display" );
+                            showHide(el, false);
+                        }
+                    }
+
+                    // Animate inline elements as inline-block
+                    if ( display === "inline" || display === "inline-block" && restoreDisplay != null ) {
+                        if ( $dom.css( el, "float" ) === "none" ) {
+
+                            // Restore the original display value at the end of pure show/hide animations
+                            if ( !hasProps ) {
+                                if ( restoreDisplay == null ) {
+                                    display = el.style.display;
+                                    restoreDisplay = display === "none" ? "" : display;
+                                }
+                            }
+                            el.style.display = "inline-block";
+                        }
+                    }
+                }
+
+                if (origOverflow != null) {
+                    el.style.overflow = 'hidden';
+                    always.push(function () {
+                        el.style.overflow = origOverflow[0];
+                        el.style.overflowX = origOverflow[1];
+                        el.style.overflowY = origOverflow[2];
+                    });
+                }
+
+                // General show/hide setup for this element animation
+                if ( !hasProps ) {
+                    if ( priv.fxshow ) {
+                        if ( "hidden" in priv.fxshow ) {
+                            hidden = priv.fxshow.hidden;
+                        }
+                    } else {
+                        priv.fxshow = { display: restoreDisplay };
+                    }
+
+                    // Store hidden/visible for toggle so `.stop().toggle()` "reverses"
+                    if ( toggle ) {
+                        priv.fxshow.hidden = !hidden;
+                    }
+
+                    // Show elements before animating them
+                    if ( hidden ) {
+                        showHide( el, true );
+                    }
+
+                    // eslint-disable-next-line no-loop-func
+                    done.push(function () {
+                        // The final step of a "hide" animation is actually hiding the element
+                        if ( !hidden ) {
+                            showHide( el );
+                        }
+
+                        priv.fxshow = null;
+
+                        for (var prop in orig) {
+                            el.style[prop] = orig[prop];
+                        }
+                    });
+                }
+
+                // Implement show/hide animations
+                for (prop in orig) {
+                    // Per-property setup
+                    var fromValue = $dom.css(el, prop),
+                        toValue = hidden ? priv.fxshow[prop] : 0;
+
+                    if (toValue === undefined) {
+                        priv.fxshow[prop] = fromValue;
+                        if (hidden) {
+                            toValue = fromValue;
+                            fromValue = 0;
+                        }
+                    }
+
+                    startKeyframe[prop] = fromValue;
+                    endKeyframe[prop] = toValue;
+                }
+            }
+
+            defaultPrefilter();
+
+            for (var property in props) {
+                var toValue = props[property];
+
+                startKeyframe[property] = computed[property];
+                endKeyframe[property] = toValue;
+            }
+
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration, easing: easing, fill: 'forwards' },
+                animation = el.animate(keyFrames, options);
+
+            animation.addEventListener('finish', listener);
+            animation.addEventListener('cancel', listener);
+
+            doAnimation.finish = function finish() {
+                animation.finish();
+            };
+
+            doAnimation.stop = function stop() {
+                // Preserve all the progress thus far
+                for (var property in startKeyframe) {
+                    el.style[property] = $dom.css(el, property);
+                }
+
+                animation.cancel(); // Cancel animation (listener() executed)
+            };
+
+            // Empty animations, or finishing flag resolves immediately (see $dom.finish())
+            if (empty || priv.finish) {
+                doAnimation.finish();
+            }
+
+            function listener(e) {
+                if (e.type === 'finish') {
+                    for (var property in endKeyframe) {
+                        el.style[property] = endKeyframe[property];
+                    }
+
+                    animation.cancel(); // Remove animation fill (doesn't fire cancel event at this stage).
+
+                    done.forEach(function (func) {
+                        func();
+                    });
+                }
+
+                always.forEach(function (func) {
+                    func();
+                });
+
+                priv.queue.shift();
+
+                if (priv.queue.length > 0) {
+                    priv.queue[0]();
+                }
+
+                callback(e.type === 'finish');
+            }
+        };
+
+        priv.queue.push(doAnimation);
+
+        if (priv.queue.length === 1) {
+            priv.queue[0]();
+        }
+    }
+
+    $dom.fx || ($dom.fx = {});
+
+    $dom.fx.speeds = {
+        slow: 600,
+        fast: 200,
+
+        // Default speed
+        _default: 400
+    };
+
+    var DOM_ANIMATE_DEFAULT_EASING = 'ease-in-out'; // Possible values: https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffectTimingProperties/easing
+
+    /**
+     * @param { Element|String } el
+     * @param { Object } props
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.animate = function animate(el, props, duration, easing) {
+        el = $dom.elArg(el);
+        duration = ((typeof duration === 'string') ? ((duration in $dom.fx.speeds) ? $dom.fx.speeds[duration] : $dom.fx.speeds._default) : intVal(duration, $dom.fx.speeds._default));
+        easing = strVal(easing) || DOM_ANIMATE_DEFAULT_EASING;
+
+        return new Promise(function (resolve) {
+            queueAnimation(el, props, duration, easing, function (completed) {
+                resolve(completed);
+            });
+        });
+    };
+
+    /**
+     * Stop the currently-running animation on the matched element.
+     * 
+     * When .stop() is called on an element, the currently-running animation (if any) is immediately stopped. 
+     * If, for instance, an element is being hidden with .slideUp() when .stop() is called, the element will now still be displayed, 
+     * but will be a fraction of its previous height. Callback functions are not called.
+     * If more than one animation method is called on the same element, the later animations are placed in the effects queue for the element. 
+     * These animations will not begin until the first one completes. When .stop() is called, the next animation in the queue begins immediately. 
+     * 
+     * If the clearQueue parameter is provided with a value of true, then the rest of the animations in the queue are removed and never run.
+     * 
+     * If the jumpToEnd argument is provided with a value of true, the current animation stops, but the element is immediately given its target values for each CSS property. 
+     * In our above .slideUp() example, the element would be immediately hidden. The callback function is then immediately called, if provided.
+     * 
+     * @param { Element|String } el
+     * @param { Boolean } [clearQueue] - Whether to remove queued animation as well.
+     * @param { Boolean } [jumpToEnd] - Whether to complete the current animation immediately
+     * @returns { Promise }
+     */
+    $dom.stop = function stop(el, clearQueue, jumpToEnd) {
+        el = $dom.elArg(el);
+
+        var priv = privateData(el);
+
+        if (priv.queue.length === 0) {
+            return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+            if (clearQueue) {
+                priv.queue.splice(1);
+            }
+
+            if (jumpToEnd) {
+                priv.queue[0].finish();
+            } else {
+                priv.queue[0].stop();
+            }
+
+            // Wait for the animation to finish
+            requestAnimationFrame(function wait() {
+                if (priv.queue.length > 0) {
+                    requestAnimationFrame(wait);
+                    return;
+                }
+
+                // All done
+                resolve();
+            });
+        });
+    };
+
+    /**
+     * Stop the currently-running animation, remove all queued animations, and complete all animations.
+     * The .finish() method is similar to .stop(true, true) in that it clears the queue and the current animation jumps to its end value. 
+     * It differs, however, in that .finish() also causes the CSS property of all queued animations to jump to their end values, as well.
+     * 
+     * @param { Element|String } el
+     * @returns { Promise }
+     */
+    $dom.finish = function finish(el) {
+        el = $dom.elArg(el);
+
+        var priv = privateData(el);
+
+        if (priv.queue.length === 0) {
+            return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+            // Enable finishing flag on private data for pending animations to finish instantly
+            priv.finish = true;
+
+            priv.queue[0].finish(); // The first animation in the queue is always the one currently running
+
+            // Wait for all animations to finish
+            requestAnimationFrame(function wait() {
+                if (priv.queue.length > 0) {
+                    requestAnimationFrame(wait);
+                    return;
+                }
+
+                // Turn off finishing flag
+                delete priv.finish;
+
+                // All done
+                resolve();
+            });
+        });
+    };
+
+    /**
+     * Removes all animations that have not been executed from the queue.
+     *
+     * @param { Element|String } el
+     */
+    $dom.clearQueue = function clearQueue(el) {
+        el = $dom.elArg(el);
+
+        var priv = privateData(el);
+        priv.queue.splice(1);
+    };
+
     /**
      * @memberof $dom
      * @param el
+     * @param { Number }[duration]
+     * @param { String } [easing]
      */
-    $dom.show = function show(el) {
+    $dom.show = function show(el, duration, easing) {
         el = $dom.elArg(el);
+
+        if (duration != null) {
+            return $dom.animate(el, genFx('show', true), duration, easing);
+        }
 
         if (el.style.display === 'none') {
             el.style.removeProperty('display');
         }
 
-        if (computedStyle(el, 'display') === 'none') { // Still hidden (with CSS?)
+        if (getStyles(el).display === 'none') { // Still hidden (with CSS?)
             el.style.display = $dom.initial(el, 'display');
         }
+
+        return Promise.resolve();
     };
 
     /**
      * @memberof $dom
      * @param el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
      */
-    $dom.hide = function hide(el) {
+    $dom.hide = function hide(el, duration, easing) {
         el = $dom.elArg(el);
+
+        if (duration != null) {
+            return $dom.animate(el, genFx('hide', true), duration, easing);
+        }
+
         $dom.css(el, 'display', 'none');
+
+        return Promise.resolve();
     };
 
     /**
      * @memberof $dom
      * @param el
-     * @param show
+     * @param { Boolean } [show]
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
      */
-    $dom.toggle = function toggle(el, show) {
+    $dom.toggle = function toggle(el, show, duration, easing) {
         el = $dom.elArg(el);
         show = (show !== undefined) ? Boolean(show) : ($dom.css(el, 'display') === 'none');
 
         if (show) {
-            $dom.show(el);
+            return $dom.show(el, duration, easing);
         } else {
-            $dom.hide(el);
+            return $dom.hide(el, duration, easing);
         }
+    };
+
+    /**
+     * @param { Element } el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.slideDown = function slideDown(el, duration, easing) {
+        return $dom.animate(el, genFx('show'), duration, easing);
+    };
+
+    /**
+     * @param { Element|String } el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.slideUp = function slideUp(el, duration, easing) {
+        return $dom.animate(el, genFx('hide'), duration, easing);
+    };
+
+    /**
+     * @param { Element|String } el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.slideToggle = function slideToggle(el, duration, easing) {
+        return $dom.animate(el, genFx('toggle'), duration, easing);
+    };
+
+    /**
+     * @param { Element|String } el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.fadeIn = function fadeIn(el, duration, easing) {
+        return $dom.animate(el, { opacity: 'show' }, duration, easing);
+    };
+
+    /**
+     * @param { Element|String } el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.fadeOut = function fadeOut(el, duration, easing) {
+        return $dom.animate(el, { opacity: 'hide' }, duration, easing);
+    };
+
+    /**
+     * @param { Element|String } el
+     * @param { Number } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.fadeToggle = function fadeToggle(el, duration, easing) {
+        return $dom.animate(el, { opacity: 'toggle' }, duration, easing);
+    };
+
+    /**
+     * @param { Element|String } el
+     * @param { Number } duration
+     * @param { Number } opacity
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.fadeTo = function fadeTo(el, duration, opacity, easing) {
+        if (opacity == null) {
+            throw new TypeError('$dom.fadeTo(): Argument `opacity` is required.');
+        }
+
+        return $dom.animate(el, { opacity: opacity }, duration, easing);
     };
 
     /**
@@ -1515,281 +2094,6 @@
         checked = (checked !== undefined) ? Boolean(checked) : !el.checked;
 
         el.checked = checked;
-    };
-
-    var _animationQueue = {};
-    /**
-     * @param { Element } el
-     * @param { function } animationFactory
-     * @returns { Promise }
-     */
-    function queueAnimation(el, animationFactory) {
-        var uid = $util.uid(el);
-
-        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
-            _animationQueue[uid] = $util.promiseMakeQuerable(animationFactory());
-        } else {
-            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(animationFactory));
-        }
-
-        return _animationQueue[uid];
-    }
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @returns { Promise }
-     */
-    $dom.fadeIn = function fadeIn(el, duration) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        return queueAnimation(el, doFadeIn);
-
-        function doFadeIn() {
-            var resolvePromise,
-                promise = new Promise(function (resolve) { resolvePromise = resolve; });
-
-            var target = /*Number($dom.css(el, 'opacity')) || */1;
-
-            $dom.show(el);
-
-            var keyFrames = [{ opacity: 0 }, { opacity: target }],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function () {
-                animation.cancel(); // Remove fill
-                el.style.removeProperty('opacity');
-                if (Number($dom.css(el, 'opacity')) !== target) {
-                    el.style.opacity = target;
-                }
-
-                resolvePromise();
-            };
-
-            return promise;
-        }
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @returns { Promise }
-     */
-    $dom.fadeOut = function fadeOut(el, duration) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        return queueAnimation(el, doFadeOut);
-
-        function doFadeOut() {
-            var resolvePromise,
-                promise = new Promise(function (resolve) { resolvePromise = resolve; });
-
-            var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: 0 }],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function () {
-                $dom.hide(el);
-                animation.cancel(); // Remove fill
-                resolvePromise();
-            };
-
-            return promise;
-        }
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @param opacity
-     * @returns { Promise }
-     */
-    $dom.fadeTo = function fadeTo(el, duration, opacity) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-        opacity = numVal(opacity);
-
-        return queueAnimation(el, doFadeTo);
-
-        function doFadeTo() {
-            var resolvePromise,
-                promise = new Promise(function (resolve) { resolvePromise = resolve; });
-
-            $dom.show(el);
-
-            var keyFrames = [{ opacity: $dom.css(el, 'opacity')}, { opacity: opacity }],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function () {
-                el.style.opacity = opacity;
-                animation.cancel(); // Remove fill
-                resolvePromise();
-            };
-
-            return promise;
-        }
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @returns { Promise }
-     */
-    $dom.fadeToggle = function fadeToggle(el, duration) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        return queueAnimation(el, doFadeToggle);
-
-        function doFadeToggle() {
-            var fadeIn = $dom.isHidden(el);
-
-            if (fadeIn) {
-                return $dom.fadeIn(el, duration);
-            } else {
-                return $dom.fadeOut(el, duration);
-            }
-        }
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @returns { Promise }
-     */
-    $dom.slideDown = function slideDown(el, duration) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        return queueAnimation(el, doSlideDown);
-
-        function doSlideDown() {
-            var resolvePromise,
-                promise = new Promise(function (resolve) { resolvePromise = resolve; });
-
-            if ($dom.isVisible(el)) {
-                resolvePromise();
-                return promise; // Nothing to do
-            }
-
-            // Show element if it is hidden
-            $dom.show(el);
-
-            // Get the element position to restore it then
-            var prevPosition = el.style.position,
-                prevVisibility = el.style.visibility;
-
-            // Place it so it displays as usually but hidden
-            el.style.position = 'absolute';
-            el.style.visibility = 'hidden';
-
-            var startKeyframe = {
-                    height: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    paddingTop: 0,
-                    paddingBottom: 0
-                },
-                // Fetch natural height, margin, padding
-                endKeyframe = $dom.css(el, ['height', 'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom']);
-
-            // Undo now
-            el.style.position = prevPosition;
-            el.style.visibility = prevVisibility;
-
-            var prevOverflow = el.style.overflow;
-            el.style.overflow = 'hidden';
-
-            var keyFrames = [startKeyframe, endKeyframe],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function () {
-                el.style.overflow = prevOverflow;
-                resolvePromise();
-            };
-
-            return promise;
-        }
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @returns { Promise }
-     */
-    $dom.slideUp = function slideUp(el, duration) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        return queueAnimation(el, doSlideUp);
-
-        function doSlideUp() {
-            var resolvePromise,
-                promise = new Promise(function (resolve) { resolvePromise = resolve; });
-
-            if ($dom.isHidden(el)) {
-                // Already hidden
-                resolvePromise();
-                return promise;
-            }
-
-            var prevOverflow = el.style.overflow;
-            el.style.overflow = 'hidden';
-
-            var startKeyframe = $dom.css(el, ['height', 'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom']),
-                endKeyframe = {
-                    height: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    paddingTop: 0,
-                    paddingBottom: 0
-                };
-
-            var keyFrames = [startKeyframe, endKeyframe],
-                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING, fill: 'forwards' },
-                animation = el.animate(keyFrames, options);
-
-            animation.onfinish = function () {
-                el.style.overflow = prevOverflow;
-                $dom.hide(el);
-                animation.cancel(); // Remove fill
-                resolvePromise();
-            };
-
-            return promise;
-        }
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param duration
-     * @returns { Promise }
-     */
-    $dom.slideToggle = function slideToggle(el, duration) {
-        el = $dom.elArg(el);
-        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-
-        return queueAnimation(el, doSlideToggle);
-
-        function doSlideToggle() {
-            if ($dom.isVisible(el)) {
-                return $dom.slideUp(el, duration);
-            } else {
-                return $dom.slideDown(el, duration);
-            }
-        }
     };
 
     /**
@@ -2386,7 +2690,7 @@
     $dom.contentWidth = function contentWidth(el) {
         el = $dom.elArg(el);
 
-        var cs = computedStyle(el),
+        var cs = getStyles(el),
             padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
             border = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
 
@@ -2402,7 +2706,7 @@
     $dom.contentHeight = function contentHeight(el) {
         el = $dom.elArg(el);
 
-        var cs = computedStyle(el),
+        var cs = getStyles(el),
             padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
             border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
 
