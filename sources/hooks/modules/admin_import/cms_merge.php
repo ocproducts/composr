@@ -1778,7 +1778,7 @@ class Hook_cms_merge
                 'p_order' => array_key_exists('p_order', $row) ? $row['p_order'] : 0,
             ));
 
-            import_id_remap_put('comcode_page', $row['the_zone'] . ':' . $row['the_page'], '1');
+            import_id_remap_put('comcode_page', $row['the_zone'] . ':' . $row['the_page'], 1);
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'comcode_page', null);
         $this->_import_content_reviews($db, $table_prefix, 'comcode_page', null);
