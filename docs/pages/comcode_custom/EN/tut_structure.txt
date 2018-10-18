@@ -102,7 +102,7 @@ For more information on how page-links are turned into URLs, see the [page="_SEA
 
 Panel pages rest around your main page. They are nothing more than pages given special names in the same zone as the pages that they surround.
 
-Panels are typically Comcode pages and are used to arrange blocks. Blocks inject dynamic functionality (such as a menu, a login box, a search box, etc): Composr has a large selection to choose from. Blocks are documented in the [page="_SELF:tut_adv_comcode_pages"]Using blocks tutorial[/page].
+Panels are typically Comcode pages and are used to arrange blocks. Blocks inject dynamic functionality (such as a menu, a login box, a search box, etc): Composr has a large selection to choose from. Blocks are documented in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page].
 
 [title="4"]Display rules[/title]
 

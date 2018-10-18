@@ -70,7 +70,7 @@ class Block_main_comments
         }
 
         if (array_key_exists('extra_param_from', $map)) {
-            $extra = '_' . $map['extra_param_from'];
+            $extra = '_' . get_param_string($map['extra_param_from'], '');
         } else {
             $extra = '';
         }

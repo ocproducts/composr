@@ -3994,7 +3994,11 @@ function ecv_SUBSTR_COUNT($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = strval(substr_count($param[0], $param[1]));
+        if ($param[0] == '') {
+            $value = '0';
+        } else {
+            $value = strval(substr_count($param[0], $param[1]));
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {

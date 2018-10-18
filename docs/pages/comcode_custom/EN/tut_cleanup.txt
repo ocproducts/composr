@@ -12,7 +12,7 @@ The tools are divided into "De-cachers" and "Optimisers" (which don't all strict
 [media width="150" description="Disabling caches" float="right"]data_custom/images/docs/tut_cleanup/cleanup_2.png[/media]
 For performance reasons, Composr defines a number of caches. During normal operation of Composr, these caches should be unnoticeable; if things are being edited from outside Composr theoretically Composr will automatically pick up on it, but you may sometimes need to force a cache flush.
 
-On a default install all recommended caches are enabled, except when Composr is installed on [tt]localhost[/tt].
+On a default install all recommended caches are enabled.
 
 Some kinds of cache may be turned off in the configuration, but leaving them on gives vastly improved performance.
 

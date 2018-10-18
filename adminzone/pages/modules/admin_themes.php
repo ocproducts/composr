@@ -1961,16 +1961,19 @@ class Module_admin_themes
         $lang_list = find_all_langs(true);
 
         if (($use_all_themes == 1) && ($use_all_langs == 1)) {
+            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id));
             foreach ($theme_list as $theme) {
                 foreach (array_keys($lang_list) as $lang) {
                     actual_add_theme_image($theme, $lang, $id, $path[0], true);
                 }
             }
         } elseif ($use_all_themes == 1) {
+            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'lang' => $lang));
             foreach ($theme_list as $theme) {
                 actual_add_theme_image($theme, $lang, $id, $path[0], true);
             }
         } elseif ($use_all_langs == 1) {
+            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'theme' => $theme));
             foreach (array_keys($lang_list) as $lang) {
                 actual_add_theme_image($theme, $lang, $id, $path[0], true);
             }

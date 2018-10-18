@@ -37,7 +37,7 @@ class Block_main_rating
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'page', 'extra_param_from', 'title');
+        $info['parameters'] = array('param', 'page', 'extra_param_from', 'title', 'display_tpl');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_rating
     /*
     function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
     {
-        $info['cache_on']='array(has_privilege(get_member(),\'rate\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
+        $info['cache_on']='array(has_privilege(get_member(),\'rate\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\',empty($map[\'display_tpl\'])?\'RATING_BOX\':$map[\'display_tpl\'])';
         $info['ttl']=60*5;
         return $info;
     }*/
@@ -70,7 +70,7 @@ class Block_main_rating
         }
 
         if (array_key_exists('extra_param_from', $map)) {
-            $extra = '_' . $map['extra_param_from'];
+            $extra = '_' . get_param_string($map['extra_param_from'], '');
         } else {
             $extra = '';
         }
@@ -86,6 +86,8 @@ class Block_main_rating
         }
         actualise_rating(true, 'block_main_rating', $id, $self_url, $self_title);
 
-        return get_rating_box($self_url, $self_title, 'block_main_rating', $id, true);
+        $display_tpl = empty($map['display_tpl']) ? 'RATING_BOX' : $map['display_tpl'];
+
+        return display_rating($self_url, $self_title, 'block_main_rating', $id, $display_tpl);
     }
 }

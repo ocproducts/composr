@@ -1499,7 +1499,6 @@ function _multi_sort($a, $b)
             }
 
             if ($backwards) { // Flip around
-                $key = substr($key, 1);
                 if ((is_numeric($av)) && (is_numeric($bv))) {
                     $ret = -strnatcasecmp($av, $bv);
                 } else {
@@ -2754,6 +2753,7 @@ function get_bot_type($agent = null)
             $BOT_MAP_CACHE = array(
                 'zyborg' => 'Looksmart',
                 'googlebot' => 'Google',
+                'mediapartners-google' => 'Google Adsense',
                 'teoma' => 'Teoma',
                 'jeeves' => 'Ask Jeeves',
                 'ultraseek' => 'Infoseek',
@@ -2771,6 +2771,7 @@ function get_bot_type($agent = null)
                 'ahrefsbot' => 'Ahrefs',
                 'mj12bot' => 'Majestic-12',
                 'blexbot' => 'webmeup',
+                'duckduckbot' => 'DuckDuckGo',
             );
         }
     }

@@ -528,7 +528,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         } elseif ($found[0] == PRODUCT_SUBSCRIPTION) { // Subscriptions have special support for tracking the order status
             $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
             if ($found[2] != '') {
-                call_user_func_array($found[2], array($purchase_id, $found, $type_code, true)); // Run cancel code
+                call_user_func_array($found[2], array($purchase_id, $found, $type_code, $payment_status, $txn_id)); // Run cancel code
             }
         } elseif ((addon_installed('shopping')) && ($item_name == do_lang('shopping:CART_ORDER', $purchase_id))) { // Cart orders have special support for tracking the order status
             $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';

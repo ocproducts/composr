@@ -651,10 +651,10 @@ function do_input_page(field_name)
 
 				window.fauxmodal_prompt(
 					'{!javascript:ENTER_CAPTION;^}',
-					'',
+					result.replace(/^[^ ]* /,''),
 					function(vc)
 					{
-						_do_input_page(field_name,result,vc);
+						_do_input_page(field_name,result.replace(/ .*/,''),(vc==null)?'':vc);
 					},
 					'{!comcode:INPUT_COMCODE_page;^}'
 				);
@@ -683,7 +683,7 @@ function do_input_page(field_name)
 									'',
 									function(vc)
 									{
-										_do_input_page(field_name,result,vc);
+										_do_input_page(field_name,result,(vc==null)?'':vc);
 									},
 									'{!comcode:INPUT_COMCODE_page;^}'
 								);
