@@ -156,7 +156,7 @@ Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need
 You may need to setup the [url="EPEL repository"]https://www.tecmint.com/how-to-enable-epel-repository-for-rhel-centos-6-5/[/url] first.
 
 [code="Bash"]
-yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget iostat
+yum install httpd mod_ssl mod_fcgid php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysqlnd php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget iotop hunspell-en screen
 [/code]
 
 You may have selinux installed, you can see if you do with [tt]sestatus[/tt]:
