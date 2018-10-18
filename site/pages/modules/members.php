@@ -112,6 +112,7 @@ class Module_members
             } else {
                 $member_id_of = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
                 if (is_null($member_id_of)) {
+                    set_http_status_code('404');
                     warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
                 }
                 if (is_guest($member_id_of)) {

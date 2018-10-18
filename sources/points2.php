@@ -120,7 +120,7 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
 
     $their_username = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id);
     if (is_null($their_username)) {
-        warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html(strval($recipient_id))));
+        warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
     }
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, true);
 

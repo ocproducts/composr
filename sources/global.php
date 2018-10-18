@@ -181,7 +181,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
 
                 if (isset($_GET['keep_show_parse_errors'])) {
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_orig)));
-                    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                    $bak = isset($GLOBALS['SUPPRESS_ERROR_DEATH']) ? $GLOBALS['SUPPRESS_ERROR_DEATH'] : false;
                     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
                     $php_errormsg = '';
                     safe_ini_set('display_errors', '0');
@@ -202,7 +202,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                 }
                 if (isset($_GET['keep_show_parse_errors'])) {
                     $custom = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
-                    $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                    $bak = isset($GLOBALS['SUPPRESS_ERROR_DEATH']) ? $GLOBALS['SUPPRESS_ERROR_DEATH'] : false;
                     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
                     $php_errormsg = '';
                     safe_ini_set('display_errors', '0');
@@ -225,7 +225,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
         } else {
             if (isset($_GET['keep_show_parse_errors'])) {
                 $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
-                $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                $bak = isset($GLOBALS['SUPPRESS_ERROR_DEATH']) ? $GLOBALS['SUPPRESS_ERROR_DEATH'] : false;
                 $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
                 $php_errormsg = '';
                 safe_ini_set('display_errors', '0');
@@ -267,7 +267,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
             $contents = @file_get_contents($path_orig);
             if ($contents !== false) {
                 $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $contents);
-                $bak = $GLOBALS['SUPPRESS_ERROR_DEATH'];
+                $bak = isset($GLOBALS['SUPPRESS_ERROR_DEATH']) ? $GLOBALS['SUPPRESS_ERROR_DEATH'] : false;
                 $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
                 $php_errormsg = '';
                 safe_ini_set('display_errors', '0');
@@ -394,7 +394,7 @@ function override_str_replace_exactly($search, $replace, $subject, $times = 1)
  */
 function appengine_is_live()
 {
-    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/index.php')));
+    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/sources/global.php')));
 }
 
 /**

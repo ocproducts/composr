@@ -25,7 +25,7 @@
 					{+END}
 
 					<script>// <![CDATA[
-						apply_rating_highlight_and_ajax_code({LIKES%}==1,{RATING%},'{CONTENT_TYPE%}','{ID%}','{TYPE%}',{RATING%},'{CONTENT_URL;/}','{CONTENT_TITLE;/}',true);
+						apply_rating_highlight_and_ajax_code({LIKES%}==1,{RATING%},'{CONTENT_TYPE;^/}','{ID;^/}','{TYPE;^/}',{RATING%},'{CONTENT_URL;/}','{CONTENT_TITLE;/}',true);
 					//]]></script>
 				</div>
 			</div>
