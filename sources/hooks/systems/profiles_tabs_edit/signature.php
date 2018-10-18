@@ -107,7 +107,7 @@ class Hook_profiles_tabs_edit_signature
 
         $help_zone = get_comcode_zone('userguide_comcode', false);
 
-        $emoticon_chooser = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+        $emoticon_chooser = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser('signature');
 
         $comcode_editor = get_comcode_editor('signature', false, true);
         $comcode_editor_small = get_comcode_editor('signature', true);

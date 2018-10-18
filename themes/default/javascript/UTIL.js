@@ -973,6 +973,7 @@
 
     /**
      * Returns a root-relative URL
+     * 'http://example.com/path/to/file' -> '/path/to/file'
      * @param url
      * @return {string}
      */
