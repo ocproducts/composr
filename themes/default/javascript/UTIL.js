@@ -36,6 +36,10 @@
         //     throw new TypeError('intVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an integer.');
         // }
 
+        if (isNaN(val) || (val < Number.MIN_SAFE_INTEGER) || (val > Number.MAX_SAFE_INTEGER)) {
+            throw new TypeError('intVal(): Invalid integer provided: "' + val + '"');
+        }
+
         val = Math.floor(val);
 
         return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
