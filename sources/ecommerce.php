@@ -216,10 +216,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
         $steps[] = array('_SELF:_SELF:terms' . ':' . $more_params, 'terms', do_lang_tempcode('ECOM_PURCHASE_STAGE_terms'));
     }
 
-    require_code('form_templates');
-    list($fields) = get_needed_fields($type_code);
-    $has_details = ($fields !== null);
-    if ($has_details) {
+    if (has_needed_fields($type_code)) {
         $steps[] = array('_SELF:_SELF:details' . ':' . $more_params, 'details', do_lang_tempcode('ECOM_PURCHASE_STAGE_details'));
     }
 
@@ -233,6 +230,40 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
     $steps[] = array('_SELF:_SELF:finish' . ':' . $more_params, 'finish', do_lang_tempcode('ECOM_PURCHASE_STAGE_finish'));
 
     return $steps;
+}
+
+/**
+ * Find if there are fields needing to filled in in the purchasing module.
+ *
+ * @param  ID_TEXT $type_code The product codename.
+ * @param  boolean $force_extended Show all possible input fields.
+ * @return boolean Whether there are.
+ */
+function has_needed_fields($type_code, $force_extended = false)
+{
+    if ($force_extended) {
+        return true;
+    }
+
+    if (is_guest()) {
+        return true;
+    }
+
+    if ($GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()) == '') {
+        return true;
+    }
+
+    if (get_option('tax_detailed') == '1') {
+        return true;
+    }
+
+    list($details, $product_object) = find_product_details($type_code);
+
+    if ($details['needs_shipping_address']) {
+        return true;
+    }
+
+    return false;
 }
 
 /**
