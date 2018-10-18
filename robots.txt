@@ -1,6 +1,14 @@
+User-agent: MJ12bot
+Disallow: /
+
 User-agent: SurdotlyBot
 Disallow: /
 
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
 
 User-agent: BLEXBot
 Disallow: /
@@ -21,6 +29,7 @@ Disallow: /docs6
 Disallow: /docs7
 Disallow: /docs8
 Disallow: /docs9
+Disallow: /docs10
 Disallow: /docs11
 Disallow: /docs12
 Disallow: /docs13
@@ -34,15 +43,47 @@ Disallow: /config_editor.php
 Disallow: /code_editor.php
 Disallow: /upgrader.php
 Disallow: /uninstall.php
+Disallow: /adminzone/
+#Disallow: /cms/
+Disallow: /caches/
+Disallow: /cgi-bin/
+Disallow: /code_editor.php
+Disallow: /config_editor.php
+Disallow: /data/ace/
+Disallow: /data/attachment_popup.php
+Disallow: /data/authors.php
+Disallow: /data/backend_cloud.php
+Disallow: /data/block_helper.php
+Disallow: /data/captcha.php
+Disallow: /data/ckeditor/
+Disallow: /data/comcode_convert.php
+Disallow: /data/comcode_helper.php
+Disallow: /data/cron_bridge.php
+Disallow: /data/emoticons.php
+Disallow: /data/form_to_email.php
+Disallow: /data/post_comment.php
+Disallow: /data/preview.php
+Disallow: /data/trackback.php
+Disallow: /data/upgrader2.php
+Disallow: /exports/
+Disallow: /imports/
+Disallow: /install.php
+Disallow: /rootkit_detection.php
+Disallow: /temp/
+Disallow: /text/
+Disallow: /text_custom/
+Disallow: /themes/default/
+Disallow: /themes/*/text
+Disallow: /themes/*/xml
+Disallow: /uninstall.php
+Disallow: /upgrader.php
 
-# Performance
-Disallow: /trackback.php
+# compo.sr-specific for performance
 Disallow: /data/iframe.php?zone=&wide_high=1&page=search&type=results
 Disallow: /search.htm
 Disallow: /search/
 Disallow: /forum/topics/report_post/
 Disallow: /forum/topics/new_post/
-Disallow: /data/securityimage.php
 Disallow: /forum/topicview/findpost/
 Disallow: *gift_start*
 Disallow: *act_start*
@@ -61,4 +102,4 @@ Disallow: /data/jwplayer.flash.swf
 
 Crawl-Delay: 10
 
-Sitemap: http://compo.sr/data_custom/sitemaps/index.xml
+Sitemap: https://compo.sr/data_custom/sitemaps/index.xml
