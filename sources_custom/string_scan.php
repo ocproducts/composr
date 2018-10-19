@@ -874,6 +874,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCKS_TYPE_main
         BLOCKS_TYPE_side
         BLOCK_CACHE
+        USE_SITE_NAME_TEXT_AS_LOGO
         BLOCK_CONFIGURATION__PANEL_LEFT
         BLOCK_CONFIGURATION__PANEL_NO
         BLOCK_CONFIGURATION__PANEL_NONE
@@ -1582,6 +1583,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_quotes_PARAM_title_TITLE
         BLOCK_main_quotes_USE
         BLOCK_main_rating_DESCRIPTION
+        BLOCK_main_rating_PARAM_display_tpl
+        BLOCK_main_rating_PARAM_display_tpl_TITLE
         BLOCK_main_rating_PARAM_page
         BLOCK_main_rating_PARAM_page_TITLE
         BLOCK_main_rating_PARAM_param

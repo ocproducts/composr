@@ -745,26 +745,31 @@
         }
 
         promiseYouTubeIframeAPIReady.then(function () {
-            var slideshowMode = document.getElementById('next_slide'),
-                player = new window.YT.Player(element.id, {
-                    width: params.width,
-                    height: params.height,
-                    videoId: params.remoteId,
-                    events: {
-                        onReady: function () {
-                            if (slideshowMode) {
-                                player.playVideo();
-                            }
-                        },
-                        onStateChange: function (newState) {
-                            if (slideshowMode) {
-                                if (Number(newState) === 0) {
-                                    window.$galleries.playerStopped();
-                                }
+            var slideshowMode = document.getElementById('next_slide');
+
+            if ((!slideshow_mode) && (typeof window.YT == 'undefined')) {
+                return; /* Should not be needed but in case the YouTube API somehow failed to load fully */
+            }
+
+            var player = new window.YT.Player(element.id, {
+                width: params.width,
+                height: params.height,
+                videoId: params.remoteId,
+                events: {
+                    onReady: function () {
+                        if (slideshowMode) {
+                            player.playVideo();
+                        }
+                    },
+                    onStateChange: function (newState) {
+                        if (slideshowMode) {
+                            if (Number(newState) === 0) {
+                                window.$galleries.playerStopped();
                             }
                         }
                     }
-                });
+                }
+            });
         });
     };
 

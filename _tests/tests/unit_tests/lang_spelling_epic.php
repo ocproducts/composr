@@ -37,6 +37,19 @@ class lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'fpm',
+            'defs',
+            'defaultview',
+            'getcomputedstyle',
+            'getelementsbyclassname',
+            'svgelementinstance',
+            'unitless',
+            'csshooks',
+            'getpropertyvalue',
+            'customproperty',
+            'overflowx',
+            'overflowy',
+            'hasownproperty',
             'imageloadfont',
             'utopian',
             'autostart',

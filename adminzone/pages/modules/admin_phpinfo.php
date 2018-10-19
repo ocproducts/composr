@@ -203,7 +203,7 @@ class Module_admin_phpinfo
                 'cat /proc/diskstats',
                 'iotop',
                 'iostat',
-                'top -l 1 -s 0',
+                'top -n1',
                 'ps -Af',
             );
 

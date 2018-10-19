@@ -744,8 +744,14 @@ function set_http_caching($last_modified, $public = false, $expiry_seconds = 604
  */
 function monitor_slow_urls()
 {
-    $time = time() - $_SERVER['REQUEST_TIME'];
-    if ($time > intval(get_value('monitor_slow_urls'))) {
+    if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+        $time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+        $slow = ($time > floatval(get_value('monitor_slow_urls')));
+    } else {
+        $time = time() - $_SERVER['REQUEST_TIME'];
+        $slow = ($time > intval(get_value('monitor_slow_urls')));
+    }
+    if ($slow) {
         require_code('urls');
         if (php_function_allowed('error_log')) {
             error_log('Profiling: Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . ' secs' . "\t" . date('Y-m-d H:i:s', time()), 0);

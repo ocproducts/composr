@@ -6,7 +6,7 @@
      */
     function getStyles(el) {
         // Support: IE <=11 only, Firefox <=30 (#15098, #14150)
-        // IE throws on elements created in popups
+        // IE throws on elements created in pop-ups
         // FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
         var view = el.ownerDocument.defaultView;
 
@@ -1816,18 +1816,18 @@
 
     /**
      * Stop the currently-running animation on the matched element.
-     * 
-     * When .stop() is called on an element, the currently-running animation (if any) is immediately stopped. 
-     * If, for instance, an element is being hidden with .slideUp() when .stop() is called, the element will now still be displayed, 
+     *
+     * When .stop() is called on an element, the currently-running animation (if any) is immediately stopped.
+     * If, for instance, an element is being hidden with .slideUp() when .stop() is called, the element will now still be displayed,
      * but will be a fraction of its previous height. Callback functions are not called.
-     * If more than one animation method is called on the same element, the later animations are placed in the effects queue for the element. 
-     * These animations will not begin until the first one completes. When .stop() is called, the next animation in the queue begins immediately. 
-     * 
+     * If more than one animation method is called on the same element, the later animations are placed in the effects queue for the element.
+     * These animations will not begin until the first one completes. When .stop() is called, the next animation in the queue begins immediately.
+     *
      * If the clearQueue parameter is provided with a value of true, then the rest of the animations in the queue are removed and never run.
-     * 
-     * If the jumpToEnd argument is provided with a value of true, the current animation stops, but the element is immediately given its target values for each CSS property. 
+     *
+     * If the jumpToEnd argument is provided with a value of true, the current animation stops, but the element is immediately given its target values for each CSS property.
      * In our above .slideUp() example, the element would be immediately hidden. The callback function is then immediately called, if provided.
-     * 
+     *
      * @param { Element|String } el
      * @param { Boolean } [clearQueue] - Whether to remove queued animation as well.
      * @param { Boolean } [jumpToEnd] - Whether to complete the current animation immediately
@@ -1868,9 +1868,9 @@
 
     /**
      * Stop the currently-running animation, remove all queued animations, and complete all animations.
-     * The .finish() method is similar to .stop(true, true) in that it clears the queue and the current animation jumps to its end value. 
+     * The .finish() method is similar to .stop(true, true) in that it clears the queue and the current animation jumps to its end value.
      * It differs, however, in that .finish() also causes the CSS property of all queued animations to jump to their end values, as well.
-     * 
+     *
      * @param { Element|String } el
      * @returns { Promise }
      */

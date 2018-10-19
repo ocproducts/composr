@@ -611,15 +611,15 @@
                     return;
                 }
 
-                $cms.ui.prompt('{!javascript:ENTER_CAPTION;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (vc) {
+                $cms.ui.prompt('{!javascript:ENTER_CAPTION;^}', result.replace(/^[^ ]* /, ''), null, '{!comcode:INPUT_COMCODE_page;^}').then(function (vc) {
                     var element = document.getElementById(fieldName);
 
                     if ($editing.getSelectedText(element) !== '') {
-                        _doInputPage(fieldName, result, '');
+                        _doInputPage(fieldName, result.replace(/ .*/, ''), '');
                         return;
                     }
 
-                    _doInputPage(fieldName, result, vc);
+                    _doInputPage(fieldName, result, (vc == null) ? '' : vc);
                 });
             });
 
@@ -642,7 +642,7 @@
                             '{!javascript:ENTER_CAPTION;^}',
                             '',
                             function (vc) {
-                                _doInputPage(fieldName, result, vc);
+                                _doInputPage(fieldName, result, (vc == null) ? '' : vc);
                             },
                             '{!comcode:INPUT_COMCODE_page;^}'
                         );

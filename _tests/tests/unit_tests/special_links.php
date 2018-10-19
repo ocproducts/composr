@@ -40,7 +40,7 @@ class special_links_test_set extends cms_test_case
 
     public function testWhoIsLink()
     {
-        $this->assertTrue(strpos(http_get_contents('http://whois.domaintools.com/compo.sr', array('trigger_error' => false)), 'Whois Record') !== false, 'External link not working, fix test and use within Composr (separate) [WARN_SPAM_URLS.tpl]');
+        $this->assertTrue(stripos(http_get_contents('http://whois.domaintools.com/compo.sr', array('trigger_error' => false)), 'whois') !== false, 'External link not working, fix test and use within Composr (separate) [WARN_SPAM_URLS.tpl]');
     }
 
     public function testHealthCheckLinks()

@@ -891,11 +891,6 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         $catalogue = load_catalogue_row($entry['c_name']);
     }
 
-    // Update view count
-    if (get_db_type() != 'xml') {
-        $entry['ce_views']++;
-    }
-
     // Get values
     $catalogue_name = $catalogue['c_name'];
     $fields = get_catalogue_entry_field_values($catalogue_name, $entry, $only_fields, $fields, false, $view_type);
@@ -1843,12 +1838,16 @@ function render_catalogue_entry_screen($id)
         $tpl_set = $catalogue_name;
     }
 
+    $count_views = (get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null);
+    if ($count_views) {
+        $entry['ce_views']++;
+    }
+
     $root = get_param_integer('keep_catalogue_' . $catalogue_name . '_root', null);
     $breadcrumbs = array();
     $map = get_catalogue_entry_map($entry, $catalogue, 'PAGE', $tpl_set, $root, null, null, true, true, null, $breadcrumbs);
 
-    if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
-        $entry['ce_views']++;
+    if ($count_views) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('catalogue_entries')) {
             $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
         }

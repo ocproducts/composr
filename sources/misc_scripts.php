@@ -562,7 +562,7 @@ function page_link_chooser_script()
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
     // Display
-    $content = do_template('PAGE_LINK_CHOOSER', array('_GUID' => '235d969528d7b81aeb17e042a17f5537', 'NAME' => 'tree_list', 'VALUE' => ''));
+    $content = do_template('PAGE_LINK_CHOOSER', array('_GUID' => '235d969528d7b81aeb17e042a17f5537', 'NAME' => 'tree_list', 'VALUE' => '', 'GET_TITLE_TOO' => true));
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '58768379196d6ad27d6298134e33fabd', 'TITLE' => do_lang_tempcode('CHOOSE'), 'CONTENT' => $content, 'POPUP' => true, 'NOINDEX' => true));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();

@@ -219,41 +219,7 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
         }
     }
 
-    require_code('abstract_file_manager');
-    if (!file_exists(get_file_base() . '/' . $zone)) {
-        // Create structure
-        require_code('abstract_file_manager');
-        afm_make_directory($zone . '/pages/minimodules_custom', true, true);
-        afm_make_directory($zone . '/pages/minimodules', false, true);
-        afm_make_directory($zone . '/pages/modules_custom', true, true);
-        afm_make_directory($zone . '/pages/modules', false, true);
-        $langs = array_keys(find_all_langs(true));
-        foreach ($langs as $lang) {
-            afm_make_directory($zone . '/pages/comcode_custom/' . $lang, true, true);
-            afm_make_directory($zone . '/pages/comcode/' . $lang, false, true);
-            afm_make_directory($zone . '/pages/html_custom/' . $lang, true, true);
-            afm_make_directory($zone . '/pages/html/' . $lang, false, true);
-        }
-        afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/adminzone/index.php'), false);
-        if (file_exists(get_file_base() . '/pages/modules/.htaccess')) {
-            $index_php = array(
-                'pages/comcode/EN', 'pages/comcode_custom/EN',
-                'pages/html/EN', 'pages/html_custom/EN',
-                'pages/modules', 'pages/modules_custom', 'pages',
-            );
-            foreach ($index_php as $i) {
-                afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/.htaccess', file_get_contents(get_file_base() . '/pages/modules/.htaccess'), false);
-            }
-        }
-        $index_php = array(
-            'pages/comcode', 'pages/comcode/EN', 'pages/comcode_custom', 'pages/comcode_custom/EN',
-            'pages/html', 'pages/html/EN', 'pages/html_custom', 'pages/html_custom/EN',
-            'pages/modules', 'pages/modules_custom', 'pages',
-        );
-        foreach ($index_php as $i) {
-            afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/index.html', '', false);
-        }
-    }
+    make_zone_directory($zone);
 
     afm_make_file($zone . '/pages/comcode_custom/EN/' . filter_naughty($default_page) . '.txt', '[title]' . $title . '[/title]' . "\n\n" . do_lang('YOUR_NEW_ZONE_PAGE', $zone . ':' . $default_page) . "\n\n" . '[block]main_comcode_page_children[/block]', true);
     $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
@@ -292,6 +258,49 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
     log_it('ADD_ZONE', $zone, $title);
 
     return $zone;
+}
+
+/**
+ * Make a zone directory, if missing.
+ *
+ * @param  ID_TEXT $zone The zone
+ */
+function make_zone_directory($zone)
+{
+    require_code('abstract_file_manager');
+    if (!file_exists(get_file_base() . '/' . $zone)) {
+        // Create structure
+        afm_make_directory($zone . '/pages/minimodules_custom', true, true);
+        afm_make_directory($zone . '/pages/minimodules', false, true);
+        afm_make_directory($zone . '/pages/modules_custom', true, true);
+        afm_make_directory($zone . '/pages/modules', false, true);
+        $langs = array_keys(find_all_langs(true));
+        foreach ($langs as $lang) {
+            afm_make_directory($zone . '/pages/comcode_custom/' . $lang, true, true);
+            afm_make_directory($zone . '/pages/comcode/' . $lang, false, true);
+            afm_make_directory($zone . '/pages/html_custom/' . $lang, true, true);
+            afm_make_directory($zone . '/pages/html/' . $lang, false, true);
+        }
+        afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/adminzone/index.php'), false);
+        if (file_exists(get_file_base() . '/pages/modules/.htaccess')) {
+            $index_php = array(
+                'pages/comcode/EN', 'pages/comcode_custom/EN',
+                'pages/html/EN', 'pages/html_custom/EN',
+                'pages/modules', 'pages/modules_custom', 'pages',
+            );
+            foreach ($index_php as $i) {
+                afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/.htaccess', file_get_contents(get_file_base() . '/pages/modules/.htaccess'), false);
+            }
+        }
+        $index_php = array(
+            'pages/comcode', 'pages/comcode/EN', 'pages/comcode_custom', 'pages/comcode_custom/EN',
+            'pages/html', 'pages/html/EN', 'pages/html_custom', 'pages/html_custom/EN',
+            'pages/modules', 'pages/modules_custom', 'pages',
+        );
+        foreach ($index_php as $i) {
+            afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/index.html', '', false);
+        }
+    }
 }
 
 /**

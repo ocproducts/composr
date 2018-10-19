@@ -37,7 +37,7 @@ class Block_main_rating
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'page', 'title');
+        $info['parameters'] = array('param', 'page', 'title', 'display_tpl');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_rating
     /*
     public function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
     {
-        $info['cache_on'] = 'array(has_privilege(get_member(),\'rate\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
+        $info['cache_on'] = 'array(has_privilege(get_member(),\'rate\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\',empty($map[\'display_tpl\'])?\'RATING_BOX\':$map[\'display_tpl\'])';
         $info['ttl'] = 60 * 5;
         return $info;
     }*/
@@ -77,8 +77,10 @@ class Block_main_rating
             delete_cache_entry('main_rating');
         }
 
+        $display_tpl = empty($map['display_tpl']) ? 'RATING_BOX' : $map['display_tpl'];
+
         actualise_rating(true, $content_type, $id, $self_url, $self_title);
 
-        return get_rating_box($self_url, $self_title, $content_type, $id, true);
+        return display_rating($self_url, $self_title, $content_type, $id, $display_tpl);
     }
 }
