@@ -1494,25 +1494,29 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             // Do structure sweep
             $urls_for = array();
 
+            // Backup then reset so we can track new titles
             $old_structure_list = $STRUCTURE_LIST;
-            $STRUCTURE_LIST = array(); // reset for e.g. comcode_to_tempcode calls (which don't itself reset it, although _comcode_to_tempcode does for top level parses)
+            $STRUCTURE_LIST = array();
 
             if ((array_key_exists('files', $attributes)) && ($comcode_dangerous)) {
                 $s_zone = array_key_exists('zone', $attributes) ? $attributes['zone'] : get_zone_name();
 
                 $pages = find_all_pages($s_zone, 'comcode_custom/' . get_site_default_lang(), 'txt') + find_all_pages($s_zone, 'comcode/' . get_site_default_lang(), 'txt');
                 $prefix = $attributes['files'];
+                $_structure_list = array();
                 foreach ($pages as $pg_name => $pg_type) {
                     if (substr($pg_name, 0, strlen($prefix)) == $prefix) {
-                        $i = count($STRUCTURE_LIST);
-                        comcode_to_tempcode(cms_file_get_contents_safe(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, null, $connection, false, false, false, true, false, null, $on_behalf_of_member);
+                        $c = cms_file_get_contents_safe(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt'));
+                        __comcode_to_tempcode($c, $source_member, $as_admin, null, null, $connection, false, false, false, true, false, null, $on_behalf_of_member);
                         $page_url = build_url(array('page' => $pg_name), $s_zone);
-                        while (array_key_exists($i, $STRUCTURE_LIST)) {
+                        foreach ($STRUCTURE_LIST as $struct) {
                             $urls_for[] = $page_url;
-                            $i++;
+                            $_structure_list[] = $struct;
                         }
+                        $STRUCTURE_LIST = array(); // Reset again, so the title increments for individual pages start from 0 again
                     }
                 }
+                $STRUCTURE_LIST = $_structure_list;
 
                 $base = array_key_exists('base', $attributes) ? intval($attributes['base']) : 1;
             } else {
@@ -1587,6 +1591,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             foreach ($STRUCTURE_LIST as $i => $struct) { // Really complex stack of trees algorithm
                 $level = $struct[0];
                 $title = $struct[1];
+
                 $_title = $title->evaluate();
                 $uniq_id = $struct[2];
                 $url = array_key_exists($i, $urls_for) ? $urls_for[$i] : '';

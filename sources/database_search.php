@@ -986,6 +986,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $where_clause = substr($where_clause, 0, strlen($where_clause) - 5);
     }
 
+    $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
+
     if ((!is_null($permissions_module)) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
         $g_or = _get_where_clause_groups(get_member());
 
@@ -994,7 +996,11 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $where_clause .= ' AND ';
         $where_clause .= 'z.category_name IS NOT NULL';*/
 
-        $cat_access = list_to_map('category_name', $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval((integer)get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, null, false, true));
+        $cat_sql = '';
+        $cat_sql .= 'SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module);
+        $cat_sql .= ' UNION ALL ';
+        $cat_sql .= 'SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval((integer)get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module);
+        $cat_access = list_to_map('category_name', $db->query($cat_sql, null, null, false, true));
     }
 
     if (key($fields) == '') {
@@ -1006,8 +1012,6 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     if (is_null($raw_fields)) {
         $raw_fields = array();
     }
-
-    $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
 
     if (strpos(get_db_type(), 'mysql') !== false) {
         $db->query('SET SESSION MAX_EXECUTION_TIME=30000', null, null, true); // Only works in MySQL 5.7+

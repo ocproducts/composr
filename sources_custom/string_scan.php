@@ -1274,6 +1274,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_rating_DESCRIPTION
         BLOCK_main_rating_PARAM_extra_param_from
         BLOCK_main_rating_PARAM_extra_param_from_TITLE
+        BLOCK_main_rating_PARAM_display_tpl
+        BLOCK_main_rating_PARAM_display_tpl_TITLE
         BLOCK_main_rating_PARAM_page
         BLOCK_main_rating_PARAM_page_TITLE
         BLOCK_main_rating_PARAM_param

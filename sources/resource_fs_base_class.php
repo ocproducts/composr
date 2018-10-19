@@ -433,10 +433,10 @@ abstract class Resource_fs_base
     protected function _default_property_float($properties, $property)
     {
         if (!array_key_exists($property, $properties)) {
-            return 0;
+            return 0.0;
         }
         if (is_null($properties[$property])) {
-            return 0;
+            return 0.0;
         }
         if (is_float($properties[$property])) {
             return $properties[$property];

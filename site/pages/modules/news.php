@@ -209,7 +209,11 @@ class Module_news
         require_lang('news');
         require_code('news');
 
-        inform_non_canonical_parameter('select');
+        $select = get_param_string('select', '0');
+        if ((!is_numeric($select)) || ($type != 'browse')) {
+            inform_non_canonical_parameter('select');
+        }
+
         inform_non_canonical_parameter('select_and');
         inform_non_canonical_parameter('blog');
         inform_non_canonical_parameter('filter');

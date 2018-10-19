@@ -262,11 +262,11 @@ Composr itself provides the following protocols and languages...
 			<td>A simple technology for generating link between pages, that compiles to HTTP URLs; page-links are local to a website (i.e. they can only work to generate links within a site), and are consistent regardless of the URL Scheme employed (Composr supports URL rewriting, which can make the appearance of final URLs vary considerably).</td>
 		</tr>
 		<tr>
-			<td>[page="_SELF:tut_filtercode"]Filtercode[/page]</td>
+			<td>[page="_SEARCH:tut_filtercode"]Filtercode[/page]</td>
 			<td>For filtering results via property querying, simpler than SQL.</td>
 		</tr>
 		<tr>
-			<td>[page="_SELF:tut_selectcode"]Selectcode[/page]</td>
+			<td>[page="_SEARCH:tut_selectcode"]Selectcode[/page]</td>
 			<td>For selecting particular results via ID, ID range, category, or tree-position.</td>
 		</tr>
 		<tr>

@@ -229,6 +229,8 @@ class Module_topics
         }
 
         if ($type == 'browse') {
+            header('X-Robots-Tag: noindex');
+
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 

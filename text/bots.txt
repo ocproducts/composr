@@ -1,5 +1,6 @@
 zyborg=Looksmart
 googlebot=Google
+mediapartners-google=Google Adsense
 teoma=Teoma
 jeeves=Ask Jeeves
 ultraseek=Infoseek
@@ -17,3 +18,4 @@ daum=Daum
 ahrefsbot=Ahrefs
 mj12bot=Majestic-12
 blexbot=webmeup
+duckduckbot=DuckDuckGo

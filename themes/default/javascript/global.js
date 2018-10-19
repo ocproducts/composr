@@ -2287,7 +2287,7 @@ function preactivate_rich_semantic_tooltip(ob,event,have_links)
 	if (typeof ob.ttitle=='undefined') ob.ttitle=((typeof ob.attributes['data-title']!='undefined')?ob.getAttribute('data-title'):ob.title);
 	ob.title='';
 	ob.onmouseover=null;
-	ob.onclick=function() { activate_rich_semantic_tooltip(ob,event,have_links); };
+	ob.onclick=function(event) { if (!event) var event=window.event; event.stopPropagation(); activate_rich_semantic_tooltip(ob,event,have_links); };
 }
 function activate_rich_semantic_tooltip(ob,event,have_links)
 {
@@ -2347,7 +2347,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	} else
 	{
 		ac.old_onclick=ac.onclick;
-		ac.onclick=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac); };
+		ac.onclick=function(event) { if (!event) var event=window.event; event.stopPropagation(); win.deactivate_tooltip(ac); };
 	}
 
 	if (typeof tooltip=='function') tooltip=tooltip();

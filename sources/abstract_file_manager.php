@@ -129,7 +129,7 @@ function get_afm_form_fields()
     $ftp_domain = get_value('ftp_domain');
     $_uses_ftp = running_script('upgrader') ? '0' : get_value('uses_ftp');
     if (is_null($_uses_ftp)) {
-        $uses_ftp = !is_writable_wrap(get_file_base() . '/adminzone/index.php');
+        $uses_ftp = !is_writable_wrap(get_file_base() . '/sources/global.php');
     } else {
         $uses_ftp = ($_uses_ftp == '1');
     }
@@ -149,7 +149,7 @@ function get_afm_form_fields()
             $ftp_username = $GLOBALS['SITE_INFO']['ftp_username'];
         } else {
             if (php_function_allowed('posix_getpwuid')) {
-                $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
+                $u_info = posix_getpwuid(fileowner(get_file_base() . '/sources/global.php'));
                 if ($u_info !== false) {
                     $ftp_username = $u_info['name'];
                 } else {
@@ -359,7 +359,7 @@ function _translate_file_access($world_access, $file_type = '')
     $mask = 0;
 
     if ($file_type == 'php') {
-        $php_perms = fileperms(get_file_base() . '/index.php');
+        $php_perms = fileperms(get_file_base() . '/sources/global.php');
         if (($php_perms & 0100) == 0100) { // If PHP files need to be marked user executable
             $mask = $mask | 0100;
         }

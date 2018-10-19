@@ -46,7 +46,7 @@ function script_load_stuff_staff()
 	var bg;
 	for (i=0;i<all_e.length;i++)
 	{
-		if (!all_e[i].className) // Unexpected event, but unexpected things happen in large data sets
+		if (!all_e[i].className.indexOf) // Unexpected event, possibly due to new HTML coming in but not properly set up for JS yet
 		{
 			continue;
 		}
