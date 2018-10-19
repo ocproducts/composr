@@ -1798,7 +1798,7 @@
     /**
      * @param { Element|String } el
      * @param { Object } props
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -1838,7 +1838,7 @@
 
         var priv = privateData(el);
 
-        if (priv.queue.length === 0) {
+        if (!priv.queue || (priv.queue.length === 0)) {
             return Promise.resolve();
         }
 
@@ -1879,7 +1879,7 @@
 
         var priv = privateData(el);
 
-        if (priv.queue.length === 0) {
+        if (!priv.queue || (priv.queue.length === 0)) {
             return Promise.resolve();
         }
 
@@ -1914,13 +1914,13 @@
         el = $dom.elArg(el);
 
         var priv = privateData(el);
-        priv.queue.splice(1);
+        priv.queue && priv.queue.splice(1);
     };
 
     /**
      * @memberof $dom
      * @param el
-     * @param { Number }[duration]
+     * @param { Number|String }[duration]
      * @param { String } [easing]
      */
     $dom.show = function show(el, duration, easing) {
@@ -1944,7 +1944,7 @@
     /**
      * @memberof $dom
      * @param el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -1964,7 +1964,7 @@
      * @memberof $dom
      * @param el
      * @param { Boolean } [show]
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -1981,7 +1981,7 @@
 
     /**
      * @param { Element } el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -1991,7 +1991,7 @@
 
     /**
      * @param { Element|String } el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -2001,7 +2001,7 @@
 
     /**
      * @param { Element|String } el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -2011,7 +2011,7 @@
 
     /**
      * @param { Element|String } el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -2021,7 +2021,7 @@
 
     /**
      * @param { Element|String } el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -2031,7 +2031,7 @@
 
     /**
      * @param { Element|String } el
-     * @param { Number } [duration]
+     * @param { Number|String } [duration]
      * @param { String } [easing]
      * @returns { Promise }
      */
@@ -2041,7 +2041,7 @@
 
     /**
      * @param { Element|String } el
-     * @param { Number } duration
+     * @param { Number|String } duration
      * @param { Number } opacity
      * @param { String } [easing]
      * @returns { Promise }
