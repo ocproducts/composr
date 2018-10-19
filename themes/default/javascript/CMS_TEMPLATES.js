@@ -374,29 +374,49 @@
             }
         });
 
-        var docEl = document.getElementById('doc_' + rand),
-            helpEl = document.getElementById('help');
+        var docEl = document.getElementById('doc-' + rand),
+            docElHtml = docEl && $dom.html(docEl),
+            helpEl = document.getElementById('help'),
+            origHelpElHtml = $dom.html(helpEl);
 
-        if (docEl && helpEl) {
+        if (docEl && helpEl && docElHtml) {
             /* Do-next document tooltips */
-            $dom.on(container, 'mouseover', function () {
-                if ($dom.html(docEl) !== '') {
-                    window.origHelperText = $dom.html(helpEl);
-                    $dom.html(helpEl, $dom.html(docEl));
-                    $dom.fadeIn(helpEl);
+            $dom.on(container, 'mouseover', function (e) {
+                if (container.contains(e.relatedTarget)) {
+                    return;
+                }
 
-                    helpEl.classList.remove('global-helper-panel-text');
-                    helpEl.classList.add('global-helper-panel-text-over');
+                var helpElHtml = $dom.html(helpEl);
+
+                if (helpElHtml !== docElHtml) {
+                    $dom.stop(helpEl, true).then(function () {
+                        helpEl.style.opacity = 0;
+                        $dom.html(helpEl, docElHtml);
+                        $dom.fadeTo(helpEl, 'fast', 1);
+
+                        helpEl.classList.remove('global-helper-panel-text');
+                        helpEl.classList.add('global-helper-panel-text-over');
+                    });
+
                 }
             });
 
-            $dom.on(container, 'mouseout', function () {
-                if (window.origHelperText !== undefined) {
-                    $dom.html(helpEl, window.origHelperText);
-                    $dom.fadeIn(helpEl);
+            $dom.on(container, 'mouseout', function (e) {
+                if (container.contains(e.relatedTarget)) {
+                    return;
+                }
 
-                    helpEl.classList.remove('global-helper-panel-text-over');
-                    helpEl.classList.add('global-helper-panel-text');
+                var helpElHtml = $dom.html(helpEl);
+
+                if (helpElHtml !== origHelpElHtml) {
+                    $dom.stop(helpEl, true).then(function () {
+                        helpEl.style.opacity = 0;
+                        $dom.html(helpEl, origHelpElHtml);
+                        $dom.fadeTo(helpEl, 'fast', 1);
+
+                        helpEl.classList.remove('global-helper-panel-text-over');
+                        helpEl.classList.add('global-helper-panel-text');
+                    });
                 }
             });
         }

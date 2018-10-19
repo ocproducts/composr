@@ -46,8 +46,13 @@
         return Number.isFinite(value) && (Math.floor(value) === value);
     });
 
-    // Not part of a standard but it should be.
+    // Proposed: https://github.com/tc39/proposal-string-replace-all
     Object.defineProperty(String.prototype, 'replaceAll', {
+        /**
+         * @param { string } search
+         * @param { string } replacement
+         * @returns { string }
+         */
         value: function replaceAll(search, replacement) {
             return this.split(search).join('' + replacement);
         },
