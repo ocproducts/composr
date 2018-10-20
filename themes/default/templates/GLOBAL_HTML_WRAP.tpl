@@ -3,7 +3,7 @@
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="is-not-scrolled has-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-homepage-slider} {$?,{$THEME_OPTION,fullscreen_homepage_slider},has-fullscreen-homepage-slider}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-homepage-slider} {$?,{$THEME_OPTION,fullscreen_homepage_slider},has-fullscreen-homepage-slider}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -96,7 +96,7 @@
 					<span class="cms-carousel-control-next-icon" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a>
-				<!-- Slider progress bar becomes visible when the "interval" parameter is set -->
+				<!-- Slider progress bar becomes visible when the "interval" parameter to [data-cms-carousel] is set -->
 				<div class="cms-carousel-progress-bar">
 					<div class="cms-carousel-progress-bar-fill"></div>
 				</div>

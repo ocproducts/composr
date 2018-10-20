@@ -738,7 +738,6 @@
             return Promise.resolve();
         }
 
-
         var loadingWrapper = targetDiv;
         if (!loadingWrapper.id.includes('carousel-') && !$dom.html(loadingWrapper).includes('ajax-loading-block') && showLoadingAnimation) {
             document.body.style.cursor = 'wait';

@@ -1565,11 +1565,12 @@
             }
 
             /* Ok to proceed */
-            fieldInput.style.display = newDisplayState;
 
             if ((newDisplayState2 !== 'none') && (count < 50/*Performance*/)) {
                 $dom.fadeIn(fieldInput);
                 count++;
+            } else {
+                fieldInput.style.display = newDisplayState;
             }
         }
 

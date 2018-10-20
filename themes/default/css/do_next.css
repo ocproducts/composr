@@ -15,11 +15,12 @@
 .do-next-section-wrap {
 	margin: 2em auto;
 	text-align: center;
-	border: 1px dotted {$GET,standard_border};
+	border: 1px solid {$GET,standard_border};
 	border-radius: {$GET,border_radius_lg};
-	background-color: {$GET,area_background};
-	padding: 0.7em;
-	box-shadow: 0px 0px 20px {$GET,standard_border};
+	background: #eee;
+	/*background-color: {$GET,area_background};*/
+	/*padding: 0.7em;*/
+	/*box-shadow: 0px 0px 20px {$GET,standard_border};*/
 }
 /*{+START,CSS_MODE,desktop}*/
 	.do-next-section-wrap {
@@ -32,26 +33,39 @@
 }
 
 .do-next-section, .do-theme-items {
-	{$BETA_CSS_PROPERTY,display: flex;}
-	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .do-next-section {
-	border-left: 1px dotted {$GET,standard_border};
-	border-top: 1px dotted {$GET,standard_border};
+	/*border-left: 1px dotted {$GET,standard_border};*/
+	/*border-top: 1px dotted {$GET,standard_border};*/
 }
 
 .do-next-item {
-	background-color: {$GET,area_background};
+	background-color: {$GET,WB};
 	min-height: 8.5em;
-	border-right: 1px dotted {$GET,standard_border};
-	border-bottom: 1px dotted {$GET,standard_border};
+	border-right: 1px solid {$GET,standard_border};
+	border-bottom: 1px solid {$GET,standard_border};
+	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
 }
+
+.do-next-item:hover,
+.do-next-item.focus {
+	background-color: {$GET,seed};
+	color: {$GET,WB}
+}
+
+.do-next-item:hover a,
+.do-next-item.focus a {
+	color: {$GET,WB};
+	transition: color  0.15s ease-in-out;
+}
+
 .do-next-item, .do-theme-items>div {
 	padding: 0.75em;
 	text-align: center;
 	font-size: 0.9em;
-	transition: background-color 0.5s linear;
 }
 
 .active-item td, td.active-item {
@@ -61,7 +75,7 @@
 	background-color: {$GET,area_4_background} !important;
 }
 
-.do-next-item:hover, .do-theme-items>div:hover, .active-item td.do-theme-items>div:hover, td.active-item.do-theme-items>div:hover {
+.active-item td.do-theme-items>div:hover, td.active-item.do-theme-items>div:hover {
 	background-color: {$GET,area_hover_background} !important;
 	cursor: pointer;
 }

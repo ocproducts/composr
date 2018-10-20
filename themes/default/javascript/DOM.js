@@ -2189,8 +2189,8 @@
             destY = $dom.findPosY($dom.$id(destY), true);
         }
 
-        if (!_recursing && document.querySelector('header.with-sticky-navbar')) {
-            destY -= document.querySelector('header.with-sticky-navbar').offsetHeight;
+        if (!_recursing && document.querySelector('header.is-sticky')) {
+            destY -= document.querySelector('header.is-sticky').offsetHeight;
         }
 
         if (destY < 0) {

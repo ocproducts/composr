@@ -88,6 +88,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#fffcc4,floating_alert_background,100% fffcc4}
 
 /* Colours to mirror human understandings (i.e. non-thematic) */
+{$THEMEWIZARD_COLOR,#dc3545,danger,100% DC3545}
 {$THEMEWIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
 {$THEMEWIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
 {$THEMEWIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
@@ -217,8 +218,8 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 {$SET,max_container_width,1349px} /* 1366px minus scrollbar */
-{$SET,modern_navbar_height,90px}
-{$SET,stickied_modern_navbar_height,70px}
+{$SET,header_modern_height,90px}
+{$SET,stickied_header_modern_height,70px}
 {$SET,border_radius,4px}
 {$SET,border_radius_lg,6px}
 
@@ -1130,15 +1131,18 @@ header h1 {
 	min-height: 60px;
 }
 
-html.is-not-scrolled.has-homepage-slider .logo-outer .logo-color {
+html.has-homepage-slider .header-modern:not(.is-sticky) .logo-outer .logo-color,
+html:not(.is-scrolled).has-homepage-slider .logo-outer .logo-color {
 	display: none;
 }
 
-html.is-not-scrolled.has-homepage-slider .logo-outer .logo-white {
+html.has-homepage-slider .header-modern:not(.is-sticky) .logo-outer .logo-white,
+html:not(.is-scrolled).has-homepage-slider .logo-outer .logo-white {
 	display: block;
 }
 
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar {
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar {
 	color: {$GET,WB};
 	background: rgba(0, 0, 0, 0.5);
 	border-bottom: 1px solid transparent;
@@ -1146,7 +1150,7 @@ html.has-homepage-slider.is-not-scrolled header.with-white-navbar {
 }
 
 html:not(.has-homepage-slider) header.with-white-navbar,
-html.is-scrolled header.with-white-navbar {
+html.is-scrolled header.is-sticky.with-white-navbar {
 	color: {$GET,a.link};
 	background-color: {$GET,WB};
 	border-bottom: 1px solid {$GET,standard_border};
@@ -1162,22 +1166,24 @@ header .logo {
 	display: flex;
 	transition: height 0.15s ease-in-out;
 	height: 90px;
+	position: relative;
+	z-index: 1; /* Force on top of the home hero slider */
 }
 
-header.with-sticky-navbar ~ .sticky-navbar-placeholder {
-	height: {$GET,modern_navbar_height};
+.header-sticky-placeholder {
+	height: {$GET,header_modern_height};
 }
 
-header.with-sticky-navbar ~ .cms-carousel-homepage-slider {
-	margin-top: -{$GET,modern_navbar_height};
+.header-modern ~ .cms-carousel-homepage-slider {
+	margin-top: -{$GET,header_modern_height};
 }
 
-header.with-sticky-navbar ~ .cms-carousel-homepage-slider .cms-carousel-item-inner {
-	padding-top: {$GET,modern_navbar_height};
+.header-modern ~ .cms-carousel-homepage-slider .cms-carousel-item-inner {
+	padding-top: {$GET,header_modern_height};
 }
 
-html.is-scrolled .header-modern.with-sticky-navbar {
-	height: {$GET,stickied_modern_navbar_height};
+html.is-scrolled .header-modern.is-sticky {
+	height: {$GET,stickied_header_modern_height};
 }
 
 .header-modern .global-navigation,
@@ -1202,7 +1208,7 @@ html.is-scrolled .header-modern.with-sticky-navbar {
 	align-items: center;
 }
 
-header.with-sticky-navbar {
+header.is-sticky {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -1210,20 +1216,27 @@ header.with-sticky-navbar {
 	z-index: 100;
 }
 
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .logo,
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .top-button {
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .logo,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .logo,
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .top-button,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .top-button {
 	color: {$GET,WB};
 }
 
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
-html.has-homepage-slider.is-not-scrolled header.with-white-navbar .top-button:hover {
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .top-button:hover,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .top-button:hover {
 	color: {$COLOR_RGBA,{$GET,WB},0.8};
 }
 
-html.is-scrolled header.with-white-navbar {
+html.is-scrolled .header-modern.is-sticky.with-white-navbar {
 	box-shadow: {$GET,box_shadow_sm};
 }
 
@@ -2147,9 +2160,11 @@ div.red-alert, p.red-alert {
 }
 
 .red-alert-icon .icon {
+	color: {$GET,danger};
 	width: 24px;
 	height: 24px;
 	margin-right: 0.3em;
+	margin-bottom: 0.3em;
 }
 
 .inline-wip-message {

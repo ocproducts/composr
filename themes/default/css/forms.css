@@ -810,7 +810,12 @@ span.validated-checkbox+input[name="validated"].input-tick {
 }
 
 .skip-step-button-wrap {
-	overflow: hidden;
+}
+
+.skip-step-button-wrap::after {
+	display: block;
+	clear: both;
+	content: "";
 }
 
 .skip-step-button-wrap div {
@@ -905,7 +910,11 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	background: white;
 }
 
-/* Reset some Composr styles that impact CKEditor */
+.cke_combopanel.cke_combopanel__format {
+	width: 200px;
+}
+
+	/* Reset some Composr styles that impact CKEditor */
 .cke_reset_all div[role="tabpanel"] {
 	padding-left: 0;
 	padding-right: 0;

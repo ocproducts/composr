@@ -19,9 +19,9 @@
 				{+START,INCLUDE,RED_ALERT}TEXT={!addons:SOME_ADDONS_UPDATED,{$PAGE_LINK*,_SEARCH:admin_addons}}{+END}
 				{+END}
 
-				<div class="img-wrap">
+				<p class="img-wrap">
 					<img width="400" height="140" src="{$IMG*,product_logo}" alt="" />
-				</div>
+				</p>
 
 				<p>{!SPONSORS_NEEDED,{$PAGE_LINK*,adminzone:admin_version}}</p>
 			</div>

@@ -31,14 +31,12 @@
 
     // Are we dealing with a touch device?
     document.documentElement.classList.toggle('is-touch-enabled', 'ontouchstart' in document.documentElement);
-    document.documentElement.classList.toggle('is-not-touch-enabled', 'ontouchstart' in document.documentElement);
 
+    // Is the document scrolled down?
     document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
-    document.documentElement.classList.toggle('is-not-scrolled', window.scrollY === 0);
 
     window.addEventListener('scroll', function () {
         document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
-        document.documentElement.classList.toggle('is-not-scrolled', window.scrollY === 0);
     });
 
     $dom.ready.then(function () {

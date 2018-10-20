@@ -18,8 +18,9 @@
 	<form title="{!PRIMARY_PAGE_FORM}" class="cns-join-1" method="post" action="{URL*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<p>
-			<input type="checkbox" id="confirm" name="confirm" value="1" class="js-chb-click-toggle-proceed-btn" /><label for="confirm">{!I_AGREE}</label>
+		<p class="agree-field">
+			<input type="checkbox" id="confirm" name="confirm" value="1" class="js-chb-click-toggle-proceed-btn" />
+			<label for="confirm">{!I_AGREE}</label>
 		</p>
 
 		{+START,IF_NON_EMPTY,{GROUP_SELECT}}

@@ -827,6 +827,10 @@ hr.cns-sig-barrier {
 	text-align: center;
 }
 
+.cns-join-1 .agree-field label {
+	margin-left: 5px;
+}
+
 .btns-cns-join-step1 {
 	display: flex;
 	justify-content: center;

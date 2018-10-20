@@ -890,23 +890,23 @@
         }
     };
 
-    // Implementation for [data-sticky-navbar]
+    // Implementation for [data-sticky-header]
     // Hides navbar when scrolling downwards, shows it again when scrolled upwards
     // Adds .is-scrolled class when the navbar is scrolled along
-    $cms.behaviors.stickyNavbar = {
+    $cms.behaviors.stickyHeader = {
         attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-sticky-navbar]'), 'behavior.stickyNavbar');
+            var els = $util.once($dom.$$$(context, '[data-sticky-header]'), 'behavior.stickyHeader');
 
-            els.forEach(function (stickyNavbar) {
+            els.forEach(function (stickyHeader) {
                 var lastScrollY = 0,
-                    navbarHeight = $dom.height(stickyNavbar),
+                    navbarHeight = $dom.height(stickyHeader),
                     movement = 0,
                     lastDirection = 0;
 
                 window.addEventListener('scroll', function () {
                     if (window.scrollY === 0) {
                         movement = 0;
-                        stickyNavbar.style.marginTop = '';
+                        stickyHeader.style.marginTop = '';
                         return;
                     }
 
@@ -921,7 +921,7 @@
                                 movement = 0;
                             }
                             margin = -Math.min(Math.abs(movement), navbarHeight);
-                            stickyNavbar.style.marginTop = margin + 'px';
+                            stickyHeader.style.marginTop = margin + 'px';
 
                             lastDirection = 1;
                         } else { // Scrolled up
@@ -929,7 +929,7 @@
                                 movement = 0;
                             }
                             margin = Math.min(Math.abs(movement), navbarHeight) - navbarHeight;
-                            stickyNavbar.style.marginTop = margin + 'px';
+                            stickyHeader.style.marginTop = margin + 'px';
 
                             lastDirection = -1;
                         }
@@ -1140,7 +1140,7 @@
                         }
                         stuckNav.parentNode.style.height = height + 'px';
                         stuckNav.style.position = 'fixed';
-                        stuckNav.style.top = document.querySelector('header.with-sticky-navbar') ? document.querySelector('header.with-sticky-navbar').offsetHeight + 'px' : '0px';
+                        stuckNav.style.top = document.querySelector('header.is-sticky') ? document.querySelector('header.is-sticky').offsetHeight + 'px' : '0px';
                         stuckNav.style.zIndex = '50';
                         stuckNav.style.width = stuckNavWidth + 'px';
                     } else {

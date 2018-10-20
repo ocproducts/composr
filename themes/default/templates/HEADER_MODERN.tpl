@@ -1,5 +1,5 @@
 {$,Add CSS class .with-white-navbar for a white navbar, .with-seed-navbar for seed-colored navbar}
-<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header-modern with-white-navbar with-sticky-navbar" data-sticky-navbar="{}">
+<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header-modern with-white-navbar {+START,IF,{$THEME_OPTION,sticky_header}}is-sticky{+END}" {+START,IF,{$THEME_OPTION,sticky_header}}data-sticky-header="{}"{+END}>
 	{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 	<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
@@ -43,4 +43,6 @@
 		</div>
 	</div>
 </header>
-<div class="sticky-navbar-placeholder"></div>
+{+START,IF,{$THEME_OPTION,sticky_header}}
+<div class="header-sticky-placeholder"></div>
+{+END}

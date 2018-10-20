@@ -266,7 +266,7 @@
     };
 
     $cms.templates.jsBlock = function jsBlock(params) {
-        $cms.callBlock(params.blockCallUrl, '', $dom.$id(params.jsBlockId), false, false, null, false, false);
+        $cms.callBlock(params.blockCallUrl, '', document.getElementById(params.jsBlockId), false, false, null, false, false);
     };
 
     $cms.templates.massSelectMarker = function (params, container) {
@@ -343,6 +343,10 @@
             warning = params.warning,
             autoAdd = params.autoAdd;
 
+        $dom.on(container, 'focusin focusout', function (e) {
+            container.classList.toggle('focus', e.type === 'focusin');
+        });
+
         $dom.on(container, 'click', function (e) {
             var clickedLink = $dom.closest(e.target, 'a', container);
 
@@ -377,7 +381,7 @@
         var docEl = document.getElementById('doc-' + rand),
             docElHtml = docEl && $dom.html(docEl),
             helpEl = document.getElementById('help'),
-            origHelpElHtml = $dom.html(helpEl);
+            origHelpElHtml = helpEl ? $dom.html(helpEl) : null;
 
         if (docEl && helpEl && docElHtml) {
             /* Do-next document tooltips */
