@@ -381,7 +381,7 @@
         var docEl = document.getElementById('doc-' + rand),
             docElHtml = docEl && $dom.html(docEl),
             helpEl = document.getElementById('help'),
-            origHelpElHtml = $dom.html(helpEl);
+            origHelpElHtml = helpEl ? $dom.html(helpEl) : null;
 
         if (docEl && helpEl && docElHtml) {
             /* Do-next document tooltips */
