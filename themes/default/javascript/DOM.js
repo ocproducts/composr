@@ -1595,7 +1595,7 @@
 
                         // Pretend to be hidden if this is a "show" and
                         // there is still data from a stopped show/hide
-                        if ( value === "show" && priv.show && priv.show[ prop ] !== undefined ) {
+                        if ( value === "show" && priv.fxshow && priv.fxshow[ prop ] !== undefined ) {
                             hidden = true;
 
                             // Ignore all other no-op show/hide data
@@ -1603,7 +1603,7 @@
                             continue;
                         }
                     }
-                    orig[prop] = priv.show && priv.show[ prop ] || el.style[prop];
+                    orig[prop] = priv.fxshow && priv.fxshow[ prop ] || el.style[prop];
                 }
 
                 // Bail out if this is a no-op like .hide().hide()
