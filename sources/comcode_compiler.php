@@ -200,7 +200,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
         }
 
         if (($key != 'param') || ($val != '')) {
-            $params_comcode .= ' ' . $key . '="' . comcode_escape($val) . '"';
+            $params_comcode .= ' ' . $key . '="' . str_replace('"', '\\"', $val) . '"';
         }
     }
     $raw_comcode_start = '[' . $tag . $params_comcode . ']';

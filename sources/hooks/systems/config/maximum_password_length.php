@@ -57,6 +57,6 @@ class Hook_config_maximum_password_length
         if (get_forum_type() != 'cns') {
             return null;
         }
-        return '40';
+        return '255';
     }
 }

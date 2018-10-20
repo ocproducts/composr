@@ -187,7 +187,7 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
             }
 
             @unlink($path) or intelligent_write_error($path);
-            rename($tmp_path, $path);
+            @rename($tmp_path, $path) or intelligent_write_error($path);
 
             if ($test) {
                 sync_file($path);

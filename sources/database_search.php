@@ -966,6 +966,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $where_clause = substr($where_clause, 0, strlen($where_clause) - 5);
     }
 
+    $db = get_db_for($table);
+    $db->set_query_time_limit(30);
+
     if (($permissions_module !== null) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
         $g_or = get_permission_where_clause_groups(get_member());
 
@@ -974,8 +977,11 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $where_clause .= ' AND ';
         $where_clause .= 'z.category_name IS NOT NULL';*/
 
-        $db = get_db_for($table);
-        $cat_access = list_to_map('category_name', $db->query('SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval(get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, 0, false, true));
+        $cat_sql = '';
+        $cat_sql .= 'SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module);
+        $cat_sql .= ' UNION ALL ';
+        $cat_sql .= 'SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval((integer)get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module);
+        $cat_access = list_to_map('category_name', $db->query($cat_sql, null, 0, false, true));
     }
 
     if (key($fields) == '') {
@@ -983,10 +989,6 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             return array();
         }
     }
-
-    $db = get_db_for($table);
-
-    $db->set_query_time_limit(30);
 
     // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);

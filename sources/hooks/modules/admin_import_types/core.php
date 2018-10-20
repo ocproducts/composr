@@ -53,6 +53,7 @@ class Hook_admin_import_types_core
             'staff_checklist_cus_tasks' => 'CHECK_LIST',
             'staff_website_monitoring' => 'SITE_WATCHLIST',
             'notifications' => 'NOTIFICATIONS',
+            'comcode_pages' => 'COMCODE_PAGES',
         );
         if (addon_installed('cns_cpfs')) {
             $ret['cns_custom_profile_fields'] = 'CUSTOM_PROFILE_FIELDS';

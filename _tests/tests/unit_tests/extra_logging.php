@@ -22,6 +22,12 @@ class extra_logging_test_set extends cms_test_case
     {
         parent::setUp();
 
+        $config_path = get_file_base() . '/_config.php';
+        $c = cms_file_get_contents_safe($config_path);
+        $c = str_replace("\n\$SITE_INFO['fast_spider_cache'] = '1';", '', $c);
+        $c = str_replace("\n\$SITE_INFO['any_guest_cached_too'] = '1';", '', $c);
+        cms_file_put_contents_safe($config_path, $c);
+
         $this->establish_admin_session();
 
         set_option('grow_template_meta_tree', '0');
@@ -68,7 +74,7 @@ class extra_logging_test_set extends cms_test_case
             return;
         }
 
-        set_value('monitor_slow_urls', '1');
+        set_value('monitor_slow_urls', '0.1');
 
         $log_path = get_custom_file_base() . '/data_custom/errorlog.php';
         cms_file_put_contents_safe($log_path, '');
@@ -246,8 +252,8 @@ class extra_logging_test_set extends cms_test_case
 
         clearstatcache();
         $size_before = filesize($path);
-        $url = build_url(array('page' => ''), '');
-        $data = http_get_contents($url->evaluate());
+        $url = build_url(array('page' => '', 'keep_su' => 'Guest'), '');
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100.0, 'cookies' => array(get_session_cookie() => get_session_id())));
         clearstatcache();
         $size_after = filesize($path);
         $this->assertTrue($size_after > $size_before);
@@ -268,7 +274,7 @@ class extra_logging_test_set extends cms_test_case
         clearstatcache();
         $size_before = filesize($path);
         $url = build_url(array('page' => ''), '');
-        $data = http_get_contents($url->evaluate());
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100.0, 'cookies' => array(get_session_cookie() => get_session_id())));
         clearstatcache();
         $size_after = filesize($path);
         $this->assertTrue($size_after > $size_before);

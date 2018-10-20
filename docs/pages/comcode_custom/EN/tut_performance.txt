@@ -640,6 +640,51 @@ You effectively have to take it down, then get Amazon to shift over your hard di
 
 If you find the system scheduler is running slowly, you can find out which individual hook is the cause via the Low-level logging feature (Admin Zone > Audit > Low-level logging).
 
+[title="2"]Diagnosing server slow-downs[/title]
+
+If you are administrating a server you could come across situations where the server 'grinds to a halt', or spits out depleted resources messages. This isn't a Composr problem, but just like any desktop computer can take on too much work, so can a server.
+
+In these kinds of situations you need to identify what server resource is depleted. Typically it is either:
+1) Disk I/O
+2) Memory
+3) CPU
+4) Network I/O (available bandwidth)
+
+There are are various commands on Linux that are useful during diagnosis...
+{|
+! Command
+! Purpose
+! Hints
+|-
+| [tt]uptime[/tt]
+| Show the CPU load at different points in time
+| If the load level is higher than the number of CPU cores in the server, you have a serious issue.
+|-
+| [tt]ps -Af[/tt]
+| Show all active tasks
+| This will show you if you have a run-away number of processes (e.g. dozens of Apache instances).
+|-
+| [tt]top -n1[/tt]
+| Show active processes, sorted by CPU usage; also, total CPU usage, memory usage, and I/O wait time
+| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted.
+|-
+| [tt]iostat[/tt]
+| Show CPU and disk load
+| This is useful to find disk I/O load.
+|-
+| [tt]iotop[/tt]
+| Show active processes by I/O load
+| This command usually is not installed by default. It is very useful to find what processes are doing a lot of I/O.
+|}
+Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache log will.
+
+There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
+
+A good system administrator will:
+1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
+2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
+3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_moving"]Moving sites[/page]

@@ -163,7 +163,7 @@ function member_password_too_old($member_id)
 function check_password_complexity($username, $password, $return_errors = false)
 {
     $_maximum_password_length = get_option('maximum_password_length');
-    $maximum_password_length = intval($_maximum_password_length);
+    $maximum_password_length = min(255, intval($_maximum_password_length));
     if (cms_mb_strlen($password) > $maximum_password_length) {
         if ($return_errors) {
             return do_lang_tempcode('PASSWORD_TOO_LONG', escape_html(integer_format($maximum_password_length)));

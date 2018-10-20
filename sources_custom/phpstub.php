@@ -2009,7 +2009,7 @@ function method_exists($object, $method_name)
 /**
  * Return current UNIX timestamp with microseconds.
  *
- * @param  boolean $as_float Whether to return a float result.
+ * @param  boolean $as_float Whether to return a float result
  * @return mixed Micro-time
  */
 function microtime($as_float = false)

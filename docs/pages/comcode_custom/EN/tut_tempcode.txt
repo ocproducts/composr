@@ -1948,7 +1948,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_EMPTY/IF_NON_EMPTY</td>
-			<td>Find if some Tempcode evaluates to empty. This is <strong>extremely</strong> useful, as it allows you to, for example, now show a table if it has no rows passed in. From a programming point of view, it allows us to avoid making new templates and improve accessibility compliance.</td>
+			<td>Find if some Tempcode evaluates to empty. This is <strong>extremely</strong> useful, as it allows you to, for example, not show a table if it has no rows passed in. From a programming point of view, it allows us to avoid making new templates and improve accessibility compliance.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>IF_ARRAY_EMPTY/IF_ARRAY_NON_EMPTY</td>

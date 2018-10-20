@@ -201,7 +201,7 @@ class Hook_import_cms_merge
                 if (empty($SITE_INFO['db_forums_host'])) {
                     $SITE_INFO['db_forums_host'] = 'localhost';
                 }
-                $same_forum = ($this_site_info['db_forums'] == $SITE_INFO['db_forums']) && ($this_site_info['db_forums_host'] == $SITE_INFO['db_forums_host']) && ($db->table_prefix);
+                $same_forum = (!isset($SITE_INFO['db_forums'])) || ($this_site_info['db_forums'] == $SITE_INFO['db_forums']) && ($this_site_info['db_forums_host'] == $SITE_INFO['db_forums_host']) && ($db->table_prefix);
                 if (($this_site_info['forum_type'] != 'cns') && (!$same_forum)) {
                     attach_message(do_lang_tempcode('ERROR_NOT_CORRECT_LINKING'), 'warn');
                     $bad = true;
@@ -270,8 +270,22 @@ class Hook_import_cms_merge
         $text = get_translated_text($id, $db);
         $HAS_MULTI_LANG_CONTENT = $bak;
 
+        $text = $this->update_comcode($text);
+
+        return $text;
+    }
+
+    /**
+     * Import some Comcode, making changes as required.
+     *
+     * @param  string $comcode Input
+     * @param  ?ID_TEXT $referer_id Attachment referer type (null: not setting one now)
+     * @return string Output
+     */
+    public function update_comcode($comcode, $referer_id = null)
+    {
         $matches = array();
-        $count = preg_match_all('#\](\d+)\[/attachment\]#', $text, $matches);
+        $count = preg_match_all('#\](\d+)\[/attachment\]#', $comcode, $matches);
         if ($count != 0) {
             for ($i = 0; $i < $count; $i++) {
                 $from = $matches[1][$i];
@@ -279,10 +293,15 @@ class Hook_import_cms_merge
                 if ($to === null) {
                     $to = -1;
                 }
-                $text = str_replace(']' . $from . '[/attachment]', ']' . strval($to) . '[/attachment]', $text);
+                $comcode = str_replace(']' . $from . '[/attachment]', ']' . strval($to) . '[/attachment]', $comcode);
+
+                if ($referer_id !== null) {
+                    $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'comcode_page', 'r_referer_id' => $referer_id, 'a_id' => $to), false, true);
+                }
             }
         }
-        return $text;
+
+        return $comcode;
     }
 
     /**
@@ -732,7 +751,7 @@ class Hook_import_cms_merge
                 }
                 $aid = import_id_remap_get('attachment', strval($row['a_id']), true);
                 if ($aid !== null) {
-                    $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => $row['r_referer_type'], 'r_referer_id' => $id_new, 'a_id' => $aid));
+                    $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => $row['r_referer_type'], 'r_referer_id' => $id_new, 'a_id' => $aid), false, true);
                 }
             }
             $row_start += 200;
@@ -1659,9 +1678,14 @@ class Hook_import_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
+            if (import_check_if_imported('comcode_page', $row['the_zone'] . ':' . $row['the_page'])) {
+                continue;
+            }
+
             $p_submitter = import_id_remap_get('member', strval($row['p_submitter']), true);
             if ($p_submitter === null) {
-                continue;
+                require_code('users_active_actions');
+                $p_submitter = get_first_admin_user();
             }
 
             $the_zone = $row['the_zone'];
@@ -1671,6 +1695,33 @@ class Hook_import_cms_merge
             $p_edit_date = $row['p_edit_date'];
             $p_add_date = $row['p_add_date'];
             $p_show_as_edit = $row['p_show_as_edit'];
+
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'the_page', array(
+                'the_zone' => $the_zone,
+                'the_page' => $the_page,
+            ));
+            if ($test !== null) {
+                $the_page .= '_duplicate_' . substr(md5(uniqid('', true)), 0, 5);
+            }
+
+            $langs = find_all_langs();
+            $found_one = false;
+            foreach (array_keys($langs) as $lang) {
+                $file_path_from = $file_base . (($the_zone == '') ? '' : '/') . $the_zone . '/pages/comcode_custom/' . $lang . '/' . $row['the_page'] . '.txt';
+                $file_path_to = get_file_base() . (($the_zone == '') ? '' : '/') . $the_zone . '/pages/comcode_custom/' . $lang . '/' . $row['the_page'] . '.txt';
+                if (is_file($file_path_from)) {
+                    $found_one = true;
+
+                    $comcode = cms_file_get_contents_safe($file_path_from);
+                    $comcode_new = $this->update_comcode($comcode, $the_zone . ':' . $the_page);
+
+                    cms_file_put_contents_safe($file_path_to, $comcode_new);
+                }
+            }
+
+            if (!$found_one) {
+                continue;
+            }
 
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => $the_zone,
@@ -1683,6 +1734,8 @@ class Hook_import_cms_merge
                 'p_show_as_edit' => $row['p_show_as_edit'],
                 'p_order' => $row['p_order'],
             ));
+
+            import_id_remap_put('comcode_page', $row['the_zone'] . ':' . $row['the_page'], 1);
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'comcode_page', null);
         $this->_import_content_reviews($db, $table_prefix, 'comcode_page', null);
@@ -2047,6 +2100,9 @@ class Hook_import_cms_merge
                 $row = insert_lang('zone_header_text', $this->get_lang_string($db, $row['zone_header_text']), 1) + $row;
 
                 $GLOBALS['SITE_DB']->query_insert('zones', $row);
+
+                require_code('zones2');
+                make_zone_directory($row['zone_name']);
             }
         }
     }

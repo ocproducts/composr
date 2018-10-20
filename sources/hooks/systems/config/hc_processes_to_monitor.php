@@ -60,8 +60,8 @@ class Hook_config_hc_processes_to_monitor
 
         $processes = array(
             'php\d*(\.dSYM)?',
-            //'php\d*-cgi(\.dSYM)?',    Might be FastCGI
-            'php\d*-fpm(\.dSYM)?',
+            'php\d*-cgi(\.dSYM)?',
+            //'php\d*-fpm(\.dSYM)?', FastCGI
         );
         return implode('|', $processes);
     }
