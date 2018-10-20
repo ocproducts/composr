@@ -104,6 +104,8 @@ class Hook_addon_registry_core_primary_layout
             'themes/default/css/helper_panel.css',
             'themes/default/css/messages.css',
             'themes/default/templates/GLOBAL_HTML_WRAP.tpl',
+            'themes/default/templates/HEADER_CLASSIC.tpl',
+            'themes/default/templates/HEADER_MODERN.tpl',
             'themes/default/templates/GLOBAL_HELPER_PANEL.tpl',
             'themes/default/templates/CLOSED_SITE.tpl',
             'themes/default/templates/SCREEN_TITLE.tpl',
