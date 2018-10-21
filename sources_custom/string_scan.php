@@ -3791,6 +3791,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_URL_METADATA_CACHE
         FONTS
         GOOGLE_FONTS
+        HC_WEBSTANDARDS_WHITELIST
+        CONFIG_OPTION_hc_webstandards_whitelist
         HC_DATABASE_THRESHOLD
         REBUILD_SITEMAP
         EMAIL_BOUNCES

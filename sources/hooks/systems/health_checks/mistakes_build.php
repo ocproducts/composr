@@ -814,10 +814,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        if ((get_option('enable_markup_webstandards') == '0') || ($check_context != CHECK_CONTEXT__SPECIFIC_PAGE_LINKS)) {
-            return;
-        }
-
         $page_links = $this->process_urls_into_page_links($urls_or_page_links);
 
         $html_segments = array();
@@ -838,12 +834,34 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             }
         }
 
+        $ignore_errors = explode("\n", get_option('hc_webstandards_whitelist'));
+
         foreach ($html_segments as $field_title => $html) {
             require_lang('webstandards');
             require_code('crypt');
             require_code('webstandards');
             $results = check_xhtml($html, false, true, true, true, true, true, false);
-            $this->assertTrue(($results === null) || (count($results['errors']) == 0), do_lang('WEB_STANDARDS_PROBLEM', $field_title));
+
+            $errors = array();
+            if ($results !== null) {
+                foreach ($results['errors'] as $error) {
+                    $ignore = false;
+                    foreach ($ignore_errors as $ignore_error) {
+                        $ignore_error = trim($ignore_error);
+
+                        if (($ignore_error != '') && (strpos($error['error'], $ignore_error) !== false)) {
+                            $ignore = true;
+                            break;
+                        }
+                    }
+
+                    if (!$ignore) {
+                        $errors[] = $error['error'];
+                    }
+                }
+            }
+
+            $this->assertTrue(count($errors) == 0, do_lang('WEB_STANDARDS_PROBLEM', $field_title, '[html]' . implode('; ', $errors) . '[/html]'));
         }
     }
 }
