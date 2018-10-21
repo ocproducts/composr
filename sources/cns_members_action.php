@@ -609,12 +609,6 @@ function _cns_predefined_custom_field_details()
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
         ),
-        'sn_google_plus' => array(
-            'type' => 'url',
-            'icon' => 'icons/links/google_plus',
-            'section' => '',
-            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
-        ),
         'amazon' => array(
             'type' => 'url',
             'icon' => 'icons/links/amazon',

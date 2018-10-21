@@ -8,7 +8,7 @@ First, if you don't already have one, you must get a YouTube API Key to use with
 
 Getting Your YouTube API v3 Key:
 [list="1"]
-	[*] If you don't have a Google account (i.e. GMail/Google+), you will need one.
+	[*] If you don't have a Google account, you will need one.
 	[*] Go to https://console.developers.google.com/project
 	[*] From there you will click the [i]Create Project[/i] button to create a new project.
 	[*] On the New Project pop-up, give your project a name. Something like [i]YourWebSite[/i] YouTube Channel Block is good. The Project ID is not important, but you can change it if you want. And then click the Create button.

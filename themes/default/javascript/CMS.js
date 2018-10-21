@@ -914,13 +914,6 @@
     };
 
     /**
-     * @memberof $cms
-     */
-    $cms.googlePlusTrack = function googlePlusTrack() {
-        $cms.gaTrack(null, 'social__google_plus');
-    };
-
-    /**
      * Used by audio CAPTCHA.
      * @memberof $cms
      * @param ob

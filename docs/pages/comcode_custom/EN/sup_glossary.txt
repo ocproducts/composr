@@ -2,7 +2,7 @@
 
 We don't blame you if you get a little bit baffled by all the terminology involved in modern web design.
 
-Here are the top 100 buzzwords that will help you understand what web designers are talking about.
+Here are the top ~100 buzzwords that will help you understand what web designers are talking about.
 
 [html]
 <table class="columned-table results-table very-spaced-table">
@@ -176,10 +176,6 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 			<td>A tool for managing and storing code, logging changes so that all code has a complete auditable change history.</td>
 		</tr>
 		<tr>
-			<td>Google+</td>
-			<td>Google's social network. Google also have a +1 button that can be displayed on a website and recommend resources to other logged in Google users who are in their Google contact lists/circles.</td>
-		</tr>
-		<tr>
 			<td>Heat map</td>
 			<td>An analytics mechanism for seeing where users tend to focus their mouse. This is correlated strongly with where they are looking, so is a nice cost-effective way for identifying how users focus on a web page, and therefore is helpful in guiding design optimisation to ensure users look at what you want them to.</td>
 		</tr>
@@ -209,7 +205,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>JavaScript</td>
-			<td>The programming language used to give a webpage interactive functionality.</td>
+			<td>The programming language used to give a webpage interactive functionality (aka ECMAScript).</td>
 		</tr>
 		<tr>
 			<td>JPEG</td>
@@ -337,7 +333,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Social network</td>
-			<td>A social application that connects people, such as Facebook, Google+, LinkedIn, or Twitter.</td>
+			<td>A social application that connects people, such as Facebook, LinkedIn, Minds, or Twitter.</td>
 		</tr>
 		<tr>
 			<td>Specification</td>

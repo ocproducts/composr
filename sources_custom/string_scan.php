@@ -8465,8 +8465,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_im_jabber_NAME
         DEFAULT_CPF_im_skype_DESCRIPTION
         DEFAULT_CPF_im_skype_NAME
-        DEFAULT_CPF_sn_google_plus_DESCRIPTION
-        DEFAULT_CPF_sn_google_plus_NAME
         DEFAULT_CPF_sn_facebook_DESCRIPTION
         DEFAULT_CPF_sn_facebook_NAME
         DEFAULT_CPF_sn_twitter_DESCRIPTION

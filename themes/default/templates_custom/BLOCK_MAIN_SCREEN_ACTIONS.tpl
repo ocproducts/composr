@@ -20,10 +20,5 @@
 	<div class="sina-weibo"><a class="link-exempt js-click-add-to-sina-weibo" target="_blank" title="{!ADD_TO_SINA_WEIBO} {!LINK_NEW_WINDOW}" href="http://service.weibo.com/share/share.php?url={EASY_SELF_URL.*}&amp;title={$METADATA.*,title}">{+START,INCLUDE,ICON}NAME=links/sina_weibo{+END} <span>{!ADD_TO_SINA_WEIBO}</span></a></div>
 	<div class="tencent-weibo"><a class="link-exempt js-click-add-to-tencent-weibo" target="_blank" title="{!ADD_TO_TENCENT_WEIBO} {!LINK_NEW_WINDOW}" href="http://v.t.qq.com/share/share.php?url={EASY_SELF_URL.*}&amp;title={$METADATA.*,title}">{+START,INCLUDE,ICON}NAME=links/tencent_weibo{+END} <span>{!ADD_TO_TENCENT_WEIBO}</span></a></div>
 	<div class="qzone"><a class="link-exempt js-click-add-to-qzone" target="_blank" title="{!ADD_TO_QZONE} {!LINK_NEW_WINDOW}" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={EASY_SELF_URL.*}&amp;title={$METADATA.*,title}">{+START,INCLUDE,ICON}NAME=links/qzone{+END} <span>{!ADD_TO_QZONE}</span></a></div>
-
-	<div class="google-plusone">
-		<div class="g-plusone" data-size="medium" data-count="true" data-href="{EASY_SELF_URL*}" data-callback="$cms.googlePlusTrack"></div>
-		{$EXTRA_FOOT,<script {$CSP_NONCE_HTML} src="https://apis.google.com/js/plusone.js"></script>}
-	</div>
 </nav>
 </aside>

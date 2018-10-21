@@ -161,7 +161,6 @@ You have probably spotted that all these examples are using a new block, [tt]mai
 You may wish to set up profiles on popular social media sites, such as:
  - Facebook
  - Twitter
- - Google Plus
  - YouTube
  - Pinterest
  - LinkedIn

@@ -65,7 +65,7 @@ Here is some infrastructure you will likely need:
  - Internal servers (if any, probably not necessary nowadays)
  - External servers (e.g. staging server)
  - Hosting environment (e.g. dedicated server with multiple sites, VPNs via Amazon EC2, separate shared hosting accounts)
- - Social media accounts (e.g. Twitter Profile, Facebook Page, Google+ Page, YouTube Channel) [see the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial]
+ - Social media accounts (e.g. Twitter Profile, Facebook Page, YouTube Channel) [see the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial]
  - Your own website (duh!)
 
 For your infrastructure you will need:
