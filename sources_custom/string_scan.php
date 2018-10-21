@@ -3244,6 +3244,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_oembed_manual_patterns
         CONFIG_OPTION_oembed_max_size
         CONFIG_OPTION_one_per_email_address
+        YOU_ADMIN_NO_EMAIL
         CONFIG_OPTION_output_streaming
         CONFIG_OPTION_overt_whisper_suggestion
         CONFIG_OPTION_password_change_days
