@@ -282,8 +282,8 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Place a comment. E.g... [/html][tt]{$,this is a comment}[/tt][html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$RAND}</td>
-			<td>A random number between 0 and 2147483647</td>
+			<td>{$RAND,min,max}</td>
+			<td>If no parameters are given, it picks a random number between 0 and 2147483647. If one is given it picks a random number between 0 and that parameter. If two are given it picks a number between the first and second parameter.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SET_RAND,a,b,c}</td>

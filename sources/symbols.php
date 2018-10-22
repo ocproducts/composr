@@ -3340,13 +3340,34 @@ function ecv_EXTRA_FOOT($lang, $escaped, $param)
 function ecv_RAND($lang, $escaped, $param)
 {
     if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) { // Normal operation
-        static $before = array(); // Don't allow repeats
-        do {
-            $random = mt_rand(0, mt_getrandmax());
+        if (isset($param[1])) {
+            $min = intval($param[0]);
+            $max = intval($param[1]);
+        } elseif (isset($param[0])) {
+            $min = 0;
+            $max = intval($param[0]);
+        } else {
+            $min = 0;
+            $max = mt_getrandmax();
         }
-        while (isset($before[$random]));
-        if (count($before) < 2147480000) {
-            $before[$random] = true;
+        if ($min > $max) {
+            $min = $max;
+            $max = intval($param[0]);
+        }
+
+        static $before = array(); // Don't allow repeats
+        $key = strval($min) . '_' . strval($max);
+        if (!isset($before[$key])) {
+            $before[$key] = array();
+        }
+        do {
+            $random = mt_rand($min, $max);
+        }
+        while (isset($before[$key][$random]));
+        if (count($before[$key]) < $max - $min) {
+            $before[$key][$random] = true;
+        } else { // Reset, so we get another set to randomise through
+            $before[$key] = array();
         }
 
         $value = strval($random);
