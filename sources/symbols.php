@@ -3351,8 +3351,9 @@ function ecv_RAND($lang, $escaped, $param)
             $max = mt_getrandmax();
         }
         if ($min > $max) {
+            $tmp = $min;
             $min = $max;
-            $max = intval($param[0]);
+            $max = $tmp;
         }
 
         static $before = array(); // Don't allow repeats
