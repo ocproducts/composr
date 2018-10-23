@@ -77,6 +77,28 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
 }
 
 /**
+ * Inform user if the user is implicitly translating content.
+ */
+function attach_translation_notice()
+{
+    if (!multi_lang_content()) {
+        return;
+    }
+
+    $user_lang = user_lang();
+    $default_lang = get_site_default_lang();
+    if ($user_lang != $default_lang) {
+        require_code('lang2');
+        require_lang('lang');
+        $_user_lang = lookup_language_full_name($user_lang);
+        $_default_lang = lookup_language_full_name($default_lang);
+        $default_lang_url = get_self_url(true, false, array('keep_lang' => $default_lang), true);
+        $notice = do_lang_tempcode('TRANSLATING_IN_LANGUAGE', escape_html($_user_lang), escape_html($_default_lang), escape_html($default_lang_url));
+        attach_message($notice, 'notice');
+    }
+}
+
+/**
  * Get an array of all the installed languages that can be found in root/lang/ and root/lang_custom/
  *
  * @param  boolean $even_empty_langs Whether to even find empty languages
@@ -191,7 +213,12 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
     require_code('lang2');
 
     foreach (array_keys($_langs) as $lang) {
-        $langs->attach(form_input_list_entry($lang, ($lang == $select_lang), lookup_language_full_name($lang)));
+        $_langs[$lang] = lookup_language_full_name($lang);
+    }
+    asort($_langs, SORT_NATURAL | SORT_FLAG_CASE);
+
+    foreach ($_langs as $lang => $full_name) {
+        $langs->attach(form_input_list_entry($lang, ($lang == $select_lang), $full_name));
     }
 
     if ($show_unset) {

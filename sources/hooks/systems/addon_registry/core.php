@@ -1387,6 +1387,7 @@ class Hook_addon_registry_core
             'sources/hooks/systems/symbols/DEEP_CLEAN.php',
             'themes/default/templates/PASSWORD_CHECK_JS.tpl',
             'themes/default/templates/SPONSORS_SCREEN.tpl',
+            'themes/default/templates/TRANSLATION_LINKS.tpl',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',
@@ -1496,6 +1497,7 @@ class Hook_addon_registry_core
             'templates/UPLOAD_SYNDICATION_SETUP_SCREEN.tpl' => 'upload_syndication_setup_screen',
             'templates/GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN.tpl' => 'group_member_timeout_manage_screen',
             'templates/SPONSORS_SCREEN.tpl' => 'sponsors_screen',
+            'templates/TRANSLATION_LINKS.tpl' => 'translation_links',
         );
     }
 
@@ -2438,6 +2440,22 @@ class Hook_addon_registry_core
                     ),
                 ),
             )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__translation_links()
+    {
+        return array(
+            do_lorem_template('TRANSLATION_LINKS', array(
+                'ALT_LANGS' => array('FR', 'DE'),
+            )
         );
     }
 }

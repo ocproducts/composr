@@ -943,6 +943,88 @@ function _hide_helper_panel(middles,panel_right,global_message,helper_panel_cont
 		helper_panel_toggle.childNodes[0].srcset='{$IMG;,icons/28x28/helper_panel_show} 2x'.replace(/^https?:/,window.location.protocol);
 }
 
+function toggle_top_language(event)
+{
+	if (typeof event=='undefined') event=window.event;
+	_toggle_top_box(event,'pts',true);
+	_toggle_top_box(event,'web_notifications',true);
+	return _toggle_top_box(event,'top_language');
+}
+
+function _toggle_top_box(event,name,hide)
+{
+	if (typeof hide=='undefined') hide=false;
+
+	var e=document.getElementById(name+'_rel');
+	if (!e) return;
+
+	event.within_message_box=true;
+	cancel_bubbling(event);
+
+	var body=document.body;
+	if (e.parentNode!=body) // Move over, so it is not cut off by overflow:hidden of the header
+	{
+		e.parentNode.removeChild(e);
+		body.appendChild(e);
+
+		add_event_listener_abstract(e,'click',function(event) { if (typeof event=='undefined') event=window.event; event.within_message_box=true; });
+		add_event_listener_abstract(body,'click',function(event) { if (typeof event=='undefined') event=window.event; if (typeof event.within_message_box!='undefined') return; _toggle_top_box(event,'top_personal_stats',true); _toggle_top_box(event,'web_notifications',true); _toggle_top_box(event,'pts',true); });
+	}
+
+	var button=document.getElementById(name+'_button');
+	button.title='';
+	var set_position=function() {
+		var button_x=find_pos_x(button,true);
+		var button_y=find_pos_y(button,true);
+		var button_width=find_width(button);
+		var button_height=find_height(button);
+		var e_width=find_width(e);
+		var e_height=find_height(e);
+		var x=(button_x+button_width-e_width);
+		var y=(button_y+button_height);
+		var screen_height=get_window_scroll_height();
+		if (x<0)
+		{
+			var span=e.getElementsByTagName('span')[0];
+			span.style.marginLeft=(button_x+button_width/4)+'px';
+			x=0;
+		}
+		e.style.left=x+'px';
+		if (y+e_height>screen_height) {
+			e.style.top=(button_y-e_height)+'px';
+			e.childNodes[1].className=e.childNodes[1].className.replace(/ box_arrow/,'');
+			e.style.left=button_x+'px'; // We display with a bottom-style, so not centered
+		} else {
+			e.style.top=y+'px';
+		}
+		try
+		{
+			e.style.opacity='1.0';
+		}
+		catch (ex) {}
+	};
+	window.setTimeout(set_position,0);
+
+	if ((e.style.display=='none') && (!hide))
+	{
+		var tooltips=document.querySelectorAll('body>.tooltip');
+		if (typeof tooltips[0]!='undefined')
+			tooltips[0].style.display='none'; // Hide tooltip, to stop it being a mess
+
+		e.style.display='inline';
+	} else
+	{
+		e.style.display='none';
+	}
+	try
+	{
+		e.style.opacity='0.0'; // Render, but invisibly, until we've positioned it
+	}
+	catch (ex) {}
+
+	return false;
+}
+
 /* Find the size of a dimensions in pixels without the px (not general purpose, just to simplify code) */
 function sts(src)
 {

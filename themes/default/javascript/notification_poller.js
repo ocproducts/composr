@@ -34,7 +34,7 @@ function notifications_mark_all_read(event)
 	url+='&forced_update=1';
 	url+=keep_stub();
 	do_ajax_request(url,window._poll_for_notifications);
-	_toggle_messaging_box(event,'web_notifications',true);
+	_toggle_top_box(event,'web_notifications',true);
 	return false;
 }
 
@@ -194,87 +194,27 @@ function explicit_notifications_enable_request()
 function toggle_top_personal_stats(event)
 {
 	if (typeof event=='undefined') event=window.event;
-	_toggle_messaging_box(event,'pts',true);
-	_toggle_messaging_box(event,'web_notifications',true);
-	return _toggle_messaging_box(event,'top_personal_stats');
+	_toggle_top_box(event,'pts',true);
+	_toggle_top_box(event,'web_notifications',true);
+	_toggle_top_box(event,'top_language',true);
+	return _toggle_top_box(event,'top_personal_stats');
 }
 
 function toggle_web_notifications(event)
 {
 	if (typeof event=='undefined') event=window.event;
-	_toggle_messaging_box(event,'top_personal_stats',true);
-	_toggle_messaging_box(event,'pts',true);
-	return _toggle_messaging_box(event,'web_notifications');
+	_toggle_top_box(event,'top_personal_stats',true);
+	_toggle_top_box(event,'pts',true);
+	_toggle_top_box(event,'top_language',true);
+	return _toggle_top_box(event,'web_notifications');
 }
 
 function toggle_pts(event)
 {
 	if (typeof event=='undefined') event=window.event;
-	_toggle_messaging_box(event,'top_personal_stats',true);
-	_toggle_messaging_box(event,'web_notifications',true);
-	return _toggle_messaging_box(event,'pts');
-}
-
-function _toggle_messaging_box(event,name,hide)
-{
-	if (typeof hide=='undefined') hide=false;
-
-	var e=document.getElementById(name+'_rel');
-	if (!e) return;
-
-	event.within_message_box=true;
-	cancel_bubbling(event);
-
-	var body=document.body;
-	if (e.parentNode!=body) // Move over, so it is not cut off by overflow:hidden of the header
-	{
-		e.parentNode.removeChild(e);
-		body.appendChild(e);
-
-		add_event_listener_abstract(e,'click',function(event) { if (typeof event=='undefined') event=window.event; event.within_message_box=true; });
-		add_event_listener_abstract(body,'click',function(event) { if (typeof event=='undefined') event=window.event; if (typeof event.within_message_box!='undefined') return; _toggle_messaging_box(event,'top_personal_stats',true); _toggle_messaging_box(event,'web_notifications',true); _toggle_messaging_box(event,'pts',true); });
-	}
-
-	var button=document.getElementById(name+'_button');
-	button.title='';
-	var set_position=function() {
-		var button_x=find_pos_x(button,true);
-		var button_width=find_width(button);
-		var x=(button_x+button_width-find_width(e));
-		if (x<0)
-		{
-			var span=e.getElementsByTagName('span')[0];
-			span.style.marginLeft=(button_x+button_width/4)+'px';
-			x=0;
-		}
-		e.style.left=x+'px';
-		e.style.top=(find_pos_y(button,true)+find_height(button))+'px';
-		try
-		{
-			e.style.opacity='1.0';
-		}
-		catch (ex) {}
-	};
-	window.setTimeout(set_position,0);
-
-	if ((e.style.display=='none') && (!hide))
-	{
-		var tooltips=document.querySelectorAll('body>.tooltip');
-		if (typeof tooltips[0]!='undefined')
-			tooltips[0].style.display='none'; // Hide tooltip, to stop it being a mess
-
-		e.style.display='inline';
-	} else
-	{
-		e.style.display='none';
-	}
-	try
-	{
-		e.style.opacity='0.0'; // Render, but invisibly, until we've positioned it
-	}
-	catch (ex) {}
-
-	return false;
+	_toggle_top_box(event,'top_personal_stats',true);
+	_toggle_top_box(event,'web_notifications',true);
+	return _toggle_top_box(event,'pts');
 }
 
 /*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/

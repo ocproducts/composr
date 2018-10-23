@@ -5010,3 +5010,41 @@ function ecv_SMART_LINK_STRIP($lang, $escaped, $param)
     }
     return $value;
 }
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_TRANSLATION_LINKS($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (cms_srv('REQUEST_METHOD') != 'POST') {
+        $langs = find_all_langs();
+        $alt_langs = array();
+        foreach (array_keys($langs) as $lang) {
+            if ($lang != user_lang()) {
+                $alt_langs[] = $lang;
+            }
+        }
+
+        if (count($alt_langs) > 0) {
+            $_value = do_template('TRANSLATION_LINKS', array('ALT_LANGS' => $alt_langs));
+            $value = $_value->evaluate();
+        }
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}

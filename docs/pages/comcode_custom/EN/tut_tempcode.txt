@@ -706,6 +706,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>HTML code for metdata-linkage to RSS/Atom feeds</td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>{$TRANSLATION_LINKS}</td>
+			<td>HTML code for metdata-linkage to translations</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 		  <td>{$RUNNING_SCRIPT,index}</td>
 		  <td>Find whether an entry script is running</td>
 		</tr>

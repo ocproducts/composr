@@ -1326,6 +1326,9 @@ abstract class Standard_crud_module
      */
     public function _edit()
     {
+        require_code('lang3');
+        attach_translation_notice();
+
         $submit_name = do_lang_tempcode('SAVE');
 
         $id = mixed(); // Define type as mixed

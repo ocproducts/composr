@@ -3453,11 +3453,29 @@ div.proceed_button_left_2 {
 	height: 25px;
 }
 
+#top_language_button {
+	width: 30px;
+	height: 24px;
+	display: inline-block;
+}
+#top_language_button>img {
+	padding: 0 5px;
+	vertical-align: middle;
+}
+#top_language_rel a, #top_language_rel img {
+	vertical-align: middle;
+}
+#top_language_rel a.current {
+	font-weight: bold;
+}
+
 .global_button_ref_point {
 	position: absolute;
-	min-width: 22em;
 	font-size: 13px; /* Puts it back, as was set to zero elsewhere */
 	z-index: 2000;
+}
+#top_personal_stats_rel, #web_notifications_rel {
+	min-width: 22em;
 }
 .global_button_ref_point .box {
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
