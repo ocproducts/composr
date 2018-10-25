@@ -886,6 +886,7 @@ function init__webstandards2()
         'meta.property' => '[a-zA-Z].+',
         'object.form' => $enforce_name,
         'script.async' => '(async)',
+        'select.required' => '(required)',
         'select.autofocus' => '(autofocus)',
         'select.form' => $enforce_name,
         'style.scoped' => '(scoped)',
