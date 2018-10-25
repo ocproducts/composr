@@ -155,6 +155,62 @@ function init__global3()
 }
 
 /**
+ * Find the base URL for documentation.
+ *
+ * @return URLPATH The base URL for documentation
+ */
+function get_brand_base_url()
+{
+    $value = function_exists('get_value') ? get_value('rebrand_base_url') : null;
+    if (($value === null) || ($value == '')) {
+        $value = 'http://compo.sr';
+    }
+    return $value;
+}
+
+/**
+ * Get a URL to a Composr tutorial.
+ *
+ * @param  ?ID_TEXT $tutorial Name of a tutorial (null: don't include the page part)
+ * @return URLPATH URL to a tutorial
+ */
+function get_tutorial_url($tutorial)
+{
+    $ret = get_brand_page_url(array('page' => ($tutorial === null) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
+    if ($tutorial === null) {
+        $ret = str_replace('abcdef.htm', '', $ret);
+    }
+    return $ret;
+}
+
+/**
+ * Get a URL to a compo.sr page.
+ *
+ * @param  array $params URL map
+ * @param  ID_TEXT $zone Zone
+ * @return URLPATH URL to page
+ */
+function get_brand_page_url($params, $zone)
+{
+    // Assumes brand site supports .htm URLs, which it should
+    return get_brand_base_url() . (($zone == '') ? '' : '/') . $zone . '/' . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
+}
+
+/**
+ * Get the brand name.
+ *
+ * @return string The brand name
+ */
+function brand_name()
+{
+    $value = function_exists('get_value') ? get_value('rebrand_name') : null;
+    if ($value === null) {
+        $value = 'Composr';
+    }
+    return $value;
+}
+
+/**
  * Get the file extension of the specified file. It returns without a dot.
  *
  * @param  string $name The filename
@@ -424,6 +480,67 @@ function cms_http_request($url, $options = array())
 {
     require_code('http');
     return _cms_http_request($url, $options);
+}
+
+/**
+ * Find whether a file/directory is writeable. This function is designed to get past that the PHP is_writable function does not work properly on Windows.
+ *
+ * @param  PATH $path The file path
+ * @return boolean Whether the file is writeable
+ */
+function cms_is_writable($path)
+{
+    if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
+        return is_writable($path);
+    }
+
+    if (!file_exists($path)) {
+        return false;
+    }
+
+    if (is_dir($path)) {
+        /*if (false) { // ideal, but too dangerous as sometimes you can write files but not delete again
+            $test = @fopen($path . '/cms.delete.me', 'wb');
+            if ($test !== false) {
+                fclose($test);
+                unlink($path . '/cms.delete.me');
+                return true;
+            }
+            return false;
+        }*/
+
+        return is_writable($path); // imperfect unfortunately; but unlikely to cause a problem
+    } else {
+        $test = @fopen($path, 'ab');
+        if ($test !== false) {
+            fclose($test);
+            return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * Discern the cause of a file-write error, and show an appropriate error message.
+ *
+ * @param  PATH $path File path that could not be written (full path, not relative)
+ */
+function intelligent_write_error($path)
+{
+    require_code('files2');
+    _intelligent_write_error($path);
+}
+
+/**
+ * Discern the cause of a file-write error, and return an appropriate error message.
+ *
+ * @param  PATH $path File path that could not be written
+ * @return Tempcode Message
+ */
+function intelligent_write_error_inline($path)
+{
+    require_code('files2');
+    return _intelligent_write_error_inline($path);
 }
 
 /**
@@ -1182,67 +1299,6 @@ function is_ascii_string($x)
 }
 
 /**
- * Find whether a file/directory is writeable. This function is designed to get past that the PHP is_writable function does not work properly on Windows.
- *
- * @param  PATH $path The file path
- * @return boolean Whether the file is writeable
- */
-function cms_is_writable($path)
-{
-    if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
-        return is_writable($path);
-    }
-
-    if (!file_exists($path)) {
-        return false;
-    }
-
-    if (is_dir($path)) {
-        /*if (false) { // ideal, but too dangerous as sometimes you can write files but not delete again
-            $test = @fopen($path . '/cms.delete.me', 'wb');
-            if ($test !== false) {
-                fclose($test);
-                unlink($path . '/cms.delete.me');
-                return true;
-            }
-            return false;
-        }*/
-
-        return is_writable($path); // imperfect unfortunately; but unlikely to cause a problem
-    } else {
-        $test = @fopen($path, 'ab');
-        if ($test !== false) {
-            fclose($test);
-            return true;
-        }
-        return false;
-    }
-}
-
-/**
- * Discern the cause of a file-write error, and show an appropriate error message.
- *
- * @param  PATH $path File path that could not be written (full path, not relative)
- */
-function intelligent_write_error($path)
-{
-    require_code('files2');
-    _intelligent_write_error($path);
-}
-
-/**
- * Discern the cause of a file-write error, and return an appropriate error message.
- *
- * @param  PATH $path File path that could not be written
- * @return Tempcode Message
- */
-function intelligent_write_error_inline($path)
-{
-    require_code('files2');
-    return _intelligent_write_error_inline($path);
-}
-
-/**
  * Find whether we have no forum on this website.
  *
  * @return boolean Whether we have no forum on this website
@@ -1466,231 +1522,6 @@ function integer_format($val)
 }
 
 /**
- * Sort a list of maps by the string length of a particular key ID in the maps.
- *
- * @param  array $rows List of maps to sort
- * @param  mixed $sort_key Either an integer sort key (to sort by integer key ID of contained arrays) or a String sort key (to sort by string key ID of contained arrays)
- */
-function sort_maps_by__strlen($rows, $sort_key)
-{
-    global $M_SORT_KEY;
-    $M_SORT_KEY = $sort_key;
-    @uasort($rows, '_strlen_sort'); // @ is to stop PHP bug warning about altered array contents when Tempcode copies are evaluated internally
-}
-
-/**
- * Helper function for usort to sort a list by string length.
- *
- * @param  string $a The first string to compare
- * @param  string $b The second string to compare
- * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
- * @ignore
- */
-function _strlen_sort($a, $b)
-{
-    if (!isset($a)) {
-        $a = '';
-    }
-    if (!isset($b)) {
-        $b = '';
-    }
-    if ($a == $b) {
-        return 0;
-    }
-    if (!is_string($a)) {
-        global $M_SORT_KEY;
-        return (strlen($a[$M_SORT_KEY]) < strlen($b[$M_SORT_KEY])) ? -1 : 1;
-    }
-    return (strlen($a) < strlen($b)) ? -1 : 1;
-}
-
-/**
- * Sort a list of maps by a particular key ID in the maps. Does not (and should not) preserve list indices, but does preserve associative key indices.
- *
- * @param  array $rows List of maps to sort
- * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it)
- * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort), doesn't support natural supporting
- * @param  boolean $natural Whether to do a natural sort
- */
-function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $natural = false)
-{
-    if ($rows == array()) {
-        return;
-    }
-
-    global $M_SORT_KEY, $M_SORT_NATURAL;
-    $M_SORT_KEY = $sort_keys;
-    $M_SORT_NATURAL = $natural;
-    if ($preserve_order_if_possible) {
-        merge_sort($rows, '_multi_sort');
-    } else {
-        $first_key = key($rows);
-        if ((is_integer($first_key)) && (array_unique(array_map('is_integer', array_keys($rows))) === array(true))) {
-            usort($rows, '_multi_sort');
-        } else {
-            uasort($rows, '_multi_sort');
-        }
-    }
-}
-
-/**
- * Do a user sort, preserving order where reordering not needed. Based on a PHP manual comment at http://php.net/manual/en/function.usort.php.
- *
- * @param  array $array Sort array
- * @param  mixed $cmp_function Comparison function
- */
-function merge_sort(&$array, $cmp_function = 'strcmp')
-{
-    // Arrays of size<2 require no action.
-    if (count($array) < 2) {
-        return;
-    }
-
-    // Split the array in half
-    $halfway = intval(floatval(count($array)) / 2.0);
-    $array1 = array_slice($array, 0, $halfway);
-    $array2 = array_slice($array, $halfway);
-
-    // Recurse to sort the two halves
-    merge_sort($array1, $cmp_function);
-    merge_sort($array2, $cmp_function);
-
-    // If all of $array1 is <= all of $array2, just append them.
-    if (call_user_func($cmp_function, end($array1), reset($array2)) < 1) {
-        $array = array_merge($array1, $array2);
-        return;
-    }
-
-    // Merge the two sorted arrays into a single sorted array
-    $array = array();
-    reset($array1);
-    reset($array2);
-    $ptr1 = 0;
-    $ptr2 = 0;
-    $cnt1 = count($array1);
-    $cnt2 = count($array2);
-    while (($ptr1 < $cnt1) && ($ptr2 < $cnt2)) {
-        if (call_user_func($cmp_function, current($array1), current($array2)) < 1) {
-            $key = key($array1);
-            if (is_integer($key)) {
-                $array[] = current($array1);
-            } else {
-                $array[$key] = current($array1);
-            }
-            $ptr1++;
-            next($array1);
-        } else {
-            $key = key($array2);
-            if (is_integer($key)) {
-                $array[] = current($array2);
-            } else {
-                $array[$key] = current($array2);
-            }
-            $ptr2++;
-            next($array2);
-        }
-    }
-
-    // Merge the remainder
-    while ($ptr1 < $cnt1) {
-        $key = key($array1);
-        if (is_integer($key)) {
-            $array[] = current($array1);
-        } else {
-            $array[$key] = current($array1);
-        }
-        $ptr1++;
-        next($array1);
-    }
-    while ($ptr2 < $cnt2) {
-        $key = key($array2);
-        if (is_integer($key)) {
-            $array[] = current($array2);
-        } else {
-            $array[$key] = current($array2);
-        }
-        $ptr2++;
-        next($array2);
-    }
-}
-
-/**
- * Helper function to sort a list of maps by the value at $key in each of those maps.
- *
- * @param  array $a The first to compare
- * @param  array $b The second to compare
- * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
- * @ignore
- */
-function _multi_sort($a, $b)
-{
-    global $M_SORT_KEY, $M_SORT_NATURAL;
-    $keys = explode(',', is_string($M_SORT_KEY) ? $M_SORT_KEY : strval($M_SORT_KEY));
-    $first_key = $keys[0];
-    if ($first_key[0] === '!') {
-        $first_key = substr($first_key, 1);
-    }
-
-    $key_cnt = count($keys);
-
-    // String version
-    if ((is_string($a[$first_key])) || (is_object($a[$first_key]))) {
-        $ret = 0;
-        do {
-            $key = array_shift($keys);
-            $key_cnt--;
-
-            $backwards = ($key[0] === '!');
-            if ($backwards) {
-                $key = substr($key, 1);
-            }
-
-            $av = $a[$key];
-            $bv = $b[$key];
-
-            if (is_object($av)) {
-                $av = $av->evaluate();
-            }
-            if (is_object($bv)) {
-                $bv = $bv->evaluate();
-            }
-
-            if ((is_numeric($av)) && (is_numeric($bv)) || $M_SORT_NATURAL) {
-                $ret = strnatcasecmp($av, $bv);
-            } else {
-                $ret = strcasecmp($av, $bv);
-            }
-
-            if ($backwards) {
-                $ret *= -1;
-            }
-        } while (($key_cnt !== 0) && ($ret === 0));
-        return $ret;
-    }
-
-    // Non-string version
-    do {
-        $key = array_shift($keys);
-        $key_cnt--;
-
-        $backwards = ($key[0] === '!');
-        if ($backwards) {
-            $key = substr($key, 1);
-        }
-
-        $av = $a[$key];
-        $bv = $b[$key];
-
-        $ret = ($av > $bv) ? 1 : (($av == $bv) ? 0 : -1);
-
-        if ($backwards) {
-            $ret *= -1;
-        }
-    } while (($key_cnt !== 0) && ($ret === 0));
-    return $ret;
-}
-
-/**
  * Require all code relating to the Conversr forum.
  */
 function cns_require_all_forum_stuff()
@@ -1736,22 +1567,6 @@ function cms_tempnam($prefix = 'cms')
 {
     require_code('files2');
     return _cms_tempnam($prefix);
-}
-
-/**
- * Peek at a stack element.
- *
- * @param  array $array The stack to peek in
- * @param  integer $depth_down The depth into the stack we are peaking
- * @return mixed The result of the peeking
- */
-function array_peek($array, $depth_down = 1)
-{
-    $count = count($array);
-    if ($count - $depth_down < 0) {
-        return null;
-    }
-    return $array[$count - $depth_down];
 }
 
 /**
@@ -1998,6 +1813,22 @@ function fix_page_name_dashing($zone, $page)
 }
 
 /**
+ * Peek at a stack element.
+ *
+ * @param  array $array The stack to peek in
+ * @param  integer $depth_down The depth into the stack we are peaking
+ * @return mixed The result of the peeking
+ */
+function array_peek($array, $depth_down = 1)
+{
+    $count = count($array);
+    if ($count - $depth_down < 0) {
+        return null;
+    }
+    return $array[$count - $depth_down];
+}
+
+/**
  * Take a list of maps, and make one of the values of each array the index of a map to the map.
  *
  * list_to_map is very useful for handling query results.
@@ -2063,6 +1894,273 @@ function collapse_1d_complexity($key, $list)
     }
 
     return $new_array;
+}
+
+/**
+ * Turn an array into a humanely readable string.
+ *
+ * @param  array $array Array to convert
+ * @param  boolean $already_stripped Whether PHP magic-quotes have already been cleaned out for the array
+ * @return string A humanely readable version of the array
+ */
+function flatten_slashed_array($array, $already_stripped = false)
+{
+    $ret = '';
+    foreach ($array as $key => $val) {
+        if (is_array($val)) {
+            $val = flatten_slashed_array($val);
+        }
+
+        $ret .= '<param>' . (is_integer($key) ? strval($key) : $key) . '=' . $val . '</param>' . "\n"; // $key may be integer, due to recursion line for list fields, above
+    }
+    return $ret;
+}
+
+/**
+ * Remove any duplication inside the list of rows (each row being a map). Duplication is defined by rows with corresponding IDs.
+ *
+ * @param  array $rows The rows to remove duplication of
+ * @param  string $id_field The ID field
+ * @return array The filtered rows
+ */
+function remove_duplicate_rows($rows, $id_field = 'id')
+{
+    $ids_seen = array();
+    $rows2 = array();
+    foreach ($rows as $row) {
+        if (!array_key_exists($row[$id_field], $ids_seen)) {
+            $rows2[] = $row;
+        }
+
+        $ids_seen[$row[$id_field]] = true;
+    }
+
+    return $rows2;
+}
+
+/**
+ * Sort a list of maps by the string length of a particular key ID in the maps.
+ *
+ * @param  array $rows List of maps to sort
+ * @param  mixed $sort_key Either an integer sort key (to sort by integer key ID of contained arrays) or a String sort key (to sort by string key ID of contained arrays)
+ */
+function sort_maps_by__strlen($rows, $sort_key)
+{
+    global $M_SORT_KEY;
+    $M_SORT_KEY = $sort_key;
+    @uasort($rows, '_strlen_sort'); // @ is to stop PHP bug warning about altered array contents when Tempcode copies are evaluated internally
+}
+
+/**
+ * Helper function for usort to sort a list by string length.
+ *
+ * @param  string $a The first string to compare
+ * @param  string $b The second string to compare
+ * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
+ */
+function _strlen_sort($a, $b)
+{
+    if (!isset($a)) {
+        $a = '';
+    }
+    if (!isset($b)) {
+        $b = '';
+    }
+    if ($a == $b) {
+        return 0;
+    }
+    if (!is_string($a)) {
+        global $M_SORT_KEY;
+        return (strlen($a[$M_SORT_KEY]) < strlen($b[$M_SORT_KEY])) ? -1 : 1;
+    }
+    return (strlen($a) < strlen($b)) ? -1 : 1;
+}
+
+/**
+ * Sort a list of maps by a particular key ID in the maps. Does not (and should not) preserve list indices, but does preserve associative key indices.
+ *
+ * @param  array $rows List of maps to sort
+ * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it)
+ * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort), doesn't support natural supporting
+ * @param  boolean $natural Whether to do a natural sort
+ */
+function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $natural = false)
+{
+    if ($rows == array()) {
+        return;
+    }
+
+    global $M_SORT_KEY, $M_SORT_NATURAL;
+    $M_SORT_KEY = $sort_keys;
+    $M_SORT_NATURAL = $natural;
+    if ($preserve_order_if_possible) {
+        merge_sort($rows, '_multi_sort');
+    } else {
+        $first_key = key($rows);
+        if ((is_integer($first_key)) && (array_unique(array_map('is_integer', array_keys($rows))) === array(true))) {
+            usort($rows, '_multi_sort');
+        } else {
+            uasort($rows, '_multi_sort');
+        }
+    }
+}
+
+/**
+ * Do a user sort, preserving order where reordering not needed. Based on a PHP manual comment at http://php.net/manual/en/function.usort.php.
+ *
+ * @param  array $array Sort array
+ * @param  mixed $cmp_function Comparison function
+ */
+function merge_sort(&$array, $cmp_function = 'strcmp')
+{
+    // Arrays of size<2 require no action.
+    if (count($array) < 2) {
+        return;
+    }
+
+    // Split the array in half
+    $halfway = intval(floatval(count($array)) / 2.0);
+    $array1 = array_slice($array, 0, $halfway);
+    $array2 = array_slice($array, $halfway);
+
+    // Recurse to sort the two halves
+    merge_sort($array1, $cmp_function);
+    merge_sort($array2, $cmp_function);
+
+    // If all of $array1 is <= all of $array2, just append them.
+    if (call_user_func($cmp_function, end($array1), reset($array2)) < 1) {
+        $array = array_merge($array1, $array2);
+        return;
+    }
+
+    // Merge the two sorted arrays into a single sorted array
+    $array = array();
+    reset($array1);
+    reset($array2);
+    $ptr1 = 0;
+    $ptr2 = 0;
+    $cnt1 = count($array1);
+    $cnt2 = count($array2);
+    while (($ptr1 < $cnt1) && ($ptr2 < $cnt2)) {
+        if (call_user_func($cmp_function, current($array1), current($array2)) < 1) {
+            $key = key($array1);
+            if (is_integer($key)) {
+                $array[] = current($array1);
+            } else {
+                $array[$key] = current($array1);
+            }
+            $ptr1++;
+            next($array1);
+        } else {
+            $key = key($array2);
+            if (is_integer($key)) {
+                $array[] = current($array2);
+            } else {
+                $array[$key] = current($array2);
+            }
+            $ptr2++;
+            next($array2);
+        }
+    }
+
+    // Merge the remainder
+    while ($ptr1 < $cnt1) {
+        $key = key($array1);
+        if (is_integer($key)) {
+            $array[] = current($array1);
+        } else {
+            $array[$key] = current($array1);
+        }
+        $ptr1++;
+        next($array1);
+    }
+    while ($ptr2 < $cnt2) {
+        $key = key($array2);
+        if (is_integer($key)) {
+            $array[] = current($array2);
+        } else {
+            $array[$key] = current($array2);
+        }
+        $ptr2++;
+        next($array2);
+    }
+}
+
+/**
+ * Helper function to sort a list of maps by the value at $key in each of those maps.
+ *
+ * @param  array $a The first to compare
+ * @param  array $b The second to compare
+ * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
+ */
+function _multi_sort($a, $b)
+{
+    global $M_SORT_KEY, $M_SORT_NATURAL;
+    $keys = explode(',', is_string($M_SORT_KEY) ? $M_SORT_KEY : strval($M_SORT_KEY));
+    $first_key = $keys[0];
+    if ($first_key[0] === '!') {
+        $first_key = substr($first_key, 1);
+    }
+
+    $key_cnt = count($keys);
+
+    // String version
+    if ((is_string($a[$first_key])) || (is_object($a[$first_key]))) {
+        $ret = 0;
+        do {
+            $key = array_shift($keys);
+            $key_cnt--;
+
+            $backwards = ($key[0] === '!');
+            if ($backwards) {
+                $key = substr($key, 1);
+            }
+
+            $av = $a[$key];
+            $bv = $b[$key];
+
+            if (is_object($av)) {
+                $av = $av->evaluate();
+            }
+            if (is_object($bv)) {
+                $bv = $bv->evaluate();
+            }
+
+            if ((is_numeric($av)) && (is_numeric($bv)) || $M_SORT_NATURAL) {
+                $ret = strnatcasecmp($av, $bv);
+            } else {
+                $ret = strcasecmp($av, $bv);
+            }
+
+            if ($backwards) {
+                $ret *= -1;
+            }
+        } while (($key_cnt !== 0) && ($ret === 0));
+        return $ret;
+    }
+
+    // Non-string version
+    do {
+        $key = array_shift($keys);
+        $key_cnt--;
+
+        $backwards = ($key[0] === '!');
+        if ($backwards) {
+            $key = substr($key, 1);
+        }
+
+        $av = $a[$key];
+        $bv = $b[$key];
+
+        $ret = ($av > $bv) ? 1 : (($av == $bv) ? 0 : -1);
+
+        if ($backwards) {
+            $ret *= -1;
+        }
+    } while (($key_cnt !== 0) && ($ret === 0));
+    return $ret;
 }
 
 /**
@@ -2222,6 +2320,27 @@ function normalise_ip_address($ip, $amount = null)
         $ip_cache[$raw_ip][$amount] = implode('.', $parts);
     }
     return $ip_cache[$raw_ip][$amount];
+}
+
+/**
+ * See if an IP address is local.
+ *
+ * @param  IP $user_ip IP address
+ * @return boolean Whether the IP address is local
+ */
+function ip_address_is_local($user_ip)
+{
+    return (($user_ip == '0000:0000:0000:0000:0000:0000:0000:0001') || ($user_ip == '::1') || ($user_ip == '127.0.0.1') || (substr($user_ip, 0, 3) == '10.') || (substr($user_ip, 0, 8) == '192.168.'));
+}
+
+/**
+ * Find whether Composr is running on a local network, rather than a live-site.
+ *
+ * @return boolean If it is running locally
+ */
+function running_locally()
+{
+    return (ip_address_is_local(get_local_hostname())) || (in_array(get_local_hostname(), array('localhost')));
 }
 
 /**
@@ -2494,28 +2613,6 @@ function php_addslashes($in)
     global $PHP_REP_FROM, $PHP_REP_TO;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO, $in);
     //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
-}
-
-/**
- * Remove any duplication inside the list of rows (each row being a map). Duplication is defined by rows with corresponding IDs.
- *
- * @param  array $rows The rows to remove duplication of
- * @param  string $id_field The ID field
- * @return array The filtered rows
- */
-function remove_duplicate_rows($rows, $id_field = 'id')
-{
-    $ids_seen = array();
-    $rows2 = array();
-    foreach ($rows as $row) {
-        if (!array_key_exists($row[$id_field], $ids_seen)) {
-            $rows2[] = $row;
-        }
-
-        $ids_seen[$row[$id_field]] = true;
-    }
-
-    return $rows2;
 }
 
 /**
@@ -3026,26 +3123,6 @@ function has_js()
 }
 
 /**
- * Turn an array into a humanely readable string.
- *
- * @param  array $array Array to convert
- * @param  boolean $already_stripped Whether PHP magic-quotes have already been cleaned out for the array
- * @return string A humanely readable version of the array
- */
-function flatten_slashed_array($array, $already_stripped = false)
-{
-    $ret = '';
-    foreach ($array as $key => $val) {
-        if (is_array($val)) {
-            $val = flatten_slashed_array($val);
-        }
-
-        $ret .= '<param>' . (is_integer($key) ? strval($key) : $key) . '=' . $val . '</param>' . "\n"; // $key may be integer, due to recursion line for list fields, above
-    }
-    return $ret;
-}
-
-/**
  * Get a word-filtered version of the specified text.
  *
  * @param  string $text Text to filter
@@ -3433,62 +3510,6 @@ function strip_html($in)
 }
 
 /**
- * Find the base URL for documentation.
- *
- * @return URLPATH The base URL for documentation
- */
-function get_brand_base_url()
-{
-    $value = function_exists('get_value') ? get_value('rebrand_base_url') : null;
-    if (($value === null) || ($value == '')) {
-        $value = 'http://compo.sr';
-    }
-    return $value;
-}
-
-/**
- * Get a URL to a Composr tutorial.
- *
- * @param  ?ID_TEXT $tutorial Name of a tutorial (null: don't include the page part)
- * @return URLPATH URL to a tutorial
- */
-function get_tutorial_url($tutorial)
-{
-    $ret = get_brand_page_url(array('page' => ($tutorial === null) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
-    if ($tutorial === null) {
-        $ret = str_replace('abcdef.htm', '', $ret);
-    }
-    return $ret;
-}
-
-/**
- * Get a URL to a compo.sr page.
- *
- * @param  array $params URL map
- * @param  ID_TEXT $zone Zone
- * @return URLPATH URL to page
- */
-function get_brand_page_url($params, $zone)
-{
-    // Assumes brand site supports .htm URLs, which it should
-    return get_brand_base_url() . (($zone == '') ? '' : '/') . $zone . '/' . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
-}
-
-/**
- * Get the brand name.
- *
- * @return string The brand name
- */
-function brand_name()
-{
-    $value = function_exists('get_value') ? get_value('rebrand_name') : null;
-    if ($value === null) {
-        $value = 'Composr';
-    }
-    return $value;
-}
-
-/**
  * Convert GUIDs to IDs in some text.
  *
  * @param  string $text Input text
@@ -3536,20 +3557,6 @@ function get_mass_import_mode()
 {
     global $MASS_IMPORT_HAPPENING;
     return $MASS_IMPORT_HAPPENING;
-}
-
-/**
- * Prepare an argument for use literally in a command. Works around common PHP restrictions.
- *
- * @param  string $arg The argument
- * @return string Escaped
- */
-function cms_escapeshellarg($arg)
-{
-    if (php_function_allowed('escapeshellarg')) {
-        return escapeshellarg($arg);
-    }
-    return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";
 }
 
 /**
@@ -3607,27 +3614,6 @@ function cms_eval($code, $context, $trigger_error = true)
     }
 
     return $result;
-}
-
-/**
- * See if an IP address is local.
- *
- * @param  IP $user_ip IP address
- * @return boolean Whether the IP address is local
- */
-function ip_address_is_local($user_ip)
-{
-    return (($user_ip == '0000:0000:0000:0000:0000:0000:0000:0001') || ($user_ip == '::1') || ($user_ip == '127.0.0.1') || (substr($user_ip, 0, 3) == '10.') || (substr($user_ip, 0, 8) == '192.168.'));
-}
-
-/**
- * Find whether Composr is running on a local network, rather than a live-site.
- *
- * @return boolean If it is running locally
- */
-function running_locally()
-{
-    return (ip_address_is_local(get_local_hostname())) || (in_array(get_local_hostname(), array('localhost')));
 }
 
 /**
@@ -4121,6 +4107,20 @@ function is_spacer_post($post)
         }
     }
     return false;
+}
+
+/**
+ * Prepare an argument for use literally in a command. Works around common PHP restrictions.
+ *
+ * @param  string $arg The argument
+ * @return string Escaped
+ */
+function cms_escapeshellarg($arg)
+{
+    if (php_function_allowed('escapeshellarg')) {
+        return escapeshellarg($arg);
+    }
+    return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";
 }
 
 /**
