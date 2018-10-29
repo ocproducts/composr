@@ -527,7 +527,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FROM_TIMESTAMP,%d %B %Y,123456780}</td>
-			<td>Converts a time-stamp to a formatted date/time (optional first parameter is a strftime-style date/time formatting string, optional second parameter is a timestamp). If no parameters given it will simply return the current timestamp.</td>
+			<td>Converts a time-stamp to a formatted date/time (optional first parameter is a strftime-style date/time formatting string, optional second parameter is a timestamp). If no parameters given it will simply return the current timestamp. Supports both PHP's <kbd>strftime</kbd> and <kbd>date</kbd> syntaxes, including Composr's [page="_SEARCH:tut_intl"]extensions[/page] such as <kbd>%o</kbd>.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$TO_TIMESTAMP,April 1st 2009}</td>
