@@ -255,15 +255,20 @@ abstract class FieldsSearchHook
      * @param string $where_clause Where clause to add to
      * @param array $trans_fields Translatable fields to add to
      * @param array $nontrans_fields Non-translatable fields to add to
+     * @param ?array $content_id_field Content-ID field (null: default r.id field)
      */
-    protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields)
+    protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields, $content_id_field = null)
     {
         $advanced = $this->_get_search_parameterisation_advanced($catalogue_name, 'ce');
         if (is_null($advanced)) {
             return;
         }
 
-        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . db_cast('r.id', 'CHAR') . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
+        if ($content_id_field === null) {
+            $content_id_field = db_cast('r.id', 'CHAR');
+        }
+
+        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . $content_id_field . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries ce ON ce.id=l.catalogue_entry_id';
 
         list($sup_table, $sup_where_clause, $sup_trans_fields, $sup_nontrans_fields) = $advanced;
