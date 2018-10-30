@@ -255,7 +255,7 @@ The advantage to using the Composr code instead of hand coding the image is two-
 
 Tempcode does not have explicit data-types, everything is text. However we may interpret the text in symbols as follows:
  - Tempcode number: the text is assumed to be a number written as a normal decimal string (e.g. 12345). Numbers should not contain any special formatting other than the British English decimal point (.) symbol.
- - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true).
+ - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true). Actually everything other than 1 is considered false.
 
 [title="3"]Further notes[/title]
 
