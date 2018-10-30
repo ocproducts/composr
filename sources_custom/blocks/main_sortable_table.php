@@ -509,6 +509,17 @@ class Block_main_sortable_table
                 break;
             }
         }
+
+        $locale = localeconv();
+        if ($locale['thousands_sep'] == '.') {
+            if ($sortable_type === 'integer') {
+                $sortable_type = 'integer_comma';
+            }
+            if ($sortable_type === 'float') {
+                $sortable_type = 'float_comma';
+            }
+        }
+
         return ($sortable_type === null) ? 'alphanumeric' : $sortable_type;
     }
 
@@ -532,6 +543,18 @@ class Block_main_sortable_table
                 $num_digits = strlen($value) - strpos($value, '.') - 1;
             }
             $value = float_format(floatval($value), $num_digits);
+        }
+
+        if (($sortable_type == 'integer_comma') && (is_numeric($value))) {
+            $value = number_format(intval($value), 0, ',', '.');
+        }
+
+        if (($sortable_type == 'float_comma') && (is_numeric($value))) {
+            $num_digits = 0;
+            if (strpos($value, ',') !== false) {
+                $num_digits = strlen($value) - strpos($value, ',') - 1;
+            }
+            $value = number_format(floatval($value), $num_digits, ',', '.');
         }
 
         return $value;
