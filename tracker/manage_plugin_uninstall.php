@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,20 +14,39 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @version $Id$
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
+/**
+ * Plugin Configuration
+ *
+ * @package MantisBT
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses lang_api.php
+ * @uses plugin_api.php
+ * @uses print_api.php
+ */
 
-	/** @ignore */
-	define( 'PLUGINS_DISABLED', true );
+/** @ignore */
+define( 'PLUGINS_DISABLED', true );
 
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'plugin_api.php' );
+require_api( 'print_api.php' );
+require_api( 'string_api.php' );
 
 form_security_validate( 'manage_plugin_uninstall' );
 
@@ -40,9 +59,9 @@ plugin_register_installed();
 $f_basename = gpc_get_string( 'name' );
 $t_plugin = plugin_register( $f_basename, true );
 
-helper_ensure_confirmed( sprintf( lang_get( 'plugin_uninstall_message' ), $t_plugin->name ), lang_get( 'plugin_uninstall' ) );
+helper_ensure_confirmed( sprintf( lang_get( 'plugin_uninstall_message' ), string_display_line( $t_plugin->name ) ), lang_get( 'plugin_uninstall' ) );
 
-if ( !is_null( $t_plugin ) ) {
+if( !is_null( $t_plugin ) ) {
 	plugin_uninstall( $t_plugin );
 } else {
 	plugin_force_uninstall( $f_basename );

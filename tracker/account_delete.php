@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,16 +34,36 @@
  * @todo should page_top1 be before meta redirect?
  *
  * @package MantisBT
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses current_user_api.php
+ * @uses form_api.php
+ * @uses helper_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses user_api.php
  */
- /**
-  * MantisBT Core API's
-  */
-require_once( 'core.php' );
 
-form_security_validate('account_delete');
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'current_user_api.php' );
+require_api( 'form_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'user_api.php' );
+
+form_security_validate( 'account_delete' );
 
 auth_ensure_user_authenticated();
 
@@ -51,22 +71,22 @@ current_user_ensure_unprotected();
 
 # Only allow users to delete their own accounts if allow_account_delete = ON or
 # the user has permission to manage user accounts.
-if ( OFF == config_get( 'allow_account_delete' ) &&
-     !access_has_global_level( config_get( 'manage_user_threshold' ) ) ) {
+if( OFF == config_get( 'allow_account_delete' ) &&
+	 !access_has_global_level( config_get( 'manage_user_threshold' ) ) ) {
 	print_header_redirect( 'account_page.php' );
 }
 
 # check that we are not deleting the last administrator account
 $t_admin_threshold = config_get_global( 'admin_site_threshold' );
-if ( current_user_is_administrator() &&
-     user_count_level( $t_admin_threshold ) <= 1 ) {
+if( current_user_is_administrator() &&
+	 user_count_level( $t_admin_threshold ) <= 1 ) {
 	trigger_error( ERROR_USER_CHANGE_LAST_ADMIN, ERROR );
 }
 
 helper_ensure_confirmed( lang_get( 'confirm_delete_msg' ),
 						 lang_get( 'delete_account_button' ) );
 
-form_security_purge('account_delete');
+form_security_purge( 'account_delete' );
 
 $t_user_id = auth_get_current_user_id();
 
@@ -74,18 +94,18 @@ auth_logout();
 
 user_delete( $t_user_id );
 
-html_page_top1();
-html_page_top2a();
+layout_page_header();
 
+layout_page_begin();
 ?>
 
-<br />
-<div align="center">
+<div class="col-md-12 col-xs-12">
+	<div class="space-10"></div>
 <?php
 echo lang_get( 'account_removed_msg' ) . '<br />';
-print_bracket_link( config_get( 'logout_redirect_page' ), lang_get( 'proceed' ) );
+print_link_button( config_get_global( 'logout_redirect_page' ), lang_get( 'proceed' ));
 ?>
 </div>
 
 <?php
-	html_page_bottom1a();
+layout_page_end();

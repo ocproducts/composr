@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,105 +17,92 @@
 
 /**
  * Project Hierarchy API
+ *
  * @package CoreAPI
  * @subpackage ProjectHierarchyAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses constant_inc.php
+ * @uses database_api.php
  */
+
+require_api( 'constant_inc.php' );
+require_api( 'database_api.php' );
 
 $g_cache_project_hierarchy = null;
 $g_cache_project_inheritance = null;
 $g_cache_show_disabled = null;
- 
+
 /**
  * Add project to project hierarchy
- * @param int $p_child_id Child project ID
- * @param int $p_parent_id Parent project ID
- * @param bool $p_inherit_parent Whether or not the child project inherits from the parent project
- * @return null
+ * @param integer $p_child_id       Child project identifier.
+ * @param integer $p_parent_id      Parent project identifier.
+ * @param boolean $p_inherit_parent Whether or not the child project inherits from the parent project.
+ * @return void
  */
 function project_hierarchy_add( $p_child_id, $p_parent_id, $p_inherit_parent = true ) {
 	if( in_array( $p_parent_id, project_hierarchy_get_all_subprojects( $p_child_id ) ) ) {
 		trigger_error( ERROR_PROJECT_RECURSIVE_HIERARCHY, ERROR );
 	}
 
-	$t_project_hierarchy_table = db_get_table( 'mantis_project_hierarchy_table' );
-
-	$c_child_id = db_prepare_int( $p_child_id );
-	$c_parent_id = db_prepare_int( $p_parent_id );
-	$c_inherit_parent = db_prepare_bool( $p_inherit_parent );
-
-	$query = "INSERT INTO $t_project_hierarchy_table
+	db_param_push();
+	$t_query = 'INSERT INTO {project_hierarchy}
 		                ( child_id, parent_id, inherit_parent )
 						VALUES
-						( " . db_param() . ', ' . db_param() . ', ' . db_param() . ' )';
-
-	db_query_bound( $query, Array( $c_child_id, $c_parent_id, $c_inherit_parent ) );
+						( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ' )';
+	db_query( $t_query, array( $p_child_id, $p_parent_id, $p_inherit_parent ) );
 }
 
 /**
  * Update project hierarchy
- * @param int $p_child_id Child project ID
- * @param int $p_parent_id Parent project ID
- * @param bool $p_inherit_parent Whether or not the child project inherits from the parent project
- * @return null
+ * @param integer $p_child_id       Child project identifier.
+ * @param integer $p_parent_id      Parent project identifier.
+ * @param boolean $p_inherit_parent Whether or not the child project inherits from the parent project.
+ * @return void
  */
 function project_hierarchy_update( $p_child_id, $p_parent_id, $p_inherit_parent = true ) {
-	$t_project_hierarchy_table = db_get_table( 'mantis_project_hierarchy_table' );
-
-	$c_child_id = db_prepare_int( $p_child_id );
-	$c_parent_id = db_prepare_int( $p_parent_id );
-	$c_inherit_parent = db_prepare_bool( $p_inherit_parent );
-
-	$query = "UPDATE $t_project_hierarchy_table
-					SET inherit_parent=" . db_param() . '
+	db_param_push();
+	$t_query = 'UPDATE {project_hierarchy}
+					SET inherit_parent=' . db_param() . '
 					WHERE child_id=' . db_param() . '
 						AND parent_id=' . db_param();
-	db_query_bound( $query, Array( $c_inherit_parent, $c_child_id, $c_parent_id ) );
+	db_query( $t_query, array( $p_inherit_parent, $p_child_id, $p_parent_id ) );
 }
 
 /**
  * Remove project from project hierarchy
- * @param int $p_child_id Child project ID
- * @param int $p_parent_id Parent project ID
- * @return null
+ * @param integer $p_child_id  Child project identifier.
+ * @param integer $p_parent_id Parent project identifier.
+ * @return void
  */
 function project_hierarchy_remove( $p_child_id, $p_parent_id ) {
-	$t_project_hierarchy_table = db_get_table( 'mantis_project_hierarchy_table' );
+	db_param_push();
+	$t_query = 'DELETE FROM {project_hierarchy} WHERE child_id = ' . db_param() . '
+						AND parent_id = ' . db_param();
 
-	$c_child_id = db_prepare_int( $p_child_id );
-	$c_parent_id = db_prepare_int( $p_parent_id );
-
-	$query = "DELETE FROM $t_project_hierarchy_table
-		                WHERE child_id = " . db_param() . "
-						AND parent_id = " . db_param();
-
-	db_query_bound( $query, Array( $c_child_id, $c_parent_id ) );
+	db_query( $t_query, array( $p_child_id, $p_parent_id ) );
 }
 
 /**
  * Remove any project hierarchy entries relating to project_id
- * @param int $p_project_id Project ID
- * @return null
+ * @param integer $p_project_id Project identifier.
+ * @return void
  */
 function project_hierarchy_remove_all( $p_project_id ) {
-	$t_project_hierarchy_table = db_get_table( 'mantis_project_hierarchy_table' );
+	db_param_push();
+	$t_query = 'DELETE FROM {project_hierarchy} WHERE child_id = ' . db_param() . '
+						  OR parent_id = ' . db_param();
 
-	$c_project_id = db_prepare_int( $p_project_id );
-
-	$query = "DELETE FROM $t_project_hierarchy_table
-		                WHERE child_id = " . db_param() . "
-						  OR parent_id = " . db_param();
-
-	db_query_bound( $query, Array( $c_project_id, $c_project_id ) );
+	db_query( $t_query, array( $p_project_id, $p_project_id ) );
 }
 
 /**
  * Returns true if project is at top of hierarchy
- * @param bool $p_project_id Project ID
- * @param bool $p_show_disabled Whether or not to consider projects which are disabled
- * @return bool
+ * @param integer $p_project_id    Project identifier.
+ * @param boolean $p_show_disabled Whether or not to consider projects which are disabled.
+ * @return boolean
  */
 function project_hierarchy_is_toplevel( $p_project_id, $p_show_disabled = false ) {
 	global $g_cache_project_hierarchy;
@@ -130,9 +117,33 @@ function project_hierarchy_is_toplevel( $p_project_id, $p_show_disabled = false 
 }
 
 /**
+ * Returns the id of the project's parent (0 if top-level or not found)
+ * @param integer $p_project_id    Project Identifier.
+ * @param boolean $p_show_disabled Whether or not to consider projects which are disabled.
+ * @return integer
+ */
+function project_hierarchy_get_parent( $p_project_id, $p_show_disabled = false ) {
+	global $g_cache_project_hierarchy;
+
+	project_hierarchy_cache( $p_show_disabled );
+
+	if( ALL_PROJECTS == $p_project_id ) {
+		return 0;
+	}
+
+	foreach( $g_cache_project_hierarchy as $t_key => $t_value ) {
+		if( in_array( $p_project_id, $g_cache_project_hierarchy[$t_key] ) ) {
+			return $t_key;
+		}
+	}
+
+	return 0;
+}
+
+/**
  * Cache project hierarchy
- * @param bool $p_show_disabled Whether or not to cache projects which are disabled
- * @return bool
+ * @param boolean $p_show_disabled Whether or not to cache projects which are disabled.
+ * @return void
  */
 function project_hierarchy_cache( $p_show_disabled = false ) {
 	global $g_cache_project_hierarchy, $g_cache_project_inheritance;
@@ -143,57 +154,54 @@ function project_hierarchy_cache( $p_show_disabled = false ) {
 	}
 	$g_cache_show_disabled = $p_show_disabled;
 
-	$t_project_table = db_get_table( 'mantis_project_table' );
-	$t_project_hierarchy_table = db_get_table( 'mantis_project_hierarchy_table' );
+	db_param_push();
 	$t_enabled_clause = $p_show_disabled ? '1=1' : 'p.enabled = ' . db_param();
 
-	$query = "SELECT DISTINCT p.id, ph.parent_id, p.name, p.inherit_global, ph.inherit_parent
-				  FROM $t_project_table p
-				  LEFT JOIN $t_project_hierarchy_table ph
+	$t_query = 'SELECT DISTINCT p.id, ph.parent_id, p.name, p.inherit_global, ph.inherit_parent
+				  FROM {project} p
+				  LEFT JOIN {project_hierarchy} ph
 				    ON ph.child_id = p.id
-				  WHERE $t_enabled_clause
-				  ORDER BY p.name";
+				  WHERE ' . $t_enabled_clause . '
+				  ORDER BY p.name';
 
-	$result = db_query_bound( $query, ( $p_show_disabled ? null : Array( true ) ) );
-	$row_count = db_num_rows( $result );
+	$t_result = db_query( $t_query, ( $p_show_disabled ? array() : array( true ) ) );
 
 	$g_cache_project_hierarchy = array();
 	$g_cache_project_inheritance = array();
 
-	for( $i = 0;$i < $row_count;$i++ ) {
-		$row = db_fetch_array( $result );
-
-		if( null === $row['parent_id'] ) {
-			$row['parent_id'] = ALL_PROJECTS;
+	while( $t_row = db_fetch_array( $t_result ) ) {
+		if( null === $t_row['parent_id'] ) {
+			$t_row['parent_id'] = ALL_PROJECTS;
 		}
 
-		if( isset( $g_cache_project_hierarchy[(int)$row['parent_id']] ) ) {
-			$g_cache_project_hierarchy[(int)$row['parent_id']][] = (int)$row['id'];
+		if( isset( $g_cache_project_hierarchy[(int)$t_row['parent_id']] ) ) {
+			$g_cache_project_hierarchy[(int)$t_row['parent_id']][] = (int)$t_row['id'];
 		} else {
-			$g_cache_project_hierarchy[(int)$row['parent_id']] = array(
-				(int)$row['id'],
+			$g_cache_project_hierarchy[(int)$t_row['parent_id']] = array(
+				(int)$t_row['id'],
 			);
 		}
 
-		if( !isset( $g_cache_project_inheritance[(int)$row['id']] ) ) {
-			$g_cache_project_inheritance[(int)$row['id']] = array();
+		if( !isset( $g_cache_project_inheritance[(int)$t_row['id']] ) ) {
+			$g_cache_project_inheritance[(int)$t_row['id']] = array();
 		}
 
-		if( $row['inherit_global'] && !isset( $g_cache_project_inheritance[(int)$row['id']][ALL_PROJECTS] ) ) {
-			$g_cache_project_inheritance[(int)$row['id']][] = ALL_PROJECTS;
+		if( $t_row['inherit_global'] && !isset( $g_cache_project_inheritance[(int)$t_row['id']][ALL_PROJECTS] ) ) {
+			$g_cache_project_inheritance[(int)$t_row['id']][] = ALL_PROJECTS;
 		}
-		if( $row['inherit_parent'] && !isset( $g_cache_project_inheritance[(int)$row['id']][(int)$row['parent_id']] ) ) {
-			$g_cache_project_inheritance[(int)$row['id']][] = (int) $row['parent_id'];
+
+		if( $t_row['inherit_parent'] && !isset( $g_cache_project_inheritance[(int)$t_row['id']][(int)$t_row['parent_id']] ) ) {
+			$g_cache_project_inheritance[(int)$t_row['id']][] = (int)$t_row['parent_id'];
 		}
 	}
 }
 
 /**
  * Returns true if the child project inherits categories from the parent.
- * @param int $p_child_id Child project ID
- * @param int $p_parent_id Parent project ID
- * @param bool $p_show_disabled Whether or not to consider projects which are disabled
- * @return bool
+ * @param integer $p_child_id      Child project identifier.
+ * @param integer $p_parent_id     Parent project identifier.
+ * @param boolean $p_show_disabled Whether or not to consider projects which are disabled.
+ * @return boolean
  */
 function project_hierarchy_inherit_parent( $p_child_id, $p_parent_id, $p_show_disabled = false ) {
 	global $g_cache_project_inheritance;
@@ -206,8 +214,8 @@ function project_hierarchy_inherit_parent( $p_child_id, $p_parent_id, $p_show_di
 /**
  * Generate an array of project's the given project inherits from,
  * including the original project in the result.
- * @param int $p_project_id Project ID
- * @param bool $p_show_disabled Whether or not to consider projects which are disabled
+ * @param integer $p_project_id    Project identifier.
+ * @param boolean $p_show_disabled Whether or not to consider projects which are disabled.
  * @return array
  */
 function project_hierarchy_inheritance( $p_project_id, $p_show_disabled = false ) {
@@ -215,12 +223,8 @@ function project_hierarchy_inheritance( $p_project_id, $p_show_disabled = false 
 
 	project_hierarchy_cache( $p_show_disabled );
 
-	$t_project_ids = array(
-		(int) $p_project_id,
-	);
-	$t_lookup_ids = array(
-		(int) $p_project_id,
-	);
+	$t_project_ids = array( (int)$p_project_id, );
+	$t_lookup_ids = array( (int)$p_project_id, );
 
 	while( count( $t_lookup_ids ) > 0 ) {
 		$t_project_id = array_shift( $t_lookup_ids );
@@ -245,8 +249,8 @@ function project_hierarchy_inheritance( $p_project_id, $p_show_disabled = false 
 
 /**
  * Get subprojects for a project
- * @param int $p_project_id Project ID
- * @param bool $p_show_disabled Whether or not to consider projects which are disabled
+ * @param integer $p_project_id    Project identifier.
+ * @param boolean $p_show_disabled Whether or not to consider projects which are disabled.
  * @return array
  */
 function project_hierarchy_get_subprojects( $p_project_id, $p_show_disabled = false ) {
@@ -263,18 +267,19 @@ function project_hierarchy_get_subprojects( $p_project_id, $p_show_disabled = fa
 
 /**
  * Get complete subproject hierarchy for a project
- * @param int $p_project_id Project ID
+ * @param integer $p_project_id    Project identifier.
+ * @param boolean $p_show_disabled Whether or not to consider projects which are disabled.
  * @return array
  */
-function project_hierarchy_get_all_subprojects( $p_project_id ) {
-	$t_todo = project_hierarchy_get_subprojects( $p_project_id );
-	$t_subprojects = Array();
+function project_hierarchy_get_all_subprojects( $p_project_id, $p_show_disabled = false ) {
+	$t_todo = project_hierarchy_get_subprojects( $p_project_id, $p_show_disabled );
+	$t_subprojects = array();
 
 	while( $t_todo ) {
 		$t_elem = array_shift( $t_todo );
 		if( !in_array( $t_elem, $t_subprojects ) ) {
 			array_push( $t_subprojects, $t_elem );
-			$t_todo = array_merge( $t_todo, project_hierarchy_get_subprojects( $t_elem ) );
+			$t_todo = array_merge( $t_todo, project_hierarchy_get_subprojects( $t_elem, $p_show_disabled ) );
 		}
 	}
 

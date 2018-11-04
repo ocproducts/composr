@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,30 +14,38 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Detach a tag
+ *
+ * @package MantisBT
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses event_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses print_api.php
+ */
 
-	/**
-	 * requires tag_api
-	 */
-	require_once( 'tag_api.php' );
+require_once( 'core.php' );
+require_api( 'event_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'print_api.php' );
 
-	form_security_validate( 'tag_detach' );
+form_security_validate( 'tag_detach' );
 
-	$f_tag_id = gpc_get_int( 'tag_id' );
-	$f_bug_id = gpc_get_int( 'bug_id' );
+$f_tag_id = gpc_get_int( 'tag_id' );
+$f_bug_id = gpc_get_int( 'bug_id' );
 
-	tag_bug_detach( $f_tag_id, $f_bug_id );
+$t_data = array(
+	'query' => array( 'issue_id' => $f_bug_id, 'tag_id' => $f_tag_id )
+);
 
-	event_signal( 'EVENT_TAG_DETACHED', array( $f_bug_id, array( $f_tag_id ) ) );
+$t_command = new TagDetachCommand( $t_data );
+$t_command->execute();
 
-	form_security_purge( 'tag_detach' );
+form_security_purge( 'tag_detach' );
 
-	print_successful_redirect_to_bug( $f_bug_id );
+print_successful_redirect_to_bug( $f_bug_id );

@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,110 +14,150 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * Excel (2003 SP2 and above) export page
-	 *
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Excel (2003 SP2 and above) export page
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses bug_api.php
+ * @uses columns_api.php
+ * @uses config_api.php
+ * @uses excel_api.php
+ * @uses file_api.php
+ * @uses filter_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses print_api.php
+ * @uses utility_api.php
+ */
 
-	require_once( 'current_user_api.php' );
-	require_once( 'bug_api.php' );
-	require_once( 'string_api.php' );
-	require_once( 'columns_api.php' );
-	require_once( 'excel_api.php' );
+# Prevent output of HTML in the content if errors occur
+define( 'DISABLE_INLINE_ERROR_REPORTING', true );
 
-	require( 'print_all_bug_options_inc.php' );
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'columns_api.php' );
+require_api( 'config_api.php' );
+require_api( 'excel_api.php' );
+require_api( 'file_api.php' );
+require_api( 'filter_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'print_api.php' );
+require_api( 'utility_api.php' );
 
-	auth_ensure_user_authenticated();
+auth_ensure_user_authenticated();
 
-	$f_export = gpc_get_string( 'export', '' );
+$f_export = gpc_get_string( 'export', '' );
 
-	helper_begin_long_process();
+helper_begin_long_process();
 
-	$t_export_title = excel_get_default_filename();
+$t_export_title = excel_get_default_filename();
 
-	$t_short_date_format = config_get( 'short_date_format' );
+$t_short_date_format = config_get( 'short_date_format' );
 
-	# This is where we used to do the entire actual filter ourselves
-	$t_page_number = gpc_get_int( 'page_number', 1 );
-	$t_per_page = 100;
-	$t_bug_count = null;
-	$t_page_count = null;
+header( 'Content-Type: application/vnd.ms-excel; charset=UTF-8' );
+header( 'Pragma: public' );
+header( 'Content-Disposition: attachment; filename="' . urlencode( file_clean_name( $t_export_title ) ) . '.xml"' ) ;
 
-	$result = filter_get_bug_rows( $t_page_number, $t_per_page, $t_page_count, $t_bug_count );
-	if ( $result === false ) {
-		print_header_redirect( 'view_all_set.php?type=0&print=1' );
+echo excel_get_header( $t_export_title );
+echo excel_get_titles_row();
+
+$f_bug_arr = explode( ',', $f_export );
+
+$t_columns = excel_get_columns();
+
+
+# Get current filter
+$t_filter = filter_get_bug_rows_filter();
+
+$t_filter_query = new BugFilterQuery( $t_filter );
+$t_filter_query->set_limit( EXPORT_BLOCK_SIZE );
+
+if( 0 == $t_filter_query->get_bug_count() ) {
+	print_header_redirect( 'view_all_set.php?type=0&print=1' );
+}
+
+$t_end_of_results = false;
+$t_offset = 0;
+do {
+	# Clear cache for next block
+	bug_clear_cache_all();
+
+	# select a new block
+	$t_filter_query->set_offset( $t_offset );
+	$t_result = $t_filter_query->execute();
+	$t_offset += EXPORT_BLOCK_SIZE;
+
+	# Keep reading until reaching max block size or end of result set
+	$t_read_rows = array();
+	$t_count = 0;
+	$t_bug_id_array = array();
+	$t_unique_user_ids = array();
+	while( $t_count < EXPORT_BLOCK_SIZE ) {
+		$t_row = db_fetch_array( $t_result );
+		if( false === $t_row ) {
+			# a premature end indicates end of query results. Set flag as finished
+			$t_end_of_results = true;
+			break;
+		}
+		# @TODO, the "export" bug list parameter functionality should be implemented in a more efficient way
+		if( is_blank( $f_export ) || in_array( $t_row['id'], $f_bug_arr ) ) {
+			$t_bug_id_array[] = (int)$t_row['id'];
+			$t_read_rows[] = $t_row;
+			$t_count++;
+		}
+	}
+	# Max block size has been reached, or no more rows left to complete the block.
+	# Either way, process what we have
+	if( 0 === $t_count && !$t_end_of_results ) {
+		continue;
+	}
+	if( 0 === $t_count && $t_end_of_results ) {
+		break;
 	}
 
-	header( 'Content-Type: application/vnd.ms-excel; charset=UTF-8' );
-	header( 'Pragma: public' );
-	header( 'Content-Type: application/vnd.ms-excel' );
-	header( 'Content-Disposition: attachment; filename="' . urlencode( file_clean_name( $t_export_title ) ) . '.xml"' ) ;
+	# convert and cache data
+	$t_rows = filter_cache_result( $t_read_rows, $t_bug_id_array );
+	bug_cache_columns_data( $t_rows, $t_columns );
 
-	echo excel_get_header( $t_export_title );
-	echo excel_get_titles_row();
+	# Clear arrays that are not needed
+	unset( $t_read_rows );
+	unset( $t_unique_user_ids );
+	unset( $t_bug_id_array );
 
-	$f_bug_arr = explode( ',', $f_export );
+	# export the rows
+	foreach ( $t_rows as $t_row ) {
 
-	$t_columns = excel_get_columns();
+		echo excel_get_start_row();
 
-	do
-	{
-		$t_more = true;
-		$t_row_count = count( $result );
-
-		for( $i = 0; $i < $t_row_count; $i++ ) {
-			$t_row = $result[$i];
-			$t_bug = null;
-
-			if ( is_blank( $f_export ) || in_array( $t_row->id, $f_bug_arr ) ) {
-				echo excel_get_start_row();
-
-				foreach ( $t_columns as $t_column ) {
-					if ( column_is_extended( $t_column ) ) {
-						if ( $t_bug === null ) {
-							$t_bug = bug_get( $t_row->id, /* extended = */ true );
-						}
-
-						$t_function = 'excel_format_' . $t_column;
-						echo $t_function( $t_bug->$t_column );
-					} else {
-						$t_custom_field = column_get_custom_field_name( $t_column );
-						if ( $t_custom_field !== null ) {
-							echo excel_format_custom_field( $t_row->id, $t_row->project_id, $t_custom_field );
-						} else {
-							$t_function = 'excel_format_' . $t_column;
-							echo $t_function( $t_row->$t_column );
-						}
-					}
+		foreach ( $t_columns as $t_column ) {
+			$t_custom_field = column_get_custom_field_name( $t_column );
+			if( $t_custom_field !== null ) {
+				echo excel_format_custom_field( $t_row->id, $t_row->project_id, $t_custom_field );
+			} else if( column_is_plugin_column( $t_column ) ) {
+				echo excel_format_plugin_column_value( $t_column, $t_row );
+			} else {
+				$t_function = 'excel_format_' . $t_column;
+				if( function_exists( $t_function ) ) {
+					echo $t_function( $t_row );
+				} else {
+					# field is unknown
+					echo '';
 				}
-
-				echo excel_get_end_row();
-			} #in_array
-		} #for loop
-
-		// If got a full page, then attempt for the next one.
-		// @@@ Note that since we are not using a transaction, there is a risk that we get a duplicate record or we miss
-		// one due to a submit or update that happens in parallel.
-		if ( $t_row_count == $t_per_page ) {
-			$t_page_number++;
-			$t_bug_count = null;
-			$t_page_count = null;
-
-			$result = filter_get_bug_rows( $t_page_number, $t_per_page, $t_page_count, $t_bug_count );
-			if ( $result === false ) {
-				$t_more = false;
 			}
-		} else {
-			$t_more = false;
 		}
-	} while ( $t_more );
 
-	echo excel_get_footer();
+		echo excel_get_end_row();
+	}
+
+} while ( false === $t_end_of_results );
+
+echo excel_get_footer();
+

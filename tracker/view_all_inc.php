@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,255 +14,249 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
+/**
+ * View all bugs include file
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses category_api.php
+ * @uses columns_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses current_user_api.php
+ * @uses event_api.php
+ * @uses filter_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ */
 
-	/**
-	 * requires current_user_api
-	 */
-	require_once( 'current_user_api.php' );
-	/**
-	 * requires bug_api
-	 */
-	require_once( 'bug_api.php' );
-	/**
-	 * requires string_api
-	 */
-	require_once( 'string_api.php' );
-	/**
-	 * requires date_api
-	 */
-	require_once( 'date_api.php' );
-	/**
-	 * requires icon_api
-	 */
-	require_once( 'icon_api.php' );
-	/**
-	 * requires columns_api
-	 */
-	require_once( 'columns_api.php' );
+if( !defined( 'VIEW_ALL_INC_ALLOW' ) ) {
+	return;
+}
 
-	$t_filter = current_user_get_bug_filter();
+require_api( 'category_api.php' );
+require_api( 'columns_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'current_user_api.php' );
+require_api( 'event_api.php' );
+require_api( 'filter_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
 
-	# NOTE: this check might be better placed in current_user_get_bug_filter()
-	if ( !$t_filter ) {
-		$t_filter = filter_get_default();
-	}
+$t_filter = current_user_get_bug_filter();
+filter_init( $t_filter );
 
-	list( $t_sort, ) = explode( ',', $t_filter['sort'] );
-	list( $t_dir, ) = explode( ',', $t_filter['dir'] );
+list( $t_sort, ) = explode( ',', $g_filter['sort'] );
+list( $t_dir, ) = explode( ',', $g_filter['dir'] );
 
-	$t_checkboxes_exist = false;
-
-	$t_icon_path = config_get( 'icon_path' );
-	$t_update_bug_threshold = config_get( 'update_bug_threshold' );
-
-	# Improve performance by caching category data in one pass
-	if ( helper_get_current_project() > 0 ) {
-		category_get_all_rows( helper_get_current_project() );
-	} else {
-		$t_categories = array();
-		foreach ($rows as $t_row) {
-			$t_categories[] = $t_row->category_id;
-		}
-		category_cache_array_rows( array_unique( $t_categories ) );
-	}
-	$t_columns = helper_get_columns_to_view( COLUMNS_TARGET_VIEW_PAGE );
-
-	$col_count = count( $t_columns );
-
-	$t_filter_position = config_get( 'filter_position' );
-
-	# -- ====================== FILTER FORM ========================= --
-	if ( ( $t_filter_position & FILTER_POSITION_TOP ) == FILTER_POSITION_TOP ) {
-		filter_draw_selection_area( $f_page_number );
-	}
-	# -- ====================== end of FILTER FORM ================== --
+$g_checkboxes_exist = false;
 
 
-	# -- ====================== BUG LIST ============================ --
+# Improve performance by caching category data in one pass
+if( helper_get_current_project() > 0 ) {
+	category_get_all_rows( helper_get_current_project() );
+}
 
-	$t_status_legend_position = config_get( 'status_legend_position' );
+$g_columns = helper_get_columns_to_view( COLUMNS_TARGET_VIEW_PAGE );
 
-	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_TOP || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
-		html_status_legend();
-	}
+bug_cache_columns_data( $t_rows, $g_columns );
 
-	/** @todo (thraxisp) this may want a browser check  ( MS IE >= 5.0, Mozilla >= 1.0, Safari >=1.2, ...) */
-	if ( ( ON == config_get( 'dhtml_filters' ) ) && ( ON == config_get( 'use_javascript' ) ) ){
-		?>
-		<script type="text/javascript" language="JavaScript">
-		<!--
-			var string_loading = '<?php echo lang_get( 'loading' );?>';
-		// -->
-		</script>
-		<?php
-			html_javascript_link( 'xmlhttprequest.js');
-			html_javascript_link( 'addLoadEvent.js');
-			html_javascript_link( 'dynamic_filters.js');
-	}
+$t_filter_position = config_get( 'filter_position' );
+
+# -- ====================== FILTER FORM ========================= --
+if( ( $t_filter_position & FILTER_POSITION_TOP ) == FILTER_POSITION_TOP ) {
+	filter_draw_selection_area( $f_page_number );
+}
+# -- ====================== end of FILTER FORM ================== --
+
+
+# -- ====================== BUG LIST ============================ --
+
 ?>
-<br />
+<div class="col-md-12 col-xs-12">
+<div class="space-10"></div>
 
+<!-- Composr - hint about how to search -->
 <p><?php echo lang_get('cms_hint_message');?></p>
 
-<form name="bug_action" method="get" action="bug_actiongroup_page.php">
+<form id="bug_action" method="post" action="bug_actiongroup_page.php">
 <?php # CSRF protection not required here - form does not result in modifications ?>
-<table id="buglist" class="width100" cellspacing="1">
-<tr>
-	<td class="form-title" colspan="<?php echo $col_count; ?>">
-		<span class="floatleft">
+<div class="widget-box widget-color-blue2">
+	<div class="widget-header widget-header-small">
+	<h4 class="widget-title lighter">
+		<i class="ace-icon fa fa-columns"></i>
+		<?php echo lang_get( 'viewing_bugs_title' ) ?>
 		<?php
 			# -- Viewing range info --
-
 			$v_start = 0;
-			$v_end   = 0;
-
-			if ( count( $rows ) > 0 ) {
-				$v_start = $t_filter['per_page'] * ($f_page_number - 1) + 1;
-				$v_end = $v_start + count( $rows ) - 1;
+			$v_end = 0;
+			if (count($t_rows) > 0) {
+				$v_start = $g_filter['per_page'] * ($f_page_number - 1) + 1;
+				$v_end = $v_start + count($t_rows) - 1;
 			}
+			echo '<span class="badge"> ' . $v_start . ' - ' . $v_end . ' / ' . $t_bug_count . '</span>' ;
+		?>
+	</h4>
+	</div>
 
-			echo lang_get( 'viewing_bugs_title' );
-			echo " ($v_start - $v_end / $t_bug_count)";
-		?> </span>
+	<div class="widget-body">
 
-		<span class="floatleft small"> <?php
-				# -- Print and Export links --
-				echo '&nbsp;';
-				print_bracket_link( 'print_all_bug_page.php', lang_get( 'print_all_bug_page_link' ) );
-				echo '&nbsp;';
-				print_bracket_link( 'csv_export.php', lang_get( 'csv_export' ) );
-				echo '&nbsp;';
-				print_bracket_link( 'excel_xml_export.php', lang_get( 'excel_export' ) );
+	<div class="widget-toolbox padding-8 clearfix">
+		<div class="btn-toolbar">
+			<div class="btn-group pull-left">
+		<?php
+			$t_filter_param = filter_get_temporary_key_param( $t_filter );
+			$t_filter_param = ( empty( $t_filter_param ) ? '' : '?' ) . $t_filter_param;
+			# -- Print and Export links --
+			print_small_button( 'print_all_bug_page.php' . $t_filter_param, lang_get( 'print_all_bug_page_link' ) );
+			print_small_button( 'csv_export.php' . $t_filter_param, lang_get( 'csv_export' ) );
+			print_small_button( 'excel_xml_export.php' . $t_filter_param, lang_get( 'excel_export' ) );
 
-				$t_event_menu_options = $t_links = event_signal( 'EVENT_MENU_FILTER' );
+			$t_event_menu_options = $t_links = event_signal('EVENT_MENU_FILTER');
 
-				foreach ( $t_event_menu_options as $t_plugin => $t_plugin_menu_options ) {
-					foreach ( $t_plugin_menu_options as $t_callback => $t_callback_menu_options ) {
-						if ( !is_array( $t_callback_menu_options ) ) {
-							$t_callback_menu_options = array( $t_callback_menu_options );
-						}
+			foreach ($t_event_menu_options as $t_plugin => $t_plugin_menu_options) {
+				foreach ($t_plugin_menu_options as $t_callback => $t_callback_menu_options) {
+					if (!is_array($t_callback_menu_options)) {
+						$t_callback_menu_options = array($t_callback_menu_options);
+					}
 
-						foreach ( $t_callback_menu_options as $t_menu_option ) {
-							print_bracket_link_prepared( $t_menu_option );
+					foreach ($t_callback_menu_options as $t_menu_option) {
+						if ($t_menu_option) {
+							echo $t_menu_option;
 						}
 					}
 				}
-		?> </span>
-
-		<span class="floatright small"><?php
+			}
+		?>
+		</div>
+		<div class="btn-group pull-right"><?php
 			# -- Page number links --
-			$f_filter	= gpc_get_int( 'filter', 0);
-			print_page_links( 'view_all_bug_page.php', 1, $t_page_count, (int)$f_page_number, $f_filter );
-		?> </span>
-	</td>
-</tr>
+			$t_tmp_filter_key = filter_get_temporary_key( $t_filter );
+			print_page_links( 'view_all_bug_page.php', 1, $t_page_count, (int)$f_page_number, $t_tmp_filter_key );
+			?>
+		</div>
+	</div>
+</div>
+
+<div class="widget-main no-padding">
+	<div class="table-responsive">
+	<table id="buglist" class="table table-bordered table-condensed table-hover table-striped">
+	<thead>
 <?php # -- Bug list column header row -- ?>
-<tr class="row-category">
+<tr class="buglist-headers">
 <?php
-		foreach( $t_columns as $t_column ) {
-			$t_title_function = 'print_column_title';
-			helper_call_custom_function( $t_title_function, array( $t_column ) );
-		}
-?>
-</tr>
-
-<?php # -- Spacer row -- ?>
-<tr class="spacer">
-	<td colspan="<?php echo $col_count; ?>"></td>
-</tr>
-<?php
-	function write_bug_rows ( $p_rows )
-	{
-		global $t_columns, $t_filter;
-
-		$t_in_stickies = ( $t_filter && ( 'on' == $t_filter['sticky_issues'] ) );
-
-		# pre-cache custom column data
-		columns_plugin_cache_issue_data( $p_rows );
-
-		# -- Loop over bug rows --
-
-		$t_rows = count( $p_rows );
-		for( $i=0; $i < $t_rows; $i++ ) {
-			$t_row = $p_rows[$i];
-
-			if ( ( 0 == $t_row->sticky ) && ( 0 == $i ) ) {
-				$t_in_stickies = false;
-			}
-			if ( ( 0 == $t_row->sticky ) && $t_in_stickies ) {	# demarcate stickies, if any have been shown
-?>
-               <tr>
-                       <td class="left" colspan="<?php echo count( $t_columns ); ?>" bgcolor="#999999">&nbsp;</td>
-               </tr>
-<?php
-				$t_in_stickies = false;
-			}
-
-			# choose color based on status
-			$status_color = get_status_color( $t_row->status );
-
-			echo '<tr bgcolor="', $status_color, '" border="1" valign="top">';
-
-			foreach( $t_columns as $t_column ) {
-				$t_column_value_function = 'print_column_value';
-				helper_call_custom_function( $t_column_value_function, array( $t_column, $t_row ) );
-			}
-
-			echo '</tr>';
-		}
+	$t_title_function = 'print_column_title';
+	$t_sort_properties = filter_get_visible_sort_properties_array( $t_filter, COLUMNS_TARGET_VIEW_PAGE );
+	foreach( $g_columns as $t_column ) {
+		helper_call_custom_function( $t_title_function, array( $t_column, COLUMNS_TARGET_VIEW_PAGE, $t_sort_properties ) );
 	}
-
-
-	write_bug_rows($rows);
-	# -- ====================== end of BUG LIST ========================= --
-
-	# -- ====================== MASS BUG MANIPULATION =================== --
 ?>
-	<tr>
-		<td class="left" colspan="<?php echo $col_count; ?>">
-			<span class="floatleft">
+</tr>
+
+</thead><tbody>
+
 <?php
-		if ( $t_checkboxes_exist && ON == config_get( 'use_javascript' ) ) {
-			echo "<input type=\"checkbox\" name=\"all_bugs\" value=\"all\" onclick=\"checkall('bug_action', this.form.all_bugs.checked)\" /><span class=\"small\">" . lang_get( 'select_all' ) . '</span>';
+/**
+ * Output Bug Rows
+ *
+ * @param array $p_rows An array of bug objects.
+ * @return void
+ */
+function write_bug_rows( array $p_rows ) {
+	global $g_columns, $g_filter;
+
+	$t_in_stickies = ( $g_filter && ( 'on' == $g_filter[FILTER_PROPERTY_STICKY] ) );
+
+	# -- Loop over bug rows --
+
+	$t_rows = count( $p_rows );
+	for( $i=0; $i < $t_rows; $i++ ) {
+		$t_row = $p_rows[$i];
+
+		if( ( 0 == $t_row->sticky ) && ( 0 == $i ) ) {
+			$t_in_stickies = false;
+		}
+		if( ( 0 == $t_row->sticky ) && $t_in_stickies ) {	# demarcate stickies, if any have been shown
+?>
+		   <tr>
+				   <td colspan="<?php echo count( $g_columns ); ?>" bgcolor="#d3d3d3"></td>
+		   </tr>
+<?php
+			$t_in_stickies = false;
 		}
 
-		if ( $t_checkboxes_exist ) {
+		echo '<tr>';
+
+		$t_column_value_function = 'print_column_value';
+		foreach( $g_columns as $t_column ) {
+			helper_call_custom_function( $t_column_value_function, array( $t_column, $t_row ) );
+		}
+		echo '</tr>';
+	}
+}
+
+
+write_bug_rows( $t_rows );
+# -- ====================== end of BUG LIST ========================= --
 ?>
-			<select name="action">
-				<?php print_all_bug_action_option_list() ?>
+
+</tbody>
+</table>
+</div>
+
+<div class="widget-toolbox padding-8 clearfix">
+<?php
+# -- ====================== MASS BUG MANIPULATION =================== --
+# @@@ ideally buglist-footer would be in <tfoot>, but that's not possible due to global g_checkboxes_exist set via write_bug_rows()
+?>
+	<div class="form-inline pull-left">
+<?php
+		if( $g_checkboxes_exist ) {
+			echo '<label class="inline">';
+			echo '<input class="ace check_all input-sm" type="checkbox" id="bug_arr_all" name="bug_arr_all" value="all" />';
+			echo '<span class="lbl padding-6">' . lang_get( 'select_all' ) . ' </span > ';
+			echo '</label>';
+		}
+		if( $g_checkboxes_exist ) {
+?>
+			<select name="action" class="input-sm">
+				<?php print_all_bug_action_option_list($t_unique_project_ids) ?>
 			</select>
-			<input type="submit" class="button" value="<?php echo lang_get( 'ok' ); ?>" />
+			<input type="submit" class="btn btn-primary btn-white btn-sm btn-round" value="<?php echo lang_get('ok'); ?>"/>
 <?php
 		} else {
-			echo '&nbsp;';
+			echo '&#160;';
 		}
-?>			</span>
-			<span class="floatright small">
+?>
+			</div>
+			<div class="btn-group pull-right">
 				<?php
-					$f_filter	= gpc_get_int( 'filter', 0);
-					print_page_links( 'view_all_bug_page.php', 1, $t_page_count, (int)$f_page_number, $f_filter );
+					$t_tmp_filter_key = filter_get_temporary_key( $t_filter );
+					print_page_links('view_all_bug_page.php', 1, $t_page_count, (int)$f_page_number, $t_tmp_filter_key );
 				?>
-			</span>
-		</td>
-	</tr>
+			</div>
 <?php # -- ====================== end of MASS BUG MANIPULATION ========================= -- ?>
-</table>
-</form>
+</div>
 
+</div>
+</div>
+</div>
+</form>
+</div>
 <?php
 
-	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_BOTTOM || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
-		html_status_legend();
-	}
-
-	# -- ====================== FILTER FORM ========================= --
-	if ( ( $t_filter_position & FILTER_POSITION_BOTTOM ) == FILTER_POSITION_BOTTOM ) {
-		filter_draw_selection_area( $f_page_number );
-	}
-	# -- ====================== end of FILTER FORM ================== --
+# -- ====================== FILTER FORM ========================= --
+if( ( $t_filter_position & FILTER_POSITION_BOTTOM ) == FILTER_POSITION_BOTTOM ) {
+	filter_draw_selection_area( $f_page_number );
+}
+# -- ====================== end of FILTER FORM ================== --

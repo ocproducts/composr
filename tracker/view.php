@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,20 +15,23 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * View Bug
+ *
  * @package MantisBT
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses core.php
  */
 
 require_once( 'core.php' );
 
-define ( 'BUG_VIEW_INC_ALLOW', true );
+$t_file = __FILE__;
+$t_mantis_dir = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
+$t_show_page_header = true;
+$t_force_readonly = false;
+$t_fields_config_option = 'bug_view_page_fields';
 
-$tpl_file = __FILE__;
-$tpl_mantis_dir = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
-$tpl_show_page_header = true;
-$tpl_force_readonly = false;
-$tpl_fields_config_option = 'bug_view_page_fields';
-
-include ( 'bug_view_inc.php' );
+define( 'BUG_VIEW_INC_ALLOW', true );
+include( dirname( __FILE__ ) . '/bug_view_inc.php' );

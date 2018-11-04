@@ -1,34 +1,42 @@
 <?php
-# MantisBT - a php based bugtracking system
-# Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-# MantisBT is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 2 of the License, or
-# (at your option) any later version.
-#
-# MantisBT is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * MantisBT - A PHP based bugtracking system
+ *
+ * MantisBT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * MantisBT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ */
 
-require_once( config_get( 'class_path' ) . 'MantisPlugin.class.php' );
+require_once( __DIR__ . '/core/graph_api.php' );
 
+/**
+ * Mantis Graph plugin
+ */
 class MantisGraphPlugin extends MantisPlugin  {
 
 	/**
-	 *  A method that populates the plugin information and minimum requirements.
+	 * A method that populates the plugin information and minimum requirements.
+	 * @return void
 	 */
-	function register( ) {
+	function register() {
 		$this->name = lang_get( 'plugin_graph_title' );
 		$this->description = lang_get( 'plugin_graph_description' );
-		$this->page = 'config';
+		$this->page = '';
 
-		$this->version = '1.0';
+		$this->version = MANTIS_VERSION;
 		$this->requires = array(
-			'MantisCore' => '1.2.0',
+			'MantisCore' => '2.0.0',
 		);
 
 		$this->author = 'MantisBT Team';
@@ -38,65 +46,109 @@ class MantisGraphPlugin extends MantisPlugin  {
 
 	/**
 	 * Default plugin configuration.
+	 * @return array
 	 */
 	function config() {
-		return array(
-			'eczlibrary' => ON,
+		return array();
+	}
 
-			'window_width' => 800,
-			'bar_aspect' => 0.9,
-			'summary_graphs_per_row' => 2,
-			'font' => 'arial',
-
-			'jpgraph_path' => '',
-			'jpgraph_antialias' => ON,
+	/**
+	 * plugin hooks
+	 * @return array
+	 */
+	function hooks() {
+		$t_hooks = array(
+			'EVENT_REST_API_ROUTES' => 'routes',
+			'EVENT_LAYOUT_RESOURCES' => 'resources',
+			'EVENT_CORE_HEADERS' => 'csp_headers',
+			'EVENT_SUBMENU_SUMMARY' => 'summary_submenu',
+			'EVENT_MENU_FILTER' => 'graph_filter_menu'
 		);
+		return $t_hooks;
 	}
-	
-	function init() {
-		//mantisgraph_autoload();
-		spl_autoload_register( array( 'MantisGraphPlugin', 'autoload' ) );
-		
-		$t_path = config_get_global('plugin_path' ). plugin_get_current() . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
 
-		set_include_path(get_include_path() . PATH_SEPARATOR . $t_path);
+	/**
+	 * Add the RESTful routes that are handled by this plugin.
+	 *
+	 * @param $p_event_name The event name
+	 * @param $p_event_args The event arguments
+	 * @return void
+	 */
+	function routes( $p_event_name, $p_event_args ) {
+		$t_app = $p_event_args['app'];
+		$t_app->group( plugin_route_group(), function() use ( $t_app ) {
+			$t_app->get( '/reporters', function( $req, $res, $args ) {
+				if( access_has_project_level( config_get( 'view_summary_threshold' ) ) ) {
+					$t_report_associative = create_reporter_summary();
+					$t_report = array();
+
+					foreach( $t_report_associative as $t_name => $t_count ) {
+						$t_report[] = array( "name" => $t_name, "count" => $t_count );
+					}
+
+					return $res->withStatus( HTTP_STATUS_SUCCESS )->withJson( $t_report );
+				}
+
+				return $res->withStatus( HTTP_STATUS_FORBIDDEN );
+			} );
+		} );
 	}
-	
-	public static function autoload( $className ) {
-		if (class_exists( 'ezcBase' ) ) {
-			ezcBase::autoload( $className );
+
+	/**
+	 * Add Content-Security-Policy directives that are needed to load scripts for CDN.
+	 * @return void
+	 */
+	function csp_headers() {
+		if( config_get_global( 'cdn_enabled' ) == ON ) {
+			http_csp_add( 'script-src', 'https://cdnjs.cloudflare.com' );
 		}
 	}
-	
-	function hooks( ) {
-		$hooks = array(
-			'EVENT_MENU_SUMMARY' => 'summary_menu',
-			'EVENT_SUBMENU_SUMMARY' => 'summary_submenu',
-			'EVENT_MENU_FILTER' => 'graph_filter_menu',
-		);
-		return $hooks;
+
+	/**
+	 * generate graph filter menu
+	 * @return array
+	 */
+	function graph_filter_menu() {
+		if( access_has_project_level( config_get( 'view_summary_threshold' ) ) ) {
+			return array( '<a class="btn btn-sm btn-primary btn-white btn-round" href="' .
+				plugin_page( 'issues_trend_page.php' ) . '">' . plugin_lang_get( 'issue_trends_link' ) . '</a>', );
+		} else {
+			return '';
+		}
 	}
 
-	function summary_menu( ) {
-		return array( '<a href="' . plugin_page( 'summary_jpgraph_page' ) . '">' . plugin_lang_get( 'menu_advanced_summary' ) . '</a>', );
-	}	
+	/**
+	 * Include javascript files for chart.js
+	 * @return void
+	 */
+	function resources() {
+		if( current( explode( '/', gpc_get_string( 'page', '' ) ) ) === $this->basename ) {
+			if( config_get_global( 'cdn_enabled' ) == ON ) {
+				html_javascript_cdn_link('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . CHARTJS_VERSION . '/Chart.min.js', CHARTJS_HASH);
+				html_javascript_cdn_link('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . CHARTJS_VERSION . '/Chart.bundle.min.js', CHARTJSBUNDLE_HASH);
+			} else {
+				echo '<script src="' . plugin_file('chart-' . CHARTJS_VERSION . '.min.js') . '"></script>';
+				echo '<script src="' . plugin_file('chart.bundle-' . CHARTJS_VERSION . '.min.js') . '"></script>';
+			}
+			echo '<script src="' . plugin_file("MantisGraph.js") . '"></script>';
+		}
+	}
 
-	function graph_filter_menu( ) {
-		return array( '<a href="' . plugin_page( 'bug_graph_page.php' ) . '">' . plugin_lang_get( 'graph_bug_page_link' ) . '</a>', );
-	}		
-	
-	function summary_submenu( ) {
-		$t_icon_path = config_get( 'icon_path' );
-		return array( '<a href="' . helper_mantis_url( 'summary_page.php' ) . '"><img src="' . $t_icon_path . 'synthese.gif" border="0" alt="" />' . plugin_lang_get( 'synthesis_link' ) . '</a>',
-			'<a href="' . plugin_page( 'summary_graph_imp_status.php' ) . '"><img src="' . $t_icon_path . 'synthgraph.gif" border="0" alt="" />' . plugin_lang_get( 'status_link' ) . '</a>',
-			'<a href="' . plugin_page( 'summary_graph_imp_priority.php' ) . '"><img src="' . $t_icon_path . 'synthgraph.gif" border="0" alt="" />' . plugin_lang_get( 'priority_link' ) . '</a>',
-			'<a href="' . plugin_page( 'summary_graph_imp_severity.php' ) . '"><img src="' . $t_icon_path . 'synthgraph.gif" border="0" alt="" />' . plugin_lang_get( 'severity_link' ) . '</a>',
-			'<a href="' . plugin_page( 'summary_graph_imp_category.php' ) . '"><img src="' . $t_icon_path . 'synthgraph.gif" border="0" alt="" />' . plugin_lang_get( 'category_link' ) . '</a>',
-			'<a href="' . plugin_page( 'summary_graph_imp_resolution.php' ) . '"><img src="' . $t_icon_path . 'synthgraph.gif" border="0" alt="" />' . plugin_lang_get( 'resolution_link' ) . '</a>',
- 		);
-	}	
-
-}
-
-function mantisgraph_autoload() {
+	/**
+	 * generate summary submenu
+	 * @return array
+	 */
+	function summary_submenu() {
+		return array(
+            '<a class="btn btn-sm btn-primary btn-white" href="' . helper_mantis_url( 'summary_page.php' ) . '"> <i class="fa fa-table"></i> ' . plugin_lang_get( 'synthesis_link' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'developer_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . lang_get( 'by_developer' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'reporter_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . lang_get( 'by_reporter' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'status_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . plugin_lang_get( 'status_link' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'resolution_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . plugin_lang_get( 'resolution_link' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'priority_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . plugin_lang_get( 'priority_link' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'severity_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . plugin_lang_get( 'severity_link' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'category_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . plugin_lang_get( 'category_link' ) . '</a>',
+			'<a class="btn btn-sm btn-primary btn-white" href="' . plugin_page( 'issues_trend_graph.php' ) . '"> <i class="fa fa-bar-chart"></i> ' . plugin_lang_get( 'issue_trends_link' ) . '</a>',
+		);
+	}
 }

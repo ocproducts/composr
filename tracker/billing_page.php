@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,31 +14,39 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Display Mantis Billing Page
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ */
 
-	access_ensure_global_level( config_get( 'time_tracking_reporting_threshold' ) );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'billing_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
 
-	html_page_top( lang_get( 'time_tracking_billing_link' )  );
-?>
+billing_ensure_reporting_access();
 
-<br />
+layout_page_header( lang_get( 'time_tracking_billing_link' ) );
 
-<?php
-	$t_mantis_dir = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
-?>
-	<!-- Jump to Bugnote add form -->
-<?php
-	# Work break-down
-	include( $t_mantis_dir . 'billing_inc.php' );
+layout_page_begin();
 
-	html_page_bottom();
+# Work break-down
+define( 'BILLING_INC_ALLOW', true );
+include( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'billing_inc.php' );
+
+layout_page_end();
 

@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,12 +16,27 @@
 
 /**
  * Language (Internationalization) API
+ *
  * @package CoreAPI
  * @subpackage LanguageAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses error_api.php
+ * @uses plugin_api.php
+ * @uses user_pref_api.php
  */
+
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'error_api.php' );
+require_api( 'plugin_api.php' );
+require_api( 'user_pref_api.php' );
 
 # Cache of localization strings in the language specified by the last
 # lang_load call
@@ -35,9 +50,9 @@ $g_active_language = '';
 
 /**
  * Loads the specified language and stores it in $g_lang_strings, to be used by lang_get
- * @param string $p_lang
- * @param string $p_dir
- * @return null
+ * @param string $p_lang Name of Language to load.
+ * @param string $p_dir  Directory Containing language file.
+ * @return void
  */
 function lang_load( $p_lang, $p_dir = null ) {
 	global $g_lang_strings, $g_active_language;
@@ -51,24 +66,21 @@ function lang_load( $p_lang, $p_dir = null ) {
 		return;
 	}
 
-	$t_lang_dir = $p_dir;
-
-	if( is_null( $t_lang_dir ) ) {
-		$t_lang_dir = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR;
-		require_once( $t_lang_dir . 'strings_' . $p_lang . '.txt' );
+	if( $p_dir === null ) {
+		include_once( config_get_global( 'language_path' ) . 'strings_' . $p_lang . '.txt' );
 	} else {
-		if( is_file( $t_lang_dir . 'strings_' . $p_lang . '.txt' ) ) {
-			include_once( $t_lang_dir . 'strings_' . $p_lang . '.txt' );
+		if( is_file( $p_dir . 'strings_' . $p_lang . '.txt' ) ) {
+			include_once( $p_dir . 'strings_' . $p_lang . '.txt' );
 		}
 	}
 
 	# Allow overriding strings declared in the language file.
-	# custom_strings_inc.php can use $g_active_language
-	$t_custom_strings = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'custom_strings_inc.php';
-	if( file_exists( $t_custom_strings ) ) {
-		require( $t_custom_strings );
+	# custom_strings_inc.php can use $g_active_language.
+	# Include file multiple times to allow for overrides per language.
+	global $g_config_path;
 
-		# this may be loaded multiple times, once per language
+	if( file_exists( $g_config_path . 'custom_strings_inc.php' ) ) {
+		include( $g_config_path . 'custom_strings_inc.php' );
 	}
 
 	$t_vars = get_defined_vars();
@@ -77,11 +89,10 @@ function lang_load( $p_lang, $p_dir = null ) {
 		$t_lang_var = preg_replace( '/^s_/', '', $t_var );
 		if( $t_lang_var != $t_var ) {
 			$g_lang_strings[$p_lang][$t_lang_var] = $$t_var;
-		}
-		else if( 'MANTIS_ERROR' == $t_var ) {
+		} else if( 'MANTIS_ERROR' == $t_var ) {
 			if( isset( $g_lang_strings[$p_lang][$t_lang_var] ) ) {
-				foreach( $$t_var as $key => $val ) {
-					$g_lang_strings[$p_lang][$t_lang_var][$key] = $val;
+				foreach( $$t_var as $t_key => $t_val ) {
+					$g_lang_strings[$p_lang][$t_lang_var][$t_key] = $t_val;
 				}
 			} else {
 				$g_lang_strings[$p_lang][$t_lang_var] = $$t_var;
@@ -120,15 +131,15 @@ function lang_get_default() {
 }
 
 /**
- *
+ * Auto Map Language from HTTP server data
  * @return string
  */
 function lang_map_auto() {
-	$t_lang = config_get( 'fallback_language' );
+	$t_lang = config_get_global( 'fallback_language' );
 
 	if( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
 		$t_accept_langs = explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-		$t_auto_map = config_get( 'language_auto_map' );
+		$t_auto_map = config_get_global( 'language_auto_map' );
 
 		# Expand language map
 		$t_auto_map_exp = array();
@@ -142,7 +153,7 @@ function lang_map_auto() {
 
 		# Find encoding
 		foreach( $t_accept_langs as $t_accept_lang ) {
-			$t_tmp = explode( ';', utf8_strtolower( $t_accept_lang ) );
+			$t_tmp = explode( ';', mb_strtolower( $t_accept_lang ) );
 
 			if( isset( $t_auto_map_exp[trim( $t_tmp[0] )] ) ) {
 				$t_valid_langs = config_get( 'language_choices_arr' );
@@ -161,8 +172,8 @@ function lang_map_auto() {
 
 /**
  * Ensures that a language file has been loaded
- * @param string $p_lang the language name
- * @return null
+ * @param string $p_lang The language name.
+ * @return void
  */
 function lang_ensure_loaded( $p_lang ) {
 	global $g_lang_strings;
@@ -175,7 +186,7 @@ function lang_ensure_loaded( $p_lang ) {
 /**
 * Check if the given language exists
 *
-* @param string $p_lang the language name
+* @param string $p_lang The language name.
 * @return boolean
 */
 function lang_language_exists( $p_lang ) {
@@ -187,8 +198,8 @@ function lang_language_exists( $p_lang ) {
 /**
  * language stack implementation
  * push a language onto the stack
- * @param string $p_lang
- * @return null
+ * @param string $p_lang The language name.
+ * @return void
  */
 function lang_push( $p_lang = null ) {
 	global $g_lang_overrides;
@@ -200,14 +211,14 @@ function lang_push( $p_lang = null ) {
 	$t_lang = $p_lang;
 
 	if( null === $t_lang ) {
-		$t_lang = config_get( 'default_language' );
+		$t_lang = config_get_global( 'default_language' );
 	}
 
 	# don't allow 'auto' as a language to be pushed onto the stack
 	#  The results from auto are always the local user, not what the
 	#  override wants, unless this is the first language setting
-	if(( 'auto' == $t_lang ) && ( 0 < count( $g_lang_overrides ) ) ) {
-		$t_lang = config_get( 'fallback_language' );
+	if( ( 'auto' == $t_lang ) && ( 0 < count( $g_lang_overrides ) ) ) {
+		$t_lang = config_get_global( 'fallback_language' );
 	}
 
 	$g_lang_overrides[] = $t_lang;
@@ -220,7 +231,7 @@ function lang_push( $p_lang = null ) {
 }
 
 /**
- * pop a language onto the stack and return it
+ * pop a language from the stack and return it
  * @return string
  */
 function lang_pop() {
@@ -252,16 +263,16 @@ function lang_get_current() {
  * This function will return one of (in order of preference):
  *  1. The string in the current user's preferred language (if defined)
  *  2. The string in English
- * @param string $p_string
- * @param string $p_lang
- * @return string
+ * Note: when $p_string is 'MANTIS_ERROR', the return value is an array of error messages.
+ * @param string $p_string The language string to retrieve.
+ * @param string $p_lang   The language name.
+ * @return string|array
  */
 function lang_get( $p_string, $p_lang = null ) {
 	global $g_lang_strings;
 
-	# If no specific language is requested, we'll
-	#  try to determine the language from the users
-	#  preferences
+	# If no specific language is requested, we'll try to
+	# determine the language from the users preferences
 
 	$t_lang = $p_lang;
 
@@ -269,7 +280,7 @@ function lang_get( $p_string, $p_lang = null ) {
 		$t_lang = lang_get_current();
 	}
 
-	// Now we'll make sure that the requested language is loaded
+	# Now we'll make sure that the requested language is loaded
 	lang_ensure_loaded( $t_lang );
 
 	# note in the current implementation we always return the same value
@@ -277,14 +288,14 @@ function lang_get( $p_string, $p_lang = null ) {
 	#  language files actually *contain* English strings if none has been
 	#  defined in the correct language
 	# @todo thraxisp - not sure if this is still true. Strings from last language loaded
-	#      may still be in memeory if a new language is loaded.
+	#      may still be in memory if a new language is loaded.
 
 	if( lang_exists( $p_string, $t_lang ) ) {
 		return $g_lang_strings[$t_lang][$p_string];
 	} else {
 		$t_plugin_current = plugin_get_current();
 		if( !is_null( $t_plugin_current ) ) {
-			lang_load( $t_lang, config_get( 'plugin_path' ) . $t_plugin_current . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR );
+			lang_load( $t_lang, config_get_global( 'plugin_path' ) . $t_plugin_current . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR );
 			if( lang_exists( $p_string, $t_lang ) ) {
 				return $g_lang_strings[$t_lang][$p_string];
 			}
@@ -304,9 +315,9 @@ function lang_get( $p_string, $p_lang = null ) {
 
 /**
  * Check the language entry, if found return true, otherwise return false.
- * @param string $p_string
- * @param string $p_lang
- * @return bool
+ * @param string $p_string The language string to retrieve.
+ * @param string $p_lang   The language name.
+ * @return boolean
  */
 function lang_exists( $p_string, $p_lang ) {
 	global $g_lang_strings;
@@ -319,9 +330,9 @@ function lang_exists( $p_string, $p_lang ) {
  * - If found, return the appropriate string (as lang_get()).
  * - If not found, no default supplied, return the supplied string as is.
  * - If not found, default supplied, return default.
- * @param string $p_string
- * @param string $p_default
- * @param string $p_lang
+ * @param string $p_string  The language string to retrieve.
+ * @param string $p_default The default value to return.
+ * @param string $p_lang    The language name.
  * @return string
  */
 function lang_get_defaulted( $p_string, $p_default = null, $p_lang = null ) {
@@ -343,4 +354,20 @@ function lang_get_defaulted( $p_string, $p_default = null, $p_lang = null ) {
 			return $p_default;
 		}
 	}
+}
+
+/**
+ * Maps current lang string to moment.js locale.
+ * @see https://github.com/moment/moment/tree/develop/locale
+ * @return string Two chars browser language code (e.g. 'de' for German)
+ */
+function lang_get_current_datetime_locale() {
+	$t_lang = lang_get_current();
+
+	# Lookup $g_language_auto_map by value and then return the first key
+	$t_auto_map = config_get_global( 'language_auto_map' );
+	$t_entry = array_search( $t_lang, $t_auto_map );
+	$t_key_arr = explode( ',', $t_entry );
+
+	return $t_key_arr[0];
 }

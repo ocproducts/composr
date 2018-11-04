@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,39 +14,61 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Project Delete
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses project_api.php
+ */
 
-	form_security_validate( 'manage_proj_delete' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'project_api.php' );
 
-	auth_reauthenticate();
+form_security_validate( 'manage_proj_delete' );
 
-	$f_project_id = gpc_get_int( 'project_id' );
+auth_reauthenticate();
 
-	access_ensure_project_level( config_get( 'delete_project_threshold' ), $f_project_id );
+$f_project_id = gpc_get_int( 'project_id' );
 
-	$t_project_name = project_get_name( $f_project_id );
+access_ensure_project_level( config_get( 'delete_project_threshold' ), $f_project_id );
 
-	helper_ensure_confirmed( lang_get( 'project_delete_msg' ) .
-			'<br/>' . lang_get( 'project_name' ) . ': ' . $t_project_name,
-			lang_get( 'project_delete_button' ) );
+$t_project_name = project_get_name( $f_project_id );
 
-	project_delete( $f_project_id );
+helper_ensure_confirmed( lang_get( 'project_delete_msg' ) .
+		'<br />' . lang_get( 'project_name_label' ) . lang_get( 'word_separator' ) . $t_project_name,
+		lang_get( 'project_delete_button' ) );
 
-	form_security_purge( 'manage_proj_delete' );
+project_delete( $f_project_id );
 
-	# Don't leave the current project set to a deleted project -
-	#  set it to All Projects
-	if ( helper_get_current_project() == $f_project_id ) {
-		helper_set_current_project( ALL_PROJECTS );
-	}
+form_security_purge( 'manage_proj_delete' );
 
-	print_header_redirect( 'manage_proj_page.php' );
+# Don't leave the current project set to a deleted project -
+#  set it to All Projects
+if( helper_get_current_project() == $f_project_id ) {
+	helper_set_current_project( ALL_PROJECTS );
+}
+
+print_header_redirect( 'manage_proj_page.php' );

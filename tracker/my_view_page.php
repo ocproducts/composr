@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,167 +14,159 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * My View Page
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses category_api.php
+ * @uses compress_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses current_user_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses user_api.php
+ */
 
-	require_once( 'compress_api.php' );
-	require_once( 'filter_api.php' );
-	require_once( 'last_visited_api.php' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'category_api.php' );
+require_api( 'compress_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'current_user_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'user_api.php' );
+require_api( 'layout_api.php' );
+require_css( 'status_config.php' );
 
-	auth_ensure_user_authenticated();
+auth_ensure_user_authenticated();
 
-	$t_current_user_id = auth_get_current_user_id();
+$t_current_user_id = auth_get_current_user_id();
+$t_current_project_id = helper_get_current_project();
 
-	# Improve performance by caching category data in one pass
-	category_get_all_rows( helper_get_current_project() );
+# Improve performance by caching category data in one pass
+category_get_all_rows( $t_current_project_id );
 
-	compress_enable();
+compress_enable();
 
-	# don't index my view page
-	html_robots_noindex();
+# don't index my view page
+html_robots_noindex();
 
-	html_page_top1( lang_get( 'my_view_link' ) );
+layout_page_header_begin( lang_get( 'my_view_link' ) );
 
-	if ( current_user_get_pref( 'refresh_delay' ) > 0 ) {
-		html_meta_redirect( 'my_view_page.php', current_user_get_pref( 'refresh_delay' )*60 );
-	}
+$t_refresh_delay = current_user_get_pref( 'refresh_delay' );
+if( $t_refresh_delay > 0 ) {
+	html_meta_redirect( 'my_view_page.php?refresh=true', $t_refresh_delay * 60 );
+}
 
-	html_page_top2();
+layout_page_header_end();
 
-	print_recently_visited();
+layout_page_begin( __FILE__ );
 
-	$f_page_number		= gpc_get_int( 'page_number', 1 );
+$f_page_number = gpc_get_int( 'page_number', 1 );
 
-	$t_per_page = config_get( 'my_view_bug_count' );
-	$t_bug_count = null;
-	$t_page_count = null;
+$t_per_page = config_get( 'my_view_bug_count' );
+$t_bug_count = null;
+$t_page_count = null;
 
-	$t_boxes = config_get( 'my_view_boxes' );
-	asort ($t_boxes);
-	reset ($t_boxes);
-	#print_r ($t_boxes);
+$t_boxes = config_get( 'my_view_boxes' );
+asort( $t_boxes );
+reset( $t_boxes );
 
-	$t_project_id = helper_get_current_project();
+$t_project_ids_to_check = $t_current_project_id == ALL_PROJECTS ? null : array( $t_current_project_id );
+$t_timeline_view_threshold_access = access_has_any_project_level( config_get( 'timeline_view_threshold' ), $t_project_ids_to_check, $t_current_user_id );
+$t_timeline_view_class = ( $t_timeline_view_threshold_access ) ? "col-md-7" : "col-md-6";
 ?>
 
-<div style="text-align: left; font-size: 1.2em">
+<!-- Composr - intro message -->
+<div style="margin: 1em; font-size: 1.2em">
 	<p>
-		<?php echo sprintf(lang_get('my_view_welcome_message'), $cms_sc_product_name, $cms_sc_business_name_possesive, $cms_sc_business_name, $cms_sc_report_guidance_url);?>
+		<?php echo sprintf(lang_get('cms_my_view_welcome_message'), $cms_sc_product_name, $cms_sc_business_name_possesive, $cms_sc_business_name, $cms_sc_report_guidance_url);?>
 	</p>
 </div>
 
-<div align="center">
-<table class="hide" border="0" cellspacing="3" cellpadding="0">
+<div class="col-xs-12 <?php echo $t_timeline_view_class ?>">
 
 <?php
-	$t_status_legend_position = config_get( 'status_legend_position' );
+$t_number_of_boxes = count ( $t_boxes );
+$t_boxes_position = config_get( 'my_view_boxes_fixed_position' );
+$t_counter = 0;
+$t_two_columns_applied = false;
 
-	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_TOP || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
-		echo '<tr>';
-		echo '<td colspan="2">';
-		html_status_legend();
-		echo '</td>';
-		echo '</tr>';
+define( 'MY_VIEW_INC_ALLOW', true );
+
+foreach( $t_boxes as $t_box_title => $t_box_display ) {
+		# don't display boxes that are set as 0
+	if ( $t_box_display == 0 ) {
+		$t_number_of_boxes = $t_number_of_boxes - 1;
 	}
-
-	$t_number_of_boxes = count ( $t_boxes );
-	$t_boxes_position = config_get( 'my_view_boxes_fixed_position' );
-	$t_counter = 0;
-
-	while (list ($t_box_title, $t_box_display) = each ($t_boxes)) {
-		# don't display bugs that are set as 0
-		if ($t_box_display == 0) {
-			$t_number_of_boxes = $t_number_of_boxes - 1;
-		}
-
 		# don't display "Assigned to Me" bugs to users that bugs can't be assigned to
-		else if ( $t_box_title == 'assigned' && ( current_user_is_anonymous() OR user_get_assigned_open_bug_count( $t_current_user_id, $t_project_id ) == 0 ) ) {
-			$t_number_of_boxes = $t_number_of_boxes - 1;
-		}
-
+	else if( $t_box_title == 'assigned'
+		&&  ( current_user_is_anonymous()
+			|| !access_has_any_project_level( config_get( 'handle_bug_threshold' ), $t_project_ids_to_check, $t_current_user_id ) ) ) {
+		$t_number_of_boxes = $t_number_of_boxes - 1;
+	}
 		# don't display "Monitored by Me" bugs to users that can't monitor bugs
-		else if ( $t_box_title == 'monitored' && ( current_user_is_anonymous() OR !access_has_project_level( config_get( 'monitor_bug_threshold' ), $t_project_id, $t_current_user_id ) ) ) {
-			$t_number_of_boxes = $t_number_of_boxes - 1;
-		}
-
+	else if( $t_box_title == 'monitored'
+		&& ( current_user_is_anonymous()
+			|| !access_has_any_project_level( config_get( 'monitor_bug_threshold' ), $t_project_ids_to_check, $t_current_user_id ) ) ) {
+		$t_number_of_boxes = $t_number_of_boxes - 1;
+	}
 		# don't display "Reported by Me" bugs to users that can't report bugs
-		else if ( in_array( $t_box_title, array( 'reported', 'feedback', 'verify' ) ) &&
-				( current_user_is_anonymous() OR !access_has_project_level( config_get( 'report_bug_threshold' ), $t_project_id, $t_current_user_id ) ) ) {
-			$t_number_of_boxes = $t_number_of_boxes - 1;
-		}
-
+	else if( in_array( $t_box_title, array( 'reported', 'feedback', 'verify' ) )
+		&& ( current_user_is_anonymous()
+			|| !access_has_any_project_level( config_get( 'report_bug_threshold' ), $t_project_ids_to_check, $t_current_user_id ) ) ) {
+		$t_number_of_boxes = $t_number_of_boxes - 1;
+	}
 		# display the box
-		else {
+	else {
+		if( !$t_timeline_view_threshold_access ) {
+			if ($t_counter >= $t_number_of_boxes / 2 && !$t_two_columns_applied) {
+				echo '</div>';
+				echo '<div class="col-xs-12 col-md-6">';
+				$t_two_columns_applied = true;
+			} elseif ($t_counter >= $t_number_of_boxes && $t_two_columns_applied) {
+				echo '</div>';
+			} else {
+				include( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'my_view_inc.php' );
+				echo '<div class="space-10"></div>';
+			}
 			$t_counter++;
-
-			# check the style of displaying boxes - fixed (ie. each box in a separate table cell) or not
-			if ( ON == $t_boxes_position ) {
-				# for even box number start new row and column
-				if ( 1 == $t_counter%2 ) {
-					echo '<tr><td valign="top" width="50%">';
-					include 'my_view_inc.php';
-					echo '</td>';
-				}
-
-				# for odd box number only start new column
-				else if ( 0 == $t_counter%2 ) {
-					echo '<td valign="top" width="50%">';
-					include 'my_view_inc.php';
-					echo '</td></tr>';
-				}
-
-				# for odd number of box display one empty table cell in second column
-				if ( ( $t_counter == $t_number_of_boxes ) && 1 == $t_counter%2 ) {
-					echo '<td valign="top" width="50%"></td></tr>';
-				}
-			}
-			else if ( OFF == $t_boxes_position ) {
-				# start new table row and column for first box
-				if ( 1 == $t_counter ) {
-					echo '<tr><td valign="top" width="50%">';
-				}
-
-				# start new table column for the second half of boxes
-				if ( $t_counter == ceil ($t_number_of_boxes/2) + 1 ) {
-					echo '<td valign="top" width="50%">';
-				}
-
-				# display the required box
-				include 'my_view_inc.php';
-				echo '<br />';
-
-				# close the first column for first half of boxes
-				if ( $t_counter == ceil ($t_number_of_boxes/2) ) {
-					echo '</td>';
-				}
-
-				# close the table row after all of the boxes
-				if ( $t_counter == $t_number_of_boxes ) {
-					echo '</td></tr>';
-				}
-			}
+		} else {
+			include( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'my_view_inc.php' );
+			echo '<div class="space-10"></div>';
 		}
 	}
-
-	if ( $t_status_legend_position == STATUS_LEGEND_POSITION_BOTTOM || $t_status_legend_position == STATUS_LEGEND_POSITION_BOTH ) {
-		echo '<tr>';
-		echo '<td colspan="2">';
-		html_status_legend();
-		echo '</td>';
-		echo '</tr>';
-	}
+}
 ?>
-
-</table>
 </div>
 
-<?php
-	html_page_bottom();
+<?php if( $t_timeline_view_threshold_access ) { ?>
+<div class="col-md-5 col-xs-12">
+	<?php
+		# Build a simple filter that gets all bugs for current project
+		$g_timeline_filter = array();
+		$g_timeline_filter[FILTER_PROPERTY_HIDE_STATUS] = array( META_FILTER_NONE );
+		$g_timeline_filter = filter_ensure_valid_filter( $g_timeline_filter );
+		include( $g_core_path . 'timeline_inc.php' );
+	?>
+	<div class="space-10"></div>
+</div>
+<?php }
+layout_page_end();
