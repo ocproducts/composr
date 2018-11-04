@@ -400,23 +400,27 @@ $(document).ready( function() {
 	}
 
 	// Composr - simple anti-spam measure
-	document.getElementsByName('spammer_bugnote_text')[0].onclick = function() {
-		this.name='bugnote_text';
-	};
+	if (document.getElementsByName('spammer_bugnote_text')[0]) {
+		document.getElementsByName('spammer_bugnote_text')[0].onclick = function() {
+			this.name='bugnote_text';
+		};
+	}
 
 	// Composr - support credit sponsorship calculation
-	document.getElementById('sponsor_amount_credits').onblur = function() {
-		var pricePer = window.parseFloat(this.getAttribute("data-price-per"));
-		if (this.value.match(/^\d+$/)) {
-			this.form.elements['amount'].value = window.parseFloat(this.value) * pricePer;
-		}
-	};
-	document.getElementById('sponsor_amount').onblur = function() {
-		var pricePer = window.parseFloat(this.getAttribute("data-price-per"));
-		if (this.value.match(/^\d+$/)) {
-			this.form.elements['amount_credits'].value = Math.ceil(window.parseFloat(this.value) / pricePer);
-		}
-	};
+	if (document.getElementById('sponsor_amount_credits')) {
+		document.getElementById('sponsor_amount_credits').onblur = function() {
+			var pricePer = window.parseFloat(this.getAttribute("data-price-per"));
+			if (this.value.match(/^\d+$/)) {
+				this.form.elements['amount'].value = window.parseFloat(this.value) * pricePer;
+			}
+		};
+		document.getElementById('sponsor_amount').onblur = function() {
+			var pricePer = window.parseFloat(this.getAttribute("data-price-per"));
+			if (this.value.match(/^\d+$/)) {
+				this.form.elements['amount_credits'].value = Math.ceil(window.parseFloat(this.value) / pricePer);
+			}
+		};
+	}
 });
 
 function setBugLabel() {

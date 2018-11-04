@@ -155,15 +155,15 @@ function user_cache_array_rows( array $p_user_id_array ) {
 			'realname' => '',
 			'email' => ($cms_row['m_email_address'] == '') ? 'info+noaddress@ocproducts.com' : $cms_row['m_email_address'],
 			'password' => $cms_row['m_pass_hash_salted'] . ':' . $cms_row['m_pass_salt'] . ':' . $cms_row['m_password_compat_scheme'],
-			'enabled' => intval($cms_row['m_validated']),
+			'enabled' => (int)$cms_row['m_validated'],
 			'protected' => 0,
 			'access_level' => $access_level,
 			'login_count' => 0,
 			'lost_password_request_count' => 0,
 			'failed_login_count' => 0,
 			'cookie_string' => empty($cms_row['m_pass_hash_salted']) ? ('erjg9843h9grefjlg' . $cms_row['m_username']) : $cms_row['m_pass_hash_salted'],
-			'last_visit' => intval($cms_row['m_last_visit_time']),
-			'date_created' => intval($cms_row['m_join_time']),
+			'last_visit' => (int)$cms_row['m_last_visit_time'],
+			'date_created' => (int)$cms_row['m_join_time'],
 		);
 
 		$t_user_table = db_get_table( 'user' );
@@ -771,7 +771,7 @@ function user_get_id_by_name( $p_username, $p_throw = false ) {
 	$t_result = db_query( $t_query, array( $p_username ) );
 	$t_row = db_fetch_array( $t_result );
 	if( $t_row ) {
-		return $t_row['id'];
+		return (int)$t_row['id'];
 	}
 
 	/*
