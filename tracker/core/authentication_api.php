@@ -952,8 +952,8 @@ function auth_get_current_user_cookie( $p_login_anonymous = true ) {
 	$t_cookie = gpc_get_cookie( $t_cookie_name, '' );
 
 	// Composr - try session authentication
-	global $cms_sc_db_prefix, $cms_sc_session_cookie_name;
-	if (isset($_COOKIE[$cms_sc_session_cookie_name]))
+	global $cms_sc_db_prefix, $cms_sc_session_cookie_name, $g_db;
+	if ((isset($_COOKIE[$cms_sc_session_cookie_name])) && (isset($g_db)))
 	{
 		$query = 'SELECT member_id FROM ' . $cms_sc_db_prefix . 'sessions WHERE the_session=\'' . db_prepare_string($_COOKIE[$cms_sc_session_cookie_name]) . '\'';
 		$result = db_query( $query );
