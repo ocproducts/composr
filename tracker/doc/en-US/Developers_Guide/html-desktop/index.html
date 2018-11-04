@@ -1,0 +1,1430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Developers Guide</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta name="generator" content="publican 3.2.1" /><meta name="package" content="MantisBT-Developers_Guide-2.0-en-US-2.18-0" /><meta name="description" content="This book is targeted at MantisBT developers, contributors and plugin authors. It documents the development process and provides reference information regarding the MantisBT core, including the database schema as well as the plugin system including an events reference." /></head><body class="desktop "><p id="title"><a class="left" href="http://www.mantisbt.org"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.mantisbt.org/documentation.php"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><div class="book"><div class="titlepage"><div><div class="producttitle"><span class="productname">MantisBT</span> <span class="productnumber">2.0</span></div><div><h1 class="title"><a id="idm140628934446000"></a>Developers Guide</h1></div><div><h2 class="subtitle">Reference for developers and community members</h2></div><div><h3 class="corpauthor">
+		<span class="inlinemediaobject"><img src="./images/mantis_logo.png" /></span>
+
+	</h3></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="surname">MantisBT Development Team</span></h3><code class="email"><a class="email" href="mailto:mantisbt-dev@lists.sourceforge.net">mantisbt-dev@lists.sourceforge.net</a></code></div></div></div><div><div class="legalnotice"><a id="idm140628922566544"></a><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"></span>© 2016 MantisBT team.  This material may only be distributed subject to the terms and conditions set forth in the GNU Free Documentation License (GFDL), V1.2 or later (the latest version is presently available at <a href="http://www.gnu.org/licenses/fdl.txt">http://www.gnu.org/licenses/fdl.txt</a>).
+	</div></div></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+			This book is targeted at MantisBT developers, contributors and plugin authors. It documents the development process and provides reference information regarding the MantisBT core, including the database schema as well as the plugin system including an events reference.
+		</div></div></div></div></div><div class="toc"><dl class="toc"><dt><span class="chapter"><a href="#dev.contrib">1. Contributing to MantisBT</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.setup">1.1. Initial Setup</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone">1.2. Cloning the Repository</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.clone.dev">1.2.1. Determining the Clone URL</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone.clone">1.2.2. Initializing the Clone</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone.remotes">1.2.3. Adding remotes</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone.branches">1.2.4. Checking out branches</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.contrib.branch">1.3. Maintaining Tracking Branches</a></span></dt><dt><span class="section"><a href="#dev.contrib.prepare">1.4. Preparing Feature Branches</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.prepare.local">1.4.1. Private Branches</a></span></dt><dt><span class="section"><a href="#dev.contrib.prepare.public">1.4.2. Public Branches</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.contrib.test">1.5. Running PHPUnit tests</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.test.soap">1.5.1. Running the SOAP tests</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.contrib.submit">1.6. Submitting Changes</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.submit.before">1.6.1. Before you submit</a></span></dt><dt><span class="section"><a href="#dev.contrib.submit.github">1.6.2. Submission Via Github Pull Requests</a></span></dt><dt><span class="section"><a href="#dev.contrib.submit.patch">1.6.3. Submission Via Formatted Patches</a></span></dt><dt><span class="section"><a href="#dev.contrib.submit.repo">1.6.4. Submission Via Public Repository</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#dev.database">2. Database Schema Management</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.database.erd">2.1. The MantisBT schema</a></span></dt><dt><span class="section"><a href="#dev.database.schema">2.2. Schema Definition</a></span></dt><dt><span class="section"><a href="#dev.database.install">2.3. Installation / Upgrade Process</a></span></dt></dl></dd><dt><span class="chapter"><a href="#dev.events">3. Event System</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.events.concepts">3.1. General Concepts</a></span></dt><dt><span class="section"><a href="#dev.events.api">3.2. API Usage</a></span></dt><dt><span class="section"><a href="#dev.events.types">3.3. Event Types</a></span></dt></dl></dd><dt><span class="chapter"><a href="#dev.plugins">4. Plugin System</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.plugins.concepts">4.1. General Concepts</a></span></dt><dt><span class="section"><a href="#dev.plugins.building">4.2. Building a Plugin</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.plugins.building.structure">4.2.1. Plugin Structure</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.properties">4.2.2. Properties</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.pages">4.2.3. Pages and Files</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.events">4.2.4. Events</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.config">4.2.5. Configuration</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.language">4.2.6. Language and Localization</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.plugins.building.source">4.3. Example Plugin Source Listing</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.plugins.building.source.Example.php">4.3.1. Example/Example.php</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.foo.css">4.3.2. Example/files/foo.css</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.stringsenglish.txt">4.3.3. Example/lang/strings_english.txt</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.configpage.php">4.3.4. Example/page/config_page.php</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.configupdate.php">4.3.5. Example/pages/config_update.php</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.foo.php">4.3.6. Example/page/foo.php</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.plugins.api">4.4. API Usage</a></span></dt></dl></dd><dt><span class="chapter"><a href="#dev.eventref">5. Events Reference</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.intro">5.1. Introduction</a></span></dt><dt><span class="section"><a href="#dev.eventref.system">5.2. System Events</a></span></dt><dt><span class="section"><a href="#dev.eventref.output">5.3. Output Modifier Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.output.display">5.3.1. String Display</a></span></dt><dt><span class="section"><a href="#dev.eventref.output.menu">5.3.2. Menu Items</a></span></dt><dt><span class="section"><a href="#dev.eventref.output.layout">5.3.3. Page Layout</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.filter">5.4. Bug Filter Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.filter.custom">5.4.1. Custom Filters and Columns</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.bug">5.5. Bug and Bugnote Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.bug.view">5.5.1. Bug View</a></span></dt><dt><span class="section"><a href="#dev.eventref.bug.action">5.5.2. Bug Actions</a></span></dt><dt><span class="section"><a href="#dev.eventref.bug.noteview">5.5.3. Bugnote View</a></span></dt><dt><span class="section"><a href="#dev.eventref.bug.noteaction">5.5.4. Bugnote Actions</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.notify">5.6. Notification Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.notify.user">5.6.1. Recipient Selection</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.account">5.7. User Account Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.account.pref">5.7.1. Account Preferences</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.manage">5.8. Management Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.manage.project">5.8.1. Projects and Versions</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#integrators">6. Integrating with MantisBT</a></span></dt><dd><dl><dt><span class="section"><a href="#integrators.java">6.1. Java integration</a></span></dt><dd><dl><dt><span class="section"><a href="#integrators.java.soap">6.1.1. Prebuilt SOAP stubs using Axis</a></span></dt><dt><span class="section"><a href="#integrators.java.osgi">6.1.2. Usage in OSGi environments</a></span></dt></dl></dd><dt><span class="section"><a href="#integrators.compatibility">6.2. Compatibility between releases</a></span></dt><dt><span class="section"><a href="#integrators.support">6.3. Support</a></span></dt></dl></dd><dt><span class="chapter"><a href="#dev.appendix">7. Appendix</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.appendix.git">7.1. Git References</a></span></dt></dl></dd><dt><span class="appendix"><a href="#appe-Developers_Guide-Revision_History">A. Revision History</a></span></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="dev.contrib"></a>Chapter 1. Contributing to MantisBT</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#dev.contrib.setup">1.1. Initial Setup</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone">1.2. Cloning the Repository</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.clone.dev">1.2.1. Determining the Clone URL</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone.clone">1.2.2. Initializing the Clone</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone.remotes">1.2.3. Adding remotes</a></span></dt><dt><span class="section"><a href="#dev.contrib.clone.branches">1.2.4. Checking out branches</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.contrib.branch">1.3. Maintaining Tracking Branches</a></span></dt><dt><span class="section"><a href="#dev.contrib.prepare">1.4. Preparing Feature Branches</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.prepare.local">1.4.1. Private Branches</a></span></dt><dt><span class="section"><a href="#dev.contrib.prepare.public">1.4.2. Public Branches</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.contrib.test">1.5. Running PHPUnit tests</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.test.soap">1.5.1. Running the SOAP tests</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.contrib.submit">1.6. Submitting Changes</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.contrib.submit.before">1.6.1. Before you submit</a></span></dt><dt><span class="section"><a href="#dev.contrib.submit.github">1.6.2. Submission Via Github Pull Requests</a></span></dt><dt><span class="section"><a href="#dev.contrib.submit.patch">1.6.3. Submission Via Formatted Patches</a></span></dt><dt><span class="section"><a href="#dev.contrib.submit.repo">1.6.4. Submission Via Public Repository</a></span></dt></dl></dd></dl></div><div class="para">
+		MantisBT source code is managed with <a href="http://git-scm.com/">Git</a>. If you are new to this version control system, you can find some good resources for learning and installing it in <a class="xref" href="#dev.appendix.git">Section 7.1, “Git References”</a>.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.contrib.setup"></a>1.1. Initial Setup</h2></div></div></div><div class="para">
+			There are a few steps the MantisBT team requires of contributors and developers when accepting code submissions. The user needs to configure Git to know their full name (not a screen name) and an email address they can be contacted at (not a throwaway address).
+		</div><div class="para">
+			To set up your name and email address with Git, run the following commands, substituting your own real name and email address:
+		</div><pre class="programlisting">
+git config --global user.name "John Smith"
+git config --global user.email "jsmith@mantisbt.org"
+</pre><div class="para">
+			Optionally, you may want to configure Git to use terminal colors when displaying file diffs and other information, and also alias certain Git actions to shorter phrases to reduce typing:
+		</div><pre class="programlisting">
+git config --global color.diff "auto"
+git config --global color.status "auto"
+git config --global color.branch "auto"
+
+git config --global alias.st "status"
+git config --global alias.di "diff"
+git config --global alias.co "checkout"
+git config --global alias.ci "commit"
+</pre></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.contrib.clone"></a>1.2. Cloning the Repository</h2></div></div></div><div class="para">
+			The official MantisBT source code repository is hosted at <a href="https://github.com/mantisbt/mantisbt">GitHub</a>. This document assumes that you have already signed up for and setup a GitHub account.
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.clone.dev"></a>1.2.1. Determining the Clone URL</h3></div></div></div><div class="para">
+				Which URL you will use to clone the repository before you start developing depends on your situation.
+			</div><div class="variablelist"><dl class="variablelist"><dt><span class="term">MantisBT Core Team Developers</span></dt><dd><div class="para">
+							MantisBT developers have <span class="emphasis"><em>push</em></span> access to the official repository.
+						</div><div class="para">
+							Benefitting from this access requires a special URL that uses your SSH key to handle access permissions: <a href="git@github.com:mantisbt/mantisbt.git">git@github.com:mantisbt/mantisbt.git</a>. Alternatively, an HTTPS link can be used as well, in which case you will have to provide your GitHub User ID and password when Git requests it: <a href="https://github.com/mantisbt/mantisbt.git">https://github.com/mantisbt/mantisbt.git</a>.
+						</div><div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+								Pushes <span class="emphasis"><em>will fail</em></span> if you do not have access or your public SSH key is not set up correctly in your GitHub profile.
+							</div></div></div></dd><dt><span class="term">Contributors</span></dt><dd><div class="para">
+							For other people, the MantisBT repository and the related clone URLs <a href="git://github.com/mantisbt/mantisbt.git">git://github.com/mantisbt/mantisbt.git</a> (SSH) or <a href="https://github.com/mantisbt/mantisbt.git">https://github.com/mantisbt/mantisbt.git</a> (HTTPS) will always be read-only.
+						</div><div class="para">
+							It is therefore strongly advised to <span class="emphasis"><em> <a href="https://github.com/mantisbt/mantisbt/fork"> create your own fork </a> </em></span> of MantisBT where you will be able to push your changes, and then use the fork's URL instead to clone, which will look like this: <a href="git@github.com:MyGithubId/mantisbt.git">git@github.com:MyGithubId/mantisbt.git</a> or <a href="https://github.com/MyGithubId/mantisbt.git">https://github.com/MyGithubId/mantisbt.git</a>
+						</div></dd></dl></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.clone.clone"></a>1.2.2. Initializing the Clone</h3></div></div></div><div class="para">
+				To clone the repository, execute the following command from your target workspace: 
+<pre class="programlisting">
+git clone YourCloneURL
+</pre>
+				 After performing the cloning operation, you should end up with a new directory in your workspace, <code class="filename">mantisbt/</code>, containing the MantisBT repository with a <code class="literal">remote</code> named <span class="emphasis"><em>origin</em></span> pointing to your Clone URL.
+			</div><div class="para">
+				MantisBT uses <a href="https://getcomposer.org">Composer</a> to pull libraries and components from <a href="https://packagist.org">Packagist</a> and <a href="https://github.com">Github</a>. <a href="https://getcomposer.org/download/">Install Composer</a> and run the following command: 
+<pre class="programlisting">
+composer install
+</pre>
+
+			</div><div class="warning"><div class="admonition_header"><p><strong>Warning</strong></p></div><div class="admonition"><div class="para">
+					Failure to execute the submodule initialization commands will result in critical components being missing from <code class="filename">/vendor</code> folder, which will then cause errors when running MantisBT.
+				</div></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.clone.remotes"></a>1.2.3. Adding remotes</h3></div></div></div><div class="para">
+				If you are planning to use your own fork to push and maintain your changes, then we recommend setting up an <span class="emphasis"><em>upstream</em></span> <code class="literal">remote</code> for MantisBT's official repository, which will make it easier to keep your repository up-to-date. 
+<pre class="programlisting">
+git remote add --tags upstream git://github.com/mantisbt/mantisbt.git
+</pre>
+
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.clone.branches"></a>1.2.4. Checking out branches</h3></div></div></div><div class="para">
+				By default, the new clone will only track code from the primary remote branch, <code class="literal">master</code>, which is the latest development version of MantisBT. If you are planning to work with stable release or other development branches, you will need to set up local tracking branches in your repository.
+			</div><div class="para">
+				The following command will set up a tracking branch for the current stable branch, <code class="literal">master-1.3.x</code>. 
+<pre class="programlisting">
+git checkout -b master-1.3.x origin/master-1.3.x
+</pre>
+
+			</div><div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+					With the introduction of submodules for some of the third-party libraries, you may encounter issues when switching to an older branch which still has code from those libraries in a subdirectory of <code class="filename">/library</code> rather than a submodule:
+				</div><div class="para">
+					
+<pre class="programlisting">
+$ git checkout old_branch
+error: The following untracked working tree files would be overwritten by checkout
+	(list of files)
+Aborting
+</pre>
+
+				</div><div class="para">
+					To resolve this, you first have to get rid of the submodules directories before you can checkout the branch. The command below will move all submodules to <code class="filename">/tmp</code>: 
+<pre class="programlisting">
+sed -rn "s/^.*path\s*=\s*(.*)$/\1/p" .gitmodules |xargs -I{} mv -v {} /tmp
+git checkout old_branch
+</pre>
+
+				</div><div class="para">
+					Alernatively, if you don't care about keeping the changes in the submodules directories, you can simply execute 
+<pre class="programlisting">
+git checkout -f old_branch
+git clean -df
+</pre>
+
+				</div><div class="para">
+					When switching back from the older branch, the submodules directories will be empty. At that point you can either 
+					<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+								Update the submodules to reclone them 
+<pre class="programlisting">
+git submodule update
+</pre>
+
+							</div></li><li class="listitem"><div class="para">
+								Restore the directories previously moved to <code class="filename">/tmp</code> back into the empty directories, e.g. 
+<pre class="programlisting">
+sed -rn "s/^.*path\s*=\s*(.*)$/\1/p" .gitmodules |xargs -n 1 basename |xargs -I{} mv -v /tmp/{} library
+</pre>
+
+							</div></li></ul></div>
+
+				</div><div class="para">
+					For further reference: <a href="http://git-scm.com/book/en/Git-Tools-Submodules#Issues-with-Submodules"> Pro Git book </a>
+				</div></div></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.contrib.branch"></a>1.3. Maintaining Tracking Branches</h2></div></div></div><div class="para">
+			In order to keep your local repository up-to-date with the official one, there are a few simple commands needed for any tracking branches that you may have, including <code class="literal">master</code> and <code class="literal">master-1.3.x</code>.
+		</div><div class="para">
+			First, you'll need to get the latest information from the remote repository: 
+<pre class="programlisting">
+git fetch origin
+</pre>
+
+		</div><div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+				If you cloned from your personal GitHub fork instead of the official MantisBT repository as explained in <a class="xref" href="#dev.contrib.clone.remotes">Section 1.2.3, “Adding remotes”</a>, then you should instead execute: 
+<pre class="programlisting">
+git fetch upstream
+</pre>
+
+			</div></div></div><div class="para">
+			Then for each tracking branch you have, enter the following commands: 
+<pre class="programlisting">
+git checkout BranchName
+git rebase
+</pre>
+
+		</div><div class="para">
+			Alternatively, you may combine the fetch and rebase operations described above into a single pull command (for each remote tracking branch): 
+<pre class="programlisting">
+git checkout master
+git pull --rebase
+</pre>
+
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.contrib.prepare"></a>1.4. Preparing Feature Branches</h2></div></div></div><div class="para">
+			For each local or shared feature branch that you are working on, you will need to keep it up to date with the appropriate master branch. There are multiple methods for doing this, each better suited to a different type of feature branch. <span class="emphasis"><em>Both methods assume that you have already performed the previous step, to update your local tracking branches (see <a class="xref" href="#dev.contrib.branch">Section 1.3, “Maintaining Tracking Branches”</a>).</em></span>
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.prepare.local"></a>1.4.1. Private Branches</h3></div></div></div><div class="para">
+				If the topic branch in question is a local, private branch, that you are not sharing with other developers, the simplest and easiest method to stay up to date with <code class="literal">master</code> is to use the <code class="command">rebase</code> command. This will append all of your feature branch commits into a linear history after the last commit on the <code class="literal">master</code> branch.
+			</div><pre class="programlisting">
+git rebase master feature
+</pre><div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+					Rebasing changes the ID for each commit in your feature branch, which will cause trouble for anyone sharing and/or following your branch.
+				</div><div class="para">
+					The resulting conflict can be fixed by rebasing their copy of your branch onto your branch:
+				</div><pre class="programlisting">
+git checkout feature
+git fetch remote/feature
+git rebase remote/feature
+</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.prepare.public"></a>1.4.2. Public Branches</h3></div></div></div><div class="para">
+				For any publicly-shared branches, where other users may be watching your feature branches, or cloning them locally for development work, you'll need to take a different approach to keeping it up to date with <code class="literal">master</code>.
+			</div><div class="para">
+				To bring public branch up to date, you'll need to <code class="command">merge</code> the current <code class="literal">master</code> branch, which will create a special "merge commit" in the branch history, causing a logical "split" in commit history where your branch started and joining at the merge. These merge commits are generally disliked, because they can crowd commit history, and because the history is no longer linear. They will be dealt with during the submission process (see <a class="xref" href="#dev.contrib.test">Section 1.5, “Running PHPUnit tests”</a>).
+			</div><pre class="programlisting">
+git checkout feature
+git merge master
+</pre><div class="para">
+				At this point, you can push the branch to your public repository, and anyone following the branch can then pull the changes directly into their local branch, either with another merge, or with a rebase, as necessitated by the public or private status of their own changes.
+			</div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.contrib.test"></a>1.5. Running PHPUnit tests</h2></div></div></div><div class="para">
+			MantisBT has a suite of PHPUnit tests found in the <code class="literal">tests</code> directory. You are encouraged to add your own tests for the patches you are submitting, but please remember that your changes must not break existing tests.
+		</div><div class="para">
+			In order to run the tests, you will need to have the PHP Soap extension, <a href="http://www.phpunit.de">PHPUnit 3.4 or newer</a> and <a href="http://phing.info">Phing 2.4 or newer</a> installed. The tests are configured using a <code class="literal">bootstrap.php</code> file. The <code class="literal">boostrap.php.sample</code> file contains the settings you will need to adjust to run all the tests.
+		</div><div class="para">
+			Running the unit tests is done from root directory using the following command:
+		</div><pre class="programlisting">
+phing test
+</pre><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.test.soap"></a>1.5.1. Running the SOAP tests</h3></div></div></div><div class="para">
+				MantisBT ships with a suite of SOAP tests which require an initial set up to be executed. The required steps are:
+			</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						Install MantisBT locally and configure a project and a category.
+					</div></li><li class="listitem"><div class="para">
+						Adjust the <code class="literal">bootstrap.php</code> file to point to your local installation.
+					</div></li><li class="listitem"><div class="para">
+						Customize the <code class="literal">config_inc.php</code> to enable all the features tested using the SOAP tests. The simplest way to do that is to run all the tests once and adjust it based on the skipped tests.
+					</div></li></ul></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.contrib.submit"></a>1.6. Submitting Changes</h2></div></div></div><div class="para">
+			This section describes what you should do to submit a set of changes to MantisBT, allowing the project developers to review and test, your code, and ultimately commit it to the MantisBT repository.
+		</div><div class="para">
+			The actual submission can be done using several methods, described later in this section: 
+			<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+						<span class="emphasis"><em>Recommended:</em></span> Github Pull Requests (see <a class="xref" href="#dev.contrib.submit.github">Section 1.6.2, “Submission Via Github Pull Requests”</a>)
+					</div></li><li class="listitem"><div class="para">
+						Other public Git repository Pull Requests (see <a class="xref" href="#dev.contrib.submit.repo">Section 1.6.4, “Submission Via Public Repository”</a>)
+					</div></li><li class="listitem"><div class="para">
+						Git Formatted patches (see <a class="xref" href="#dev.contrib.submit.patch">Section 1.6.3, “Submission Via Formatted Patches”</a>)
+					</div></li></ul></div>
+
+		</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.submit.before"></a>1.6.1. Before you submit</h3></div></div></div><div class="para">
+				Before submitting your contribution, you should make sure that 
+				<div class="orderedlist"><ol><li class="listitem"><div class="para">
+							Your code follows the <a href="http://www.mantisbt.org/wiki/doku.php/mantisbt:coding_guidelines"> MantisBT coding guidelines </a>
+						</div></li><li class="listitem"><div class="para">
+							You have tested your changes locally (see <a class="xref" href="#dev.contrib.test">Section 1.5, “Running PHPUnit tests”</a>)
+						</div></li><li class="listitem"><div class="para">
+							Your local branch has been rebased on top of the current Master branch, as described in <a class="xref" href="#dev.contrib.prepare.local">Section 1.4.1, “Private Branches”</a>.
+						</div></li></ol></div>
+
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.submit.github"></a>1.6.2. Submission Via Github Pull Requests</h3></div></div></div><div class="para">
+				Since the <a href="https://github.com/mantisbt/mantisbt"> official MantisBT repository</a> is hosted there, using <a href="http://github.com">GitHub</a> is the recommended (and easiest) way to submit your contributions.
+			</div><div class="para">
+				With this method, you can keep your changesets up-to-date with the official development repository, and likewise let anyone stay up to date with your repository, without needing to constantly upload and download new formatted patches whenever you change anything.
+			</div><div class="para">
+				The process below describes a simple workflow that can help you make your submission if you are not familiar with Git; note that it is by no means the only way to do this.
+			</div><div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+					We'll assume that you have already <a href="https://github.com/mantisbt/mantisbt/fork">forked MantisBT</a>, cloned it locally as described in <a class="xref" href="#dev.contrib.clone">Section 1.2, “Cloning the Repository”</a> (remote <span class="emphasis"><em>upstream</em></span> being the official MantisBT repository and <span class="emphasis"><em>origin</em></span> your personal fork), and created a new feature branch (see <a class="xref" href="#dev.contrib.prepare">Section 1.4, “Preparing Feature Branches”</a>) for your contribution, which we'll call <span class="emphasis"><em>MyBranch</em></span>.
+				</div></div></div><div class="orderedlist"><ol><li class="listitem"><div class="para">
+						Make sure that the <span class="emphasis"><em>MyBranch</em></span> feature branch is up-to-date with the master branch by rebasing it, resolving any conflicts if necessary. 
+<pre class="programlisting">
+git fetch upstream
+git rebase upstream/master MyBranch
+</pre>
+
+					</div></li><li class="listitem"><div class="para">
+						Push the branch to your Github fork 
+<pre class="programlisting">
+git push origin MyBranch
+</pre>
+
+					</div></li><li class="listitem"><div class="para">
+						Go to your Fork on Github (<a href="https://github.com/MyGithubId/mantisbt">https://github.com/MyGithubId/mantisbt</a>)
+					</div></li><li class="listitem"><div class="para">
+						Initiate a <a href="https://github.com/MyGithubId/mantisbt/compare/MyBranch"> Pull Request</a> from your feature branch, following the guidelines provided in <a href="https://help.github.com/articles/using-pull-requests"> Github Help</a>.
+					</div><div class="para">
+						Please make sure you provide a detailed description of the changes you are submitting, including the reason for it and if possible a reference (link) to an existing issue on <a href="http://mantibt.org/bugs/">our bugtracker</a>. The team will usually review your changes and provide feedback within 7 days (but your mileage may vary).
+					</div></li></ol></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.submit.patch"></a>1.6.3. Submission Via Formatted Patches</h3></div></div></div><div class="para">
+				Formatted patches are very similar to file diffs generated by other tools or source control systems, but contain far more information, including your name and email address, and for every commit in the set, the commit's timestamp, message, author, and more. They allow anyone to import the enclosed changesets directly into Git, where all of the commit information is preserved.
+			</div><div class="para">
+				Assuming that you have an existing local that you've kept up to date with <code class="literal">master</code> as described in <a class="xref" href="#dev.contrib.prepare">Section 1.4, “Preparing Feature Branches”</a> currently checked out, generating a formatted patch set should be relatively straightforward, using an appropriate filename as the target of the patch set:
+			</div><pre class="programlisting">
+git format-patch --binary --stdout origin/master..HEAD &gt; feature_branch.patch
+</pre><div class="para">
+				Once you've generated the formatted patch file, you can easily attach it to a bug report, or even use the patch file as an email to send to the developer mailing list. Developers, or other users, can then import this patch set into their local repositories using the following command, again substituting the appropriate filename:
+			</div><pre class="programlisting">
+git am --signoff feature_branch.patch
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.contrib.submit.repo"></a>1.6.4. Submission Via Public Repository</h3></div></div></div><div class="para">
+				If you are not able or not willing to make use of a fork of the official <a href="http://github.com">GitHub</a> repository but have another publicly available one to host your changes, for example on a free hosting for public repository such as 
+				<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+							<a href="https://bitbucket.org">Bitbucket</a>
+						</div></li><li class="listitem"><div class="para">
+							<a href="https://gitlab.com">GitLab</a>
+						</div></li></ul></div>
+				 you can still use it to submit a patch in a similar fashion to the Github method described above, although the process is slightly more complicated.
+			</div><div class="para">
+				We'll assume you've already set up a publicly accessible repository at URL <code class="literal">git@githosting.com:contrib.git</code>, kept it up-to-date with MantisBT's official repository, and that you have pushed your feature branch <code class="literal">MyBranch</code> to it.
+			</div><div class="orderedlist"><ol><li class="listitem"><div class="para">
+						Generate the Pull Request
+					</div><div class="para">
+						This will list information about your changes and how to access them. The process will attempt to verify that you've pushed the correct data to the public repository, and will generate a summary of changes. 
+<pre class="programlisting">
+git request-pull origin/master git@githosting.com:contrib.git MyBranch
+</pre>
+
+					</div></li><li class="listitem"><div class="para">
+						Paste the output of the above command into a bug report or an email to the <a href="mailto:mantisbt-dev@lists.sourceforge.net">developer mailing list</a>
+					</div></li></ol></div><div class="para">
+				Once your pull request has been posted, developers and other users can add your public repository as a remote, and track your feature branch in their own working repository using the following commands, replacing the remote name and local branch name as appropriate:
+			</div><pre class="programlisting">
+git remote add feature  git@githosting.com:contrib.git
+git checkout -b MyBranch feature/MyBranch
+</pre><div class="para">
+				If the feature is approved for entry into MantisBT core, then the branch should first be rebased onto the latest HEAD so that Git can remove any unnecessary merge commits, and create a linear history. Once that's completed, the feature branch can be merged into <code class="literal"> master</code>:
+			</div><pre class="programlisting">
+git rebase master feature
+git checkout master
+git merge --no-ff feature
+</pre></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="dev.database"></a>Chapter 2. Database Schema Management</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#dev.database.erd">2.1. The MantisBT schema</a></span></dt><dt><span class="section"><a href="#dev.database.schema">2.2. Schema Definition</a></span></dt><dt><span class="section"><a href="#dev.database.install">2.3. Installation / Upgrade Process</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.database.erd"></a>2.1. The MantisBT schema</h2></div></div></div><div class="para">
+			The MantisBT database schema (excluding plugins) is described in the Entity-Relationship diagram (ERD) below. There is also a <a href="http://mantisbt.org/docs/erd/"> PDF version available for download</a>.
+		</div><div class="figure"><a id="erd"></a><div class="figure-contents"><a href="images/erd.png"> <span class="inlinemediaobject"><img src="images/erd.png" width="100%" alt="MantisBT Entity-Relationship Diagram" /></span>
+			 </a></div><p class="title"><strong>Figure 2.1. MantisBT Entity-Relationship Diagram</strong></p></div><br class="figure-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.database.schema"></a>2.2. Schema Definition</h2></div></div></div><div class="para">
+			TODO: Discuss the ADODB datadict formats and the format MantisBT expects for schema definitions.
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.database.install"></a>2.3. Installation / Upgrade Process</h2></div></div></div><div class="para">
+			TODO: Discuss how MantisBT handles a database installation / upgrade, including the use of the config system and schema definitions.
+		</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="dev.events"></a>Chapter 3. Event System</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#dev.events.concepts">3.1. General Concepts</a></span></dt><dt><span class="section"><a href="#dev.events.api">3.2. API Usage</a></span></dt><dt><span class="section"><a href="#dev.events.types">3.3. Event Types</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.events.concepts"></a>3.1. General Concepts</h2></div></div></div><div class="para">
+			The event system in MantisBT uses the concept of signals and hooked events to drive dynamic actions. Functions, or plugin methods, can be hooked during runtime to various defined events, which can be signalled at any point to initiate execution of hooked functions.
+		</div><div class="para">
+			Events are defined at runtime by name and event type (covered in the next section). Depending on the event type, signal parameters and return values from hooked functions will be handled in different ways to make certain types of common communication simplified.
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.events.api"></a>3.2. API Usage</h2></div></div></div><div class="para">
+			This is a general overview of the event API. For more detailed analysis, you may reference the file <code class="filename">core/event_api.php</code> in the codebase.
+		</div><div class="blockquote"><a id="dev.events.api.declare"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>Declaring Events</strong></p></div><div class="para">
+				When declaring events, the only information needed is the event name and event type. Events can be declared alone using the form:
+			</div><pre class="programlisting">event_declare( $name, $type=EVENT_TYPE_DEFAULT );</pre><div class="para">
+				or they can be declared in groups using key/value pairs of name =&gt; type relations, stored in a single array, such as:
+			</div><pre class="programlisting">
+$events = array(
+	$name_1 =&gt; $type_1,
+	$name_2 =&gt; $type_2,
+	...
+	);
+
+event_declare_many( $events );
+</pre></blockquote></div><div class="blockquote"><a id="dev.events.api.hook"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>Hooking Events</strong></p></div><div class="para">
+				Hooking events requires knowing the name of an already-declared event, and the name of the callback function (and possibly associated plugin) that will be hooked to the event. If hooking only a function, it must be declared in the global namespace.
+			</div><pre class="programlisting">event_hook( $event_name, $callback, [$plugin] );</pre><div class="para">
+				In order to hook many functions at once, using key/value pairs of name =&gt; callback relations, in a single array:
+			</div><pre class="programlisting">
+$events = array(
+	$event_1 =&gt; $callback_1,
+	$event_2 =&gt; $callback_2,
+	...
+	);
+
+event_hook( $events, [$plugin] );
+</pre></blockquote></div><div class="blockquote"><a id="dev.events.api.signal"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>Signalling Events</strong></p></div><div class="para">
+				When signalling events, the event type of the target event must be kept in mind when handling event parameters and return values. The general format for signalling an event uses the following structure:
+			</div><pre class="programlisting">$value = event_signal( $event_name, [ array( $param, ... ), [ array( $static_param, ... ) ] ] );</pre><div class="para">
+				Each type of event (and individual events themselves) will use different combinations of parameters and return values, so perusing <a class="xref" href="#dev.eventref">Chapter 5, <em>Events Reference</em></a> is recommended for determining the unique needs of each event when signalling and hooking them.
+			</div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.events.types"></a>3.3. Event Types</h2></div></div></div><div class="para">
+			There are five standard event types currently defined in MantisBT. Each type is a generalization of a certain "class" of solution to the problems that the event system is designed to solve. Each type allows for simplifying a different set of communication needs between event signals and hooked callback functions.
+		</div><div class="para">
+			Each type of event (and individual events themselves) will use different combinations of parameters and return values, so perusing <a class="xref" href="#dev.eventref">Chapter 5, <em>Events Reference</em></a> is recommended for determining the unique needs of each event when signalling and hooking them.
+		</div><div class="blockquote"><a id="dev.events.types.execute"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TYPE_EXECUTE</strong></p></div><div class="para">
+				This is the simplest event type, meant for initiating basic hook execution without needing to communicate more than a set of immutable parameters to the event, and expecting no return of data.
+			</div><div class="para">
+				These events only use the first parameter array, and return values from hooked functions are ignored. Example usage:
+			</div><pre class="programlisting">event_signal( $event_name, [ array( $param, ... ) ] );</pre></blockquote></div><div class="blockquote"><a id="dev.events.types.output"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TYPE_OUTPUT</strong></p></div><div class="para">
+				This event type allows for simple output and execution from hooked events. A single set of immutable parameters are sent to each callback, and the return value is inlined as output. This event is generally used for an event with a specific purpose of adding content or markup to the page.
+			</div><div class="para">
+				These events only use the first parameter array, and return values from hooked functions are immediately sent to the output buffer via 'echo'. Another parameter <em class="parameter"><code>$format</code></em> can be used to model how the results are printed. This parameter can be either: 
+				<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+							null, or omitted: The returned values are printed without further processing
+						</div></li><li class="listitem"><div class="para">
+							&lt;String&gt;: A string to be used as separator for printed values
+						</div></li><li class="listitem"><div class="para">
+							&lt;Array&gt;: An array of (prefix, separator, postfix) to be used for the printed values
+						</div></li></ul></div>
+
+			</div><div class="para">
+				Example usage:
+			</div><pre class="programlisting">event_signal( $event_name, [ array( $param, ... ) ], [ $format ] );</pre></blockquote></div><div class="blockquote"><a id="dev.events.types.chain"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TYPE_CHAIN</strong></p></div><div class="para">
+				This event type is designed to allow plugins to successively alter the parameters given to them, such that the end result returned to the caller is a mutated version of the original parameters. This is very useful for such things as output markup parsers.
+			</div><div class="para">
+				The first set of parameters to the event are sent to the first hooked callback, which is then expected to alter the parameters and return the new values, which are then sent to the next callback to modify, and this continues for all callbacks. The return value from the last callback is then returned to the event signaller.
+			</div><div class="para">
+				This type allows events to optionally make use of the second parameter set, which are sent to every callback in the series, but should not be returned by each callback. This allows the signalling function to send extra, immutable information to every callback in the chain. Example usage:
+			</div><pre class="programlisting">$value = event_signal( $event_name, $param, [ array( $static_param, ... ) ] );</pre></blockquote></div><div class="blockquote"><a id="dev.events.types.first"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TYPE_FIRST</strong></p></div><div class="para">
+				The design of this event type allows for multiple hooked callbacks to 'compete' for the event signal, based on priority and execution order. The first callback that can satisfy the needs of the signal is the last callback executed for the event, and its return value is the only one sent to the event caller. This is very useful for topics like user authentication.
+			</div><div class="para">
+				These events only use the first parameter array, and the first non-null return value from a hook function is returned to the caller. Subsequent callbacks are never executed. Example usage:
+			</div><pre class="programlisting">$value = event_signal( $event_name, [ array( $param, ... ) ] );</pre></blockquote></div><div class="blockquote"><a id="dev.events.types.default"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TYPE_DEFAULT</strong></p></div><div class="para">
+				This is the fallback event type, in which the return values from all hooked callbacks are stored in a special array structure. This allows the event caller to gather data separately from all events.
+			</div><div class="para">
+				These events only use the first parameter array, and return values from hooked functions are returned in a multi-dimensional array keyed by plugin name and hooked function name. Example usage:
+			</div><pre class="programlisting">$values = event_signal( $event_name, [ array( $param, ... ) ] );</pre></blockquote></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="dev.plugins"></a>Chapter 4. Plugin System</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#dev.plugins.concepts">4.1. General Concepts</a></span></dt><dt><span class="section"><a href="#dev.plugins.building">4.2. Building a Plugin</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.plugins.building.structure">4.2.1. Plugin Structure</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.properties">4.2.2. Properties</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.pages">4.2.3. Pages and Files</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.events">4.2.4. Events</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.config">4.2.5. Configuration</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.language">4.2.6. Language and Localization</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.plugins.building.source">4.3. Example Plugin Source Listing</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.plugins.building.source.Example.php">4.3.1. Example/Example.php</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.foo.css">4.3.2. Example/files/foo.css</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.stringsenglish.txt">4.3.3. Example/lang/strings_english.txt</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.configpage.php">4.3.4. Example/page/config_page.php</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.configupdate.php">4.3.5. Example/pages/config_update.php</a></span></dt><dt><span class="section"><a href="#dev.plugins.building.source.foo.php">4.3.6. Example/page/foo.php</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.plugins.api">4.4. API Usage</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.plugins.concepts"></a>4.1. General Concepts</h2></div></div></div><div class="para">
+			The plugin system for MantisBT is designed as a lightweight extension to the standard MantisBT API, allowing for simple and flexible addition of new features and customization of core operations. It takes advantage of the new Event System (see <a class="xref" href="#dev.events">Chapter 3, <em>Event System</em></a>) to offer developers rapid creation and testing of extensions, without the need to modify core files.
+		</div><div class="para">
+			Plugins are defined as implementations, or subclasses, of the <code class="classname">MantisPlugin</code> class as defined in <code class="filename">core/classes/MantisPlugin.php</code>. Each plugin may define information about itself, as well as a list of conflicts and dependencies upon other plugins. There are many methods defined in the <code class="classname">MantisPlugin</code> class that may be used as convenient places to define extra behaviors, such as configuration options, event declarations, event hooks, errors, and database schemas. Outside a plugin's core class, there is a standard method of handling language strings, content pages, and files.
+		</div><div class="para">
+			At page load, the core MantisBT API will find and process any conforming plugins. Plugins will be checked for minimal information, such as its name, version, and dependencies. Plugins that meet requirements will then be initialized. At this point, MantisBT will interact with the plugins when appropriate.
+		</div><div class="para">
+			The plugin system includes a special set of API functions that provide convenience wrappers around the more useful MantisBT API calls, including configuration, language strings, and link generation. This API allows plugins to use core API's in "sandboxed" fashions to aid interoperation with other plugins, and simplification of common functionality.
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.plugins.building"></a>4.2. Building a Plugin</h2></div></div></div><div class="para">
+		This section will act as a walk through of how to build a plugin, from the bare basics all the way up to advanced topics. A general understanding of the concepts covered in the last section is assumed, as well as knowledge of how the event system works. Later topics in this section will require knowledge of database schemas and how they are used with MantisBT.
+	</div><div class="para">
+		This walk through will be working towards building a single end result: the "Example" plugin as listed in <a class="xref" href="#dev.plugins.building.source">Section 4.3, “Example Plugin Source Listing”</a>. You may refer to the final source code along the way, although every part of it will be built up in steps throughout this section.
+	</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.structure"></a>4.2.1. Plugin Structure</h3></div></div></div><div class="para">
+			This section will introduce the general concepts of plugin structure, and how to get a barebones plugin working with MantisBT. Not much will be mentioned yet on the topic of adding functionality to plugins, just how to get the development process rolling.
+		</div><div class="para">
+			The backbone of every plugin is what MantisBT calls the <span class="emphasis"><em>basename</em></span>, a succinct, and most importantly, unique name that identifies the plugin. It may not contain any spacing or special characters beyond the ASCII upper- and lowercase alphabet, numerals, and underscore. This is used to identify the plugin everywhere except for what the end-user sees. For our "Example" plugin, the basename we will use should be obvious enough: <code class="literal">Example</code>.
+		</div><div class="para">
+			Every plugin must be contained in a single directory, named to match the plugin's basename, as well as contain at least a single PHP file, also named to match the basename, as such:
+		</div><div class="para">
+			Note that for plugins that require a database schema to operate, the basename is also used to build the table names, using the MantisBT table prefixes and suffix (please refer to the Admin Guide's <span class="emphasis"><em>Configuration</em></span> section for further information). If our Example plugin were to create a table named 'foo', assuming default values for prefixes and suffix in MantisBT configuration, the physical table name would be <code class="literal">mantis_plugin_Example_foo_table</code>.
+		</div><pre class="programlisting">
+Example/
+	Example.php
+</pre><div class="warning"><div class="admonition_header"><p><strong>Warning</strong></p></div><div class="admonition"><div class="para">
+				Depending on case sensitivity of the underlying file system, these names must <span class="emphasis"><em>exactly match</em></span> the plugin's base name, i.e. <code class="literal">example</code> will not work.
+			</div></div></div><div class="para">
+			This top-level PHP file must then contain a concrete class deriving from the <code class="classname">MantisPlugin</code> class, which must be named in the form of <code class="classname">%Basename%Plugin</code>, which for our purpose becomes <code class="classname">ExamplePlugin</code>.
+		</div><div class="para">
+			Because of how <code class="classname">MantisPlugin</code> declares the <code class="function">register()</code> method as <code class="literal">abstract</code>, our plugin must implement that method before PHP will find it semantically valid. This method is meant for one simple purpose, and should never be used for any other task: setting the plugin's information properties including the plugin's name, description, version, and more. Please refer to <a class="xref" href="#dev.plugins.building.properties">Section 4.2.2, “Properties”</a> below for details about available properties.
+		</div><div class="para">
+			Once your plugin defines its class, implements the <code class="function">register()</code> method, and sets at least the name and version properties, it is then considered a "complete" plugin, and can be loaded and installed within MantisBT's plugin manager. At this stage, our Example plugin, with all the possible plugin properties set at registration, looks like this:
+		</div><pre class="programlisting"><code class="filename">Example/Example.php</code>
+
+&lt;?php
+class ExamplePlugin extends MantisPlugin {
+    function register() {
+        $this-&gt;name = 'Example';    # Proper name of plugin
+        $this-&gt;description = '';    # Short description of the plugin
+        $this-&gt;page = '';           # Default plugin page
+
+        $this-&gt;version = '1.0';     # Plugin version string
+        $this-&gt;requires = array(    # Plugin dependencies
+            'MantisCore' =&gt; '2.0',  # Should always depend on an appropriate
+                                    # version of MantisBT
+        );
+
+        $this-&gt;author = '';         # Author/team name
+        $this-&gt;contact = '';        # Author/team e-mail address
+        $this-&gt;url = '';            # Support webpage
+    }
+}
+</pre><div class="para">
+			This alone will allow the Example plugin to be installed with MantisBT, and is the foundation of any plugin. More of the plugin development process will be continued in the next sections.
+		</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.properties"></a>4.2.2. Properties</h3></div></div></div><div class="para">
+			This section describes the properties that can be defined when registering the plugin.
+		</div><div class="variablelist"><dl class="variablelist"><dt><span class="term">name</span></dt><dd><div class="para">
+						Your plugin's full name. <span class="emphasis"><em>Required value.</em></span>
+					</div></dd><dt><span class="term">description</span></dt><dd><div class="para">
+						A full description of your plugin.
+					</div></dd><dt><span class="term">page</span></dt><dd><div class="para">
+						The name of a plugin page for further information and administration of the plugin. This is used to create a link to the specified page on Mantis' manage plugin page.
+					</div></dd><dt><span class="term">version</span></dt><dd><div class="para">
+						Your plugin's version string. <span class="emphasis"><em>Required value.</em></span> We recommend following the <a href="http://semver.org/">Semantic Versioning</a> specification, but you are free to use any versioning scheme that can be handled by PHP's <a href="http://php.net/manual/en/function.version-compare.php"> version_compare() </a> function.
+					</div></dd><dt><span class="term">requires</span></dt><dd><div class="para">
+						An array of key/value pairs of basename/version plugin dependencies. 
+						<div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+								The special, reserved basename <code class="literal">MantisCore</code> can be used to specify the minimum requirement for MantisBT core.
+							</div></div></div>
+						 The version string can be defined as:
+					</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+								<span class="emphasis"><em>Minimum requirement</em></span>: the plugin specified by the given basename must be installed, and its version must be equal or higher than the indicated one.
+							</div></li><li class="listitem"><div class="para">
+								<span class="emphasis"><em>Maximum requirement</em></span>: prefixing a version number with '<code class="literal">&lt;</code>' will allow the plugin to specify the highest version (non-inclusive) up to which the required dependency is supported. 
+								<div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+										If the plugin's minimum dependency for MantisCore is unspecified or lower than the current release (i.e. it does not specifically list the current core version as supported) and the plugin does not define a maximum dependency, a default one will be set to the next major release of MantisBT. (i.e. for 2.x.y we would add <code class="literal">'&lt;2</code>').
+									</div><div class="para">
+										This effectively disables plugins which have not been specifically designed for a new major Mantis release, thus forcing authors to review their code, adapt it if necessary, and release a new version of the plugin with updated dependencies.
+									</div></div></div>
+
+							</div></li><li class="listitem"><div class="para">
+								<span class="emphasis"><em>Both minimum and maximum</em></span>: the two version numbers must be separated by a comma.
+							</div></li></ul></div><div class="para">
+						Here are a few examples to illustrate the above explanations, assuming that the current Mantis release (<span class="emphasis"><em>MantisCore</em></span> version) is 2.1: 
+						<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+									Old release without a maximum version specified 
+<pre class="programlisting">
+$this-&gt;requires = array( 'MantisCore' =&gt; '1.3.1' );
+</pre>
+									 The plugin is compatible with MantisBT &gt;= 1.3.1 and &lt; 2.0.0 - note that the maximum version (<code class="literal">&lt;2</code>) was added by the system.
+								</div></li><li class="listitem"><div class="para">
+									Current release without a maximum version specified 
+<pre class="programlisting">
+$this-&gt;requires = array( 'MantisCore' =&gt; '2.0' );
+</pre>
+									 The plugin is compatible with MantisBT &gt;= 2.0 and &lt; 3.0 (the latter is implicit); code supporting older releases (e.g. 1.3) must be maintained separately (i.e. in a different branch).
+								</div></li><li class="listitem"><div class="para">
+									Only specify a maximum version 
+<pre class="programlisting">
+$this-&gt;requires = array( 'MantisCore' =&gt; '&lt; 3.1' );
+</pre>
+									 The plugin is compatible up to MantisBT 3.1 (not inclusive).
+								</div></li><li class="listitem"><div class="para">
+									Old release with a maximum version 
+<pre class="programlisting">
+$this-&gt;requires = array( 'MantisCore' =&gt; '1.3, &lt; 4.0' );
+</pre>
+									 The plugin is compatible with MantisBT &gt;= 1.3 and &lt; 4.0.
+								</div></li></ul></div>
+
+					</div></dd><dt><span class="term">uses</span></dt><dd><div class="para">
+						An array of key/value pairs of basename/version optional (soft) plugin dependencies. See <code class="literal">requires</code> above for details on how to specify versions.
+					</div></dd><dt><span class="term">author</span></dt><dd><div class="para">
+						Your name, or an array of names.
+					</div></dd><dt><span class="term">contact</span></dt><dd><div class="para">
+						An email address where you can be contacted.
+					</div></dd><dt><span class="term">url</span></dt><dd><div class="para">
+						A web address for your plugin.
+					</div></dd></dl></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.pages"></a>4.2.3. Pages and Files</h3></div></div></div><div class="para">
+			The plugin API provides a standard hierarchy and process for adding new pages and files to your plugin. For strict definitions, pages are PHP files that will be executed within the MantisBT core system, while files are defined as a separate set of raw data that will be passed to the client's browser exactly as it appears in the filesystem.
+		</div><div class="para">
+			New pages for your plugin should be placed in your plugin's <code class="filename">pages/</code> directory, and should be named using only letters and numbers, and must have a ".php" file extension. To generate a URI to the new page in MantisBT, the API function <code class="function">plugin_page()</code> should be used. Our Example plugin will create a page named <code class="filename">foo.php</code>, which can then be accessed via <code class="literal">plugin_page.php?page=Example/foo</code>, the same URI that <code class="function">plugin_page()</code> would have generated:
+		</div><pre class="programlisting"><code class="filename">Example/pages/foo.php</code>
+
+&lt;?php
+echo '&lt;p&gt;Here is a link to &lt;a href="', plugin_page( 'foo' ), '"&gt;page foo&lt;/a&gt;.&lt;/p&gt;';
+</pre><div class="para">
+			Adding non-PHP files, such as images or CSS stylesheets, follows a very similar pattern as pages. Files should be placed in the plugin's <code class="filename">files/</code> directory, and can only contain a single period in the name. The file's URI is generated with the <code class="function">plugin_file()</code> function. For our Example plugin, we'll create a basic CSS stylesheet, and modify the previously shown page to include the stylesheet:
+		</div><pre class="programlisting"><code class="filename">Example/files/foo.css</code>
+
+p.foo {
+    color: red;
+}
+</pre><pre class="programlisting"><code class="filename">Example/pages/foo.php</code>
+
+&lt;?php
+echo '&lt;p&gt;Here is a link to &lt;a href="', plugin_page( 'foo' ), '"&gt;page foo&lt;/a&gt;.&lt;/p&gt;';
+echo '&lt;link rel="stylesheet" type="text/css" href="', plugin_file( 'foo.css' ), '"/&gt;',
+     '&lt;p class="foo"&gt;This is red text.&lt;/p&gt;';
+</pre><div class="para">
+			Note that while <code class="function">plugin_page()</code> expects only the page's name without the extension, <code class="function">plugin_file()</code> requires the entire filename so that it can distinguish between <code class="filename">foo.css</code> and a potential file <code class="filename">foo.png</code>.
+		</div><div class="para">
+			The plugin's filesystem structure at this point looks like this:
+		</div><pre class="programlisting">
+Example/
+	Example.php
+	pages/
+		foo.php
+	files/
+		foo.css
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.events"></a>4.2.4. Events</h3></div></div></div><div class="para">
+			Plugins have an integrated method for both declaring and hooking events, without needing to directly call the event API functions. These take the form of class methods on your plugin.
+		</div><div class="para">
+			To declare a new event, or a set of events, that your plugin will trigger, override the <code class="function">events()</code> method of your plugin class, and return an associative array with event names as the key, and the event type as the value. Let's add an event "foo" to our Example plugin that does not expect a return value (an "execute" event type), and another event 'bar' that expects a single value that gets modified by each hooked function (a "chain" event type):
+		</div><pre class="programlisting"><code class="filename">Example/Example.php</code>
+
+&lt;?php
+class ExamplePlugin extends MantisPlugin {
+    ...
+
+    function events() {
+        return array(
+            'EVENT_EXAMPLE_FOO' =&gt; EVENT_TYPE_EXECUTE,
+            'EVENT_EXAMPLE_BAR' =&gt; EVENT_TYPE_CHAIN,
+        );
+    }
+}
+</pre><div class="para">
+			When the Example plugin is loaded, the event system in MantisBT will add these two events to its list of events, and will then allow other plugins or functions to hook them. Naming the events "EVENT_PLUGINNAME_EVENTNAME" is not necessary, but is considered best practice to avoid conflicts between plugins.
+		</div><div class="para">
+			Hooking other events (or events from your own plugin) is almost identical to declaring them. Instead of passing an event type as the value, your plugin must pass the name of a class method on your plugin that will be called when the event is triggered. For our Example plugin, we'll create a <code class="function">foo()</code> and <code class="function">bar()</code> method on our plugin class, and hook them to the events we declared earlier.
+		</div><pre class="programlisting"><code class="filename">Example/Example.php</code>
+
+&lt;?php
+class ExamplePlugin extends MantisPlugin {
+    ...
+
+    function hooks() {
+        return array(
+            'EVENT_EXAMPLE_FOO' =&gt; 'foo',
+            'EVENT_EXAMPLE_BAR' =&gt; 'bar',
+        );
+    }
+
+    function foo( $p_event ) {
+        ...
+    }
+
+    function bar( $p_event, $p_chained_param ) {
+        ...
+        return $p_chained_param;
+    }
+}
+</pre><div class="para">
+			Note that both hooked methods need to accept the <em class="parameter"><code>$p_event</code></em> parameter, as that contains the event name triggering the method (for cases where you may want a method hooked to multiple events). The <code class="function">bar()</code> method also accepts and returns the chained parameter in order to match the expectations of the "bar" event.
+		</div><div class="para">
+			Now that we have our plugin's events declared and hooked, let's modify our earlier page so that triggers the events, and add some real processing to the hooked methods:
+		</div><pre class="programlisting"><code class="filename">Example/Example.php</code>
+
+&lt;?php
+class ExamplePlugin extends MantisPlugin {
+    ...
+
+    function foo( $p_event ) {
+        echo 'In method foo(). ';
+    }
+
+    function bar( $p_event, $p_chained_param ) {
+        return str_replace( 'foo', 'bar', $p_chained_param );
+    }
+}
+</pre><pre class="programlisting"><code class="filename">Example/pages/foo.php</code>
+
+&lt;?php
+echo '&lt;p&gt;Here is a link to &lt;a href="', plugin_page( 'foo' ), '"&gt;page foo&lt;/a&gt;.&lt;/p&gt;';
+     '&lt;link rel="stylesheet" type="text/css" href="', plugin_file( 'foo.css' ), '"/&gt;',
+     '&lt;p class="foo"&gt;';
+
+event_signal( 'EVENT_EXAMPLE_FOO' );
+
+$t_string = 'A sentence with the word "foo" in it.';
+$t_new_string = event_signal( 'EVENT_EXAMPLE_BAR', array( $t_string ) );
+
+echo $t_new_string, '&lt;/p&gt;';
+</pre><div class="para">
+			When the first event "foo" is signaled, the Example plugin's <code class="function">foo()</code> method will execute and echo a string. After that, the second event "bar" is signaled, and the page passes a string parameter; the plugin's <code class="function">bar()</code> gets the string and replaces any instance of "foo" with "bar", and returns the resulting string. If any other plugin had hooked the event, that plugin could have further modified the new string from the Example plugin, or vice versa, depending on the loading order of plugins. The page then echos the modified string that was returned from the event.
+		</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.config"></a>4.2.5. Configuration</h3></div></div></div><div class="para">
+			Similar to events, plugins have a simplified method for declaring configuration options, as well as API functions for retrieving or setting those values at runtime.
+		</div><div class="para">
+			Declaring a new configuration option is achieved just like declaring events. By overriding the <code class="function">config()</code> method on your plugin class, your plugin can return an associative array of configuration options, with the option name as the key, and the default option as the array value. Our Example plugin will declare an option "foo_or_bar", with a default value of "foo":
+		</div><pre class="programlisting"><code class="filename">Example/Example.php</code>
+
+&lt;?php
+class ExamplePlugin extends MantisPlugin {
+    ...
+
+    function config() {
+        return array(
+            'foo_or_bar' =&gt; 'foo',
+        );
+    }
+}
+</pre><div class="para">
+			Retrieving the current value of a plugin's configuration option is achieved by using the plugin API's <code class="function">plugin_config_get()</code> function, and can be set to a modified value in the database using <code class="function">plugin_config_set()</code>. With these functions, the config option is prefixed with the plugin's name, in attempt to automatically avoid conflicts in naming. Our Example plugin will demonstrate this by adding a secure form to the "config_page", and handling the form on a separate page "config_update" that will modify the value in the database, and redirect back to page "config_page", just like any other form and action page in MantisBT:
+		</div><pre class="programlisting"><code class="filename">Example/pages/config_page.php</code>
+
+&lt;form action="&lt;?php echo plugin_page( 'config_update' ) ?&gt;" method="post"&gt;
+&lt;?php echo form_security_field( 'plugin_Example_config_update' ) ?&gt;
+
+&lt;label&gt;Foo or Bar?&lt;br/&gt;&lt;input name="foo_or_bar" value="&lt;?php echo string_attribute( $t_foo_or_bar ) ?&gt;"/&gt;&lt;/label&gt;
+&lt;br/&gt;
+&lt;label&gt;&lt;input type="checkbox" name="reset"/&gt; Reset&lt;/label&gt;
+&lt;br/&gt;
+&lt;input type="submit"/&gt;
+
+&lt;/form&gt;
+</pre><pre class="programlisting"><code class="filename">Example/pages/config_update.php</code>
+
+&lt;?php
+form_security_validate( 'plugin_Example_config_update' );
+
+$f_foo_or_bar = gpc_get_string( 'foo_or_bar' );
+$f_reset = gpc_get_bool( 'reset', false );
+
+if( $f_reset ) {
+    plugin_config_delete( 'foo_or_bar' );
+} else {
+    if( $f_foo_or_bar == 'foo' || $f_foo_or_bar == 'bar' ) {
+        plugin_config_set( 'foo_or_bar', $f_foo_or_bar );
+    }
+}
+
+form_security_purge( 'plugin_Example_config_update' );
+print_successful_redirect( plugin_page( 'foo', true ) );
+</pre><div class="para">
+			Note that the <code class="function">form_security_*()</code> functions are part of the form API, and prevent CSRF attacks against forms that make changes to the system.
+		</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.language"></a>4.2.6. Language and Localization</h3></div></div></div><div class="para">
+			MantisBT has a very advanced set of localization tools, which allow all parts of of the application to be localized to the user's preferred language. This feature has been extended for use by plugins as well, so that a plugin can be localized in much the same method as used for the core system. Localizing a plugin involves creating a language file for each localization available, and using a special API call to retrieve the appropriate string for the user's language.
+		</div><div class="para">
+			All language files for plugins follow the same format used in the core of MantisBT, should be placed in the plugin's <code class="filename">lang/</code> directory, and named the same as the core language files. Strings specific to the plugin should be "namespaced" in a way that will minimize any risk of collision. Translating the plugin to other languages already supported by MantisBT is then as simple as creating a new strings file with the localized content; the MantisBT core will find and use the new language strings automatically.
+		</div><div class="para">
+			We'll use the "configuration" pages from the previous examples, and dress them up with localized language strings, and add a few more flourishes to make the page act like a standard MantisBT page. First we need to create a language file for English, the default language of MantisBT and the default fallback language in the case that some strings have not yet been localized to the user's language:
+		</div><pre class="programlisting"><code class="filename">Example/lang/strings_english.txt</code>
+
+&lt;?php
+
+$s_plugin_Example_configuration = "Configuration";
+$s_plugin_Example_foo_or_bar = "Foo or Bar?";
+$s_plugin_Example_reset = "Reset Value";
+</pre><pre class="programlisting"><code class="filename">Example/pages/config_page.php</code>
+&lt;?php
+
+layout_page_header( plugin_lang_get( 'configuration' ) );
+layout_page_begin();
+$t_foo_or_bar = plugin_config_get( 'foo_or_bar' );
+
+?&gt;
+
+&lt;br/&gt;
+
+&lt;form action="&lt;?php echo plugin_page( 'config_update' ) ?&gt;" method="post"&gt;
+&lt;?php echo form_security_field( 'plugin_Example_config_update' ) ?&gt;
+&lt;table class="width60"&gt;
+
+&lt;tr&gt;
+    &lt;td class="form-title" rowspan="2"&gt;&lt;?php echo plugin_lang_get( 'configuration' ) ?&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr &lt;?php echo helper_alternate_class() ?&gt;&gt;
+    &lt;td class="category"&gt;&lt;php echo plugin_lang_get( 'foo_or_bar' ) ?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input name="foo_or_bar" value="&lt;?php echo string_attribute( $t_foo_or_bar ) ?&gt;"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr &lt;?php echo helper_alternate_class() ?&gt;&gt;
+    &lt;td class="category"&gt;&lt;php echo plugin_lang_get( 'reset' ) ?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input type="checkbox" name="reset"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+    &lt;td class="center" rowspan="2"&gt;&lt;input type="submit"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+&lt;/form&gt;
+
+&lt;?php
+
+layout_page_end();
+</pre><div class="para">
+			The two calls to <code class="function">layout_page_being()</code> and <code class="function">layout_page_end()</code> trigger the standard MantisBT header and footer portions, respectively, which also displays things such as the menus and triggers other layout-related events. <code class="function">layout_page_header()</code> pulls in the CSS classes for alternating row colors in the table. The rest of the HTML and CSS follows the "standard" MantisBT markup styles for content and layout.
+		</div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.plugins.building.source"></a>4.3. Example Plugin Source Listing</h2></div></div></div><div class="para">
+		The code in this section, for the Example plugin, is available for use, modification, and redistribution without any restrictions and without any warranty or implied warranties. You may use this code however you want.
+	</div><pre class="programlisting">
+Example/
+    Example.php
+    files/
+        foo.css
+    lang/
+        strings_english.txt
+    pages/
+        config_page.php
+        config_update.php
+        foo.php
+</pre><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.source.Example.php"></a>4.3.1. Example/Example.php</h3></div></div></div><pre class="programlisting"><code class="filename">Example/Example.php</code>
+&lt;?php
+class ExamplePlugin extends MantisPlugin {
+    function register() {
+        $this-&gt;name = 'Example';    # Proper name of plugin
+        $this-&gt;description = '';    # Short description of the plugin
+        $this-&gt;page = '';           # Default plugin page
+
+        $this-&gt;version = '1.0';     # Plugin version string
+        $this-&gt;requires = array(    # Plugin dependencies
+            'MantisCore' =&gt; '2.0',  # Should always depend on an appropriate
+                                    # version of MantisBT
+        );
+
+        $this-&gt;author = '';         # Author/team name
+        $this-&gt;contact = '';        # Author/team e-mail address
+        $this-&gt;url = '';            # Support webpage
+    }
+
+    function events() {
+        return array(
+            'EVENT_EXAMPLE_FOO' =&gt; EVENT_TYPE_EXECUTE,
+            'EVENT_EXAMPLE_BAR' =&gt; EVENT_TYPE_CHAIN,
+        );
+    }
+
+    function hooks() {
+        return array(
+            'EVENT_EXAMPLE_FOO' =&gt; 'foo',
+            'EVENT_EXAMPLE_BAR' =&gt; 'bar',
+        );
+    }
+
+    function config() {
+        return array(
+            'foo_or_bar' =&gt; 'foo',
+        );
+    }
+
+    function foo( $p_event ) {
+        echo 'In method foo(). ';
+    }
+
+    function bar( $p_event, $p_chained_param ) {
+        return str_replace( 'foo', 'bar', $p_chained_param );
+    }
+
+}
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.source.foo.css"></a>4.3.2. Example/files/foo.css</h3></div></div></div><pre class="programlisting"><code class="filename">Example/files/foo.css</code>
+p.foo {
+    color: red;
+}
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.source.stringsenglish.txt"></a>4.3.3. Example/lang/strings_english.txt</h3></div></div></div><pre class="programlisting"><code class="filename">Example/lang/strings_english.txt</code>
+&lt;?php
+
+$s_plugin_Example_configuration = "Configuration";
+$s_plugin_Example_foo_or_bar = "Foo or Bar?";
+$s_plugin_Example_reset = "Reset Value";
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.source.configpage.php"></a>4.3.4. Example/page/config_page.php</h3></div></div></div><pre class="programlisting"><code class="filename">Example/pages/config_page.php</code>
+&lt;?php
+
+layout_page_header( plugin_lang_get( 'configuration' ) );
+layout_page_begin();
+$t_foo_or_bar = plugin_config_get( 'foo_or_bar' );
+
+?&gt;
+
+&lt;br/&gt;
+
+&lt;form action="&lt;?php echo plugin_page( 'config_update' ) ?&gt;" method="post"&gt;
+&lt;?php echo form_security_field( 'plugin_Example_config_update' ) ?&gt;
+&lt;table class="width60"&gt;
+
+&lt;tr&gt;
+    &lt;td class="form-title" rowspan="2"&gt;&lt;?php echo plugin_lang_get( 'configuration' ) ?&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr &lt;?php echo helper_alternate_class() ?&gt;&gt;
+    &lt;td class="category"&gt;&lt;php echo plugin_lang_get( 'foo_or_bar' ) ?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input name="foo_or_bar" value="&lt;?php echo string_attribute( $t_foo_or_bar ) ?&gt;"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr &lt;?php echo helper_alternate_class() ?&gt;&gt;
+    &lt;td class="category"&gt;&lt;php echo plugin_lang_get( 'reset' ) ?&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input type="checkbox" name="reset"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+    &lt;td class="center" rowspan="2"&gt;&lt;input type="submit"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+&lt;/form&gt;
+
+&lt;?php
+
+layout_page_end();
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.source.configupdate.php"></a>4.3.5. Example/pages/config_update.php</h3></div></div></div><pre class="programlisting"><code class="filename">Example/pages/config_update.php</code>
+&lt;?php
+form_security_validate( 'plugin_Example_config_update' );
+
+$f_foo_or_bar = gpc_get_string( 'foo_or_bar' );
+$f_reset = gpc_get_bool( 'reset', false );
+
+if( $f_reset ) {
+    plugin_config_delete( 'foo_or_bar' );
+} else {
+    if( $f_foo_or_bar == 'foo' || $f_foo_or_bar == 'bar' ) {
+        plugin_config_set( 'foo_or_bar', $f_foo_or_bar );
+    }
+}
+
+form_security_purge( 'plugin_Example_config_update' );
+print_successful_redirect( plugin_page( 'foo', true ) );
+</pre></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.plugins.building.source.foo.php"></a>4.3.6. Example/page/foo.php</h3></div></div></div><pre class="programlisting"><code class="filename">Example/pages/foo.php</code>
+&lt;?php
+echo '&lt;p&gt;Here is a link to &lt;a href="', plugin_page( 'foo' ), '"&gt;page foo&lt;/a&gt;.&lt;/p&gt;';
+     '&lt;link rel="stylesheet" type="text/css" href="', plugin_file( 'foo.css' ), '"/&gt;',
+     '&lt;p class="foo"&gt;';
+
+event_signal( 'EVENT_EXAMPLE_FOO' );
+
+$t_string = 'A sentence with the word "foo" in it.';
+$t_new_string = event_signal( 'EVENT_EXAMPLE_BAR', array( $t_string ) );
+
+echo $t_new_string, '&lt;/p&gt;';
+</pre></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.plugins.api"></a>4.4. API Usage</h2></div></div></div><div class="para">
+			This is a general overview of the plugin API. For more detailed analysis, you may reference the file <code class="filename">core/plugin_api.php</code> in the codebase.
+		</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="dev.eventref"></a>Chapter 5. Events Reference</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#dev.eventref.intro">5.1. Introduction</a></span></dt><dt><span class="section"><a href="#dev.eventref.system">5.2. System Events</a></span></dt><dt><span class="section"><a href="#dev.eventref.output">5.3. Output Modifier Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.output.display">5.3.1. String Display</a></span></dt><dt><span class="section"><a href="#dev.eventref.output.menu">5.3.2. Menu Items</a></span></dt><dt><span class="section"><a href="#dev.eventref.output.layout">5.3.3. Page Layout</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.filter">5.4. Bug Filter Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.filter.custom">5.4.1. Custom Filters and Columns</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.bug">5.5. Bug and Bugnote Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.bug.view">5.5.1. Bug View</a></span></dt><dt><span class="section"><a href="#dev.eventref.bug.action">5.5.2. Bug Actions</a></span></dt><dt><span class="section"><a href="#dev.eventref.bug.noteview">5.5.3. Bugnote View</a></span></dt><dt><span class="section"><a href="#dev.eventref.bug.noteaction">5.5.4. Bugnote Actions</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.notify">5.6. Notification Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.notify.user">5.6.1. Recipient Selection</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.account">5.7. User Account Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.account.pref">5.7.1. Account Preferences</a></span></dt></dl></dd><dt><span class="section"><a href="#dev.eventref.manage">5.8. Management Events</a></span></dt><dd><dl><dt><span class="section"><a href="#dev.eventref.manage.project">5.8.1. Projects and Versions</a></span></dt></dl></dd></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.intro"></a>5.1. Introduction</h2></div></div></div><div class="para">
+			In this chapter, an attempt will be made to list all events used (or planned for later use) in the MantisBT event system. Each listed event will include details for the event type, when the event is called, and the expected parameters and return values for event callbacks.
+		</div><div class="para">
+			Here we show an example event definition. For each event, the event identifier will be listed along with the event types (see <a class="xref" href="#dev.events.types">Section 3.3, “Event Types”</a>) in parentheses. Below that should be a concise but thorough description of how the event is called and how to use it. Following that should be a list of event parameters (if any), as well as the expected return value (if any).
+		</div><div class="blockquote"><a id="dev.eventref.example"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_EXAMPLE (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an example event description.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Type&gt;: Description of parameter one
+						</div></li><li class="listitem"><div class="para">
+							&lt;Type&gt;: Description of parameter two
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Type&gt;: Description of return value
+						</div></li></ul></div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.system"></a>5.2. System Events</h2></div></div></div><div class="para">
+			These events are initiated by the plugin system itself to allow certain functionality to simplify plugin development.
+		</div><div class="blockquote"><a id="dev.eventref.system.plugininit"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_PLUGIN_INIT (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event is triggered by the MantisBT plugin system after all registered and enabled plugins have been initialized (their <code class="function">init()</code> functions have been called). This event should <span class="emphasis"><em>always</em></span> be the first event triggered for any page load. No parameters are passed to hooked functions, and no return values are expected.
+				</div><div class="para">
+					This event is the first point in page execution where all registered plugins are guaranteed to be enabled (assuming dependencies and such are met). At any point before this event, any or all plugins may not yet be loaded. Note that the core system has not yet completed the bootstrap process when this event is signalled.
+				</div><div class="para">
+					Suggested uses for the event include: 
+					<div class="itemizedlist"><ul><li class="listitem"><div class="para">
+								Checking for plugins that aren't require for normal usage.
+							</div></li><li class="listitem"><div class="para">
+								Interacting with other plugins outside the context of pages or events.
+							</div></li></ul></div>
+
+				</div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.system.coreheaders"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_CORE_HEADERS (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event is triggered by the MantisBT bootstrap process just before emitting the headers. This enables plugins to emit their own headers or use API that enables tweaking values of headers emitted by core. An example, of headers that can be tweaked is Content-Security-Policy header which can be tweaked using http_csp_*() APIs.
+				</div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.system.coreready"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_CORE_READY (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event is triggered by the MantisBT bootstrap process after all core APIs have been initialized, including the plugin system, but before control is relinquished from the bootstrap process back to the originating page. No parameters are passed to hooked functions, and no return values are expected.
+				</div><div class="para">
+					This event is the first point in page execution where the entire system is considered loaded and ready.
+				</div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.system.rest_api_routes"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_REST_API_ROUTES (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event is triggered by MantisBT to enable plugins to register their own routes to be accessible via the REST API. All APIs belonging to a plugin named 'Example', MUST live under 'https://.../api/rest/plugins/Example/'. The route registration is done using the Slim Framework app instance that is passed as a parameter. A route group should be used to include all routes for the plugin. The name of the route group should be retrieved via calling plugin_route_group(). See MantisGraph core plugin for an example and <a href="https://www.slimframework.com/docs/objects/router.html">Slim Framework router documentation</a>.
+				</div><div class="para">
+					Before calling into the plugin routes, the user would be already authenticated and authorized for API access in general. However, it is the responsibility of the plugin to do its own plugin specific authorization.
+				</div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.system.log"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LOG (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event is triggered by MantisBT to log a message. The contents of the message should be hyper linked based on the following rules: #123 means issue 123, ~123 means issue note 123, @P123 means project 123, @U123 means user 123. Logging plugins can capture extra context information like timestamp, current logged in user, etc. This event receives the logging string as a parameter.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: the logging string
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.auth.flags"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_AUTH_USER_FLAGS (First)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					An event that enables plugins to return a set of flags that control the authentication behaviors for the user who is logging in or logged in. In some cases, the user will be in the system, but there will be cases where the username provided by the user doesn't exist. In case the user doesn't exist, it is up to the authentication plugin whether to fail the login, validate credentials then fail, or validate credentials then auto-provision the user based on information the plugin is aware of (e.g. IDP or some db of accounts). If no plugin is registered for events, then defaults are used. If plugin sets a subset of the options, then the default will be used for the rest.
+				</div><div class="para">
+					Checkout <a href="https://github.com/mantisbt-plugins/SampleAuth">SampleAuth plugin</a> for more details.
+				</div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.output"></a>5.3. Output Modifier Events</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.output.display"></a>5.3.1. String Display</h3></div></div></div><div class="para">
+			These events make it possible to dynamically modify output strings to interpret or add semantic meaning or markup. Examples include the creation of links to other bugs or bugnotes, as well as handling urls to other sites in general.
+		</div><div class="blockquote"><a id="dev.eventref.output.display.bugid"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_DISPLAY_BUG_ID (Chained)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an event to format bug ID numbers before being displayed, using the <code class="function">bug_format_id()</code> API call. The result should be plain-text, as the resulting string is used in various formats and locations.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: bug ID string to be displayed
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: bug ID number
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: modified bug ID string
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.display.email"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_DISPLAY_EMAIL (Chained)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an event to format text before being sent in an email. Callbacks should be used to process text and convert it into a plaintext-readable format so that users with textual email clients can best utilize the information. Hyperlinks and other markup should be removed, leaving the core content by itself.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: input string to be displayed
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: modified input string
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.display.email.subject"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_DISPLAY_EMAIL_BUILD_SUBJECT (Chained)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an event to format the subject line of an email before it is sent.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: input string for email subject
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: modified subject string
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.display.formatted"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_DISPLAY_FORMATTED (Chained)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an event to display generic formatted text. The string to be displayed is passed between hooked callbacks, each taking a turn to modify the output in some specific manner. Text passed to this may be processed for all types of formatting and markup, including clickable links, presentation adjustments, etc.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: input string to be displayed
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: modified input string
+						</div></li><li class="listitem"><div class="para">
+							&lt;Boolean&gt;: multiline input string
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.display.rss"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_DISPLAY_RSS (Chained)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an event to format content before being displayed in an RSS feed. Text should be processed to perform any necessary character escaping to preserve hyperlinks and other appropriate markup.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: input string to be displayed
+						</div></li><li class="listitem"><div class="para">
+							&lt;Boolean&gt;: multiline input string
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: modified input string
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.display.text"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_DISPLAY_TEXT (Chained)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This is an event to display generic unformatted text. The string to be displayed is passed between hooked callbacks, each taking a turn to modify the output in some specific manner. Text passed to this event should only be processed for the most basic formatting, such as preserving line breaks and special characters.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: input string to be displayed
+						</div></li><li class="listitem"><div class="para">
+							&lt;Boolean&gt;: multiline input string
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: modified input string
+						</div></li></ul></div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.output.menu"></a>5.3.2. Menu Items</h3></div></div></div><div class="para">
+			These events allow new menu items to be inserted in order for new content to be added, such as new pages or integration with other applications.
+		</div><div class="blockquote"><a id="dev.eventref.output.menu.account"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_ACCOUNT (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the user account menu available to users from the 'My Account' link on the main menu.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the user account menu.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.docs"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_DOCS (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the documents menu available to users from the 'Docs' link on the main menu.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the documents menu.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.filter"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_FILTER (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the issue list menu available to users from the 'View Issues' link on the main menu.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the issue list menu.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.issue"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_ISSUE (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the issue menu available to users when viewing issues.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: bug ID
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the documents menu.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.main"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_MAIN (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new menu options to the main menu. New links will be added AFTER the standard menu options.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: Hooked events may return an array of menu options. Each array entry will contain an associate array with keys 'title', 'url', 'access_level', and 'icon' (e.g. fa-pencil from <a href="http://fontawesome.io/icons/">Font Awesome</a>).
+						</div><pre class="programlisting">
+							return array(
+							    array( 
+									'title' =&gt; 'My Link',
+									'access_level' =&gt; DEVELOPER,
+									'url' =&gt; 'my_link.php',
+									'icon' =&gt; 'fa-random'
+								),
+								array(
+									'title' =&gt; 'My Link2',
+									'access_level' =&gt; DEVELOPER,
+									'url' =&gt; 'my_link2.php',
+									'icon' =&gt; 'fa-shield'
+								)
+							);
+</pre></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.mainfront"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_MAIN_FRONT (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new menu options to main menu. New links will be added BEFORE the standard menu options.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: Hooked events may return an array of menu options. Each array entry will contain an associate array with keys 'title', 'url', 'access_level', and 'icon' (e.g. fa-pencil from <a href="http://fontawesome.io/icons/">Font Awesome</a>).
+						</div><pre class="programlisting">
+							return array(
+							    array( 
+									'title' =&gt; 'My Link',
+									'access_level' =&gt; DEVELOPER,
+									'url' =&gt; 'my_link.php',
+									'icon' =&gt; 'fa-random'
+								),
+								array(
+									'title' =&gt; 'My Link2',
+									'access_level' =&gt; DEVELOPER,
+									'url' =&gt; 'my_link2.php',
+									'icon' =&gt; 'fa-shield'
+								)
+							);
+</pre></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.manage"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_MANAGE (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the management menu available to site administrators from the 'Manage' link on the main menu. Plugins should try to minimize use of these links to functions dealing with core MantisBT management.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the management menu.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.manageconfig"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_MANAGE_CONFIG (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the configuration management menu available to site administrators from the 'Manage Configuration' link on the standard management menu. Plugins should try to minimize use of these links to functions dealing with core MantisBT configuration.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the manage configuration menu.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.menu.summary"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MENU_SUMMARY (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gives plugins the opportunity to add new links to the summary menu available to users from the 'Summary' link on the main menu.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: List of HTML links for the summary menu.
+						</div></li></ul></div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.output.layout"></a>5.3.3. Page Layout</h3></div></div></div><div class="para">
+			These events offer the chance to create output at points relevant to the overall page layout of MantisBT. Page headers, footers, stylesheets, and more can be created. Events listed below are in order of runtime execution.
+		</div><div class="blockquote"><a id="dev.eventref.output.layout.resources"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_RESOURCES (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code from inside the <code class="literal">&lt;head&gt;</code> tag, for use with CSS, Javascript, RSS, or any other similar resources. Note that this event is signaled after all other CSS and Javascript resources are linked by MantisBT.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.layout.bodybegin"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_BODY_BEGIN (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code immediately after the <code class="literal">&lt;body&gt;</code> tag is opened, so that MantisBT may be integrated within another website's template, or other similar use.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.layout.pageheader"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_PAGE_HEADER (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code immediately after the MantisBT header content, such as the logo image.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.layout.contentbegin"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_CONTENT_BEGIN (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code after the top main menu, but before any page-specific content begins.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.layout.contentend"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_CONTENT_END (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code after any page- specific content has completed, but before the bottom menu bar (or footer).
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.layout.pagefooter"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_PAGE_FOOTER (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code after the MantisBT version, copyright, and webmaster information, but before the query information.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.layout.bodyend"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_LAYOUT_BODY_END (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code immediately before the <code class="literal">&lt;/body&gt;</code> end tag, to so that MantisBT may be integrated within another website's template, or other similar use.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.output.view_bug_attachment"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_VIEW_BUG_ATTACHMENT (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to output HTML code immediately after the line of an attachment. Receives the attachment data as a parameter, in the form of an attachment array from within the array returned by the <code class="function">file_get_visible_attachments()</code> function.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: the attachment data as an array (see <code class="filename">core/file_api.php</code>)
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: HTML code to output.
+						</div></li></ul></div></blockquote></div></blockquote></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.filter"></a>5.4. Bug Filter Events</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.filter.custom"></a>5.4.1. Custom Filters and Columns</h3></div></div></div><div class="blockquote"><a id="dev.eventref.filter.custom.fields"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_FILTER_FIELDS (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to register custom filter objects (based on the <code class="classname">MantisFilter</code> class) that will allow the user to search for issues based on custom criteria or datasets. The plugin can return either a class name (which will be instantiated at runtime) or an already instantiated object. The plugin must ensure that the filter class has been defined before returning the class name for this event.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: Array of class names or objects for custom filters
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.filter.custom.columns"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_FILTER_COLUMNS (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to register custom column objects (based on the <code class="classname">MantisColumn</code> class) that will allow the user to view data for issues based on custom datasets. The plugin can return either a class name (which will be instantiated at runtime) or an already instantiated object. The plugin must ensure that the column class has been defined before returning the class name for this event.
+				</div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: Array of class names or objects for custom columns
+						</div></li></ul></div></blockquote></div></blockquote></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.bug"></a>5.5. Bug and Bugnote Events</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.bug.view"></a>5.5.1. Bug View</h3></div></div></div><div class="blockquote"><a id="dev.eventref.bug.view.details"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_VIEW_BUG_DETAILS (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to either process information or display some data in the bug view page. It is triggered after the row containing the target version and product build fields, and before the bug summary is displayed.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding 
+<pre class="programlisting">&lt;table&gt;</pre>
+					 elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.view.extra"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_VIEW_BUG_EXTRA (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to either process information or display some data in the bug view page. It is triggered after the bug notes have been displayed, but before the history log is shown.
+				</div><div class="para">
+					Any output here should be contained within its own 
+<pre class="programlisting">&lt;table&gt;</pre>
+					 element.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.bug.action"></a>5.5.2. Bug Actions</h3></div></div></div><div class="blockquote"><a id="dev.eventref.bug.action.reportbugform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_REPORT_BUG_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Report Issue page. It is triggered immediately before the summary text field.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.reportbugformtop"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_REPORT_BUG_FORM_TOP (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements at the top of the Report Issue page. It is triggered before any of the visible form elements have been created.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.reportbugdata"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_REPORT_BUG_DATA (Chain)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to perform pre-processing of the new bug data structure after being reported from the user, but before the data is saved to the database. At this point, the issue ID is not yet known, as the data has not yet been persisted.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Bug data structure
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.reportbug"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_REPORT_BUG (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to perform post-processing of the bug data structure after being reported from the user and being saved to the database. At this point, the issue ID is actually known, and is passed as a second parameter.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.updatebugform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_UPDATE_BUG_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Update Issue page. It is triggered immediately before the summary text field.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.updatebugformtop"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_UPDATE_BUG_FORM_TOP (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Update Issue page. It is triggered immediately before before any of the visible form elements have been created.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.bugupdatestatusform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_UPDATE_BUG_STATUS_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements in the bug change status form. It is triggered immediately before the add bugnote fields.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: New Status
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.updatebugdata"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_UPDATE_BUG_DATA (Chain)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to perform pre-processing of the updated bug data structure after being modified by the user, but before being saved to the database.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Updated bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Original bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Updated bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.updatebug"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_UPDATE_BUG (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to perform post-processing of the bug data structure after being updated.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Original bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li><li class="listitem"><div class="para">
+							&lt;Complex&gt;: Updated bug data structure (see <code class="filename">core/bug_api.php</code>)
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.bugactiongroupform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUG_ACTIONGROUP_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements in the bug group action page form. It is triggered immediately after the standard fields, and before bugnote fields (if applicable).
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: Array of event data elements
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Parameter array contents</strong></p><div class="para">
+						The parameter array contains elements for these indexes:
+					</div><ul><li class="listitem"><div class="para">
+							'action' =&gt; &lt;String&gt;: Action title (see <code class="filename">bug_actiongroup.php</code>)
+						</div></li><li class="listitem"><div class="para">
+							'bug_ids' =&gt; &lt;Array&gt;: Array of selected bug ids
+						</div></li><li class="listitem"><div class="para">
+							'multiple_projects' =&gt; &lt;Boolean&gt;: Flag if selected bug ids span multiple projects
+						</div></li><li class="listitem"><div class="para">
+							'has_bugnote' =&gt; &lt;Boolean&gt;: Flag if current group action form contains a bugnote input
+						</div></li></ul></div><div class="itemizedlist"><div class="para">
+						Depending on the action, any of these indexes may appear:
+					</div><ul><li class="listitem"><div class="para">
+							'custom_field_id' =&gt; &lt;Integer&gt;: If action is 'CUSTOM', contains the custom field id selected for update
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.bugaction"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUG_ACTION (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to perform post-processing of group actions performed from the View Issues page. The event will get called for each bug ID that was part of the group action event.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;String&gt;: Action title (see <code class="filename">bug_actiongroup.php</code>)
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.bugdelete"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUG_DELETED (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to perform pre-processing of bug deletion actions. The actual deletion will occur after execution of the event, for compatibility reasons.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.bug.noteview"></a>5.5.3. Bugnote View</h3></div></div></div><div class="blockquote"><a id="dev.eventref.bug.noteview.start"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_VIEW_BUGNOTES_START (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to either process information or display some data in the bug notes section, before any bug notes are displayed. It is triggered after the bug notes section title.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Complex&gt;: A list of all bugnotes to be displayed to the user
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.noteview.note"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_VIEW_BUGNOTE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to either process information or display some data in the bug notes section, interleaved with the individual bug notes. It gets triggered after every bug note is displayed.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bugnote ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Boolean&gt;: Private bugnote (false if public)
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.noteview.end"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_VIEW_BUGNOTES_END (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to either process information or display some data in the bug notes section, after all bugnotes have been displayed.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.bug.noteaction"></a>5.5.4. Bugnote Actions</h3></div></div></div><div class="blockquote"><a id="dev.eventref.bug.noteaction.addform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUGNOTE_ADD_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements in the bugnote adding form. It is triggered immediately after the bugnote text field.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.noteaction.add"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUGNOTE_ADD (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of bugnotes added to an issue.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bugnote ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.noteaction.editform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUGNOTE_EDIT_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements in the bugnote editing form. It is triggered immediately after the bugnote text field.
+				</div><div class="para">
+					Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bugnote ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.noteaction.edit"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUGNOTE_EDIT (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of bugnote edits.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bugnote ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.noteaction.deleted"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_BUGNOTE_DELETED (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of bugnote deletions.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bugnote ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.tagattached"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TAG_ATTACHED (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of attached tags.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Array of Integers&gt;: Tag IDs
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.bug.action.tagdetached"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_TAG_DETACHED (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of detached tags.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;Array of Integers&gt;: Tag IDs
+						</div></li></ul></div></blockquote></div></blockquote></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.notify"></a>5.6. Notification Events</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.notify.user"></a>5.6.1. Recipient Selection</h3></div></div></div><div class="blockquote"><a id="dev.eventref.notify.user.include"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_NOTIFY_USER_INCLUDE (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to specify a set of users to be included as recipients for a notification. The set of users returned is added to the list of recipients already generated from the existing notification flags and selection process.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;String&gt;: Notification type
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Array&gt;: User IDs to include as recipients
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.notify.user.exclude"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_NOTIFY_USER_EXCLUDE (Default)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows a plugin to selectively exclude individual users from the recipient list for a notification. The event is signalled for every user in the final recipient list, including recipients added by the event NOTIFY_USER_INCLUDE as described above.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Bug ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;String&gt;: Notification type
+						</div></li><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div><div class="itemizedlist"><p class="title"><strong>Return Value</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Boolean&gt;: True to exclude the user, false otherwise
+						</div></li></ul></div></blockquote></div></blockquote></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.account"></a>5.7. User Account Events</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.account.pref"></a>5.7.1. Account Preferences</h3></div></div></div><div class="blockquote"><a id="dev.eventref.account.pref.updateform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_ACCOUNT_PREF_UPDATE_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Account Preferences page. It is triggered immediately after the last core preference element.
+				</div><div class="para">
+					Any output here should follow the format found in account_prefs_inc.php. As of 1.3.x this is no longer table elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.account.pref.update"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_ACCOUNT_PREF_UPDATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do pre-processing of form elements from the Account Preferences page. It is triggered immediately before the user preferences are saved to the database.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.user.avatar"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_USER_AVATAR (First)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event gets the user's avatar as an instance of the Avatar class. The first plugin to respond with an avatar wins. Hence, in case of multiple avatar plugins, make sure to tweak the priorities. Avatars should return null if they don't have an avatar for the specified user id.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Avatar&gt;: Avatar instance or null.
+						</div></li></ul></div></blockquote></div></blockquote></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.eventref.manage"></a>5.8. Management Events</h2></div></div></div><div class="blockquote"><a id="dev.eventref.manage.overviewinfo"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_OVERVIEW_INFO (Output)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+				This event allows plugins to display special information on the Management Overview page.
+			</div><div class="para">
+				Any output here should be defining appropriate rows and columns for the surrounding &lt;table&gt; elements.
+			</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+						&lt;Boolean&gt;: whether user is administrator
+					</div></li></ul></div></blockquote></div></blockquote></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="dev.eventref.manage.project"></a>5.8.1. Projects and Versions</h3></div></div></div><div class="blockquote"><a id="dev.eventref.manage.project.view"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_PROJECT_PAGE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display information on the View Project page. It is triggered immediately before the project access blocks.
+				</div><div class="para">
+					Any output here should be contained within its own &lt;table&gt; element.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.project.createform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_PROJECT_CREATE_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Create Project page. It is triggered immediately before the submit button.
+				</div><div class="para">
+					Any output here should follow the format found in manage_proj_create_page.php. As of 1.3.x this is no longer table elements.
+				</div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.project.create"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_PROJECT_CREATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of newly-created projects and form elements from the Create Project page.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.project.updateform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_PROJECT_UPDATE_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements in the Edit Project form on the View Project page. It is triggered immediately before the submit button.
+				</div><div class="para">
+					Any output here should follow the format found in manage_proj_edit_page.php. As of 1.3.x this is no longer table elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.project.update"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_PROJECT_UPDATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of modified projects and form elements from the Edit Project form.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.project.delete"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_PROJECT_DELETE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do pre-processing of project deletion. This event is triggered prior to the project removal from the database.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Project ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.version.create"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_VERSION_CREATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of newly-created project versions from the View Project page, or versions copied from other projects. This event is triggered for each version created.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Version ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.version.updateform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_VERSION_UPDATE_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Update Version page. It is triggered immediately before the submit button.
+				</div><div class="para">
+					Any output here should follow the format found in manage_proj_ver_edit_page.php. As of 1.3.x this is no longer table elements.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Version ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.version.update"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_VERSION_UPDATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of modified versions and form elements from the Edit Version page.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Version ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.version.delete"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_VERSION_DELETE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do pre-processing of version deletion. This event is triggered prior to the version removal from the database.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: Version ID
+						</div></li><li class="listitem"><div class="para">
+							&lt;String&gt;: Replacement version to set on issues that are currently using the version that is about to be deleted.
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.user.createform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_USER_CREATE_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements on the Create User page. It is triggered immediately before the submit button.
+				</div><div class="para">
+					Any output here should follow the format found in manage_user_create_page.php.
+				</div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.user.create"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_USER_CREATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of newly-created users. This event is triggered for each user created. The Manage Users create form is one possible case for triggering such events, but there can be other ways users can be created.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.user.updateform"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_USER_UPDATE_FORM (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display form elements in the Manage User page. It is triggered immediately before the submit button.
+				</div><div class="para">
+					Any output here should follow the format found in manage_user_edit_page.php.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.user.update"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_USER_UPDATE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do post-processing of modified users. This may be triggered by the Manage User page or some other path.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.user.delete"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_USER_DELETE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do pre-processing of user deletion.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div><div class="blockquote"><a id="dev.eventref.manage.user.view"></a><blockquote class="blockquote"><div class="blockquote-title"><p><strong>EVENT_MANAGE_USER_PAGE (Execute)</strong></p></div><div class="blockquote"><blockquote class="blockquote"><div class="para">
+					This event allows plugins to do processing or display information on the View User page. It is triggered immediately after the reset password segment.
+				</div><div class="para">
+					Any output here should be contained within its own container.
+				</div><div class="itemizedlist"><p class="title"><strong>Parameters</strong></p><ul><li class="listitem"><div class="para">
+							&lt;Integer&gt;: User ID
+						</div></li></ul></div></blockquote></div></blockquote></div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="integrators"></a>Chapter 6. Integrating with MantisBT</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#integrators.java">6.1. Java integration</a></span></dt><dd><dl><dt><span class="section"><a href="#integrators.java.soap">6.1.1. Prebuilt SOAP stubs using Axis</a></span></dt><dt><span class="section"><a href="#integrators.java.osgi">6.1.2. Usage in OSGi environments</a></span></dt></dl></dd><dt><span class="section"><a href="#integrators.compatibility">6.2. Compatibility between releases</a></span></dt><dt><span class="section"><a href="#integrators.support">6.3. Support</a></span></dt></dl></div><div class="para">
+		The primary means of integrating with MantisBT with web services is with the bundled SOAP API, which is accessible at <code class="literal">http://server.com/mantis/api/soap/mantisconnect.php</code>.
+	</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="integrators.java"></a>6.1. Java integration</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="integrators.java.soap"></a>6.1.1. Prebuilt SOAP stubs using Axis</h3></div></div></div><div class="para">
+				For ease of integration of the Java clients, SOAP stubs are maintained and deployed in the <a href="http://maven.org/">Maven central repository</a>. For example:
+			</div><pre class="programlisting">
+&lt;dependency&gt;
+    &lt;groupId&gt;biz.futureware.mantis&lt;/groupId&gt;
+    &lt;artifactId&gt;mantis-axis-soap-client&lt;/artifactId&gt;
+    &lt;version&gt;1.2.15&lt;/version&gt;
+&lt;/dependency&gt;
+</pre><div class="para">
+				To include them in your project, <a href="http://search.maven.org/#search|ga|1|g%3A%22biz.futureware.mantis%22"> download the latest available version</a>.
+			</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="integrators.java.osgi"></a>6.1.2. Usage in OSGi environments</h3></div></div></div><div class="para">
+				If you would like to use Axis in an OSGi environment, it is recommended that you use a ready-made bundle, such as the Axis bundle available from <a href="http://download.eclipse.org/tools/orbit/downloads/"> Eclipse Orbit</a>
+			</div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="integrators.compatibility"></a>6.2. Compatibility between releases</h2></div></div></div><div class="para">
+			The SOAP API signature will change between minor releases, typically to add new functionality or to extend existing features.
+		</div><div class="para">
+			Some of these changes might require a refresh of the client libraries generated, for instance Apache Axis 1 SOAP stubs must be regenerated if a complex type receives a new property. Such changes will be announced before the release of the new MantisBT version on the <a href="http://lists.sourceforge.net/mailman/listinfo/mantisbt-soap-dev"> mantisbt-soap-dev mailing list</a>. Typically there will be two weeks time to integrate the new SOAP stubs.
+		</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="integrators.support"></a>6.3. Support</h2></div></div></div><div class="para">
+			The primary means of obtaining support for Web Services and the SOAP API is through the <a href="http://lists.sourceforge.net/mailman/listinfo/mantisbt-soap-dev"> mantisbt-soap-dev mailing list</a>.
+		</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="dev.appendix"></a>Chapter 7. Appendix</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#dev.appendix.git">7.1. Git References</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="dev.appendix.git"></a>7.1. Git References</h2></div></div></div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+					The <a href="http://git-scm.com/documentation/">Git SCM web site</a> offers a full reference of Git commands, as well Scott Chacon's excellent <span class="emphasis"><em>Pro Git</em></span> book.
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://gitref.org/">Github's Git Reference</a>
+				</div></li><li class="listitem"><div class="para">
+					Official documentation (from kernel.org)
+				</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+							<a href="http://www.kernel.org/pub/software/scm/git/docs/"> Manual Page</a>
+						</div></li><li class="listitem"><div class="para">
+							<a href="http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html"> Tutorial</a>
+						</div></li><li class="listitem"><div class="para">
+							<a href="http://www.kernel.org/pub/software/scm/git/docs/everyday.html"> Everyday Git With 20 Commands</a>
+						</div></li></ul></div></li><li class="listitem"><div class="para">
+					<a href="https://git.wiki.kernel.org/index.php/GitSvnCrashCourse">Git Crash Course for SVN Users</a>
+				</div></li><li class="listitem"><div class="para">
+					<a href="http://ftp.newartisans.com/pub/git.from.bottom.up.pdf">Git From the Bottom Up</a> (PDF)
+				</div></li></ul></div></div></div><div class="appendix"><div class="titlepage"><div><div><h1 class="title"><a id="appe-Developers_Guide-Revision_History"></a>Revision History</h1></div></div></div><div class="para"><p></p>
+		<div class="revhistory"><table summary="Revision History"><tr><th align="left" valign="top" colspan="3"><strong>Revision History</strong></th></tr><tr><td align="left">Revision 2.18-0</td><td align="left">Tue Oct 16 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.18.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.17-1</td><td align="left">Mon Sep 24 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.17.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.17-0</td><td align="left">Mon Sep 3 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.17.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.16-0</td><td align="left">Sun Jul 29 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.16.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.15-0</td><td align="left">Tue Jun 5 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.15.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.14-0</td><td align="left">Sun Apr 29 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.14.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.13-1</td><td align="left">Wed Apr 4 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.13.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.13-0</td><td align="left">Sun Apr 1 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.13.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.12-0</td><td align="left">Sat Mar 3 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.12.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.11-0</td><td align="left">Tue Feb 6 2018</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.11.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.10-0</td><td align="left">Sat Dec 30 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.10.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.9-0</td><td align="left">Sun Dec 3 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.9.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.8-0</td><td align="left">Sat Oct 28 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.8.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.7-0</td><td align="left">Sun Oct 8 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.7.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.6-0</td><td align="left">Sun Sep 3 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.6.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.5-1</td><td align="left">Sat Jun 17 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.5.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.5-0</td><td align="left">Sun Jun 4 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.5.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.4-1</td><td align="left">Sat May 20 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.4.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.4-0</td><td align="left">Sun Apr 30 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.4.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.3-3</td><td align="left">Sun Apr 30 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.3.2</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.3-2</td><td align="left">Sun Apr 17 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.3.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.3-1</td><td align="left">Fri Mar 31 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.3.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.2-3</td><td align="left">Wed Mar 22 2017</td><td align="left"><span class="author"><span class="firstname">Damien</span> <span class="surname">Regad</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.2.2</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.2-2</td><td align="left">Sun Mar 12 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.2.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.2-1</td><td align="left">Sun Feb 26 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.2.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.1-2</td><td align="left">Sun Feb 26 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.1.1</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.1-1</td><td align="left">Tue Jan 31 2017</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.1.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.0-2</td><td align="left">Fri Dec 30 2016</td><td align="left"><span class="author"><span class="firstname">Victor</span> <span class="surname">Boctor</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.0.0</td></tr></table>
+
+				</td></tr><tr><td align="left">Revision 2.0-1</td><td align="left">Sat Nov 26 2016</td><td align="left"><span class="author"><span class="firstname">Damien</span> <span class="surname">Regad</span></span></td></tr><tr><td align="left" colspan="3">
+					<table border="0" summary="Simple list" class="simplelist"><tr><td>Release 2.0.0-rc.2</td></tr></table>
+
+				</td></tr></table></div>
+
+	</div></div></div></body></html>

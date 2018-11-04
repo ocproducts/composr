@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,71 +14,92 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * Updates printing prefs then redirect to print_all_bug_page_page.php
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
-	require( 'print_all_bug_options_inc.php' );
+/**
+ * Updates printing prefs then redirect to print_all_bug_page_page.php
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses constant_inc.php
+ * @uses database_api.php
+ * @uses error_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ */
 
-	form_security_validate( 'print_all_bug_options_update' );
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'database_api.php' );
+require_api( 'error_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
 
-	auth_ensure_user_authenticated();
+define( 'PRINT_ALL_BUG_OPTIONS_INC_ALLOW', true );
+include( dirname( __FILE__ ) . '/print_all_bug_options_inc.php' );
 
-	$f_user_id		= gpc_get_int( 'user_id' );
-	$f_redirect_url	= gpc_get_string( 'redirect_url' );
+form_security_validate( 'print_all_bug_options_update' );
 
-	# the check for the protected state is already done in the form, there is
-	# no need to duplicate it here.
+auth_ensure_user_authenticated();
 
-	# get the fields list
-	$t_field_name_arr = get_field_names();
-	$field_name_count = count($t_field_name_arr);
+$f_user_id		= gpc_get_int( 'user_id' );
+$f_redirect_url	= gpc_get_string( 'redirect_url' );
 
-	# check the checkboxes
-	for ($i=0 ; $i <$field_name_count ; $i++) {
-		$t_name='print_'.utf8_strtolower(str_replace(' ','_',$t_field_name_arr[$i]));
-		$t_flag = gpc_get( $t_name, null );
+# the check for the protected state is already done in the form, there is
+# no need to duplicate it here.
 
-		if ( $t_flag === null ) {
-			$t_prefs_arr[$i] = 0;
-		} else {
-			$t_prefs_arr[$i] = 1;
-		}
-	}
+# get the fields list
+$t_field_name_arr = get_field_names();
+$t_field_name_count = count( $t_field_name_arr );
 
-	# get user id
-	$t_user_id = $f_user_id;
+# check the checkboxes
+for( $i=0; $i <$t_field_name_count; $i++ ) {
+	//$t_name = 'print_' . mb_strtolower( str_replace( ' ', '_', $t_field_name_arr[$i] ) );
+	// Composr - allow statuses with hyphens
+	$t_name = 'print_' . mb_strtolower( str_replace( array(' ', '-'), array('_', '_'), $t_field_name_arr[$i] ) );
 
-	$c_export = implode('',$t_prefs_arr);
+	$t_flag = gpc_get( $t_name, null );
 
-	# update preferences
-	$t_user_print_pref_table = db_get_table( 'mantis_user_print_pref_table' );
-	$query = "UPDATE $t_user_print_pref_table
-			SET print_pref=" . db_param() . "
-			WHERE user_id=" . db_param();
-
-	$result = db_query_bound( $query, Array( $c_export, $t_user_id ) );
-
-	form_security_purge( 'print_all_bug_options_update' );
-
-	html_page_top( null, $f_redirect_url );
-
-	echo '<br /><div align="center">';
-
-	if ( $result ) {
-		print lang_get( 'operation_successful' );
+	if( $t_flag === null ) {
+		$t_prefs_arr[$i] = 0;
 	} else {
-		print error_string( ERROR_GENERIC );
+		$t_prefs_arr[$i] = 1;
 	}
+}
 
-	echo '<br />';
-	print_bracket_link( $f_redirect_url, lang_get( 'proceed' ) );
-	echo '<br /></div>';
-	html_page_bottom();
+# get user id
+$t_user_id = $f_user_id;
+
+$c_export = implode( '', $t_prefs_arr );
+
+# update preferences
+$t_query = 'UPDATE {user_print_pref} SET print_pref=' . db_param() . ' WHERE user_id=' . db_param();
+
+$t_result = db_query( $t_query, array( $c_export, $t_user_id ) );
+
+form_security_purge( 'print_all_bug_options_update' );
+
+layout_page_header( null, $f_redirect_url );
+
+layout_page_begin();
+
+if( $t_result ) {
+	html_operation_successful( $f_redirect_url );
+} else {
+	echo '<div class="failure-msg">';
+	print error_string( ERROR_GENERIC ) . '<br />';
+	print_link_button( $f_redirect_url, lang_get( 'proceed' ) );
+	echo '</div>';
+}
+
+layout_page_end();

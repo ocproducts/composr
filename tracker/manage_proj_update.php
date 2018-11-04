@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,35 +14,53 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Update Project
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses event_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses print_api.php
+ * @uses project_api.php
+ */
 
-	form_security_validate( 'manage_proj_update' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'event_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'print_api.php' );
+require_api( 'project_api.php' );
 
-	auth_reauthenticate();
+form_security_validate( 'manage_proj_update' );
 
-	$f_project_id 	= gpc_get_int( 'project_id' );
-	$f_name 		= gpc_get_string( 'name' );
-	$f_description 	= gpc_get_string( 'description' );
-	$f_status 		= gpc_get_int( 'status' );
-	$f_view_state 	= gpc_get_int( 'view_state' );
-	$f_file_path 	= gpc_get_string( 'file_path', '' );
-	$f_enabled	 	= gpc_get_bool( 'enabled' );
-	$f_inherit_global = gpc_get_bool( 'inherit_global', 0 );
+auth_reauthenticate();
 
-	access_ensure_project_level( config_get( 'manage_project_threshold' ), $f_project_id );
+$f_project_id 	= gpc_get_int( 'project_id' );
+$f_name 		= gpc_get_string( 'name' );
+$f_description 	= gpc_get_string( 'description' );
+$f_status 		= gpc_get_int( 'status' );
+$f_view_state 	= gpc_get_int( 'view_state' );
+$f_file_path 	= gpc_get_string( 'file_path', '' );
+$f_enabled	 	= gpc_get_bool( 'enabled' );
+$f_inherit_global = gpc_get_bool( 'inherit_global', 0 );
 
-	project_update( $f_project_id, $f_name, $f_description, $f_status, $f_view_state, $f_file_path, $f_enabled, $f_inherit_global );
-	event_signal( 'EVENT_MANAGE_PROJECT_UPDATE', array( $f_project_id ) );
+access_ensure_project_level( config_get( 'manage_project_threshold' ), $f_project_id );
 
-	form_security_purge( 'manage_proj_update' );
+project_update( $f_project_id, $f_name, $f_description, $f_status, $f_view_state, $f_file_path, $f_enabled, $f_inherit_global );
+event_signal( 'EVENT_MANAGE_PROJECT_UPDATE', array( $f_project_id ) );
 
-	print_header_redirect( 'manage_proj_page.php' );
+form_security_purge( 'manage_proj_update' );
+
+print_header_redirect( 'manage_proj_page.php' );

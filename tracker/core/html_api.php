@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,83 +15,69 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * These functions control the display of each page
+ * HTML API
  *
- * This is the call order of these functions, should you need to figure out
- * which to modify or which to leave out.
+ * These functions control the HTML output of each page.
  *
- * html_page_top1
- * 	html_begin
- * 	html_head_begin
- * 	html_css
- * 	html_content_type
- * 	html_rss_link
- * 	(html_meta_redirect)
- * 	html_title
- * html_page_top2
- * 	html_page_top2a
- * 	html_head_end
- * 	html_body_begin
- * 	html_header
- * 	html_top_banner
- * 	html_login_info
- * 	(print_project_menu_bar)
- * 	print_menu
- *
- * ...Page content here...
- *
- * html_page_bottom1
- * 	(print_menu)
- * 	html_page_bottom1a
- * 	html_bottom_banner
- * 	html_footer
- * 	html_body_end
- * html_end
  *
  * @package CoreAPI
  * @subpackage HTMLAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses bug_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses current_user_api.php
+ * @uses database_api.php
+ * @uses error_api.php
+ * @uses event_api.php
+ * @uses file_api.php
+ * @uses filter_api.php
+ * @uses filter_constants_inc.php
+ * @uses form_api.php
+ * @uses helper_api.php
  * @uses lang_api.php
+ * @uses news_api.php
+ * @uses php_api.php
+ * @uses print_api.php
+ * @uses project_api.php
+ * @uses rss_api.php
+ * @uses string_api.php
+ * @uses user_api.php
+ * @uses utility_api.php
+ * @uses layout_api.php
+ * @uses api_token_api.php
  */
 
-/**
- * requires current_user_api
- */
-require_once( 'current_user_api.php' );
-/**
- * requires string_api
- */
-require_once( 'string_api.php' );
-/**
- * requires bug_api
- */
-require_once( 'bug_api.php' );
-/**
- * requires project_api
- */
-require_once( 'project_api.php' );
-/**
- * requires helper_api
- */
-require_once( 'helper_api.php' );
-/**
- * requires authentication_api
- */
-require_once( 'authentication_api.php' );
-/**
- * requires user_api
- */
-require_once( 'user_api.php' );
-/**
- * requires rss_api
- */
-require_once( 'rss_api.php' );
-/**
- * requires php_api
- */
-require_once( 'php_api.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'current_user_api.php' );
+require_api( 'database_api.php' );
+require_api( 'error_api.php' );
+require_api( 'event_api.php' );
+require_api( 'file_api.php' );
+require_api( 'filter_api.php' );
+require_api( 'filter_constants_inc.php' );
+require_api( 'form_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'news_api.php' );
+require_api( 'php_api.php' );
+require_api( 'print_api.php' );
+require_api( 'project_api.php' );
+require_api( 'rss_api.php' );
+require_api( 'string_api.php' );
+require_api( 'user_api.php' );
+require_api( 'utility_api.php' );
+require_api( 'layout_api.php' );
+require_api( 'api_token_api.php' );
 
 $g_rss_feed_url = null;
 
@@ -100,15 +86,14 @@ $g_robots_meta = '';
 # flag for error handler to skip header menus
 $g_error_send_page_header = true;
 
-# Projax library disabled by default.  It will be enabled if projax_api.php
-# is included.  But it must be included after html_api.php
-$g_enable_projax = false;
+$g_stylesheets_included = array();
+$g_scripts_included = array();
 
 /**
  * Sets the url for the rss link associated with the current page.
  * null: means no feed (default).
- * @param string $p_rss_feed_url rss feed url
- * @return null
+ * @param string $p_rss_feed_url RSS feed URL.
+ * @return void
  */
 function html_set_rss_link( $p_rss_feed_url ) {
 	if( OFF != config_get( 'rss_enabled' ) ) {
@@ -118,9 +103,8 @@ function html_set_rss_link( $p_rss_feed_url ) {
 }
 
 /**
- * This method must be called before the html_page_top* methods.  It marks the page as not
- * for indexing.
- * @return null
+ * This method marks the page as not for indexing by search engines
+ * @return void
  */
 function html_robots_noindex() {
 	global $g_robots_meta;
@@ -129,195 +113,68 @@ function html_robots_noindex() {
 
 /**
  * Prints the link that allows auto-detection of the associated feed.
- * @return null
+ * @return void
  */
 function html_rss_link() {
 	global $g_rss_feed_url;
 
 	if( $g_rss_feed_url !== null ) {
-		echo '<link rel="alternate" type="application/rss+xml" title="RSS" href="', $g_rss_feed_url, '" />';
+		echo '<link rel="alternate" type="application/rss+xml" title="RSS" href="' . string_attribute( $g_rss_feed_url ) . '" />' . "\n";
 	}
 }
 
 /**
- * Prints a <script> tag to include a javascript file.
- * This includes either minimal or development file from /javascript depending on whether mantis is set for debug/production use
- * @param string $p_filename
- * @return null
+ * Prints a <script> tag to include a JavaScript file.
+ * @param string $p_filename Name of JavaScript file (with extension) to include.
+ * @return void
  */
-function html_javascript_link( $p_filename) {
-	if( config_get_global( 'minimal_jscss' ) ) {
-		echo '<script type="text/javascript" src="', helper_mantis_url( 'javascript/min/' . $p_filename ), '"></script>' . "\n";
-	} else {
-		echo '<script type="text/javascript" src="', helper_mantis_url( 'javascript/dev/' . $p_filename ), '"></script>' . "\n";
-	}
+function html_javascript_link( $p_filename ) {
+	echo "\t", '<script type="text/javascript" src="', helper_mantis_url( 'js/' . $p_filename ), '"></script>', "\n";
 }
 
 /**
- * Defines the top of a HTML page
- * @param string $p_page_title html page title
- * @param string $p_redirect_url url to redirect to if necessary
- * @return null
+ * Prints a <script> tag to include a JavaScript file.
+ * @param string $p_url fully qualified domain name for the cdn js file
+ * @param string $p_hash resource hash to perform subresource integrity check
+ * @return void
  */
-function html_page_top( $p_page_title = null, $p_redirect_url = null ) {
-	html_page_top1( $p_page_title );
-	if ( $p_redirect_url !== null ) {
-		html_meta_redirect( $p_redirect_url );
+function html_javascript_cdn_link( $p_url, $p_hash = '' ) {
+	$t_integrity = '';
+	if( $p_hash !== '' ) {
+		$t_integrity = 'integrity="' . $p_hash . '" ';
 	}
-	html_page_top2();
+	echo "\t", '<script type="text/javascript" src="', $p_url, '" ', $t_integrity, 'crossorigin="anonymous"></script>', "\n";
 }
 
 /**
- * Print the part of the page that comes before meta redirect tags should be inserted
- * @param string $p_page_title page title
- * @return null
- */
-function html_page_top1( $p_page_title = null ) {
-	html_begin();
-	html_head_begin();
-	html_css();
-	html_content_type();
-	include( config_get( 'meta_include_file' ) );
-
-	global $g_robots_meta;
-	if ( !is_blank( $g_robots_meta ) ) {
-		echo "\t", '<meta name="robots" content="', $g_robots_meta, '" />', "\n";
-	}
-
-	html_rss_link();
-
-	$t_favicon_image = config_get( 'favicon_image' );
-	if( !is_blank( $t_favicon_image ) ) {
-		echo "\t", '<link rel="shortcut icon" href="', ( $t_favicon_image ), '" type="image/x-icon" />', "\n";
-	}
-
-	// Advertise the availability of the browser search plug-ins.
-	echo "\t", '<link rel="search" type="application/opensearchdescription+xml" title="MantisBT: Text Search" href="' . string_sanitize_url( 'browser_search_plugin.php?type=text', true) . '" />';
-	echo "\t", '<link rel="search" type="application/opensearchdescription+xml" title="MantisBT: Issue Id" href="' . string_sanitize_url( 'browser_search_plugin.php?type=id', true) . '" />';
-
-	html_title( $p_page_title );
-	html_head_javascript();
-}
-
-/**
- * Print the part of the page that comes after meta tags, but before the actual page content
- * @return null
- */
-function html_page_top2() {
-	html_page_top2a();
-
-	if( !db_is_connected() ) {
-		return;
-	}
-
-	if( auth_is_user_authenticated() ) {
-		html_login_info();
-
-		if( ON == config_get( 'show_project_menu_bar' ) ) {
-			print_project_menu_bar();
-			echo '<br />';
-		}
-	}
-	print_menu();
-
-	event_signal( 'EVENT_LAYOUT_CONTENT_BEGIN' );
-}
-
-/**
- * Print the part of the page that comes after meta tags and before the
- *  actual page content, but without login info or menus.  This is used
- *  directly during the login process and other times when the user may
- *  not be authenticated
- * @return null
- */
-function html_page_top2a() {
-	global $g_error_send_page_header;
-
-	html_head_end();
-	html_body_begin();
-	$g_error_send_page_header = false;
-	html_header();
-	html_top_banner();
-}
-
-/**
- * Print the part of the page that comes below the page content
- * $p_file should always be the __FILE__ variable. This is passed to show source
- * @param string $p_file should always be the __FILE__ variable. This is passed to show source
- * @return null
- */
-function html_page_bottom( $p_file = null ) {
-	html_page_bottom1( $p_file );
-}
-
-/**
- * Print the part of the page that comes below the page content
- * $p_file should always be the __FILE__ variable. This is passed to show source
- * @param string $p_file should always be the __FILE__ variable. This is passed to show source
- * @return null
- */
-function html_page_bottom1( $p_file = null ) {
-	if( !db_is_connected() ) {
-		return;
-	}
-
-	event_signal( 'EVENT_LAYOUT_CONTENT_END' );
-
-	if( config_get( 'show_footer_menu' ) ) {
-		echo '<br />';
-		print_menu();
-	}
-
-	html_page_bottom1a( $p_file );
-}
-
-/**
- * Print the part of the page that comes below the page content but leave off
- *  the menu.  This is used during the login process and other times when the
- *  user may not be authenticated.
- * @param string $p_file should always be the __FILE__ variable.
- * @return null
- */
-function html_page_bottom1a( $p_file = null ) {
-	if( null === $p_file ) {
-		$p_file = basename( $_SERVER['SCRIPT_NAME'] );
-	}
-
-	html_bottom_banner();
-	html_footer();
-	html_body_end();
-	html_end();
-}
-
-/**
- * (1) Print the document type and the opening <html> tag
- * @return null
+ * Print the document type and the opening <html> tag
+ * @return void
  */
 function html_begin() {
-	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', "\n";
+	echo '<!DOCTYPE html>', "\n";
 	echo '<html>', "\n";
 }
 
 /**
- * (2) Begin the <head> section
- * @return null
+ * Begin the <head> section
+ * @return void
  */
 function html_head_begin() {
 	echo '<head>', "\n";
 }
 
 /**
- * (3) Print the content-type
- * @return null
+ * Print the content-type
+ * @return void
  */
 function html_content_type() {
 	echo "\t", '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />', "\n";
 }
 
 /**
- * (4) Print the window title
- * @param string $p_page_title window title
- * @return null
+ * Print the window title
+ * @param string $p_page_title Window title.
+ * @return void
  */
 function html_title( $p_page_title = null ) {
 	$t_page_title = string_html_specialchars( $p_page_title );
@@ -336,35 +193,79 @@ function html_title( $p_page_title = null ) {
 }
 
 /**
- * (5) Print the link to include the css file
- * @return null
+ * Require a CSS file to be in html page headers
+ * @param string $p_stylesheet_path Path to CSS style sheet.
+ * @return void
  */
-function html_css() {
-	$t_css_url = config_get( 'css_include_file' );
-	echo "\t", '<link rel="stylesheet" type="text/css" href="', helper_mantis_url( $t_css_url ), '" />', "\n";
-
-	# Add right-to-left css if needed
-	if( lang_get( 'directionality' ) == 'rtl' ) {
-		$t_css_rtl_url = config_get( 'css_rtl_include_file' );
-		echo "\t", '<link rel="stylesheet" type="text/css" href="', helper_mantis_url( $t_css_rtl_url ), '" />', "\n";
-	}
-
-	# fix for NS 4.x css
-	echo "\t", '<script type="text/javascript" language="JavaScript"><!--', "\n";
-	echo "\t\t", 'if(document.layers) {document.write("<style>td{padding:0px;}<\/style>")}', "\n";
-	echo "\t", '// --></script>', "\n";
+function require_css( $p_stylesheet_path ) {
+	global $g_stylesheets_included;
+	$g_stylesheets_included[$p_stylesheet_path] = $p_stylesheet_path;
 }
 
 /**
- * (6) Print an HTML meta tag to redirect to another page
+ * Print the link to include the CSS file
+ * @return void
+ */
+function html_css() {
+	global $g_stylesheets_included;
+	html_css_link( config_get_global( 'css_include_file' ) );
+	# Add right-to-left css if needed
+	if( lang_get( 'directionality' ) == 'rtl' ) {
+		html_css_link( config_get_global( 'css_rtl_include_file' ) );
+	}
+	foreach( $g_stylesheets_included as $t_stylesheet_path ) {
+		# status_config.php is a special css file, dynamically generated.
+		# Add a hash to the query string to differentiate content based on its
+		# relevant properties. This allows a browser to cache them separately and force
+		# a reload when the content may differ.
+		if( $t_stylesheet_path == 'status_config.php' ) {
+			$t_stylesheet_path = helper_url_combine(
+				helper_mantis_url( 'css/status_config.php' ),
+				'cache_key=' . helper_generate_cache_key( array( 'user' ) )
+			);
+		}
+		html_css_link( $t_stylesheet_path );
+	}
+
+	# dropzone css
+	if ( config_get_global( 'cdn_enabled' ) == ON ) {
+		html_css_cdn_link( 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/' . DROPZONE_VERSION . '/min/dropzone.min.css' );
+	} else {
+		html_css_link( 'dropzone-' . DROPZONE_VERSION . '.min.css' );
+	}
+}
+
+/**
+ * Prints a CSS link
+ * @param string $p_filename Filename.
+ * @return void
+ */
+function html_css_link( $p_filename ) {
+	# If no path is specified, look for CSS files in default directory
+	if( $p_filename == basename( $p_filename ) ) {
+		$p_filename = 'css/' . $p_filename;
+	}
+	echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url( helper_mantis_url( $p_filename ), true ), '" />', "\n";
+}
+
+/**
+ * Prints a CSS link for CDN
+ * @param string $p_url fully qualified domain name to the js file name
+ * @return void
+ */
+function html_css_cdn_link( $p_url ) {
+	echo "\t", '<link rel="stylesheet" type="text/css" href="', $p_url, '" crossorigin="anonymous" />', "\n";
+}
+
+/**
+ * Print an HTML meta tag to redirect to another page
  * This function is optional and may be called by pages that need a redirect.
  * $p_time is the number of seconds to wait before redirecting.
- * If we have handled any errors on this page and the 'stop_on_errors' config
- *  option is turned on, return false and don't redirect.
+ * If we have handled any errors on this page return false and don't redirect.
  *
- * @param string $p_url The page to redirect: has to be a relative path
- * @param integer $p_time seconds to wait for before redirecting
- * @param boolean $p_sanitize apply string_sanitize_url to passed url
+ * @param string  $p_url      The page to redirect: has to be a relative path.
+ * @param integer $p_time     Seconds to wait for before redirecting.
+ * @param boolean $p_sanitize Apply string_sanitize_url to passed URL.
  * @return boolean
  */
 function html_meta_redirect( $p_url, $p_time = null, $p_sanitize = true ) {
@@ -376,7 +277,7 @@ function html_meta_redirect( $p_url, $p_time = null, $p_sanitize = true ) {
 		$p_time = current_user_get_pref( 'redirect_delay' );
 	}
 
-	$t_url = config_get( 'path' );
+	$t_url = config_get_global( 'path' );
 	if( $p_sanitize ) {
 		$t_url .= string_sanitize_url( $p_url );
 	} else {
@@ -385,535 +286,288 @@ function html_meta_redirect( $p_url, $p_time = null, $p_sanitize = true ) {
 
 	$t_url = htmlspecialchars( $t_url );
 
-	echo "\t<meta http-equiv=\"Refresh\" content=\"$p_time;URL=$t_url\" />\n";
+	echo "\t" . '<meta http-equiv="Refresh" content="' . $p_time . '; URL=' . $t_url . '" />' . "\n";
 
 	return true;
 }
 
 /**
- * (6a) Javascript...
- * @return null
+ * Require a javascript file to be in html page headers
+ * @param string $p_script_path Path to javascript file.
+ * @return void
+ */
+function require_js( $p_script_path ) {
+	global $g_scripts_included;
+	$g_scripts_included[$p_script_path] = $p_script_path;
+}
+
+/**
+ * Javascript...
+ * @return void
  */
 function html_head_javascript() {
-	if( ON == config_get( 'use_javascript' ) ) {
-		html_javascript_link( 'common.js' );
-		echo '<script language="javascript">var loading_lang = "' . lang_get( 'loading' ) . '";</script>';
-		html_javascript_link( 'ajax.js' );
+	global $g_scripts_included;
+	# Add a hash to the query string to differentiate content based on its
+	# relevant properties. This allows a browser to cache them separately and force
+	# a reload when the content may differ.
+	$t_javascript_translations = helper_url_combine(
+		helper_mantis_url( 'javascript_translations.php' ),
+		'cache_key=' . helper_generate_cache_key( array( 'lang' ) )
+	);
+	$t_javascript_config = helper_url_combine(
+		helper_mantis_url( 'javascript_config.php' ),
+		'cache_key=' . helper_generate_cache_key( array( 'user' ) )
+	);
+	echo "\t" . '<script type="text/javascript" src="' . $t_javascript_config . '"></script>' . "\n";
+	echo "\t" . '<script type="text/javascript" src="' . $t_javascript_translations . '"></script>' . "\n";
 
-		global $g_enable_projax;
+	if ( config_get_global( 'cdn_enabled' ) == ON ) {
+		# JQuery
+		html_javascript_cdn_link( 'https://ajax.googleapis.com/ajax/libs/jquery/' . JQUERY_VERSION . '/jquery.min.js', JQUERY_HASH );
 
-		if( $g_enable_projax ) {
-			html_javascript_link( 'projax/prototype.js' );
-			html_javascript_link( 'projax/scriptaculous.js' );
-		}
+		# Dropzone
+		html_javascript_cdn_link( 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/' . DROPZONE_VERSION . '/min/dropzone.min.js', DROPZONE_HASH );
+	} else {
+		# JQuery
+		html_javascript_link( 'jquery-' . JQUERY_VERSION . '.min.js' );
+
+		# Dropzone
+		html_javascript_link( 'dropzone-' . DROPZONE_VERSION . '.min.js' );
+	}
+
+	html_javascript_link( 'common.js' );
+	foreach ( $g_scripts_included as $t_script_path ) {
+		html_javascript_link( $t_script_path );
 	}
 }
 
 /**
- * (7) End the <head> section
- * @return null
+ * End the <head> section
+ * @return void
  */
 function html_head_end() {
-	event_signal( 'EVENT_LAYOUT_RESOURCES' );
-
 	echo '</head>', "\n";
 }
 
 /**
- * (8) Begin the <body> section
- * @return null
+ * Prints the logo with an URL link.
+ * @param string $p_logo Path to the logo image. If not specified, will get it
+ *                       from $g_logo_image
+ * @return void
  */
-function html_body_begin() {
-	echo '<body>', "\n";
-
-	event_signal( 'EVENT_LAYOUT_BODY_BEGIN' );
-}
-
-/**
- * (9) Print the title displayed at the top of the page
- * @return null
- */
-function html_header() {
-	$t_title = config_get( 'page_title' );
-	if( !is_blank( $t_title ) ) {
-		echo '<div class="center"><span class="pagetitle">', string_display( $t_title ), '</span></div>', "\n";
-	}
-}
-
-/**
- * (10) Print a user-defined banner at the top of the page if there is one.
- * @return null
- */
-function html_top_banner() {
-	$t_page = config_get( 'top_include_page' );
-	$t_logo_image = config_get( 'logo_image' );
-	$t_logo_url = config_get( 'logo_url' );
-
-	if( is_blank( $t_logo_image ) ) {
-		$t_show_logo = false;
-	} else {
-		$t_show_logo = true;
-		if( is_blank( $t_logo_url ) ) {
-			$t_show_url = false;
-		} else {
-			$t_show_url = true;
-		}
+function html_print_logo( $p_logo = null ) {
+	if( !$p_logo ) {
+		$p_logo = config_get( 'logo_image' );
 	}
 
-	if( !is_blank( $t_page ) && file_exists( $t_page ) && !is_dir( $t_page ) ) {
-		include( $t_page );
-	} else if( $t_show_logo ) {
-		if( is_page_name( 'login_page' ) ) {
-			$t_align = 'center';
-		} else {
-			$t_align = 'left';
-		}
+	if( !is_blank( $p_logo ) ) {
+		$t_logo_url = config_get_global( 'logo_url' );
+		$t_show_url = !is_blank( $t_logo_url );
 
-		echo '<div class="logo" align="', $t_align, '">';
 		if( $t_show_url ) {
-			echo '<a href="', config_get( 'logo_url' ), '">';
+			echo '<a id="logo-link" href="', config_get_global( 'logo_url' ), '">';
 		}
-		echo '<img border="0" alt="Mantis Bug Tracker" src="' . helper_mantis_url( config_get( 'logo_image' ) ) . '" />';
+		$t_alternate_text = string_html_specialchars( config_get( 'window_title' ) );
+		echo '<img id="logo-image" alt="', $t_alternate_text, '" style="max-height: 80px;" src="' . helper_mantis_url( $p_logo ) . '" />';
 		if( $t_show_url ) {
 			echo '</a>';
 		}
-		echo '<p><em>'.lang_get('cms_sc_banner_message').'</em></p>';
+	}
+}
+
+
+
+/**
+ * Print a user-defined banner at the top of the page if there is one.
+ * @return void
+ */
+function html_top_banner() {
+	$t_page = config_get_global( 'top_include_page' );
+	$t_logo_image = config_get( 'logo_image' );
+
+	if( !is_blank( $t_page ) && file_exists( $t_page ) && !is_dir( $t_page ) ) {
+		include( $t_page );
+	} else if( !is_blank( $t_logo_image ) ) {
+		echo '<div id="banner">';
+		html_print_logo( $t_logo_image );
+		echo '</div>';
 	}
 
 	event_signal( 'EVENT_LAYOUT_PAGE_HEADER' );
 }
 
 /**
- * (11) Print the user's account information
- * Also print the select box where users can switch projects
- * @return null
+ * Outputs a message to confirm an operation's result.
+ * @param array   $p_buttons     Array of (URL, label) pairs used to generate
+ *                               the buttons; if label is null or unspecified,
+ *                               the default 'proceed' text will be displayed.
+ * @param string  $p_message     Message to display to the user. If none is
+ *                               provided, a default message will be printed
+ * @param integer $p_type        One of the constants CONFIRMATION_TYPE_SUCCESS,
+ *                               CONFIRMATION_TYPE_WARNING, CONFIRMATION_TYPE_FAILURE
+ * @return void
  */
-function html_login_info() {
-	$t_username = current_user_get_field( 'username' );
-	$t_access_level = get_enum_element( 'access_levels', current_user_get_access_level() );
-	$t_now = date( config_get( 'complete_date_format' ) );
-	$t_realname = current_user_get_field( 'realname' );
+function html_operation_confirmation( array $p_buttons, $p_message = '', $p_type = CONFIRMATION_TYPE_SUCCESS ) {
+	switch( $p_type ) {
+		case CONFIRMATION_TYPE_FAILURE:
+			$t_alert_css = 'alert-danger';
+			$t_message = 'operation_failed';
+			break;
+		case CONFIRMATION_TYPE_WARNING:
+			$t_alert_css = 'alert-warning';
+			$t_message = 'operation_warnings';
+			break;
+		case CONFIRMATION_TYPE_SUCCESS:
+		default:
+			$t_alert_css = 'alert-success';
+			$t_message = 'operation_successful';
+			break;
+	}
 
-	echo '<table class="hide">';
-	echo '<tr>';
-	echo '<td class="login-info-left">';
-	if( current_user_is_anonymous() ) {
-		$t_return_page = $_SERVER['SCRIPT_NAME'];
-		if( isset( $_SERVER['QUERY_STRING'] ) ) {
-			$t_return_page .= '?' . $_SERVER['QUERY_STRING'];
-		}
+	echo '<div class="container-fluid">';
+	echo '<div class="col-md-12 col-xs-12">';
+	echo '<div class="space-0"></div>';
+	echo '<div class="alert ' . $t_alert_css . ' center">';
 
-		$t_return_page = string_url( $t_return_page );
-		echo lang_get( 'anonymous' ) . ' | <a href="' . helper_mantis_url( 'login_page.php?return=' . $t_return_page ) . '">' . lang_get( 'login_link' ) . '</a>';
-		if( config_get_global( 'allow_signup' ) == ON ) {
-			echo ' | <a href="' . helper_mantis_url( 'signup_page.php' ) . '">' . lang_get( 'signup_link' ) . '</a>';
-		}
+	# Print message
+	if( is_blank( $p_message ) ) {
+		$t_message = lang_get( $t_message );
 	} else {
-		echo lang_get( 'logged_in_as' ), ": <span class=\"italic\">", string_html_specialchars( $t_username ), "</span> <span class=\"small\">";
-		echo is_blank( $t_realname ) ? "($t_access_level)" : "(" . string_html_specialchars( $t_realname ) . " - $t_access_level)";
-		echo "</span>";
+		$t_message = $p_message;
 	}
-	echo '</td>';
-	echo '<td class="login-info-middle">';
-	echo "<span class=\"italic\">$t_now</span>";
-	echo '</td>';
-	echo '<td class="login-info-right">';
-	$t_show_project_selector = true;
-	if( count( current_user_get_accessible_projects() ) == 1 ) {
+	echo '<p class="bold bigger-110">' . $t_message  . '</p><br />';
 
-		// >1
-		$t_project_ids = current_user_get_accessible_projects();
-		$t_project_id = (int) $t_project_ids[0];
-		if( count( current_user_get_accessible_subprojects( $t_project_id ) ) == 0 ) {
-			$t_show_project_selector = false;
-		}
+	# Print buttons
+	echo '<div class="btn-group">';
+	foreach( $p_buttons as $t_button ) {
+		$t_url = string_sanitize_url( $t_button[0] );
+		$t_label = isset( $t_button[1] ) ? $t_button[1] : lang_get( 'proceed' );
+
+		print_link_button( $t_url, $t_label );
 	}
+	echo '</div>';
 
-	if( $t_show_project_selector ) {
-		$current_projects = join( ';', helper_get_current_project_trace() );
-		$t_project_ids = current_user_get_accessible_projects();
-		$in_main_project = ($t_project_ids[0] == $current_projects);
-
-		echo '<form method="post" name="form_set_project" action="' . helper_mantis_url( 'set_project.php' ) . '"' . ($in_main_project ? '' : ' style="font-weight: bold; color: red"' ) . '>';
-		# CSRF protection not required here - form does not result in modifications
-
-		echo lang_get( 'email_project' ), ': ';
-		if( ON == config_get( 'show_extended_project_browser' ) ) {
-			print_extended_project_browser( helper_get_current_project_trace() );
-		} else {
-			if( ON == config_get( 'use_javascript' ) ) {
-				echo '<select name="project_id" class="small" onchange="document.forms.form_set_project.submit();">';
-			} else {
-				echo '<select name="project_id" class="small">';
-			}
-
-			print_project_option_list( $current_projects, true, null, true );
-			echo '</select> ';
-		}
-		echo '<input type="submit" class="button-small" value="' . lang_get( 'switch' ) . '" />';
-		echo '</form>';
-	}
-	if( OFF != config_get( 'rss_enabled' ) ) {
-
-		# Link to RSS issues feed for the selected project, including authentication details.
-		echo '<a href="' . htmlspecialchars( rss_get_issues_feed_url() ) . '">';
-		echo '<img src="' . helper_mantis_url( 'images/rss.png' ) . '" alt="' . lang_get( 'rss' ) . '" style="border-style: none; margin: 5px; vertical-align: middle;" />';
-		echo '</a>';
-	}
-
-	echo '</td>';
-	echo '</tr>';
-	echo '</table>';
+	echo '</div></div></div>', PHP_EOL;
 }
 
 /**
- * (12) Print a user-defined banner at the bottom of the page if there is one.
- * @return null
+ * Outputs an operation successful message with a single redirect link.
+ * @param string $p_redirect_url The url to redirect to.
+ * @param string $p_message      Message to display to the user.
+ * @return void
  */
-function html_bottom_banner() {
-	$t_page = config_get( 'bottom_include_page' );
-
-	if( !is_blank( $t_page ) && file_exists( $t_page ) && !is_dir( $t_page ) ) {
-		include( $t_page );
-	}
+function html_operation_successful( $p_redirect_url, $p_message = '' ) {
+	html_operation_confirmation( array( array( $p_redirect_url ) ), $p_message );
 }
 
 /**
- * (13) Print the page footer information
- * @param string $p_file
- * @return null
+ * Outputs a warning message with a single redirect link.
+ * @param string $p_redirect_url The url to redirect to.
+ * @param string $p_message      Message to display to the user.
+ * @return void
  */
-function html_footer( $p_file = null ) {
-	global $g_queries_array, $g_request_time;
-
-	# If a user is logged in, update their last visit time.
-	# We do this at the end of the page so that:
-	#  1) we can display the user's last visit time on a page before updating it
-	#  2) we don't invalidate the user cache immediately after fetching it
-	#  3) don't do this on the password verification or update page, as it causes the
-	#    verification comparison to fail
-	if ( auth_is_user_authenticated() && !current_user_is_anonymous() && !( is_page_name( 'verify.php' ) || is_page_name( 'account_update.php' ) ) ) {
-		$t_user_id = auth_get_current_user_id();
-		user_update_last_visit( $t_user_id );
-	}
-
-	echo "\t", '<br />', "\n";
-	echo "\t", '<hr size="1" />', "\n";
-
-	echo '<table border="0" width="100%" cellspacing="0" cellpadding="0"><tr valign="top"><td>';
-	if( ON == config_get( 'show_version' ) ) {
-		$t_version_suffix = config_get_global( 'version_suffix' );
-		echo "\t", '<span class="timer"><a href="http://www.mantisbt.org/" title="Free Web Based Bug Tracker">MantisBT ', MANTIS_VERSION, ( $t_version_suffix ? " $t_version_suffix" : '' ), '</a>', '[<a href="http://www.mantisbt.org/"  title="Free Web Based Bug Tracker" target="_blank">^</a>]</span>', "\n";
-	}
-	echo "\t", '<address>Copyright &copy; 2000 - 2010 MantisBT Group</address>', "\n";
-
-	# only display webmaster email is current user is not the anonymous user
-	if( !is_page_name( 'login_page.php' ) && auth_is_user_authenticated() && !current_user_is_anonymous() ) {
-		echo "\t", '<address><a href="mailto:', config_get( 'webmaster_email' ), '">', config_get( 'webmaster_email' ), '</a></address>', "\n";
-	}
-
-	event_signal( 'EVENT_LAYOUT_PAGE_FOOTER' );
-
-	# print timings
-	if( ON == config_get( 'show_timer' ) ) {
-		echo '<span class="italic">Time: ' . number_format( microtime(true) - $g_request_time, 4 ) . ' seconds.</span><br />';
-		echo sprintf( lang_get( 'memory_usage_in_kb' ), number_format( memory_get_peak_usage() / 1024 ) ), '<br />';
-	}
-
-	# print db queries that were run
-	if( helper_show_queries() ) {
-		$t_count = count( $g_queries_array );
-		echo "\t";
-		echo sprintf( lang_get( 'total_queries_executed' ), $t_count );
-		echo "<br />\n";
-
-		if( ON == config_get( 'show_queries_list' ) ) {
-			$t_unique_queries = 0;
-			$t_shown_queries = array();
-			for( $i = 0;$i < $t_count;$i++ ) {
-				if( !in_array( $g_queries_array[$i][0], $t_shown_queries ) ) {
-					$t_unique_queries++;
-					$g_queries_array[$i][3] = false;
-					array_push( $t_shown_queries, $g_queries_array[$i][0] );
-				} else {
-					$g_queries_array[$i][3] = true;
-				}
-			}
-
-			echo "\t";
-			echo sprintf( lang_get( 'unique_queries_executed' ), $t_unique_queries );
-			echo "\t", '<table>', "\n";
-			$t_total = 0;
-			for( $i = 0;$i < $t_count;$i++ ) {
-				$t_time = $g_queries_array[$i][1];
-				$t_caller = $g_queries_array[$i][2];
-				$t_total += $t_time;
-				$t_style_tag = '';
-				if( true == $g_queries_array[$i][3] ) {
-					$t_style_tag = ' style="color: red;"';
-				}
-				echo "\t", '<tr valign="top"><td', $t_style_tag, '>', ( $i + 1 ), '</td>';
-				echo '<td', $t_style_tag, '>', $t_time, '</td>';
-				echo '<td', $t_style_tag, '><span style="color: gray;">', $t_caller, '</span><br />', string_html_specialchars( $g_queries_array[$i][0] ), '</td></tr>', "\n";
-			}
-
-			# @@@ Note sure if we should localize them given that they are debug info.  Will add if requested by users.
-			echo "\t", '<tr><td></td><td>', $t_total, '</td><td>SQL Queries Total Time</td></tr>', "\n";
-			echo "\t", '<tr><td></td><td>', round( microtime(true) - $g_request_time, 4 ), '</td><td>Page Request Total Time</td></tr>', "\n";
-			echo "\t", '</table>', "\n";
-		}
-	}
-
-	echo '</td><td>', "\n\t", '<div align="right">';
-	echo '<a href="http://www.mantisbt.org" title="Free Web Based Bug Tracker"><img src="' . helper_mantis_url( 'images/mantis_logo_button.gif' ) . '" width="88" height="35" alt="Powered by Mantis Bugtracker" border="0" /></a>';
-	echo '</div>', "\n", '</td></tr></table>', "\n";
+function html_operation_warning( $p_redirect_url, $p_message = '' ) {
+	html_operation_confirmation(
+		array( array( $p_redirect_url ) ),
+		$p_message,
+		CONFIRMATION_TYPE_WARNING
+	);
 }
 
 /**
- * (14) End the <body> section
- * @return null
+ * Outputs an error message with a single redirect link.
+ * @param string $p_redirect_url The url to redirect to.
+ * @param string $p_message      Message to display to the user.
+ * @return void
+ */
+function html_operation_failure( $p_redirect_url, $p_message = '' ) {
+	html_operation_confirmation(
+		array( array( $p_redirect_url ) ),
+		$p_message,
+		CONFIRMATION_TYPE_FAILURE
+	);
+}
+
+/**
+ * End the <body> section
+ * @return void
  */
 function html_body_end() {
+	# Should code need to be added to this function in the future, it should be
+	# placed *above* this event, which needs to be the last thing to occur
+	# before the actual body ends (see #20084)
 	event_signal( 'EVENT_LAYOUT_BODY_END' );
 
 	echo '</body>', "\n";
 }
 
 /**
- * (15) Print the closing <html> tag
- * @return null
+ * Print the closing <html> tag
+ * @return void
  */
 function html_end() {
 	echo '</html>', "\n";
-}
 
-/**
- * Prepare an array of additional menu options from a config variable
- * @param string $p_config config name
- * @return array
- */
-function prepare_custom_menu_options( $p_config ) {
-	$t_custom_menu_options = config_get( $p_config );
-	$t_options = array();
-
-	foreach( $t_custom_menu_options as $t_custom_option ) {
-		$t_access_level = $t_custom_option[1];
-		if( access_has_project_level( $t_access_level ) ) {
-			$t_caption = lang_get_defaulted( $t_custom_option[0] );
-			$t_link = $t_custom_option[2];
-			$t_options[] = "<a href=\"$t_link\">$t_caption</a>";
-		}
-	}
-
-	return $t_options;
-}
-
-/**
- * Print the main menu
- * @return null
- */
-function print_menu() {
-	global $cms_sc_sourcecode_link;
-	if( auth_is_user_authenticated() ) {
-		$t_protected = current_user_get_field( 'protected' );
-		$t_current_project = helper_get_current_project();
-
-		echo '<table class="width100" cellspacing="0">';
-		echo '<tr>';
-		echo '<td class="menu">';
-		$t_menu_options_issues = array();
-		$t_menu_options_analysis = array();
-		$t_menu_options_admin = array();
-		$t_menu_options_account = array();
-
-		# Main Page
-		$t_menu_options_analysis[] = '<a href="' . helper_mantis_url( 'main_page.php' ) . '">' . lang_get( 'main_link' ) . '</a>';
-
-		# Plugin / Event added options
-		$t_event_menu_options = event_signal( 'EVENT_MENU_MAIN_FRONT' );
-		foreach( $t_event_menu_options as $t_plugin => $t_plugin_menu_options ) {
-			foreach( $t_plugin_menu_options as $t_callback => $t_callback_menu_options ) {
-				if( is_array( $t_callback_menu_options ) ) {
-					$t_menu_options_analysis = array_merge( $t_menu_options_analysis, $t_callback_menu_options );
-				} else {
-					if ( !is_null( $t_callback_menu_options ) ) {
-						$t_menu_options_analysis[] = $t_callback_menu_options;
-					}
-				}
-			}
-		}
-
-		# My View
-		$t_menu_options_issues[] = '<a href="' . helper_mantis_url( 'my_view_page.php">' ) . lang_get( 'my_view_link' ) . '</a>';
-
-		# View Bugs
-		$t_menu_options_issues[] = '<a href="' . helper_mantis_url( 'view_all_bug_page.php">' ) . lang_get( 'view_bugs_link' ) . '</a>';
-
-		# Report Bugs
-		if( access_has_project_level( config_get( 'report_bug_threshold' ) ) ) {
-			$t_menu_options_issues[] = string_get_bug_report_link();
-		}
-
-		# Changelog Page
-		/*if( access_has_project_level( config_get( 'view_changelog_threshold' ) ) ) {
-			$t_menu_options_analysis[] = '<a href="' . helper_mantis_url( 'changelog_page.php">' ) . lang_get( 'changelog_link' ) . '</a>';
-		}*/
-
-		# Roadmap Page
-		/*if( access_has_project_level( config_get( 'roadmap_view_threshold' ) ) ) {
-			$t_menu_options_analysis[] = '<a href="' . helper_mantis_url( 'roadmap_page.php">' ) . lang_get( 'roadmap_link' ) . '</a>';
-		}*/
-
-		# Summary Page
-		if( access_has_project_level( config_get( 'view_summary_threshold' ) ) ) {
-			$t_menu_options_analysis[] = '<a href="' . helper_mantis_url( 'summary_page.php">' ) . lang_get( 'summary_link' ) . '</a>';
-		}
-
-		# Project Documentation Page
-		if( ON == config_get( 'enable_project_documentation' ) ) {
-			$t_menu_options_issues[] = '<a href="' . helper_mantis_url( 'proj_doc_page.php">' ) . lang_get( 'docs_link' ) . '</a>';
-		}
-
-		# Project Wiki
-		if( config_get_global( 'wiki_enable' ) == ON ) {
-			$t_menu_options_issues[] = '<a href="' . helper_mantis_url( 'wiki.php?type=project&amp;id=' ) . $t_current_project . '">' . lang_get( 'wiki' ) . '</a>';
-		}
-
-		# Plugin / Event added options
-		$t_event_menu_options = event_signal( 'EVENT_MENU_MAIN' );
-		foreach( $t_event_menu_options as $t_plugin => $t_plugin_menu_options ) {
-			foreach( $t_plugin_menu_options as $t_callback => $t_callback_menu_options ) {
-				if( is_array( $t_callback_menu_options ) ) {
-					$t_menu_options_issues = array_merge( $t_menu_options_issues, $t_callback_menu_options );
-				} else {
-					if ( !is_null( $t_callback_menu_options ) ) {
-						$t_menu_options_issues[] = $t_callback_menu_options;
-					}
-				}
-			}
-		}
-
-		# Manage Users (admins) or Manage Project (managers) or Manage Custom Fields
-		if( access_has_global_level( config_get( 'manage_site_threshold' ) ) ) {
-			$t_link = helper_mantis_url( 'manage_overview_page.php' );
-			$t_menu_options_admin[] = "<a href=\"$t_link\">" . lang_get( 'manage_link' ) . '</a>';
-		} else {
-			$t_show_access = min( config_get( 'manage_user_threshold' ), config_get( 'manage_project_threshold' ), config_get( 'manage_custom_fields_threshold' ) );
-			if( access_has_global_level( $t_show_access ) || access_has_any_project( $t_show_access ) ) {
-				$t_current_project = helper_get_current_project();
-				/*if( access_has_global_level( config_get( 'manage_user_threshold' ) ) ) {
-					$t_link = helper_mantis_url( 'manage_user_page.php' );
-				} else {*/
-					if( access_has_project_level( config_get( 'manage_project_threshold' ), $t_current_project ) && ( $t_current_project <> ALL_PROJECTS ) ) {
-						$t_link = helper_mantis_url( 'manage_proj_edit_page.php?project_id=' ) . $t_current_project;
-					} else {
-						$t_link = helper_mantis_url( 'manage_proj_page.php' );
-					}
-				/*}*/
-				$t_menu_options_admin[] = "<a href=\"$t_link\">" . lang_get( 'manage_link' ) . '</a>';
-			}
-		}
-
-		# News Page
-		if ( news_is_enabled() && access_has_project_level( config_get( 'manage_news_threshold' ) ) ) {
-
-			# Admin can edit news for All Projects (site-wide)
-			if( ALL_PROJECTS != helper_get_current_project() || current_user_is_administrator() ) {
-				$t_menu_options_issues[] = '<a href="' . helper_mantis_url( 'news_menu_page.php">' ) . lang_get( 'edit_news_link' ) . '</a>';
-			} else {
-				$t_menu_options_issues[] = '<a href="' . helper_mantis_url( 'login_select_proj_page.php">' ) . lang_get( 'edit_news_link' ) . '</a>';
-			}
-		}
-
-		# Account Page (only show accounts that are NOT protected)
-		if( OFF == $t_protected ) {
-			$t_menu_options_account[] = '<a href="' . helper_mantis_url( 'account_prefs_page.php">' ) . lang_get( 'account_link' ) . '</a>';
-		}
-
-		# Add custom options
-		$t_custom_options = prepare_custom_menu_options( 'main_menu_custom_options' );
-		$t_menu_options_issues = array_merge( $t_menu_options_issues, $t_custom_options );
-		if( config_get( 'time_tracking_enabled' ) && config_get( 'time_tracking_with_billing' ) && access_has_global_level( config_get( 'time_tracking_reporting_threshold' ) ) ) {
-			$t_menu_options_account[] = '<a href="' . helper_mantis_url( 'billing_page.php">' ) . lang_get( 'time_tracking_billing_link' ) . '</a>';
-		}
-
-		# Logout (no if anonymously logged in)
-		if( !current_user_is_anonymous() ) {
-			$t_menu_options_account[] = '<a href="' . helper_mantis_url( 'logout_page.php">' ) . lang_get( 'logout_link' ) . '</a>';
-		}
-
-		echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('issues').':</span> '.implode( $t_menu_options_issues, ' | ' ).'</div>';
-		echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('analysis').':</span> '.implode( $t_menu_options_analysis, ' | ' ).'</div>';
-		if (count($t_menu_options_admin)!=0)
-				echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('administration').':</span> '.implode( $t_menu_options_admin, ' | ' ).'</div>';
-		if (count($t_menu_options_account)!=0)
-				echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('account').':</span> '.implode( $t_menu_options_account, ' | ' ).'</div>';
-
-		echo ' <div class="menu_section"><span class="menu_divider">'.lang_get('scm_acronym').':</span> '.$cms_sc_sourcecode_link .'</div>';
-
-		echo '</td>';
-		echo '<td class="menu right nowrap">';
-		echo '<form method="post" action="' . helper_mantis_url( 'jump_to_bug.php">' );
-		# CSRF protection not required here - form does not result in modifications
-
-		if( ON == config_get( 'use_javascript' ) ) {
-			$t_bug_label = lang_get( 'issue_id' );
-			echo "<input type=\"text\" name=\"bug_id\" size=\"10\" class=\"small\" value=\"$t_bug_label\" onfocus=\"if (this.value == '$t_bug_label') this.value = ''\" onblur=\"if (this.value == '') this.value = '$t_bug_label'\" />&nbsp;";
-		} else {
-			echo "<input type=\"text\" name=\"bug_id\" size=\"10\" class=\"small\" />&nbsp;";
-		}
-
-		echo '<input type="submit" class="button-small" value="' . lang_get( 'jump' ) . '" />&nbsp;';
-		echo '</form>';
-		echo '</td>';
-		echo '</tr>';
-		echo '</table>';
+	if( function_exists( 'fastcgi_finish_request' ) ) {
+		fastcgi_finish_request();
 	}
 }
 
 /**
  * Print the menu bar with a list of projects to which the user has access
- * @return null
+ * @return void
  */
 function print_project_menu_bar() {
 	$t_project_ids = current_user_get_accessible_projects();
+	$t_current_project_id = helper_get_current_project();
 
-	echo '<table class="width100" cellspacing="0">';
-	echo '<tr>';
-	echo '<td class="menu">';
-	echo '<a href="' . helper_mantis_url( 'set_project.php?project_id=' . ALL_PROJECTS ) . '">' . lang_get( 'all_projects' ) . '</a>';
+	echo '<div class="col-md-12 col-xs-12">' . "\n";
+	echo '<div class="btn-group">' . "\n";
+
+	$t_active = ALL_PROJECTS == $t_current_project_id ? 'active' : '';
+	echo '<a class="btn btn-xs btn-white btn-info ' . $t_active .
+		'" href="' . helper_mantis_url( 'set_project.php?project_id=' . ALL_PROJECTS ) . '">', lang_get( 'all_projects' ), '</a>' . "\n";
 
 	foreach( $t_project_ids as $t_id ) {
-		echo ' | <a href="' . helper_mantis_url( 'set_project.php?project_id=' . $t_id ) . '">' . string_html_specialchars( project_get_field( $t_id, 'name' ) ) . '</a>';
-		print_subproject_menu_bar( $t_id, $t_id . ';' );
+		$t_active = $t_id == $t_current_project_id ? 'active' : '';
+		echo '<a class="btn btn-xs btn-white btn-info ' . $t_active .
+			'" href="' . helper_mantis_url( 'set_project.php?project_id=' . $t_id ) . '">', string_html_specialchars( project_get_field( $t_id, 'name' ) ), '</a>' . "\n";
+		print_subproject_menu_bar( $t_current_project_id, $t_id, $t_id . ';' );
 	}
 
-	echo '</td>';
-	echo '</tr>';
-	echo '</table>';
+	echo '</div>' . "\n";
+	echo '<div class="space-4"></div>' . "\n";
+	echo '</div>' . "\n";
 }
 
 /**
  * Print the menu bar with a list of projects to which the user has access
- * @return null
+ * @todo check parents param - set_project.php?project_id=' . $p_parents . $t_subproject
+ * @param integer $p_current_project_id Selected project id.
+ * @param integer $p_parent_project_id Parent project id.
+ * @param string  $p_parents    Parent project identifiers.
+ * @return void
  */
-function print_subproject_menu_bar( $p_project_id, $p_parents = '' ) {
-	$t_subprojects = current_user_get_accessible_subprojects( $p_project_id );
-	$t_char = ':';
-	foreach( $t_subprojects as $t_subproject ) {
-		echo $t_char . ' <a href="' . helper_mantis_url( 'set_project.php?project_id=' . $p_parents . $t_subproject ) . '">' . string_html_specialchars( project_get_field( $t_subproject, 'name' ) ) . '</a>';
-		print_subproject_menu_bar( $t_subproject, $p_parents . $t_subproject . ';' );
-		$t_char = ',';
+function print_subproject_menu_bar( $p_current_project_id, $p_parent_project_id, $p_parents = '' ) {
+	$t_subprojects = current_user_get_accessible_subprojects( $p_parent_project_id );
+
+	foreach( $t_subprojects as $t_subproject_id ) {
+		$t_active = $p_current_project_id == $t_subproject_id ? 'active' : '';
+		echo '<a class="btn btn-xs btn-white btn-default ' . $t_active .
+			'" href="' . helper_mantis_url( 'set_project.php?project_id=' . $p_parents . $t_subproject_id ) .
+			'"><i class="ace-icon fa fa-angle-double-right"></i> ' .
+			string_html_specialchars( project_get_field( $t_subproject_id, 'name' ) ) . '</a>';
+
+		# Render this subproject's subprojects ... passing current project id to highlight selected project
+		print_subproject_menu_bar( $p_current_project_id, $t_subproject_id, $p_parents . $t_subproject_id . ';' );
 	}
 }
 
 /**
  * Print the menu for the graph summary section
- * @return null
+ * @return void
  */
 function print_summary_submenu() {
-	echo '<div align="center">';
-
 	# Plugin / Event added options
 	$t_event_menu_options = event_signal( 'EVENT_SUBMENU_SUMMARY' );
 	$t_menu_options = array();
@@ -922,83 +576,63 @@ function print_summary_submenu() {
 			if( is_array( $t_callback_menu_options ) ) {
 				$t_menu_options = array_merge( $t_menu_options, $t_callback_menu_options );
 			} else {
-				if ( !is_null( $t_callback_menu_options ) ) {
+				if( !is_null( $t_callback_menu_options ) ) {
 					$t_menu_options[] = $t_callback_menu_options;
 				}
 			}
 		}
 	}
 
-	// Plugins menu items
-	// TODO: this would be a call to print_pracket_link but the events returns cooked links so we cant
-	foreach( $t_menu_options as $t_menu_item ) {
-		echo '<span class="bracket-link">[&nbsp;';
-		echo $t_menu_item;
-		echo '&nbsp;]</span> ';
+	if( count($t_menu_options) > 0 ) {
+		echo '<div class="space-10"></div>';
+		echo '<div class="center">';
+		echo '<div class="btn-toolbar inline">';
+		echo '<div class="btn-group">';
+
+		# Plugins menu items - these are cooked links
+		foreach ($t_menu_options as $t_menu_item) {
+			echo $t_menu_item;
+		}
+		echo '</div></div></div>';
 	}
-	echo '</div>';
 }
 
 /**
  * Print the menu for the manage section
  *
- * @param string $p_page specifies the current page name so it's link can be disabled
- * @return null
+ * @param string $p_page Specifies the current page name so it's link can be disabled.
+ * @return void
  */
 function print_manage_menu( $p_page = '' ) {
-	$t_manage_user_page = 'manage_user_page.php';
-	$t_manage_project_menu_page = 'manage_proj_page.php';
-	$t_manage_custom_field_page = 'manage_custom_field_page.php';
-	$t_manage_plugin_page = 'manage_plugin_page.php';
-	$t_manage_config_page = 'adm_config_report.php';
-	$t_manage_prof_menu_page = 'manage_prof_menu_page.php';
-	$t_manage_tags_page = 'manage_tags_page.php';
+	$t_pages = array();
 
-	switch( $p_page ) {
-		case $t_manage_user_page:
-			$t_manage_user_page = '';
-			break;
-		case $t_manage_project_menu_page:
-			$t_manage_project_menu_page = '';
-			break;
-		case $t_manage_custom_field_page:
-			$t_manage_custom_field_page = '';
-			break;
-		case $t_manage_config_page:
-			$t_manage_config_page = '';
-			break;
-		case $t_manage_plugin_page:
-			$t_manage_plugin_page = '';
-			break;
-		case $t_manage_prof_menu_page:
-			$t_manage_prof_menu_page = '';
-			break;
-		case $t_manage_tags_page:
-			$t_manage_tags_page = '';
-			break;
+	if( access_has_global_level( config_get( 'manage_site_threshold' ) ) ) {
+		$t_pages['manage_overview_page.php'] = array( 'url'   => 'manage_overview_page.php', 'label' => '' );
 	}
-
-	echo '<div align="center"><p>';
-	/*if( access_has_global_level( config_get( 'manage_user_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_user_page ), lang_get( 'manage_users_link' ) );
-	}*/
+	if( access_has_global_level( config_get( 'manage_user_threshold' ) ) ) {
+		$t_pages['manage_user_page.php'] = array( 'url'   => 'manage_user_page.php', 'label' => 'manage_users_link' );
+	}
 	if( access_has_project_level( config_get( 'manage_project_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_project_menu_page ), lang_get( 'manage_projects_link' ) );
+		$t_pages['manage_proj_page.php'] = array( 'url'   => 'manage_proj_page.php', 'label' => 'manage_projects_link' );
 	}
-	if( access_has_project_level( config_get( 'tag_edit_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_tags_page ), lang_get( 'manage_tags_link' ) );
+	if( access_has_global_level( config_get( 'tag_edit_threshold' ) ) ) {
+		$t_pages['manage_tags_page.php'] = array( 'url'   => 'manage_tags_page.php', 'label' => 'manage_tags_link' );
 	}
 	if( access_has_global_level( config_get( 'manage_custom_fields_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_custom_field_page ), lang_get( 'manage_custom_field_link' ) );
+		$t_pages['manage_custom_field_page.php'] = array( 'url'   => 'manage_custom_field_page.php', 'label' => 'manage_custom_field_link' );
 	}
-	if( access_has_global_level( config_get( 'manage_global_profile_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_prof_menu_page ), lang_get( 'manage_global_profiles_link' ) );
+	if( config_get( 'enable_profiles' ) == ON && access_has_global_level( config_get( 'manage_global_profile_threshold' ) ) ) {
+		$t_pages['manage_prof_menu_page.php'] = array( 'url'   => 'manage_prof_menu_page.php', 'label' => 'manage_global_profiles_link' );
 	}
 	if( access_has_global_level( config_get( 'manage_plugin_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_plugin_page ), lang_get( 'manage_plugin_link' ) );
+		$t_pages['manage_plugin_page.php'] = array( 'url'   => 'manage_plugin_page.php', 'label' => 'manage_plugin_link' );
 	}
-	if( access_has_project_level( config_get( 'view_configuration_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_manage_config_page ), lang_get( 'manage_config_link' ) );
+
+	if( access_has_project_level( config_get( 'manage_configuration_threshold' ) ) ) {
+		$t_pages['adm_permissions_report.php'] = array(
+			'url'   => 'adm_permissions_report.php',
+			'label' => 'manage_config_link'
+		);
 	}
 
 	# Plugin / Event added options
@@ -1009,110 +643,131 @@ function print_manage_menu( $p_page = '' ) {
 			if( is_array( $t_callback_menu_options ) ) {
 				$t_menu_options = array_merge( $t_menu_options, $t_callback_menu_options );
 			} else {
-				if ( !is_null( $t_callback_menu_options ) ) {
+				if( !is_null( $t_callback_menu_options ) ) {
 					$t_menu_options[] = $t_callback_menu_options;
 				}
 			}
 		}
 	}
 
-	// Plugins menu items
-	// TODO: this would be a call to print_pracket_link but the events returns cooked links so we cant
-	foreach( $t_menu_options as $t_menu_item ) {
-		echo '<span class="bracket-link">[&nbsp;';
-		echo $t_menu_item;
-		echo '&nbsp;]</span> ';
+	echo '<ul class="nav nav-tabs padding-18">' . "\n";
+	foreach( $t_pages AS $t_page ) {
+		$t_active =  $t_page['url'] == $p_page ? 'active' : '';
+		echo '<li class="' . $t_active .  '">' . "\n";
+		if( $t_page['label'] == '' ) {
+			echo '<a href="'. lang_get_defaulted( $t_page['url'] ) .'"><i class="blue ace-icon fa fa-info-circle"></i> </a>';
+		} else {
+			echo '<a href="'. helper_mantis_url( $t_page['url'] ) .'">' . lang_get_defaulted( $t_page['label'] ) . '</a>';
+		}
+		echo '</li>' . "\n";
 	}
 
-	echo '</p></div>';
+	# Plugins menu items - these are html hyperlinks (<a> tags)
+	foreach( $t_menu_options as $t_menu_item ) {
+		$t_active = $p_page && strpos( $t_menu_item, $p_page ) !== false
+			? ' class="active"'
+			: '';
+		echo "<li{$t_active}>", $t_menu_item, '</li>';
+	}
+
+	echo '</ul>' . "\n";
 }
 
 /**
  * Print the menu for the manage configuration section
- * @param string $p_page specifies the current page name so it's link can be disabled
- * @return null
+ * @param string $p_page Specifies the current page name so it's link can be disabled.
+ * @return void
  */
 function print_manage_config_menu( $p_page = '' ) {
-	$t_configuration_report = 'adm_config_report.php';
-	$t_permissions_summary_report = 'adm_permissions_report.php';
-	$t_manage_work_threshold = 'manage_config_work_threshold_page.php';
-	$t_manage_email = 'manage_config_email_page.php';
-	$t_manage_workflow = 'manage_config_workflow_page.php';
-	$t_manage_columns = 'manage_config_columns_page.php';
-
-	switch( $p_page ) {
-		case $t_configuration_report:
-			$t_configuration_report = '';
-			break;
-		case $t_permissions_summary_report:
-			$t_permissions_summary_report = '';
-			break;
-		case $t_manage_work_threshold:
-			$t_manage_work_threshold = '';
-			break;
-		case $t_manage_email:
-			$t_manage_email = '';
-			break;
-		case $t_manage_workflow:
-			$t_manage_workflow = '';
-			break;
-		case $t_manage_columns:
-			$t_manage_columns = '';
-			break;
+	if( !access_has_project_level( config_get( 'manage_configuration_threshold' ) ) ) {
+		return;
 	}
 
-	echo '<br /><div align="center">';
-	if( access_has_project_level( config_get( 'view_configuration_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_configuration_report ), lang_get_defaulted( 'configuration_report' ) );
-		print_bracket_link( helper_mantis_url( $t_permissions_summary_report ), lang_get( 'permissions_summary_report' ) );
-		print_bracket_link( helper_mantis_url( $t_manage_work_threshold ), lang_get( 'manage_threshold_config' ) );
-		print_bracket_link( helper_mantis_url( $t_manage_workflow ), lang_get( 'manage_workflow_config' ) );
-		print_bracket_link( helper_mantis_url( $t_manage_email ), lang_get( 'manage_email_config' ) );
-		print_bracket_link( $t_manage_columns, lang_get( 'manage_columns_config' ) );
+	$t_pages = array();
+
+	$t_pages['adm_permissions_report.php'] = array( 'url'   => 'adm_permissions_report.php',
+	                                                'label' => 'permissions_summary_report' );
+
+	if( access_has_global_level( config_get( 'view_configuration_threshold' ) ) ) {
+		$t_pages['adm_config_report.php'] = array( 'url'   => 'adm_config_report.php',
+		                                           'label' => 'configuration_report' );
 	}
-	echo '</div>';
+
+	$t_pages['manage_config_work_threshold_page.php'] = array( 'url'   => 'manage_config_work_threshold_page.php',
+	                                                           'label' => 'manage_threshold_config' );
+
+	$t_pages['manage_config_workflow_page.php'] = array( 'url'   => 'manage_config_workflow_page.php',
+	                                                     'label' => 'manage_workflow_config' );
+
+	if( config_get( 'relationship_graph_enable' ) ) {
+		$t_pages['manage_config_workflow_graph_page.php'] = array( 'url'   => 'manage_config_workflow_graph_page.php',
+		                                                           'label' => 'manage_workflow_graph' );
+	}
+
+	if( config_get( 'enable_email_notification' ) == ON ) {
+		$t_pages['manage_config_email_page.php'] = array( 'url'   => 'manage_config_email_page.php',
+		                                                  'label' => 'manage_email_config' );
+	}
+
+	$t_pages['manage_config_columns_page.php'] = array( 'url'   => 'manage_config_columns_page.php',
+	                                                    'label' => 'manage_columns_config' );
+
+	# Plugin / Event added options
+	$t_event_menu_options = event_signal( 'EVENT_MENU_MANAGE_CONFIG' );
+	$t_menu_options = array();
+	foreach ( $t_event_menu_options as $t_plugin => $t_plugin_menu_options ) {
+		foreach ( $t_plugin_menu_options as $t_callback => $t_callback_menu_options ) {
+			if( is_array( $t_callback_menu_options ) ) {
+				$t_menu_options = array_merge( $t_menu_options, $t_callback_menu_options );
+			} else {
+				if( !is_null( $t_callback_menu_options ) ) {
+					$t_menu_options[] = $t_callback_menu_options;
+				}
+			}
+		}
+	}
+
+	echo '<div class="space-10"></div>' . "\n";
+	echo '<div class="center">' . "\n";
+	echo '<div class="btn-toolbar inline">' . "\n";
+	echo '<div class="btn-group">' . "\n";
+
+	foreach ( $t_pages as $t_page ) {
+		$t_active =  $t_page['url'] == $p_page ? 'active' : '';
+		echo '<a class="btn btn-sm btn-white btn-primary ' . $t_active . '" href="'. helper_mantis_url( $t_page['url'] ) .'">' . "\n";
+		echo lang_get_defaulted( $t_page['label'] );
+		echo '</a>' . "\n";
+	}
+
+	foreach ( $t_menu_options as $t_menu_item ) {
+		echo $t_menu_item;
+	}
+
+	echo '</div>' . "\n";
+	echo '</div>' . "\n";
+	echo '</div>' . "\n";
 }
 
 /**
  * Print the menu for the account section
- * @param string $p_page specifies the current page name so it's link can be disabled
- * @return null
+ * @param string $p_page Specifies the current page name so it's link can be disabled.
+ * @return void
  */
 function print_account_menu( $p_page = '' ) {
-	$t_account_page = 'account_page.php';
-	$t_account_prefs_page = 'account_prefs_page.php';
-	$t_account_profile_menu_page = 'account_prof_menu_page.php';
-	$t_account_sponsor_page = 'account_sponsor_page.php';
-	$t_account_manage_columns_page = 'account_manage_columns_page.php';
+	$t_pages['account_page.php'] = array( 'url'=>'account_page.php', 'label'=>'account_link' );
+	$t_pages['account_prefs_page.php'] = array( 'url'=>'account_prefs_page.php', 'label'=>'change_preferences_link' );
+	$t_pages['account_manage_columns_page.php'] = array( 'url'=>'account_manage_columns_page.php', 'label'=>'manage_columns_config' );
 
-	switch( $p_page ) {
-		case $t_account_page:
-			$t_account_page = '';
-			break;
-		case $t_account_prefs_page:
-			$t_account_prefs_page = '';
-			break;
-		case $t_account_profile_menu_page:
-			$t_account_profile_menu_page = '';
-			break;
-		case $t_account_sponsor_page:
-			$t_account_sponsor_page = '';
-			break;
-		case $t_account_manage_columns_page:
-			$t_account_manage_columns_page = '';
-			break;
-	}
-
-	print_bracket_link( $t_account_page, lang_get( 'account_link' ) );
-	print_bracket_link( $t_account_prefs_page, lang_get( 'change_preferences_link' ) );
-	print_bracket_link( $t_account_manage_columns_page, lang_get( 'manage_columns_config' ) );
-
-	if( config_get ( 'enable_profiles' ) == ON && access_has_project_level( config_get( 'add_profile_threshold' ) ) ) {
-		print_bracket_link( helper_mantis_url( $t_account_profile_menu_page ), lang_get( 'manage_profiles_link' ) );
+	if( config_get( 'enable_profiles' ) == ON && access_has_project_level( config_get( 'add_profile_threshold' ) ) ) {
+		$t_pages['account_prof_menu_page.php'] = array( 'url'=>'account_prof_menu_page.php', 'label'=>'manage_profiles_link' );
 	}
 
 	if( config_get( 'enable_sponsorship' ) == ON && access_has_project_level( config_get( 'view_sponsorship_total_threshold' ) ) && !current_user_is_anonymous() ) {
-		print_bracket_link( helper_mantis_url( $t_account_sponsor_page ), lang_get( 'my_sponsorship' ) );
+		$t_pages['account_sponsor_page.php'] = array( 'url'=>'account_sponsor_page.php', 'label'=>'my_sponsorship' );
+	}
+
+	if( api_token_can_create() ) {
+		$t_pages['api_tokens_page.php'] = array( 'url' => 'api_tokens_page.php', 'label' => 'api_tokens_link' );
 	}
 
 	# Plugin / Event added options
@@ -1123,61 +778,90 @@ function print_account_menu( $p_page = '' ) {
 			if( is_array( $t_callback_menu_options ) ) {
 				$t_menu_options = array_merge( $t_menu_options, $t_callback_menu_options );
 			} else {
-				if ( !is_null( $t_callback_menu_options ) ) {
+				if( !is_null( $t_callback_menu_options ) ) {
 					$t_menu_options[] = $t_callback_menu_options;
 				}
 			}
 		}
 	}
 
-	// Plugins menu items
-	// TODO: this would be a call to print_pracket_link but the events returns cooked links so we cant
-	foreach( $t_menu_options as $t_menu_item ) {
-		echo '<span class="bracket-link">[&nbsp;';
-		echo $t_menu_item;
-		echo '&nbsp;]</span> ';
+	echo '<ul class="nav nav-tabs padding-18">' . "\n";
+	foreach ( $t_pages as $t_page ) {
+		$t_active =  $t_page['url'] == $p_page ? 'active' : '';
+		echo '<li class="' . $t_active . '">' . "\n";
+		echo '<a href="'. helper_mantis_url( $t_page['url'] ) .'">' . "\n";
+		echo lang_get( $t_page['label'] );
+		echo '</a>' . "\n";
+		echo '</li>' . "\n";
 	}
+
+	# Plugins menu items - these are cooked links
+	foreach ( $t_menu_options as $t_menu_item ) {
+		echo '<li>' . $t_menu_item . '</li>';
+	}
+	echo '</ul>' . "\n";
 }
 
 /**
- * Print the menu for the docs section
- * @param string $p_page specifies the current page name so it's link can be disabled
- * @return null
+ * Print the menu for the documentation section
+ * @param string $p_page Specifies the current page name so it's link can be disabled.
+ * @return void
  */
 function print_doc_menu( $p_page = '' ) {
-	$t_documentation_html = config_get( 'manual_url' );
-	$t_proj_doc_page = 'proj_doc_page.php';
-	$t_proj_doc_add_page = 'proj_doc_add_page.php';
-
-	switch( $p_page ) {
-		case $t_documentation_html:
-			$t_documentation_html = '';
-			break;
-		case $t_proj_doc_page:
-			$t_proj_doc_page = '';
-			break;
-		case $t_proj_doc_add_page:
-			$t_proj_doc_add_page = '';
-			break;
+	# User Documentation
+	$t_doc_url = config_get_global( 'manual_url' );
+	if( is_null( parse_url( $t_doc_url, PHP_URL_SCHEME ) ) ) {
+		# URL has no scheme, so it is relative to MantisBT root
+		if( is_blank( $t_doc_url ) ||
+			!file_exists( config_get_global( 'absolute_path' ) . $t_doc_url )
+		) {
+			# Local documentation not available, use online docs
+			$t_doc_url = 'http://www.mantisbt.org/documentation.php';
+		} else {
+			$t_doc_url = helper_mantis_url( $t_doc_url );
+		}
 	}
 
-	print_bracket_link( $t_documentation_html, lang_get( 'user_documentation' ) );
-	print_bracket_link( helper_mantis_url( $t_proj_doc_page ), lang_get( 'project_documentation' ) );
+	$t_pages[$t_doc_url] = array(
+		'url'   => $t_doc_url,
+		'label' => 'user_documentation'
+	);
+
+	# Project Documentation
+	$t_pages['proj_doc_page.php'] = array(
+		'url'   => helper_mantis_url( 'proj_doc_page.php' ),
+		'label' => 'project_documentation'
+	);
+
+	# Add File
 	if( file_allow_project_upload() ) {
-		print_bracket_link( helper_mantis_url( $t_proj_doc_add_page ), lang_get( 'add_file' ) );
+		$t_pages['proj_doc_add_page.php'] = array(
+			'url'   => helper_mantis_url( 'proj_doc_add_page.php' ),
+			'label' => 'add_file'
+		);
 	}
+
+	echo '<ul class="nav nav-tabs padding-18">' . "\n";
+
+	foreach ( $t_pages as $key => $t_page ) {
+		$t_active =  $key == $p_page ? 'active' : '';
+		echo '<li class="' . $t_active . '">' . "\n";
+		echo '<a href="' . $t_page['url'] . '">' . "\n";
+		echo lang_get($t_page['label']);
+
+		echo '</a>' . "\n";
+		echo '</li>' . "\n";
+	}
+
+	echo '</ul>' . "\n";
 }
 
 /**
  * Print the menu for the summary section
- * @param string $p_page specifies the current page name so it's link can be disabled
- * @return null
+ * @param string $p_page Specifies the current page name so it's link can be disabled.
+ * @return void
  */
 function print_summary_menu( $p_page = '' ) {
-	echo '<div align="center">';
-	print_bracket_link( 'print_all_bug_page.php', lang_get( 'print_all_bug_page_link' ) );
-	print_bracket_link( helper_mantis_url( 'summary_page.php' ), lang_get( 'summary_link' ) );
-
 	# Plugin / Event added options
 	$t_event_menu_options = event_signal( 'EVENT_MENU_SUMMARY' );
 	$t_menu_options = array();
@@ -1186,165 +870,115 @@ function print_summary_menu( $p_page = '' ) {
 			if( is_array( $t_callback_menu_options ) ) {
 				$t_menu_options = array_merge( $t_menu_options, $t_callback_menu_options );
 			} else {
-				if ( !is_null( $t_callback_menu_options ) ) {
+				if( !is_null( $t_callback_menu_options ) ) {
 					$t_menu_options[] = $t_callback_menu_options;
 				}
 			}
 		}
 	}
 
-	// Plugins menu items
-	// TODO: this would be a call to print_pracket_link but the events returns cooked links so we cant
-	foreach( $t_menu_options as $t_menu_item ) {
-		echo '<span class="bracket-link">[&nbsp;';
-		echo $t_menu_item;
-		echo '&nbsp;]</span> ';
+	$t_pages['summary_page.php'] = array( 'url'=>'summary_page.php', 'label'=>'summary_link' );
+
+	echo '<ul class="nav nav-tabs padding-18">' . "\n";
+
+	foreach ( $t_pages as $t_page ) {
+		$t_active =  $t_page['url'] == $p_page ? 'active' : '';
+		echo '<li class="' . $t_active . '">' . "\n";
+		echo '<a href="'. helper_mantis_url( $t_page['url'] ) .'">' . "\n";
+		echo lang_get( $t_page['label'] );
+		echo '</a>' . "\n";
+		echo '</li>' . "\n";
 	}
-	echo '</div>';
+
+	# Plugins menu items - these are cooked links
+	foreach ( $t_menu_options as $t_menu_item ) {
+		echo '<li>' . $t_menu_item . '</li>';
+	}
+
+	echo '</ul>' . "\n";
 }
 
 /**
- * Print the color legend for the status colors
- * @param string
- * @return null
+ * Print the admin tab bar
+ * @param string $p_page Specifies the current page name so it set to active.
+ * @return void
  */
-function html_status_legend() {
-	echo '<br />';
-	echo '<table class="width100" cellspacing="1">';
-	echo '<tr>';
+function print_admin_menu_bar( $p_page ) {
+	global $g_upgrade;
+	echo '<div class="space-10"></div>';
+	echo '<ul class="nav nav-tabs padding-18">' . "\n";
 
-	$t_status_array = MantisEnum::getAssocArrayIndexedByValues( config_get( 'status_enum_string' ) );
-	$t_status_names = MantisEnum::getAssocArrayIndexedByValues( lang_get( 'status_enum_string' ) );
-	$enum_count = count( $t_status_array );
+	$t_active = 'index.php' == $p_page ? 'active' : '';
+	echo '<li class="green ' . $t_active . '">' . "\n";
+	echo '<a href="index.php"><i class="blue ace-icon fa fa-info-circle"></i> </a>';
+	echo '</li>' . "\n";
 
-	# read through the list and eliminate unused ones for the selected project
-	# assumes that all status are are in the enum array
-	$t_workflow = config_get( 'status_enum_workflow' );
-	if( !empty( $t_workflow ) ) {
-		foreach( $t_status_array as $t_status => $t_name ) {
-			if( !isset( $t_workflow[$t_status] ) || ( $t_workflow[$t_status] == '' ) ) {
-
-				# drop elements that are not in the workflow
-				unset( $t_status_array[$t_status] );
-			}
-		}
+	if( count( $g_upgrade ) - 1 != config_get( 'database_version' ) ) {
+		echo '<li class="bold">' . "\n";
+		echo '<a class="green" href="install.php">Upgrade your installation</a>';
+		echo '</li>' . "\n";
 	}
 
-	# draw the status bar
-	$width = (int)( 100 / count( $t_status_array ) );
-	foreach( $t_status_array as $t_status => $t_name ) {
-		$t_val = $t_status_names[$t_status];
-		$t_color = get_status_color( $t_status );
+	$t_active = 'system_utils.php' == $p_page ? 'active' : '';
+	echo '<li class="' . $t_active . '">' . "\n";
+	echo '<a href="system_utils.php">System Utilities</a>' . "\n";
+	echo '</li>' . "\n";
 
-		echo "<td class=\"small-caption\" width=\"$width%\" bgcolor=\"$t_color\">$t_val</td>";
-	}
+	$t_active = 'test_langs.php' == $p_page ? 'active' : '';
+	echo '<li class="' . $t_active . '">' . "\n";
+	echo '<a href="test_langs.php">Test Langs</a>' . "\n";
+	echo '</li>' . "\n";
 
-	echo '</tr>';
-	echo '</table>';
-	if( ON == config_get( 'status_percentage_legend' ) ) {
-		html_status_percentage_legend();
-	}
-}
+	$t_active = 'email_queue.php' == $p_page ? 'active' : '';
+	echo '<li class="' . $t_active . '">' . "\n";
+	echo '<a href="email_queue.php">Email Queue</a>' . "\n";
+	echo '</li>' . "\n";
 
-/**
- * Print the legend for the status percentage
- * @return null
- */
-function html_status_percentage_legend() {
-	$t_mantis_bug_table = db_get_table( 'mantis_bug_table' );
-	$t_project_id = helper_get_current_project();
-	$t_user_id = auth_get_current_user_id();
-
-	# checking if it's a per project statistic or all projects
-	$t_specific_where = helper_project_specific_where( $t_project_id, $t_user_id );
-
-	$query = "SELECT status, COUNT(*) AS number
-				FROM $t_mantis_bug_table
-				WHERE $t_specific_where
-				GROUP BY status";
-	$result = db_query_bound( $query );
-
-	$t_bug_count = 0;
-	$t_status_count_array = array();
-
-	while( $row = db_fetch_array( $result ) ) {
-		$t_status_count_array[$row['status']] = $row['number'];
-		$t_bug_count += $row['number'];
-	}
-
-	$t_enum_values = MantisEnum::getValues( config_get( 'status_enum_string' ) );
-	$enum_count = count( $t_enum_values );
-
-	if( $t_bug_count > 0 ) {
-		echo '<br />';
-		echo '<table class="width100" cellspacing="1">';
-		echo '<tr>';
-		echo '<td class="form-title" colspan="' . $enum_count . '">' . lang_get( 'issue_status_percentage' ) . '</td>';
-		echo '</tr>';
-		echo '<tr>';
-
-		foreach ( $t_enum_values as $t_status ) {
-			$t_color = get_status_color( $t_status );
-
-			if ( !isset( $t_status_count_array[$t_status] ) ) {
-				$t_status_count_array[$t_status] = 0;
-			}
-
-			$width = round(( $t_status_count_array[$t_status] / $t_bug_count ) * 100 );
-
-			if( $width > 0 ) {
-				echo "<td class=\"small-caption-center\" width=\"$width%\" bgcolor=\"$t_color\">$width%</td>";
-			}
-		}
-
-		echo '</tr>';
-		echo '</table>';
-	}
+	echo '</ul>' . "\n";
 }
 
 /**
  * Print an html button inside a form
- * @param string $p_action
- * @param string $p_buttion_text
- * @param array $p_fields
- * @param string $p_method
- * @return null
+ * @param string $p_action      Form Action.
+ * @param string $p_button_text Button Text.
+ * @param array  $p_fields      An array of hidden fields to include on the form.
+ * @param string $p_method      Form submit method - default post.
+ * @return void
  */
-function html_button( $p_action, $p_button_text, $p_fields = null, $p_method = 'post' ) {
+function html_button( $p_action, $p_button_text, array $p_fields = array(), $p_method = 'post' ) {
 	$t_form_name = explode( '.php', $p_action, 2 );
 	$p_action = urlencode( $p_action );
 	$p_button_text = string_attribute( $p_button_text );
-	if( null === $p_fields ) {
-		$p_fields = array();
-	}
 
-	if( utf8_strtolower( $p_method ) == 'get' ) {
+	if( strtolower( $p_method ) == 'get' ) {
 		$t_method = 'get';
 	} else {
 		$t_method = 'post';
 	}
 
-	echo "<form method=\"$t_method\" action=\"$p_action\">\n";
+	echo '<form method="' . $t_method . '" action="' . $p_action . '" class="form-inline">' . "\n";
+	echo "\t" . '<fieldset>';
 	# Add a CSRF token only when the form is being sent via the POST method
-	if ( $t_method == 'post' ) {
+	if( $t_method == 'post' ) {
 		echo form_security_field( $t_form_name[0] );
 	}
 
-	foreach( $p_fields as $key => $val ) {
-		$key = string_attribute( $key );
-		$val = string_attribute( $val );
+	foreach( $p_fields as $t_key => $t_val ) {
+		$t_key = string_attribute( $t_key );
+		$t_val = string_attribute( $t_val );
 
-		echo "	<input type=\"hidden\" name=\"$key\" value=\"$val\" />\n";
+		echo "\t\t" . '<input type="hidden" name="' . $t_key . '" value="' . $t_val . '" />' . "\n";
 	}
 
-	echo "	<input type=\"submit\" class=\"button\" value=\"$p_button_text\" />\n";
-	echo "</form>\n";
+	echo "\t\t" . '<input type="submit" class="btn btn-primary btn-sm btn-white btn-round" value="' . $p_button_text . '" />' . "\n";
+	echo "\t" . '</fieldset>';
+	echo '</form>' . "\n";
 }
 
 /**
  * Print a button to update the given bug
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A Bug identifier.
+ * @return void
  */
 function html_button_bug_update( $p_bug_id ) {
 	if( access_has_bug_level( config_get( 'update_bug_threshold' ), $p_bug_id ) ) {
@@ -1357,79 +991,85 @@ function html_button_bug_update( $p_bug_id ) {
  * This code is similar to print_status_option_list except
  * there is no masking, except for the current state
  *
- * @param int $p_bug_id
- * @return null
+ * @param BugData $p_bug A valid bug object.
+ * @return void
  */
-function html_button_bug_change_status( $p_bug_id ) {
-	$t_bug_project_id = bug_get_field( $p_bug_id, 'project_id' );
-	$t_bug_current_state = bug_get_field( $p_bug_id, 'status' );
-	$t_current_access = access_get_project_level( $t_bug_project_id );
+function html_button_bug_change_status( BugData $p_bug ) {
+	$t_current_access = access_get_project_level( $p_bug->project_id );
 
-	$t_enum_list = get_status_option_list( $t_current_access, $t_bug_current_state, false, ( bug_get_field( $p_bug_id, 'reporter_id' ) == auth_get_current_user_id() && ( ON == config_get( 'allow_reporter_close' ) ) ), $t_bug_project_id );
+	# User must have rights to change status to use this button
+	if( !access_has_bug_level( config_get( 'update_bug_status_threshold' ), $p_bug->id ) ) {
+		return;
+	}
+
+	$t_enum_list = get_status_option_list(
+		$t_current_access,
+		$p_bug->status,
+		false,
+		# Add close if user is bug's reporter, still has rights to report issues
+		# (to prevent users downgraded to viewers from updating issues) and
+		# reporters are allowed to close their own issues
+		(  bug_is_user_reporter( $p_bug->id, auth_get_current_user_id() )
+		&& access_has_bug_level( config_get( 'report_bug_threshold' ), $p_bug->id )
+		&& ON == config_get( 'allow_reporter_close' )
+		),
+		$p_bug->project_id );
 
 	if( count( $t_enum_list ) > 0 ) {
-
 		# resort the list into ascending order after noting the key from the first element (the default)
-		$t_default_arr = @each( $t_enum_list );
-		$t_default = $t_default_arr['key'];
+		$t_default = key( $t_enum_list );
 		ksort( $t_enum_list );
-		reset( $t_enum_list );
 
-		echo "<form method=\"post\" action=\"bug_change_status_page.php\">";
+		//echo '<form method="post" action="bug_change_status_page.php" class="form-inline">';
+		// Composr - Show if non-main project is selected in red, to stop submitting to secondary projects
+		$current_projects = join( ';', helper_get_current_project_trace() );
+		$t_project_ids = current_user_get_accessible_projects();
+		$in_main_project = ($t_project_ids[0] == $current_projects);
+		echo '<form method="post" name="form_set_project" action="' . helper_mantis_url( 'set_project.php' ) . '"' . ($in_main_project ? '' : ' style="font-weight: bold; color: red"' ) . ' class="form-inline">';
+
 		# CSRF protection not required here - form does not result in modifications
 
 		$t_button_text = lang_get( 'bug_status_to_button' );
-		echo "<input type=\"submit\" class=\"button\" value=\"$t_button_text\" />";
+		echo '<input type="submit" class="btn btn-primary btn-sm btn-white btn-round" value="' . $t_button_text . '" />';
 
-		echo " <select name=\"new_status\">";
+		echo ' <select name="new_status" class="input-sm">';
 
 		# space at beginning of line is important
-		foreach( $t_enum_list as $key => $val ) {
-			echo "<option value=\"$key\" ";
-			check_selected( $key, $t_default );
-			echo ">$val</option>";
+		foreach( $t_enum_list as $t_key => $t_val ) {
+			echo '<option value="' . $t_key . '" ';
+			check_selected( $t_key, $t_default );
+			echo '>' . $t_val . '</option>';
 		}
 		echo '</select>';
 
-		$t_bug_id = string_attribute( $p_bug_id );
-		echo "<input type=\"hidden\" name=\"id\" value=\"$t_bug_id\" />\n";
+		$t_bug_id = string_attribute( $p_bug->id );
+		echo '<input type="hidden" name="id" value="' . $t_bug_id . '" />' . "\n";
+		echo '<input type="hidden" name="change_type" value="' . BUG_UPDATE_TYPE_CHANGE_STATUS . '" />' . "\n";
 
-		echo "</form>\n";
+		echo '</form>' . "\n";
 	}
 }
 
 /**
  * Print Assign To: combo box of possible handlers
- * @param int $p_bug_id
- * @return null
+ * @param BugData $p_bug Bug object.
+ * @return void
  */
-function html_button_bug_assign_to( $p_bug_id ) {
-
+function html_button_bug_assign_to( BugData $p_bug ) {
 	# make sure status is allowed of assign would cause auto-set-status
-	$t_status = bug_get_field( $p_bug_id, 'status' );
-
-	# workflow implementation
-
-	if( ON == config_get( 'auto_set_status_to_assigned' ) && !bug_check_workflow( $t_status, config_get( 'bug_assigned_status' ) ) ) {
-
-		# workflow
-		return;
-	}
 
 	# make sure current user has access to modify bugs.
-	if( !access_has_bug_level( config_get( 'update_bug_assign_threshold', config_get( 'update_bug_threshold' ) ), $p_bug_id ) ) {
+	if( !access_has_bug_level( config_get( 'update_bug_assign_threshold', config_get( 'update_bug_threshold' ) ), $p_bug->id ) ) {
 		return;
 	}
 
-	$t_reporter_id = bug_get_field( $p_bug_id, 'reporter_id' );
-	$t_handler_id = bug_get_field( $p_bug_id, 'handler_id' );
 	$t_current_user_id = auth_get_current_user_id();
-	$t_new_status = ( ON == config_get( 'auto_set_status_to_assigned' ) ) ? config_get( 'bug_assigned_status' ) : $t_status;
-
 	$t_options = array();
 	$t_default_assign_to = null;
 
-	if(( $t_handler_id != $t_current_user_id ) && ( access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug_id, $t_current_user_id ) ) ) {
+	if( ( $p_bug->handler_id != $t_current_user_id )
+		&& access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug->id, $t_current_user_id )
+	) {
 		$t_options[] = array(
 			$t_current_user_id,
 			'[' . lang_get( 'myself' ) . ']',
@@ -1437,31 +1077,36 @@ function html_button_bug_assign_to( $p_bug_id ) {
 		$t_default_assign_to = $t_current_user_id;
 	}
 
-	if(( $t_handler_id != $t_reporter_id ) && user_exists( $t_reporter_id ) && ( access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug_id, $t_reporter_id ) ) ) {
+	if( ( $p_bug->handler_id != $p_bug->reporter_id )
+		&& user_exists( $p_bug->reporter_id )
+		&& access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug->id, $p_bug->reporter_id )
+	) {
 		$t_options[] = array(
-			$t_reporter_id,
+			$p_bug->reporter_id,
 			'[' . lang_get( 'reporter' ) . ']',
 		);
 
 		if( $t_default_assign_to === null ) {
-			$t_default_assign_to = $t_reporter_id;
+			$t_default_assign_to = $p_bug->reporter_id;
 		}
 	}
 
-	echo "<form method=\"post\" action=\"bug_assign.php\">";
-	echo form_security_field( 'bug_assign' );
+	echo '<form method="post" action="bug_update.php" class="form-inline">';
+	echo form_security_field( 'bug_update' );
+	echo '<input type="hidden" name="last_updated" value="' . $p_bug->last_updated . '" />';
+	echo '<input type="hidden" name="action_type" value="' . BUG_UPDATE_TYPE_ASSIGN . '" />';
 
 	$t_button_text = lang_get( 'bug_assign_to_button' );
-	echo "<input type=\"submit\" class=\"button\" value=\"$t_button_text\" />";
+	echo '<input type="submit" class="btn btn-primary btn-sm btn-white btn-round" value="' . $t_button_text . '" />';
 
-	echo " <select name=\"handler_id\">";
+	echo ' <select class="input-sm" name="handler_id">';
 
 	# space at beginning of line is important
 
 	$t_already_selected = false;
 
 	foreach( $t_options as $t_entry ) {
-		$t_id = string_attribute( $t_entry[0] );
+		$t_id = (int)$t_entry[0];
 		$t_caption = string_attribute( $t_entry[1] );
 
 		# if current user and reporter can't be selected, then select the first
@@ -1472,7 +1117,7 @@ function html_button_bug_assign_to( $p_bug_id ) {
 
 		echo '<option value="' . $t_id . '" ';
 
-		if(( $t_id == $t_default_assign_to ) && !$t_already_selected ) {
+		if( ( $t_id == $t_default_assign_to ) && !$t_already_selected ) {
 			check_selected( $t_id, $t_default_assign_to );
 			$t_already_selected = true;
 		}
@@ -1481,66 +1126,79 @@ function html_button_bug_assign_to( $p_bug_id ) {
 	}
 
 	# allow un-assigning if already assigned.
-	if( $t_handler_id != 0 ) {
-		echo "<option value=\"0\"></option>";
+	if( $p_bug->handler_id != 0 ) {
+		echo '<option value="0"></option>';
 	}
 
-	$t_project_id = bug_get_field( $p_bug_id, 'project_id' );
-
 	# 0 means currently selected
-	print_assign_to_option_list( 0, $t_project_id );
-	echo "</select>";
+	print_assign_to_option_list( 0, $p_bug->project_id );
+	echo '</select>';
 
-	$t_bug_id = string_attribute( $p_bug_id );
-	echo "<input type=\"hidden\" name=\"bug_id\" value=\"$t_bug_id\" />\n";
+	$t_bug_id = string_attribute( $p_bug->id );
+	echo '<input type="hidden" name="bug_id" value="' . $t_bug_id . '" />' . "\n";
 
-	echo "</form>\n";
+	echo '</form>' . "\n";
 }
 
 /**
  * Print a button to move the given bug to a different project
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_move( $p_bug_id ) {
-	$t_status = bug_get_field( $p_bug_id, 'status' );
-
 	if( access_has_bug_level( config_get( 'move_bug_threshold' ), $p_bug_id ) ) {
 		html_button( 'bug_actiongroup_page.php', lang_get( 'move_bug_button' ), array( 'bug_arr[]' => $p_bug_id, 'action' => 'MOVE' ) );
 	}
 }
 
 /**
- * Print a button to move the given bug to a different project
- * @param int $p_bug_id
- * @return null
+ * Print a button to clone the given bug
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_create_child( $p_bug_id ) {
-	if( access_has_bug_level( config_get( 'update_bug_threshold' ), $p_bug_id ) ) {
+	if( access_has_bug_level( config_get( 'report_bug_threshold' ), $p_bug_id ) ) {
 		html_button( string_get_bug_report_url(), lang_get( 'create_child_bug_button' ), array( 'm_id' => $p_bug_id ) );
 	}
 }
 
 /**
  * Print a button to reopen the given bug
- * @param int $p_bug_id
- * @return null
+ * @param BugData $p_bug A valid bug object.
+ * @return void
  */
-function html_button_bug_reopen( $p_bug_id ) {
-	$t_status = bug_get_field( $p_bug_id, 'status' );
-	$t_project = bug_get_field( $p_bug_id, 'project_id' );
-	$t_reopen_status = config_get( 'bug_reopen_status', null, null, $t_project );
+function html_button_bug_reopen( BugData $p_bug ) {
+	if( access_can_reopen_bug( $p_bug ) ) {
+		$t_reopen_status = config_get( 'bug_reopen_status', null, null, $p_bug->project_id );
+		html_button(
+			'bug_change_status_page.php',
+			lang_get( 'reopen_bug_button' ),
+			array( 'id' => $p_bug->id, 'new_status' => $t_reopen_status, 'change_type' => BUG_UPDATE_TYPE_REOPEN ) );
+	}
+}
 
-	if( access_has_bug_level( config_get( 'reopen_bug_threshold', null, null, $t_project ), $p_bug_id ) ||
-			(( bug_get_field( $p_bug_id, 'reporter_id' ) == auth_get_current_user_id() ) && ( ON == config_get( 'allow_reporter_reopen', null, null, $t_project ) ) ) ) {
-		html_button( 'bug_change_status_page.php', lang_get( 'reopen_bug_button' ), array( 'id' => $p_bug_id, 'new_status' => $t_reopen_status, 'reopen_flag' => ON ) );
+/**
+ * Print a button to close the given bug
+ * Only if user can close bugs and workflow allows moving them to that status
+ * @param BugData $p_bug A valid bug object.
+ * @return void
+ */
+function html_button_bug_close( BugData $p_bug ) {
+	$t_closed_status = config_get( 'bug_closed_status_threshold', null, null, $p_bug->project_id );
+	if( access_can_close_bug( $p_bug )
+		&& bug_check_workflow( $p_bug->status, $t_closed_status )
+	) {
+		html_button(
+			'bug_change_status_page.php',
+			lang_get( 'close_bug_button' ),
+			array( 'id' => $p_bug->id, 'new_status' => $t_closed_status, 'change_type' => BUG_UPDATE_TYPE_CLOSE ) );
 	}
 }
 
 /**
  * Print a button to monitor the given bug
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_monitor( $p_bug_id ) {
 	if( access_has_bug_level( config_get( 'monitor_bug_threshold' ), $p_bug_id ) ) {
@@ -1551,8 +1209,8 @@ function html_button_bug_monitor( $p_bug_id ) {
 /**
  * Print a button to unmonitor the given bug
  * no reason to ever disallow someone from unmonitoring a bug
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_unmonitor( $p_bug_id ) {
 	html_button( 'bug_monitor_delete.php', lang_get( 'unmonitor_bug_button' ), array( 'bug_id' => $p_bug_id ) );
@@ -1560,30 +1218,30 @@ function html_button_bug_unmonitor( $p_bug_id ) {
 
 /**
  * Print a button to stick the given bug
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_stick( $p_bug_id ) {
-	if ( access_has_bug_level( config_get( 'set_bug_sticky_threshold' ), $p_bug_id ) ) {
+	if( access_has_bug_level( config_get( 'set_bug_sticky_threshold' ), $p_bug_id ) ) {
 		html_button( 'bug_stick.php', lang_get( 'stick_bug_button' ), array( 'bug_id' => $p_bug_id, 'action' => 'stick' ) );
 	}
 }
 
 /**
  * Print a button to unstick the given bug
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_unstick( $p_bug_id ) {
-	if ( access_has_bug_level( config_get( 'set_bug_sticky_threshold' ), $p_bug_id ) ) {
+	if( access_has_bug_level( config_get( 'set_bug_sticky_threshold' ), $p_bug_id ) ) {
 		html_button( 'bug_stick.php', lang_get( 'unstick_bug_button' ), array( 'bug_id' => $p_bug_id, 'action' => 'unstick' ) );
 	}
 }
 
 /**
  * Print a button to delete the given bug
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_bug_delete( $p_bug_id ) {
 	if( access_has_bug_level( config_get( 'delete_bug_threshold' ), $p_bug_id ) ) {
@@ -1593,8 +1251,8 @@ function html_button_bug_delete( $p_bug_id ) {
 
 /**
  * Print a button to create a wiki page
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_button_wiki( $p_bug_id ) {
 	if( config_get_global( 'wiki_enable' ) == ON ) {
@@ -1606,85 +1264,355 @@ function html_button_wiki( $p_bug_id ) {
 
 /**
  * Print all buttons for view bug pages
- * @param int $p_bug_id
- * @return null
+ * @param integer $p_bug_id A valid bug identifier.
+ * @return void
  */
 function html_buttons_view_bug_page( $p_bug_id ) {
-	$t_resolved = config_get( 'bug_resolved_status_threshold' );
-	$t_status = bug_get_field( $p_bug_id, 'status' );
 	$t_readonly = bug_is_readonly( $p_bug_id );
 	$t_sticky = config_get( 'set_bug_sticky_threshold' );
 
-	echo '<table><tr class="vcenter">';
+	$t_bug = bug_get( $p_bug_id );
+
+	echo '<div class="btn-group">';
 	if( !$t_readonly ) {
 		# UPDATE button
-		echo '<td class="center">';
+		echo '<div class="pull-left padding-right-8">';
 		html_button_bug_update( $p_bug_id );
-		echo '</td>';
+		echo '</div>';
 
 		# ASSIGN button
-		echo '<td class="center">';
-		html_button_bug_assign_to( $p_bug_id );
-		echo '</td>';
+		echo '<div class="pull-left padding-right-8">';
+		html_button_bug_assign_to( $t_bug );
+		echo '</div>';
 
-		# Change State button
-		echo '<td class="center">';
-		html_button_bug_change_status( $p_bug_id );
-		echo '</td>';
+		# Change status button/dropdown
+		echo '<div class="pull-left padding-right-8">';
+		html_button_bug_change_status( $t_bug );
+		echo '</div>';
 	}
 
 	# MONITOR/UNMONITOR button
 	if( !current_user_is_anonymous() ) {
-		echo '<td class=center">';
+		echo '<div class="pull-left padding-right-2">';
 		if( user_is_monitoring_bug( auth_get_current_user_id(), $p_bug_id ) ) {
 			html_button_bug_unmonitor( $p_bug_id );
 		} else {
 			html_button_bug_monitor( $p_bug_id );
 		}
-		echo '</td>';
+		echo '</div>';
 	}
 
 	# STICK/UNSTICK button
-	if ( access_has_bug_level( $t_sticky, $p_bug_id ) ) {
-		echo '<td class="center">';
-		if ( !bug_get_field( $p_bug_id, 'sticky' ) ) {
+	if( access_has_bug_level( $t_sticky, $p_bug_id ) ) {
+		echo '<div class="pull-left padding-right-2">';
+		if( !bug_get_field( $p_bug_id, 'sticky' ) ) {
 			html_button_bug_stick( $p_bug_id );
 		} else {
 			html_button_bug_unstick( $p_bug_id );
 		}
-		echo '</td>';
+		echo '</div>';
 	}
 
+	# CLONE button
 	if( !$t_readonly ) {
-		# CREATE CHILD button
-		echo '<td class="center">';
+		echo '<div class="pull-left padding-right-2">';
 		html_button_bug_create_child( $p_bug_id );
-		echo '</td>';
+		echo '</div>';
 	}
 
-	if( $t_resolved <= $t_status ) {
-		# resolved is not the same as readonly
-		echo '<td class="center">';
+	# REOPEN button
+	echo '<div class="pull-left padding-right-2">';
+	html_button_bug_reopen( $t_bug );
+	echo '</div>';
 
-		# REOPEN button
-		html_button_bug_reopen( $p_bug_id );
-		echo '</td>';
-	}
+	# CLOSE button
+	echo '<div class="pull-left padding-right-2">';
+	html_button_bug_close( $t_bug );
+	echo '</div>';
 
-	if( !$t_readonly ) {
+	# MOVE button
+	echo '<div class="pull-left padding-right-2">';
+	html_button_bug_move( $p_bug_id );
+	echo '</div>';
 
-		# MOVE button
-		echo '<td class="center">';
-		html_button_bug_move( $p_bug_id );
-		echo '</td>';
-
-		# DELETE button
-		echo '<td class="center">';
-		html_button_bug_delete( $p_bug_id );
-		echo '</td>';
-	}
+	# DELETE button
+	echo '<div class="pull-left padding-right-2">';
+	html_button_bug_delete( $p_bug_id );
+	echo '</div>';
 
 	helper_call_custom_function( 'print_bug_view_page_custom_buttons', array( $p_bug_id ) );
 
-	echo '</tr></table>';
+	echo '</div>';
 }
+
+/**
+ * get the css class name for the given status, user and project
+ * @param integer $p_status  An enumeration value.
+ * @param integer $p_user    A valid user identifier.
+ * @param integer $p_project A valid project identifier.
+ * @return string
+ *
+ * @todo This does not work properly when displaying issues from a project other
+ * than then current one, if the other project has custom status or colors.
+ * This is due to the dynamic css for color coding (css/status_config.php).
+ * Build CSS including project or even user-specific colors ?
+ */
+function html_get_status_css_class( $p_status, $p_user = null, $p_project = null ) {
+	$t_status_enum = config_get( 'status_enum_string', null, $p_user, $p_project );
+	if( MantisEnum::hasValue( $t_status_enum, $p_status ) ) {
+		return 'status-' . $p_status . '-color';
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Class that provides managed generation of an HTML table content, consisting of <tr> and <td> elements
+ * which are arranged sequentially on a grid.
+ * Items consist of "header" and "content", which are rendered to separate table cells.
+ * An option is provided to arrange the header and content in vertical or horizontal orientation.
+ * Vertical orientation places header on top of content, while horizontal orientation places the header
+ * to the left of content cell.
+ * Each item can have a different colspan, which is used to arrange the items efficiently. When the
+ * arrangement is made, an item with higher colspan than current free space may be placed in next row,
+ * but still fill the current row with next items if they fit. This may cause a variation in expected
+ * order, but allows for a more compact fill for rows.
+ */
+class TableGridLayout {
+	const ORIENTATION_VERTICAL = 0;
+	const ORIENTATION_HORIZONTAL = 1;
+
+	protected $cols;
+	private $_max_colspan;
+
+	public $items = array();
+	public $item_orientation;
+
+	/**
+	 * Set this variable to add a class attribute for each <tr>
+	 * @var string
+	 */
+	public $tr_class = null;
+
+	/**
+	 * Constructor.
+	 * $p_orientation may be one of this class constants:
+	 * ORIENTATION_VERTICAL, ORIENTATION_HORIZONTAL
+	 * @param integer $p_cols	Number of columns for the table
+	 * @param integer $p_orientation	Orientation for header and content cells
+	 */
+	public function __construct( $p_cols, $p_orientation = null ) {
+		# sanitize values
+		switch( $p_orientation ) {
+			case self::ORIENTATION_HORIZONTAL:
+				if( $p_cols < 2 ) {
+					$p_cols = 2;
+				}
+				$this->_max_colspan = $p_cols-1;
+				break;
+			case self::ORIENTATION_VERTICAL:
+			default:
+				$p_orientation = self::ORIENTATION_VERTICAL;
+				if( $p_cols < 1 ) {
+					$p_cols = 1;
+				}
+				$this->_max_colspan = $p_cols;
+		}
+
+		$this->cols = $p_cols;
+		$this->item_orientation = $p_orientation;
+	}
+
+	/**
+	 * Adds a item to the collection
+	 * @param TableFieldsItem $p_item An item
+	 */
+	public function add_item( TableFieldsItem $p_item ) {
+		if( $p_item->colspan > $this->_max_colspan ) {
+			$p_item->colspan = $this->_max_colspan;
+		}
+		$this->items[] = $p_item;
+	}
+
+	/**
+	 * Prints the HTMl for the generated table cells, for all items contained
+	 */
+	public function render() {
+		$t_rows_items = array();
+		$t_rows_freespace = array();
+		$t_used_rows = 0;
+
+		# Arrange the items in rows accounting for their actual cell space
+		foreach( $this->items as $t_item ) {
+			# Get the actual table columns needed to render the item
+			$t_item_cols = ( $this->item_orientation == self::ORIENTATION_VERTICAL ) ? $t_item->colspan : $t_item->colspan + 1;
+			# Search for a row with enough space to fit the item
+			$t_found = false;
+			for( $t_ix = 0; $t_ix < $t_used_rows; $t_ix++ ) {
+				if( $t_rows_freespace[$t_ix] >= $t_item_cols ) {
+					# Found a row with available space. Add the item here
+					$t_found = true;
+					$t_rows_freespace[$t_ix] -= $t_item_cols;
+					$t_rows_items[$t_ix][] = $t_item;
+					break;
+				}
+			}
+			# If no suitable row was found, create new one and add the item here
+			if( !$t_found ) {
+				$t_rows_items[] = array( $t_item );
+				$t_used_rows++;
+				$t_rows_freespace[] = $this->cols - $t_item_cols;
+			}
+		}
+
+		# Render the arranged items
+		if( $this->tr_class ) {
+			$p_tr_attr_class = ' class="' . $this->tr_class . '"';
+		} else {
+			$p_tr_attr_class = '';
+		}
+		foreach( $t_rows_items as $t_row ) {
+			switch( $this->item_orientation ) {
+
+				case self::ORIENTATION_HORIZONTAL:
+					$t_cols_left = $this->cols;
+					echo '<tr' . $p_tr_attr_class . '>';
+					foreach( $t_row as $t_item ) {
+						$this->render_td_item_header( $t_item, 1 );
+						$this->render_td_item_content( $t_item, $t_item->colspan );
+						$t_cols_left -= ( $t_item->colspan + 1 );
+					}
+					if( $t_cols_left > 0 ) {
+						$this->render_td_empty($t_cols_left);
+					}
+					echo '</tr>';
+					break;
+
+				# default is vertical orientation
+				default:
+					# row for headers
+					$t_cols_left = $this->cols;
+					echo '<tr' . $p_tr_attr_class . '>';
+					foreach( $t_row as $t_item ) {
+						$this->render_td_item_header( $t_item, $t_item->colspan );
+						$t_cols_left -= $t_item->colspan;
+					}
+					if( $t_cols_left > 0 ) {
+						$this->render_td_empty_header( $t_cols_left );
+					}
+					echo '</tr>';
+					# row for contents
+					$t_cols_left = $this->cols;
+					echo '<tr' . $p_tr_attr_class . '>';
+					foreach( $t_row as $t_item ) {
+						$this->render_td_item_content( $t_item, $t_item->colspan );
+						$t_cols_left -= $t_item->colspan;
+					}
+					if( $t_cols_left > 0 ) {
+						$this->render_td_empty($t_cols_left);
+					}
+					echo '</tr>';
+			}
+		}
+	}
+
+	/**
+	 * Prints HTML code for an empty TD cell
+	 * @param integer $p_colspan Colspan attribute for cell
+	 */
+	protected function render_td_empty( $p_colspan ) {
+		echo '<td';
+		if( $p_colspan > 1) {
+			echo ' colspan="' . $p_colspan . '"';
+		}
+		echo '>';
+		echo '&nbsp;';
+		echo '</td>';
+	}
+
+	/**
+	 * Prints HTML code for an empty TD cell, of header type
+	 * @param integer $p_colspan Colspan attribute for cell
+	 */
+	protected function render_td_empty_header( $p_colspan ) {
+		$this->render_td_empty( $p_colspan );
+	}
+
+	/**
+	 * Prints HTML code for TD cell representing the Item header
+	 * @abstract
+	 * @param TableFieldsItem $p_item Item to display
+	 * @param integer $p_colspan Colspan attribute for cell
+	 */
+	protected function render_td_item_header( TableFieldsItem $p_item, $p_colspan ) {
+		echo '<th';
+		if( $p_item->attr_class ) {
+			echo 'class="' . $p_item->attr_class . '"';
+		}
+		if( $p_colspan > 1) {
+			echo ' colspan="' . $p_colspan . '"';
+		}
+		if( $p_item->header_attr_id ) {
+			echo ' id="' . $p_item->header_attr_id . '"';
+		}
+		echo '>';
+		echo $p_item->header;
+		echo '</th>';
+	}
+
+	/**
+	 * Prints HTML code for TD cell representing the Item content
+	 * @abstract
+	 * @param TableFieldsItem $p_item Item to display
+	 * @param integer $p_colspan Colspan attribute for cell
+	 */
+	protected function render_td_item_content( TableFieldsItem $p_item, $p_colspan  ) {
+		echo '<td';
+		if( $p_item->attr_class ) {
+			echo 'class="' . $p_item->attr_class . '"';
+		}
+		if( $p_colspan > 1) {
+			echo ' colspan="' . $p_colspan . '"';
+		}
+		if( $p_item->content_attr_id ) {
+			echo ' id="' . $p_item->content_attr_id . '"';
+		}
+		echo '>';
+		echo $p_item->header;
+		echo '</td>';
+	}
+}
+
+/**
+ * Class that represent Items to use with TableGridLayout
+ */
+class TableFieldsItem {
+	public $header;
+	public $content;
+	public $colspan;
+	public $attr_class = null;
+	public $content_attr_id = null;
+	public $header_attr_id = null;
+
+	/**
+	 * Constructor
+	 * @param string $p_header		HTMl to be used in header cell
+	 * @param string $p_content		HTMl to be used in content cell
+	 * @param integer $p_colspan	Colspan for the content cell
+	 * @param string $p_class		Class to be added to the cells
+	 * @param string $p_content_id	Id attribute to use for content cell
+	 * @param string $p_header_id	Id attribute to use for header cell
+	 */
+	public function __construct( $p_header, $p_content, $p_colspan = 1, $p_class = null, $p_content_id = null, $p_header_id = null ) {
+		$this->header = $p_header;
+		$this->content = $p_content;
+		if( $p_colspan < 1 ) {
+			$p_colspan = 1;
+		}
+		$this->colspan = $p_colspan;
+		$this->attr_class = $p_class;
+		$this->content_attr_id = $p_content_id;
+		$this->header_attr_id = $p_header_id;
+	}
+}
+

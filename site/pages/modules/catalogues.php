@@ -921,7 +921,7 @@ class Module_catalogues
             $entry_map = get_catalogue_entry_map($row, $catalogue, 'CATEGORY', 'DEFAULT', $root, null, array(0), false, false);
             $letter = strtoupper(substr(is_object($entry_map['FIELD_0_PLAIN']) ? $entry_map['FIELD_0_PLAIN']->evaluate() : $entry_map['FIELD_0_PLAIN'], 0, 1));
 
-            if ((get_value('disable_cat_cat_perms') !== '1') && (!has_category_access(get_member(), 'catalogues_category', strval($row['id'])))) {
+            if ((get_value('disable_cat_cat_perms') !== '1') && (!has_category_access(get_member(), 'catalogues_category', strval($row['cc_id'])))) {
                 continue;
             }
 

@@ -255,7 +255,7 @@ The advantage to using the Composr code instead of hand coding the image is two-
 
 Tempcode does not have explicit data-types, everything is text. However we may interpret the text in symbols as follows:
  - Tempcode number: the text is assumed to be a number written as a normal decimal string (e.g. 12345). Numbers should not contain any special formatting other than the British English decimal point (.) symbol.
- - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true).
+ - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true). Actually everything other than 1 is considered false.
 
 [title="3"]Further notes[/title]
 
@@ -282,8 +282,8 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Place a comment. E.g... [/html][tt]{$,this is a comment}[/tt][html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$RAND}</td>
-			<td>A random number between 0 and 2147483647</td>
+			<td>{$RAND,min,max}</td>
+			<td>If no parameters are given, it picks a random number between 0 and 2147483647. If one is given it picks a random number between 0 and that parameter. If two are given it picks a number between the first and second parameter.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SET_RAND,a,b,c}</td>
@@ -527,7 +527,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FROM_TIMESTAMP,%d %B %Y,123456780}</td>
-			<td>Converts a time-stamp to a formatted date/time (optional first parameter is a strftime-style date/time formatting string, optional second parameter is a timestamp). If no parameters given it will simply return the current timestamp.</td>
+			<td>Converts a time-stamp to a formatted date/time (optional first parameter is a strftime-style date/time formatting string, optional second parameter is a timestamp). If no parameters given it will simply return the current timestamp. Supports both PHP's <kbd>strftime</kbd> and <kbd>date</kbd> syntaxes, including Composr's [page="_SEARCH:tut_intl"]extensions[/page] such as <kbd>%o</kbd>.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$TO_TIMESTAMP,April 1st 2009}</td>
@@ -703,7 +703,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FEEDS}</td>
-			<td>HTML code for RSS/Atom feeds</td>
+			<td>HTML code for metdata-linkage to RSS/Atom feeds</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 		  <td>{$RUNNING_SCRIPT,index}</td>
@@ -934,8 +934,8 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Stuff to append to a Composr URL for 'keep parameter' passing (Composr passes any parameters between screens if their names start <kbd>keep_</kbd>, and this symbol enables that). The first parameter should be '1' if you need to place this directly on the front of a URL. The second parameter should '1' if you need to always attach a session ID (i.e. if you are creating a link that might be used somewhere outside the current cookie context, e.g. to feed into a download manager)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$EXTEND_URL,http://example.com/index.php?foo=a,bar=b}</td>
-			<td>Add parameter(s) onto a URL. Starts by appending ? or &amp; by analysis of existing URL structure. Does not handle URL encoding of the appended parameter, which you should do first if applicable.</td>
+			<td>{$EXTEND_URL,http://example.com/index.php?foo=a&bar=b}</td>
+			<td>Add parameter(s) onto a URL, avoiding unreliable assumptions about how a URL is already structured (URL Schemes may cause a big diversity in the URLs Composr puts out). It puts <kbd>?</kbd> or <kbd>&amp;</kbd> before your parameter correctly based on an analysis of existing URL structure. It does not handle URL encoding of the appended parameter, which you should do first if applicable.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$BLOCK,block=main_search,zone=site}</td>

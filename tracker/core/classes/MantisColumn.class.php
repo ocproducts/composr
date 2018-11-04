@@ -1,7 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
-
-# Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,10 +15,16 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Base class that implements basic column functionality
- * and integration with MantisBT.
+ * Mantis Column Handling
+ * @copyright Copyright 2009  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
  * @package MantisBT
  * @subpackage classes
+ */
+
+/**
+ * Base class that implements basic column functionality
+ * and integration with MantisBT.
  */
 abstract class MantisColumn {
 
@@ -43,25 +47,53 @@ abstract class MantisColumn {
 	/**
 	 * Build the SQL query elements 'join' and 'order' as used by
 	 * core/filter_api.php to create the filter sorting query.
-	 * @param string Sorting order ('ASC' or 'DESC')
+	 * @param string $p_direction Sorting order ('ASC' or 'DESC').
 	 * @return array Keyed-array with query elements; see developer guide
 	 */
-	public function sortquery( $p_dir ) {}
+	public function sortquery( $p_direction ) {
+		return array();
+	}
 
 	/**
 	 * Allow plugin columns to pre-cache data for all issues
 	 * that will be shown in a given view.  This is preferable to
 	 * the alternative option of querying the database for each
 	 * issue as the display() method is called.
-	 * @param array Bug objects
+	 * @param array $p_bugs Bug objects.
+	 * @return void
 	 */
-	public function cache( $p_bugs ) {}
+	public function cache( array $p_bugs ) {}
+
+	/**
+	 * Function to clear the cache of values that was built with the cache() method.
+	 * This can be requested as part of an export of bugs, and clearing the used
+	 * memory helps to keep a long export process within memory limits.
+	 * @return void
+	 */
+	public function clear_cache() {}
 
 	/**
 	 * Function to display column data for a given bug row.
-	 * @param object Bug object
-	 * @param int Column display target
+	 * @param BugData $p_bug            A BugData object.
+	 * @param integer $p_columns_target Column display target.
+	 * @return void
 	 */
-	abstract public function display( $p_bug, $p_columns_target );
-}
+	abstract public function display( BugData $p_bug, $p_columns_target );
 
+	/**
+	 * Function to return column value for a given bug row.
+	 * This should be overridden to provide value without processing for html
+	 * display or escaping for a specific target output. The output will be
+	 * escaped by calling code to the appropriate format.
+	 * Default implementation is to capture display output, for backward
+	 * compatibility with target COLUMNS_TARGET_CSV_PAGE.
+	 * @param BugData $p_bug            A BugData object.
+	 * @param integer $p_columns_target Column display target.
+	 * @return string The column value.
+	 */
+	public function value( BugData $p_bug, $p_columns_target = COLUMNS_TARGET_CSV_PAGE ) {
+		ob_start();
+		$this->display( $p_bug, $p_columns_target );
+		return ob_get_clean();
+	}
+}

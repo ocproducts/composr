@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,20 +15,38 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Bug action group include file
+ *
  * @package MantisBT
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses access_api.php
+ * @uses bug_api.php
+ * @uses config_api.php
+ * @uses gpc_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
  */
+
+if( !defined( 'BUG_ACTIONGROUP_INC_ALLOW' ) ) {
+	return;
+}
+
+require_api( 'access_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'config_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
 
 /**
  * Prints the title for the custom action page.
+ * @return void
  */
 function action_update_severity_print_title() {
-	echo '<tr class="form-title">';
-	echo '<td colspan="2">';
 	echo lang_get( 'update_severity_title' );
-	echo '</td></tr>';
 }
 
 /**
@@ -36,53 +54,52 @@ function action_update_severity_print_title() {
  * every field the user need to supply + the submit button.  The fields are
  * added as rows in a table that is already created by the calling code.
  * A row has two columns.
+ * @return void
  */
 function action_update_severity_print_fields() {
-	echo '<tr class="row-1" valign="top"><td class="category">';
-	echo lang_get( 'update_severity_msg' );
-	echo '</td><td><select name="severity">';
-	print_enum_string_option_list( 'severity' );
-	echo '</select></td></tr>';
-	echo '<tr><td colspan="2"><center><input type="submit" class="button" value="' . lang_get( 'update_severity_button' ) . ' " /></center></td></tr>';
+?>
+	<tr>
+		<th class="category">
+			<?php echo lang_get( 'update_severity_msg' ); ?>
+		</th>
+		<td>
+			<select name="severity" class="input-sm">';
+				<?php print_enum_string_option_list( 'severity' ); ?>
+			</select>
+		</td>
+	</tr>
+<?php
 }
 
 /**
  * Validates the action on the specified bug id.
  *
- * @returns true    Action can be applied.
- * @returns array( bug_id => reason for failure )
+ * @param integer $p_bug_id A bug identifier.
+ * @return string|null On failure: the reason why the action could not be validated. On success: null.
  */
 function action_update_severity_validate( $p_bug_id ) {
-	$f_severity = gpc_get_string( 'severity' );
-
-	$t_failed_validation_ids = array();
-
 	$t_update_severity_threshold = config_get( 'update_bug_threshold' );
 	$t_bug_id = $p_bug_id;
 
-	if ( bug_is_readonly( $t_bug_id ) ) {
-		$t_failed_validation_ids[$t_bug_id] = lang_get( 'actiongroup_error_issue_is_readonly' );
-		return $t_failed_validation_ids;
+	if( bug_is_readonly( $t_bug_id ) ) {
+		return lang_get( 'actiongroup_error_issue_is_readonly' );
 	}
 
-	if ( !access_has_bug_level( $t_update_severity_threshold, $t_bug_id ) ) {
-		$t_failed_validation_ids[$t_bug_id] = lang_get( 'access_denied' );
-		return $t_failed_validation_ids;
+	if( !access_has_bug_level( $t_update_severity_threshold, $t_bug_id ) ) {
+		return lang_get( 'access_denied' );
 	}
 
-	return true;
+	return null;
 }
 
 /**
  * Executes the custom action on the specified bug id.
  *
- * @param $p_bug_id  The bug id to execute the custom action on.
- *
- * @returns true   Action executed successfully.
- * @returns array( bug_id => reason for failure )
+ * @param integer $p_bug_id The bug id to execute the custom action on.
+ * @return null Previous validation ensures that this function doesn't fail. Therefore we can always return null to indicate no errors occurred.
  */
 function action_update_severity_process( $p_bug_id ) {
 	$f_severity = gpc_get_string( 'severity' );
 	bug_set_field( $p_bug_id, 'severity', $f_severity );
-	return true;
+	return null;
 }

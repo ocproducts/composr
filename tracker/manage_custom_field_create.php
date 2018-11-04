@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,46 +14,60 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Custom Field Configuration
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses custom_field_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ */
 
-	require_once( 'custom_field_api.php' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'custom_field_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
 
-	form_security_validate('manage_custom_field_create');
+form_security_validate( 'manage_custom_field_create' );
 
-	auth_reauthenticate();
-	access_ensure_global_level( config_get( 'manage_custom_fields_threshold' ) );
+auth_reauthenticate();
+access_ensure_global_level( config_get( 'manage_custom_fields_threshold' ) );
 
-	$f_name	= gpc_get_string( 'name' );
+$f_name	= gpc_get_string( 'name' );
 
-	$t_field_id = custom_field_create( $f_name );
+$t_field_id = custom_field_create( $f_name );
 
-	if ( ON == config_get( 'custom_field_edit_after_create' ) ) {
-		$t_redirect_url = "manage_custom_field_edit_page.php?field_id=$t_field_id";
-	} else {
-		$t_redirect_url = 'manage_custom_field_page.php';
-	}
+if( ON == config_get( 'custom_field_edit_after_create' ) ) {
+	$t_redirect_url = 'manage_custom_field_edit_page.php?field_id=' . $t_field_id;
+} else {
+	$t_redirect_url = 'manage_custom_field_page.php';
+}
 
-	form_security_purge('manage_custom_field_create');
+form_security_purge( 'manage_custom_field_create' );
 
-	html_page_top( null, $t_redirect_url );
+layout_page_header( null, $t_redirect_url );
 
-	echo '<br />';
-	echo '<div align="center">';
+layout_page_begin( 'manage_overview_page.php' );
 
-	echo lang_get( 'operation_successful' ) . '<br />';
+html_operation_successful( $t_redirect_url );
 
-	print_bracket_link( $t_redirect_url, lang_get( 'proceed' ) );
-
-	echo '</div>';
-
-	html_page_bottom();
-
+layout_page_end();
