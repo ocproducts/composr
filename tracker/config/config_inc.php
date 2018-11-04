@@ -12,7 +12,6 @@ Fix any TODOs in this file.
 */
 
 require(dirname(__FILE__) . '/../../_config.php');
-ini_set('error_log', dirname(__FILE__) . '/../../data_custom/errorlog.php');
 
 // Database Configuration
 $g_hostname = $SITE_INFO['db_site_host'];
@@ -43,7 +42,7 @@ $g_from_name = 'Composr CMS feature tracker'; // TODO: Customise
 $g_from_email = $g_administrator_email; // the "From: " field in emails
 $g_return_path_email = $g_administrator_email; // the return address for bounced mail
 $g_email_receive_own = OFF;
-$g_email_send_using_cronjob = OFF;
+$g_email_send_using_cronjob = ON;
 
 // Misc
 $g_show_realname = OFF;
@@ -52,11 +51,17 @@ $g_cookie_time_length = 60 * 60 * 24 * 30;
 $g_html_valid_tags = 'p, li, ul, ol, br, pre, i, b, u, em';
 $g_rss_enabled = OFF;
 
+// Debugging
+//$g_show_detailed_errors = ON;
+//$g_log_level = LOG_ALL;
+ini_set('error_log', dirname(__FILE__) . '/../../data_custom/errorlog.php');
+$g_log_destination = dirname(__FILE__) . '/../../data_custom/errorlog.php';
+
 // Composr-specific
 $cms_sc_site_url = $SITE_INFO['base_url'];
 $cms_sc_site_name = 'compo.sr';
 $g_default_home_page = 'my_view_page.php'; // Set to name of page to go to after login
-$g_logo_url = '../';
+$g_logo_url = './';
 $cms_sc_profile_url = $cms_sc_site_url . '/members/view.htm';
 $cms_sc_commercial_support_url = $cms_sc_site_url . '/professional-support.htm';
 $cms_sc_report_guidance_url = $cms_sc_site_url . '/docs/tut-software-feedback.htm';

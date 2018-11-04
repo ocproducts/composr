@@ -158,7 +158,10 @@ if( $f_master_bug_id > 0 ) {
 	if( !access_has_project_level( config_get( 'report_bug_threshold' ) ) ) {
 		# If can't report on current project, show project selector if there is any other allowed project
 		access_ensure_any_project_level( 'report_bug_threshold' );
-		print_header_redirect( 'login_select_proj_page.php?ref=bug_report_page.php' );
+
+		//print_header_redirect( 'login_select_proj_page.php?ref=bug_report_page.php' );
+		// Composr - actually it means they need to log in
+		print_header_redirect( 'login_page.php?ref=bug_report_page.php' );
 	}
 	access_ensure_project_level( config_get( 'report_bug_threshold' ) );
 

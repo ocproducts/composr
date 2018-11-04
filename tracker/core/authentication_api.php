@@ -956,21 +956,21 @@ function auth_get_current_user_cookie( $p_login_anonymous = true ) {
 	if ((isset($_COOKIE[$cms_sc_session_cookie_name])) && (isset($g_db)))
 	{
 		$query = 'SELECT member_id FROM ' . $cms_sc_db_prefix . 'sessions WHERE the_session=\'' . db_prepare_string($_COOKIE[$cms_sc_session_cookie_name]) . '\'';
-		$result = db_query( $query );
+		$result = db_query($query);
  
-		if( 1 == db_num_rows( $result ) ) {
-			$user = db_result( $result );
-			user_cache_row( $user);
+		if (1 == db_num_rows($result)) {
+			$user = db_result($result);
+			user_cache_row($user);
 
 			$t_query = 'SELECT u.id,u.cookie_string
-							FROM '.$cms_sc_db_prefix.'f_members m LEFT JOIN ' . db_get_table( 'user' ) . ' u ON u.username=m.m_username
+							FROM '.$cms_sc_db_prefix.'f_members m LEFT JOIN ' . db_get_table('user') . ' u ON u.username=m.m_username
 							WHERE m.id<>1 AND m.id=' . strval($user);
-			$t_result = db_query( $t_query );
-			if( $t_row = db_fetch_array( $t_result ) ) {
+			$t_result = db_query($t_query);
+			if ($t_row = db_fetch_array($t_result)) {
 				$t_cookie = $t_row['cookie_string'];
 
 				$g_cache_anonymous_user_cookie_string = $t_cookie;
-				current_user_set( $t_row['id'] );
+				current_user_set((int)$t_row['id']);
 
 				return $t_cookie;
 			}
