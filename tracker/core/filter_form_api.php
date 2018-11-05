@@ -294,7 +294,7 @@ function print_filter_user_monitor( array $p_filter = null ) {
 
 		// Composr - Ability to find stuff you're not monitoring yourself
 		echo '<option value="' . META_FILTER_NOT_MYSELF . '" ';
-		check_selected( $t_filter[FILTER_PROPERTY_MONITOR_USER_ID], META_FILTER_NOT_MYSELF );
+		check_selected( $p_filter[FILTER_PROPERTY_MONITOR_USER_ID], META_FILTER_NOT_MYSELF );
 		echo '>[' . lang_get('cms_not_myself') . ']</option>';
 	}
 	$t_threshold = config_get( 'show_monitor_list_threshold' );

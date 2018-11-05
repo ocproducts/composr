@@ -11,7 +11,7 @@ Custom fields with special names will have been installed for you:
 Fix any TODOs in this file.
 */
 
-require(dirname(__FILE__) . '/../../_config.php');
+require(__DIR__ . '/../../_config.php');
 
 // Database Configuration
 $g_hostname = $SITE_INFO['db_site_host'];
@@ -30,6 +30,7 @@ $g_max_file_size = 25000000; // in bytes
 $g_preview_attachments_inline_max_size = 256 * 1024;
 $g_allowed_files = 'pages,numbers,patch,diff,swf,sql,odg,odp,odt,ods,ps,pdf,doc,ppt,csv,xls,docx,docb,docm,pptx,xlsx,xlsb,xlsm,pub,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,flv,avi,mov,mpg,mpeg,mp4,asf,wmv,ram,ra,rm,qt,zip,tar,rar,gz,wav,mp3,ogg,torrent,php,css,tpl,ini,eml';
 $g_disallowed_files = '';
+$g_absolute_path_default_upload_folder = __DIR__ . '/../uploads/';
 
 // Email Configuration
 $g_phpMailer_method = PHPMAILER_METHOD_MAIL; // or PHPMAILER_METHOD_SMTP, PHPMAILER_METHOD_SENDMAIL
@@ -54,8 +55,8 @@ $g_rss_enabled = OFF;
 // Debugging
 //$g_show_detailed_errors = ON;
 //$g_log_level = LOG_ALL;
-ini_set('error_log', dirname(__FILE__) . '/../../data_custom/errorlog.php');
-$g_log_destination = dirname(__FILE__) . '/../../data_custom/errorlog.php';
+ini_set('error_log', __DIR__ . '/../../data_custom/errorlog.php');
+$g_log_destination = __DIR__ . '/../../data_custom/errorlog.php';
 
 // Composr-specific
 $cms_sc_site_url = $SITE_INFO['base_url'];
@@ -95,7 +96,7 @@ $cms_guest_id = 1;
 // Branding
 $g_window_title = 'Composr CMS feature tracker'; // TODO: Customise
 $g_logo_image = '../themes/default/images/EN/logo/standalone_logo.png'; // TODO: Customise
-$g_favicon_image = $cms_sc_site_url . '/themes/default/images/favicon.ico';
+$g_favicon_image = '../themes/default/images/favicon.ico';
 
 // Security Settings
 $g_show_user_email_threshold = ADMINISTRATOR;
