@@ -153,7 +153,7 @@ function user_cache_array_rows( array $p_user_id_array ) {
 			'id' => $t_user_id,
 			'username' => $cms_row['m_username'],
 			'realname' => '',
-			'email' => ($cms_row['m_email_address'] == '') ? 'info+noaddress@ocproducts.com' : $cms_row['m_email_address'],
+			'email' => ($cms_row['m_email_address'] == '') ? '' : $cms_row['m_email_address'],
 			'password' => $cms_row['m_pass_hash_salted'] . ':' . $cms_row['m_pass_salt'] . ':' . $cms_row['m_password_compat_scheme'],
 			'enabled' => (int)$cms_row['m_validated'],
 			'protected' => 0,
