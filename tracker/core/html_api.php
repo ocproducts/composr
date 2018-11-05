@@ -1025,7 +1025,7 @@ function html_button_bug_change_status( BugData $p_bug ) {
 		$current_projects = join( ';', helper_get_current_project_trace() );
 		$t_project_ids = current_user_get_accessible_projects();
 		$in_main_project = ($t_project_ids[0] == $current_projects);
-		echo '<form method="post" name="form_set_project" action="' . helper_mantis_url( 'set_project.php' ) . '"' . ($in_main_project ? '' : ' style="font-weight: bold; color: red"' ) . ' class="form-inline">';
+		echo '<form method="post" name="form_set_project" action="' . helper_mantis_url( 'bug_change_status_page.php' ) . '"' . ($in_main_project ? '' : ' style="font-weight: bold; color: red"' ) . ' class="form-inline">';
 
 		# CSRF protection not required here - form does not result in modifications
 

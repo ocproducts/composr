@@ -100,7 +100,7 @@ abstract class FieldsSearchHook
      * Get details needed (SQL etc) to perform an advanced field search.
      *
      * @param string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
-     * @param string $table_alias Table alias for main content table
+     * @param string $table_alias Table alias for catalogue entry table
      * @return ?array A big tuple of details used to search with (null: no fields)
      */
     protected function _get_search_parameterisation_advanced($catalogue_name, $table_alias = 'r')
@@ -123,7 +123,7 @@ abstract class FieldsSearchHook
         require_code('fields');
         foreach ($fields as $i => $field) {
             $ob = get_fields_hook($field['cf_type']);
-            $temp = $ob->inputted_to_sql_for_search($field, $i);
+            $temp = $ob->inputted_to_sql_for_search($field, $i, $table_alias);
             if (is_null($temp)) { // Standard direct 'substring' search
                 list(, , $row_type) = $ob->get_field_value_row_bits($field);
                 switch ($row_type) {
