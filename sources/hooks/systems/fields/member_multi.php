@@ -43,9 +43,10 @@ class Hook_fields_member_multi
      *
      * @param  array $field The field details
      * @param  integer $i We're processing for the ith row
+     * @param string $table_alias Table alias for catalogue entry table
      * @return ?array Tuple of SQL details (array: extra trans fields to search, array: extra plain fields to search, string: an extra table segment for a join, string: the name of the field to use as a title, if this is the title, extra WHERE clause stuff) (null: nothing special)
      */
-    public function inputted_to_sql_for_search($field, $i)
+    public function inputted_to_sql_for_search($field, $i, $table_alias = 'r')
     {
         $param = get_param_string('option_' . strval($field['id']), '');
         if ($param != '' && !is_numeric($param)) {
@@ -56,7 +57,7 @@ class Hook_fields_member_multi
             }
             $param = strval($_member);
         }
-        return nl_delim_match_sql($field, $i, 'long', $param);
+        return nl_delim_match_sql($field, $i, 'long', $param, $table_alias);
     }
 
     // ===================
