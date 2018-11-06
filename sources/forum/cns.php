@@ -736,16 +736,6 @@ class Forum_driver_cns extends Forum_driver_base
             return null;
         }
 
-        // Are the prefixes being translated differently? If so we must do a LIKE query (less performant, but necessary)
-        $langs = find_all_langs();
-        $translations_of_comment = array();
-        foreach (array_keys($langs) as $lang) {
-            $translations_of_comment[do_lang('COMMENT', null, null, null, $lang)] = true;
-        }
-        if (count($translations_of_comment) > 1) {
-            $topic_identifier_encapsulation_prefix = null;
-        }
-
         $query = 'SELECT t.id,f_is_threaded FROM ' . $this->connection->get_table_prefix() . 'f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND ';
         $query .= '(';
         if ($topic_identifier_encapsulation_prefix === null) {
