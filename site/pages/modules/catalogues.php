@@ -880,6 +880,8 @@ class Module_catalogues
     public function view_atoz()
     {
         $id = $this->id;
+        $true_id = get_param_integer('id', null); // Needs to be true URL $id, not one automatically set to root category if not passed
+
         $category = $this->category;
         $_title = $this->_title;
 
@@ -900,8 +902,12 @@ class Module_catalogues
         $max = null;
         $start = null;
 
-        require_code('selectcode');
-        $sql_select = selectcode_to_sqlfragment(strval($id) . '*', 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if ($true_id === null) { // All entries in catalogue
+            $sql_select = db_string_equal_to('c_name', $catalogue_name);
+        } else { // All entries under category (going deep)
+            require_code('selectcode');
+            $sql_select = selectcode_to_sqlfragment(strval($id) . '*', 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        }
 
         if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'catalogue_entries p WHERE ce_validated=1 AND (' . $sql_select . ')', false, true) > intval(get_option('general_safety_listing_limit')) * 3) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
