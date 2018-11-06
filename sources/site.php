@@ -501,7 +501,7 @@ function breadcrumbs($show_self = true)
 
     // Special hard-coded link to sitemap structure for Admin and CMS zones
     $zone = get_zone_name();
-    if ((($zone == 'adminzone') || ($zone == 'cms')) && (get_option('deeper_admin_breadcrumbs') == '1')) {
+    if ((($zone == 'adminzone') || ($zone == 'cms')) && (get_option('deeper_admin_breadcrumbs') == '1') && (get_page_name() != 'login')) {
         require_code('site_adminzone');
         $BREADCRUMB_SET_PARENTS = array_merge(adminzone_extended_breadcrumbs(), $BREADCRUMB_SET_PARENTS);
     }
