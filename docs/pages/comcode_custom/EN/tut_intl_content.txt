@@ -96,7 +96,7 @@ Any content which has not been translated yet will display in the original langu
 
 Content translation may not be supported in every feature perfectly, here are some known limitations:
  - Content CSV import and export is not translation-aware
- - Content sorting will only sort consistently if translations are complete (for example, if you have some translations into German, but some falling back to English, and viewing in German, only the German entries will be sorted correctly)
+ - Content sorting will only sort consistently if translations are complete (for example, if you have some translations into German, but some falling back to English, and viewing in German, only the German entries will be sorted correctly) (https://compo.sr/tracker/view.php?id=3732)
 
 [title="2"]See also[/title]
 
