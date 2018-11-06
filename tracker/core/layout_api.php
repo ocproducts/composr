@@ -823,6 +823,10 @@ function layout_print_sidebar( $p_active_sidebar_page = null ) {
 		global $cms_sc_sourcecode_url;
 		layout_sidebar_menu( $cms_sc_sourcecode_url, 'cms_sourcecode_link', 'fa-git', $p_active_sidebar_page, /*Composr - provide some link structure*/'scm' );
 
+		// Composr - Main website link
+		global $cms_sc_home_url;
+		layout_sidebar_menu( $cms_sc_home_url, 'cms_home_link', 'fa-home', $p_active_sidebar_page, /*Composr - provide some link structure*/'misc' );
+
 		# Plugin / Event added options
 		$t_event_menu_options = event_signal( 'EVENT_MENU_MAIN' );
 		layout_plugin_menu_options_for_sidebar( $t_event_menu_options, $p_active_sidebar_page );
