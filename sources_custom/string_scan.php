@@ -4270,6 +4270,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ERROR_NOT_CORRECT_VERSION
         ERROR_OCCURRED_SUBJECT
         EVAL_ERROR
+        EVAL_ERROR_QUOTE_ISSUE
         EVAL_HACK
         EVENTS
         EVENT_CANNOT_AROUND
@@ -5433,6 +5434,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NNR
         NONPRESENT_EXTENSION_FUNCTION
         NON_COMMAND
+        NON_COMMAND_MISSING_COLON
+        COMMAND_NO_OUTPUT
         NON_RECOGNISED_CSS_FILE
         NORMAL_GROUPS_PER_PAGE
         NOTE
