@@ -968,27 +968,29 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
 
     $content_title = strip_comcode($content_title);
 
-    if (is_null($post_id)) {
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id, do_lang('COMMENT'));
-        if (is_null($topic_id)) {
-            return;
-        }
-        $post_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'MIN(id)', array('p_topic_id' => $topic_id));
+    foreach (($post_id !== null) ? get_site_default_lang() : array_keys(find_all_langs()) as $lang) {
         if (is_null($post_id)) {
-            return;
+            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id, do_lang('COMMENT'));
+            if (is_null($topic_id)) {
+                continue;
+            }
+            $post_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'MIN(id)', array('p_topic_id' => $topic_id));
+            if (is_null($post_id)) {
+                continue;
+            }
+        } else {
+            $topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $post_id));
         }
-    } else {
-        $topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $post_id));
-    }
 
-    $spacer_title = is_null($content_title) ? ($content_type . '_' . $content_id) : ($content_title . ' (#' . $content_type . '_' . $content_id . ')');
-    $spacer_post = '[semihtml]' . do_lang('SPACER_POST', $home_link->evaluate(), '', '', get_site_default_lang()) . '[/semihtml]';
+        $spacer_title = is_null($content_title) ? ($content_type . '_' . $content_id) : ($content_title . ' (#' . $content_type . '_' . $content_id . ')');
+        $spacer_post = '[semihtml]' . do_lang('SPACER_POST', $home_link->evaluate(), '', '', $lang) . '[/semihtml]';
 
-    if (get_forum_type() == 'cns') {
-        require_code('cns_posts_action3');
-        cns_edit_post($post_id, 1, is_null($content_title) ? $spacer_title : $content_title, $spacer_post, 0, 0, null, false, false, '', false);
-        require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, null, '', null, $home_link->evaluate(), false);
+        if (get_forum_type() == 'cns') {
+            require_code('cns_posts_action3');
+            cns_edit_post($post_id, 1, is_null($content_title) ? $spacer_title : $content_title, $spacer_post, 0, 0, null, false, false, '', false);
+            require_code('cns_topics_action2');
+            cns_edit_topic($topic_id, do_lang('COMMENT', null, null, null, $lang) . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, null, '', null, $home_link->evaluate(), false);
+        }
     }
 }
 
