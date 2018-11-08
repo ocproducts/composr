@@ -512,7 +512,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                     $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_name)));
                     $_postdetails['p_title'] = '';
                 } else {
-                    $out['title'] = do_lang_tempcode('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']), '', '', $spacer_post_lang);
+                    $out['title'] = protect_from_escaping(do_lang('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']), '', '', $spacer_post_lang));
                     $_postdetails['p_title'] = do_lang('SPACER_TOPIC_TITLE_WRAP', $_postdetails['p_title'], '', '', $spacer_post_lang);
                 }
             }

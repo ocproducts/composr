@@ -968,7 +968,7 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
 
     $content_title = strip_comcode($content_title);
 
-    foreach (($post_id !== null) ? get_site_default_lang() : array_keys(find_all_langs()) as $lang) {
+    foreach (($post_id !== null) ? array(get_site_default_lang()) : array_keys(find_all_langs()) as $lang) {
         if (is_null($post_id)) {
             $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id, do_lang('COMMENT'));
             if (is_null($topic_id)) {
