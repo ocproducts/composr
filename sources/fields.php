@@ -52,8 +52,8 @@ function catalogue_file_script()
     }
     $size = filesize($_full);
 
-    // Security check; doesn't work for very old attachments (pre-v8)
-    if ($table != 'catalogue_efv_short' && $table != 'catalogue_efv_long' && $table != 'f_member_custom_fields') {
+    // Security check; doesn't work for very old attachments (pre-v8) LEGACY note
+    if ($table != 'catalogue_efv_short' && $table != 'catalogue_efv_long' && $table != 'f_member_custom_fields') { // HACKHACK
         access_denied('I_ERROR');
     }
     $entry_id = get_param_integer('id');

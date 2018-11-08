@@ -92,6 +92,13 @@ class Hook_fields_picture_multi
             return '';
         }
 
+        if ((($table === 'catalogue_efv_short') || ($table === 'catalogue_efv_long')) && ($id !== null)) {
+            $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => $id));
+            if (substr($c_name, 0, 1) != '_') { // Doesn't work on custom fields (this is documented)
+                $cc_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', array('id' => $id));
+            }
+        }
+
         $ret = new Tempcode();
         $evs = explode("\n", $ev);
         foreach ($evs as $i => $ev) {
@@ -132,6 +139,20 @@ class Hook_fields_picture_multi
                     $download_url .= '&field_id_field=' . urlencode($field_id_field) . '&field_id=' . urlencode(strval($field['id']));
                 }
                 $download_url .= $keep->evaluate();
+
+                if ((($table === 'catalogue_efv_short') || ($table === 'catalogue_efv_long')) && ($id !== null)) {
+                    if (substr($c_name, 0, 1) != '_') { // Doesn't work on custom fields (this is documented)
+                        if (!has_category_access(get_member(), 'catalogues_catalogue', $c_name)) {
+                            $download_url = '';
+                        }
+                        if (!has_category_access(get_member(), 'catalogues_category', strval($cc_id))) {
+                            $download_url = '';
+                        }
+                        if ((is_file(get_file_base() . '/site/catalogue_file.php')) && (!has_zone_access(get_member(), 'site'))) {
+                            $download_url = '';
+                        }
+                    }
+                }
             } else {
                 $download_url = $img_url;
             }
