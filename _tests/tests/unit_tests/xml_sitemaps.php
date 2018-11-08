@@ -59,12 +59,13 @@ class xml_sitemaps_test_set extends cms_test_case
 
             $files = array(
                 'xmlfile' => $tmp_file,
+                'option' => '1',
             );
             $result = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 6.0, false, $files);
 
             unlink($tmp_file);
 
-            $this->assertTrue(strpos($result, '<strong>100%</strong> valid sitemap'));
+            $this->assertTrue(strpos($result, '<strong>100%</strong> valid sitemap'), $result);
         }
     }
 }

@@ -65,7 +65,7 @@ class Hook_fields_content_link_multi
      */
     public function inputted_to_sql_for_search($field, $i, $table_alias = 'r')
     {
-        return exact_match_sql($field, $i, null, $table_alias);
+        return exact_match_sql($field, $i, 'short', null, $table_alias);
     }
 
     // ===================

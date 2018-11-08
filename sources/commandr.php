@@ -135,9 +135,9 @@ function commandr_script()
                 $temp->output_xml();
             } catch (Exception $e) {
                 if (has_smart_quotes($command)) {
-                    $stderr = do_lang('EVAL_ERROR') . do_lang('EVAL_ERROR_QUOTE_ISSUE');
+                    $_stderr = do_lang('EVAL_ERROR') . do_lang('EVAL_ERROR_QUOTE_ISSUE');
                 } else {
-                    $stderr = do_lang('EVAL_ERROR');
+                    $_stderr = do_lang('EVAL_ERROR');
                 }
 
                 @header('HTTP/1.0 200 Ok');
@@ -149,7 +149,7 @@ function commandr_script()
                             <stdcommand></stdcommand>
                             <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
                             <stdout>' . xmlentities($e->getMessage()) . '</stdout>
-                            <stderr>' . xmlentities($stderr) . '</stderr>
+                            <stderr>' . xmlentities($_stderr) . '</stderr>
                             <stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
                         </result>
                     </response>';
@@ -1507,5 +1507,21 @@ function commandr_make_normal_html_visible($html)
  */
 function has_smart_quotes($str)
 {
-    return ((get_charset() == 'utf-8') && ((strpos($str, hex2bin('e28098')) !==false) || (strpos($str, hex2bin('e28099')) !==false) || (strpos($str, hex2bin('e2809c')) !==false) || (strpos($str, hex2bin('e2809d')) !==false)));
+    if (get_charset() != 'utf-8') {
+        return false;
+    }
+    // TODO: Change to hex2bin in v11
+    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('98'))) !== false) {
+        return true;
+    }
+    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('99'))) !== false) {
+        return true;
+    }
+    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('9c'))) !== false) {
+        return true;
+    }
+    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('9d'))) !== false) {
+        return true;
+    }
+    return false;
 }
