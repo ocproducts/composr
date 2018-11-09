@@ -1999,7 +1999,8 @@ class Module_topics
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
         }
-        $specialisation2 = form_input_various_ticks($options, '');
+        $specialisation2 = new Tempcode();
+        $specialisation2->attach(form_input_various_ticks($options, ''));
         if (count($moderation_options) != 0) {
             $specialisation2->attach(form_input_various_ticks($moderation_options, '', null, do_lang_tempcode('MODERATION_OPTIONS')));
         }
@@ -3203,6 +3204,10 @@ END;
 
         $specialisation2 = new Tempcode();
 
+        if (count($moderation_options) != 0) {
+            $specialisation2->attach(form_input_various_ticks($moderation_options, '', null, do_lang_tempcode('MODERATION_OPTIONS')));
+        }
+
         require_code('fields');
         if (has_tied_catalogue('post')) {
             append_form_custom_fields('post', strval($post_id), $specialisation2, $hidden_fields);
@@ -3211,9 +3216,6 @@ END;
         require_code('content2');
         $specialisation2->attach(metadata_get_fields('post', strval($post_id)));
 
-        if (count($moderation_options) != 0) {
-            $specialisation2->attach(form_input_various_ticks($moderation_options, '', null, do_lang_tempcode('MODERATION_OPTIONS')));
-        }
         $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'bdab02bfa4ea2f50feedf8a15762c5f1', 'TITLE' => do_lang_tempcode('ACTIONS'))));
         $options = array();
         if (get_option('is_on_post_map') == '1') {

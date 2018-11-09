@@ -165,8 +165,8 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
     if (is_null($field)) {
         return uniqid('', true);
     }
-    $value = $field['effective_value_pure'];
-    return strip_comcode($value);
+    $value = $field['effective_value'];
+    return strip_html(is_object($value) ? $value->evaluate() : $value);
 }
 
 /**

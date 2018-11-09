@@ -255,7 +255,7 @@ abstract class FieldsSearchHook
      * @param string $where_clause Where clause to add to
      * @param array $trans_fields Translatable fields to add to
      * @param array $nontrans_fields Non-translatable fields to add to
-     * @param ?array $content_id_field Content-ID field (null: default r.id field)
+     * @param ?string $content_id_field Content-ID field (null: default r.id field)
      */
     protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields, $content_id_field = null)
     {

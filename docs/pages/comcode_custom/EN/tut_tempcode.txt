@@ -703,7 +703,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FEEDS}</td>
-			<td>HTML code for metdata-linkage to RSS/Atom feeds</td>
+			<td>HTML code for metadata-linkage to RSS/Atom feeds</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 		  <td>{$RUNNING_SCRIPT,index}</td>

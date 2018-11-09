@@ -396,7 +396,7 @@ function ecv2_MAILTO($lang, $escaped, $param)
  */
 function ecv2_ADD($lang, $escaped, $param)
 {
-    $_value = 0;
+    $_value = 0.0;
 
     foreach ($param as $p) {
         $_value += floatval(str_replace(',', '', $p));
@@ -425,7 +425,7 @@ function ecv2_SUBTRACT($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[0])) {
-        $_value = 0;
+        $_value = 0.0;
 
         foreach ($param as $i => $p) {
             $_p = floatval(str_replace(',', '', $p));

@@ -85,8 +85,8 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
     {
         $catalogue_name = get_param_string('catalogue_name', '');
         if ($catalogue_name == '') {
-            if (get_param_string('content') != '') {
-                return null; // Mid-searc
+            if (get_param_string('content', '') != '') {
+                return null; // Mid-search
             }
 
             $tree = create_selection_list_catalogues(null, true);
