@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,10 +15,36 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * MantisBT Core
+ *
+ * Initialises the MantisBT core, connects to the database, starts plugins and
+ * performs other global operations that either help initialise MantisBT or
+ * are required to be executed on every page load.
+ *
  * @package MantisBT
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses authentication_api.php
+ * @uses collapse_api.php
+ * @uses compress_api.php
+ * @uses config_api.php
+ * @uses config_defaults_inc.php
+ * @uses config_inc.php
+ * @uses constant_inc.php
+ * @uses crypto_api.php
+ * @uses custom_constants_inc.php
+ * @uses custom_functions_inc.php
+ * @uses database_api.php
+ * @uses event_api.php
+ * @uses http_api.php
+ * @uses lang_api.php
+ * @uses mantis_offline.php
+ * @uses plugin_api.php
+ * @uses php_api.php
+ * @uses user_pref_api.php
+ * @uses wiki_api.php
  */
 
 /**
@@ -30,227 +56,289 @@
  *   If you have to test MantisBT while it's offline, add the
  *   parameter 'mbadmin=1' to the URL.
  */
-if ( file_exists( 'mantis_offline.php' ) && !isset( $_GET['mbadmin'] ) ) {
+if( file_exists( 'mantis_offline.php' ) && !isset( $_GET['mbadmin'] ) ) {
 	include( 'mantis_offline.php' );
 	exit;
 }
 
-$g_request_time = microtime(true);
+$g_request_time = microtime( true );
+
+# Load supplied constants
+require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'constant_inc.php' );
+
+# Enforce our minimum PHP requirements
+if( version_compare( PHP_VERSION, PHP_MIN_VERSION, '<' ) ) {
+	echo '<strong>FATAL ERROR: Your version of PHP is too old. '
+		. 'MantisBT requires ' . PHP_MIN_VERSION . ' or newer</strong><br />'
+		. 'Your are running PHP version <em>' . PHP_VERSION . '</em>';
+	die();
+}
+
+# Enforce PHP mbstring extension
+if( !extension_loaded( 'mbstring' ) ) {
+	echo '<strong>FATAL ERROR: PHP mbstring extension is not enabled.</strong><br />'
+		. 'MantisBT requires this extension for Unicode (UTF-8) support<br />'
+		. 'http://www.php.net/manual/en/mbstring.installation.php';
+	die();
+}
+
+# Ensure that encoding is always UTF-8 independent from any PHP default or ini setting
+mb_internal_encoding('UTF-8');
 
 ob_start();
 
-/**
- * Load supplied constants
- */
-require_once( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'constant_inc.php' );
+# Load Composer autoloader
+require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php' );
 
-/**
- * Load user-defined constants (if required)
- */
-if ( file_exists( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'custom_constants_inc.php' ) ) {
-	require_once( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'custom_constants_inc.php' );
-# Check for the old name of the user-defined constants file (to be deprecated in 1.3)
-} else if ( file_exists( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'custom_constant_inc.php' ) ) {
-	require_once( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'custom_constant_inc.php' );
+# Include default configuration settings
+require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'config_defaults_inc.php' );
+
+# Load user-defined constants (if required)
+if( file_exists( $g_config_path . 'custom_constants_inc.php' ) ) {
+	require_once( $g_config_path . 'custom_constants_inc.php' );
 }
-
-$t_config_inc_found = false;
-
-/**
- * Include default configuration settings
- */
-require_once( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'config_defaults_inc.php' );
 
 # config_inc may not be present if this is a new install
-if ( file_exists( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'config_inc.php' ) ) {
-	require_once( dirname( __FILE__ ).DIRECTORY_SEPARATOR.'config_inc.php' );
-	$t_config_inc_found = true;
-}
+$t_config_inc_found = file_exists( $g_config_path . 'config_inc.php' );
 
-# Allow an environment variable (defined in an Apache vhost for example)
-#  to specify a config file to load to override other local settings
-$t_local_config = getenv( 'MANTIS_CONFIG' );
-if ( $t_local_config && file_exists( $t_local_config ) ){
-	require_once( $t_local_config );
-	$t_config_inc_found = true;
+if( $t_config_inc_found ) {
+	require_once( $g_config_path . 'config_inc.php' );
 }
 
 
-# Attempt to find the location of the core files.
-$t_core_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR;
-if (isset($GLOBALS['g_core_path']) && !isset( $HTTP_GET_VARS['g_core_path'] ) && !isset( $HTTP_POST_VARS['g_core_path'] ) && !isset( $HTTP_COOKIE_VARS['g_core_path'] ) ) {
-	$t_core_path = $g_core_path;
+/**
+ * Define an API inclusion function to replace require_once
+ *
+ * @param string $p_api_name An API file name.
+ * @return void
+ */
+function require_api( $p_api_name ) {
+	static $s_api_included;
+	global $g_core_path;
+	if( !isset( $s_api_included[$p_api_name] ) ) {
+		require_once( $g_core_path . $p_api_name );
+		$t_new_globals = array_diff_key( get_defined_vars(), $GLOBALS, array( 't_new_globals' => 0 ) );
+		foreach ( $t_new_globals as $t_global_name => $t_global_value ) {
+			$GLOBALS[$t_global_name] = $t_global_value;
+		}
+		$s_api_included[$p_api_name] = 1;
+	}
 }
 
-$g_core_path = $t_core_path;
-
-/*
- * Set include paths
+/**
+ * Define an API inclusion function to replace require_once
+ *
+ * @param string $p_library_name A library file name.
+ * @return void
  */
-define ( 'BASE_PATH' , realpath( dirname(__FILE__) ) );
-$mantisLibrary = BASE_PATH . DIRECTORY_SEPARATOR . 'library';
-$mantisCore = $g_core_path;
+function require_lib( $p_library_name ) {
+	static $s_libraries_included;
 
-/*
- * Prepend the application/ and tests/ directories to the
- * include_path.  
+	if( !isset( $s_libraries_included[$p_library_name] ) ) {
+		global $g_library_path;
+		$t_library_file_path = $g_library_path . $p_library_name;
+
+		if( file_exists( $t_library_file_path ) ) {
+			require_once( $t_library_file_path );
+		} else {
+			echo 'External library \'' . $t_library_file_path . '\' not found.';
+			exit;
+		}
+
+		$t_new_globals = array_diff_key( get_defined_vars(), $GLOBALS, array( 't_new_globals' => 0 ) );
+		foreach ( $t_new_globals as $t_global_name => $t_global_value ) {
+			$GLOBALS[$t_global_name] = $t_global_value;
+		}
+
+		$s_libraries_included[$p_library_name] = 1;
+	}
+}
+
+/**
+ * Checks to see if script was queried through the HTTPS protocol
+ * @return boolean True if protocol is HTTPS
  */
-$path = array(
-    $mantisCore,
-    $mantisLibrary,
-    get_include_path()
-    );
-set_include_path( implode( PATH_SEPARATOR, $path ) );
+function http_is_protocol_https() {
+	if( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ) {
+		return strtolower( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) == 'https';
+	}
 
-/*
- * Unset global variables that are no longer needed.
+	if( !empty( $_SERVER['HTTPS'] ) && ( strtolower( $_SERVER['HTTPS'] ) != 'off' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Define an autoload function to automatically load classes when referenced
+ *
+ * @param string $p_class Class name being autoloaded.
+ * @return void
  */
-unset($mantisRoot, $mantisLibrary, $mantisCore, $path);
-
-# load UTF8-capable string functions
-require_once( 'utf8/utf8.php' );
-require_once( UTF8 . '/str_pad.php' );
-
-# Include compatibility file before anything else
-require_once( 'php_api.php' );
-
-# Define an autoload function to automatically load classes when referenced.
-function __autoload( $className ) {
+function autoload_mantis( $p_class ) {
 	global $g_core_path;
 
-	$t_require_path = $g_core_path . 'classes' . DIRECTORY_SEPARATOR . $className . '.class.php';
+	# Remove namespace from class name
+	$t_end_of_namespace = strrpos( $p_class, '\\' );
+	if( $t_end_of_namespace !== false ) {
+		$p_class = substr( $p_class, $t_end_of_namespace + 1 );
+	}
 
-	if ( file_exists( $t_require_path ) ) {
+	# Commands
+	if( substr( $p_class, -7 ) === 'Command' ) {
+		$t_require_path = $g_core_path . 'commands/' . $p_class . '.php';
+		if( file_exists( $t_require_path ) ) {
+			require_once( $t_require_path );
+			return;
+		}	
+	}
+
+	# Exceptions
+	if( substr( $p_class, -9 ) === 'Exception' ) {
+		$t_require_path = $g_core_path . 'exceptions/' . $p_class . '.php';
+		if( file_exists( $t_require_path ) ) {
+			require_once( $t_require_path );
+			return;
+		}	
+	}
+
+	global $g_class_path;
+	global $g_library_path;
+
+	$t_require_path = $g_class_path . $p_class . '.class.php';
+
+	if( file_exists( $t_require_path ) ) {
 		require_once( $t_require_path );
 		return;
 	}
 
-	$t_require_path = BASE_PATH . DIRECTORY_SEPARATOR . 'library' . DIRECTORY_SEPARATOR . 'rssbuilder' . DIRECTORY_SEPARATOR . 'class.' . $className . '.inc.php';
+	$t_require_path = $g_library_path . 'rssbuilder' . DIRECTORY_SEPARATOR . 'class.' . $p_class . '.inc.php';
 
-	if ( file_exists( $t_require_path ) ) {
+	if( file_exists( $t_require_path ) ) {
 		require_once( $t_require_path );
 		return;
 	}
 }
 
-spl_autoload_register( '__autoload' );
+# Register the autoload function to make it effective immediately
+spl_autoload_register( 'autoload_mantis' );
 
-if ( ($t_output = ob_get_contents()) != '') {
+# Include PHP compatibility file
+require_api( 'php_api.php' );
+
+# Ensure that output is blank so far (output at this stage generally denotes
+# that an error has occurred)
+if( ( $t_output = ob_get_contents() ) != '' ) {
 	echo 'Possible Whitespace/Error in Configuration File - Aborting. Output so far follows:<br />';
-	echo var_dump($t_output);
+	var_dump( $t_output );
 	die;
 }
+unset( $t_output );
 
-require_once( 'utility_api.php' );
-require_once( 'compress_api.php' );
-
+# Start HTML compression handler (if enabled)
+require_api( 'compress_api.php' );
 compress_start_handler();
 
-if ( false === $t_config_inc_found ) {
-	# if not found, redirect to the admin page to install the system
-	# this needs to be long form and not replaced by is_page_name as that function isn't loaded yet
-	if ( !( isset( $_SERVER['SCRIPT_NAME'] ) && ( 0 < strpos( $_SERVER['SCRIPT_NAME'], 'admin' ) ) ) ) {
-		if ( OFF == $g_use_iis ) {
-			header( 'Status: 302' );
-		}
+# If no configuration file exists, redirect the user to the admin page so
+# they can complete installation and configuration of MantisBT
+if( false === $t_config_inc_found ) {
+	if( php_sapi_name() == 'cli' ) {
+		echo 'Error: ' . $g_config_path . "config_inc.php file not found; ensure MantisBT is properly setup.\n";
+		exit(1);
+	}
+
+	if( !( isset( $_SERVER['SCRIPT_NAME'] ) && ( 0 < strpos( $_SERVER['SCRIPT_NAME'], 'admin' ) ) ) ) {
 		header( 'Content-Type: text/html' );
-
-		if ( ON == $g_use_iis ) {
-			header( "Refresh: 0;url=admin/install.php" );
-		} else {
-			header( "Location: admin/install.php" );
-		}
-
-		exit; # additional output can cause problems so let's just stop output here
+		# Temporary redirect (307) instead of Found (302) default
+		header( 'Location: admin/install.php', true, 307 );
+		# Make sure it's not cached
+		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+		exit;
 	}
 }
 
-# Load rest of core in separate directory.
+# Initialise cryptographic keys
+require_api( 'crypto_api.php' );
+crypto_init();
 
-require_once( 'config_api.php' );
-require_once( 'logging_api.php' );
+# Connect to the database
+require_api( 'database_api.php' );
+require_api( 'config_api.php' );
 
-# Load internationalization functions (needed before database_api, in case database connection fails)
-require_once( 'lang_api.php' );
+# Set the default timezone
+# To reduce overhead, we assume that the timezone configuration is valid,
+# i.e. it exists in timezone_identifiers_list(). If not, a PHP NOTICE will
+# be raised. Use admin checks to validate configuration.
+@date_default_timezone_set( config_get_global( 'default_timezone' ) );
+$t_tz = @date_default_timezone_get();
+config_set_global( 'default_timezone', $t_tz, true );
 
-# error functions should be loaded to allow database to print errors
-require_once( 'error_api.php' );
-require_once( 'helper_api.php' );
+if( !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
+	if( OFF == $g_use_persistent_connections ) {
+		db_connect( config_get_global( 'dsn', false ), $g_hostname, $g_db_username, $g_db_password, $g_database_name );
+	} else {
+		db_connect( config_get_global( 'dsn', false ), $g_hostname, $g_db_username, $g_db_password, $g_database_name, true );
+	}
+}
 
-# DATABASE WILL BE OPENED HERE!!  THE DATABASE SHOULDN'T BE EXPLICITLY
-# OPENED ANYWHERE ELSE.
-require_once( 'database_api.php' );
+# Register global shutdown function
+shutdown_functions_register();
 
-# PHP Sessions
-require_once( 'session_api.php' );
-
-# Initialize Event System
-require_once( 'event_api.php' );
-require_once( 'events_inc.php' );
-
-# Plugin initialization
-require_once( 'plugin_api.php' );
-if ( !defined( 'PLUGINS_DISABLED' ) ) {
+# Initialise plugins
+require_api( 'plugin_api.php' );  // necessary for some upgrade steps
+if( !defined( 'PLUGINS_DISABLED' ) && !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
 	plugin_init_installed();
 }
 
-# Authentication and user setup
-require_once( 'authentication_api.php' );
-require_once( 'project_api.php' );
-require_once( 'project_hierarchy_api.php' );
-require_once( 'user_api.php' );
-require_once( 'access_api.php' );
-
-# Wiki Integration
+# Initialise Wiki integration
 if( config_get_global( 'wiki_enable' ) == ON ) {
-	require_once( 'wiki_api.php' );
+	require_api( 'wiki_api.php' );
 	wiki_init();
 }
 
-# Display API's
-require_once( 'http_api.php' );
-require_once( 'html_api.php' );
-require_once( 'gpc_api.php' );
-require_once( 'form_api.php' );
-require_once( 'print_api.php' );
-require_once( 'collapse_api.php' );
-
-if ( !is_blank ( config_get_global( 'default_timezone' ) ) ) {
-	// if a default timezone is set in config, set it here, else we use php.ini's value
-	// having a timezone set avoids a php warning
-	date_default_timezone_set( config_get_global( 'default_timezone' ) );
-} else {
-	config_set_global( 'default_timezone', date_default_timezone_get(), true );
-}
-
-if ( !isset( $g_login_anonymous ) ) {
+if( !isset( $g_login_anonymous ) ) {
 	$g_login_anonymous = true;
 }
 
-if( auth_is_user_authenticated() ) {
-	date_default_timezone_set( user_pref_get_pref( auth_get_current_user_id(), 'timezone' ) );
-}
+if( !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
+	require_api( 'authentication_api.php' );
 
-if ( !defined( 'MANTIS_INSTALLER' ) ) {
+	# Override the default timezone according to user's preferences
+	if( auth_is_user_authenticated() ) {
+		require_api( 'user_pref_api.php' );
+		$t_tz = user_pref_get_pref( auth_get_current_user_id(), 'timezone' );
+		@date_default_timezone_set( $t_tz );
+	}
+}
+unset( $t_tz );
+
+# Cache current user's collapse API data
+if( !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
+	require_api( 'collapse_api.php' );
 	collapse_cache_token();
 }
 
-// custom functions (in main directory)
-/** @todo Move all such files to core/ */
-require_once( 'custom_function_api.php' );
-$t_overrides = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'custom_functions_inc.php';
-if ( file_exists( $t_overrides ) ) {
-	require_once( $t_overrides );
+# Load custom functions
+require_api( 'custom_function_api.php' );
+
+if( file_exists( $g_config_path . 'custom_functions_inc.php' ) ) {
+	require_once( $g_config_path . 'custom_functions_inc.php' );
 }
 
-// set HTTP response headers
+# Set HTTP response headers
+require_api( 'http_api.php' );
+event_signal( 'EVENT_CORE_HEADERS' );
 http_all_headers();
 
-// push push default language to speed calls to lang_get
-if ( !isset( $g_skip_lang_load ) ) {
+# Push default language to speed calls to lang_get
+if( !defined( 'LANG_LOAD_DISABLED' ) ) {
+	require_api( 'lang_api.php' );
 	lang_push( lang_get_default() );
 }
 
-# signal plugins that the core system is loaded
-event_signal( 'EVENT_CORE_READY' );
-
+# Signal plugins that the core system is loaded
+if( !defined( 'PLUGINS_DISABLED' ) && !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
+	require_api( 'event_api.php' );
+	event_signal( 'EVENT_CORE_READY' );
+}

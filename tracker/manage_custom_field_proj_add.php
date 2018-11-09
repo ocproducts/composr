@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,37 +14,53 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Custom Field Configuration
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses custom_field_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses print_api.php
+ */
 
-	form_security_validate('manage_custom_field_proj_add');
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'custom_field_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'print_api.php' );
 
-	auth_reauthenticate();
+form_security_validate( 'manage_custom_field_proj_add' );
 
-	$f_field_id = gpc_get_int( 'field_id' );
-	$f_project_id = gpc_get_int_array( 'project_id', array() );
-	$f_sequence	= gpc_get_int( 'sequence' );
+auth_reauthenticate();
 
-	$t_manage_project_threshold = config_get( 'manage_project_threshold' );
+$f_field_id = gpc_get_int( 'field_id' );
+$f_project_id = gpc_get_int_array( 'project_id', array() );
+$f_sequence	= gpc_get_int( 'sequence' );
 
-	foreach ( $f_project_id as $t_proj_id ) {
-		if ( access_has_project_level( $t_manage_project_threshold, $t_proj_id ) ) {
-			if ( !custom_field_is_linked( $f_field_id, $t_proj_id ) ) {
-				custom_field_link( $f_field_id, $t_proj_id );
-			}
+$t_manage_project_threshold = config_get( 'manage_project_threshold' );
 
-			custom_field_set_sequence( $f_field_id, $t_proj_id, $f_sequence );
+foreach ( $f_project_id as $t_proj_id ) {
+	if( access_has_project_level( $t_manage_project_threshold, $t_proj_id ) ) {
+		if( !custom_field_is_linked( $f_field_id, $t_proj_id ) ) {
+			custom_field_link( $f_field_id, $t_proj_id );
 		}
+
+		custom_field_set_sequence( $f_field_id, $t_proj_id, $f_sequence );
 	}
+}
 
-	form_security_purge('manage_custom_field_proj_add');
+form_security_purge( 'manage_custom_field_proj_add' );
 
-	print_header_redirect( 'manage_custom_field_edit_page.php?field_id=' . $f_field_id );
+print_header_redirect( 'manage_custom_field_edit_page.php?field_id=' . $f_field_id );

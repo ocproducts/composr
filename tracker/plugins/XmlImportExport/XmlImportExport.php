@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,32 +18,27 @@
  * XML Import / Export Plugin
  * @package MantisPlugin
  * @subpackage MantisPlugin
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
-
-/**
- * requires MantisPlugin.class.php
- */
-require_once( config_get( 'class_path' ) . 'MantisPlugin.class.php' );
 
 /**
  * XmlImportExportPlugin Class
  */
 class XmlImportExportPlugin extends MantisPlugin {
-
 	/**
-	 *  A method that populates the plugin information and minimum requirements.
+	 * A method that populates the plugin information and minimum requirements.
+	 * @return void
 	 */
-	function register( ) {
+	function register() {
 		$this->name = plugin_lang_get( 'title' );
 		$this->description = plugin_lang_get( 'description' );
-		$this->page = '';
+		$this->page = "config_page";
 
-		$this->version = '1.0';
+		$this->version = MANTIS_VERSION;
 		$this->requires = array(
-			'MantisCore' => '1.2.0',
+			'MantisCore' => '2.0.0',
 		);
 
 		$this->author = 'MantisBT Team';
@@ -53,20 +48,57 @@ class XmlImportExportPlugin extends MantisPlugin {
 
 	/**
 	 * Default plugin configuration.
+	 * @return array
 	 */
-	function hooks( ) {
-		$hooks = array(
+	public function config() {
+		return array(
+			"import_threshold" => ADMINISTRATOR,
+			"export_threshold" => DEVELOPER,
+		);
+	}
+
+	/**
+	 * Plugin hooks
+	 * @return array
+	 */
+	function hooks() {
+		$t_hooks = array(
 			'EVENT_MENU_MANAGE' => 'import_issues_menu',
 			'EVENT_MENU_FILTER' => 'export_issues_menu',
 		);
-		return $hooks;
+		return $t_hooks;
 	}
 
-	function import_issues_menu( ) {
+	/**
+	 * Import Issues Menu
+	 * @return array
+	 */
+	function import_issues_menu() {
 		return array( '<a href="' . plugin_page( 'import' ) . '">' . plugin_lang_get( 'import' ) . '</a>', );
 	}
 
-	function export_issues_menu( ) {
-		return array( '<a href="' . plugin_page( 'export' ) . '">' . plugin_lang_get( 'export' ) . '</a>', );
+	/**
+	 * Export Issues Menu
+	 * @return array
+	 */
+	function export_issues_menu() {
+		if( !access_has_project_level( plugin_config_get( 'export_threshold' ) ) ) {
+			return array();
+		}
+		return array( '<a class="btn btn-sm btn-primary btn-white btn-round" href="' . plugin_page( 'export' ) . '">' . plugin_lang_get( 'export' ) . '</a>', );
+	}
+
+	/**
+	 * Plugin Installation
+	 * @return boolean
+	 */
+	function install() {
+		$t_result = extension_loaded( 'xmlreader' ) && extension_loaded( 'xmlwriter' );
+		if( !$t_result ) {
+			# @todo returning false should trigger some error reporting, needs rethinking error_api
+			error_parameters( plugin_lang_get( 'error_no_xml' ) );
+			trigger_error( ERROR_PLUGIN_INSTALL_FAILED, ERROR );
+		}
+		return $t_result;
 	}
 }

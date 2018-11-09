@@ -106,6 +106,9 @@ class Hook_implicit_usergroups_antispam_question
         $is_exclusive = true;
 
         require_code('cns_members');
+        if (!function_exists('cns_get_custom_field_mappings')) {
+            return false; // Startup loop with keep_safe_mode=1
+        }
         $mappings = cns_get_custom_field_mappings($member_id);
         $f = 'field_' . strval($this->field_id);
         if (!isset($mappings[$f])) {

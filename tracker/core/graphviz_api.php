@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,28 +15,32 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * GraphViz API
+ *
  * Wrapper classes around GraphViz utilities (dot and neato) for
- * directed and undirected graph generation. Under Windows, the COM
- * API provided by WinGraphviz is used. These wrappers are enhanced
+ * directed and undirected graph generation. These wrappers are enhanced
  * enough just to support relationship_graph_api.php. They don't
  * support subgraphs yet.
  *
  * The original Graphviz package is available at:
- * 	- http://www.research.att.com/sw/tools/graphviz/
- * WinGraphviz can be installed from:
- * 	- http://home.so-net.net.tw/oodtsen/wingraphviz/
+ * 	- http://www.graphviz.org/
  * Additional documentation can be found at:
  * 	- http://www.graphviz.org/Documentation.html
+ *
  * @package CoreAPI
  * @subpackage GraphVizAPI
  * @author Juliano Ravasi Ferraz <jferraz at users sourceforge net>
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses constant_inc.php
+ * @uses utility_api.php
  */
 
-/** 
- * constant(s) defining the output formats supported by dot and neato. 
- */
+require_api( 'constant_inc.php' );
+require_api( 'utility_api.php' );
+
+# constant(s) defining the output formats supported by dot and neato.
 define( 'GRAPHVIZ_ATTRIBUTED_DOT', 0 );
 define( 'GRAPHVIZ_PS', 1 );
 define( 'GRAPHVIZ_HPGL', 2 );
@@ -59,25 +63,51 @@ define( 'GRAPHVIZ_SVGZ', 26 );
 define( 'GRAPHVIZ_CANONICAL_DOT', 27 );
 define( 'GRAPHVIZ_PDF', 28 );
 
-/** 
+/**
  * Base class for graph creation and manipulation. By default,
  * undirected graphs are generated. For directed graphs, use Digraph
  * class.
- * @package MantisBT
- * @subpackage classes
  */
 class Graph {
-	var $name = 'G';
-	var $attributes = array();
-	var $default_node = null;
-	var $default_edge = null;
-	var $nodes = array();
-	var $edges = array();
+	/**
+	 * Name
+	 */
+	public $name = 'G';
 
-	var $graphviz_tool;
-	var $graphviz_com_module;
+	/**
+	 * Attributes
+	 */
+	public $attributes = array();
 
-	var $formats = array(
+	/**
+	 * Default node
+	 */
+	public $default_node = null;
+
+	/**
+	 * Default edge
+	 */
+	public $default_edge = null;
+
+	/**
+	 * Nodes
+	 */
+	public $nodes = array();
+
+	/**
+	 * Edges
+	 */
+	public $edges = array();
+
+	/**
+	 * Graphviz tool
+	 */
+	public $graphviz_tool;
+
+	/**
+	 * Formats
+	 */
+	public $formats = array(
 		'dot' => array(
 			'binary' => false,
 			'type' => GRAPHVIZ_ATTRIBUTED_DOT,
@@ -175,15 +205,13 @@ class Graph {
 		),
 	);
 
-	/** 
+	/**
 	 * Constructor for Graph objects.
-	 * @param string $p_name
-	 * @param array $p_attributes
-	 * @param string $p_tool
-	 * @param string $p_com_module
-	 * @return null
+	 * @param string $p_name       Graph name.
+	 * @param array  $p_attributes Attributes.
+	 * @param string $p_tool       Graph generation tool.
 	 */
-	function Graph( $p_name = 'G', $p_attributes = array(), $p_tool = 'neato', $p_com_module = 'WinGraphviz.NEATO' ) {
+	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'neato' ) {
 		if( is_string( $p_name ) ) {
 			$this->name = $p_name;
 		}
@@ -191,15 +219,14 @@ class Graph {
 		$this->set_attributes( $p_attributes );
 
 		$this->graphviz_tool = $p_tool;
-		$this->graphviz_com_module = $p_com_module;
 	}
 
 	/**
 	 * Sets graph attributes.
-	 * @param array $p_attributes
-	 * @return null
+	 * @param array $p_attributes Attributes.
+	 * @return void
 	 */
-	function set_attributes( $p_attributes ) {
+	function set_attributes( array $p_attributes ) {
 		if( is_array( $p_attributes ) ) {
 			$this->attributes = $p_attributes;
 		}
@@ -207,10 +234,10 @@ class Graph {
 
 	/**
 	 * Sets default attributes for all nodes of the graph.
-	 * @param array $p_attributes
-	 * @return null
+	 * @param array $p_attributes Attributes.
+	 * @return void
 	 */
-	function set_default_node_attr( $p_attributes ) {
+	function set_default_node_attr( array $p_attributes ) {
 		if( is_array( $p_attributes ) ) {
 			$this->default_node = $p_attributes;
 		}
@@ -218,10 +245,10 @@ class Graph {
 
 	/**
 	 * Sets default attributes for all edges of the graph.
-	 * @param array $p_attributes
-	 * @return null
+	 * @param array $p_attributes Attributes.
+	 * @return void
 	 */
-	 function set_default_edge_attr( $p_attributes ) {
+	 function set_default_edge_attr( array $p_attributes ) {
 		if( is_array( $p_attributes ) ) {
 			$this->default_edge = $p_attributes;
 		}
@@ -229,11 +256,11 @@ class Graph {
 
 	/**
 	 * Adds a node to the graph.
-	 * @param string $p_name
-	 * @param array $p_attributes
-	 * @return null
+	 * @param string $p_name       Node name.
+	 * @param array  $p_attributes Attributes.
+	 * @return void
 	 */
-	 function add_node( $p_name, $p_attributes = array() ) {
+	 function add_node( $p_name, array $p_attributes = array() ) {
 		if( is_array( $p_attributes ) ) {
 			$this->nodes[$p_name] = $p_attributes;
 		}
@@ -241,12 +268,12 @@ class Graph {
 
 	/**
 	 * Adds an edge to the graph.
-	 * @param string $p_src
-	 * @param string $p_dst
-	 * @param array $p_attributes
-	 * @return null
+	 * @param string $p_src        Source.
+	 * @param string $p_dst        Destination.
+	 * @param array  $p_attributes Attributes.
+	 * @return void
 	 */
-	 function add_edge( $p_src, $p_dst, $p_attributes = array() ) {
+	 function add_edge( $p_src, $p_dst, array $p_attributes = array() ) {
 		if( is_array( $p_attributes ) ) {
 			$this->edges[] = array(
 				'src' => $p_src,
@@ -258,9 +285,9 @@ class Graph {
 
 	/**
 	 * Check if an edge is already present.
-	 * @param string $p_src
-	 * @param string $p_dst
-	 * @return bool
+	 * @param string $p_src Source.
+	 * @param string $p_dst Destination.
+	 * @return boolean
 	 */
 	function is_edge_present( $p_src, $p_dst ) {
 		foreach( $this->edges as $t_edge ) {
@@ -273,7 +300,7 @@ class Graph {
 
 	/**
 	 * Generates an undirected graph representation (suitable for neato).
-	 * @return null
+	 * @return void
 	 */
 	function generate() {
 		echo 'graph ' . $this->name . ' {' . "\n";
@@ -299,9 +326,9 @@ class Graph {
 
 	/**
 	 * Outputs a graph image or map in the specified format.
-	 * @param string $p_format
-	 * @param bool $p_headers
-	 * @return null
+	 * @param string  $p_format  Graphviz output format.
+	 * @param boolean $p_headers Whether to sent http headers.
+	 * @return void
 	 */
 	function output( $p_format = 'dot', $p_headers = false ) {
 		# Check if it is a recognized format.
@@ -317,120 +344,56 @@ class Graph {
 		if( $p_headers ) {
 			header( 'Content-Type: ' . $t_mime );
 		}
-
 		# Retrieve the source dot document into a buffer
 		ob_start();
 		$this->generate();
 		$t_dot_source = ob_get_contents();
 		ob_end_clean();
 
-		# There are three different ways to generate the output depending
-		# on the operating system and PHP version.
-		if( is_windows_server() ) {
-			# If we are under Windows, we use the COM interface provided
-			# by WinGraphviz. Thanks Paul!
-			# Issue #4625: Work around WinGraphviz bug that fails with
-			# graphs with zero or one node. It is probably too much to
-			# generate a graphic output just to explain it to the user,
-			# so we just return a null content.
-			if( count( $this->nodes ) <= 1 ) {
-				return;
-			}
+		# Start dot process
 
-			$t_graphviz = new COM( $this->graphviz_com_module );
-
-			# Check if we managed to instantiate the COM object.
-			if( is_null( $t_graphviz ) ) {
-				# We can't display any message or trigger an error on
-				# failure, since we may have already sent a Content-type
-				# header potentially incompatible with the any html output.
-				return;
-			}
-
-			if( $t_binary ) {
-				# Image formats
-				$t_dot_output = $t_graphviz->ToBinaryGraph( $t_dot_source, $t_type );
-
-				if( $p_headers ) {
-					# Headers were requested, use another output buffer
-					# to retrieve the size for Content-Length.
-					ob_start();
-					echo base64_decode( $t_dot_output->ToBase64String() );
-					header( 'Content-Length: ' . ob_get_length() );
-					ob_end_flush();
-				} else {
-					# No need for headers, send output directly.
-					echo base64_decode( $ret->ToBase64String() );
-				}
-			} else {
-				# Text formats
-				$t_dot_output = $t_graphviz->ToTextGraph( $t_dot_source, $t_type );
-
-				if( $p_headers ) {
-					header( 'Content-Length: ' . utf8_strlen( $t_dot_output ) );
-				}
-
-				echo $t_dot_output;
-			}
-
-			unset( $t_graphviz );
-		} else {
-			# If we are not under Windows, use proc_open,
-			# since it avoids the need of temporary files.
-			# Start dot process
-			$t_command = $this->graphviz_tool . ' -T' . $p_format;
-			$t_descriptors = array(
-				0 => array(
-					'pipe',
-					'r',
-				),
-				1 => array(
-					'pipe',
-					'w',
-				),
-				2 => array(
-					'file',
-					'php://stderr',
-					'w',
-				),
+		$t_command = $this->graphviz_tool . ' -T' . $p_format;
+		$t_descriptors = array(
+			0 => array( 'pipe', 'r', ),
+			1 => array( 'pipe', 'w', ),
+			2 => array( 'file', 'php://stderr', 'w', ),
 			);
 
-			$t_pipes = array();
-			$t_proccess = proc_open( $t_command, $t_descriptors, $t_pipes );
+		$t_pipes = array();
+		$t_proccess = proc_open( $t_command, $t_descriptors, $t_pipes );
 
-			if( is_resource( $t_proccess ) ) {
-				# Filter generated output through dot
-				fwrite( $t_pipes[0], $t_dot_source );
-				fclose( $t_pipes[0] );
+		if( is_resource( $t_proccess ) ) {
+			# Filter generated output through dot
+			fwrite( $t_pipes[0], $t_dot_source );
+			fclose( $t_pipes[0] );
 
-				if( $p_headers ) {
-					# Headers were requested, use another output buffer to
-					# retrieve the size for Content-Length.
-					ob_start();
-					while( !feof( $t_pipes[1] ) ) {
-						echo fgets( $t_pipes[1], 1024 );
-					}
-					header( 'Content-Length: ' . ob_get_length() );
-					ob_end_flush();
-				} else {
-					# No need for headers, send output directly.
-					while( !feof( $t_pipes[1] ) ) {
-						print( fgets( $t_pipes[1], 1024 ) );
-					}
+			if( $p_headers ) {
+				# Headers were requested, use another output buffer to
+				# retrieve the size for Content-Length.
+				ob_start();
+				while( !feof( $t_pipes[1] ) ) {
+					echo fgets( $t_pipes[1], 1024 );
 				}
-
-				fclose( $t_pipes[1] );
-				proc_close( $t_proccess );
+				header( 'Content-Length: ' . ob_get_length() );
+				ob_end_flush();
+			} else {
+				# No need for headers, send output directly.
+				while( !feof( $t_pipes[1] ) ) {
+					print( fgets( $t_pipes[1], 1024 ) );
+				}
 			}
+
+			fclose( $t_pipes[1] );
+			proc_close( $t_proccess );
 		}
 	}
 
-	/** 
+	/**
 	 * PROTECTED function to build a node or edge attribute list.
-	 * @param array $p_attributes
+	 * @param array $p_attributes Attributes.
 	 * @return string
 	 */
-	function _build_attribute_list( $p_attributes ) {
+	function _build_attribute_list( array $p_attributes ) {
 		if( empty( $p_attributes ) ) {
 			return '';
 		}
@@ -438,15 +401,14 @@ class Graph {
 		$t_result = array();
 
 		foreach( $p_attributes as $t_name => $t_value ) {
-			if( !preg_match( "/[a-zA-Z]+/", $t_name ) ) {
+			if( !preg_match( '/[a-zA-Z]+/', $t_name ) ) {
 				continue;
 			}
 
 			if( is_string( $t_value ) ) {
 				$t_value = '"' . addcslashes( $t_value, "\0..\37\"\\" ) . '"';
-			}
-			else if( is_integer( $t_value ) or is_float( $t_value ) ) {
-				$t_value = (string) $t_value;
+			} else if( is_integer( $t_value ) or is_float( $t_value ) ) {
+				$t_value = (string)$t_value;
 			} else {
 				continue;
 			}
@@ -459,19 +421,18 @@ class Graph {
 
 	/**
 	 * PROTECTED function to print graph attributes and defaults.
-	 * @return null
+	 * @return void
 	 */
 	function _print_graph_defaults() {
 		foreach( $this->attributes as $t_name => $t_value ) {
-			if( !preg_match( "/[a-zA-Z]+/", $t_name ) ) {
+			if( !preg_match( '/[a-zA-Z]+/', $t_name ) ) {
 				continue;
 			}
 
 			if( is_string( $t_value ) ) {
 				$t_value = '"' . addcslashes( $t_value, "\0..\37\"\\" ) . '"';
-			}
-			else if( is_integer( $t_value ) or is_float( $t_value ) ) {
-				$t_value = (string) $t_value;
+			} else if( is_integer( $t_value ) or is_float( $t_value ) ) {
+				$t_value = (string)$t_value;
 			} else {
 				continue;
 			}
@@ -493,24 +454,21 @@ class Graph {
 
 /**
  * Directed graph creation and manipulation.
- * @package MantisBT
- * @subpackage classes
  */
 class Digraph extends Graph {
-	/** 
+	/**
 	 * Constructor for Digraph objects.
-	 * @param string $p_name
-	 * @param array $p_attributes
-	 * @param string $p_tool
-	 * @param string $p_com_module
-	 * @return null
+	 * @param string $p_name       Name of the graph.
+	 * @param array  $p_attributes Attributes.
+	 * @param string $p_tool       Graphviz tool.
 	 */
-	function Digraph( $p_name = 'G', $p_attributes = array(), $p_tool = 'dot', $p_com_module = 'WinGraphviz.DOT' ) {
-		parent::Graph( $p_name, $p_attributes, $p_tool, $p_com_module );
+	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'dot' ) {
+		parent::__construct( $p_name, $p_attributes, $p_tool );
 	}
 
-	/** 
+	/**
 	 * Generates a directed graph representation (suitable for dot).
+	 * @return void
 	 */
 	function generate() {
 		echo 'digraph ' . $this->name . ' {' . "\n";

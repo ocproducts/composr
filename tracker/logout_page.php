@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,17 +14,27 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Logout Page
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses print_api.php
+ */
 
-	auth_logout();
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'print_api.php' );
 
-	print_header_redirect( config_get( 'logout_redirect_page' ), /* die */ true, /* sanitize */ false );
+# Cache the current logout redirect page as it will be cleared by auth_logout()
+$t_logout_redirect = auth_logout_redirect_page();
+
+auth_logout();
+
+print_header_redirect( $t_logout_redirect, true, false );

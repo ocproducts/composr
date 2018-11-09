@@ -400,9 +400,9 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             $linked_url = '';
 
             // If it's a spacer post, see if we can detect it better
-            $is_spacer_post = is_spacer_post($_postdetails['message_comcode']);
+            list($is_spacer_post, $spacer_post_lang) = is_spacer_post($_postdetails['message_comcode']);
             if ($is_spacer_post) {
-                $c_prefix = do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #';
+                $c_prefix = do_lang('COMMENT', null, null, null, $spacer_post_lang) . ': #';
                 if ((substr($out['description'], 0, strlen($c_prefix)) == $c_prefix) && ($out['description_link'] != '')) {
                     list($linked_type, $linked_id) = explode('_', substr($out['description'], strlen($c_prefix)), 2);
                     $linked_url = $out['description_link'];
@@ -464,8 +464,8 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                     $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), ($ticket_type_name === null) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_name)));
                     $_postdetails['p_title'] = '';
                 } else {
-                    $out['title'] = do_lang_tempcode('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']));
-                    $_postdetails['p_title'] = do_lang('SPACER_TOPIC_TITLE_WRAP', $_postdetails['p_title']);
+                    $out['title'] = protect_from_escaping(do_lang('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']), '', '', $spacer_post_lang));
+                    $_postdetails['p_title'] = do_lang('SPACER_TOPIC_TITLE_WRAP', $_postdetails['p_title'], '', '', $spacer_post_lang);
                 }
             }
 

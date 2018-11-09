@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,60 +14,82 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Manage configuration
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses project_api.php
+ * @uses string_api.php
+ */
 
-	form_security_validate('manage_config_revert');
 
-	auth_reauthenticate();
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'project_api.php' );
+require_api( 'string_api.php' );
 
-	$f_project_id = gpc_get_int( 'project', 0 );
-	$f_revert = gpc_get_string( 'revert', '' );
-	$f_return = gpc_get_string( 'return' );
+form_security_validate( 'manage_config_revert' );
 
-	$t_access = true;
-	$t_revert_vars = explode( ',', $f_revert );
-	array_walk( $t_revert_vars, 'trim' );
+auth_reauthenticate();
+
+$f_project_id = gpc_get_int( 'project', 0 );
+$f_revert = gpc_get_string( 'revert', '' );
+$f_return = gpc_get_string( 'return' );
+
+$t_access = true;
+$t_revert_vars = explode( ',', $f_revert );
+array_walk( $t_revert_vars, 'trim' );
+foreach ( $t_revert_vars as $t_revert ) {
+	$t_access &= access_has_project_level( config_get_access( $t_revert ), $f_project_id );
+}
+
+if( !$t_access ) {
+	access_denied();
+}
+
+if( '' != $f_revert ) {
+	# Confirm with the user
+	helper_ensure_confirmed( lang_get( 'config_delete_sure' ) . lang_get( 'word_separator' ) .
+		string_html_specialchars( implode( ', ', $t_revert_vars ) ) . lang_get( 'word_separator' ) . lang_get( 'in_project' ) . lang_get( 'word_separator' ) . project_get_name( $f_project_id ),
+		lang_get( 'delete_config_button' ) );
+
 	foreach ( $t_revert_vars as $t_revert ) {
-		$t_access &= access_has_project_level( config_get_access( $t_revert ), $f_project_id );
+		config_delete( $t_revert, ALL_USERS, $f_project_id );
 	}
+}
 
-	if ( !$t_access ) {
-		access_denied();
-	}
+form_security_purge( 'manage_config_revert' );
 
-	if ( '' != $f_revert ) {
-		# Confirm with the user
-		helper_ensure_confirmed( lang_get( 'config_delete_sure' ) . lang_get( 'word_separator' ) . 
-			string_html_specialchars( implode( ', ', $t_revert_vars ) ) . ' ' . lang_get( 'in_project' ) . ' ' . project_get_name( $f_project_id ),
-			lang_get( 'delete_config_button' ) );
+$t_redirect_url = $f_return;
 
-		foreach ( $t_revert_vars as $t_revert ) {
-			config_delete( $t_revert, null , $f_project_id );
-		}
-	}
+layout_page_header( null, $t_redirect_url );
 
-	form_security_purge('manage_config_revert');
+layout_page_begin();
 
-	$t_redirect_url = $f_return;
+html_operation_successful( $t_redirect_url );
 
-	html_page_top( null, $t_redirect_url );
-?>
-<br />
-<div align="center">
-<?php
-	echo lang_get( 'operation_successful' ).'<br />';
-	print_bracket_link( $t_redirect_url, lang_get( 'proceed' ) );
-?>
-</div>
-
-<?php
-	html_page_bottom();
+layout_page_end();

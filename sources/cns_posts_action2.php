@@ -21,19 +21,19 @@
 /**
  * Get the poster name a Guest may have specified, after sanitising it.
  *
- * @param  ?boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it)
+ * @param  ?boolean $is_required_good_value If it is a required field (null: typically no, but look at hidden option for it)
  * @return string Poster name
  */
-function cns_get_safe_specified_poster_name($is_required_field = null)
+function cns_get_safe_specified_poster_name($is_required_good_value = null)
 {
-    if ($is_required_field === null) {
-        $is_required_field = (get_option('force_guest_names') === '1');
+    if ($is_required_good_value === null) {
+        $is_required_good_value = (get_option('force_guest_names') === '1');
     }
 
-    if ((get_option('force_guest_names') === '1') && (is_guest())) {
+    if (($is_required_good_value) && (is_guest())) {
         $poster_name_if_guest = post_param_string('poster_name_if_guest');
     } else {
-        $poster_name_if_guest = post_param_string('poster_name_if_guest', null);
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', null/*Will default to current user's username (which could be Guest) near end of function*/);
     }
     if ($poster_name_if_guest == '') {
         $poster_name_if_guest = null;
@@ -41,7 +41,7 @@ function cns_get_safe_specified_poster_name($is_required_field = null)
     if ($poster_name_if_guest !== null) {
         $poster_name_if_guest = trim($poster_name_if_guest);
 
-        if ($is_required_field) {
+        if ($is_required_good_value) {
             if ($poster_name_if_guest == do_lang('GUEST')) {
                 warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__poster_name_if_guest', 'poster_name_if_guest'))));
             }
@@ -65,7 +65,7 @@ function cns_get_safe_specified_poster_name($is_required_field = null)
                 break;
             }
         }
-    } else {
+    } else { // Don't run extra checks because we know current-username is valid
         $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     }
     return $poster_name_if_guest;

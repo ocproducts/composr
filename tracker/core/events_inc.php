@@ -1,23 +1,31 @@
 <?php
-# MantisBT - a php based bugtracking system
+/**
+ * MantisBT - A PHP based bugtracking system
+ *
+ * MantisBT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * MantisBT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ * @package MantisBT
+ */
 
-# MantisBT is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 2 of the License, or
-# (at your option) any later version.
-#
-# MantisBT is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Event Declarations
+ * Please view the Plugin Events Reference for details on each event.
+ * http://www.mantisbt.org/wiki/doku.php/mantisbt:plugins_events
+ */
 
-# Event Declarations
-# Please view the Plugin Events Reference for details on each event.
-# http://www.mantisbt.org/wiki/doku.php/mantisbt:plugins_events
-#
 # Declare supported plugin events
 event_declare_many( array(
 	# Events specific to plugins
@@ -25,6 +33,10 @@ event_declare_many( array(
 
 	# Events specific to the core system
 	'EVENT_CORE_READY' => EVENT_TYPE_EXECUTE,
+	'EVENT_CORE_HEADERS' => EVENT_TYPE_EXECUTE,
+
+	# REST API Events
+	'EVENT_REST_API_ROUTES' => EVENT_TYPE_EXECUTE,
 
 	# MantisBT Layout Events
 	'EVENT_LAYOUT_RESOURCES' => EVENT_TYPE_OUTPUT,
@@ -41,6 +53,7 @@ event_declare_many( array(
 	'EVENT_DISPLAY_FORMATTED' => EVENT_TYPE_CHAIN,
 	'EVENT_DISPLAY_RSS' => EVENT_TYPE_CHAIN,
 	'EVENT_DISPLAY_EMAIL' => EVENT_TYPE_CHAIN,
+	'EVENT_DISPLAY_EMAIL_BUILD_SUBJECT' => EVENT_TYPE_CHAIN,
 
 	# Menu Events
 	'EVENT_MENU_MAIN' => EVENT_TYPE_DEFAULT,
@@ -60,14 +73,28 @@ event_declare_many( array(
 	'EVENT_MANAGE_PROJECT_CREATE' => EVENT_TYPE_EXECUTE,
 	'EVENT_MANAGE_PROJECT_UPDATE_FORM' => EVENT_TYPE_EXECUTE,
 	'EVENT_MANAGE_PROJECT_UPDATE' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_PROJECT_DELETE' => EVENT_TYPE_EXECUTE,
 	'EVENT_MANAGE_PROJECT_PAGE' => EVENT_TYPE_EXECUTE,
 	'EVENT_MANAGE_VERSION_CREATE' => EVENT_TYPE_EXECUTE,
 	'EVENT_MANAGE_VERSION_UPDATE_FORM' => EVENT_TYPE_EXECUTE,
 	'EVENT_MANAGE_VERSION_UPDATE' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_VERSION_DELETE' => EVENT_TYPE_EXECUTE,
+
+	'EVENT_MANAGE_USER_CREATE_FORM' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_USER_CREATE' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_USER_UPDATE_FORM' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_USER_UPDATE' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_USER_DELETE' => EVENT_TYPE_EXECUTE,
+	'EVENT_MANAGE_USER_PAGE' => EVENT_TYPE_EXECUTE,
+
+	# TODO: Should we use jquery to insert elements on view page and on forms
+	#       rather than having events that restrict where to insert such elements?
 
 	# User account pages
 	'EVENT_ACCOUNT_PREF_UPDATE_FORM' => EVENT_TYPE_EXECUTE,
 	'EVENT_ACCOUNT_PREF_UPDATE' => EVENT_TYPE_EXECUTE,
+
+	'EVENT_USER_AVATAR' => EVENT_TYPE_FIRST,
 
 	# Bug filter events
 	'EVENT_FILTER_FIELDS' => EVENT_TYPE_DEFAULT,
@@ -82,6 +109,7 @@ event_declare_many( array(
 	# Bug view events
 	'EVENT_VIEW_BUG_DETAILS' => EVENT_TYPE_EXECUTE,
 	'EVENT_VIEW_BUG_EXTRA' => EVENT_TYPE_EXECUTE,
+	'EVENT_VIEW_BUG_ATTACHMENT' => EVENT_TYPE_OUTPUT,
 	'EVENT_VIEW_BUGNOTES_START' => EVENT_TYPE_EXECUTE,
 	'EVENT_VIEW_BUGNOTE' => EVENT_TYPE_EXECUTE,
 	'EVENT_VIEW_BUGNOTES_END' => EVENT_TYPE_EXECUTE,
@@ -89,11 +117,14 @@ event_declare_many( array(
 	# Bug update events
 	'EVENT_UPDATE_BUG_FORM_TOP' => EVENT_TYPE_EXECUTE,
 	'EVENT_UPDATE_BUG_FORM' => EVENT_TYPE_EXECUTE,
-	'EVENT_UPDATE_BUG' => EVENT_TYPE_CHAIN,
+	'EVENT_UPDATE_BUG_DATA' => EVENT_TYPE_CHAIN,
+	'EVENT_UPDATE_BUG' => EVENT_TYPE_EXECUTE,
+	'EVENT_UPDATE_BUG_STATUS_FORM' => EVENT_TYPE_EXECUTE,
 
 	# Other bug events
 	'EVENT_BUG_DELETED' => EVENT_TYPE_EXECUTE,
 	'EVENT_BUG_ACTION' => EVENT_TYPE_EXECUTE,
+	'EVENT_BUG_ACTIONGROUP_FORM' => EVENT_TYPE_EXECUTE,
 
 	# Bugnote events
 	'EVENT_BUGNOTE_ADD_FORM' => EVENT_TYPE_EXECUTE,
@@ -116,4 +147,7 @@ event_declare_many( array(
 
 	# Logging (tracing) events
 	'EVENT_LOG' => EVENT_TYPE_EXECUTE,
+
+	# Authentication Events
+	'EVENT_AUTH_USER_FLAGS' => EVENT_TYPE_FIRST,
 ) );

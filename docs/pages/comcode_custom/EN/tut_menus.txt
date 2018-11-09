@@ -72,7 +72,7 @@ In the form part of the screen there are the following fields:
  - a field for a URL or entry-point
  - a field for match-keys -- match-keys are a powerful tool for making menus 'context sensitive'.
  - a check-box to determine if the link opens in a new window
- - a check-box to determine whether the link will be shown only if there is permission to actually view the page (slight efficiency hit)
+ - a check-box to determine whether the link will be shown only if there is permission to actually view the page (slight efficiency hit, and can't check permissions deeper than the page level)
  - options to automatically include Sitemap children (useful if you want to have deep menus that automatically expand as you add new content categories)
 
 You can also delete the menu from a button at the bottom.

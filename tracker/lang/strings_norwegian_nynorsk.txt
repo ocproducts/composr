@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2016  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
  *
+ * **********************************************************************
+ * ** This file contains translations stored in translatewiki.net.     **
+ * ** See https://translatewiki.net/wiki/Project:About for information **
+ * ** on copyright/license for translatewiki.net translations.         **
+ * **********************************************************************
+ * **                                                                  **
+ * **                      DO NOT UPDATE MANUALLY                      **
+ * **                                                                  **
+ * ** To improve a translation please visit http://translatewiki.net   **
+ * ** Detailed instructions on how to create or update translations at **
+ * ** http://www.mantisbt.org/wiki/doku.php/mantisbt:translationshowto **
+ * **********************************************************************
+ */
+/** Norwegian Nynorsk (norsk nynorsk)
+ * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
  *
@@ -28,7 +40,9 @@
  *
  * @author Frokor
  * @author Gunnernett
- * @author Harald Khan
+ * @author Nghtwlkr
+ * @author Njardarlogar
+ * @author Tinygreen
  */
 
 $s_actiongroup_menu_move = 'Flytt';
@@ -39,12 +53,15 @@ $s_actiongroup_menu_delete = 'Slett';
 $s_actiongroup_menu_resolve = 'Løys';
 $s_actiongroup_menu_update_priority = 'Endre prioritet';
 $s_actiongroup_menu_update_status = 'Endre status';
+$s_actiongroup_menu_update_severity = 'Endre grad av alvor';
 $s_actiongroup_menu_update_view_status = 'Endre visingsstatus';
-$s_actiongroup_menu_update_category = 'Oppdater kategori';
+$s_actiongroup_menu_update_category = 'Endre kategori';
 $s_actiongroup_menu_set_sticky = 'Oppdater fastlåst sak';
-$s_actiongroup_menu_update_field = 'Oppdater %1$s';
-$s_actiongroup_menu_update_target_version = 'Oppdater målversjon';
-$s_actiongroup_menu_update_fixed_in_version = 'Oppdater retting i versjon';
+$s_actiongroup_menu_update_field = 'Endre %1$s';
+$s_actiongroup_menu_update_product_version = 'Endre produktversjon';
+$s_actiongroup_menu_update_target_version = 'Endre målversjon';
+$s_actiongroup_menu_update_fixed_in_version = 'Endre retta versjon';
+$s_actiongroup_menu_update_due_date = 'Endre frist';
 $s_actiongroup_menu_add_note = 'Legg til merknad';
 $s_actiongroup_menu_attach_tags = 'Heng ved merke';
 $s_actiongroup_bugs = 'Valde saker';
@@ -62,7 +79,6 @@ $s_private_project_msg = 'Dette prosjektet er PRIVAT. Berre administratorar og b
 $s_access_level_project = 'Prosjekttilgjenge';
 $s_view_submitted_bug_link = 'Sjå insend sak %1$s';
 $s_assigned_projects = 'Tildelte prosjekt';
-$s_unassigned_projects = 'Utildelte prosjekt';
 $s_print = 'Skriv ut';
 $s_jump = 'Gå til';
 $s_copy_users = 'Kopier brukarar';
@@ -76,11 +92,13 @@ $s_bug_history = 'Sakssoga';
 $s_field = 'Felt';
 $s_old_value = 'Gammal verdi';
 $s_new_value = 'Ny verdi';
+$s_date_modified = 'Sist endra';
 $s_bugnote = 'Merknad';
 $s_change = 'Endring';
 $s_delete_bugnote_button = 'Slett merknad';
 $s_delete_bugnote_sure_msg = 'Er du sikker på at du ynskjer å sletta denne merknaden?';
 $s_bug_relationships = 'Skyldskapar';
+$s_empty_password_button = 'Bruk blankt passord';
 $s_duplicate_of = 'er eit duplikat av';
 $s_has_duplicate = 'har duplikat';
 $s_related_to = 'er skyld med';
@@ -99,6 +117,8 @@ $s_file_deleted = 'Fil sletta';
 $s_bug_deleted = 'Sak sletta';
 $s_make_private = 'Gjer privat';
 $s_make_public = 'Gjer offentleg';
+$s_login_link = 'Logg inn';
+$s_select_option = '(vel)';
 $s_bug_actiongroup_access = 'Du hadde ikkje rettar til å utføra handlinga.';
 $s_close_bugs_conf_msg = 'Er du sikker på at du ynskjer å stengja desse sakene?';
 $s_delete_bugs_conf_msg = 'Er du sikker på at du ynskjer å sletta desse sakene?';
@@ -115,20 +135,7 @@ $s_delete_group_bugs_button = 'Slett saker';
 $s_move_group_bugs_button = 'Flytt saker';
 $s_copy_group_bugs_button = 'Kopier saker';
 $s_assign_group_bugs_button = 'Tildel saker';
-$s_status_link = 'Etter stoda';
-$s_priority_link = 'Etter prioritet';
-$s_severity_link = 'Etter grad av alvor';
-$s_category_link = 'Etter kategori';
-$s_resolution_link = 'Etter løysingsstoda';
-$s_legend_still_open = 'Enno opne';
-$s_legend_resolved = 'Løyste';
-$s_legend_assigned = 'Tildelte';
-$s_legend_opened = 'Opna';
-$s_legend_closed = 'Attlatne';
-$s_legend_reported = 'Melde';
 $s_printing_options_link = 'Val for utskrift';
-$MANTIS_ERROR[ERROR_BUG_NOT_FOUND] = 'Fann ikkje sak %1$d';
-$MANTIS_ERROR[ERROR_CATEGORY_NOT_FOUND] = 'Fann ikkje kategorien.';
 $s_go_back = 'Attende';
 $s_switch = 'Skift';
 $s_logged_in_as = 'Innlogga som';
@@ -177,6 +184,7 @@ $s_email_severity = 'Grad av alvor';
 $s_email_priority = 'Prioritet';
 $s_email_status = 'Stoda';
 $s_email_resolution = 'Løysingsstoda';
+$s_email_duplicate = 'Dublett';
 $s_email_fixed_in_version = 'Fiksa i versjon';
 $s_email_target_version = 'Målversjon';
 $s_email_date_submitted = 'Dato sendt inn';
@@ -185,19 +193,26 @@ $s_email_summary = 'Samandrag';
 $s_email_description = 'Skildring';
 $s_email_additional_information = 'Tilleggsinformasjon';
 $s_email_steps_to_reproduce = 'Steg for å reprodusera';
+$s_email_tag = 'Merkelappar';
+$s_email_due_date = 'Frist';
 $s_account_protected_msg = 'Brukarkontoen er verna; kan ikkje endra innstillingar.';
 $s_account_removed_msg = 'Kontoen din er vorten fjerna.';
 $s_confirm_delete_msg = 'Er du sikker på at du ynskjer å sletta brukarkontoen din?';
 $s_delete_account_button = 'Slett konto';
 $s_manage_profiles_link = 'Profilar';
-$s_change_preferences_link = 'Preferansar';
+$s_change_preferences_link = 'Innstillingar';
 $s_edit_account_title = 'Endra brukarkonto';
 $s_username = 'Brukarnamn';
+$s_username_label = 'Brukarnamn';
 $s_realname = 'Verkeleg namn';
+$s_realname_label = 'Verkeleg namn';
 $s_email = 'E-post';
+$s_email_label = 'E-post';
 $s_password = 'Passord';
+$s_new_password = 'Nytt passord';
 $s_no_password_change = 'Passordet vert kontrollert av eit anna system, difor kan det ikkje verta endra her.';
 $s_confirm_password = 'Stadfest passord';
+$s_current_password = 'Noverande passord';
 $s_access_level = 'Tilgjenge';
 $s_update_user_button = 'Oppdater brukar';
 $s_verify_warning = 'Kontoinformasjonen din er vorten stadfesta. Meldinga du fekk om stadfesting av brukarkonto er no ugyldig.';
@@ -213,7 +228,6 @@ $s_profile_added_msg = 'La til profil';
 $s_profile_deleted_msg = 'Sletta profil';
 $s_edit_profile_title = 'Endra profil';
 $s_platform = 'Plattform';
-$s_operating_system = 'Operativsystem';
 $s_additional_description = 'Tilleggsinformasjon';
 $s_add_profile_title = 'Legg til profil';
 $s_add_profile_button = 'Legg til profil';
@@ -224,14 +238,13 @@ $s_delete_profile = 'Slett profil';
 $s_select_profile = 'Vel profil';
 $s_submit_button = 'OK';
 $s_profile_updated_msg = 'Profilen vart oppdatert.';
+$s_sponsor_show = 'Sjå alle';
 $s_new_bug_title = 'Ny sak';
 $s_feedback_bug_title = 'Be om tilbakemelding på sak';
 $s_feedback_bug_button = 'Be om tilbakemelding';
-$s_file_upload_msg = 'Fila vart lasta opp.';
 $s_upload_file = 'Last opp fil';
 $s_select_file = 'Vel fil';
 $s_upload_file_button = 'Last opp fil';
-$s_max_file_size = 'Maks. storleik';
 $s_from = 'Frå';
 $s_to = 'Til';
 $s_bug_send_button = 'Send';
@@ -252,7 +265,6 @@ $s_summary = 'Samandrag';
 $s_description = 'Skildring';
 $s_steps_to_reproduce = 'Steg for å reprodusera';
 $s_update_information_button = 'Oppdater informasjon';
-$s_bugnote_added_msg = 'Merknad lagd til.';
 $s_bugnote_deleted_msg = 'Merknaden er vorten sletta.';
 $s_bug_notes_title = 'Merknader';
 $s_edit_bugnote_title = 'Endra merknad';
@@ -263,10 +275,9 @@ $s_add_bugnote_button = 'Legg til merknad';
 $s_bugnote_edit_link = 'Endra';
 $s_closed_bug_button = 'Lat att sak';
 $s_bugnote_updated_msg = 'Merknaden er vorten oppdatert.';
-$s_edited_on = 'endra:';
 $s_hide_content = 'Løyn innhald';
 $s_show_content = 'Vis innhald';
-$s_click_to_login = 'Trykk her for å logga inn';
+$s_click_to_login = 'Logg inn';
 $s_login_title = 'Innlogging';
 $s_save_login = 'Lagra innlogging';
 $s_choose_project = 'Vel prosjekt';
@@ -286,7 +297,7 @@ $s_project_delete_button = 'Slett prosjekt';
 $s_edit_project_title = 'Endra prosjekt';
 $s_project_name = 'Prosjektnamn';
 $s_edit_user_title = 'Endra brukar';
-$s_show_all_users = 'ALLE';
+$s_show_all_users = 'Alle';
 $s_users_unused = 'UNYTTA';
 $s_users_new = 'NYE';
 $s_account_reset_protected_msg = 'Brukarkontoen er verna. Kan ikkje nullstilla passord.';
@@ -296,7 +307,7 @@ $s_my_view_title_unassigned = 'Utildelte';
 $s_assign_to = 'Tildel';
 $s_check_report_more_bugs = 'hak av for å melda fleire saker';
 $s_summary_title = 'Samandrag';
-$s_summary_jpgraph_link = 'Avansert samandrag';
+$s_summary_advanced_link = 'Avansert samandrag';
 $s_by_project = 'etter prosjekt';
 $s_by_status = 'etter stoda';
 $s_by_date = 'etter dato (dagar)';
@@ -317,8 +328,6 @@ $s_prev = 'Førre';
 $s_next = 'Neste';
 $s_first = 'Fyrste';
 $s_last = 'Siste';
-$s_start_date = 'Startdato';
-$s_end_date = 'Sluttdato';
 $s_use_date_filters = 'Nytt datofilter';
 $s_yes = 'Ja';
 $s_no = 'Nei';
@@ -353,8 +362,6 @@ $s_set_view_status = 'Endra visingsstoda (offentleg eller privat)';
 $s_update_view_status = 'Oppdater visingsstoda (offentleg eller privat)';
 $s_notes = 'MERKNADER';
 $s_add_notes = 'Legg til merknader';
-$s_update_notes = 'Oppdater merknader';
-$s_delete_note = 'Slett merknad';
 $s_view_private_notes = 'Sjå private merknader';
 $s_news = 'NYHENDE';
 $s_view_private_news = 'Sjå private nyhende';
@@ -398,20 +405,9 @@ $s_tag_detach = 'Fjern «%1$s»';
 $s_tag_separate_by = '(skil dei frå kvarandre med «%1$s»)';
 $s_tag_invalid_name = 'Ugyldig merkenamn.';
 $s_development_team = 'Utviklarlag';
-$s_all_dates = 'Alle datoar';
-$s_period_none = 'Ingen';
-$s_period_this_week = 'Denne veka';
-$s_period_last_week = 'Førre veka';
-$s_period_two_weeks = 'Siste to veker';
-$s_period_this_month = 'Denne månaden';
-$s_period_last_month = 'Førre månad';
-$s_select = 'Vel';
-$s_select_bystatus = 'etter stoda';
-$s_select_summbystatus = 'Samandrag etter stoda';
-$s_select_bycat = 'Samandrag etter kategori';
-$s_select_both = 'Samandrag etter stoda og kategori';
-$s_show_as_graph = 'Vis som graf';
-$s_show_as_table = 'Vis som tabell';
 $s_overdue = 'Forseinka';
 $s_view_account_title = 'Brukarinformasjon';
 $s_manage_user = 'Handsam brukar';
+$s_timeline_title = 'Tidsline';
+$MANTIS_ERROR[ERROR_BUG_NOT_FOUND] = 'Fann ikkje sak %1$d';
+$MANTIS_ERROR[ERROR_CATEGORY_NOT_FOUND] = 'Fann ikkje kategorien.';

@@ -59,7 +59,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue($result !== null);
@@ -99,7 +99,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue($result === null);
@@ -134,7 +134,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue($result !== null);
@@ -169,7 +169,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue($result === null);
@@ -205,7 +205,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -247,7 +247,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -289,7 +289,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -332,7 +332,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -374,7 +374,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -416,7 +416,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -458,7 +458,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => 'add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => 'add'), 'cms');
 
         if (get_db_type() == 'xml') {
             sleep(1); // Need different timestamps because IDs are randomised
@@ -505,7 +505,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
             if ($expect) {
@@ -549,7 +549,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
             if ($expect) {
@@ -593,7 +593,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
             if ($expect) {
@@ -638,7 +638,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
             if ($expect) {
@@ -682,7 +682,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
             if ($expect) {
@@ -726,7 +726,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_get_contents($url->evaluate(), array('trigger_error' => false, 'timeout' => 20.0, 'post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
             if ($expect) {

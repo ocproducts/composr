@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,65 +14,80 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * Reset prefs to defaults then redirect to account_prefs_page.php
-	 *
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
-	
-	require_once( 'current_user_api.php' );
-	require( 'print_all_bug_options_inc.php' );
+/**
+ * Reset prefs to defaults then redirect to account_prefs_page.php
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses constant_inc.php
+ * @uses current_user_api.php
+ * @uses database_api.php
+ * @uses error_api.php
+ * @uses form_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ */
 
-	form_security_validate( 'print_all_bug_options_reset' );
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'current_user_api.php' );
+require_api( 'database_api.php' );
+require_api( 'error_api.php' );
+require_api( 'form_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
 
-	auth_ensure_user_authenticated();
+define( 'PRINT_ALL_BUG_OPTIONS_INC_ALLOW', true );
+include( dirname( __FILE__ ) . '/print_all_bug_options_inc.php' );
 
-	# protected account check
-	current_user_ensure_unprotected();
+form_security_validate( 'print_all_bug_options_reset' );
 
-	# get user id
-	$t_user_id = auth_get_current_user_id();
+auth_ensure_user_authenticated();
 
-	# get the fields list
-	$t_field_name_arr = get_field_names();
-	$field_name_count = count($t_field_name_arr);
+# protected account check
+current_user_ensure_unprotected();
 
-	# create a default array, same size than $t_field_name
-	for ($i=0 ; $i<$field_name_count ; $i++) {
-		$t_default_arr[$i] = 0 ;
-	}
-	$t_default = implode('',$t_default_arr) ;
+# get user id
+$t_user_id = auth_get_current_user_id();
 
-	# reset to defaults
-	$t_user_print_pref_table = db_get_table( 'mantis_user_print_pref_table' );
-	$query = "UPDATE $t_user_print_pref_table
-			SET print_pref=" . db_param() . "
-			WHERE user_id=" . db_param();
+# get the fields list
+$t_field_name_arr = get_field_names();
+$t_field_name_count = count( $t_field_name_arr );
 
-	$result = db_query_bound( $query, Array( $t_default, $t_user_id ) );
+# create a default array, same size than $t_field_name
+for( $i=0; $i<$t_field_name_count; $i++ ) {
+	$t_default_arr[$i] = 0 ;
+}
+$t_default = implode( '', $t_default_arr );
 
-	form_security_purge( 'print_all_bug_options_reset' );
+# reset to defaults
+$t_query = 'UPDATE {user_print_pref} SET print_pref=' . db_param() . ' WHERE user_id=' . db_param();
 
-	$t_redirect_url = 'print_all_bug_options_page.php';
+$t_result = db_query( $t_query, array( $t_default, $t_user_id ) );
 
-	html_page_top( null, $t_redirect_url );
+form_security_purge( 'print_all_bug_options_reset' );
 
-	echo '<br /><div align="center">';
+$t_redirect_url = 'print_all_bug_options_page.php';
 
-	if ( $result ) {
-		print lang_get( 'operation_successful' );
-	} else {
-		print error_string( ERROR_GENERIC );
-	}
+layout_page_header( null, $t_redirect_url );
 
-	echo '<br />';
-	print_bracket_link( $t_redirect_url, lang_get( 'proceed' ) );
-	echo '<br /></div>';
-	html_page_bottom();
+layout_page_begin();
+
+if( $t_result ) {
+	html_operation_successful( $t_redirect_url );
+} else {
+	echo '<div class="failure-msg">';
+	echo error_string( ERROR_GENERIC ) . '<br />';
+	print_link_button( $t_redirect_url, lang_get( 'proceed' ) );
+	echo '</div>';
+}
+
+layout_page_end();

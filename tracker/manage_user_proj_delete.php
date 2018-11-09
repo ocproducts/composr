@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,48 +14,70 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Delete a user from a project
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses project_api.php
+ */
 
-	form_security_validate( 'manage_user_proj_delete' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'project_api.php' );
 
-	auth_reauthenticate();
+form_security_validate( 'manage_user_proj_delete' );
 
-	$f_project_id = gpc_get_int( 'project_id' );
-	$f_user_id = gpc_get_int( 'user_id' );
+auth_reauthenticate();
 
-	access_ensure_project_level( config_get( 'project_user_threshold' ), $f_project_id );
+$f_project_id = gpc_get_int( 'project_id' );
+$f_user_id = gpc_get_int( 'user_id' );
 
-	$t_project_name = project_get_name( $f_project_id );
+user_ensure_exists( $f_user_id );
 
-	# Confirm with the user
-	helper_ensure_confirmed( lang_get( 'remove_user_sure_msg' ) .
-		'<br/>' . lang_get( 'project_name' ) . ': ' . $t_project_name,
-		lang_get( 'remove_user_button' ) );
+$t_user = user_get_row( $f_user_id );
 
-	$result = project_remove_user( $f_project_id, $f_user_id );
+access_ensure_project_level( config_get( 'project_user_threshold' ), $f_project_id );
+access_ensure_project_level( $t_user['access_level'], $f_project_id );
 
-	form_security_purge( 'manage_user_proj_delete' );
+$t_project_name = project_get_name( $f_project_id );
 
-	$t_redirect_url = 'manage_user_edit_page.php?user_id=' .$f_user_id;
+# Confirm with the user
+helper_ensure_confirmed( lang_get( 'remove_user_sure_msg' ) .
+	'<br />' . lang_get( 'project_name_label' ) . lang_get( 'word_separator' ) . $t_project_name,
+	lang_get( 'remove_user_button' ) );
 
-	html_page_top( null, $t_redirect_url );
-?>
-<br />
-<div align="center">
-<?php
-	echo lang_get( 'operation_successful' ).'<br />';
-	print_bracket_link( $t_redirect_url, lang_get( 'proceed' ) );
-?>
-</div>
+project_remove_user( $f_project_id, $f_user_id );
 
-<?php
-	html_page_bottom();
+form_security_purge( 'manage_user_proj_delete' );
+
+$t_redirect_url = 'manage_user_edit_page.php?user_id=' .$f_user_id;
+
+layout_page_header( null, $t_redirect_url );
+
+layout_page_begin( 'manage_overview_page.php' );
+
+html_operation_successful( $t_redirect_url );
+
+layout_page_end();

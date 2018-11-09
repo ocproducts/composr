@@ -4083,12 +4083,13 @@ div.proceed-button-left-2 {
 	padding: 0.2em;
 	float: right;
 	border: 1px solid {$GET,standard_border};
-	margin-left: 2em;
+	margin-left: 1em;
 	margin-top: 1px; /* To get it past a possible overflow:hidden (may be a browser bug) */
 }
 .mass-select-marker input {
 	width: 25px;
 	height: 25px;
+	margin: 0;
 }
 
 .global-button-ref-point {

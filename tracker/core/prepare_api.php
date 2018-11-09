@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,20 +15,35 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * this file handles preparing of strings like to be printed
- * or stored.  print_api.php will gradually be replaced by
- * think calls to echo the results of functions implemented here.
+ * Prepare API
+ *
+ * Handles preparation of strings prior to be printed or stored.
+ *
  * @package CoreAPI
  * @subpackage PrepareAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses access_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses string_api.php
+ * @uses user_api.php
+ * @uses version_api.php
  */
+
+require_api( 'access_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'string_api.php' );
+require_api( 'user_api.php' );
+require_api( 'version_api.php' );
 
 /**
  * return the mailto: href string link
- * @param string $p_email
- * @param string $p_text
+ * @param string $p_email Email address to prepare.
+ * @param string $p_text  Display text for the hyperlink.
  * @return string
  */
 function prepare_email_link( $p_email, $p_text ) {
@@ -47,7 +62,7 @@ function prepare_email_link( $p_email, $p_text ) {
 
 /**
  * prepares the name of the user given the id.  also makes it an email link.
- * @param int $p_user_id
+ * @param integer $p_user_id A valid user identifier.
  * @return string
  */
 function prepare_user_name( $p_user_id ) {
@@ -56,39 +71,92 @@ function prepare_user_name( $p_user_id ) {
 		return '';
 	}
 
-	$t_username = user_get_name( $p_user_id );
-	if( user_exists( $p_user_id ) && user_get_field( $p_user_id, 'enabled' ) ) {
-		$t_username = string_display_line( $t_username );
-		return '<a href="' . string_sanitize_url( 'view_user_page.php?id=' . $p_user_id, true ) . '">' . $t_username . '</a>';
+	$t_username = user_get_username( $p_user_id );
+	$t_name = user_get_name( $p_user_id );
+	if( $t_username != $t_name ) {
+		$t_tooltip = ' title="' . string_attribute( $t_username ) . '"';
 	} else {
-		$t_result = '<font STYLE="text-decoration: line-through">';
-		$t_result .= string_display_line( $t_username );
-		$t_result .= '</font>';
-		return $t_result;
+		$t_tooltip = '';
 	}
+
+	$t_name = string_display_line( $t_name );
+
+	if( user_exists( $p_user_id ) && user_get_field( $p_user_id, 'enabled' ) ) {
+		return '<a ' . $t_tooltip . ' href="' . string_sanitize_url( 'view_user_page.php?id=' . $p_user_id, true ) . '">' . $t_name . '</a>';
+	}
+
+	return '<del ' . $t_tooltip . '>' . $t_name . '</del>';
 }
 
 /**
  * A function that prepares the version string for outputting to the user on view / print issue pages.
  * This function would add the version date, if appropriate.
  *
- * @param integer $p_project_id  The project id.
- * @param integer $p_version_id  The version id.  If false then this method will return an empty string.
- * @return The formatted version string.
+ * @param integer $p_project_id The project id.
+ * @param integer $p_version_id The version id.  If false then this method will return an empty string.
+ * @return string The formatted version string.
  */
 function prepare_version_string( $p_project_id, $p_version_id ) {
-	if ( $p_version_id === false ) {
+	if( $p_version_id === false ) {
 		return '';
 	}
 
-	$t_version_text = version_full_name( $p_version_id, /* showProject */ null, $p_project_id );
+	$t_version_text = version_full_name( $p_version_id, null, $p_project_id );
 
-	if ( access_has_project_level( config_get( 'show_version_dates_threshold' ), $p_project_id ) ) {
+	if( access_has_project_level( config_get( 'show_version_dates_threshold' ), $p_project_id ) ) {
 		$t_short_date_format = config_get( 'short_date_format' );
 
 		$t_version = version_get( $p_version_id );
 		$t_version_text .= ' (' . date( $t_short_date_format, $t_version->date_order ) . ')';
 	}
 
-	return $t_version_text;	
+	return $t_version_text;
 }
+
+/**
+ * Prepares avatar for raw outputting (only avatar image).
+ *
+ * @param Avatar $p_avatar          An instance of class Avatar.
+ * @param string $p_class_prefix    CSS class prefix to add to the avatar's surrounding div and to the img.
+ *   The CSS classes to implement will be named [$p_class_prefix]-avatar_container-[$p_size] and 
+ *   [$p_class_prefix]-avatar-[$p_size].
+ * @param integer $p_size           Image maximum size.
+ * @return string the HTML string of the avatar.
+ */
+function prepare_raw_avatar( $p_avatar, $p_class_prefix, $p_size) {
+	if( $p_avatar === null ) {
+		return '';
+	}
+
+	$t_image = htmlspecialchars( $p_avatar->image );
+	$t_text = htmlspecialchars( $p_avatar->text );
+
+	$t_avatar_class = $p_class_prefix . '-avatar' . '-' . $p_size;
+	return '<img class="' . $t_avatar_class . '" src="' . $t_image . '" alt="' .
+			$t_text . '" />';
+}
+
+/**
+ * Prepares avatar for outputting.
+ *
+ * @param Avatar $p_avatar          An instance of class Avatar.
+ * @param string $p_class_prefix    CSS class prefix to add to the avatar's surrounding div and to the img.
+ *   The CSS classes to implement will be named [$p_class_prefix]-avatar-container-[$p_size] and
+ *   [$p_class_prefix]-avatar-[$p_size].
+ * @param integer $p_size           Image maximum size.
+ * @return string the HTML string of the avatar.
+ */
+function prepare_avatar( $p_avatar, $p_class_prefix, $p_size ) {
+	if( $p_avatar === null ) {
+		return '';
+	}
+
+	$t_link = htmlspecialchars( $p_avatar->link );
+
+	$t_container_class = $p_class_prefix . '-avatar-container' . '-' . $p_size;
+	return '<div class="' . $t_container_class . '">' . 
+			'<a rel="nofollow" href="' . $t_link . '">' .
+			prepare_raw_avatar( $p_avatar, $p_class_prefix, $p_size ) . 
+			'</a></div>';
+}
+

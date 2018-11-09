@@ -30,7 +30,7 @@ class Module_admin_customers
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 1;
+        $info['version'] = 2;
         $info['locked'] = false;
         return $info;
     }
@@ -50,37 +50,38 @@ class Module_admin_customers
 
         // MANTIS TABLE DELETION
 
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bugnote_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bugnote_text_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_file_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_history_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_monitor_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_relationship_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_revision_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_tag_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_text_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_category_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_config_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_custom_field_project_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_custom_field_string_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_custom_field_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_email_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_filters_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_news_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_plugin_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_file_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_hierarchy_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_user_list_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_version_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_sponsorship_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_tag_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_tokens_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_pref_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_print_pref_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_profile_table`');
-        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_table`');
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_api_token_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_file_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_history_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_monitor_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_relationship_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_revision_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_tag_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_text_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bugnote_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bugnote_text_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_category_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_config_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_custom_field_project_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_custom_field_string_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_custom_field_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_email_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_filters_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_news_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_plugin_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_file_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_hierarchy_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_user_list_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_version_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_sponsorship_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_tag_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_tokens_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_pref_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_print_pref_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_profile_table`");
+        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_table`");
     }
 
     /**
@@ -138,29 +139,16 @@ class Module_admin_customers
         if (strpos(get_db_type(), 'mysql') !== false) {
             $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
 
-            $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
+            $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_api_token_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                `bug_id` int(10) unsigned NOT NULL DEFAULT '0',
-                `reporter_id` int(10) unsigned NOT NULL DEFAULT '0',
-                `bugnote_text_id` int(10) unsigned NOT NULL DEFAULT '0',
-                `view_state` smallint(6) NOT NULL DEFAULT '10',
-                `note_type` int(11) DEFAULT '0',
-                `note_attr` varchar(250) DEFAULT '',
-                `time_tracking` int(10) unsigned NOT NULL DEFAULT '0',
-                `last_modified` int(10) unsigned NOT NULL DEFAULT '1',
-                `date_submitted` int(10) unsigned NOT NULL DEFAULT '1',
+                `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+                `name` varchar(128) NOT NULL,
+                `hash` varchar(128) NOT NULL,
+                `date_created` int(10) unsigned NOT NULL DEFAULT '1',
+                `date_used` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`),
-                KEY `idx_bug` (`bug_id`),
-                KEY `idx_last_mod` (`last_modified`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
-
-            $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_text_table` (
-                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                `note` longtext NOT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+                UNIQUE KEY `idx_user_id_name` (`user_id`,`name`)
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_file_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -172,14 +160,13 @@ class Module_admin_customers
                 `folder` varchar(250) NOT NULL DEFAULT '',
                 `filesize` int(11) NOT NULL DEFAULT '0',
                 `file_type` varchar(250) NOT NULL DEFAULT '',
-                `content` longblob NOT NULL,
+                `content` longblob,
                 `date_added` int(10) unsigned NOT NULL DEFAULT '1',
                 `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                 PRIMARY KEY (`id`),
                 KEY `idx_bug_file_bug_id` (`bug_id`),
                 KEY `idx_diskfile` (`diskfile`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_history_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -192,16 +179,16 @@ class Module_admin_customers
                 `date_modified` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`),
                 KEY `idx_bug_history_bug_id` (`bug_id`),
-                KEY `idx_history_user_id` (`user_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+                KEY `idx_history_user_id` (`user_id`),
+                KEY `idx_bug_history_date_modified` (`date_modified`)
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_monitor_table` (
                 `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                 `bug_id` int(10) unsigned NOT NULL DEFAULT '0',
-                PRIMARY KEY (`user_id`,`bug_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+                PRIMARY KEY (`user_id`,`bug_id`),
+                KEY `idx_bug_id` (`bug_id`)
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_relationship_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -211,8 +198,7 @@ class Module_admin_customers
                 PRIMARY KEY (`id`),
                 KEY `idx_relationship_source` (`source_bug_id`),
                 KEY `idx_relationship_destination` (`destination_bug_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_revision_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -225,8 +211,7 @@ class Module_admin_customers
                 PRIMARY KEY (`id`),
                 KEY `idx_bug_rev_type` (`type`),
                 KEY `idx_bug_rev_id_time` (`bug_id`,`timestamp`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -263,8 +248,7 @@ class Module_admin_customers
                 KEY `idx_bug_fixed_in_version` (`fixed_in_version`),
                 KEY `idx_bug_status` (`status`),
                 KEY `idx_project` (`project_id`)
-                ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_tag_table` (
                 `bug_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -273,8 +257,7 @@ class Module_admin_customers
                 `date_attached` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`bug_id`,`tag_id`),
                 KEY `idx_bug_tag_tag_id` (`tag_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_text_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -282,8 +265,30 @@ class Module_admin_customers
                 `steps_to_reproduce` longtext NOT NULL,
                 `additional_information` longtext NOT NULL,
                 PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8;
+                ");
+
+            $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
+                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                `bug_id` int(10) unsigned NOT NULL DEFAULT '0',
+                `reporter_id` int(10) unsigned NOT NULL DEFAULT '0',
+                `bugnote_text_id` int(10) unsigned NOT NULL DEFAULT '0',
+                `view_state` smallint(6) NOT NULL DEFAULT '10',
+                `note_type` int(11) DEFAULT '0',
+                `note_attr` varchar(250) DEFAULT '',
+                `time_tracking` int(10) unsigned NOT NULL DEFAULT '0',
+                `last_modified` int(10) unsigned NOT NULL DEFAULT '1',
+                `date_submitted` int(10) unsigned NOT NULL DEFAULT '1',
+                PRIMARY KEY (`id`),
+                KEY `idx_bug` (`bug_id`),
+                KEY `idx_last_mod` (`last_modified`)
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
+
+            $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_text_table` (
+                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                `note` longtext NOT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_category_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -293,10 +298,9 @@ class Module_admin_customers
                 `status` int(10) unsigned NOT NULL DEFAULT '0',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `idx_category_project_name` (`project_id`,`name`)
-            ) ENGINE=" . $table_type . "  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
-            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_category_table` (`id`, `project_id`, `user_id`, `name`, `status`) VALUES (1, 0, 0, 'General', 0)");
+            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_category_table` values('1','0','0','General','0')");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_config_table` (
                 `config_id` varchar(64) NOT NULL,
@@ -306,29 +310,27 @@ class Module_admin_customers
                 `type` int(11) DEFAULT '90',
                 `value` longtext NOT NULL,
                 PRIMARY KEY (`config_id`,`project_id`,`user_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
-            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_config_table` (`config_id`, `project_id`, `user_id`, `access_reqd`, `type`, `value`) VALUES ('database_version', 0, 0, 90, 1, '182')");
+            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_config_table` values('database_version','0','0','90','1','209')");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_custom_field_project_table` (
                 `field_id` int(11) NOT NULL DEFAULT '0',
                 `project_id` int(10) unsigned NOT NULL DEFAULT '0',
                 `sequence` smallint(6) NOT NULL DEFAULT '0',
                 PRIMARY KEY (`field_id`,`project_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
-            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_custom_field_project_table` (`field_id`, `project_id`, `sequence`) VALUES (1, 1, 0)");
+            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_custom_field_project_table` values('1','1','0'),('2','1','0')");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_custom_field_string_table` (
                 `field_id` int(11) NOT NULL DEFAULT '0',
                 `bug_id` int(11) NOT NULL DEFAULT '0',
                 `value` varchar(255) NOT NULL DEFAULT '',
+                `text` longtext,
                 PRIMARY KEY (`field_id`,`bug_id`),
                 KEY `idx_custom_field_bug` (`bug_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_custom_field_table` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -352,51 +354,9 @@ class Module_admin_customers
                 `filter_by` tinyint(4) NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`),
                 KEY `idx_custom_field_name` (`name`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
-            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_custom_field_table` (
-                `id`,
-                `name`,
-                `type`,
-                `possible_values`,
-                `default_value`,
-                `valid_regexp`,
-                `access_level_r`,
-                `access_level_rw`,
-                `length_min`,
-                `length_max`,
-                `require_report`,
-                `require_update`,
-                `display_report`,
-                `display_update`,
-                `require_resolved`,
-                `display_resolved`,
-                `display_closed`,
-                `require_closed`,
-                `filter_by`
-            ) VALUES (
-                1,
-                'Time estimation (hours)',
-                2,
-                '',
-                '0',
-                '',
-                10,
-                10,
-                0,
-                0,
-                0,
-                0,
-                1,
-                1,
-                0,
-                1,
-                1,
-                0,
-                1
-            )"
-            );
+            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_custom_field_table` values('1','Time estimation (hours)','2','','0','','10','10','0','0','0','0','1','1','0','1','1','0','1'),('2','Sponsorship open','5','Open','0','','10','55','0','0','0','0','1','1','0','1','1','0','1')");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_email_table` (
                 `email_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -406,8 +366,7 @@ class Module_admin_customers
                 `body` longtext NOT NULL,
                 `submitted` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`email_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_filters_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -417,8 +376,7 @@ class Module_admin_customers
                 `name` varchar(64) NOT NULL DEFAULT '',
                 `filter_string` longtext NOT NULL,
                 PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_news_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -431,8 +389,7 @@ class Module_admin_customers
                 `last_modified` int(10) unsigned NOT NULL DEFAULT '1',
                 `date_posted` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_plugin_table` (
                 `basename` varchar(40) NOT NULL,
@@ -440,10 +397,9 @@ class Module_admin_customers
                 `protected` tinyint(4) NOT NULL DEFAULT '0',
                 `priority` int(10) unsigned NOT NULL DEFAULT '3',
                 PRIMARY KEY (`basename`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
-            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_plugin_table` (`basename`, `enabled`, `protected`, `priority`) VALUES ('MantisCoreFormatting', 1, 0, 3)");
+            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_plugin_table` values('MantisCoreFormatting','1','0','3')");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_file_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -455,21 +411,20 @@ class Module_admin_customers
                 `folder` varchar(250) NOT NULL DEFAULT '',
                 `filesize` int(11) NOT NULL DEFAULT '0',
                 `file_type` varchar(250) NOT NULL DEFAULT '',
-                `content` longblob NOT NULL,
+                `content` longblob,
                 `date_added` int(10) unsigned NOT NULL DEFAULT '1',
                 `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                 PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_hierarchy_table` (
                 `child_id` int(10) unsigned NOT NULL,
                 `parent_id` int(10) unsigned NOT NULL,
-                `inherit_parent` int(10) unsigned NOT NULL DEFAULT '0',
+                `inherit_parent` tinyint(4) NOT NULL DEFAULT '0',
+                UNIQUE KEY `idx_project_hierarchy` (`child_id`,`parent_id`),
                 KEY `idx_project_hierarchy_child_id` (`child_id`),
                 KEY `idx_project_hierarchy_parent_id` (`parent_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -481,37 +436,13 @@ class Module_admin_customers
                 `file_path` varchar(250) NOT NULL DEFAULT '',
                 `description` longtext NOT NULL,
                 `category_id` int(10) unsigned NOT NULL DEFAULT '1',
-                `inherit_global` int(10) unsigned NOT NULL DEFAULT '0',
+                `inherit_global` tinyint(4) NOT NULL DEFAULT '0',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `idx_project_name` (`name`),
                 KEY `idx_project_view` (`view_state`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
-            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_project_table` (
-                `id`,
-                `name`,
-                `status`,
-                `enabled`,
-                `view_state`,
-                `access_min`,
-                `file_path`,
-                `description`,
-                `category_id`,
-                `inherit_global`
-            ) VALUES (
-                1,
-                'All Projects',
-                10,
-                1,
-                10,
-                10,
-                '',
-                '',
-                1,
-                1
-            )"
-            );
+            $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_project_table` values('1','All Projects','10','1','10','10','','','1','1')");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_user_list_table` (
                 `project_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -519,8 +450,7 @@ class Module_admin_customers
                 `access_level` smallint(6) NOT NULL DEFAULT '10',
                 PRIMARY KEY (`project_id`,`user_id`),
                 KEY `idx_project_user` (`user_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_version_table` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -532,8 +462,7 @@ class Module_admin_customers
                 `date_order` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `idx_project_version` (`project_id`,`version`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_sponsorship_table` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -548,8 +477,7 @@ class Module_admin_customers
                 PRIMARY KEY (`id`),
                 KEY `idx_sponsorship_bug_id` (`bug_id`),
                 KEY `idx_sponsorship_user_id` (`user_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_tag_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -560,8 +488,7 @@ class Module_admin_customers
                 `date_updated` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`,`name`),
                 KEY `idx_tag_name` (`name`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_tokens_table` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -572,8 +499,7 @@ class Module_admin_customers
                 `expiry` int(10) unsigned NOT NULL DEFAULT '1',
                 PRIMARY KEY (`id`),
                 KEY `idx_typeowner` (`type`,`owner`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_pref_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -606,15 +532,13 @@ class Module_admin_customers
                 `language` varchar(32) NOT NULL DEFAULT 'english',
                 `timezone` varchar(32) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_print_pref_table` (
                 `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                 `print_pref` varchar(64) NOT NULL,
                 PRIMARY KEY (`user_id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_profile_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -624,15 +548,14 @@ class Module_admin_customers
                 `os_build` varchar(32) NOT NULL DEFAULT '',
                 `description` longtext NOT NULL,
                 PRIMARY KEY (`id`)
-            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_table` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                `username` varchar(32) NOT NULL DEFAULT '',
-                `realname` varchar(64) NOT NULL DEFAULT '',
-                `email` varchar(64) NOT NULL DEFAULT '',
-                `password` varchar(32) NOT NULL DEFAULT '',
+                `username` varchar(191) NOT NULL DEFAULT '',
+                `realname` varchar(191) NOT NULL DEFAULT '',
+                `email` varchar(191) NOT NULL DEFAULT '',
+                `password` varchar(64) NOT NULL DEFAULT '',
                 `enabled` tinyint(4) NOT NULL DEFAULT '1',
                 `protected` tinyint(4) NOT NULL DEFAULT '0',
                 `access_level` smallint(6) NOT NULL DEFAULT '10',
@@ -646,9 +569,9 @@ class Module_admin_customers
                 UNIQUE KEY `idx_user_cookie_string` (`cookie_string`),
                 UNIQUE KEY `idx_user_username` (`username`),
                 KEY `idx_enable` (`enabled`),
-                KEY `idx_access` (`access_level`)
-            ) ENGINE=" . $table_type . "  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-            );
+                KEY `idx_access` (`access_level`),
+                KEY `idx_email` (`email`)
+            ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8");
         }
 
         // Multi-moderations...

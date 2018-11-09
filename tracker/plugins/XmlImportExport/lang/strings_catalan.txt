@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2016  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/** Catalan (Català)
  *
+ * **********************************************************************
+ * ** This file contains translations stored in translatewiki.net.     **
+ * ** See https://translatewiki.net/wiki/Project:About for information **
+ * ** on copyright/license for translatewiki.net translations.         **
+ * **********************************************************************
+ * **                                                                  **
+ * **                      DO NOT UPDATE MANUALLY                      **
+ * **                                                                  **
+ * ** To improve a translation please visit http://translatewiki.net   **
+ * ** Detailed instructions on how to create or update translations at **
+ * ** http://www.mantisbt.org/wiki/doku.php/mantisbt:translationshowto **
+ * **********************************************************************
+ */
+/** Catalan (català)
+ * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
  *
@@ -28,6 +40,7 @@
  *
  * @author Bernat
  * @author Paucabot
+ * @author Pitort
  */
 
 $s_plugin_XmlImportExport_title = 'Importa/Exporta incidències';
@@ -47,3 +60,4 @@ $s_plugin_XmlImportExport_disable_desc = 'Deshabilita l\'enllaç';
 $s_plugin_XmlImportExport_fallback = 'Estratègia alternativa (quan "Renumerar" no s\'aplica):';
 $s_plugin_XmlImportExport_fallback_category = 'Categoria alternativa:';
 $s_plugin_XmlImportExport_keep_same_category = 'Intenta conservar la mateixa categoria';
+$s_plugin_XmlImportExport_error_no_xml = 'no ha estat possible de trobar les extensions xmlreader i xmlwriter';
