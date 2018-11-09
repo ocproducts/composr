@@ -59,7 +59,6 @@ tmpfile__*
 error_log
 thumbs.db
 thumbs.db:encrypted
-.ds_store
 _old
 gibb
 gibberish

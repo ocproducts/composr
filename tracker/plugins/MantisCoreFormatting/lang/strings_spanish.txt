@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2016  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/** Spanish (Español)
  *
+ * **********************************************************************
+ * ** This file contains translations stored in translatewiki.net.     **
+ * ** See https://translatewiki.net/wiki/Project:About for information **
+ * ** on copyright/license for translatewiki.net translations.         **
+ * **********************************************************************
+ * **                                                                  **
+ * **                      DO NOT UPDATE MANUALLY                      **
+ * **                                                                  **
+ * ** To improve a translation please visit http://translatewiki.net   **
+ * ** Detailed instructions on how to create or update translations at **
+ * ** http://www.mantisbt.org/wiki/doku.php/mantisbt:translationshowto **
+ * **********************************************************************
+ */
+/** Spanish (español)
+ * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
  *
@@ -27,16 +39,20 @@
  * @file
  *
  * @author Bithunter
+ * @author Fitoschido
  * @author Locos epraix
+ * @author Luisangelrg
  */
 
 $s_plugin_format_title = 'Formateado MantisBT';
 $s_plugin_format_description = 'Plugin oficial de procesamiento y formateo de texto.';
 $s_plugin_format_config = 'Configuración';
-$s_plugin_format_process_text = 'Procesamiento de Textos';
-$s_plugin_format_process_text_warning_notice = 'No lo desactive a menos que sepas lo que estás haciendo. Estando desactivado los ataques "Cross Site Scripting" (XSS) son posibles.';
+$s_plugin_format_process_text = 'Procesamiento de Texto';
+$s_plugin_format_process_text_warning_notice = 'No lo desactive a menos que sepa lo que está haciendo. Estando desactivado, los ataques "Cross Site Scripting" (XSS) son posibles.';
 $s_plugin_format_process_urls = 'Procesamiento de URL';
-$s_plugin_format_process_buglinks = 'Enlaces MantisBT (Incidencia/Nota)';
-$s_plugin_format_process_vcslinks = 'Enlaces VCS';
+$s_plugin_format_process_buglinks = 'Enlaces internos MantisBT (Incidencias/Notas)';
+$s_plugin_format_process_buglinks_info = 'Su configuración define las etiquedas de la siguiente forma: <em>Incidencia</em> como "<literal>%s</literal>" y <em>Nota</em> como "<literal>%s</literal>"';
+$s_plugin_format_process_markdown = 'Procesando Markdown';
+$s_plugin_format_process_markdown_info = 'Aplicando estilo con soporte Markdown, la síntaxis de formato de texto diseñada para que pueda ser convertida a HTML.';
 $s_plugin_format_enabled = 'Habilitado';
-$s_plugin_format_disabled = 'Deshabilitado';
+$s_plugin_format_disabled = 'Desactivado';

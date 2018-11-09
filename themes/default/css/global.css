@@ -3445,12 +3445,13 @@ div.proceed_button_left_2 {
 	padding: 0.2em;
 	float: {!en_right};
 	border: 1px solid {$GET,standard_border};
-	margin-{!en_left}: 2em;
+	margin-{!en_left}: 1em;
 	margin-top: 1px; /* To get it past a possible overflow:hidden (may be a browser bug) */
 }
 .mass_select_marker input {
 	width: 25px;
 	height: 25px;
+	margin: 0;
 }
 
 .global_button_ref_point {

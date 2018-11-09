@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,15 +16,52 @@
 
 /**
  * CSV API
- * Names for formatting functions are csv_format_*, where * corresponds to the
- * field name as return get csv_get_columns() and by the filter api.
  *
  * @package CoreAPI
  * @subpackage CSVAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses authentication_api.php
+ * @uses bug_api.php
+ * @uses category_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses file_api.php
+ * @uses helper_api.php
+ * @uses project_api.php
+ * @uses user_api.php
  */
+
+require_api( 'authentication_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'category_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'file_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'project_api.php' );
+require_api( 'user_api.php' );
+
+/**
+ * Emits the headers and byte order marker.  This must be called at the beginning
+ * of scripts that export CSV file before any other content is called.
+ *
+ * @param  string  $p_filename The csv filename and extension.
+ * @return void
+ */
+function csv_start( $p_filename ) {
+	$t_filename = urlencode( file_clean_name( $p_filename ) );
+
+	header( 'Pragma: public' );
+	header( 'Content-Encoding: UTF-8' );
+	header( 'Content-Type: text/csv; name=' . $t_filename . ';charset=UTF-8' );
+	header( 'Content-Transfer-Encoding: BASE64;' );
+	header( 'Content-Disposition: attachment; filename="' . $t_filename . '"' );
+
+	echo UTF8_BOM;
+}
 
 /**
  * get the csv file new line, can be moved to config in the future
@@ -42,8 +79,9 @@ function csv_get_newline() {
  */
 function csv_get_separator() {
 	static $s_seperator = null;
-	if ( $s_seperator === null )
+	if( $s_seperator === null ) {
 		$s_seperator = config_get( 'csv_separator' );
+	}
 	return $s_seperator;
 }
 
@@ -67,29 +105,27 @@ function csv_get_default_filename() {
 
 /**
  * escape a string before writing it to csv file.
- * @param type $todo TODO
- * @return  TODO
+ * @param string $p_string String to escape.
+ * @return string
  * @access public
  */
-function csv_escape_string( $p_str ) {
+function csv_escape_string( $p_string ) {
+		$t_escaped = str_split( '"' . csv_get_separator() . csv_get_newline() );
+		$t_must_escape = false;
+		while( ( $t_char = current( $t_escaped ) ) !== false && !$t_must_escape ) {
+			$t_must_escape = strpos( $p_string, $t_char ) !== false;
+			next( $t_escaped );
+		}
+		if( $t_must_escape ) {
+			$p_string = '"' . str_replace( '"', '""', $p_string ) . '"';
+		}
 
-	# enclose strings with separators with quotaiton marks
-	if( strpos( $p_str, csv_get_separator() ) !== false ) {
-		$p_str = '"' . str_replace( '"', '""', $p_str ) . '"';
-	}
-
-	# enclose multi-line strings with quotaiton marks
-	if( strpos( $p_str, "\n" ) !== false ) {
-		$p_str = '"' . str_replace( '"', '""', $p_str ) . '"';
-	}
-
-	return $p_str;
+		return $p_string;
 }
 
 /**
- * An array of column names that are used to identify  fields to include and in which order.
- * @param type $todo TODO
- * @return  TODO
+ * An array of column names that are used to identify fields to include and in which order.
+ * @return array
  * @access public
  */
 function csv_get_columns() {
@@ -98,302 +134,423 @@ function csv_get_columns() {
 }
 
 /**
- * format bug id
- * @param int $p_bug_id bug id
- * @return string csv formatted bug
- * @access public
+ * Gets the formatted value for the specified issue id, project and custom field.
+ * @param integer $p_issue_id     The issue id.
+ * @param integer $p_project_id   The project id.
+ * @param string  $p_custom_field The custom field name (without 'custom_' prefix).
+ * @return string The custom field value.
  */
-function csv_format_id( $p_bug_id ) {
-	return bug_format_id( $p_bug_id );
+function csv_format_custom_field( $p_issue_id, $p_project_id, $p_custom_field ) {
+	$t_field_id = custom_field_get_id_from_name( $p_custom_field );
+
+	if( $t_field_id === false ) {
+		$t_value = '@' . $p_custom_field . '@';
+	} else if( custom_field_is_linked( $t_field_id, $p_project_id ) ) {
+		$t_def = custom_field_get_definition( $t_field_id );
+		$t_value = string_custom_field_value( $t_def, $t_field_id, $p_issue_id );
+	} else {
+		# field is not linked to project
+		$t_value = '';
+	}
+
+	return csv_escape_string( $t_value );
 }
 
 /**
- * returns the project name corresponding to the supplied project id.
- * @param int $p_project_id project id
+ * Gets the formatted value for the specified plugin column value.
+ * @param string  $p_column The plugin column name.
+ * @param BugData $p_bug    A bug object to print the column for - needed for the display function of the plugin column.
+ * @return string The plugin column value.
+ */
+function csv_format_plugin_column_value( $p_column, BugData $p_bug ) {
+	$t_plugin_columns = columns_get_plugin_columns();
+
+	if( !isset( $t_plugin_columns[$p_column] ) ) {
+		$t_value = '';
+	} else {
+		$t_column_object = $t_plugin_columns[$p_column];
+		$t_value = $t_column_object->value( $p_bug );
+	}
+
+	return csv_escape_string( $t_value );
+}
+
+/**
+ * returns the formatted bug id
+ * @param BugData $p_bug A BugData object.
+ * @return string csv formatted bug id
+ * @access public
+ */
+function csv_format_id( BugData $p_bug ) {
+	return bug_format_id( $p_bug->id );
+}
+
+/**
+ * returns the project name corresponding to the supplied bug
+ * @param BugData $p_bug A BugData object.
  * @return string csv formatted project name
  * @access public
  */
-function csv_format_project_id( $p_project_id ) {
-	return csv_escape_string( project_get_name( $p_project_id ) );
+function csv_format_project_id( BugData $p_bug ) {
+	return csv_escape_string( project_get_name( $p_bug->project_id ) );
 }
 
 /**
- * returns the reporter name corresponding to the supplied id.
- * @param int $p_reporter_id user id
+ * returns the reporter name corresponding to the supplied bug
+ * @param BugData $p_bug A BugData object.
  * @return string formatted user name
  * @access public
  */
-function csv_format_reporter_id( $p_reporter_id ) {
-	return csv_escape_string( user_get_name( $p_reporter_id ) );
+function csv_format_reporter_id( BugData $p_bug ) {
+	return csv_escape_string( user_get_name( $p_bug->reporter_id ) );
 }
 
 /**
- * returns the handler name corresponding to the supplied id
- * @param int $p_handler_id user id
+ * returns the handler name corresponding to the supplied bug
+ * @param BugData $p_bug A BugData object.
  * @return string formatted user name
  * @access public
  */
-function csv_format_handler_id( $p_handler_id ) {
-	if( $p_handler_id > 0 ) {
-		return csv_escape_string( user_get_name( $p_handler_id ) );
+function csv_format_handler_id( BugData $p_bug ) {
+	if( $p_bug->handler_id > 0 ) {
+		return csv_escape_string( user_get_name( $p_bug->handler_id ) );
 	}
+	return '';
 }
 
 /**
  * return the priority string
- * @param int $p_priority
+ * @param BugData $p_bug A BugData object.
  * @return string formatted priority string
  * @access public
  */
-function csv_format_priority( $p_priority ) {
-	return csv_escape_string( get_enum_element( 'priority', $p_priority ) );
+function csv_format_priority( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'priority', $p_bug->priority, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the severity string
- * @param int $p_severity
+ * @param BugData $p_bug A BugData object.
  * @return string formatted severity string
  * @access public
  */
-function csv_format_severity( $p_severity ) {
-	return csv_escape_string( get_enum_element( 'severity', $p_severity ) );
+function csv_format_severity( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'severity', $p_bug->severity, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
- * return the reproducability string
- * @param int $p_reproducibility
+ * return the reproducibility string
+ * @param BugData $p_bug A BugData object.
  * @return string formatted reproducibility string
  * @access public
  */
-function csv_format_reproducibility( $p_reproducibility ) {
-	return csv_escape_string( get_enum_element( 'reproducibility', $p_reproducibility ) );
+function csv_format_reproducibility( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'reproducibility', $p_bug->reproducibility, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the version
- * @param string $p_version version string
+ * @param BugData $p_bug A BugData object.
  * @return string formatted version string
  * @access public
  */
-function csv_format_version( $p_version ) {
-	return csv_escape_string( $p_version );
+function csv_format_version( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->version );
 }
 
 /**
  * return the fixed_in_version
- * @param string $p_fixed_in_version fixed in version string
+ * @param BugData $p_bug A BugData object.
  * @return string formatted fixed in version string
  * @access public
  */
-function csv_format_fixed_in_version( $p_fixed_in_version ) {
-	return csv_escape_string( $p_fixed_in_version );
+function csv_format_fixed_in_version( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->fixed_in_version );
 }
 
 /**
  * return the target_version
- * @param string $p_target_version target version string
+ * @param BugData $p_bug A BugData object.
  * @return string formatted target version string
  * @access public
  */
-function csv_format_target_version( $p_target_version ) {
-	return csv_escape_string( $p_target_version );
+function csv_format_target_version( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->target_version );
+}
+
+/**
+ * return the tags
+ * @param BugData $p_bug A BugData object.
+ * @return string formatted tags string
+ * @access public
+ */
+function csv_format_tags( BugData $p_bug ) {
+	$t_value = '';
+
+	if( access_has_bug_level( config_get( 'tag_view_threshold' ), $p_bug->id ) ) {
+		$t_value = tag_bug_get_all( $p_bug->id );
+	}
+
+	return csv_escape_string( $t_value );
 }
 
 /**
  * return the projection
- * @param int $p_projection
+ * @param BugData $p_bug A BugData object.
  * @return string formatted projection string
  * @access public
  */
-function csv_format_projection( $p_projection ) {
-	return csv_escape_string( get_enum_element( 'projection', $p_projection ) );
+function csv_format_projection( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'projection', $p_bug->projection, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the category
- * @param int $p_category_id
+ * @param BugData $p_bug A BugData object.
  * @return string formatted category string
  * @access public
  */
-function csv_format_category_id( $p_category_id ) {
-	return csv_escape_string( category_full_name( $p_category_id, false ) );
+function csv_format_category_id( BugData $p_bug ) {
+	return csv_escape_string( category_full_name( $p_bug->category_id, false ) );
 }
 
 /**
  * return the date submitted
- * @param string $p_date_submitted
+ * @param BugData $p_bug A BugData object.
  * @return string formatted date
  * @access public
  */
-function csv_format_date_submitted( $p_date_submitted ) {
+function csv_format_date_submitted( BugData $p_bug ) {
 	static $s_date_format = null;
-	if ( $s_date_format === null )
+	if( $s_date_format === null ) {
 		$s_date_format = config_get( 'short_date_format' );
-	return date( $s_date_format, $p_date_submitted );
+	}
+	return date( $s_date_format, $p_bug->date_submitted );
 }
 
 /**
  * return the eta
- * @param int $p_eta eta
+ * @param BugData $p_bug A BugData object.
  * @return string formatted eta
  * @access public
  */
-function csv_format_eta( $p_eta ) {
-	return csv_escape_string( get_enum_element( 'eta', $p_eta ) );
+function csv_format_eta( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'eta', $p_bug->eta, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the operating system
- * @param string $p_os operating system
+ * @param BugData $p_bug A BugData object.
  * @return string formatted operating system
  * @access public
  */
-function csv_format_os( $p_os ) {
-	return csv_escape_string( $p_os );
+function csv_format_os( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->os );
 }
 
 /**
  * return the os build (os version)
- * @param string $p_os_build operating system build
+ * @param BugData $p_bug A BugData object.
  * @return string formatted operating system build
  * @access public
  */
-function csv_format_os_build( $p_os_build ) {
-	return csv_escape_string( $p_os_build );
+function csv_format_os_build( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->os_build );
 }
 
 /**
  * return the build
- * @param string $p_build
+ * @param BugData $p_bug A BugData object.
  * @return string formatted build
  * @access public
  */
-function csv_format_build( $p_build ) {
-	return csv_escape_string( $p_build );
+function csv_format_build( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->build );
 }
 
 /**
  * return the platform
- * @param string $p_platform platform
+ * @param BugData $p_bug A BugData object.
  * @return string formatted platform
  * @access public
  */
-function csv_format_platform( $p_platform ) {
-	return csv_escape_string( $p_platform );
+function csv_format_platform( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->platform );
 }
 
 /**
- * return the view state (eg: private / public)
- * @param int $p_view_state view state
+ * return the view state (either private or public)
+ * @param BugData $p_bug A BugData object.
  * @return string formatted view state
  * @access public
  */
-function csv_format_view_state( $p_view_state ) {
-	return csv_escape_string( get_enum_element( 'view_state', $p_view_state ) );
+function csv_format_view_state( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'view_state', $p_bug->view_state, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the last updated date
- * @param string $p_last_updated last updated
- * @return string formated last updated string
+ * @param BugData $p_bug A BugData object.
+ * @return string formatted last updated string
  * @access public
  */
-function csv_format_last_updated( $p_last_updated ) {
+function csv_format_last_updated( BugData $p_bug ) {
 	static $s_date_format = null;
-	if ( $s_date_format === null )
+	if( $s_date_format === null ) {
 		$s_date_format = config_get( 'short_date_format' );
-	return date( $s_date_format, $p_last_updated );
+	}
+	return date( $s_date_format, $p_bug->last_updated );
 }
 
 /**
  * return the summary
- * @param string $p_summary summary
+ * @param BugData $p_bug A BugData object.
  * @return string formatted summary
  * @access public
  */
-function csv_format_summary( $p_summary ) {
-	return csv_escape_string( $p_summary );
+function csv_format_summary( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->summary );
 }
 
 /**
  * return the description
- * @param string $p_description description
+ * @param BugData $p_bug A BugData object.
  * @return string formatted description
  * @access public
  */
-function csv_format_description( $p_description ) {
-	return csv_escape_string( $p_description );
+function csv_format_description( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->description );
+}
+
+/**
+ * Return the notes associated with the specified bug as a string.
+ *
+ * @param BugData $p_bug A BugData object.
+ * @return string The notes formatted as a string.
+ * @access public
+ */
+function csv_format_notes( BugData $p_bug ) {
+	$t_notes = bugnote_get_all_visible_as_string( $p_bug->id, /* user_bugnote_order */ 'DESC', /* user_bugnote_limit */ 0 );
+	return csv_escape_string( $t_notes );
 }
 
 /**
  * return the steps to reproduce
- * @param string $p_steps_to_reproduce steps to reproduce
+ * @param BugData $p_bug A BugData object.
  * @return string formatted steps to reproduce
  * @access public
  */
-function csv_format_steps_to_reproduce( $p_steps_to_reproduce ) {
-	return csv_escape_string( $p_steps_to_reproduce );
+function csv_format_steps_to_reproduce( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->steps_to_reproduce );
 }
 
 /**
  * return the additional information
- * @param string $p_additional_information
+ * @param BugData $p_bug A BugData object.
  * @return string formatted additional information
  * @access public
  */
-function csv_format_additional_information( $p_additional_information ) {
-	return csv_escape_string( $p_additional_information );
+function csv_format_additional_information( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->additional_information );
 }
 
 /**
  * return the status string
- * @param string $p_status status
+ * @param BugData $p_bug A BugData object.
  * @return string formatted status
  * @access public
  */
-function csv_format_status( $p_status ) {
-	return csv_escape_string( get_enum_element( 'status', $p_status ) );
+function csv_format_status( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'status', $p_bug->status, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the resolution string
- * @param int $p_resolution resolution
+ * @param BugData $p_bug A BugData object.
  * @return string formatted resolution string
  * @access public
  */
-function csv_format_resolution( $p_resolution ) {
-	return csv_escape_string( get_enum_element( 'resolution', $p_resolution ) );
+function csv_format_resolution( BugData $p_bug ) {
+	return csv_escape_string( get_enum_element( 'resolution', $p_bug->resolution, auth_get_current_user_id(), $p_bug->project_id ) );
 }
 
 /**
  * return the duplicate bug id
- * @param int $p_duplicate_id
+ * @param BugData $p_bug A BugData object.
  * @return string formatted bug id
  * @access public
  */
-function csv_format_duplicate_id( $p_duplicate_id ) {
-	return bug_format_id( $p_duplicate_id );
+function csv_format_duplicate_id( BugData $p_bug ) {
+	return bug_format_id( $p_bug->duplicate_id );
 }
 
 /**
  * return the selection
- * @param int $p_duplicate_id
+ * @param BugData $p_bug A BugData object.
  * @return string
  * @access public
  */
-function csv_format_selection( $p_duplicate_id ) {
+function csv_format_selection( BugData $p_bug ) {
 	return csv_escape_string( '' );
 }
 
 /**
  * return the due date column
- * @param int $p_due_date
+ * @param BugData $p_bug A BugData object.
  * @return string
  * @access public
  */
-function csv_format_due_date( $p_due_date ) {
+function csv_format_due_date( BugData $p_bug ) {
 	static $s_date_format = null;
-	if ( $s_date_format === null )
+	if( $s_date_format === null ) {
 		$s_date_format = config_get( 'short_date_format' );
-	return csv_escape_string( date( $s_date_format, $p_due_date ) );
+	}
+	
+	$t_value = '';
+	if ( !date_is_null( $p_bug->due_date ) && access_has_bug_level( config_get( 'due_date_view_threshold' ), $p_bug->id ) ) {
+		$t_value = date( $s_date_format, $p_bug->due_date );
+	}
+	return csv_escape_string( $t_value );
+}
+
+/**
+ * return the sponsorship total for an issue
+ * @param BugData $p_bug A BugData object.
+ * @return string
+ * @access public
+ */
+function csv_format_sponsorship_total( BugData $p_bug ) {
+	return csv_escape_string( $p_bug->sponsorship_total );
+}
+
+/**
+ * return the attachment count for an issue
+ * @param BugData $p_bug A BugData object.
+ * @return string
+ * @access public
+ */
+function csv_format_attachment_count( BugData $p_bug ) {
+	# Check for attachments
+	$t_attachment_count = 0;
+	if( file_can_view_bug_attachments( $p_bug->id, null ) ) {
+		$t_attachment_count = file_bug_attachment_count( $p_bug->id );
+	}
+	return csv_escape_string( $t_attachment_count );
+}
+
+/**
+ * return the bug note count for an issue
+ * @param BugData $p_bug A BugData object.
+ * @return string
+ * @access public
+ */
+function csv_format_bugnotes_count( BugData $p_bug ) {
+	# grab the bugnote count
+	$t_bugnote_stats = bug_get_bugnote_stats( $p_bug->id );
+	if( $t_bugnote_stats ) {
+		$t_bugnote_count = $t_bugnote_stats['count'];
+	} else {
+		$t_bugnote_count = 0;
+	}
+	return csv_escape_string( $t_bugnote_count );
 }

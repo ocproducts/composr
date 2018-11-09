@@ -56,11 +56,12 @@ class Hook_fields_list_multi extends ListFieldHook
      *
      * @param  array $field The field details
      * @param  integer $i We're processing for the ith row
+     * @param string $table_alias Table alias for catalogue entry table
      * @return ?array Tuple of SQL details (array: extra trans fields to search, array: extra plain fields to search, string: an extra table segment for a join, string: the name of the field to use as a title, if this is the title, extra WHERE clause stuff) (null: nothing special)
      */
-    public function inputted_to_sql_for_search($field, $i)
+    public function inputted_to_sql_for_search($field, $i, $table_alias = 'r')
     {
-        return nl_delim_match_sql($field, $i, 'long');
+        return nl_delim_match_sql($field, $i, 'long', null, $table_alias);
     }
 
     // ===================
@@ -119,16 +120,21 @@ class Hook_fields_list_multi extends ListFieldHook
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
 
         $all = array();
+        $flat = array();
         foreach (array_keys($exploded_inbuilt) as $option) {
             $has = isset($exploded_chosen[$option]);
             if ($has || $show_unset_values) {
-                $all[] = array('OPTION' => $option, 'HAS' => $has, 'IS_OTHER' => false);
+                $all[] = array('OPTION' => comcode_to_tempcode($option, null, true), 'HAS' => $has, 'IS_OTHER' => false);
+            }
+            if ($has) {
+                $flat[] = static_evaluate_tempcode(comcode_to_tempcode($option, null, true));
             }
         }
         if ($custom_values != 'off') {
             foreach (array_keys($exploded_chosen) as $chosen) {
                 if (!isset($exploded_inbuilt[$chosen])) {
                     $all[] = array('OPTION' => $chosen, 'HAS' => true, 'IS_OTHER' => true);
+                    $flat[] = $chosen;
                 }
             }
         }
@@ -144,7 +150,7 @@ class Hook_fields_list_multi extends ListFieldHook
             $template = 'CATALOGUE_other_FIELD_MULTILIST';
         }
 
-        return do_template($template, array('_GUID' => 'x28e21cdbc38a3037d083f619bb31dae', 'SHOW_UNSET_VALUES' => $show_unset_values, 'ALL' => $all, 'FIELD_ID' => strval($field['id'])), null, false, 'CATALOGUE_DEFAULT_FIELD_MULTILIST');
+        return do_template($template, array('_GUID' => 'x28e21cdbc38a3037d083f619bb31dae', 'SHOW_UNSET_VALUES' => $show_unset_values, 'ALL' => $all, 'FLAT' => $flat, 'FIELD_ID' => strval($field['id'])), null, false, 'CATALOGUE_DEFAULT_FIELD_MULTILIST');
     }
 
     // ======================
@@ -210,7 +216,7 @@ class Hook_fields_list_multi extends ListFieldHook
             case 'horizontal_checkboxes':
                 $_list = array();
                 foreach ($list as $i => $l) {
-                    $_list[] = array(protect_from_escaping(comcode_to_tempcode($l, null, true)), $input_name . '_' . strval($i), in_array($l, $exploded_chosen), '');
+                    $_list[] = array($l, $input_name . '_' . strval($i), in_array($l, $exploded_chosen), '');
                 }
                 return form_input_various_ticks($_list, $_cf_description, null, $_cf_name, ($widget == 'vertical_checkboxes'), $custom_name, $custom_value);
 
@@ -218,7 +224,7 @@ class Hook_fields_list_multi extends ListFieldHook
             default:
                 $list_tpl = new Tempcode();
                 foreach ($list as $l) {
-                    $list_tpl->attach(form_input_list_entry(protect_from_escaping(comcode_to_tempcode($l, null, true)), in_array($l, $exploded_chosen)));
+                    $list_tpl->attach(form_input_list_entry($l, in_array($l, $exploded_chosen), protect_from_escaping(comcode_to_tempcode($l, null, true))));
                 }
                 return form_input_multi_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, $input_size, $field['cf_required'] == 1, $custom_name, $custom_value);
         }

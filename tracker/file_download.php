@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,24 +14,46 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * Add file and redirect to the referring page
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
+/**
+ * Add file and redirect to the referring page
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses bug_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses database_api.php
+ * @uses file_api.php
+ * @uses gpc_api.php
+ * @uses http_api.php
+ * @uses utility_api.php
+ */
 
-	$g_bypass_headers = true; # suppress headers as we will send our own later
-	define( 'COMPRESSION_DISABLED', true );
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+# Prevent output of HTML in the content if errors occur
+define( 'DISABLE_INLINE_ERROR_REPORTING', true );
 
-	require_once( 'file_api.php' );
+$g_bypass_headers = true; # suppress headers as we will send our own later
+define( 'COMPRESSION_DISABLED', true );
 
-	auth_ensure_user_authenticated();
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'database_api.php' );
+require_api( 'file_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'http_api.php' );
+require_api( 'utility_api.php' );
+
+auth_ensure_user_authenticated();
 
 $f_show_inline = gpc_get_bool( 'show_inline', false );
 
@@ -41,204 +63,161 @@ $f_show_inline = gpc_get_bool( 'show_inline', false );
 # attachment and direct a user to file_download.php?file_id=X&type=bug&show_inline=1
 # and the malicious HTML content would be rendered in the user's browser,
 # violating cross-domain security.
-if ( $f_show_inline ) {
-	# Disable errors for form_security_validate as we need to first need to
-	# send HTTP headers prior to raising an error (the error handler within
-	# error_api.php doesn't check that headers have been sent, it just
+if( $f_show_inline ) {
+	# Disable errors for form_security_validate as we need to send HTTP
+	# headers prior to raising an error (the error handler
+	# doesn't check that headers have been sent, it just
 	# makes the assumption that they've been sent already).
-	if ( !@form_security_validate( 'file_show_inline' ) ) {
+	if( !@form_security_validate( 'file_show_inline' ) ) {
 		http_all_headers();
 		trigger_error( ERROR_FORM_TOKEN_INVALID, ERROR );
 	}
 }
 
- $f_file_id = gpc_get_int( 'file_id' );
- $f_type	= gpc_get_string( 'type' );
+$f_file_id = gpc_get_int( 'file_id' );
+$f_type	= gpc_get_string( 'type' );
 
-	$c_file_id = (integer)$f_file_id;
+$c_file_id = (integer)$f_file_id;
 
-	# we handle the case where the file is attached to a bug
-	# or attached to a project as a project doc.
-	$query = '';
-	switch ( $f_type ) {
-		case 'bug':
-			$t_bug_file_table = db_get_table( 'mantis_bug_file_table' );
-			$query = "SELECT *
-				FROM $t_bug_file_table
-				WHERE id=" . db_param();
-			break;
-		case 'doc':
-			$t_project_file_table = db_get_table( 'mantis_project_file_table' );
-			$query = "SELECT *
-				FROM $t_project_file_table
-				WHERE id=" . db_param();
-			break;
-		default:
+# we handle the case where the file is attached to a bug
+# or attached to a project as a project doc.
+$t_query = '';
+switch( $f_type ) {
+	case 'bug':
+		$t_query = 'SELECT * FROM {bug_file} WHERE id=' . db_param();
+		break;
+	case 'doc':
+		$t_query = 'SELECT * FROM {project_file} WHERE id=' . db_param();
+		break;
+	default:
+		access_denied();
+}
+$t_result = db_query( $t_query, array( $c_file_id ) );
+$t_row = db_fetch_array( $t_result );
+if( false === $t_row ) {
+	# Attachment not found
+	error_parameters( $c_file_id );
+	trigger_error( ERROR_FILE_NOT_FOUND, ERROR );
+}
+extract( $t_row, EXTR_PREFIX_ALL, 'v' );
+
+if( $f_type == 'bug' ) {
+	$t_project_id = bug_get_field( $v_bug_id, 'project_id' );
+} else {
+	$t_project_id = $v_project_id;
+}
+
+# Check access rights
+switch( $f_type ) {
+	case 'bug':
+		if( !file_can_download_bug_attachments( $v_bug_id, (int)$v_user_id ) ) {
 			access_denied();
-	}
-	$result = db_query_bound( $query, Array( $c_file_id ) );
-	$row = db_fetch_array( $result );
-	extract( $row, EXTR_PREFIX_ALL, 'v' );
-
-	if ( $f_type == 'bug' ) {
-		$t_project_id = bug_get_field( $v_bug_id, 'project_id' );
-	} else {
-		$t_project_id = $v_project_id;
-	}
-
-	# Check access rights
-	switch ( $f_type ) {
-		case 'bug':
-			if ( !file_can_download_bug_attachments( $v_bug_id ) ) {
-				access_denied();
-			}
-			break;
-		case 'doc':
-			# Check if project documentation feature is enabled.
-			if ( OFF == config_get( 'enable_project_documentation' ) ) {
-				access_denied();
-			}
-
-			access_ensure_project_level( config_get( 'view_proj_doc_threshold' ), $v_project_id );
-			break;
-	}
-
-	# throw away output buffer contents (and disable it) to protect download
-	while ( @ob_end_clean() );
-
-	if ( ini_get( 'zlib.output_compression' ) && function_exists( 'ini_set' ) ) {
-		ini_set( 'zlib.output_compression', false );
-	}
-
-	# Make sure that IE can download the attachments under https.
-	header( 'Pragma: public' );
-
-	# To fix an IE bug which causes problems when downloading
-	# attached files via HTTPS, we disable the "Pragma: no-cache"
-	# command when IE is used over HTTPS.
-	global $g_allow_file_cache;
-	if ( ( isset( $_SERVER["HTTPS"] ) && ( "on" == utf8_strtolower( $_SERVER["HTTPS"] ) ) ) && is_browser_internet_explorer() ) {
-		# Suppress "Pragma: no-cache" header.
-	} else {
-		if ( !isset( $g_allow_file_cache ) ) {
-		    header( 'Pragma: no-cache' );
 		}
-	}
-	header( 'Expires: ' . gmdate( 'D, d M Y H:i:s \G\M\T', time() ) );
-
-	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s \G\M\T', $v_date_added ) );
-
-	$t_filename = file_get_display_name( $v_filename );
-
-	# For Internet Explorer 8 as per http://blogs.msdn.com/ie/archive/2008/07/02/ie8-security-part-v-comprehensive-protection.aspx
-	# Don't let IE second guess our content-type!
-	header( 'X-Content-Type-Options: nosniff' );
-	
-	http_content_disposition_header( $t_filename, $f_show_inline );
-
-	header( 'Content-Length: ' . $v_filesize );
-
-	# If finfo is available (always true for PHP >= 5.3.0) we can use it to determine the MIME type of files
-	$finfo_available = false;
-	if ( class_exists( 'finfo' ) ) {
-		$t_info_file = config_get( 'fileinfo_magic_db_file' );
-
-		if ( is_blank( $t_info_file ) ) {
-			$finfo = new finfo( FILEINFO_MIME );
-		} else {
-			$finfo = new finfo( FILEINFO_MIME, $t_info_file );
+		break;
+	case 'doc':
+		# Check if project documentation feature is enabled.
+		if( OFF == config_get( 'enable_project_documentation' ) ) {
+			access_denied();
 		}
 
-		if ( $finfo ) {
-			$finfo_available = true;
+		access_ensure_project_level( config_get( 'view_proj_doc_threshold' ), $v_project_id );
+		break;
+}
+
+# throw away output buffer contents (and disable it) to protect download
+while( @ob_end_clean() ) {
+}
+
+if( ini_get( 'zlib.output_compression' ) && function_exists( 'ini_set' ) ) {
+	ini_set( 'zlib.output_compression', false );
+}
+
+http_security_headers();
+
+# Make sure that IE can download the attachments under https.
+header( 'Pragma: public' );
+
+# To fix an IE bug which causes problems when downloading
+# attached files via HTTPS, we disable the "Pragma: no-cache"
+# command when IE is used over HTTPS.
+global $g_allow_file_cache;
+if( http_is_protocol_https() && is_browser_internet_explorer() ) {
+	# Suppress "Pragma: no-cache" header.
+} else {
+	if( !isset( $g_allow_file_cache ) ) {
+		header( 'Pragma: no-cache' );
+	}
+}
+header( 'Expires: ' . gmdate( 'D, d M Y H:i:s \G\M\T', time() ) );
+
+header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s \G\M\T', $v_date_added ) );
+
+$t_upload_method = config_get( 'file_upload_method' );
+$t_filename = file_get_display_name( $v_filename );
+
+# Content headers
+$t_content_type = $v_file_type;
+
+$t_content_type_override = file_get_content_type_override( $t_filename );
+$t_file_info_type = false;
+
+switch( $t_upload_method ) {
+	case DISK:
+		$t_local_disk_file = file_normalize_attachment_path( $v_diskfile, $t_project_id );
+		if( file_exists( $t_local_disk_file ) ) {
+			$t_file_info_type = file_get_mime_type( $t_local_disk_file );
 		}
-	}
+		break;
+	case DATABASE:
+		$t_file_info_type = file_get_mime_type_for_content( $v_content );
+		break;
+	default:
+		trigger_error( ERROR_GENERIC, ERROR );
 
-	$t_content_type = $v_file_type;
+}
 
-	# dump file content to the connection.
-	switch ( config_get( 'file_upload_method' ) ) {
-		case DISK:
-			$t_local_disk_file = file_normalize_attachment_path( $v_diskfile, $t_project_id );
+if( $t_file_info_type !== false ) {
+	$t_content_type = $t_file_info_type;
+}
 
-			if ( file_exists( $t_local_disk_file ) ) {
-				if ( $finfo_available ) {
-					$t_file_info_type = $finfo->file( $t_local_disk_file );
+if( $t_content_type_override ) {
+	$t_content_type = $t_content_type_override;
+}
 
-					if ( $t_file_info_type !== false ) {
-						$t_content_type = $t_file_info_type;
-					}
-				}
+# Decide what should open inline in the browser vs. download as attachment
+# https://www.thoughtco.com/mime-types-by-content-type-3469108
+$t_show_inline = $f_show_inline;
+$t_mime_force_inline = array(
+	'image/jpeg', 'image/gif', 'image/tiff', 'image/bmp', 'image/svg+xml', 'image/png',
+	'application/pdf' );
+$t_mime_force_attachment = array( 'application/x-shockwave-flash', 'text/html' );
 
-				header( 'Content-Type: ' . $t_content_type );
-				file_send_chunk( $t_local_disk_file );
-			}
-			break;
-		case FTP:
-			$t_local_disk_file = file_normalize_attachment_path( $v_diskfile, $t_project_id );
+# extract mime type from content type
+$t_mime_type = explode( ';', $t_content_type, 2 );
+$t_mime_type = $t_mime_type[0];
 
-			if ( !file_exists( $t_local_disk_file ) ) {
-				$ftp = file_ftp_connect();
-				file_ftp_get ( $ftp, $t_local_disk_file, $v_diskfile );
-				file_ftp_disconnect( $ftp );
-			}
+if( in_array( $t_mime_type, $t_mime_force_inline ) ) {
+	$t_show_inline = true;
+} else if( in_array( $t_mime_type, $t_mime_force_attachment ) ) {
+	$t_show_inline = false;
+}
 
-			if ( $finfo_available ) {
-				$t_file_info_type = $finfo->file( $t_local_disk_file );
+http_content_disposition_header( $t_filename, $t_show_inline );
 
-				if ( $t_file_info_type !== false ) {
-					$t_content_type = $t_file_info_type;
-				}
-			}
+header( 'Content-Type: ' . $t_content_type );
+header( 'Content-Length: ' . $v_filesize );
 
-			header( 'Content-Type: ' . $t_content_type );
-			readfile( $t_local_disk_file );
-			break;
-		default:
-			if ( $finfo_available ) {
-				$t_file_info_type = $finfo->buffer( $v_content );
+# Don't let Internet Explorer second-guess our content-type [1]
+# Also disable Flash content-type sniffing [2]
+# [1] http://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-v-comprehensive-protection.aspx
+# [2] http://50.56.33.56/blog/?p=242
+header( 'X-Content-Type-Options: nosniff' );
 
-				if ( $t_file_info_type !== false ) {
-					$t_content_type = $t_file_info_type;
-				}
-			}
-
-			header( 'Content-Type: ' . $t_content_type );
-			echo $v_content;
-	}
-	exit();
-
-function file_send_chunk($filename, $start = 0, $maxlength = 0 ) {
-    static $s_safe_mode = null;
-    $chunksize = 4*131072;
-    $buffer = '';
-	$offset = $start;
-	
-	if( $s_safe_mode == null ) {
-		$s_safe_mode = ini_get('safe_mode');
-	}
-	
-    while (true) {
-		if ( $s_safe_mode == false) {
-			@set_time_limit(60*60); //reset time limit to 60 min - should be enough for 1 MB chunk
-		}
-        $buffer = file_get_contents($filename, 0, null, $offset, ( ($maxlength > 0 && $maxlength < $chunksize) ? $maxlength : $chunksize ) );
-        if ( !$buffer ) {
-			if( $maxlength > 0 ) {
-				$buffer = file_get_contents($filename, 0, null, $offset, $maxlength );
-			} else {
-				$buffer = file_get_contents($filename, 0, null, $offset );			
-			}
-			echo $buffer;
-			flush();
-        	exit(); // end of file
-        }
-        echo $buffer;
-        flush();
-        $offset += $chunksize;
-        $maxlength -= $chunksize;
-        unset($buffer);
-        $buffer = null;
-    }
-    return;
+# dump file content to the connection.
+switch( $t_upload_method ) {
+	case DISK:
+		readfile( $t_local_disk_file );
+		break;
+	case DATABASE:
+		echo $v_content;
 }

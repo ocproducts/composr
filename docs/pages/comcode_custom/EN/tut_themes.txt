@@ -167,8 +167,8 @@ Before you edit your templates, you need to know which template you're going to 
 [media width="150" description="The \"Template Tree\" option selected in the Page rendering tools" float="right"]data_custom/images/docs/tut_themes/themes_tree_go.png[/media]
 An example of this is the front page in the Welcome zone. If, for example you wanted to edit the 'poll' section, you simply click the "Edit Page" link at the bottom of the page. This takes you directly to an "Edit Comcode page" screen, where you can edit any element of that page. Knowing the difference between [concept]Comcode page[/concept]s and pages that use templates is sometimes difficult. The general rule of thumb is that if there's an 'edit this page' button at the bottom of the page, try it first to see if you can edit what you want. If not, you'll need to determine which template you need to edit.
 
-[media width="150" description="An example of the \"Tree\" screen" float="left"]data_custom/images/docs/tut_themes/themes_page_tree.png[/media]
-To get a list of all of the templates for a given page, choose the "tree" option from your toolkit ([url="see example" rel="lightbox"]data_custom/images/docs/tut_themes/themes_tree_go.png[/url]). Then click the "view" option, and a new window will appear, containing a list of templates for the page you're viewing, shown in a structured tree format ([url="image" rel="lightbox"]data_custom/images/docs/tut_themes/themes_page_tree.png[/url]). This list may look a little bit intimidating at first, but once you understand the concept behind it, it's relatively simple.
+[media width="150" description="An example of the \"Template Tree\" screen" float="left"]data_custom/images/docs/tut_themes/themes_page_tree.png[/media]
+To get a list of all of the templates for a given page, choose the "Template Tree" page rendering tool ([url="see example" rel="lightbox"]data_custom/images/docs/tut_themes/themes_tree_go.png[/url]). Then click the "view" option, and a new window will appear, containing a list of templates for the page you're viewing, shown in a structured tree format ([url="image" rel="lightbox"]data_custom/images/docs/tut_themes/themes_page_tree.png[/url]). This list may look a little bit intimidating at first, but once you understand the concept behind it, it's relatively simple.
 
 The list is essentially a list of all of the templates used on that page. The ones that are nested underneath parents are templates that are used within those parents.
 
@@ -181,7 +181,17 @@ You can simply modify the template here, and then click the "Edit Template" link
 
 There is also a section at the bottom allowing you to restore a previous version, if you have any.
 
-If you can't access this tree drop-down, there is a slightly less user-friendly alternative. If you add [tt]&keep_markers=1[/tt]/[tt]?keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
+[title="4"]Alternative: Templates page rendering tool[/title]
+
+There is a "Templates" page rendering tool you can use. This is similar to the "Template Tree" tool, except it is a flat sorted listed with no repetition. The number of times each template is used is displayed.
+
+Advantages of this technique:
+1) Much more compact display
+2) Shows templates 'override' options that are supported even if not used (e.g. as supported in the catalogue system, for overriding templates on a per-catalogue basis)
+
+[title="4"]Alternative: [tt]keep_markers[/tt][/title]
+
+If you can't access this tree drop-down (perhaps you have removed it from your custom theme), there is a slightly less user-friendly alternative. If you add [tt]&keep_markers=1[/tt]/[tt]?keep_markers=1[/tt] to the end of your URL, click "Go" again, then click View > Source in your browser, you will be able to see the HTML markup for your page, with comments marking the beginning and end of each template. This is a great way to find a template if you know exactly which section of the page it's at.
 
 [code="HTML"]
 <!-- START-TEMPLATE=MENU_BRANCH_popup -->
@@ -198,7 +208,7 @@ If you can't access this tree drop-down, there is a slightly less user-friendly 
 
 You can see that it's marking the beginning and end of two templates. The first is [tt]MENU_BRANCH_popup.tpl[/tt], which contains another template: [tt]HYPERLINK.tpl[/tt].
 
-[title="3"]Alternative Method[/title]
+[title="4"]Alternative: Manually identifying the template to edit[/title]
 
 [box="\"Default\"?" width="32em" float="right"]
 You may notice that this list of templates are all in the [tt]themes/default/templates[/tt] folder, which isn't necessarily the theme you're trying to edit.
@@ -206,7 +216,7 @@ This is intentional -- the only templates that will be copied into your [tt]them
 
 Everything else is just left in the [tt]themes/default/templates[/tt] folder. This is to cut down on the amount of files you need to keep track of.
 [/box]
-If you already know which template you intend to edit, you can do it directly through the 'Edit Templates' screen.
+If you already know which template you intend to edit (by intuition, memory, or reading the code), you can do it directly through the 'Edit Templates' screen.
 
 1) Go to Admin Zone > Style > Themes.
 2) Click "Edit Templates" for the theme of your choice.

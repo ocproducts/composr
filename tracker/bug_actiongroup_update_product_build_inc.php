@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,68 +14,88 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
+/**
+ * Bug action group include file
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses access_api.php
+ * @uses bug_api.php
+ * @uses config_api.php
+ * @uses gpc_api.php
+ * @uses lang_api.php
+ */
 
-	/**
-	 * Prints the title for the custom action page.
-	 */
-	function action_update_product_build_print_title() {
-        echo '<tr class="form-title">';
-        echo '<td colspan="2">';
-        echo lang_get( 'product_build' );
-        echo '</td></tr>';
+if( !defined( 'BUG_ACTIONGROUP_INC_ALLOW' ) ) {
+	return;
+}
+
+require_api( 'access_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'config_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'lang_api.php' );
+
+/**
+ * Prints the title for the custom action page.
+ * @return void
+ */
+function action_update_product_build_print_title() {
+	echo lang_get( 'actiongroup_menu_update_product_build' );
+}
+
+/**
+ * Prints the field within the custom action form.  This has an entry for
+ * every field the user need to supply + the submit button.  The fields are
+ * added as rows in a table that is already created by the calling code.
+ * A row has two columns.
+ * @return void
+ */
+function action_update_product_build_print_fields() {
+?>
+    <tr>
+        <th class="category">
+            <?php echo lang_get( 'product_build' ); ?>
+        </th>
+        <td>
+            <input type="text" name="build" class="input-sm" size="32" maxlength="32" />
+        </td>
+    </tr>
+<?php
+}
+
+/**
+ * Validates the action on the specified bug id.
+ *
+ * @param integer $p_bug_id A bug identifier.
+ * @return string|null On failure: the reason why the action could not be validated. On success: null.
+ */
+function action_update_product_build_validate( $p_bug_id ) {
+	$t_bug_id = (int)$p_bug_id;
+
+	if( bug_is_readonly( $t_bug_id ) ) {
+		return lang_get( 'actiongroup_error_issue_is_readonly' );
 	}
 
-	/**
-	 * Prints the field within the custom action form.  This has an entry for
-	 * every field the user need to supply + the submit button.  The fields are
-	 * added as rows in a table that is already created by the calling code.
-	 * A row has two columns.
-	 */
-	function action_update_product_build_print_fields() {
-		echo '<tr class="row-1" valign="top"><td class="category">', lang_get( 'product_build' ), '</td><td><input type="text" name="build" size="32" maxlength="32" /></td></tr>';
-		echo '<tr><td colspan="2"><center><input type="submit" class="button" value="' . lang_get( 'actiongroup_menu_update_product_build' ) . ' " /></center></td></tr>';
+	if( !access_has_bug_level( config_get( 'update_bug_threshold' ), $t_bug_id ) ) {
+		return lang_get( 'access_denied' );
 	}
 
-	/**
-	 * Validates the action on the specified bug id.
-	 *
-	 * @param $p_bug_id Bug ID
-	 * @return true|array  Action can be applied., bug_id => reason for failure
-	 */
-	function action_update_product_build_validate( $p_bug_id ) {
-		$t_bug_id = (int)$p_bug_id;
+	return null;
+}
 
-		if ( bug_is_readonly( $t_bug_id ) ) {
-			$t_failed_validation_ids = array();
-			$t_failed_validation_ids[$t_bug_id] = lang_get( 'actiongroup_error_issue_is_readonly' );
-			return $t_failed_validation_ids;
-		}
+/**
+ * Executes the custom action on the specified bug id.
+ *
+ * @param integer $p_bug_id The bug id to execute the custom action on.
+ * @return null Previous validation ensures that this function doesn't fail. Therefore we can always return null to indicate no errors occurred.
+ */
+function action_update_product_build_process( $p_bug_id ) {
+	$t_build = gpc_get_string( 'build' );
 
-		if ( !access_has_bug_level( config_get( 'update_bug_threshold' ), $t_bug_id ) ) {
-			$t_failed_validation_ids = array();
-			$t_failed_validation_ids[$t_bug_id] = lang_get( 'access_denied' );
-			return $t_failed_validation_ids;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Executes the custom action on the specified bug id.
-	 *
-	 * @param $p_bug_id  The bug id to execute the custom action on.
-	 * @returns true|array Action executed successfully., ( bug_id => reason for failure )
-	 */
-	function action_update_product_build_process( $p_bug_id ) {
-		$f_build = gpc_get_string( 'build' );
-		$t_build = trim( $f_build );
-
-		bug_set_field( $p_bug_id, 'build', $t_build );
-		return true;
-    }
+	bug_set_field( $p_bug_id, 'build', $t_build );
+	return null;
+}

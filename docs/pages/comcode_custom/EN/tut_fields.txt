@@ -487,7 +487,7 @@ By default a 'region' is the same as a 'country', but it may be overridden by ad
 | [i]None[/i]
 |-
 ! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__tick__required.png[/media]
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600" description="If set as required it will not actually show as required as it is not possible for it to not have a value"]data_custom/images/docs/tut_fields/core_fields_backend__tick__required.png[/media]
 [media framed="1" wysiwyg_editable="1" thumb="0" width="600" description="If set as non-required it will actually be a drop-down input with 3 possible values (N/A, No, Yes)"]data_custom/images/docs/tut_fields/core_fields_backend__tick__not_required.png[/media]
 |-
 ! Front-end UI

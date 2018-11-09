@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,66 +14,83 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * This file turns monitoring on or off for a bug for the current user
-	 *
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * This file turns monitoring on or off for a bug for the current user
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses bug_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses print_api.php
+ * @uses user_api.php
+ */
 
-	require_once( 'bug_api.php' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'bug_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'print_api.php' );
+require_api( 'user_api.php' );
 
-	//form_security_validate( 'bug_monitor_delete' );
+//form_security_validate( 'bug_monitor_delete' );  Composr - disabled so direct linking works
 
-	$f_bug_id = gpc_get_int( 'bug_id' );
-	$t_bug = bug_get( $f_bug_id, true );
-	$f_user_id = gpc_get_int( 'user_id', NO_USER );
+$f_bug_id = gpc_get_int( 'bug_id' );
+$t_bug = bug_get( $f_bug_id, true );
+$f_user_id = gpc_get_int( 'user_id', NO_USER );
 
-	$t_logged_in_user_id = auth_get_current_user_id();
+$t_logged_in_user_id = auth_get_current_user_id();
 
-	if ( $f_user_id === NO_USER ) {
-		$t_user_id = $t_logged_in_user_id;
-	} else {
-		user_ensure_exists( $f_user_id );
-		$t_user_id = $f_user_id;
-	}
+if( $f_user_id === NO_USER ) {
+	$t_user_id = $t_logged_in_user_id;
+} else {
+	user_ensure_exists( $f_user_id );
+	$t_user_id = $f_user_id;
+}
 
-	if ( user_is_anonymous( $t_user_id ) ) {
-		trigger_error( ERROR_PROTECTED_ACCOUNT, E_USER_ERROR );
-	}
+if( user_is_anonymous( $t_user_id ) ) {
+	trigger_error( ERROR_PROTECTED_ACCOUNT, E_USER_ERROR );
+}
 
-	bug_ensure_exists( $f_bug_id );
+bug_ensure_exists( $f_bug_id );
 
-	if( $t_bug->project_id != helper_get_current_project() ) {
-		# in case the current project is not the same project of the bug we are viewing...
-		# ... override the current project. This to avoid problems with categories and handlers lists etc.
-		$g_project_override = $t_bug->project_id;
-	}
+if( $t_bug->project_id != helper_get_current_project() ) {
+	# in case the current project is not the same project of the bug we are viewing...
+	# ... override the current project. This to avoid problems with categories and handlers lists etc.
+	$g_project_override = $t_bug->project_id;
+}
 
-	if ( $t_logged_in_user_id == $t_user_id ) {
-		access_ensure_bug_level( config_get( 'monitor_bug_threshold' ), $f_bug_id );
-	} else {
-		access_ensure_bug_level( config_get( 'monitor_delete_others_bug_threshold' ), $f_bug_id );
-	}
+if( $t_logged_in_user_id == $t_user_id ) {
+	access_ensure_bug_level( config_get( 'monitor_bug_threshold' ), $f_bug_id );
+} else {
+	access_ensure_bug_level( config_get( 'monitor_delete_others_bug_threshold' ), $f_bug_id );
+}
 
-	bug_unmonitor( $f_bug_id, $t_user_id );
+bug_unmonitor( $f_bug_id, $t_user_id );
 
-	form_security_purge( 'bug_monitor_delete' );
+form_security_purge( 'bug_monitor_delete' );
 
-	$p_redirect_to='view.php?id='.strval($f_bug_id);
-
-	html_page_top( null/*, $p_redirect_to */);
-	echo '<br /><div class="center">';
-	echo lang_get('vote_removed').'<br />';
-	print_bracket_link( $p_redirect_to, lang_get('cms_sc_view_details') );
-	echo lang_get('cp_sc_close_window');
-	echo '</div>';
-	html_page_bottom();
-
-	//print_successful_redirect_to_bug( $f_bug_id );
+// Composr - show message relating to vote (monitor = vote)
+$p_redirect_to='view.php?id=' . strval($f_bug_id);
+layout_page_header_begin( lang_get('cms_title_vote_removed') );
+layout_page_header_end();
+layout_page_begin( 'bug_monitor_add.php' );
+echo '<br /><div class="center">';
+echo lang_get('cms_vote_removed').'<br />';
+print_small_button( $p_redirect_to, lang_get('cms_sc_view_details') );
+echo '</div>';
+layout_page_end();

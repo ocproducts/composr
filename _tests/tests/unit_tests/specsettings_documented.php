@@ -92,7 +92,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'exports/') === false) && ($f != '_config.php') && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
+            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests/') === false) && (strpos($f, 'tracker/') === false) && (strpos($f, 'exports/') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'exports/') === false) && ($f != '_config.php') && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
                 $c = file_get_contents(get_file_base() . '/' . $f);
                 $all_code .= $c;
             }
@@ -166,7 +166,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js')) && (basename($f) != 'upgrade.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
+            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js')) && (basename($f) != 'upgrade.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests/') === false) && (strpos($f, 'tracker/') === false) && (strpos($f, 'exports/') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
                 $c = file_get_contents(get_file_base() . '/' . $f);
                 $all_code .= $c;
             }
@@ -215,7 +215,7 @@ class specsettings_documented_test_set extends cms_test_case
         $files = get_directory_contents(get_file_base());
         $files[] = 'install.php';
         foreach ($files as $f) {
-            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl')) && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'sources/forum/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
+            if (((substr($f, -4) == '.php') || (substr($f, -4) == '.tpl')) && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests/') === false) && (strpos($f, 'tracker/') === false) && (strpos($f, 'exports/') === false) && (strpos($f, '_custom/') === false) && (strpos($f, 'sources/forum/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
                 $c = file_get_contents($f);
                 $all_code .= $c;
             }

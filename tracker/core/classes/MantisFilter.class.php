@@ -1,7 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
-
-# Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,10 +15,16 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Base class that implements basic filter functionality
- * and integration with MantisBT.
+ * Filter functionality class
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
  * @package MantisBT
  * @subpackage classes
+ */
+
+/**
+ * Base class that implements basic filter functionality
+ * and integration with MantisBT.
  */
 abstract class MantisFilter {
 
@@ -50,10 +54,15 @@ abstract class MantisFilter {
 	public $size = null;
 
 	/**
+	 * Number of columns to use in the bug filter.
+	 */
+	public $colspan = 1;
+
+	/**
 	 * Validate the filter input, returning true if input is
 	 * valid, or returning false if invalid.  Invalid inputs will
 	 * be replaced with the filter's default value.
-	 * @param multi Filter field input
+	 * @param mixed $p_filter_input Filter field input.
 	 * @return boolean Input valid (true) or invalid (false)
 	 */
 	public function validate( $p_filter_input ) {
@@ -63,14 +72,14 @@ abstract class MantisFilter {
 	/**
 	 * Build the SQL query elements 'join', 'where', and 'params'
 	 * as used by core/filter_api.php to create the filter query.
-	 * @param multi Filter field input
+	 * @param mixed $p_filter_input Filter field input.
 	 * @return array Keyed-array with query elements; see developer guide
 	 */
 	abstract function query( $p_filter_input );
 
 	/**
 	 * Display the current value of the filter field.
-	 * @param multi Filter field input
+	 * @param mixed $p_filter_value Filter field input.
 	 * @return string Current value output
 	 */
 	abstract function display( $p_filter_value );
@@ -80,6 +89,8 @@ abstract class MantisFilter {
 	 * filter options, not including an 'any' value.
 	 * @return array Filter options keyed by value=>display
 	 */
-	public function options() {}
+	public function options() {
+		return array();
+	}
 }
 

@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,57 +14,80 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Remove User from Project
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses project_api.php
+ * @uses user_api.php
+ */
 
-	form_security_validate( 'manage_proj_user_remove' );
-	auth_reauthenticate();
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'project_api.php' );
+require_api( 'user_api.php' );
 
-	$f_project_id = gpc_get_int( 'project_id' );
-	$f_user_id = gpc_get_int( 'user_id', 0 );
+form_security_validate( 'manage_proj_user_remove' );
+auth_reauthenticate();
 
-	# We should check both since we are in the project section and an
-	#  admin might raise the first threshold and not realize they need
-	#  to raise the second
-	access_ensure_project_level( config_get( 'manage_project_threshold' ), $f_project_id );
-	access_ensure_project_level( config_get( 'project_user_threshold' ), $f_project_id );
+$f_project_id = gpc_get_int( 'project_id' );
+$f_user_id = gpc_get_int( 'user_id', 0 );
 
-	if ( 0 == $f_user_id ) {
-		# Confirm with the user
-		helper_ensure_confirmed( lang_get( 'remove_all_users_sure_msg' ), lang_get( 'remove_all_users_button' ) );
+# We should check both since we are in the project section and an
+#  admin might raise the first threshold and not realize they need
+#  to raise the second
+access_ensure_project_level( config_get( 'manage_project_threshold' ), $f_project_id );
+access_ensure_project_level( config_get( 'project_user_threshold' ), $f_project_id );
 
-		project_remove_all_users( $f_project_id );
-	} else {
-		$t_user = user_get_row( $f_user_id );
-		# Confirm with the user
-		helper_ensure_confirmed( lang_get( 'remove_user_sure_msg' ) .
-			'<br/>' . lang_get( 'username' ) . ': ' . $t_user['username'],
-			lang_get( 'remove_user_button' ) );
+if( 0 == $f_user_id ) {
+	# Confirm with the user
+	helper_ensure_confirmed( lang_get( 'remove_all_users_sure_msg' ), lang_get( 'remove_all_users_button' ) );
 
-		project_remove_user( $f_project_id, $f_user_id );
-	}
+	project_remove_all_users( $f_project_id, access_get_project_level( $f_project_id ) );
+} else {
+	# Don't allow removal of users from the project who have a higher access level than the current user
+	access_ensure_project_level( access_get_project_level( $f_project_id, $f_user_id ), $f_project_id );
 
-	form_security_purge( 'manage_proj_user_remove' );
+	$t_user = user_get_row( $f_user_id );
 
-	$t_redirect_url = 'manage_proj_edit_page.php?project_id=' . $f_project_id;
+	# Confirm with the user
+	helper_ensure_confirmed( lang_get( 'remove_user_sure_msg' ) .
+		'<br />' . lang_get( 'username_label' ) . lang_get( 'word_separator' ) . $t_user['username'],
+		lang_get( 'remove_user_button' ) );
 
-	html_page_top( null, $t_redirect_url );
-?>
-<br />
-<div align="center">
-<?php
-	echo lang_get( 'operation_successful' ).'<br />';
-	print_bracket_link( $t_redirect_url, lang_get( 'proceed' ) );
-?>
-</div>
+	project_remove_user( $f_project_id, $f_user_id );
+}
 
-<?php
-	html_page_bottom();
+form_security_purge( 'manage_proj_user_remove' );
+
+$t_redirect_url = 'manage_proj_edit_page.php?project_id=' . $f_project_id;
+
+layout_page_header( null, $t_redirect_url );
+
+layout_page_begin( 'manage_overview_page.php' );
+
+html_operation_successful( $t_redirect_url );
+
+layout_page_end();

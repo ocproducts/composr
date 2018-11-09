@@ -60,6 +60,7 @@ class standard_dir_files_test_set extends cms_test_case
             if (
                 (!file_exists($dir . '/index.php')) &&
                 (strpos($dir, 'ckeditor') === false) &&
+                (strpos($dir, 'tracker/') === false) &&
                 (strpos($dir, 'personal_dicts') === false) &&
                 (strpos($dir, 'uploads/website_specific') === false)
             ) {
@@ -71,6 +72,7 @@ class standard_dir_files_test_set extends cms_test_case
                 (!file_exists($dir . '/html_custom')) &&
                 (!file_exists($dir . '/EN')) &&
                 (strpos($dir, 'ckeditor') === false) &&
+                (strpos($dir, 'tracker/') === false) &&
                 (strpos($dir, 'uploads') === false) &&
                 (preg_match('#/data(/|$|\_)#', $dir) == 0)
                 && (strpos($dir, 'themes') === false) &&

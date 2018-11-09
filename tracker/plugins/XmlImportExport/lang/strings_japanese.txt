@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2016  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/** Japanese (日本語)
  *
+ * **********************************************************************
+ * ** This file contains translations stored in translatewiki.net.     **
+ * ** See https://translatewiki.net/wiki/Project:About for information **
+ * ** on copyright/license for translatewiki.net translations.         **
+ * **********************************************************************
+ * **                                                                  **
+ * **                      DO NOT UPDATE MANUALLY                      **
+ * **                                                                  **
+ * ** To improve a translation please visit http://translatewiki.net   **
+ * ** Detailed instructions on how to create or update translations at **
+ * ** http://www.mantisbt.org/wiki/doku.php/mantisbt:translationshowto **
+ * **********************************************************************
+ */
+/** Japanese (日本語)
+ * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
  *
@@ -27,16 +39,24 @@
  * @file
  *
  * @author Fryed-peach
+ * @author Gulpin
+ * @author Ryoon
+ * @author Shirayuki
+ * @author 赤城。
  */
 
-$s_plugin_XmlImportExport_title = 'チケットのインポートとエクスポート';
+$s_plugin_XmlImportExport_title = '課題のインポート/エクスポート';
 $s_plugin_XmlImportExport_description = 'MantisBT に XML ベースのインポートおよびエクスポート機能を加える。';
-$s_plugin_XmlImportExport_import = 'チケットのインポート';
+$s_plugin_XmlImportExport_import = '課題をインポート';
 $s_plugin_XmlImportExport_export = 'XMLエクスポート';
-$s_plugin_XmlImportExport_importing_in_project = '次のプロジェクト内のチケットをインポート:';
+$s_plugin_XmlImportExport_config_title = 'XMLインポート/エクスポートアクセスレベル設定';
+$s_plugin_XmlImportExport_import_threshold = '課題を読み込む';
+$s_plugin_XmlImportExport_export_threshold = '課題を書き出す';
+$s_plugin_XmlImportExport_action_update = '更新';
+$s_plugin_XmlImportExport_importing_in_project = '課題を次のプロジェクトにインポート: \'%s\'';
 $s_plugin_XmlImportExport_import_options = 'インポートのオプション';
 $s_plugin_XmlImportExport_cross_references = '相互参照';
-$s_plugin_XmlImportExport_default_strategy = 'デフォルトの変換戦略:';
+$s_plugin_XmlImportExport_default_strategy = '既定の変換戦略:';
 $s_plugin_XmlImportExport_renumber = '再番号割当';
 $s_plugin_XmlImportExport_renumber_desc = '参照の番号割当を振り直すよう試みる';
 $s_plugin_XmlImportExport_link = 'リンク';
@@ -44,5 +64,6 @@ $s_plugin_XmlImportExport_link_desc = '元の項目へのリンクに変換す�
 $s_plugin_XmlImportExport_disable = '無効化';
 $s_plugin_XmlImportExport_disable_desc = 'リンクを無効化する';
 $s_plugin_XmlImportExport_fallback = '代替戦略 (「再番号割当」を適用しない場合):';
-$s_plugin_XmlImportExport_fallback_category = '代替戦略:';
+$s_plugin_XmlImportExport_fallback_category = '代替カテゴリー:';
 $s_plugin_XmlImportExport_keep_same_category = '同じカテゴリを保つよう試みる';
+$s_plugin_XmlImportExport_error_no_xml = 'xmlreader 拡張機能および xmlwriter 拡張機能が見つかりません';

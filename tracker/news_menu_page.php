@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,120 +14,179 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Manage News
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses config_api.php
+ * @uses current_user_api.php
+ * @uses form_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses news_api.php
+ * @uses print_api.php
+ */
 
-	news_ensure_enabled();
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'config_api.php' );
+require_api( 'current_user_api.php' );
+require_api( 'form_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'news_api.php' );
+require_api( 'print_api.php' );
 
-	access_ensure_project_level( config_get( 'manage_news_threshold' ) );
+news_ensure_enabled();
 
-	html_page_top( lang_get( 'edit_news_link' ) );
+access_ensure_project_level( config_get( 'manage_news_threshold' ) );
+
+layout_page_header( lang_get( 'edit_news_link' ) );
+
+layout_page_begin( 'main_page.php' );
 ?>
 
-<br />
-<div align="center">
-<form method="post" action="news_add.php">
-<?php echo form_security_field( 'news_add' ); ?>
-<table class="width75" cellspacing="1">
-<tr>
-	<td class="form-title" colspan="2">
-		<?php echo lang_get( 'add_news_title' ) ?>
-	</td>
-</tr>
-<tr class="row-1">
-	<td class="category" width="25%">
-		<span class="required">*</span><?php echo lang_get( 'headline' ) ?>
-	</td>
-	<td width="75%">
-		<input type="text" name="headline" size="64" maxlength="64" />
-	</td>
-</tr>
-<tr class="row-2">
-	<td class="category">
-		<span class="required">*</span><?php echo lang_get( 'body' ) ?>
-	</td>
-	<td>
-		<textarea name="body" cols="60" rows="8"></textarea>
-	</td>
-</tr>
-<tr class="row-1">
-	<td class="category">
-		<?php echo lang_get( 'announcement' ) ?><br />
-		<span class="small"><?php echo lang_get( 'stays_on_top' ) ?></span>
-	</td>
-	<td>
-		<input type="checkbox" name="announcement" />
-	</td>
-</tr>
-<tr class="row-2">
-	<td class="category" width="25%">
-		<?php echo lang_get( 'view_status' ) ?>
-	</td>
-	<td width="75%">
-		<select name="view_state">
-			<?php print_enum_string_option_list( 'view_state' ) ?>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td>
-		<span class="required">* <?php echo lang_get( 'required' ) ?></span>
-	</td>
-	<td class="center">
-		<input type="submit" class="button" value="<?php echo lang_get( 'post_news_button' ) ?>" />
-	</td>
-</tr>
-</table>
-</form>
+<div class="col-md-12 col-xs-12">
+	<div id="news-add-div" class="form-container">
+	<form id="news-add-form" method="post" action="news_add.php">
+		<div class="widget-box widget-color-blue2">
+			<div class="widget-header widget-header-small">
+				<h4 class="widget-title lighter">
+					<i class="ace-icon fa fa-edit"></i>
+					<?php echo lang_get( 'add_news_title' ) ?>
+				</h4>
+			</div>
+		<div class="widget-body">
+		<div class="widget-main no-padding">
+		<div class="table-responsive">
+		<table class="table table-bordered table-condensed table-striped">
+		<fieldset>
+			<?php echo form_security_field( 'news_add' ); ?>
+			<tr>
+				<td class="category">
+					<span class="required">*</span> <?php echo lang_get( 'headline' ) ?>
+				</td>
+				<td>
+					<input type="text" id="news-headline" name="headline" class="input-sm" size="64" maxlength="64" required />
+				</td>
+			</tr>
+			<tr>
+				<td class="category">
+					<span class="required">*</span> <?php echo lang_get( 'body' ) ?>
+				</td>
+				<td>
+					<textarea class="form-control" id="news-body" name="body" cols="60" rows="8" required></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="category">
+					<?php echo lang_get( 'announcement' ) ?> <span class="help-text"><?php echo lang_get( 'stays_on_top' ) ?></span>
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" class="ace" id="news-announcement" name="announcement" />
+						<span class="lbl"></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="category">
+					<?php echo lang_get( 'view_status' ) ?>
+				</td>
+				<td>
+					<select id="news-view-status" name="view_state" class="input-sm">
+						<?php print_enum_string_option_list( 'view_state' ) ?>
+					</select>
+				</td>
+			</tr>
+		</fieldset>
+		</table>
+		</div>
+		</div>
+			<div class="widget-toolbox padding-8 clearfix">
+				<span class="required pull-right"> * <?php echo lang_get( 'required' ) ?></span>
+				<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'post_news_button' ) ?>" />
+			</div>
+		</div>
+		</div>
+	</form>
+	</div>
 </div>
-<?php 
-	# Add News Form END
-	# Edit/Delete News Form BEGIN
-	if ( news_get_count( helper_get_current_project(), current_user_is_administrator() ) > 0 ) {
-?>
-<br />
-<div align="center">
-<form method="post" action="news_edit_page.php">
-<?php echo form_security_field( 'news_delete' ); ?>
-<table class="width75" cellspacing="1">
-<tr>
-	<td class="form-title" colspan="2">
-		<?php echo lang_get( 'edit_or_delete_news_title' ) ?>
-	</td>
-</tr>
-<tr class="row-1">
-	<td class="center" colspan="2">
-		<input type="radio" name="action" value="edit" checked="checked" /> <?php echo lang_get( 'edit_post' ) ?>
-		<input type="radio" name="action" value="delete" /> <?php echo lang_get( 'delete_post' ) ?>
-	</td>
-</tr>
-<tr class="row-2">
-	<td class="category" width="25%">
-		<?php echo lang_get( 'select_post' ) ?>
-	</td>
-	<td width="75%">
-		<select name="news_id">
-			<?php print_news_item_option_list() ?>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td class="center" colspan="2">
-		<input type="submit" class="button" value="<?php echo lang_get( 'submit_button' ) ?>" />
-	</td>
-</tr>
-</table>
-</form>
-</div>
-<?php 
-	} # Edit/Delete News Form END 
 
-	html_page_bottom();
+<?php
+# Add News Form END
+# Edit/Delete News Form BEGIN
+if( news_get_count( helper_get_current_project(), current_user_is_administrator() ) > 0 ) { ?>
+<div class="col-md-12 col-xs-12">
+	<div class="space-10"></div>
+	<div id="news-edit-div" class="form-container">
+	<form id="news-edit-form" method="post" action="news_edit_page.php">
+		<div class="widget-box widget-color-blue2">
+			<div class="widget-header widget-header-small">
+				<h4 class="widget-title lighter">
+					<i class="ace-icon fa fa-edit"></i>
+					<?php echo lang_get( 'edit_or_delete_news_title' ) ?>
+				</h4>
+			</div>
+		<div class="widget-body">
+		<div class="widget-main no-padding">
+		<div class="table-responsive">
+		<table class="table table-bordered table-condensed table-striped">
+		<fieldset>
+			<?php echo form_security_field( 'news_delete' ); ?>
+			<tr>
+				<td class="category">
+					<?php echo lang_get( 'edit_post' ) ?>
+				</td>
+				<td>
+					<label>
+						<input type="radio" class="ace" id="news-edit-action" name="action" value="edit" checked="checked">
+						<span class="lbl"></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="category">
+					<?php echo lang_get( 'delete_post' ) ?>
+				</td>
+				<td>
+					<label>
+						<input type="radio" class="ace" id="news-delete-action" name="action" value="delete">
+						<span class="lbl"></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="category">
+					<?php echo lang_get( 'select_post' ) ?>
+				</td>
+				<td>
+					<select id="news-edit-id" name="news_id" class="input-sm">
+						<?php print_news_item_option_list() ?>
+					</select>
+				</td>
+			</tr>
+		</fieldset>
+		</table>
+		</div>
+		</div>
+			<div class="widget-toolbox padding-8 clearfix">
+				<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'submit_button' ) ?>" />
+			</div>
+		</div>
+		</div>
+	</form>
+	</div>
+</div>
+<?php
+} # Edit/Delete News Form END
+
+layout_page_end();

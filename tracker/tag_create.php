@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,18 +15,26 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Tag Create
+ *
  * @package MantisBT
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses print_api.php
+ * @uses tag_api.php
  */
- /**
-  * MantisBT Core API's
-  */
-require_once( 'core.php' );
 
-require_once ( 'html_api.php' );
-require_once ( 'form_api.php' );
-require_once( 'tag_api.php' );
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'print_api.php' );
+require_api( 'tag_api.php' );
 
 form_security_validate( 'tag_create' );
 
@@ -35,10 +43,10 @@ $f_tag_description = gpc_get_string( 'description' );
 
 $t_tag_user = auth_get_current_user_id();
 
-if ( !is_null( $f_tag_name )) {
+if( !is_null( $f_tag_name ) ) {
 	$t_tags = tag_parse_string( $f_tag_name );
 	foreach ( $t_tags as $t_tag_row ) {
-		if ( -1 == $t_tag_row['id'] ) {
+		if( -1 == $t_tag_row['id'] ) {
 			tag_create( $t_tag_row['name'], $t_tag_user, $f_tag_description );
 		}
 	}

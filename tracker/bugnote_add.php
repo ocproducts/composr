@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,51 +14,69 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * Insert the bugnote into the database then redirect to the bug page
-	 *
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Insert the bugnote into the database then redirect to the bug page
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses file_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses print_api.php
+ */
 
-	require_once( 'bug_api.php' );
-	require_once( 'bugnote_api.php' );
+require_once( 'core.php' );
+require_api( 'file_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'print_api.php' );
 
-	form_security_validate( 'bugnote_add' );
+form_security_validate( 'bugnote_add' );
 
-	$f_bug_id		= gpc_get_int( 'bug_id' );
-	$f_private		= gpc_get_bool( 'private' );
-	$f_time_tracking	= gpc_get_string( 'time_tracking', '0:00' );
-	$f_bugnote_text	= trim( gpc_get_string( 'bugnote_text', '' ) );
+$f_bug_id = gpc_get_int( 'bug_id' );
+$f_text = gpc_get_string( 'bugnote_text', '' );
+$f_duration = gpc_get_string( 'time_tracking', '0:00' );
+$f_files = gpc_get_file( 'ufile', array() );
 
-	$t_bug = bug_get( $f_bug_id, true );
-	if( $t_bug->project_id != helper_get_current_project() ) {
-		# in case the current project is not the same project of the bug we are viewing...
-		# ... override the current project. This to avoid problems with categories and handlers lists etc.
-		$g_project_override = $t_bug->project_id;
-	}
+$t_query = array( 'issue_id' => $f_bug_id );
 
-	if ( bug_is_readonly( $f_bug_id ) ) {
-		error_parameters( $f_bug_id );
-		trigger_error( ERROR_BUG_READ_ONLY_ACTION_DENIED, ERROR );
-	}
+if( count( $f_files ) > 0 && is_blank( $f_text ) && helper_duration_to_minutes( $f_duration ) == 0 ) {
+	$t_payload = array(
+		'files' => helper_array_transpose( $f_files )
+	);
 
-	access_ensure_bug_level( config_get( 'add_bugnote_threshold' ), $f_bug_id );
+	$t_data = array(
+		'query' => $t_query,
+		'payload' => $t_payload,
+	);
 
-	// We always set the note time to BUGNOTE, and the API will overwrite it with TIME_TRACKING
-	// if $f_time_tracking is not 0 and the time tracking feature is enabled.
-	$t_bugnote_id = bugnote_add( $f_bug_id, $f_bugnote_text, $f_time_tracking, $f_private, BUGNOTE );
-    if ( !$t_bugnote_id ) {
-        error_parameters( lang_get( 'bugnote' ) );
-        trigger_error( ERROR_EMPTY_FIELD, ERROR );
-    }
+	$t_command = new IssueFileAddCommand( $t_data );
+	$t_command->execute();
+} else {
+	$t_payload = array(
+		'text' => $f_text,
+		'view_state' => array(
+			'id' => gpc_get_bool( 'private' ) ? VS_PRIVATE : VS_PUBLIC
+		),
+		'time_tracking' => array(
+			'duration' => $f_duration
+		),
+		'files' => helper_array_transpose( $f_files )
+	);
 
-	form_security_purge( 'bugnote_add' );
+	$t_data = array(
+		'query' => $t_query,
+		'payload' => $t_payload,
+	);
 
-	print_successful_redirect_to_bug( $f_bug_id );
+	$t_command = new IssueNoteAddCommand( $t_data );
+	$t_command->execute();
+}
+
+form_security_purge( 'bugnote_add' );
+
+print_successful_redirect_to_bug( $f_bug_id );

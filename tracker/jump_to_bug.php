@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,20 +14,27 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Given a bug id, redirect user to the view bug page for the given id
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses gpc_api.php
+ * @uses print_api.php
+ */
 
-	auth_ensure_user_authenticated();
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'print_api.php' );
 
-	# Determine which view page to redirect back to.
-	$f_bug_id		= gpc_get_int( 'bug_id' );
+auth_ensure_user_authenticated();
 
-	print_header_redirect_view( $f_bug_id );
+# Determine which view page to redirect back to.
+$f_bug_id		= gpc_get_int( 'bug_id' );
+
+print_header_redirect_view( $f_bug_id );

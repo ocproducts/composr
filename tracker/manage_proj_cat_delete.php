@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,60 +14,81 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Remove Project Category
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses category_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses database_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ */
 
-	require_once( 'category_api.php' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'category_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'database_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'string_api.php' );
 
-	form_security_validate( 'manage_proj_cat_delete' );
+form_security_validate( 'manage_proj_cat_delete' );
 
-	auth_reauthenticate();
+auth_reauthenticate();
 
-	$f_category_id = gpc_get_string( 'id' );
-	$f_project_id = gpc_get_int( 'project_id' );
+$f_category_id = gpc_get_int( 'id' );
+$f_project_id = gpc_get_int( 'project_id' );
 
-	access_ensure_project_level( config_get( 'manage_project_threshold' ), $f_project_id );
+$t_row = category_get_row( $f_category_id );
+$t_name = category_full_name( $f_category_id );
+$t_project_id = $t_row['project_id'];
 
-	$t_row = category_get_row( $f_category_id );
-	$t_name = category_full_name( $f_category_id );
-	$t_project_id = $t_row['project_id'];
+access_ensure_project_level( config_get( 'manage_project_threshold' ), $t_project_id );
 
-	# Get a bug count
-	$t_bug_table = db_get_table( 'mantis_bug_table' );
-	$t_query = "SELECT COUNT(id) FROM $t_bug_table WHERE category_id=" . db_param();
-	$t_bug_count = db_result( db_query_bound( $t_query, array( $f_category_id ) ) );
+# Protect the 'default category for moves' from deletion
+category_ensure_can_remove( $f_category_id );
 
-	# Confirm with the user
-	helper_ensure_confirmed( sprintf( lang_get( 'category_delete_sure_msg' ), $t_name, $t_bug_count ),
-		lang_get( 'delete_category_button' ) );
+# Protect the category from deletion which is associted with an issue.
+category_ensure_can_delete( $f_category_id );
 
-	category_remove( $f_category_id );
+# Confirm with the user
+helper_ensure_confirmed( sprintf( lang_get( 'category_delete_confirm_msg' ), string_display_line( $t_name ) ),
+	lang_get( 'delete_category_button' ) );
 
-	form_security_purge( 'manage_proj_cat_delete' );
+category_remove( $f_category_id );
 
-	if ( $f_project_id == ALL_PROJECTS ) {
-		$t_redirect_url = 'manage_proj_page.php';
-	} else {
-		$t_redirect_url = 'manage_proj_edit_page.php?project_id=' . $f_project_id;
-	}
+form_security_purge( 'manage_proj_cat_delete' );
 
-	html_page_top( null, $t_redirect_url );
-?>
-<br />
-<div align="center">
-<?php
-	echo lang_get( 'operation_successful' ).'<br />';
-	print_bracket_link( $t_redirect_url, lang_get( 'proceed' ) );
-?>
-</div>
+if( $f_project_id == ALL_PROJECTS ) {
+	$t_redirect_url = 'manage_proj_page.php';
+} else {
+	$t_redirect_url = 'manage_proj_edit_page.php?project_id=' . $f_project_id;
+}
 
-<?php
-	html_page_bottom();
+layout_page_header( null, $t_redirect_url );
+
+layout_page_begin( 'manage_overview_page.php' );
+
+html_operation_successful( $t_redirect_url );
+
+layout_page_end();

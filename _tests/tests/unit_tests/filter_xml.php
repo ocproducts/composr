@@ -54,7 +54,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
         $this->assertTrue($result !== null);
@@ -86,7 +86,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
         $this->assertTrue($result === null);
@@ -116,7 +116,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
         $this->assertTrue($result !== null);
@@ -146,7 +146,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
         $this->assertTrue($result === null);
@@ -177,7 +177,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -210,7 +210,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -243,7 +243,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -277,7 +277,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -310,7 +310,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -343,7 +343,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -376,7 +376,7 @@ class filter_xml_test_set extends cms_test_case
             'confirm_double_post' => '1',
         );
 
-        $url = build_url(array('page' => 'cms_news', 'type' => 'add', 'keep_fatalistic' => 1), 'cms');
+        $url = build_url(array('page' => 'cms_news', 'type' => 'add'), 'cms');
 
         $result = http_download_file($url->evaluate(), null, true, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
 
@@ -414,7 +414,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
             if ($expect) {
@@ -453,7 +453,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
             if ($expect) {
@@ -492,7 +492,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
             if ($expect) {
@@ -532,7 +532,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
             if ($expect) {
@@ -571,7 +571,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
             if ($expect) {
@@ -610,7 +610,7 @@ class filter_xml_test_set extends cms_test_case
                 'confirm_double_post' => '1',
             );
 
-            $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
+            $url = build_url(array('page' => 'cms_news', 'type' => '_add'), 'cms');
 
             $result = http_download_file($url->evaluate(), null, false, false, 'Composr', $post, array(get_session_cookie() => get_session_id()));
             if ($expect) {
