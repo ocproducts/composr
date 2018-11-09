@@ -37,7 +37,7 @@ class file_type_whitelisting_test_set extends cms_test_case
 
     public function testTrackerValidTypes()
     {
-        $path = get_file_base() . '/tracker/config_inc.php';
+        $path = get_file_base() . '/tracker/config/config_inc.php';
         $c = file_get_contents($path);
 
         $file_types = array();

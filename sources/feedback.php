@@ -991,7 +991,7 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
             require_code('cns_posts_action3');
             cns_edit_post($post_id, 1, ($content_title === null) ? $spacer_title : $content_title, $spacer_post, 0, 0, null, false, false, '', false);
             require_code('cns_topics_action2');
-            cns_edit_topic($topic_id, do_lang('COMMENT', null, null, null, $lang) . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, null, '', null, $home_link->evaluate(), false);
+            cns_edit_topic($topic_id, do_lang('COMMENT', null, null, null, $lang) . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, '', null, $home_link->evaluate(), false);
         }
     }
 }

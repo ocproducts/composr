@@ -883,7 +883,7 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
  * @param  ID_TEXT $type Table type
  * @set short long
  * @param  ?string $param Search term (null: lookup from environment)
- * @param string $table_alias Table alias for catalogue entry table
+ * @param  string $table_alias Table alias for catalogue entry table
  * @return ?array Tuple of SQL details (array: extra trans fields to search, array: extra plain fields to search, string: an extra table segment for a join, string: the name of the field to use as a title, if this is the title, extra WHERE clause stuff) (null: nothing special)
  */
 function exact_match_sql($field, $i, $type = 'short', $param = null, $table_alias = 'r')
@@ -912,7 +912,7 @@ function exact_match_sql($field, $i, $type = 'short', $param = null, $table_alia
  * @param  ID_TEXT $type Table type
  * @set short long
  * @param  ?string $param Search term (null: lookup from environment)
- * @param string $table_alias Table alias for catalogue entry table
+ * @param  string $table_alias Table alias for catalogue entry table
  * @return ?array Tuple of SQL details (array: extra trans fields to search, array: extra plain fields to search, string: an extra table segment for a join, string: the name of the field to use as a title, if this is the title, extra WHERE clause stuff) (null: nothing special)
  */
 function nl_delim_match_sql($field, $i, $type = 'short', $param = null, $table_alias = 'r')

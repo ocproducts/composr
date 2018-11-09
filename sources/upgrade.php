@@ -327,9 +327,10 @@ function upgrader_output_login($message = null)
     }
 
     $login_icon = do_template('ICON', array('NAME' => 'menu/site_meta/user_actions/login'));
+    $_login_icon = $login_icon->evaluate();
     echo "
     <p>
-        <button class=\"menu--site-meta--user-actions--login button-screen\" type=\"submit\">{$login_icon} {$l_login}</button>
+        <button class=\"menu--site-meta--user-actions--login button-screen\" type=\"submit\">{$_login_icon} {$l_login}</button>
     </p>
     </form>
     ";

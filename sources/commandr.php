@@ -1441,17 +1441,16 @@ function has_smart_quotes($str)
     if (get_charset() != 'utf-8') {
         return false;
     }
-    // TODO: Change to hex2bin in v11
-    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('98'))) !== false) {
+    if (strpos($str, hex2bin('e28098')) !== false) {
         return true;
     }
-    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('99'))) !== false) {
+    if (strpos($str, hex2bin('e28099')) !== false) {
         return true;
     }
-    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('9c'))) !== false) {
+    if (strpos($str, hex2bin('e2809c')) !== false) {
         return true;
     }
-    if (strpos($str, chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('9d'))) !== false) {
+    if (strpos($str, hex2bin('e2809d')) !== false) {
         return true;
     }
     return false;

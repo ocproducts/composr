@@ -99,7 +99,7 @@ abstract class FieldsSearchHook
     /**
      * Get details needed (SQL etc) to perform an advanced field search.
      *
-     * @param string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
+     * @param  string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
      * @param  string $table_alias Table alias for main content table
      * @return ?array A big tuple of details used to search with (null: no fields)
      */
@@ -250,12 +250,12 @@ abstract class FieldsSearchHook
     /**
      * Get details needed (SQL etc) to perform an advanced field search for custom content fields (builds on _get_search_parameterisation_advanced).
      *
-     * @param string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
-     * @param string $table Table clause to add to
-     * @param string $where_clause Where clause to add to
-     * @param array $trans_fields Translatable fields to add to
-     * @param array $nontrans_fields Non-translatable fields to add to
-     * @param ?string $content_id_field Content-ID field (null: default r.id field)
+     * @param  string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
+     * @param  string $table Table clause to add to
+     * @param  string $where_clause Where clause to add to
+     * @param  array $trans_fields Translatable fields to add to
+     * @param  array $nontrans_fields Non-translatable fields to add to
+     * @param  ?string $content_id_field Content-ID field (null: default r.id field)
      */
     protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields, $content_id_field = null)
     {
