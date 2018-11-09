@@ -304,7 +304,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     if ($check_correctness) {
         // If it was an invite/recommendation, award the referrer
-        if (addon_installed('recommend')) {
+        if ((addon_installed('recommend')) && ($email_address != '')) {
             $inviter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $email_address), 'ORDER BY i_time');
             if (!is_null($inviter)) {
                 if (addon_installed('points')) {
