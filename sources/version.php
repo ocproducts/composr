@@ -41,7 +41,7 @@ function init__version()
  */
 function cms_version_minor()
 {
-    return '1 beta14';
+    return '1 beta15';
 }
 
 /**
