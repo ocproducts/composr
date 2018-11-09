@@ -699,8 +699,9 @@ class Module_catalogues
 
         if ($type == 'atoz') {
             $id = get_param_integer('id', null);
+            $true_id = $id;
 
-            if ($id === null) {
+            if ($true_id === null) {
                 $id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => get_param_string('catalogue_name'), 'cc_parent_id' => null));
             }
             set_feed_url('?mode=catalogues&select=' . strval($id));
@@ -718,11 +719,18 @@ class Module_catalogues
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . (is_ecommerce_catalogue($category['c_name']) ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
 
-            $_title = get_translated_text($category['cc_title']);
+            $catalogue = load_catalogue_row($category['c_name']);
+
+            if ($true_id === null) {
+                $_title = get_translated_text($catalogue['c_title']);
+            } else {
+                $_title = get_translated_text($category['cc_title']);
+            }
             $title_to_use = do_lang_tempcode('DEFAULT__CATALOGUE_CATEGORY_ATOZ', escape_html($_title));
             $this->title = get_screen_title($title_to_use, false);
 
             $this->category = $category;
+            $this->catalogue = $catalogue;
             $this->id = $id;
             $this->_title = $_title;
         }
@@ -880,18 +888,14 @@ class Module_catalogues
     public function view_atoz()
     {
         $id = $this->id;
-        $category = $this->category;
+        $true_id = get_param_integer('id', null); // Needs to be true URL $id, not one automatically set to root category if not passed
+
         $_title = $this->_title;
 
+        $category = $this->category;
         $catalogue_name = $category['c_name'];
-
         $root = get_param_integer('keep_catalogue_' . $catalogue_name . '_root', null);
-
-        $category = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_title', array('id' => $id));
-
-        $category_name = get_translated_text($category);
-
-        $catalogue = load_catalogue_row($catalogue_name);
+        $catalogue = $this->catalogue;
 
         $tpl_set = $catalogue_name;
 
@@ -900,8 +904,12 @@ class Module_catalogues
         $max = null;
         $start = null;
 
-        require_code('selectcode');
-        $sql_select = selectcode_to_sqlfragment(strval($id) . '*', 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if ($true_id === null) { // All entries in catalogue
+            $sql_select = db_string_equal_to('c_name', $catalogue_name);
+        } else { // All entries under category (going deep)
+            require_code('selectcode');
+            $sql_select = selectcode_to_sqlfragment(strval($id) . '*', 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        }
 
         if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'catalogue_entries p WHERE ce_validated=1 AND (' . $sql_select . ')', false, true) > intval(get_option('general_safety_listing_limit')) * 3) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
@@ -921,7 +929,7 @@ class Module_catalogues
             $entry_map = get_catalogue_entry_map($row, $catalogue, 'CATEGORY', 'DEFAULT', $root, null, array(0), false, false);
             $letter = strtoupper(substr(is_object($entry_map['FIELD_0_PLAIN']) ? $entry_map['FIELD_0_PLAIN']->evaluate() : $entry_map['FIELD_0_PLAIN'], 0, 1));
 
-            if ((get_value('disable_cat_cat_perms') !== '1') && (!has_category_access(get_member(), 'catalogues_category', strval($row['id'])))) {
+            if ((get_value('disable_cat_cat_perms') !== '1') && (!has_category_access(get_member(), 'catalogues_category', strval($row['cc_id'])))) {
                 continue;
             }
 

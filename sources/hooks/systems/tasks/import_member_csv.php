@@ -385,7 +385,7 @@ class Hook_task_import_member_csv
                     $password_compatibility_scheme = ($use_temporary_passwords ? 'temporary' : '');
                 }
 
-                $linked_id = cns_make_member($username, $password, is_null($email_address) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, 1, null, 0, '*', '', null, $auto_mark_read);
+                $linked_id = cns_make_member($username, $password, is_null($email_address) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, null, null, 0, '*', '', null, $auto_mark_read);
                 $all_members[$linked_id] = $username;
                 $all_members_flipped[$username] = $linked_id;
                 $num_added++;

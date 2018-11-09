@@ -3677,7 +3677,7 @@ function escape_header($str, $within_quotes = false)
  * Find if a forum post is a spacer post.
  *
  * @param string $post The spacer post
- * @return boolean Whether it is
+ * @return array A pair: Whether it is, and the language it is in
  */
 function is_spacer_post($post)
 {
@@ -3689,10 +3689,10 @@ function is_spacer_post($post)
     foreach (array_keys($langs) as $lang) {
         $matcher = do_lang('SPACER_POST_MATCHER', null, null, null, $lang);
         if (substr($post, 0, strlen($matcher)) == $matcher) {
-            return true;
+            return array(true, $lang);
         }
     }
-    return false;
+    return array(false, get_site_default_lang());
 }
 
 /**

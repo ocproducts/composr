@@ -1130,7 +1130,7 @@ class DatabaseConnector
                     } elseif (is_float($v)) {
                         $values .= float_to_raw_string($v, 10);
                     } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                        $values .= $v; // Fudge, for all our known large unsigned integers
+                        $values .= $v; // FUDGE: for all our known large unsigned integers
                     } else {
                         $values .= '\'' . $this->static_ob->db_escape_string($v) . '\'';
                     }
@@ -1212,7 +1212,7 @@ class DatabaseConnector
                 } elseif (is_integer($value)) {
                     $where .= $key . '=' . strval($value);
                 } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                    $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
+                    $where .= $key . '=' . $value; // FUDGE: for all our known large unsigned integers
                 } else {
                     if ($value === null) {
                         $where .= $key . ' IS NULL';
@@ -1834,7 +1834,7 @@ class DatabaseConnector
                 } elseif (is_integer($value)) {
                     $where .= $key . '=' . strval($value);
                 } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                    $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
+                    $where .= $key . '=' . $value; // FUDGE: for all our known large unsigned integers
                 } else {
                     if ($value === null) {
                         $where .= $key . ' IS NULL';
@@ -1864,7 +1864,7 @@ class DatabaseConnector
                 } elseif (is_integer($value)) {
                     $update .= $key . '=' . strval($value);
                 } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                    $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
+                    $where .= $key . '=' . $value; // FUDGE: for all our known large unsigned integers
                 } else {
                     $update .= $key . '=\'' . $this->static_ob->db_escape_string($value) . '\'';
                 }
@@ -1914,7 +1914,7 @@ class DatabaseConnector
             } elseif (is_integer($value)) {
                 $where .= $key . '=' . strval($value);
             } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
+                $where .= $key . '=' . $value; // FUDGE: for all our known large unsigned integers
             } else {
                 if ($value === null) {
                     $where .= $key . ' IS NULL';

@@ -201,7 +201,11 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $period_start = utctime_to_usertime(time());
     }
     if (is_null($period_end)) {
-        $period_end = utctime_to_usertime(time() + 60 * 60 * 24 * 360 * 20);
+        $period_end = time() + 60 * 60 * 24 * 365 * 20;
+        if (is_float($period_end)) {
+            $period_end = max($period_start, 2147483647 - 60 * 60 * 24 * 365 * 2); // Y-2038 issue, so bring back comfortably before that
+        }
+        $period_end = utctime_to_usertime($period_end);
     }
 
     $initial_start_year = $start_year;
@@ -688,7 +692,11 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
         $period_start = utctime_to_usertime(time());
     }
     if (is_null($period_end)) {
-        $period_end = utctime_to_usertime(time() + 60 * 60 * 24 * 360 * 20);
+        $period_end = time() + 60 * 60 * 24 * 365 * 20;
+        if (is_float($period_end)) {
+            $period_end = max($period_start, 2147483647 - 60 * 60 * 24 * 365 * 2); // Y-2038 issue, so bring back comfortably before that
+        }
+        $period_end = utctime_to_usertime($period_end);
     }
 
     $matches = array();

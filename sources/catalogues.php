@@ -405,10 +405,16 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
         $extra_sorts['fixed_random'] = 'RANDOM';
         foreach ($extra_sorts as $extra_sort_code => $extra_sort_lang) {
             foreach (array('ASC' => '_ASCENDING', 'DESC' => '_DESCENDING') as $dir_code => $dir_lang) {
+                if (($extra_sort_code == 'fixed_random') && ($dir_code == 'DESC')) {
+                    continue;
+                }
+
                 $sort_sel = (($order_by == $extra_sort_code) && ($direction == $dir_code));
                 $_potential_sorter_name = new Tempcode();
                 $_potential_sorter_name->attach(do_lang_tempcode($extra_sort_lang));
-                $_potential_sorter_name->attach(do_lang_tempcode($dir_lang));
+                if ($extra_sort_code != 'fixed_random') {
+                    $_potential_sorter_name->attach(do_lang_tempcode($dir_lang));
+                }
                 $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => 'xfdsfdsusd0fsd0dsf', 'SELECTED' => $sort_sel, 'NAME' => protect_from_escaping($_potential_sorter_name), 'VALUE' => $extra_sort_code . ' ' . $dir_code)));
             }
         }
@@ -745,6 +751,10 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $sel
 
     if ($num_entries === null) {
         $num_entries = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'catalogue_entries r' . implode('', $extra_join) . ' WHERE ' . $where_clause, false, true);
+    }
+
+    if (get_value('force_memory_sort__' . $catalogue_name) === '1') {
+        $can_do_db_sorting = false;
     }
 
     $in_db_sorting = $do_sorting && $can_do_db_sorting; // This defines whether $virtual_order_by can actually be used in SQL (if not, we have to sort manually)
