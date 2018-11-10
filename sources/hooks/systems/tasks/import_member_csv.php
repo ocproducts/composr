@@ -374,9 +374,12 @@ class Hook_task_import_member_csv
             if ($new_member) {
                 if (is_null($password)) {
                     $password = $default_password;
+                    $using_default_password = true;
                     if (is_null($password)) {
                         continue;
                     }
+                } else {
+                    $using_default_password = false;
                 }
                 if (is_null($salt)) {
                     $salt = '';
@@ -385,10 +388,20 @@ class Hook_task_import_member_csv
                     $password_compatibility_scheme = ($use_temporary_passwords ? 'temporary' : '');
                 }
 
+                if ($using_default_password) {
+                    // Minimise setting time, so we aren't taking ages encrypting the same password (which presumably we know isn't very secure anyway)
+                    $cr_bak = get_option('crypt_ratchet');
+                    set_option('crypt_ratchet', '4');
+                }
+
                 $linked_id = cns_make_member($username, $password, is_null($email_address) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, null, null, 0, '*', '', null, $auto_mark_read);
                 $all_members[$linked_id] = $username;
                 $all_members_flipped[$username] = $linked_id;
                 $num_added++;
+
+                if ($using_default_password) {
+                    set_option('crypt_ratchet', $cr_bak);
+                }
             } else {
                 $old_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($linked_id, 'm_username');
                 if ($old_username == $username) {
