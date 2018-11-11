@@ -29,10 +29,7 @@
  */
 function init__m_zip()
 {
-    $ud = get_option('unzip_dir');
-    if (substr($ud, -1) == '/') {
-        $ud = substr($ud, 0, strlen($ud) - 1);
-    }
+    $ud = trim(get_option('unzip_dir'), '/\\');
     if (!defined('UNZIP_DIR')) {
         define('UNZIP_DIR', $ud);
         define('UNZIP_CMD', get_option('unzip_cmd'));

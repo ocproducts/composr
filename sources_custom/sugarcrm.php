@@ -224,6 +224,9 @@ function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp
         $data = array(do_lang('AUTOMATIC_NOTE') => $body) + $cpfs;
 
         save_message_into_sugarcrm('leads', $member_mappings, '', $body, $email_address, $username, $attachments, $data, $posted_data, $timestamp, strpos($sync_types, '_guarded') !== false);
+
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
     }
 
     return $contact_id;
