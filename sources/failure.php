@@ -1048,6 +1048,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
+        (strpos($text, 'FTP server error') === false) && // LDAP error, misconfiguration
         (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
         (strpos($text, 'Can\'t contact LDAP server') === false) && // LDAP error, network issue
         (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free webhosts
