@@ -92,7 +92,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
                 continue;
             }
             $info = $ob->info(false);
-            if (is_null($info)) {
+            if (($info === null) || ($info === false)) {
                 continue;
             }
             if (($hook == 'catalogue_entries') || (array_key_exists('special_on', $info)) || (array_key_exists('special_off', $info)) || (method_exists($ob, 'get_tree')) || (method_exists($ob, 'ajax_tree'))) {
@@ -202,7 +202,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
             return null;
         }
         $info = $ob->info(false);
-        if (is_null($info)) {
+        if (($info === null) || ($info === false)) {
             return null;
         }
 
