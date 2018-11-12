@@ -27,7 +27,7 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
-     * @return ?array Map of search hook details (null: hook is disabled)
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {
@@ -41,7 +41,7 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
 
         if ($check_permissions) {
             if (!has_actual_page_access(get_member(), 'topicview')) {
-                return null;
+                return false;
             }
 
             if (get_member() == $GLOBALS['CNS_DRIVER']->get_guest_id()) {

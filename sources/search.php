@@ -547,7 +547,7 @@ function do_search_block($map)
         require_code('hooks/modules/search/' . filter_naughty_harsh($id, true));
         $object = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
         $info = $object->info();
-        if ($info !== null) {
+        if (($info !== null) && ($info !== false)) {
             if (array_key_exists('special_on', $info)) {
                 foreach ($info['special_on'] as $name => $display) {
                     $_name = 'option_' . $id . '_' . $name;
