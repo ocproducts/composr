@@ -45,12 +45,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     if (running_script('stress_test_loader')) {
+        require_code('files2');
         clean_temporary_mail_attachments($attachments);
+
         return false;
     }
 
     if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
+        require_code('files2');
         clean_temporary_mail_attachments($attachments);
+
         return false;
     }
 
@@ -62,7 +66,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
 
                 if (count($to_email) == 0) {
+                    require_code('files2');
                     clean_temporary_mail_attachments($attachments);
+
                     return true;
                 }
             }
@@ -142,7 +148,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     global $SENDING_MAIL;
     if ($SENDING_MAIL) {
+        require_code('files2');
         clean_temporary_mail_attachments($attachments);
+
         return false;
     }
     $SENDING_MAIL = true;
@@ -164,7 +172,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $to_email = $to_email_new;
     if ($to_email == array()) {
         $SENDING_MAIL = false;
+
+        require_code('files2');
         clean_temporary_mail_attachments($attachments);
+
         return true;
     }
 
