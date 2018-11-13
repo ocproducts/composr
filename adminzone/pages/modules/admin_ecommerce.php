@@ -480,6 +480,12 @@ class Module_admin_ecommerce extends Standard_crud_module
         $mails = $this->_mails();
 
         $id = add_usergroup_subscription($title, post_param_string('description'), post_param_string('cost'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+
+        require_code('templates_donext');
+        if (has_simplified_donext()) {
+            $text = null;
+        }
+
         return array(strval($id), $text);
     }
 
