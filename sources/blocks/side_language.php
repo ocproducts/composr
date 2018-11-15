@@ -49,7 +49,7 @@ class Block_side_language
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(isset($map[\'block_id\'])?$map[\'block_id\']:\'\',user_lang())';
+        $info['cache_on'] = 'array(user_lang())';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
         return $info;
     }
