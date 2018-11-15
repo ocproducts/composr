@@ -27,7 +27,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
-     * @return ?array Map of search hook details (null: hook is disabled)
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {
@@ -37,7 +37,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
         if ($check_permissions) {
             if (!has_actual_page_access(get_member(), 'catalogues')) {
-                return null;
+                return false;
             }
         }
 
@@ -85,8 +85,8 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
     {
         $catalogue_name = get_param_string('catalogue_name', '');
         if ($catalogue_name == '') {
-            if (get_param_string('content') != '') {
-                return null; // Mid-searc
+            if (get_param_string('content', '') != '') {
+                return null; // Mid-search
             }
 
             $tree = create_selection_list_catalogues(null, true);

@@ -135,6 +135,7 @@ function dispatch_mail($subject_line, $message_raw, $to_emails = null, $to_names
     }
 
     $dispatcher->dispatch($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
+
     return $dispatcher;
 }
 
@@ -543,7 +544,7 @@ abstract class Mail_dispatcher_base
         }
 
         $this->priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
-        $this->attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : array(); // An list of attachments (each attachment being a map, absolute path=>filename) (null: none)
+        $this->attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : array(); // A list of attachments (each attachment being a map, absolute path=>filename) (null: none)
         $this->no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to CC to the CC address
         $this->as = isset($advanced_parameters['as']) ? $advanced_parameters['as'] : $GLOBALS['FORUM_DRIVER']->get_guest_id(); // Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
         $this->as_admin = isset($advanced_parameters['as_admin']) ? $advanced_parameters['as_admin'] : false; // Replace above with arbitrary admin
@@ -590,6 +591,9 @@ abstract class Mail_dispatcher_base
 
         // May not be enabled for various reasons
         if (!$this->is_enabled()) {
+            require_code('files2');
+            clean_temporary_mail_attachments($this->attachments);
+
             return null;
         }
 
@@ -603,6 +607,9 @@ abstract class Mail_dispatcher_base
         $theme = 'default'; // Returned by reference if we want something else
         $this->tidy_parameters($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name, $lang, $theme);
         if ($to_emails == array()) {
+            require_code('files2');
+            clean_temporary_mail_attachments($this->attachments);
+
             return null;
         }
 
@@ -615,6 +622,9 @@ abstract class Mail_dispatcher_base
             $through_queue = $this->is_through_queue();
             $this->log_message($through_queue, $subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
             if ($through_queue) {
+                require_code('files2');
+                clean_temporary_mail_attachments($this->attachments);
+
                 return null;
             }
         }
@@ -622,6 +632,9 @@ abstract class Mail_dispatcher_base
         // Stop loops (check / lock)
         global $SENDING_MAIL;
         if ($SENDING_MAIL) {
+            require_code('files2');
+            clean_temporary_mail_attachments($this->attachments);
+
             return null;
         }
         $SENDING_MAIL = true;
@@ -665,6 +678,9 @@ abstract class Mail_dispatcher_base
 
         // Stop loops (unlock)
         $SENDING_MAIL = false;
+
+        require_code('files2');
+        clean_temporary_mail_attachments($this->attachments);
 
         return array($worked, $error);
     }

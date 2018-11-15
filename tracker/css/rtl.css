@@ -10,7 +10,7 @@ td.left {
 	text-align: right;
 }
 
-td.right {
+td.pull-right {
 	text-align: left;
 }
 
@@ -32,14 +32,6 @@ td.print-category {
 
 tr.row-category-history td {
 	text-align: right;
-}
-
-td.login-info-left {
-	text-align: right;
-}
-
-td.login-info-right {
-	text-align: left;
 }
 
 td.news-heading-public {
@@ -64,7 +56,7 @@ div.quick-summary-right {
 	text-align: right;
 }
 
-.right {
+.pull-right {
 	text-align: left;
 }
 

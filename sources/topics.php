@@ -796,10 +796,10 @@ class CMS_Topic
             if (get_forum_type() == 'cns') {
                 // Spacer post fiddling
                 if (($this->first_post_id !== null) && ($post['id'] == $this->first_post_id) && ($this->topic_title !== null) && ($this->topic_description !== null) && ($this->topic_description_link !== null)) {
-                    $is_spacer_post = is_spacer_post($post['message_comcode']);
+                    list($is_spacer_post, $spacer_post_lang) = is_spacer_post($post['message_comcode']);
 
                     if ($is_spacer_post) {
-                        $c_prefix = do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #';
+                        $c_prefix = do_lang('COMMENT', null, null, null, $spacer_post_lang) . ': #';
                         if ((substr($this->topic_description, 0, strlen($c_prefix)) == $c_prefix) && ($this->topic_description_link != '')) {
                             list($linked_type, $linked_id) = explode('_', substr($this->topic_description, strlen($c_prefix)), 2);
                             $linked_url = $this->topic_description_link;
@@ -812,8 +812,8 @@ class CMS_Topic
                             }
                             $highlight = false;
 
-                            $this->topic_title = do_lang('SPACER_TOPIC_TITLE_WRAP', $this->topic_title);
-                            $post['title'] = do_lang('SPACER_TOPIC_TITLE_WRAP', $post['title']);
+                            $this->topic_title = do_lang('SPACER_TOPIC_TITLE_WRAP', $this->topic_title, '', '', $spacer_post_lang);
+                            $post['title'] = do_lang('SPACER_TOPIC_TITLE_WRAP', $post['title'], '', '', $spacer_post_lang);
                             $this->topic_description = '';
                         }
                     }

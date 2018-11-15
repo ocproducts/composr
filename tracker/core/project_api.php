@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,51 +15,82 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Project API
+ *
  * @package CoreAPI
  * @subpackage ProjectAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses bug_api.php
+ * @uses category_api.php
+ * @uses config_api.php
+ * @uses constant_inc.php
+ * @uses custom_field_api.php
+ * @uses database_api.php
+ * @uses error_api.php
+ * @uses file_api.php
+ * @uses lang_api.php
+ * @uses news_api.php
+ * @uses project_hierarchy_api.php
+ * @uses user_api.php
+ * @uses user_pref_api.php
+ * @uses utility_api.php
+ * @uses version_api.php
  */
 
-/**
- * requires category_api
- */
-require_once( 'category_api.php' );
-/**
- * requires version_api
- */
-require_once( 'version_api.php' );
-/**
- * requires bug_api
- */
-require_once( 'bug_api.php' );
-/**
- * requires file_api
- */
-require_once( 'file_api.php' );
-/**
- * requires news_api
- */
-require_once( 'news_api.php' );
-
-# ## Project API ###
-# ===================================
-# Caching
-# ===================================
-# ########################################
-# SECURITY NOTE: cache globals are initialized here to prevent them
-#   being spoofed if register_globals is turned on
+require_api( 'bug_api.php' );
+require_api( 'category_api.php' );
+require_api( 'config_api.php' );
+require_api( 'constant_inc.php' );
+require_api( 'custom_field_api.php' );
+require_api( 'database_api.php' );
+require_api( 'error_api.php' );
+require_api( 'file_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'news_api.php' );
+require_api( 'project_hierarchy_api.php' );
+require_api( 'user_api.php' );
+require_api( 'user_pref_api.php' );
+require_api( 'utility_api.php' );
+require_api( 'version_api.php' );
 
 $g_cache_project = array();
 $g_cache_project_missing = array();
 $g_cache_project_all = false;
 
-# --------------------
-# Cache a project row if necessary and return the cached copy
-#  If the second parameter is true (default), trigger an error
-#  if the project can't be found.  If the second parameter is
-#  false, return false if the project can't be found.
+use Mantis\Exceptions\ClientException;
+
+/**
+ * Checks if there are no projects defined.
+ * @return boolean true if there are no projects defined, false otherwise.
+ * @access public
+ */
+function project_table_empty() {
+	global $g_cache_project;
+
+	# If projects already cached, use the cache.
+	if( isset( $g_cache_project ) && count( $g_cache_project ) > 0 ) {
+		return false;
+	}
+
+	# Otherwise, check if the projects table contains at least one project.
+	$t_query = 'SELECT * FROM {project}';
+	$t_result = db_query( $t_query, array(), 1 );
+
+	return db_num_rows( $t_result ) == 0;
+}
+
+/**
+ * Cache a project row if necessary and return the cached copy
+ *  If the second parameter is true (default), trigger an error
+ *  if the project can't be found.  If the second parameter is
+ *  false, return false if the project can't be found.
+ * @param integer $p_project_id     A project identifier.
+ * @param boolean $p_trigger_errors Whether to trigger errors.
+ * @return array|boolean
+ */
 function project_cache_row( $p_project_id, $p_trigger_errors = true ) {
 	global $g_cache_project, $g_cache_project_missing;
 
@@ -67,46 +98,46 @@ function project_cache_row( $p_project_id, $p_trigger_errors = true ) {
 		return false;
 	}
 
-	if( isset( $g_cache_project[(int) $p_project_id] ) ) {
-		return $g_cache_project[(int) $p_project_id];
-	}
-	else if( isset( $g_cache_project_missing[(int) $p_project_id] ) ) {
+	if( isset( $g_cache_project[(int)$p_project_id] ) ) {
+		return $g_cache_project[(int)$p_project_id];
+	} else if( isset( $g_cache_project_missing[(int)$p_project_id] ) ) {
 		return false;
 	}
 
-	$c_project_id = db_prepare_int( $p_project_id );
-	$t_project_table = db_get_table( 'mantis_project_table' );
+	db_param_push();
+	$t_query = 'SELECT * FROM {project} WHERE id=' . db_param();
+	$t_result = db_query( $t_query, array( $p_project_id ) );
 
-	$query = "SELECT *
-				  FROM $t_project_table
-				  WHERE id=" . db_param();
-	$result = db_query_bound( $query, Array( $c_project_id ) );
-
-	if( 0 == db_num_rows( $result ) ) {
-		$g_cache_project_missing[(int) $p_project_id] = true;
+	if( 0 == db_num_rows( $t_result ) ) {
+		$g_cache_project_missing[(int)$p_project_id] = true;
 
 		if( $p_trigger_errors ) {
-			trigger_error( ERROR_PROJECT_NOT_FOUND, ERROR );
-		} else {
-			return false;
+			throw new ClientException( "Project #$p_project_id not found", ERROR_PROJECT_NOT_FOUND, array( $p_project_id ) );
 		}
+
+		return false;
 	}
 
-	$row = db_fetch_array( $result );
+	$t_row = db_fetch_array( $t_result );
 
-	$g_cache_project[(int) $p_project_id] = $row;
+	$g_cache_project[(int)$p_project_id] = $t_row;
 
-	return $row;
+	return $t_row;
 }
 
-function project_cache_array_rows( $p_project_id_array ) {
+/**
+ * Cache project data for array of project ids
+ * @param array $p_project_id_array An array of project identifiers.
+ * @return void
+ */
+function project_cache_array_rows( array $p_project_id_array ) {
 	global $g_cache_project, $g_cache_project_missing;
 
 	$c_project_id_array = array();
 
 	foreach( $p_project_id_array as $t_project_id ) {
-		if( !isset( $g_cache_project[(int) $t_project_id] ) && !isset( $g_cache_project_missing[(int) $t_project_id] ) ) {
-			$c_project_id_array[] = (int) $t_project_id;
+		if( !isset( $g_cache_project[(int)$t_project_id] ) && !isset( $g_cache_project_missing[(int)$t_project_id] ) ) {
+			$c_project_id_array[] = (int)$t_project_id;
 		}
 	}
 
@@ -114,44 +145,35 @@ function project_cache_array_rows( $p_project_id_array ) {
 		return;
 	}
 
-	$t_project_table = db_get_table( 'mantis_project_table' );
-
-	$query = "SELECT *
-				  FROM $t_project_table
-				  WHERE id IN (" . implode( ',', $c_project_id_array ) . ')';
-	$result = db_query_bound( $query );
+	$t_query = 'SELECT * FROM {project} WHERE id IN (' . implode( ',', $c_project_id_array ) . ')';
+	$t_result = db_query( $t_query );
 
 	$t_projects_found = array();
-	while( $row = db_fetch_array( $result ) ) {
-		$g_cache_project[(int) $row['id']] = $row;
-		$t_projects_found[(int) $row['id']] = true;
+	while( $t_row = db_fetch_array( $t_result ) ) {
+		$g_cache_project[(int)$t_row['id']] = $t_row;
+		$t_projects_found[(int)$t_row['id']] = true;
 	}
 
 	foreach ( $c_project_id_array as $c_project_id ) {
-		if ( !isset( $t_projects_found[$c_project_id] ) ) {
-			$g_cache_project_missing[(int) $c_project_id] = true;
+		if( !isset( $t_projects_found[$c_project_id] ) ) {
+			$g_cache_project_missing[(int)$c_project_id] = true;
 		}
 	}
-
-	return;
 }
 
-# --------------------
-# Cache all project rows and return an array of them
+/**
+ * Cache all project rows and return an array of them
+ * @return array
+ */
 function project_cache_all() {
 	global $g_cache_project, $g_cache_project_all;
 
 	if( !$g_cache_project_all ) {
-		$t_project_table = db_get_table( 'mantis_project_table' );
+		$t_query = 'SELECT * FROM {project}';
+		$t_result = db_query( $t_query );
 
-		$query = "SELECT *
-					  FROM $t_project_table";
-		$result = db_query_bound( $query );
-		$count = db_num_rows( $result );
-		for( $i = 0;$i < $count;$i++ ) {
-			$row = db_fetch_array( $result );
-
-			$g_cache_project[(int) $row['id']] = $row;
+		while( $t_row = db_fetch_array( $t_result ) ) {
+			$g_cache_project[(int)$t_row['id']] = $t_row;
 		}
 
 		$g_cache_project_all = true;
@@ -160,7 +182,11 @@ function project_cache_all() {
 	return $g_cache_project;
 }
 
-# Clear the project cache (or just the given id if specified)
+/**
+ * Clear the project cache (or just the given id if specified)
+ * @param integer $p_project_id A project identifier.
+ * @return void
+ */
 function project_clear_cache( $p_project_id = null ) {
 	global $g_cache_project, $g_cache_project_missing, $g_cache_project_all;
 
@@ -169,25 +195,30 @@ function project_clear_cache( $p_project_id = null ) {
 		$g_cache_project_missing = array();
 		$g_cache_project_all = false;
 	} else {
-		unset( $g_cache_project[(int) $p_project_id] );
-		unset( $g_cache_project_missing[(int) $p_project_id] );
+		unset( $g_cache_project[(int)$p_project_id] );
+		unset( $g_cache_project_missing[(int)$p_project_id] );
 		$g_cache_project_all = false;
 	}
-
-	return true;
 }
 
-# ===================================
-# Boolean queries and ensures
-# ===================================
-# check to see if project exists by id
-# return true if it does, false otherwise
-function project_exists( $p_project_id ) {
+/**
+ * Check if project is enabled.
+ * @param integer $p_project_id The project id.
+ * @return boolean
+ */
+function project_enabled( $p_project_id ) {
+	return project_get_field( $p_project_id, 'enabled' ) ? true : false;
+}
 
-	# we're making use of the caching function here.  If we
-	#  succeed in caching the project then it exists and is
-	#  now cached for use by later function calls.  If we can't
-	#  cache it we return false.
+/**
+ * check to see if project exists by id
+ * return true if it does, false otherwise
+ * @param integer $p_project_id A project identifier.
+ * @return boolean
+ */
+function project_exists( $p_project_id ) {
+	# we're making use of the caching function here.  If we succeed in caching the project then it exists and is
+	# now cached for use by later function calls.  If we can't cache it we return false.
 	if( false == project_cache_row( $p_project_id, false ) ) {
 		return false;
 	} else {
@@ -195,9 +226,13 @@ function project_exists( $p_project_id ) {
 	}
 }
 
-# check to see if project exists by id
-# if it doesn't exist then error
-#  otherwise let execution continue undisturbed
+/**
+ * check to see if project exists by id
+ * if it does not exist then error
+ * otherwise let execution continue undisturbed
+ * @param integer $p_project_id A project identifier.
+ * @return void
+ */
 function project_ensure_exists( $p_project_id ) {
 	if( !project_exists( $p_project_id ) ) {
 		error_parameters( $p_project_id );
@@ -205,61 +240,102 @@ function project_ensure_exists( $p_project_id ) {
 	}
 }
 
-# check to see if project exists by name
-function project_is_name_unique( $p_name ) {
-	$t_project_table = db_get_table( 'mantis_project_table' );
-
-	$query = "SELECT COUNT(*)
-				 FROM $t_project_table
-				 WHERE name=" . db_param();
-	$result = db_query_bound( $query, Array( $p_name ) );
-
-	if( 0 == db_result( $result ) ) {
-		return true;
-	} else {
-		return false;
+/**
+ * check to see if project exists by name
+ * @param string  $p_name       The project name.
+ * @param integer $p_exclude_id Optional project id to exclude from the check,
+ *                              to allow uniqueness check when updating.
+ * @return boolean
+ */
+function project_is_name_unique( $p_name, $p_exclude_id = null ) {
+	db_param_push();
+	$t_query = 'SELECT COUNT(*) FROM {project} WHERE name=' . db_param();
+	$t_param = array( $p_name );
+	if( $p_exclude_id ) {
+		$t_query .= ' AND id <> ' . db_param();
+		$t_param[] = (int)$p_exclude_id;
 	}
+	$t_result = db_query( $t_query, $t_param );
+
+	return 0 == db_result( $t_result );
 }
 
-# check to see if project exists by id
-# if it doesn't exist then error
-#  otherwise let execution continue undisturbed
-function project_ensure_name_unique( $p_name ) {
-	if( !project_is_name_unique( $p_name ) ) {
+/**
+ * check to see if project exists by id
+ * if it doesn't exist then error
+ * otherwise let execution continue undisturbed
+ * @param string  $p_name       The project name.
+ * @param integer $p_exclude_id Optional project id to exclude from the check,
+ *                              to allow uniqueness check when updating.
+ * @return void
+ */
+function project_ensure_name_unique( $p_name, $p_exclude_id = null ) {
+	if( !project_is_name_unique( $p_name, $p_exclude_id ) ) {
 		trigger_error( ERROR_PROJECT_NAME_NOT_UNIQUE, ERROR );
 	}
 }
 
-# check to see if the user/project combo already exists
-# returns true is duplicate is found, otherwise false
+/**
+ * check to see if the user/project combo already exists
+ * returns true is duplicate is found, otherwise false
+ * @param integer $p_project_id A project identifier.
+ * @param integer $p_user_id    A user id identifier.
+ * @return boolean
+ */
 function project_includes_user( $p_project_id, $p_user_id ) {
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
+	db_param_push();
+	$t_query = 'SELECT COUNT(*) FROM {project_user_list}
+				  WHERE project_id=' . db_param() . ' AND
+						user_id=' . db_param();
+	$t_result = db_query( $t_query, array( $p_project_id, $p_user_id ) );
 
-	$c_project_id = db_prepare_int( $p_project_id );
-	$c_user_id = db_prepare_int( $p_user_id );
-
-	$query = "SELECT COUNT(*)
-				  FROM $t_project_user_list_table
-				  WHERE project_id=" . db_param() . " AND
-						user_id=" . db_param();
-	$result = db_query_bound( $query, Array( $c_project_id, $c_user_id ) );
-
-	if( 0 == db_result( $result ) ) {
+	if( 0 == db_result( $t_result ) ) {
 		return false;
 	} else {
 		return true;
 	}
 }
 
-# =======================================
-# Creation / Deletion / Updating / Copy
-# =======================================
+/**
+ * Make sure that the project file path is valid: add trailing slash and
+ * set it to blank if equal to default path
+ * @param string $p_file_path A file path.
+ * @return string
+ * @access public
+ */
+function validate_project_file_path( $p_file_path ) {
+	if( !is_blank( $p_file_path ) ) {
+		# Make sure file path has trailing slash
+		$p_file_path = terminate_directory_path( $p_file_path );
 
-# Create a new project
+		# If the provided path is the same as the default, make the path blank.
+		# This means that if the default upload path is changed, you don't have
+		# to update the upload path for every single project.
+		if( !strcmp( $p_file_path, config_get_global( 'absolute_path_default_upload_folder' ) ) ) {
+			$p_file_path = '';
+		} else {
+			file_ensure_valid_upload_path( $p_file_path );
+		}
+	}
+
+	return $p_file_path;
+}
+
+
+
+/**
+ * Create a new project
+ * @param string  $p_name           The name of the project being created.
+ * @param string  $p_description    A description for the project.
+ * @param integer $p_status         The status of the project.
+ * @param integer $p_view_state     The view state of the project - public or private.
+ * @param string  $p_file_path      The attachment file path for the project, if not storing in the database.
+ * @param boolean $p_enabled        Whether the project is enabled.
+ * @param boolean $p_inherit_global Whether the project inherits global categories.
+ * @return integer
+ */
 function project_create( $p_name, $p_description, $p_status, $p_view_state = VS_PUBLIC, $p_file_path = '', $p_enabled = true, $p_inherit_global = true ) {
-
-	$c_enabled = db_prepare_bool( $p_enabled );
-	$c_inherit_global = db_prepare_bool( $p_inherit_global );
+	$c_enabled = (bool)$p_enabled;
 
 	if( is_blank( $p_name ) ) {
 		trigger_error( ERROR_PROJECT_NAME_INVALID, ERROR );
@@ -267,36 +343,35 @@ function project_create( $p_name, $p_description, $p_status, $p_view_state = VS_
 
 	project_ensure_name_unique( $p_name );
 
-	if( !is_blank( $p_file_path ) ) {
-		# Make sure file path has trailing slash
-		$p_file_path = terminate_directory_path( $p_file_path );
-		file_ensure_valid_upload_path( $p_file_path );
+	# Project does not exist yet, so we get global config
+	if( DATABASE !== config_get( 'file_upload_method', null, null, ALL_PROJECTS ) ) {
+		$p_file_path = validate_project_file_path( $p_file_path );
 	}
 
-	$t_project_table = db_get_table( 'mantis_project_table' );
-
-	$query = "INSERT INTO $t_project_table
+	db_param_push();
+	$t_query = 'INSERT INTO {project}
 					( name, status, enabled, view_state, file_path, description, inherit_global )
 				  VALUES
-					( " . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ')';
+					( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ')';
 
-	db_query_bound( $query, Array( $p_name, (int) $p_status, $c_enabled, (int) $p_view_state, $p_file_path, $p_description, $c_inherit_global ) );
+	db_query( $t_query, array( $p_name, (int)$p_status, $c_enabled, (int)$p_view_state, $p_file_path, $p_description, $p_inherit_global ) );
 
 	# return the id of the new project
-	return db_insert_id( $t_project_table );
+	return db_insert_id( db_get_table( 'project' ) );
 }
 
-# --------------------
-# Delete a project
+/**
+ * Delete a project
+ * @param integer $p_project_id A project identifier.
+ * @return void
+ */
 function project_delete( $p_project_id ) {
+	event_signal( 'EVENT_MANAGE_PROJECT_DELETE', array( $p_project_id ) );
+
 	$t_email_notifications = config_get( 'enable_email_notification' );
 
 	# temporarily disable all notifications
 	config_set_cache( 'enable_email_notification', OFF, CONFIG_TYPE_INT );
-
-	$c_project_id = db_prepare_int( $p_project_id );
-
-	$t_project_table = db_get_table( 'mantis_project_table' );
 
 	# Delete the bugs
 	bug_delete_all( $p_project_id );
@@ -329,26 +404,31 @@ function project_delete( $p_project_id ) {
 	user_pref_delete_project( $p_project_id );
 
 	# Delete the project entry
-	$query = "DELETE FROM $t_project_table
-				  WHERE id=" . db_param();
-
-	db_query_bound( $query, Array( $c_project_id ) );
+	db_param_push();
+	$t_query = 'DELETE FROM {project} WHERE id=' . db_param();
+	db_query( $t_query, array( $p_project_id ) );
 
 	config_set_cache( 'enable_email_notification', $t_email_notifications, CONFIG_TYPE_INT );
 
 	project_clear_cache( $p_project_id );
-
-	# db_query errors on failure so:
-	return true;
 }
 
-# --------------------
-# Update a project
+/**
+ * Update a project
+ * @param integer $p_project_id     The project identifier being updated.
+ * @param string  $p_name           The project name.
+ * @param string  $p_description    A description of the project.
+ * @param integer $p_status         The current status of the project.
+ * @param integer $p_view_state     The view state of the project - public or private.
+ * @param string  $p_file_path      The attachment file path for the project, if not storing in the database.
+ * @param boolean $p_enabled        Whether the project is enabled.
+ * @param boolean $p_inherit_global Whether the project inherits global categories.
+ * @return void
+ */
 function project_update( $p_project_id, $p_name, $p_description, $p_status, $p_view_state, $p_file_path, $p_enabled, $p_inherit_global ) {
-
-	$p_project_id = (int) $p_project_id;
-	$c_enabled = db_prepare_bool( $p_enabled );
-	$c_inherit_global = db_prepare_bool( $p_inherit_global );
+	$p_project_id = (int)$p_project_id;
+	$c_enabled = (bool)$p_enabled;
+	$c_inherit_global = (bool)$p_inherit_global;
 
 	if( is_blank( $p_name ) ) {
 		trigger_error( ERROR_PROJECT_NAME_INVALID, ERROR );
@@ -356,36 +436,52 @@ function project_update( $p_project_id, $p_name, $p_description, $p_status, $p_v
 
 	$t_old_name = project_get_field( $p_project_id, 'name' );
 
+	# If project is becoming private, save current user's access level
+	# so we can add them to the project afterwards so they don't lock
+	# themselves out
+	$t_old_view_state = project_get_field( $p_project_id, 'view_state' );
+	$t_is_becoming_private = VS_PRIVATE == $p_view_state && VS_PRIVATE != $t_old_view_state;
+	if( $t_is_becoming_private ) {
+		$t_user_id = auth_get_current_user_id();
+		$t_access_level = user_get_access_level( $t_user_id, $p_project_id );
+		$t_manage_project_threshold = config_get( 'manage_project_threshold' );
+	}
+
 	if( strcasecmp( $p_name, $t_old_name ) != 0 ) {
-		project_ensure_name_unique( $p_name );
+		project_ensure_name_unique( $p_name, $p_project_id );
 	}
 
-	if( !is_blank( $p_file_path ) ) {
-		# Make sure file path has trailing slash
-		$p_file_path = terminate_directory_path( $p_file_path );
-		file_ensure_valid_upload_path( $p_file_path );
+	if( DATABASE !== config_get( 'file_upload_method', null, null, $p_project_id ) ) {
+		$p_file_path = validate_project_file_path( $p_file_path );
 	}
 
-	$t_project_table = db_get_table( 'mantis_project_table' );
-
-	$query = "UPDATE $t_project_table
-				  SET name=" . db_param() . ",
-					status=" . db_param() . ",
-					enabled=" . db_param() . ",
-					view_state=" . db_param() . ",
-					file_path=" . db_param() . ",
-					description=" . db_param() . ",
-					inherit_global=" . db_param() . "
-				  WHERE id=" . db_param();
-	db_query_bound( $query, Array( $p_name, (int) $p_status, $c_enabled, (int) $p_view_state, $p_file_path, $p_description, $c_inherit_global, $p_project_id ) );
+	db_param_push();
+	$t_query = 'UPDATE {project}
+				  SET name=' . db_param() . ',
+					status=' . db_param() . ',
+					enabled=' . db_param() . ',
+					view_state=' . db_param() . ',
+					file_path=' . db_param() . ',
+					description=' . db_param() . ',
+					inherit_global=' . db_param() . '
+				  WHERE id=' . db_param();
+	db_query( $t_query, array( $p_name, (int)$p_status, $c_enabled, (int)$p_view_state, $p_file_path, $p_description, $c_inherit_global, $p_project_id ) );
 
 	project_clear_cache( $p_project_id );
 
-	# db_query errors on failure so:
-	return true;
+	# User just locked themselves out of the project by making it private,
+	# so we add them to the project with their previous access level
+	if( $t_is_becoming_private && !access_has_project_level( $t_manage_project_threshold, $p_project_id ) ) {
+		project_add_user( $p_project_id, $t_user_id, $t_access_level );
+	}
 }
 
-# Copy custom fields
+/**
+ * Copy custom fields
+ * @param integer $p_destination_id The destination project identifier.
+ * @param integer $p_source_id      The source project identifier.
+ * @return void
+ */
 function project_copy_custom_fields( $p_destination_id, $p_source_id ) {
 	$t_custom_field_ids = custom_field_get_linked_ids( $p_source_id );
 	foreach( $t_custom_field_ids as $t_custom_field_id ) {
@@ -397,117 +493,132 @@ function project_copy_custom_fields( $p_destination_id, $p_source_id ) {
 	}
 }
 
-# ===================================
-# Data Access
-# ===================================
-# Get the id of the project with the specified name
+/**
+ * Get the id of the project with the specified name
+ * @param string $p_project_name Project name to retrieve.
+ * @return integer
+ */
 function project_get_id_by_name( $p_project_name ) {
-	$t_project_table = db_get_table( 'mantis_project_table' );
+	db_param_push();
+	$t_query = 'SELECT id FROM {project} WHERE name = ' . db_param();
+	$t_result = db_query( $t_query, array( $p_project_name ), 1 );
 
-	$query = "SELECT id FROM $t_project_table WHERE name = " . db_param();
-	$t_result = db_query_bound( $query, Array( $p_project_name ), 1 );
-
-	if( db_num_rows( $t_result ) == 0 ) {
-		return 0;
+	$t_id = db_result( $t_result );
+	if( $t_id ) {
+		return $t_id;
 	} else {
-		return db_result( $t_result );
+		return 0;
 	}
 }
 
-# Return the row describing the given project
-function project_get_row( $p_project_id ) {
-	return project_cache_row( $p_project_id );
+/**
+ * Return the row describing the given project
+ * @param integer $p_project_id     A project identifier.
+ * @param boolean $p_trigger_errors Whether to trigger errors.
+ * @return array
+ */
+function project_get_row( $p_project_id, $p_trigger_errors = true ) {
+	return project_cache_row( $p_project_id, $p_trigger_errors );
 }
 
-# Return all rows describing all projects
+/**
+ * Return all rows describing all projects
+ * @return array
+ */
 function project_get_all_rows() {
 	return project_cache_all();
 }
 
-# Return the specified field of the specified project
-function project_get_field( $p_project_id, $p_field_name ) {
-	$row = project_get_row( $p_project_id );
+/**
+ * Return the specified field of the specified project
+ * @param integer $p_project_id     A project identifier.
+ * @param string  $p_field_name     The field name to retrieve.
+ * @param boolean $p_trigger_errors Whether to trigger errors.
+ * @return string
+ */
+function project_get_field( $p_project_id, $p_field_name, $p_trigger_errors = true ) {
+	$t_row = project_get_row( $p_project_id, $p_trigger_errors );
 
-	if( isset( $row[$p_field_name] ) ) {
-		return $row[$p_field_name];
-	} else {
+	if( isset( $t_row[$p_field_name] ) ) {
+		return $t_row[$p_field_name];
+	} else if( $p_trigger_errors ) {
 		error_parameters( $p_field_name );
 		trigger_error( ERROR_DB_FIELD_NOT_FOUND, WARNING );
-		return '';
 	}
+
+	return '';
 }
 
-# Return the name of the project
-# Handles ALL_PROJECTS by returning the internationalized string for All Projects
-function project_get_name( $p_project_id ) {
+/**
+ * Return the name of the project
+ * Handles ALL_PROJECTS by returning the internationalized string for All Projects
+ * @param integer $p_project_id     A project identifier.
+ * @param boolean $p_trigger_errors Whether to trigger errors.
+ * @return string
+ */
+function project_get_name( $p_project_id, $p_trigger_errors = true ) {
 	if( ALL_PROJECTS == $p_project_id ) {
 		return lang_get( 'all_projects' );
 	} else {
-		return project_get_field( $p_project_id, 'name' );
+		return project_get_field( $p_project_id, 'name', $p_trigger_errors );
 	}
 }
 
-# Return the user's local (overridden) access level on the project or false
-#  if the user is not listed on the project
+/**
+ * Return the user's local (overridden) access level on the project or false
+ *  if the user is not listed on the project
+ * @param integer $p_project_id A project identifier.
+ * @param integer $p_user_id    A user identifier.
+ * @return integer
+ * @deprecated     access_get_local_level() should be used in preference to this function
+ *                 This function has been deprecated in version 2.6
+ */
 function project_get_local_user_access_level( $p_project_id, $p_user_id ) {
-	$p_project_id = (int) $p_project_id;
-
-	if( ALL_PROJECTS == $p_project_id ) {
-		return false;
-	}
-
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
-
-	$query = "SELECT access_level
-				  FROM $t_project_user_list_table
-				  WHERE user_id=" . db_param() . " AND project_id=" . db_param();
-	$result = db_query_bound( $query, Array( (int) $p_user_id, $p_project_id ) );
-
-	if( db_num_rows( $result ) > 0 ) {
-		return db_result( $result );
-	} else {
-		return false;
-	}
+	error_parameters( __FUNCTION__ . '()', 'access_get_local_level()' );
+	trigger_error( ERROR_DEPRECATED_SUPERSEDED, DEPRECATED );
+	return access_get_local_level( $p_user_id, $p_project_id );
 }
 
-# return the descriptor holding all the info from the project user list
-# for the specified project
+/**
+ * return the descriptor holding all the info from the project user list
+ * for the specified project
+ * @param integer $p_project_id A project identifier.
+ * @return array
+ */
 function project_get_local_user_rows( $p_project_id ) {
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
-
-	$query = "SELECT *
-				FROM $t_project_user_list_table
-				WHERE project_id=" . db_param();
-
-	$result = db_query_bound( $query, Array( (int) $p_project_id ) );
+	db_param_push();
+	$t_query = 'SELECT * FROM {project_user_list} WHERE project_id=' . db_param();
+	$t_result = db_query( $t_query, array( (int)$p_project_id ) );
 
 	$t_user_rows = array();
-	$t_row_count = db_num_rows( $result );
+	$t_row_count = db_num_rows( $t_result );
 
-	for( $i = 0;$i < $t_row_count;$i++ ) {
-		array_push( $t_user_rows, db_fetch_array( $result ) );
+	while( $t_row = db_fetch_array( $t_result ) ) {
+		array_push( $t_user_rows, $t_row );
 	}
 
 	return $t_user_rows;
 }
 
-# Return an array of info about users who have access to the the given project
-# For each user we have 'id', 'username', and 'access_level' (overall access level)
-# If the second parameter is given, return only users with an access level
-#  higher than the given value.
-# if the first parameter is given as 'ALL_PROJECTS', return the global access level (without
-# any reference to the specific project
+/**
+ * Return an array of info about users who have access to the the given project
+ * For each user we have 'id', 'username', and 'access_level' (overall access level)
+ * If the second parameter is given, return only users with an access level
+ * higher than the given value.
+ * if the first parameter is given as 'ALL_PROJECTS', return the global access level (without
+ * any reference to the specific project
+ * @param integer $p_project_id           A project identifier.
+ * @param integer $p_access_level         Access level.
+ * @param boolean $p_include_global_users Whether to include global users.
+ * @return array List of users, array key is user ID
+ */
 function project_get_all_user_rows( $p_project_id = ALL_PROJECTS, $p_access_level = ANYBODY, $p_include_global_users = true ) {
-	$c_project_id = db_prepare_int( $p_project_id );
+	$c_project_id = (int)$p_project_id;
 
 	# Optimization when access_level is NOBODY
 	if( NOBODY == $p_access_level ) {
 		return array();
 	}
-
-	$t_user_table = db_get_table( 'mantis_user_table' );
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
-	$t_project_table = db_get_table( 'mantis_project_table' );
 
 	$t_on = ON;
 	$t_users = array();
@@ -517,11 +628,10 @@ function project_get_all_user_rows( $p_project_id = ALL_PROJECTS, $p_access_leve
 
 		# looking for specific project
 		if( VS_PRIVATE == project_get_field( $p_project_id, 'view_state' ) ) {
-			/** @todo (thraxisp) this is probably more complex than it needs to be
-			 * When a new project is created, those who meet 'private_project_threshold' are added
-			 *  automatically, but don't have an entry in project_user_list_table.
-			 *  if they did, you would not have to add global levels.
-			 */
+			# @todo (thraxisp) this is probably more complex than it needs to be
+			# When a new project is created, those who meet 'private_project_threshold' are added
+			# automatically, but don't have an entry in project_user_list_table.
+			#  if they did, you would not have to add global levels.
 			$t_private_project_threshold = config_get( 'private_project_threshold' );
 			if( is_array( $t_private_project_threshold ) ) {
 				if( is_array( $p_access_level ) ) {
@@ -538,7 +648,7 @@ function project_get_all_user_rows( $p_project_id = ALL_PROJECTS, $p_access_leve
 				}
 			} else {
 				if( is_array( $p_access_level ) ) {
-					// private threshold is a number, but request is an array, use values in request higher than threshold
+					# private threshold is a number, but request is an array, use values in request higher than threshold
 					$t_global_access_level = array();
 					foreach( $p_access_level as $t_threshold ) {
 						if( $t_threshold >= $t_private_project_threshold ) {
@@ -546,7 +656,7 @@ function project_get_all_user_rows( $p_project_id = ALL_PROJECTS, $p_access_leve
 						}
 					}
 				} else {
-					// both private threshold and request are numbers, use maximum
+					# both private threshold and request are numbers, use maximum
 					$t_global_access_level = max( $p_access_level, $t_private_project_threshold );
 				}
 			}
@@ -562,109 +672,124 @@ function project_get_all_user_rows( $p_project_id = ALL_PROJECTS, $p_access_leve
 			$t_global_access_clause = 'IN (' . implode( ',', $t_global_access_level ) . ')';
 		}
 	} else {
-		$t_global_access_clause = ">= $t_global_access_level ";
+		$t_global_access_clause = '>= ' . $t_global_access_level . ' ';
 	}
 
 	if( $p_include_global_users ) {
-		$query = "SELECT id, username, realname, access_level
-				FROM $t_user_table
-				WHERE enabled = " . db_param() . "
-					AND access_level $t_global_access_clause";
+		db_param_push();
+		$t_query = 'SELECT id, username, realname, access_level
+				FROM {user}
+				WHERE enabled = ' . db_param() . '
+					AND access_level ' . $t_global_access_clause;
+		$t_result = db_query( $t_query, array( $t_on ) );
 
-		$result = db_query_bound( $query, Array( $t_on ) );
-		$t_row_count = db_num_rows( $result );
-		for( $i = 0;$i < $t_row_count;$i++ ) {
-			$row = db_fetch_array( $result );
-			$t_users[$row['id']] = $row;
+		while( $t_row = db_fetch_array( $t_result ) ) {
+			$t_users[(int)$t_row['id']] = $t_row;
 		}
 	}
 
 	if( $c_project_id != ALL_PROJECTS ) {
-
-		// Get the project overrides
-		$query = "SELECT u.id, u.username, u.realname, l.access_level
-				FROM $t_project_user_list_table l, $t_user_table u
+		# Get the project overrides
+		db_param_push();
+		$t_query = 'SELECT u.id, u.username, u.realname, l.access_level
+				FROM {project_user_list} l, {user} u
 				WHERE l.user_id = u.id
-				AND u.enabled = " . db_param() . "
-				AND l.project_id = " . db_param();
+				AND u.enabled = ' . db_param() . '
+				AND l.project_id = ' . db_param();
+		$t_result = db_query( $t_query, array( $t_on, $c_project_id ) );
 
-		$result = db_query_bound( $query, Array( $t_on, $c_project_id ) );
-		$t_row_count = db_num_rows( $result );
-		for( $i = 0;$i < $t_row_count;$i++ ) {
-			$row = db_fetch_array( $result );
+		while( $t_row = db_fetch_array( $t_result ) ) {
 			if( is_array( $p_access_level ) ) {
-				$t_keep = in_array( $row['access_level'], $p_access_level );
+				$t_keep = in_array( $t_row['access_level'], $p_access_level );
 			} else {
-				$t_keep = $row['access_level'] >= $p_access_level;
+				$t_keep = $t_row['access_level'] >= $p_access_level;
 			}
 
 			if( $t_keep ) {
-				$t_users[$row['id']] = $row;
+				$t_users[(int)$t_row['id']] = $t_row;
 			} else {
 				# If user's overridden level is lower than required, so remove
 				#  them from the list if they were previously there
-				unset( $t_users[$row['id']] );
+				unset( $t_users[(int)$t_row['id']] );
 			}
 		}
 	}
 
-	user_cache_array_rows( array_keys( $t_users ) );
-
-	return array_values( $t_users );
+	return $t_users;
 }
 
-# ===================================
-# Data Modification
-# ===================================
-# add user with the specified access level to a project
-function project_add_user( $p_project_id, $p_user_id, $p_access_level ) {
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
-
-	$c_project_id = db_prepare_int( $p_project_id );
-	$c_user_id = db_prepare_int( $p_user_id );
-	$c_access_level = db_prepare_int( $p_access_level );
-
-	if( DEFAULT_ACCESS_LEVEL == $p_access_level ) {
-
-		# Default access level for this user
-		$c_access_level = db_prepare_int( user_get_access_level( $p_user_id ) );
+/**
+ * Returns the upload path for the specified project, empty string if
+ * file_upload_method is DATABASE
+ * @param integer $p_project_id A project identifier.
+ * @return string upload path
+ */
+function project_get_upload_path( $p_project_id ) {
+	if( DATABASE == config_get( 'file_upload_method', null, ALL_USERS, $p_project_id ) ) {
+		return '';
 	}
 
-	$query = "INSERT
-				  INTO $t_project_user_list_table
+	if( $p_project_id == ALL_PROJECTS ) {
+		$t_path = config_get_global( 'absolute_path_default_upload_folder', '' );
+	} else {
+		$t_path = project_get_field( $p_project_id, 'file_path' );
+		if( is_blank( $t_path ) ) {
+			$t_path = config_get_global( 'absolute_path_default_upload_folder', '' );
+		}
+	}
+
+	return $t_path;
+}
+
+/**
+ * add user with the specified access level to a project
+ * @param integer $p_project_id   A project identifier.
+ * @param integer $p_user_id      A valid user id identifier.
+ * @param integer $p_access_level The access level to add the user with.
+ * @return void
+ */
+function project_add_user( $p_project_id, $p_user_id, $p_access_level ) {
+	$t_access_level = (int)$p_access_level;
+	if( DEFAULT_ACCESS_LEVEL == $t_access_level ) {
+		# Default access level for this user
+		$t_access_level = user_get_access_level( $p_user_id );
+	}
+
+	db_param_push();
+	$t_query = 'INSERT INTO {project_user_list}
 				    ( project_id, user_id, access_level )
 				  VALUES
-				    ( " . db_param() . ', ' . db_param() . ', ' . db_param() . ')';
+				    ( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ')';
 
-	db_query_bound( $query, Array( $c_project_id, $c_user_id, $c_access_level ) );
-
-	# db_query errors on failure so:
-	return true;
+	db_query( $t_query, array( (int)$p_project_id, (int)$p_user_id, $t_access_level ) );
 }
 
-# update entry
-# must make sure entry exists beforehand
+/**
+ * update entry
+ * must make sure entry exists beforehand
+ * @param integer $p_project_id   A project identifier.
+ * @param integer $p_user_id      A user identifier.
+ * @param integer $p_access_level Access level to set.
+ * @return void
+ */
 function project_update_user_access( $p_project_id, $p_user_id, $p_access_level ) {
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
+	db_param_push();
+	$t_query = 'UPDATE {project_user_list}
+				  SET access_level=' . db_param() . '
+				  WHERE	project_id=' . db_param() . ' AND
+						user_id=' . db_param();
 
-	$c_project_id = db_prepare_int( $p_project_id );
-	$c_user_id = db_prepare_int( $p_user_id );
-	$c_access_level = db_prepare_int( $p_access_level );
-
-	$query = "UPDATE $t_project_user_list_table
-				  SET access_level=" . db_param() . "
-				  WHERE	project_id=" . db_param() . " AND
-						user_id=" . db_param();
-
-	db_query_bound( $query, Array( $c_access_level, $c_project_id, $c_user_id ) );
-
-	# db_query errors on failure so:
-	return true;
+	db_query( $t_query, array( (int)$p_access_level, (int)$p_project_id, (int)$p_user_id ) );
 }
 
-# update or add the entry as appropriate
-#  This function involves one more db query than project_update_user_acces()
-#  or project_add_user()
+/**
+ * update or add the entry as appropriate
+ * This function involves one more database query than project_update_user_acces() or project_add_user()
+ * @param integer $p_project_id   A project identifier.
+ * @param integer $p_user_id      A user identifier.
+ * @param integer $p_access_level Project Access level to grant the user.
+ * @return boolean
+ */
 function project_set_user_access( $p_project_id, $p_user_id, $p_access_level ) {
 	if( project_includes_user( $p_project_id, $p_user_id ) ) {
 		return project_update_user_access( $p_project_id, $p_user_id, $p_access_level );
@@ -673,88 +798,92 @@ function project_set_user_access( $p_project_id, $p_user_id, $p_access_level ) {
 	}
 }
 
-# remove user from project
+/**
+ * remove user from project
+ * @param integer $p_project_id A project identifier.
+ * @param integer $p_user_id    A user identifier.
+ * @return void
+ */
 function project_remove_user( $p_project_id, $p_user_id ) {
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
+	db_param_push();
+	$t_query = 'DELETE FROM {project_user_list}
+				  WHERE project_id=' . db_param() . ' AND user_id=' . db_param();
 
-	$c_project_id = db_prepare_int( $p_project_id );
-	$c_user_id = db_prepare_int( $p_user_id );
-
-	$query = "DELETE FROM $t_project_user_list_table
-				  WHERE project_id=" . db_param() . " AND
-						user_id=" . db_param();
-
-	db_query_bound( $query, Array( $c_project_id, $c_user_id ) );
-
-	# db_query errors on failure so:
-	return true;
+	db_query( $t_query, array( (int)$p_project_id, (int)$p_user_id ) );
 }
 
-# delete all users from the project user list for a given project
-# this is useful when deleting or closing a project
-function project_remove_all_users( $p_project_id ) {
-	$t_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
+/**
+ * Delete all users from the project user list for a given project. This is
+ * useful when deleting or closing a project. The $p_access_level_limit
+ * parameter can be used to only remove users from a project if their access
+ * level is below or equal to the limit.
+ * @param integer $p_project_id         A project identifier.
+ * @param integer $p_access_level_limit Access level limit (null = no limit).
+ * @return void
+ */
+function project_remove_all_users( $p_project_id, $p_access_level_limit = null ) {
+	db_param_push();
+	$t_query = 'DELETE FROM {project_user_list} WHERE project_id = ' . db_param();
 
-	$c_project_id = db_prepare_int( $p_project_id );
-
-	$query = "DELETE FROM $t_project_user_list_table
-				WHERE project_id=" . db_param();
-
-	db_query_bound( $query, Array( $c_project_id ) );
-
-	# db_query errors on failure so:
-	return true;
+	if( $p_access_level_limit !== null ) {
+		$t_query .= ' AND access_level <= ' . db_param();
+		db_query( $t_query, array( (int)$p_project_id, (int)$p_access_level_limit ) );
+	} else {
+		db_query( $t_query, array( (int)$p_project_id ) );
+	}
 }
 
-# Copy all users and their permissions from the source project to the
-#  destination project
-function project_copy_users( $p_destination_id, $p_source_id ) {
+/**
+ * Copy all users and their permissions from the source project to the
+ * destination project. The $p_access_level_limit parameter can be used to
+ * limit the access level for users as they're copied to the destination
+ * project (the highest access level they'll receive in the destination
+ * project will be equal to $p_access_level_limit).
+ * @param integer $p_destination_id     The destination project identifier.
+ * @param integer $p_source_id          The source project identifier.
+ * @param integer $p_access_level_limit Access level limit (null = no limit).
+ * @return void
+ */
+function project_copy_users( $p_destination_id, $p_source_id, $p_access_level_limit = null ) {
 	# Copy all users from current project over to another project
 	$t_rows = project_get_local_user_rows( $p_source_id );
 
 	$t_count = count( $t_rows );
-	for ( $i = 0; $i < $t_count; $i++ ) {
+	for( $i = 0; $i < $t_count; $i++ ) {
 		$t_row = $t_rows[$i];
+
+		if( $p_access_level_limit !== null &&
+			$t_row['access_level'] > $p_access_level_limit ) {
+			$t_destination_access_level = $p_access_level_limit;
+		} else {
+			$t_destination_access_level = $t_row['access_level'];
+		}
 
 		# if there is no duplicate then add a new entry
 		# otherwise just update the access level for the existing entry
-		if ( project_includes_user( $p_destination_id, $t_row['user_id'] ) ) {
-			project_update_user_access( $p_destination_id, $t_row['user_id'], $t_row['access_level'] );
+		if( project_includes_user( $p_destination_id, $t_row['user_id'] ) ) {
+			project_update_user_access( $p_destination_id, $t_row['user_id'], $t_destination_access_level );
 		} else {
-			project_add_user( $p_destination_id, $t_row['user_id'], $t_row['access_level'] );
+			project_add_user( $p_destination_id, $t_row['user_id'], $t_destination_access_level );
 		}
 	}
 }
 
-# Delete all files associated with a project
+/**
+ * Delete all files associated with a project
+ * @param integer $p_project_id A project identifier.
+ * @return void
+ */
 function project_delete_all_files( $p_project_id ) {
 	file_delete_project_files( $p_project_id );
 }
 
-# ===================================
-# Other
-# ===================================
-
-# Pads the project id with the appropriate number of zeros.
+/**
+ * Pads the project id with the appropriate number of zeros.
+ * @param integer $p_project_id A project identifier.
+ * @return string
+ */
 function project_format_id( $p_project_id ) {
 	$t_padding = config_get( 'display_project_padding' );
 	return( utf8_str_pad( $p_project_id, $t_padding, '0', STR_PAD_LEFT ) );
-}
-
-
-# Return true if the file name identifier is unique, false otherwise
-function project_file_is_name_unique( $p_name ) {
-	$t_file_table = db_get_table( 'mantis_project_file_table' );
-
-	$query = "SELECT COUNT(*)
-				  FROM $t_file_table
-				  WHERE filename=" . db_param();
-	$result = db_query_bound( $query, Array( $p_name ) );
-	$t_count = db_result( $result );
-
-	if( $t_count > 0 ) {
-		return false;
-	} else {
-		return true;
-	}
 }

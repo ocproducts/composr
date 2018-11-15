@@ -183,13 +183,14 @@ class Hook_addon_registry_core_fields
                 'ALL' => array(
                     array(
                         'HAS' => true,
-                        'OPTION' => lorem_phrase(),
+                        'OPTION' => lorem_phrase() . 'a',
                     ),
                     array(
                         'HAS' => false,
-                        'OPTION' => lorem_phrase(),
+                        'OPTION' => lorem_phrase() . 'b',
                     ),
                 ),
+                'FLAT' => array(lorem_phrase() . 'a', lorem_phrase() . 'b'),
                 'FIELD_ID' => placeholder_id(),
             )), null, '', true)
         );

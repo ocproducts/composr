@@ -27,7 +27,7 @@ class Hook_search_cns_clubs extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
-     * @return ?array Map of search hook details (null: hook is disabled)
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {
@@ -41,7 +41,7 @@ class Hook_search_cns_clubs extends FieldsSearchHook
 
         if ($check_permissions) {
             if (!has_actual_page_access(get_member(), 'groups')) {
-                return null;
+                return false;
             }
         }
 

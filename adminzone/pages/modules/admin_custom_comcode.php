@@ -70,7 +70,8 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -91,18 +92,24 @@ class Module_admin_custom_comcode extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('custom_comcode', array(
-            'tag_tag' => '*ID_TEXT',
-            'tag_title' => 'SHORT_TRANS',
-            'tag_description' => 'SHORT_TRANS',
-            'tag_replace' => 'LONG_TEXT',
-            'tag_example' => 'LONG_TEXT',
-            'tag_parameters' => 'SHORT_TEXT',
-            'tag_enabled' => 'BINARY',
-            'tag_dangerous_tag' => 'BINARY',
-            'tag_block_tag' => 'BINARY',
-            'tag_textual_tag' => 'BINARY',
-        ));
+        if ($upgrade_from === null) {
+            $GLOBALS['SITE_DB']->create_table('custom_comcode', array(
+                'tag_tag' => '*ID_TEXT',
+                'tag_title' => 'SHORT_TRANS',
+                'tag_description' => 'SHORT_TRANS',
+                'tag_replace' => 'LONG_TEXT',
+                'tag_example' => 'LONG_TEXT',
+                'tag_parameters' => 'LONG_TEXT',
+                'tag_enabled' => 'BINARY',
+                'tag_dangerous_tag' => 'BINARY',
+                'tag_block_tag' => 'BINARY',
+                'tag_textual_tag' => 'BINARY'
+            ));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->alter_table_field('custom_comcode', 'tag_parameters', 'LONG_TEXT');
+        }
     }
 
     public $title;

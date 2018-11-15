@@ -123,9 +123,9 @@ function cms_get_temp_dir()
     if (!file_exists($local_path)) {
         make_missing_directory($local_path);
     }
-    $server_path = sys_get_temp_dir();
+    $server_path = rtrim(sys_get_temp_dir(), '/\\');
     $problem_saving = ((get_option('force_local_temp_dir') == '1') || ((ini_get('open_basedir') != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
-    $path = ($problem_saving ? $local_path : $server_path) . '/';
+    $path = ($problem_saving ? $local_path : $server_path);
     return array($path, $problem_saving, $server_path, $local_path);
 }
 
@@ -155,6 +155,51 @@ function _cms_tempnam($prefix = '')
         fix_permissions($local_path . '/' . $tempnam);
     }
     return $tempnam;
+}
+
+/**
+ * Find if a file is a temporary file.
+ *
+ * @param  PATH $path File path
+ * @return boolean Whether it is
+ */
+function is_temp_file($path)
+{
+    $path = realpath($path);
+
+    $_temp_dir = cms_get_temp_dir();
+    $temp_dirs = array(
+        realpath($_temp_dir[0]),
+        get_custom_file_base() . '/temp',
+    );
+
+    foreach ($temp_dirs as $temp_dir) {
+        if (substr($path, 0, strlen($temp_dir) + 1) == $temp_dir . '/') {
+            return true;
+        }
+        if (substr($path, 0, strlen($temp_dir) + 1) == $temp_dir . '\\') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Delete any attachment files from disk that were created as temporary files.
+ * We cannot do this after the mail_wrap function is called because the mail queue will need them - it has to be once the mail is finished with.
+ *
+ * @param  ?array $attachments A list of attachments (each attachment being a map, absolute path=>filename) (null: none)
+ */
+function clean_temporary_mail_attachments($attachments)
+{
+    if ($attachments !== null) {
+        foreach (array_keys($attachments) as $path) {
+            if (is_temp_file($path)) {
+                unlink($path);
+            }
+        }
+    }
 }
 
 /**

@@ -109,6 +109,12 @@ function commandr_script()
             $temp = new Virtual_shell(trim($command));
             $temp->output_xml();
         } catch (Exception $e) {
+            if (has_smart_quotes($command)) {
+                $_stderr = do_lang('EVAL_ERROR') . do_lang('EVAL_ERROR_QUOTE_ISSUE');
+            } else {
+                $_stderr = do_lang('EVAL_ERROR');
+            }
+
             @http_response_code(200);
             @header('Content-type: text/xml; charset=' . get_charset());
             $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
@@ -118,7 +124,7 @@ function commandr_script()
                         <stdcommand></stdcommand>
                         <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) != 0) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
                         <stdout>' . xmlentities($e->getMessage()) . '</stdout>
-                        <stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
+                        <stderr>' . xmlentities($_stderr) . '</stderr>
                     </result>
                 </response>';
 
@@ -971,7 +977,11 @@ class Virtual_shell
                     $this->output[STREAM_STDCOMMAND] = '';
                     $this->output[STREAM_STDHTML] = '';
                     $this->output[STREAM_STDOUT] = '';
-                    $this->output[STREAM_STDERR] = do_lang('NON_COMMAND');
+                    if ((substr(trim($this->parsed_input[SECTION_COMMAND]), -1) == ';') || (substr(trim($this->parsed_input[SECTION_COMMAND]), -1) == ')')) {
+                        $this->output[STREAM_STDERR] = do_lang('NON_COMMAND_MISSING_COLON');
+                    } else {
+                        $this->output[STREAM_STDERR] = do_lang('NON_COMMAND');
+                    }
                     return;
                 }
             }
@@ -1252,6 +1262,9 @@ class Virtual_shell
             $commandr_output = ob_get_contents();
             if (($commandr_output == '') && ($commandr_eval_output !== false)) {
                 $commandr_output = @strval($commandr_eval_output);
+                if ($commandr_output == '') {
+                    $commandr_output = do_lang('COMMAND_NO_OUTPUT');
+                }
             }
             ob_end_clean();
 
@@ -1313,7 +1326,11 @@ class Virtual_shell
             $this->output[STREAM_STDOUT] = $commandr_output;
         }
         if ($commandr_eval_output === false) {
-            $this->output[STREAM_STDERR] = do_lang('EVAL_ERROR');
+            if (has_smart_quotes($this->parsed_input[SECTION_COMMAND])) {
+                $this->output[STREAM_STDERR] = do_lang('EVAL_ERROR') . do_lang('EVAL_ERROR_QUOTE_ISSUE');
+            } else {
+                $this->output[STREAM_STDERR] = do_lang('EVAL_ERROR');
+            }
         }
         if ($commandr_output === null) {
             $this->output[STREAM_STDERR] = do_lang('NO_RESULTS');
@@ -1411,4 +1428,30 @@ function do_command_help($command, $options, $parameters)
 function commandr_make_normal_html_visible($html)
 {
     return do_template('COMMANDR_BOX', array('_GUID' => '1a77370b0230fafda432c2d325d83ef1', 'HTML' => $html));
+}
+
+/**
+ * Find whether some text is using Unicode smart quotes.
+ *
+ * @param  string $str Text
+ * @return boolean Whether it has Unicode smart quotes
+ */
+function has_smart_quotes($str)
+{
+    if (get_charset() != 'utf-8') {
+        return false;
+    }
+    if (strpos($str, hex2bin('e28098')) !== false) {
+        return true;
+    }
+    if (strpos($str, hex2bin('e28099')) !== false) {
+        return true;
+    }
+    if (strpos($str, hex2bin('e2809c')) !== false) {
+        return true;
+    }
+    if (strpos($str, hex2bin('e2809d')) !== false) {
+        return true;
+    }
+    return false;
 }

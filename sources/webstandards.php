@@ -940,6 +940,7 @@ function init__webstandards()
         'q.cite' => '.+',
         'rt.rbspan' => $enforce_inumber,
         'script.async' => '(async)',
+        'select.required' => '(required)',
         'script.charset' => '.+',
         'script.defer' => 'defer',
         'script.event' => '.+',

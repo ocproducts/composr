@@ -22,7 +22,7 @@ class Hook_search_tutorials_external extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
-     * @return ?array Map of search hook details (null: hook is disabled)
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {

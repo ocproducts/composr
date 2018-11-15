@@ -883,11 +883,12 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
  * @param  ID_TEXT $type Table type
  * @set short long
  * @param  ?string $param Search term (null: lookup from environment)
+ * @param  string $table_alias Table alias for catalogue entry table
  * @return ?array Tuple of SQL details (array: extra trans fields to search, array: extra plain fields to search, string: an extra table segment for a join, string: the name of the field to use as a title, if this is the title, extra WHERE clause stuff) (null: nothing special)
  */
-function exact_match_sql($field, $i, $type = 'short', $param = null)
+function exact_match_sql($field, $i, $type = 'short', $param = null, $table_alias = 'r')
 {
-    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
+    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if ($param === null) {
         $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
@@ -911,11 +912,12 @@ function exact_match_sql($field, $i, $type = 'short', $param = null)
  * @param  ID_TEXT $type Table type
  * @set short long
  * @param  ?string $param Search term (null: lookup from environment)
+ * @param  string $table_alias Table alias for catalogue entry table
  * @return ?array Tuple of SQL details (array: extra trans fields to search, array: extra plain fields to search, string: an extra table segment for a join, string: the name of the field to use as a title, if this is the title, extra WHERE clause stuff) (null: nothing special)
  */
-function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
+function nl_delim_match_sql($field, $i, $type = 'short', $param = null, $table_alias = 'r')
 {
-    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
+    $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if ($param === null) {
         $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);

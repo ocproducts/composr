@@ -326,9 +326,11 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
     if (!$got_geo_lookup) {
         $location_data[do_lang('IP_ADDRESS', null, null, null, get_site_default_lang())] = $ip;
 
-        $reverse_dns = cms_gethostbyaddr($ip);
-        if (strpos($reverse_dns, 'NXDOMAIN') === false) {
-            $location_data[do_lang('REVERSE_DNS_AND_WHOIS', null, null, null, get_site_default_lang())] = $reverse_dns;
+        if ($ip != '') {
+            $reverse_dns = cms_gethostbyaddr($ip);
+            if (strpos($reverse_dns, 'NXDOMAIN') === false) {
+                $location_data[do_lang('REVERSE_DNS_AND_WHOIS', null, null, null, get_site_default_lang())] = $reverse_dns;
+            }
         }
 
         require_code('locations');

@@ -47,6 +47,8 @@ var SortableTableSort = (function(){
   // Default alpha-numeric sort
   // --------------------------
   sort.alphanumeric = function(a,b) {
+    if (typeof a=='string') a=a.toLowerCase();
+    if (typeof b=='string') b=b.toLowerCase();
     return (a==b)?0:(a<b)?-1:1;
   };
   sort['default'] = sort.alphanumeric; // IE chokes on sort.default
@@ -55,7 +57,7 @@ var SortableTableSort = (function(){
   sort.numeric_converter = function(separator) {
     return function(val) {
       if (typeof(val)=="string") {
-        val = parseFloat(val.replace(/^[^\d\.]*([\d., ]+).*/g,"$1").replace(new RegExp("[^\\\d"+separator+"]","g"),'').replace(/,/,'.')) || 0;
+        val = parseFloat(val.replace(/^[^\d\.\-\+]*([\d\.\-\+, ]+).*/g,"$1").replace(new RegExp("[^\\\d"+separator+"\\\-\\\+]","g"),'').replace(/,/,'.')) || 0;
       }
       return val || 0;
     };

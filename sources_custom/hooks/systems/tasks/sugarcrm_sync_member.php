@@ -39,6 +39,11 @@ class Hook_task_sugarcrm_sync_member
             $_POST = $post;
         }
 
+        $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
+        if ($email_address == '') {
+            return null; // No real details for user
+        }
+
         require_code('sugarcrm');
         sugarcrm_initialise_connection();
 

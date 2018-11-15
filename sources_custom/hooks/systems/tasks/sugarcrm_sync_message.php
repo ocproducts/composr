@@ -27,7 +27,7 @@ class Hook_task_sugarcrm_sync_message
      * @param  string $to_name The recipient name. Array or string
      * @param  EMAIL $from_email The from address
      * @param  string $from_name The from name
-     * @param  array $attachments An list of attachments (each attachment being a map, absolute path=>filename)
+     * @param  array $attachments A list of attachments (each attachment being a map, absolute path=>filename)
      * @param  array $body_parts Body parts
      * @param  string $body_prefix The prefix text to the e-mail body (blank: none)
      * @param  string $body_suffix The suffix text to the e-mail body (blank: none)

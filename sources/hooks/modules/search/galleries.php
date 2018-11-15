@@ -27,7 +27,7 @@ class Hook_search_galleries extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
-     * @return ?array Map of search hook details (null: hook is disabled)
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {
@@ -37,7 +37,7 @@ class Hook_search_galleries extends FieldsSearchHook
 
         if ($check_permissions) {
             if (!has_actual_page_access(get_member(), 'galleries')) {
-                return null;
+                return false;
             }
         }
 
@@ -132,7 +132,7 @@ class Hook_search_galleries extends FieldsSearchHook
         $table = 'galleries r';
         $trans_fields = array('r.fullname' => 'SHORT_TRANS__COMCODE', 'r.description' => 'LONG_TRANS__COMCODE');
         $nontrans_fields = array();
-        $this->_get_search_parameterisation_advanced_for_content_type('_gallery', $table, $where_clause, $trans_fields, $nontrans_fields);
+        $this->_get_search_parameterisation_advanced_for_content_type('_gallery', $table, $where_clause, $trans_fields, $nontrans_fields, 'name');
 
         // Calculate and perform query
         $rows = get_search_rows('gallery', 'name', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*', $nontrans_fields, 'galleries', 'name', true);

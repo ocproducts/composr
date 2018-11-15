@@ -614,7 +614,7 @@ function filter_naughty_harsh($in, $preg = false)
         return preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $in);
     }
     log_hack_attack_and_exit('EVAL_HACK', $in);
-    return ''; // trick to make Zend happy
+    return ''; // trick to make linters happy
 }
 
 /**

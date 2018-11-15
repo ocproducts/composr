@@ -426,7 +426,7 @@ Composr provides a JavaScript function, [tt]$cms.gaTrack[/tt], to abstract this,
 | [tt]<currentUrl>[/tt]
 |-
 | Do a social interaction (e.g. a like or a share)
-| [tt]social__facebook_like[/tt] / [tt]social__facebook[/tt] / [tt]social__google_plus[/tt] / [tt]social__twitter[/tt] / [tt]social__linkedin[/tt] / [tt]social__pinterest[/tt] / [tt]social__tumblr[/tt] / [tt]social__vk[/tt] / [tt]social__sina_weibo[/tt] / [tt]social__tencent_weibo[/tt] / [tt]social__qzone[/tt]
+| [tt]social__facebook_like[/tt] / [tt]social__facebook[/tt] / [tt]social__twitter[/tt] / [tt]social__linkedin[/tt] / [tt]social__pinterest[/tt] / [tt]social__tumblr[/tt] / [tt]social__vk[/tt] / [tt]social__sina_weibo[/tt] / [tt]social__tencent_weibo[/tt] / [tt]social__qzone[/tt]
 | [tt]<currentUrl>[/tt]
 |-
 | Print the page

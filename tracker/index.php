@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,18 +15,26 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Default Index Page - redirects user to their home page or login page
+ *
  * @package MantisBT
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses print_api.php
  */
-/**
- * MantisBT Core API's
- */
-require_once( 'core.php' );
 
-if ( auth_is_user_authenticated() ) {
-	print_header_redirect( config_get( 'default_home_page' ) );
+require_once( 'core.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'print_api.php' );
+
+if( auth_is_user_authenticated() ) {
+	print_header_redirect( config_get_global( 'default_home_page' ) );
 } else {
-	print_header_redirect( 'login_page.php' );
+	print_header_redirect( auth_login_page() );
 }

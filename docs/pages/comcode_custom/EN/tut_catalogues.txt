@@ -171,7 +171,7 @@ You can delete an entry from the bottom of its edit form.
 
 [title="2"]Viewing catalogues[/title]
 
-You view catalogues via the [tt]catalogues[/tt] module ([tt]site:catalogues:index:<catalogue-name>[/tt] page-link gets you to a catalogue's index). Individual catalogue links are automatically added under Content on the default menus.
+You view catalogues via the [tt]catalogues[/tt] module ([tt]site:catalogues:index:<catalogue-name>[/tt] page-link gets you to a catalogue's index, which lists all categories under the catalogue). Links to individual catalogues are automatically added under Content on the default menus.
 [/surround]
 
 [title="2"]Permissions[/title]

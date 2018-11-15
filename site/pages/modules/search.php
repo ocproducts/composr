@@ -152,7 +152,7 @@ class Module_search
                 $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
                 $info = $ob->info();
 
-                if ($info !== null) {
+                if (($info !== null) && ($info !== false)) {
                     $this->title = get_screen_title('_SEARCH_TITLE', true, array($info['lang']));
                 }
 
@@ -262,8 +262,12 @@ class Module_search
             require_code('hooks/modules/search/' . filter_naughty_harsh($id, true), true);
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
             $info = $ob->info();
-            if ($info === null) {
-                set_http_status_code(404);
+            if (($info === null) || ($info === false)) {
+                if ($info === null) {
+                    set_http_status_code('404');
+                } else {
+                    set_http_status_code('401');
+                }
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
             }
 
@@ -393,7 +397,7 @@ class Module_search
             $_hooks = find_all_hook_obs('modules', 'search', 'Hook_search_');
             foreach ($_hooks as $hook => $ob) {
                 $info = $ob->info();
-                if ($info === null) {
+                if (($info === null) || ($info === false)) {
                     continue;
                 }
 
@@ -607,7 +611,7 @@ class Module_search
 
             if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook))) {
                 $info = $ob->info();
-                if ($info === null) {
+                if (($info === null) || ($info === false)) {
                     continue;
                 }
             }

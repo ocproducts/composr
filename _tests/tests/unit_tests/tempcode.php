@@ -231,11 +231,11 @@ class Tempcode_test_set extends cms_test_case
 	</tr>
 	<tr>
 		<th>$SUBTRACT,3,2</th>
-		<td>1</td>
+		<td>1.00</td>
 	</tr>
 	<tr>
 		<th>$ADD,3,2</th>
-		<td>5</td>
+		<td>5.00</td>
 	</tr>
 </tbody></table>
 

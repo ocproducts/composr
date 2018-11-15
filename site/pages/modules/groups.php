@@ -381,11 +381,11 @@ class Module_groups
 
                 $entry = array();
                 $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
+                $entry[] = $p_t;
                 if ($has_images) {
                     $entry[] = $rank_image_tpl;
                 }
                 $entry[] = escape_html($num_members);
-                $entry[] = $p_t;
 
                 $rank->attach(results_entry($entry, false));
             }
@@ -462,13 +462,13 @@ class Module_groups
     {
         if ($has_images) {
             if ($has_rank) {
-                $col_widths = array('157', '157', '77', '157');
+                $col_widths = array('157', '157', '157', '77');
 
                 $titles = array(
                     do_lang_tempcode('NAME'),
+                    do_lang_tempcode('PROMOTION_THRESHOLD'),
                     do_lang_tempcode('IMAGE'),
                     do_lang_tempcode('COUNT_MEMBERS'),
-                    do_lang_tempcode('PROMOTION_THRESHOLD'),
                 );
             } else {
                 $col_widths = array('314', '157', '77');
@@ -481,12 +481,12 @@ class Module_groups
             }
         } else {
             if ($has_rank) {
-                $col_widths = array('314', '77', '157');
+                $col_widths = array('314', '157', '77');
 
                 $titles = array(
                     do_lang_tempcode('NAME'),
-                    do_lang_tempcode('COUNT_MEMBERS'),
                     do_lang_tempcode('PROMOTION_THRESHOLD'),
+                    do_lang_tempcode('COUNT_MEMBERS'),
                 );
             } else {
                 $col_widths = array('471', '77');

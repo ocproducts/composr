@@ -177,10 +177,6 @@ class modularisation_test_set extends cms_test_case
 
     public function should_check_package($data, $path)
     {
-        if ($path == 'tracker/config_inc.php') {
-            return false;
-        }
-
         if (strpos($data, 'ocProducts') === false) {
             return false;
         }

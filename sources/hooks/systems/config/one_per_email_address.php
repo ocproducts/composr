@@ -56,4 +56,22 @@ class Hook_config_one_per_email_address
     {
         return '1';
     }
+
+    /**
+     * Code to run before the option is saved.
+     * If there is some kind of problem with the new value then we could attach an error message.
+     *
+     * @param  string $new_value The new value
+     * @param  string $old_value The old value
+     * @return boolean Whether to allow the save
+     */
+    public function presave_handler($new_value, $old_value)
+    {
+        if (($new_value == '2') && ($GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()) == '')) {
+            attach_message(do_lang_tempcode('YOU_ADMIN_NO_EMAIL'), 'warn');
+            return false;
+        }
+
+        return true;
+    }
 }

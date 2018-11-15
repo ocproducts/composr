@@ -27,7 +27,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
-     * @return ?array Map of search hook details (null: hook is disabled)
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {
@@ -135,7 +135,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         $table = 'cached_comcode_pages r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages q ON (q.the_zone=r.the_zone AND q.the_page=r.the_page)';
         $trans_fields = array('r.cc_page_title' => 'SHORT_TRANS', 'r.string_index' => 'LONG_TRANS__COMCODE');
         $nontrans_fields = array();
-        $this->_get_search_parameterisation_advanced_for_content_type('_comcode_page', $table, $where_clause, $trans_fields, $nontrans_fields);
+        $this->_get_search_parameterisation_advanced_for_content_type('_comcode_page', $table, $where_clause, $trans_fields, $nontrans_fields, db_function('CONCAT', array('r.the_zone', 'r.the_page')));
 
         // Calculate and perform query
         if ($g_or == '') {

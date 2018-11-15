@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
  *
  * @package CoreAPI
  * @subpackage ObsoleteAPI
- * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -138,3 +138,88 @@ config_obsolete( 'default_advanced_update', '' );
 config_obsolete( 'default_graph_type', '' );
 config_obsolete( 'graph_font', '' );
 config_obsolete( 'graph_colors', '' );
+
+# changes in 1.2.8
+config_obsolete( 'show_attachment_indicator' );
+config_obsolete( 'default_avatar', '' );
+
+# changes in 1.2.13
+config_obsolete( 'manage_cookie', 'manage_users_cookie' );
+
+# changes in 1.3.0dev
+config_obsolete( 'bugnote_allow_user_edit_delete', '' );
+config_obsolete( 'password_confirm_hash_magic_string', 'crypto_master_salt' );
+config_obsolete( 'rss_key_seed', 'crypto_master_salt' );
+config_obsolete( 'cvs_web' );
+config_obsolete( 'source_control_notes_view_status' );
+config_obsolete( 'source_control_account' );
+config_obsolete( 'source_control_set_status_to' );
+config_obsolete( 'source_control_set_resolution_to' );
+config_obsolete( 'source_control_regexp' );
+config_obsolete( 'source_control_fixed_regexp' );
+config_obsolete( 'allow_close_immediately' );
+config_obsolete( 'show_extended_project_browser' );
+config_obsolete( 'show_queries_threshold', 'show_log_threshold' );
+config_obsolete( 'show_queries_list' );
+config_obsolete( 'administrator_email', 'webmaster_email' );
+config_obsolete( 'session_key' );
+config_obsolete( 'dhtml_filters', 'use_dynamic_filters' );
+config_obsolete( 'use_iis' );
+config_obsolete( 'page_title', 'top_include_page' );
+config_obsolete( 'limit_email_domain', 'limit_email_domains' );
+config_obsolete( 'file_upload_ftp_server' );
+config_obsolete( 'file_upload_ftp_user' );
+config_obsolete( 'file_upload_ftp_pass' );
+config_obsolete( 'mantistouch_url' );
+config_obsolete( 'custom_strings_file' );
+config_obsolete( 'mc_readonly_access_level_threshold', 'webservice_readonly_access_level_threshold' );
+config_obsolete( 'mc_readwrite_access_level_threshold', 'webservice_readwrite_access_level_threshold' );
+config_obsolete( 'mc_admin_access_level_threshold', 'webservice_admin_access_level_threshold' );
+config_obsolete( 'mc_specify_reporter_on_add_access_level_threshold', 'webservice_specify_reporter_on_add_access_level_threshold' );
+config_obsolete( 'mc_priority_enum_default_when_not_found', 'webservice_priority_enum_default_when_not_found' );
+config_obsolete( 'mc_severity_enum_default_when_not_found', 'webservice_severity_enum_default_when_not_found' );
+config_obsolete( 'mc_status_enum_default_when_not_found', 'webservice_status_enum_default_when_not_found' );
+config_obsolete( 'mc_resolution_enum_default_when_not_found', 'webservice_resolution_enum_default_when_not_found' );
+config_obsolete( 'mc_projection_enum_default_when_not_found', 'webservice_projection_enum_default_when_not_found' );
+config_obsolete( 'mc_eta_enum_default_when_not_found', 'webservice_eta_enum_default_when_not_found' );
+config_obsolete( 'mc_error_when_version_not_found', 'webservice_error_when_version_not_found' );
+config_obsolete( 'mc_version_when_not_found', 'webservice_version_when_not_found' );
+env_obsolete( 'MANTIS_CONFIG', 'MANTIS_CONFIG_FOLDER' );
+config_obsolete( 'colour_project' );
+config_obsolete( 'colour_global' );
+config_obsolete( 'content_expire' );
+config_obsolete( 'use_javascript' );
+config_obsolete( 'recently_visited', 'recently_visited_count' );
+config_obsolete( 'email_set_category' );
+config_obsolete( 'show_footer_menu' );
+config_obsolete( 'status_legend_position' );
+config_obsolete( 'status_percentage_legend' );
+config_obsolete( 'font_per_captcha' );
+config_obsolete( 'csv_add_bom' );
+config_obsolete( 'hr_size' );
+config_obsolete( 'hr_width' );
+config_obsolete( 'db_schema' );
+
+# changes in 1.3.4
+config_obsolete( 'mail_priority' );
+
+# changes in 2.0.0dev
+config_obsolete( 'icon_path' );
+config_obsolete( 'bug_print_page_fields' );
+config_obsolete( 'calendar_js_date_format', 'datetime_picker_format' );
+config_obsolete( 'calendar_date_format', 'normal_date_format' );
+
+# changes in 2.8.0
+config_obsolete( 'inline_file_exts' );
+
+# changes in 2.9.0
+config_obsolete( 'meta_include_file' );
+
+# changes in 2.11.0
+config_obsolete( 'differentiate_duplicates' );
+
+# changes in 2.12.0
+config_obsolete( 'session_handler' );
+
+# changes in 2.17.0
+config_obsolete( 'default_manage_user_prefix' );

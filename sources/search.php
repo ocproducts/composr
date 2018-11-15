@@ -123,7 +123,7 @@ abstract class FieldsSearchHook
         require_code('fields');
         foreach ($fields as $i => $field) {
             $ob = get_fields_hook($field['cf_type']);
-            $temp = $ob->inputted_to_sql_for_search($field, $i);
+            $temp = $ob->inputted_to_sql_for_search($field, $i, $table_alias);
             if ($temp === null) { // Standard direct 'substring' search
                 list(, , $row_type) = $ob->get_field_value_row_bits($field);
                 switch ($row_type) {
@@ -255,15 +255,20 @@ abstract class FieldsSearchHook
      * @param  string $where_clause Where clause to add to
      * @param  array $trans_fields Translatable fields to add to
      * @param  array $nontrans_fields Non-translatable fields to add to
+     * @param  ?string $content_id_field Content-ID field (null: default r.id field)
      */
-    protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields)
+    protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields, $content_id_field = null)
     {
         $advanced = $this->_get_search_parameterisation_advanced($catalogue_name, 'ce');
         if ($advanced === null) {
             return;
         }
 
-        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . db_cast('r.id', 'CHAR') . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
+        if ($content_id_field === null) {
+            $content_id_field = db_cast('r.id', 'CHAR');
+        }
+
+        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . $content_id_field . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries ce ON ce.id=l.catalogue_entry_id';
 
         list($sup_table, $sup_where_clause, $sup_trans_fields, $sup_nontrans_fields) = $advanced;
@@ -542,7 +547,7 @@ function do_search_block($map)
         require_code('hooks/modules/search/' . filter_naughty_harsh($id, true));
         $object = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
         $info = $object->info();
-        if ($info !== null) {
+        if (($info !== null) && ($info !== false)) {
             if (array_key_exists('special_on', $info)) {
                 foreach ($info['special_on'] as $name => $display) {
                     $_name = 'option_' . $id . '_' . $name;

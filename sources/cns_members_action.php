@@ -325,7 +325,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
 
     if ($check_correctness) {
         // If it was an invite/recommendation, award the referrer
-        if (addon_installed('recommend')) {
+        if ((addon_installed('recommend')) && ($email_address != '')) {
             $inviter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $email_address), 'ORDER BY i_time');
             if ($inviter !== null) {
                 if (addon_installed('points')) {
@@ -606,12 +606,6 @@ function _cns_predefined_custom_field_details()
         'sn_facebook' => array(
             'type' => 'url',
             'icon' => 'icons/links/facebook',
-            'section' => '',
-            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
-        ),
-        'sn_google_plus' => array(
-            'type' => 'url',
-            'icon' => 'icons/links/google_plus',
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
         ),

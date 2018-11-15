@@ -1,5 +1,5 @@
 <?php
-# MantisBT - a php based bugtracking system
+# MantisBT - A PHP based bugtracking system
 
 # MantisBT is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,53 +14,69 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-	/**
-	 * @package MantisBT
-	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2010  MantisBT Team - mantisbt-dev@lists.sourceforge.net
-	 * @link http://www.mantisbt.org
-	 */
-	 /**
-	  * MantisBT Core API's
-	  */
-	require_once( 'core.php' );
+/**
+ * Custom Field Configuration
+ *
+ * @package MantisBT
+ * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+ * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link http://www.mantisbt.org
+ *
+ * @uses core.php
+ * @uses access_api.php
+ * @uses authentication_api.php
+ * @uses config_api.php
+ * @uses custom_field_api.php
+ * @uses form_api.php
+ * @uses gpc_api.php
+ * @uses helper_api.php
+ * @uses html_api.php
+ * @uses lang_api.php
+ * @uses print_api.php
+ * @uses string_api.php
+ */
 
-	require_once( 'custom_field_api.php' );
+require_once( 'core.php' );
+require_api( 'access_api.php' );
+require_api( 'authentication_api.php' );
+require_api( 'config_api.php' );
+require_api( 'custom_field_api.php' );
+require_api( 'form_api.php' );
+require_api( 'gpc_api.php' );
+require_api( 'helper_api.php' );
+require_api( 'html_api.php' );
+require_api( 'lang_api.php' );
+require_api( 'print_api.php' );
+require_api( 'string_api.php' );
 
-	form_security_validate('manage_custom_field_delete');
+form_security_validate( 'manage_custom_field_delete' );
 
-	auth_reauthenticate();
-	access_ensure_global_level( config_get( 'manage_custom_fields_threshold' ) );
+auth_reauthenticate();
+access_ensure_global_level( config_get( 'manage_custom_fields_threshold' ) );
 
-	$f_field_id	= gpc_get_int( 'field_id' );
-	$f_return = strip_tags( gpc_get_string( 'return', 'manage_custom_field_page.php' ) );
+$f_field_id	= gpc_get_int( 'field_id' );
+$f_return = strip_tags( gpc_get_string( 'return', 'manage_custom_field_page.php' ) );
 
-	$t_definition = custom_field_get_definition( $f_field_id );
+$t_definition = custom_field_get_definition( $f_field_id );
 
-	if( 0 < count( custom_field_get_project_ids( $f_field_id ) ) ) {
-		helper_ensure_confirmed( lang_get( 'confirm_used_custom_field_deletion' ) .
-			'<br/>' . lang_get( 'custom_field' ) . ': ' . string_attribute( $t_definition['name'] ),
-			lang_get( 'field_delete_button' ) );
-	} else {
-		helper_ensure_confirmed( lang_get( 'confirm_custom_field_deletion' ) .
-			'<br/>' . lang_get( 'custom_field' ) . ': ' . string_attribute( $t_definition['name'] ),
-			lang_get( 'field_delete_button' ) );
-	}
+if( 0 < count( custom_field_get_project_ids( $f_field_id ) ) ) {
+	helper_ensure_confirmed( lang_get( 'confirm_used_custom_field_deletion' ) .
+		'<br />' . lang_get( 'custom_field_label' ) . lang_get( 'word_separator' ) . string_attribute( $t_definition['name'] ),
+		lang_get( 'field_delete_button' ) );
+} else {
+	helper_ensure_confirmed( lang_get( 'confirm_custom_field_deletion' ) .
+		'<br />' . lang_get( 'custom_field_label' ) . lang_get( 'word_separator' ) . string_attribute( $t_definition['name'] ),
+		lang_get( 'field_delete_button' ) );
+}
 
-	custom_field_destroy( $f_field_id );
+custom_field_destroy( $f_field_id );
 
-	form_security_purge('manage_custom_field_delete');
+form_security_purge( 'manage_custom_field_delete' );
 
-	html_page_top( null, $f_return );
-?>
+layout_page_header( null, $f_return );
 
-<br />
-<div align="center">
-<?php
-	echo lang_get( 'operation_successful' ) . '<br />';
-	print_bracket_link( $f_return, lang_get( 'proceed' ) );
-?>
-</div>
+layout_page_begin( 'manage_overview_page.php' );
 
-<?php
-	html_page_bottom();
+html_operation_successful( $f_return );
+
+layout_page_end();

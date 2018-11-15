@@ -40,9 +40,9 @@
 <hr class="spaced-rule" />
 
 <div class="boxless-space">
-	{+START,BOX}{$BLOCK,block=main_multi_content,param=download,no_links=1,efficient=0,give_context=0,include_breadcrumbs=1,render_if_empty=1,max=10,mode=recent,title={!RECENT,10,{!SECTION_DOWNLOADS}}}{+END}
+	{+START,BOX}{$BLOCK-,block=main_multi_content,param=download,no_links=1,efficient=0,give_context=0,include_breadcrumbs=1,render_if_empty=1,max=10,mode=recent,title={!RECENT,10,{!SECTION_DOWNLOADS}}}{+END}
 
 	{+START,IF,{$CONFIG_OPTION,is_on_rating}}
-		{+START,BOX}{$BLOCK,block=main_multi_content,param=download,no_links=1,efficient=0,give_context=0,include_breadcrumbs=1,render_if_empty=1,max=10,mode=top,title={!TOP,10,{!SECTION_DOWNLOADS}}}{+END}
+		{+START,BOX}{$BLOCK-,block=main_multi_content,param=download,no_links=1,efficient=0,give_context=0,include_breadcrumbs=1,render_if_empty=1,max=10,mode=top,title={!TOP,10,{!SECTION_DOWNLOADS}}}{+END}
 	{+END}
 </div>

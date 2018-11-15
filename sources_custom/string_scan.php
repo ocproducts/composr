@@ -3244,6 +3244,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_oembed_manual_patterns
         CONFIG_OPTION_oembed_max_size
         CONFIG_OPTION_one_per_email_address
+        YOU_ADMIN_NO_EMAIL
         CONFIG_OPTION_output_streaming
         CONFIG_OPTION_overt_whisper_suggestion
         CONFIG_OPTION_password_change_days
@@ -3790,6 +3791,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_URL_METADATA_CACHE
         FONTS
         GOOGLE_FONTS
+        HC_WEBSTANDARDS_WHITELIST
+        CONFIG_OPTION_hc_webstandards_whitelist
         HC_DATABASE_THRESHOLD
         REBUILD_SITEMAP
         EMAIL_BOUNCES
@@ -4794,6 +4797,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ERROR_NOT_CORRECT_VERSION
         ERROR_OCCURRED_SUBJECT
         EVAL_ERROR
+        EVAL_ERROR_QUOTE_ISSUE
         EVAL_HACK
         EVENTS
         EVENT_CANNOT_AROUND
@@ -5942,6 +5946,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NICE_BLOCK_NAME
         NONPRESENT_EXTENSION_FUNCTION
         NON_COMMAND
+        NON_COMMAND_MISSING_COLON
+        COMMAND_NO_OUTPUT
         NON_RECOGNISED_CSS_FILE
         NORMAL_GROUPS_PER_PAGE
         NOTE
@@ -8462,8 +8468,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_im_jabber_NAME
         DEFAULT_CPF_im_skype_DESCRIPTION
         DEFAULT_CPF_im_skype_NAME
-        DEFAULT_CPF_sn_google_plus_DESCRIPTION
-        DEFAULT_CPF_sn_google_plus_NAME
         DEFAULT_CPF_sn_facebook_DESCRIPTION
         DEFAULT_CPF_sn_facebook_NAME
         DEFAULT_CPF_sn_twitter_DESCRIPTION
