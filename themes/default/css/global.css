@@ -1292,10 +1292,12 @@ header.with-seed-navbar .top-button:hover {
 	position: absolute;
 	right: 2px;
 	border-radius: {$GET,border_radius};
-	top: 10px;
+	top: 50%;
+	margin-top: -50%;
 	background: rgba(0, 0, 0, 0.7);
 	padding: 0 3px;
 	font-size: 11px;
+	color: {$GET,WB};
 }
 
 .top-button.count-0 .top-button-bubble {
@@ -2590,10 +2592,12 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .box>.box-inner>h5,
 .boxless-space .box>.box-inner>h6,
 .boxless-space .box>.toggleable-tray-title {
+	background: transparent;
 	text-align: left;
 	text-transform: uppercase;
 	border-radius: 0;
-	padding-left: 0;
+	/*padding-left: 0;*/
+	margin: 0.5em 0;
 }
 
 .boxless-space .buttons-group, 
@@ -2675,7 +2679,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 .toggleable-tray-title {
 	font-size: 1.1em;
-	font-weight: bold;
+	font-weight: 500;
 	vertical-align: middle;
 	padding-top: 0.7em;
 	padding-bottom: 0.5em;
@@ -3987,8 +3991,8 @@ div .post-buttons>*, div .buttons-group-faded>* {
 /*{+END}*/
 
 .comments-posting-form-inner th {
-	font-weight: bold !important;
-	border-right: 1px solid {$GET,pale_border};
+	font-weight: 500;
+	border-right: 1px solid {$GET,standard_border};
 	text-align: right;
 }
 /*{+START,CSS_MODE,mobile}*/
