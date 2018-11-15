@@ -126,7 +126,7 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/index.html',
             'sources_custom/hooks/systems/cleanup/index.html',
             'sources/hooks/systems/cleanup/language.php',
-            'sources/hooks/systems/cleanup/orphaned_lang_strings.php',
+            'sources/hooks/systems/cleanup/orphaned_content_lang_strings.php',
             'sources/hooks/systems/cleanup/orphaned_uploads.php',
             'sources/hooks/systems/cleanup/templates.php',
             'sources/hooks/systems/cleanup/page_backups.php',
@@ -134,10 +134,10 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/http.php',
             'sources/hooks/systems/cleanup/self_learning.php',
             'sources/hooks/systems/tasks/find_broken_urls.php',
-            'sources/hooks/systems/tasks/find_orphaned_lang_strings.php',
+            'sources/hooks/systems/tasks/find_orphaned_content_lang_strings.php',
             'sources/hooks/systems/tasks/find_orphaned_uploads.php',
             'sources/hooks/systems/cleanup/email_bounces.php',
-            'themes/default/templates/BROKEN_LANG_STRINGS.tpl',
+            'themes/default/templates/BROKEN_CONTENT_LANG_STRINGS.tpl',
             'themes/default/templates/BROKEN_URLS.tpl',
             'sources/hooks/systems/cleanup/template_usage.php',
             'sources/hooks/systems/cleanup/url_metadata_cache.php',
@@ -161,7 +161,7 @@ class Hook_addon_registry_core_cleanup_tools
             'templates/CLEANUP_ORPHANED_UPLOADS.tpl' => 'administrative__cleanup_completed_screen',
             'templates/CLEANUP_PAGE_STATS.tpl' => 'administrative__cleanup_completed_screen',
             'templates/BROKEN_URLS.tpl' => 'administrative__broken_urls_screen',
-            'templates/BROKEN_LANG_STRINGS.tpl' => 'administrative__broken_lang_strings',
+            'templates/BROKEN_CONTENT_LANG_STRINGS.tpl' => 'administrative__broken_content_lang_strings',
         );
     }
 
@@ -239,15 +239,15 @@ class Hook_addon_registry_core_cleanup_tools
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__broken_lang_strings()
+    public function tpl_preview__administrative__broken_content_lang_strings()
     {
         require_lang('cleanup');
 
         return array(
-            lorem_globalise(do_lorem_template('BROKEN_LANG_STRINGS', array(
-                'MISSING_LANG_STRINGS' => placeholder_array(),
-                'FUSED_LANG_STRINGS' => placeholder_array(),
-                'ORPHANED_LANG_STRINGS' => placeholder_array(),
+            lorem_globalise(do_lorem_template('BROKEN_CONTENT_LANG_STRINGS', array(
+                'MISSING_CONTENT_LANG_STRINGS' => placeholder_array(),
+                'FUSED_CONTENT_LANG_STRINGS' => placeholder_array(),
+                'ORPHANED_CONTENT_LANG_STRINGS' => placeholder_array(),
             )), null, '', true)
         );
     }

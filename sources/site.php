@@ -1452,7 +1452,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
- * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
+ * @param  ?LANGUAGE_NAME $lang Language name (null: user's language)
  * @param  boolean $redirect_check Whether to check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  */
@@ -1472,7 +1472,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $redir
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
- * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
+ * @param  ?LANGUAGE_NAME $lang Language name (null: user's language)
  * @param  boolean $redirect_check Whether to check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  * @ignore

@@ -2814,8 +2814,8 @@ function make_tick($nice_name, $description, $name, $value)
 /**
  * Get an example string for the installer UI (abstraction).
  *
- * @param  string $example The name of the example text language string (blank: none)
- * @param  string $description The name of the example description language string (blank: none)
+ * @param  string $example The codename of the example text language string (blank: none)
+ * @param  string $description The codename of the example description language string (blank: none)
  * @return Tempcode The text
  */
 function example($example, $description = '')

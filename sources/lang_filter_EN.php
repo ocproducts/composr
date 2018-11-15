@@ -44,7 +44,7 @@ class LangFilter_EN extends LangFilter
     /**
      * Do a compile-time filter.
      *
-     * @param  ?string $key Language string ID (null: not a language string)
+     * @param  ?string $key Language string codename (null: not a language string)
      * @param  string $value String value
      * @param  ?LANGUAGE_NAME $lang Language (null: current language)
      * @return string The suffix
@@ -363,7 +363,7 @@ class LangFilter_EN extends LangFilter
     /**
      * Do a run-time filter. Only happens for strings marked for processing with a flag.
      *
-     * @param  string $key Language string ID
+     * @param  string $key Language string codename
      * @param  string $value Language string value
      * @param  string $flag Flag value assigned to the string
      * @param  array $parameters The parameters

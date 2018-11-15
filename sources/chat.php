@@ -1096,13 +1096,13 @@ function chat_get_all_rooms()
  * @param  ?AUTO_LINK $room_id The room ID (null: for all IM)
  * @param  array $_rooms Rooms database rows that we'll need
  * @param  ?integer $max_messages The maximum number of messages to be returned (null: no maximum)
- * @param  boolean $dereference Whether to dereference the returned messages (i.e. lookup the language strings)
+ * @param  boolean $dereference Whether to dereference the returned messages (i.e. lookup the content language strings)
  * @param  boolean $downloading Whether to return the messages in a downloadable format (using the templates for log downloading)
  * @param  ?integer $start The datetime stamp to start gathering messages from (null: all)
  * @param  ?integer $finish The datetime stamp to stop gathering messages at (null: current time)
  * @param  ?integer $uptoid The lowest message ID to return (null: no special lowest number)
  * @param  ?ID_TEXT $zone The zone the chat module is in (null: find it)
- * @param  ?AUTO_LINK $entering_room The language string ID for the "entering room" message (null: not entering the room)
+ * @param  ?AUTO_LINK $entering_room The content language string ID for the "entering room" message (null: not entering the room)
  * @param  boolean $return_my_messages Return the current user's messages?
  * @param  boolean $return_system_messages Return system messages
  * @return array An array of all the messages collected according to the search criteria

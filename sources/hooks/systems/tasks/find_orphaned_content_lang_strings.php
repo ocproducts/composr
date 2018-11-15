@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_task_find_orphaned_lang_strings
+class Hook_task_find_orphaned_content_lang_strings
 {
     /**
      * Run the task hook.
@@ -36,13 +36,13 @@ class Hook_task_find_orphaned_lang_strings
 
         push_db_scope_check(false);
 
-        // When a language string isn't there
-        $missing_lang_strings = array();
-        $missing_lang_strings_zero = array();
-        // When a language string isn't used
-        $orphaned_lang_strings = array();
-        // When a language string is used more than once
-        $fused_lang_strings = array();
+        // When a content language string isn't there
+        $missing_content_lang_strings = array();
+        $missing_content_lang_strings_zero = array();
+        // When a content language string isn't used
+        $orphaned_content_lang_strings = array();
+        // When a content language string is used more than once
+        $fused_content_lang_strings = array();
 
         $_all_ids = $GLOBALS['SITE_DB']->query_select('translate', array('DISTINCT id'));
         $all_ids = array();
@@ -82,15 +82,15 @@ class Hook_task_find_orphaned_lang_strings
                 }
 
                 if (!array_key_exists($id, $all_ids)) {
-                    if (($fix) && (($id == 0) || (!array_key_exists($id, $missing_lang_strings)/*not fixed already*/))) {
+                    if (($fix) && (($id == 0) || (!array_key_exists($id, $missing_content_lang_strings)/*not fixed already*/))) {
                         $new_id = insert_lang($langidfield['m_name'], '', 2, null, false, $id);
                         if ($id[$langidfield['m_name']] != $new_id) {
                             $GLOBALS['SITE_DB']->query_update($langidfield['m_table'], $new_id, $of, '', 1);
                         }
                     }
 
-                    $missing_lang_strings[$id] = true;
-                    $missing_lang_strings_zero[json_encode($of)] = true;
+                    $missing_content_lang_strings[$id] = true;
+                    $missing_content_lang_strings_zero[json_encode($of)] = true;
                 } elseif (array_key_exists($id, $ids_seen_so_far)) {
                     $looked_up = get_translated_text($id);
                     if ($fix) {
@@ -100,7 +100,7 @@ class Hook_task_find_orphaned_lang_strings
                         $of = insert_lang($langidfield['m_name'], $looked_up, 2) + $of;
                         $GLOBALS['SITE_DB']->query_update($langidfield['m_table'], $of, $of_orig, '', 1);
                     }
-                    $fused_lang_strings[$id] = $looked_up;
+                    $fused_content_lang_strings[$id] = $looked_up;
                 }
                 if ($langidfield['m_name'] != 't_cache_first_post') { // 'if..!=' is for special exception for one that may be re-used in a cache position
                     $ids_seen_so_far[$id] = true;
@@ -109,20 +109,20 @@ class Hook_task_find_orphaned_lang_strings
         }
 
         if ($table === null) {
-            $orphaned_lang_strings = array_diff(array_keys($all_ids), array_keys($ids_seen_so_far));
+            $orphaned_content_lang_strings = array_diff(array_keys($all_ids), array_keys($ids_seen_so_far));
             if ($fix) {
-                foreach ($orphaned_lang_strings as $id) {
+                foreach ($orphaned_content_lang_strings as $id) {
                     delete_lang($id);
                 }
             }
         }
 
-        $ret = do_template('BROKEN_LANG_STRINGS', array(
+        $ret = do_template('BROKEN_CONTENT_LANG_STRINGS', array(
             '_GUID' => '318fcbe81e1e4324350114c3def020dd',
-            'MISSING_LANG_STRINGS' => array_keys($missing_lang_strings),
-            'MISSING_LANG_STRINGS_ZERO' => array_keys($missing_lang_strings_zero),
-            'FUSED_LANG_STRINGS' => $fused_lang_strings,
-            'ORPHANED_LANG_STRINGS' => $orphaned_lang_strings,
+            'MISSING_CONTENT_LANG_STRINGS' => array_keys($missing_content_lang_strings),
+            'MISSING_CONTENT_LANG_STRINGS_ZERO' => array_keys($missing_content_lang_strings_zero),
+            'FUSED_CONTENT_LANG_STRINGS' => $fused_content_lang_strings,
+            'ORPHANED_CONTENT_LANG_STRINGS' => $orphaned_content_lang_strings,
         ));
         return array('text/html', $ret);
     }

@@ -24,16 +24,16 @@ Editing/deleting attachments.
 */
 
 /**
- * Update a language string, in such a way that new attachments are created if they were specified.
+ * Update a content language string, in such a way that new attachments are created if they were specified.
  *
  * @param  ID_TEXT $field_name The field name
- * @param  mixed $lang_id The language string
+ * @param  mixed $lang_id The content language string
  * @param  LONG_TEXT $text The new text
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?MEMBER $for_member The member that owns the content this is for (null: current member)
- * @return array The language string save fields
+ * @return array The content language string save fields
  */
 function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $id, $db = null, $for_member = null)
 {
@@ -170,7 +170,7 @@ function _delete_attachment($id, $db)
 }
 
 /**
- * Deletes all the attachments a given language string holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references.
+ * Deletes all the attachments a given content language string holds. Well, not quite! It deletes all references, and any attachments have through it, run out of references.
  *
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
@@ -201,9 +201,9 @@ function delete_comcode_attachments($type, $id, $db = null, $force = false)
 }
 
 /**
- * This function is the same as delete_comcode_attachments, except that it deletes the language string as well.
+ * This function is the same as delete_comcode_attachments, except that it deletes the content language string as well.
  *
- * @param  mixed $lang_id The language string
+ * @param  mixed $lang_id The content language string
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
  * @param  ?object $db The database connector to use (null: standard site connector)

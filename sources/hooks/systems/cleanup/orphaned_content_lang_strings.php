@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_cleanup_orphaned_lang_strings
+class Hook_cleanup_orphaned_content_lang_strings
 {
     /**
      * Find details about this cleanup hook.
@@ -45,8 +45,8 @@ class Hook_cleanup_orphaned_lang_strings
         }
 
         $info = array();
-        $info['title'] = do_lang_tempcode('ORPHANED_LANG_STRINGS');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_ORPHANED_LANG_STRINGS');
+        $info['title'] = do_lang_tempcode('ORPHANED_CONTENT_LANG_STRINGS');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_ORPHANED_CONTENT_LANG_STRINGS');
         $info['type'] = 'optimise';
 
         return $info;
@@ -60,6 +60,6 @@ class Hook_cleanup_orphaned_lang_strings
     public function run()
     {
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('ORPHANED_LANG_STRINGS'), null, 'find_orphaned_lang_strings');
+        return call_user_func_array__long_task(do_lang('ORPHANED_CONTENT_LANG_STRINGS'), null, 'find_orphaned_content_lang_strings');
     }
 }

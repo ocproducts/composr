@@ -22,7 +22,7 @@
  * Get the Tempcode for a do next manager, using hooks. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
  *
  * @param  ID_TEXT $title The title of what we are doing (a language string)
- * @param  ?mixed $text The language string ID for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
+ * @param  ?mixed $text The language string codename for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
  * @param  ID_TEXT $type The menu 'type' we are doing (filters out any icons that don't match it)
  * @param  ?string $main_title The title to use for the main links (a language string) (null: same as title)
  * @return Tempcode The do next manager

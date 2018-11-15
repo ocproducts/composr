@@ -291,8 +291,8 @@ If the problem isn't due to a cookie conflict, check the cookies really are savi
 [title="3"]Why does the language pack I installed mess up the layout?[/title]
 
 Often people will accidentally translate these language strings:
- - left
- - right
+ - [tt]left[/tt]
+ - [tt]right[/tt]
 These are there to control [acronym="Cascading Style Sheets"]CSS[/acronym] settings, for the potential of supporting right-to-left languages. Valid values for each are [tt]left[/tt] or [tt]right[/tt] (you flip them for a right-to-left language pack). They should never be literally translated.
 
 [title="2"]E-mail problems[/title]

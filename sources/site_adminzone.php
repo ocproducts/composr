@@ -56,7 +56,7 @@ function adminzone_extended_breadcrumbs()
         list($link_map, $link_zone, $link_lang) = $link;
 
         if ($link_lang !== null) {
-            $title = do_lang_tempcode($link_lang); // The language string ID version of the page grouping we found our current module was in
+            $title = do_lang_tempcode($link_lang); // The language string codename version of the page grouping we found our current module was in
             $page_link = build_page_link($link_map, $link_zone);
             $breadcrumbs[] = array($page_link, $title);
         }
@@ -121,7 +121,7 @@ function adminzone_extended_breadcrumbs()
 
                         $SMART_CACHE->set('extended_breadcrumbs', array($link_map, $link_zone, $link_lang));
 
-                        $title = do_lang_tempcode($link_lang); // The language string ID version of the page grouping we found our current module was in
+                        $title = do_lang_tempcode($link_lang); // The language string codename version of the page grouping we found our current module was in
                         $page_link = build_page_link($link_map, $link_zone);
                         $breadcrumbs[] = array($page_link, $title);
 

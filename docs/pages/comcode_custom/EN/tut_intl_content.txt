@@ -75,7 +75,7 @@ For example:
 
 Content translation is primarily performed in a special 'Translate content' part of the Admin Zone (Admin Zone > Style > Translate website content).
 
-You will see there is also an option in the footer for opening up a 'Translate content' screen just with language strings (the user content kind) that were included on the page you are viewing. This is a nice feature if the main translation queue is to full to realistically deal with and you just want new content to get translated.
+You will see there is also an option in the footer for opening up a 'Translate content' screen just with content language strings that were included on the page you are viewing. This is a nice feature if the main translation queue is to full to realistically deal with and you just want new content to get translated.
 
 In Composr almost [i]everything[/i] (*) can be translated, but obviously you would not want to translate every forum post for a large community (for example). For this reason, Composr saves language with 'priorities', and that of the highest priority will be presented for translation first. For example, the names of zones would be the highest priority, while forum posts would be the lowest.
 
@@ -111,6 +111,10 @@ Advantages:
  - Easier to maintain if you prefer working with code than the translation interface
  - Avoid re-translating if you already have created language strings for the same text
  - Can survive CSV import and export
+
+[concepts
+ 1_key="Content language string"       1_value="A translatable piece of content-managed text, stored in the Composr [tt]translate[/tt] table using an ID"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

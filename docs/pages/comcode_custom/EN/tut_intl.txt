@@ -593,12 +593,13 @@ If you translate within Composr (not Transifex), then you can export a language 
 Go to Admin Zone > Structure > Addons, scroll down to "Create (export) an addon, from selected changed local files" at the bottom. From this screen there's an option to export a language to an addon.
 
 [concepts
- 1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
- 2_key="Character set"         2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
- 3_key="Unicode"               3_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
- 4_key="Transifex"             4_value="The translation platform we use to translate Composr"
- 5_key="Collation"             5_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"
- 6_key="Internationalisation"  6_value="The process of making software work well in different international settings. It includes multiple aspects, such as time-zones, date formats, and language translations."
+ 1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short codename [tt]WRITTEN_LIKE_THIS[/tt]"
+ 2_key="Language file"         2_value="A [tt].ini[/tt] file storing language strings"
+ 3_key="Character set"         3_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
+ 4_key="Unicode"               4_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
+ 5_key="Transifex"             5_value="The translation platform we use to translate Composr"
+ 6_key="Collation"             6_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"
+ 7_key="Internationalisation"  7_value="The process of making software work well in different international settings. It includes multiple aspects, such as time-zones, date formats, and language translations."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

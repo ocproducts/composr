@@ -23,8 +23,8 @@
 /**
  * Edit a language string direct from something saved into the code.
  *
- * @param  ID_TEXT $codename The language string ID
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ID_TEXT $codename The language string codename
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  */
 function inline_language_editing(&$codename, $lang)
 {
@@ -159,9 +159,9 @@ function get_lang_files($lang = null)
 }
 
 /**
- * Search the database to find human-readable names for language string IDs.
+ * Search the database to find human-readable names for content language string IDs.
  *
- * @param  array $ids The language string IDs (array of AUTO_LINK)
+ * @param  array $ids The content language string IDs (array of AUTO_LINK)
  * @return array Human readable names (List of string against same IDs in input array or null for orphan strings)
  */
 function find_lang_content_names($ids)

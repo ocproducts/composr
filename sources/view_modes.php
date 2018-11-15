@@ -35,12 +35,12 @@ function initialise_special_page_types($special_page_type)
         global $RECORD_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
     } elseif (substr($special_page_type, 0, 12) == 'lang_content') {
-        global $RECORD_LANG_STRINGS_CONTENT;
-        /** A marker indicating whether all referenced content language strings need to be collected, so that the contextual editor knows what was used to generate the screen.
+        global $RECORD_CONTENT_LANG_STRINGS;
+        /** A marker indicating whether all referenced content language string IDs need to be collected, so that the contextual editor knows what was used to generate the screen.
          *
-         * @global boolean $RECORD_LANG_STRINGS_CONTENT
+         * @global boolean $RECORD_CONTENT_LANG_STRINGS
          */
-        $RECORD_LANG_STRINGS_CONTENT = true;
+        $RECORD_CONTENT_LANG_STRINGS = true;
     } elseif (substr($special_page_type, 0, 4) == 'lang') {
         global $RECORD_LANG_STRINGS;
         $RECORD_LANG_STRINGS = true;
@@ -278,7 +278,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $lang_name = $map[$lang_name];
         }
 
-        global $RECORDED_LANG_STRINGS_CONTENT;
+        global $RECORDED_CONTENT_LANG_STRINGS;
 
         require_lang('lang');
         require_code('form_templates');
@@ -287,9 +287,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
         $fields = new Tempcode();
 
-        $names = find_lang_content_names(array_keys($RECORDED_LANG_STRINGS_CONTENT));
+        $names = find_lang_content_names(array_keys($RECORDED_CONTENT_LANG_STRINGS));
 
-        foreach ($RECORDED_LANG_STRINGS_CONTENT as $key => $forum_db) {
+        foreach ($RECORDED_CONTENT_LANG_STRINGS as $key => $forum_db) {
             $value_found = get_translated_text($key, $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
             if ($value_found != '') {
                 $description = make_string_tempcode(escape_html($value_found));

@@ -260,7 +260,7 @@ class Module_topics
     /**
      * The UI for a trivial form page that just asks a reason before relaying the results to the same URL, but with an underscored type.
      *
-     * @param  ID_TEXT $_title The language string ID for the title to use in the page
+     * @param  ID_TEXT $_title The language string codename for the title to use in the page
      * @return Tempcode The UI
      */
     public function relay_with_reason($_title)
@@ -294,7 +294,7 @@ class Module_topics
     /**
      * Do a redirection page to a certain topic/post (because we've just done an action and want to go back).
      *
-     * @param  ID_TEXT $_title The language string ID for the title to use in the page
+     * @param  ID_TEXT $_title The language string codename for the title to use in the page
      * @param  AUTO_LINK $topic_id The ID of the topic to redirect to
      * @param  ?mixed $lang What to output (Tempcode or string) (null: default)
      * @param  ?AUTO_LINK $post_id The ID of the post to redirect to (null: redirect to topic instead)
@@ -322,7 +322,7 @@ class Module_topics
     /**
      * Do a redirection page to a certain forum (because we've just done an action and want to go back).
      *
-     * @param  ID_TEXT $_title The language string ID for the title to use in the page
+     * @param  ID_TEXT $_title The language string codename for the title to use in the page
      * @param  AUTO_LINK $forum_id The ID of the forum to redirect to
      * @param  ?mixed $lang What to output (Tempcode or string) (null: default)
      * @return Tempcode The UI

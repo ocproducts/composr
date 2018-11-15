@@ -280,7 +280,7 @@ function get_entry_points($check_perms = true, $member_id = null, $support_cross
 	return array('browse' => 'ROOT', 'tree_view' => 'TREE');
 }
 [/code]
-returns a mapping for two entry-points: the [tt]browse[/tt] screen (which almost any module will have), and the [tt]tree_view[/tt] screen. 'ROOT' and 'TREE' are language strings.
+returns a mapping for two entry-points: the [tt]browse[/tt] screen (which almost any module will have), and the [tt]tree_view[/tt] screen. [tt]ROOT[/tt] and [tt]TREE[/tt] are language strings.
 
 [title="5"]The [tt]install[/tt] and [tt]uninstall[/tt] functions[/title]
 
@@ -938,7 +938,7 @@ As discussed previously, these hooks have a convention of having a [tt]run[/tt] 
 1) It returns no-results if the calendar addon is not installed. We don't strictly need to do this, as this file won't be here normally if the calendar addon is not installed (the hook file is listed as one of the files in the calendar addon so would be uninstalled along with other calendar files). The reason we do it is in case the file was accidentally restored after the calendar addon was removed (there are many ways someone might accidentally do that).
 2) It checks a couple of permissions. One is that the accessing user has permission to [tt]assume_any_member[/tt] -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the [tt]calendar[/tt] module in general.
 3) It then returns an array structure that matches the convention for these hooks. That is:
-4) "List of tuples for results. Each tuple is: [tt]type[/tt],[tt]title[/tt],[tt]url[/tt]" (checking the PHP-doc API signature is always handy if you want to know how a hook should behave). In this case the link is a 'views' link, is given a link caption of whatever the 'CALENDAR' language string contains, and has given the [tt]build_url[/tt]-defined URL. The [tt]members[/tt] module (this is where the hooks are called from) knows what to do with this tuple of data, we just had to make sure we return what was expected.
+4) "List of tuples for results. Each tuple is: [tt]type[/tt],[tt]title[/tt],[tt]url[/tt]" (checking the PHP-doc API signature is always handy if you want to know how a hook should behave). In this case the link is a 'views' link, is given a link caption of whatever the [tt]CALENDAR[/tt] language string contains, and has given the [tt]build_url[/tt]-defined URL. The [tt]members[/tt] module (this is where the hooks are called from) knows what to do with this tuple of data, we just had to make sure we return what was expected.
 
 So now that I have explained how hook's have contracts, how they are called, and gone through an example hook implementation, you should be able to write your own. To write a new hook simply:
 1) take an existing hook file, copy it to a new filename (e.g. [tt]example.php[/tt] instead of [tt]calendar.php[/tt])

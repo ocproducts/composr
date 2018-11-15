@@ -889,7 +889,7 @@ Avoid relative paths
 | Simplicity
 | Composr development +
 | Manually
-| If we use multiple directory separators it gets messy. [tt]/[/tt] will work on Microsoft nce language strings in a sa for all PHP library functions.
+| If we use multiple directory separators it gets messy. [tt]/[/tt] is safe for all PHP library functions, even on Microsoft platforms.
 |}
 
 [title="4"]Databases[/title]
@@ -1448,7 +1448,7 @@ Blocks should not exit
 | Stability
 | All development
 | Manually
-| If you are supporting Composr attachments in a field, run the [tt]check_comcode[/tt] function on the Comcode that references the attachments before the main row for the content is added to the database. This ensures the Comcode is valid, so you can proceed to add the content row (using the integer [tt]0[/tt] temporarily as the field value for where the Comcode will be placed). The attachment Comcode can then be fully parsed (given the ID of the content row, so it can store its security properly) and then the content row updated with the new language string ID for that parsed Comcode.
+| If you are supporting Composr attachments in a field, run the [tt]check_comcode[/tt] function on the Comcode that references the attachments before the main row for the content is added to the database. This ensures the Comcode is valid, so you can proceed to add the content row (using the integer [tt]0[/tt] temporarily as the field value for where the Comcode will be placed). The attachment Comcode can then be fully parsed (given the ID of the content row, so it can store its security properly) and then the content row updated with the new content language string ID for that parsed Comcode.
 |}
 
 [title="4"]Comcode parser/renderer code[/title]
@@ -1586,7 +1586,7 @@ You [b]may[/b] assume...
 | Internationalisation
 | Product development only
 | Manually
-| Make sure the [tt]lang_code_to_default_content[/tt] function is used where appropriate in installation code. This function puts in language strings to the database such that they get stored automatically for all translations available on the installation.
+| Make sure the [tt]lang_code_to_default_content[/tt] function is used where appropriate in installation code. This function puts in content language strings to the database such that they get stored automatically for all translations available on the installation.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Upgrades must be handled correctly[/color]

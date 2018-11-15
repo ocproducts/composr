@@ -22,7 +22,7 @@
  * Get a map of notification types available to our member.
  *
  * @param  ?MEMBER $member_id_of Member this is for (null: just check globally)
- * @return array Map of notification types (integer code to language string ID)
+ * @return array Map of notification types (integer code to language string codename)
  * @ignore
  */
 function _get_available_notification_types($member_id_of = null)

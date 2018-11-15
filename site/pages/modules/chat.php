@@ -902,7 +902,7 @@ class Module_chat
     /**
      * Certain add/remove actions may be triggered by hyperlinks, but they need confirming because a link click should never constitute a state change.
      *
-     * @param  ID_TEXT $action The language string ID of our action
+     * @param  ID_TEXT $action The language string codename of our action
      * @param  string $param Parameter of action
      * @return ?Tempcode If a confirm page is being output, this is it (null: continue as before)
      */

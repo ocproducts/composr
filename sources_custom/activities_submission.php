@@ -16,10 +16,10 @@
 /**
  * Syndicate human-intended descriptions of activities performed to the internal wall, and external listeners.
  *
- * @param  string $a_language_string_code Language string ID
- * @param  string $a_label_1 Label 1 (given as a parameter to the language string ID)
- * @param  string $a_label_2 Label 2 (given as a parameter to the language string ID)
- * @param  string $a_label_3 Label 3 (given as a parameter to the language string ID)
+ * @param  string $a_language_string_code Language string codename
+ * @param  string $a_label_1 Label 1 (given as a parameter to the language string codename)
+ * @param  string $a_label_2 Label 2 (given as a parameter to the language string codename)
+ * @param  string $a_label_3 Label 3 (given as a parameter to the language string codename)
  * @param  string $a_page_link_1 Page-link 1
  * @param  string $a_page_link_2 Page-link 2
  * @param  string $a_page_link_3 Page-link 3

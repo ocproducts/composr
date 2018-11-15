@@ -1378,8 +1378,8 @@ class Module_admin_stats
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic type (for use in sort parameters and such)
-     * @param  string $graph_title Language string ID for the graph title
-     * @param  string $graph_description Language string ID for the graph description
+     * @param  string $graph_title Language string codename for the graph title
+     * @param  string $graph_description Language string codename for the graph description
      * @param  integer $hours The steps of hours to use
      * @param  integer $total The total hours to plot
      * @return array A linear array containing the graph and list Tempcode objects, respectively
@@ -1467,9 +1467,9 @@ class Module_admin_stats
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic to use
-     * @param  string $graph_title Language string ID for the graph title
-     * @param  string $graph_description Language string ID for the graph description
-     * @param  string $list_title Language string ID for the list title
+     * @param  string $graph_title Language string codename for the graph title
+     * @param  string $graph_description Language string codename for the graph description
+     * @param  string $list_title Language string codename for the list title
      * @return array A linear array containing the graph and list Tempcode objects, respectively
      */
     public function page_x_share($page, $type, $graph_title, $graph_description, $list_title)
