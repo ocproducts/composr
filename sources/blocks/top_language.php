@@ -138,7 +138,7 @@ class Block_top_language
         } else {
             $country = $lang_iso;
         }
-        if (find_theme_image('flags_large/' . $country, true) == '') {
+        if (find_theme_image('flags_large/' . strtolower($country), true) == '') {
             $country = '';
         }
 
