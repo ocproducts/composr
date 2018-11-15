@@ -968,7 +968,7 @@ function _toggle_top_box(event,name,hide)
 		body.appendChild(e);
 
 		add_event_listener_abstract(e,'click',function(event) { if (typeof event=='undefined') event=window.event; event.within_message_box=true; });
-		add_event_listener_abstract(body,'click',function(event) { if (typeof event=='undefined') event=window.event; if (typeof event.within_message_box!='undefined') return; _toggle_top_box(event,'top_personal_stats',true); _toggle_top_box(event,'web_notifications',true); _toggle_top_box(event,'pts',true); });
+		add_event_listener_abstract(body,'click',function(event) { if (typeof event=='undefined') event=window.event; if (typeof event.within_message_box!='undefined') return; _toggle_top_box(event,'top_personal_stats',true); _toggle_top_box(event,'web_notifications',true); _toggle_top_box(event,'pts',true); _toggle_top_box(event,'top_language',true); });
 	}
 
 	var button=document.getElementById(name+'_button');
