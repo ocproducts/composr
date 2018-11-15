@@ -1016,6 +1016,12 @@ function ecv_METADATA($lang, $escaped, $param)
                     if ($keywords != '') {
                         $keywords_array = array_merge($keywords_array, array_map('trim', explode(',', $keywords)));
                     }
+                    foreach ($keywords_array as &$keyword) {
+                        $_keyword = do_lang('TAG_OVERRIDE_' . $keyword, null, null, null, null, false);
+                        if ($_keyword !== null) {
+                            $keyword = $_keyword;
+                        }
+                    }
                     $value = implode(',', array_unique($keywords_array));
                 }
                 break;

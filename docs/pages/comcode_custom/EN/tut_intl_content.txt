@@ -92,6 +92,17 @@ You will want a way to be able to give your site visitors the option to view you
 Any content which has not been translated yet will display in the original language it was written in. For example, a news post will display in English if that's how it was originally written.
 [/surround]
 
+[title="2"]Keyword translation[/title]
+
+Keywords are considered language-neutral by default.
+
+You can then define language strings in any language pack's [tt]global[/tt] language file to override for a particular language.
+
+E.g.
+[code="ini"]
+TAG_OVERRIDE_defaultness=standardeinstellung
+[/code]
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
