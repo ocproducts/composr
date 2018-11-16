@@ -33,6 +33,7 @@ function init__menus2()
 
 /**
  * Export a menu structure to a CSV file.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
  *
  * @param  ?PATH $file_path The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv)
  */

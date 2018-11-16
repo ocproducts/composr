@@ -118,6 +118,27 @@ There are 3 plausible approaches for synching Configuration and Structure:[list=
 [*] Use diff tools to compare database dumps taken at different points in times, and manually transfer the database changes. This is not recommended due to complexity, but useful when in a tight spot.
 [/list]
 
+[title="4"]Coding up structure programmatically[/title]
+
+When coding up your scripts, you'll find we have defined a number of specialised functions in the API to make your life a lot easier. These functions cover the most common structural configuration for a site.
+
+Functions:
+ - Misc:
+  - [tt]define_custom_field[/tt] -- create a custom field
+  - [tt]mass_set_page_access[/tt] -- set page access
+  - [tt]define_redirects[/tt] -- set Composr-level redirects
+ - Menu structure:
+  - [tt]import_menu_csv[/tt] -- import a menu structure
+  - [tt]export_menu_csv[/tt] -- export a menu structure
+  - [tt]create_menu_structure[/tt] -- create a menu structure programmatically
+ - Comcode pages:
+  - [tt]rename_live_comcode_page[/tt] -- fix a page's database references (renaming the [tt].txt[/tt] file may not be enough)
+  - [tt]define_comcode_page_structure[/tt] -- define hierarchical relationships between pages
+  - [tt]define_page_metadata[/tt] -- define metadata for a Comcode page, like custom fields
+ - Translation (after being manually given string remappings by a human translator):
+  - [tt]content_lang_string_translation[/tt] -- translate content programmatically
+  - [tt]lang_string_translation[/tt] -- create language packs programmatically
+
 [title="4"]Site-specific versioning scripts[/title]
 
 You can give each site update an incremental version number, and code in changes relating to this update. By coding it within a Composr [tt]systems/startup[/tt] hook it will run on the first page view as soon as git code is pulled through.
@@ -169,9 +190,11 @@ Here are some assorted tips to help with portability:
 1) Avoid using Composr attachments because it's hard to sync them due to database changes. Instead place files in [tt]uploads/website_specific[/tt] or [tt]uploads/filedump[/tt] and reference them using the [tt]media[/tt] Comcode tag (which has all the same rendering functionality attachments do).
 2) Avoid coding in the site's base URL directly, use [tt]{$BASE_URL}[/tt].
 
-[title="2"]Helping users the correct server[/title]
+[title="2"]Helping users use the correct server[/title]
 
-You can make a Composr [tt]systems/startup[/tt] hook to add a notice only for the staging site.
+You can make [tt]favicon_staging[/tt] and [tt]favicon_dev[/tt] theme thages. These (by default) override the favicon if these environments are detected. The development environment is detected by [tt]localhost[/tt]. The staging environment is detected if the Health Check addon is configured with the "Test site" option enabled.
+
+You can also make a Composr [tt]systems/startup[/tt] hook to add a notice only for the staging site.
 
 [code="PHP"]
 <?php /*
