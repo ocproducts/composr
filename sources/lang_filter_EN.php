@@ -308,12 +308,12 @@ class LangFilter_EN extends LangFilter
         foreach ($remapping as $authentic => $perverted) {
             if (strpos($lc_value, $authentic) !== false) {
                 $value = preg_replace(
-                    '#(^|\s)' . preg_quote($authentic, '#') . '#',
+                    '#(^|\s|\(|"|\')' . preg_quote($authentic, '#') . '#',
                     '$1' . $perverted,
                     $value
                 );
                 $value = preg_replace(
-                    '#(^|\s)' . preg_quote(ucfirst($authentic), '#') . '#',
+                    '#(^|\s|\(|"|\')' . preg_quote(ucfirst($authentic), '#') . '#',
                     '$1' . ucfirst($perverted),
                     $value
                 );

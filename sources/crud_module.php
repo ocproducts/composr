@@ -1003,7 +1003,7 @@ abstract class Standard_crud_module
         }
         $temp = $this->add_actualisation();
 
-        $description = ($this->do_next_description === null) ? do_lang_tempcode($this->success_message_str) : $this->do_next_description;
+        $description = ($this->do_next_description === null) ? paragraph(do_lang_tempcode($this->success_message_str)) : $this->do_next_description;
 
         if (is_array($temp)) {
             list($id, $text) = $temp;
