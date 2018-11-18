@@ -723,8 +723,10 @@ header h1 {
 	}
 /*{+END}*/
 
-.global-navigation-inner {
-	overflow: hidden;
+.global-navigation-inner::after {
+	display: block;
+	clear: both;
+	content: "";
 }
 /*{+START,CSS_MODE,mobile}*/
 	.global-navigation-inner {
@@ -732,23 +734,35 @@ header h1 {
 	}
 /*{+END}*/
 
-.global-navigation .top-buttons, .global-navigation .top-form {
+.global-navigation .top-buttons, 
+.global-navigation .top-form {
 	padding: 0.5em 0;
 	margin-right: 1em;
 	float: right;
 }
 
 .global-navigation .top-buttons {
+	display: flex;
+	margin-left: auto;
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
+
+.block-top-notifications {
+	display: flex;
+}
+
+.top-button-wrapper {
+	position: relative;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	.global-navigation .top-buttons {
-		margin-left: 1.5em;
+		padding-left: 1.5em;
 	}
 /*{+END}*/
 
-.global-navigation .top-buttons>div {
-	display: inline-block;
+.global-navigation .top-buttons > div {
+	/*display: inline-block;*/
 }
 
 .global-navigation .top-form.top-search {
@@ -4092,43 +4106,45 @@ div.proceed-button-left-2 {
 	margin: 0;
 }
 
-#top-language-button {
-	width: 30px;
-	height: 24px;
-	display: inline-block;
-}
-#top-language-button > img {
-	padding: 0 5px;
-	vertical-align: middle;
-}
-#top-language-rel a, 
-#top-language-rel img {
-	vertical-align: middle;
-}
-#top-language-rel a.current {
-	font-weight: bold;
-}
-
-.global-button-ref-point {
+.top-button-popup {
 	position: absolute;
-	font-size: 13px; /* Puts it back, as was set to zero elsewhere */
 	z-index: 2000;
+	color: {$GET,slightly_seeded_text};
+	top: 110%;
+	right: -6px;
+	min-width: 20em;
 }
 
-#top-personal-stats-rel, #web-notifications-rel {
-	min-width: 22em;
-}
-
-.global-button-ref-point .box {
+.top-button-popup .box {
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 
-.global-button-ref-point .associated-links-block-group, .notification+.notification {
+.top-button-popup .associated-links-block-group, 
+.notification+.notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};
 	padding-top: 0.5em;
 }
 
+#top-language-button {
+	width: 30px;
+	height: 24px;
+	display: inline-block;
+}
+
+#top-language-button > img {
+	padding: 0 5px;
+	vertical-align: middle;
+}
+
+#top-language-rel a,
+#top-language-rel img {
+	vertical-align: middle;
+}
+
+#top-language-rel a.current {
+	font-weight: bold;
+}
 
 /*
 NB: Form buttons are wrapped in either:

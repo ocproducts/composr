@@ -275,19 +275,36 @@
         });
     };
 
-
     $cms.templates.blockTopPersonalStats = function (params, container) {
         $dom.on(container, 'click', '.js-click-toggle-top-personal-stats', function (e) {
-            if (toggleTopPersonalStats(e) === false) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+            $cms.ui.toggleTopBox('top-personal-stats');
         });
 
-        function toggleTopPersonalStats(event) {
-            window.$coreNotifications.toggleMessagingBox(event, 'pts', true);
-            window.$coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-            return window.$coreNotifications.toggleMessagingBox(event, 'top-personal-stats');
-        }
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedInside = container.contains(e.target);
+
+            if (!clickedInside) {
+                $cms.ui.toggleTopBox('top-personal-stats', true);
+            }
+        });
+    };
+
+    $cms.templates.blockTopLanguage = function (params, container) {
+        $dom.on(container, 'click', '.js-click-toggle-top-language', function (e) {
+            e.preventDefault();
+            $cms.ui.toggleTopBox('top-language');
+        });
+
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedInside = container.contains(e.target);
+
+            if (!clickedInside) {
+                $cms.ui.toggleTopBox('top-language', true);
+            }
+        });
     };
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {

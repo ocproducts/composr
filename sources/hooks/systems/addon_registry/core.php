@@ -2143,7 +2143,7 @@ class Hook_addon_registry_core
         return array(
             do_lorem_template('TRANSLATION_LINKS', array(
                 'ALT_LANGS' => array('FR', 'DE'),
-            )
+            ))
         );
     }
 }

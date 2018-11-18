@@ -6823,7 +6823,7 @@ function ecv_TRANSLATION_LINKS($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    if (cms_srv('REQUEST_METHOD') != 'POST') {
+    if (!isset($_SERVER['REQUEST_METHOD']) || ($_SERVER['REQUEST_METHOD'] !== 'POST')) {
         $langs = find_all_langs();
         $alt_langs = array();
         foreach (array_keys($langs) as $lang) {

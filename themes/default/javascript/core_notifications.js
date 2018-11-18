@@ -68,34 +68,43 @@
         window.maxNotificationsToShow = Number(params.max) || 0;
 
         $dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
-            notificationsMarkAllRead(e);
+            e.preventDefault();
+            notificationsMarkAllRead();
         });
 
         $dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
-            if (toggleWebNotifications(e) === false) {
-                e.preventDefault();
+            e.preventDefault();
+            $cms.ui.toggleTopBox('web-notifications');
+        });
+
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedIn = $dom.closest(e.target, '.js-clickout-hide-top-web-notifications', container);
+
+            if (!clickedIn) {
+                $cms.ui.toggleTopBox('web-notifications', true);
             }
         });
 
-        $dom.on(container, 'mouseup', '.js-mouseup-toggle-web-notifications', function (e) {
-            toggleWebNotifications(e);
-        });
-
-        $dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function () {
+        $dom.on(container, 'click', '.js-click-find-url-tab', function () {
             $cms.ui.findUrlTab();
         });
 
         $dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
-            if (togglePts(e) === false) {
-                e.preventDefault();
+            e.preventDefault();
+            $cms.ui.toggleTopBox('pts');
+        });
+
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedIn = $dom.closest(e.target, '.js-clickout-hide-top-pts', container);
+
+            if (!clickedIn) {
+                $cms.ui.toggleTopBox('pts', true);
             }
         });
 
-        $dom.on(container, 'mouseup', '.js-mouseup-toggle-pts', function (e) {
-            togglePts(e);
-        });
-
-        function notificationsMarkAllRead(event) {
+        function notificationsMarkAllRead() {
             var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=mark_all_read';
             if (window.maxNotificationsToShow !== undefined) {
                 url += '&max=' + window.maxNotificationsToShow;
@@ -104,20 +113,7 @@
             url += '&forced_update=1';
             url += $cms.keep();
             $cms.doAjaxRequest(url, _pollForNotifications);
-            $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-            return false;
-        }
-
-        function toggleWebNotifications(event) {
-            $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
-            $coreNotifications.toggleMessagingBox(event, 'pts', true);
-            return $coreNotifications.toggleMessagingBox(event, 'web-notifications');
-        }
-
-        function togglePts(event) {
-            $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
-            $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-            return $coreNotifications.toggleMessagingBox(event, 'pts');
+            $cms.ui.toggleTopBox('web-notifications', true);
         }
     };
 
@@ -321,70 +317,6 @@
         }
     }
 
-    $coreNotifications.toggleMessagingBox = function toggleMessagingBox(event, name, hide) {
-        hide = Boolean(hide);
-
-        var el = document.getElementById(name + '-rel');
-
-        if (!el) {
-            return;
-        }
-
-        event.withinMessageBox = true;
-
-        if (el.parentNode !== document.body) { // Move over, so it is not cut off by overflow:hidden of the header
-            el.parentNode.removeChild(el);
-            document.body.appendChild(el);
-
-            el.addEventListener('click', function (event) {
-                event.withinMessageBox = true;
-            });
-            document.body.addEventListener('click', function (event) {
-                if (event.withinMessageBox !== undefined) {
-                    return;
-                }
-                $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
-                $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-                $coreNotifications.toggleMessagingBox(event, 'pts', true);
-            });
-        }
-
-        var button = document.getElementById(name + '-button');
-        button.title = '';
-        var setPosition = function () {
-            var buttonX = $dom.findPosX(button, true);
-            var buttonWidth = button.offsetWidth;
-            var x = (buttonX + buttonWidth - el.offsetWidth);
-            if (x < 0) {
-                var span = el.querySelector('span');
-                span.style.marginLeft = (buttonX + buttonWidth / 4) + 'px';
-                x = 0;
-            }
-            el.style.left = x + 'px';
-            el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
-            try {
-                el.style.opacity = '1.0';
-            } catch (ex) {
-                // continue
-            }
-        };
-        setTimeout(setPosition, 0);
-
-        if ((el.style.display === 'none') && !hide) {
-            var tooltip = document.querySelector('body > .tooltip');
-            if (tooltip != null) { // Hide tooltip, to stop it being a mess
-                tooltip.style.display = 'none';
-            }
-
-            el.style.display = 'inline';
-        } else {
-            el.style.display = 'none';
-        }
-
-        el.style.opacity = 0; // Render, but invisibly, until we've positioned it
-
-        return false;
-    };
 }(window.$cms, window.$util, window.$dom));
 
 // LEGACY
