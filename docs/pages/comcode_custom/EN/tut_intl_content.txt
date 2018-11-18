@@ -116,6 +116,17 @@ Advantages:
  1_key="Content language string"       1_value="A translatable piece of content-managed text, stored in the Composr [tt]translate[/tt] table using an ID"
 ]Concepts[/concepts]
 
+[title="2"]Keyword translation[/title]
+
+Keywords are considered language-neutral by default.
+
+You can then define language strings in any language pack's [tt]global[/tt] language file to override for a particular language.
+
+E.g.
+[code="ini"]
+TAG_OVERRIDE_defaultness=standardeinstellung
+[/code]
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]

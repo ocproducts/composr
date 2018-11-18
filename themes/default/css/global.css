@@ -4092,12 +4092,33 @@ div.proceed-button-left-2 {
 	margin: 0;
 }
 
+#top-language-button {
+	width: 30px;
+	height: 24px;
+	display: inline-block;
+}
+#top-language-button > img {
+	padding: 0 5px;
+	vertical-align: middle;
+}
+#top-language-rel a, 
+#top-language-rel img {
+	vertical-align: middle;
+}
+#top-language-rel a.current {
+	font-weight: bold;
+}
+
 .global-button-ref-point {
 	position: absolute;
-	min-width: 22em;
 	font-size: 13px; /* Puts it back, as was set to zero elsewhere */
 	z-index: 2000;
 }
+
+#top-personal-stats-rel, #web-notifications-rel {
+	min-width: 22em;
+}
+
 .global-button-ref-point .box {
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }

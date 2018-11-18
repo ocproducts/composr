@@ -526,6 +526,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKET_ASSIGN
         TICKET_ASSIGNED_BODY
         TICKET_ASSIGNED_SUBJECT
+        TRANSLATING_IN_LANGUAGE
         ACCESS_DENIED__ATTACHMENT_ACCESS
         ACCESS_DENIED__ZONE_ACCESS_SESSION
         ACCEPT_IMAGES

@@ -34,6 +34,7 @@
 
 {$,Metadata for the page: standard metadata, Dublin Core metadata, Facebook Open Graph, and Composr metadata extensions [CMSCORE]}
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}
+{$TRANSLATION_LINKS}
 <link rel="baseurl" href="{$BASE_URL*}" />
 <link rel="sitemap" href="{$BASE_URL*}/data_custom/sitemaps/index.xml" />
 <meta id="composr-symbol-data" name="composr-symbol-data" content="{$SYMBOL_DATA_AS_JSON*}" />

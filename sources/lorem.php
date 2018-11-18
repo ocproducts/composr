@@ -911,6 +911,7 @@ function get_text_templates()
         'templates/WYSIWYG_LOAD.tpl',
         'templates/JAVASCRIPT_NEED.tpl',
         'templates/AJAX_PAGINATION.tpl',
+        'templates/TRANSLATION_LINKS.tpl',
         'templates/JS_REFRESH.tpl',
         'templates/META_REFRESH_LINE.tpl',
         'templates/CNS_AUTO_TIME_ZONE_ENTRY.tpl',
