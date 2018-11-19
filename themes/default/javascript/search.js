@@ -108,11 +108,16 @@
 
         $dom.on(container, 'click', '.js-click-toggle-top-search', function (e) {
             e.preventDefault();
-            window.$coreNotifications.toggleMessagingBox('top-search');
+            $cms.ui.toggleTopBox('top-search');
         });
 
-        $dom.on(container, 'clickout', function () {
-            window.$coreNotifications.toggleMessagingBox('top-search', true);
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedInside = container.contains(e.target);
+
+            if (!clickedInside) {
+                $cms.ui.toggleTopBox('top-search', true);
+            }
         });
     };
 }(window.$cms, window.$util, window.$dom));
