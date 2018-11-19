@@ -739,9 +739,9 @@ function apply_tempcode_escaping_inline($escaped, $value)
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specified language string ID.
+ * This will create a new Tempcode object that is containing a single specified language string codename.
  *
- * @param  ID_TEXT $lang_string The ID of the language string to use
+ * @param  ID_TEXT $lang_string The codename of the language string to use
  * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $token2 The second token [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $token3 The third token (replaces {3}). May be an array of [of string], to allow any number of additional args (null: none)
@@ -2375,7 +2375,7 @@ class Tempcode
     /**
      * Parse the current Tempcode object, then echo it to the browser.
      *
-     * @param  ?LANGUAGE_NAME $current_lang The language to evaluate with (null: current users language)
+     * @param  ?LANGUAGE_NAME $current_lang The language to evaluate with (null: current user's language)
      * @param  boolean $stop_if_stuck Whether to stop if we are stuck of a seq_part with parameters yet-unbound, and to continue from last resume point
      * @return string Blank string. Allows chaining within echo statements
      */

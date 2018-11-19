@@ -21,10 +21,141 @@
 /*EXTRA FUNCTIONS: get_included_files*/
 
 /**
+ * API to do content translation programatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  LANGUAGE_NAME $lang_from From language
+ * @param  LANGUAGE_NAME $lang_to To language
+ * @param  array $content_lang_string_changes Mapping of strings to change (from => to); if 'to' is null it should be the same as 'from'
+ * @param  boolean $test_run Whether this is only a test run, don't change anything
+ * @param  boolean $allow_multiple_matches Allow multiple matches of source strings (false if we'll require exactly one match)
+ */
+function content_lang_string_translation($lang_from, $lang_to, $content_lang_string_changes, $test_run = false, $allow_multiple_matches = true)
+{
+    if (!multi_lang_content()) {
+        warn_exit('multi_lang_content must be enabled');
+    }
+
+    // Checks...
+
+    foreach (array_keys($content_lang_string_changes) as $from) {
+        $rows = $GLOBALS['SITE_DB']->query_select('translate', array('id'), array('language' => $lang_from, 'text_original' => $from));
+
+        if (count($rows) == 0) {
+            warn_exit('No strings for \'' . $from . '\'');
+        }
+
+        if ((!$allow_multiple_matches) && (count($rows) > 1)) {
+            warn_exit('Multiple strings for \'' . $from . '\'');
+        }
+    }
+
+    if ($test_run) {
+        return;
+    }
+
+    // Make changes...
+
+    foreach ($content_lang_string_changes as $from => $to) {
+        if ($to === null) {
+            $to = $from;
+        }
+
+        $rows = $GLOBALS['SITE_DB']->query_select('translate', array('id', 'importance_level', 'source_user'), array('language' => $lang_from, 'text_original' => $from));
+        foreach ($rows as $row) {
+            // Delete any existing translation
+            $GLOBALS['SITE_DB']->query_delete('translate', array('language' => $lang_to, 'id' => $row['id']));
+
+            // Insert new translation
+            $GLOBALS['SITE_DB']->query_insert('translate', array(
+                'id' => $row['id'],
+                'language' => $lang_to,
+                'importance_level' => $row['importance_level'],
+                'text_original' => $to,
+                'text_parsed' => '',
+                'broken' => 0,
+                'source_user' => $row['source_user'],
+            ));
+        }
+    }
+}
+
+/**
+ * API to do language string translation programatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  LANGUAGE_NAME $lang_from From language
+ * @param  LANGUAGE_NAME $lang_to To language
+ * @param  array $lang_string_changes A mapping of language file to a mapping of strings to change (from => to); if 'to' is null it should be the same as 'from'
+ * @param  boolean $test_run Whether this is only a test run, don't change anything
+ * @param  boolean $allow_multiple_matches Allow multiple matches of source strings (false if we'll require exactly one match)
+ */
+function lang_string_translation($lang_from, $lang_to, $lang_string_changes, $test_run = false, $allow_multiple_matches = false)
+{
+    require_code('files2');
+
+    // Checks...
+
+    require_code('lang_compile');
+
+    foreach ($lang_string_changes as $lang_file => $_lang_string_changes) {
+        $lang_file_map_from = array_merge(get_lang_file_map($lang_from, $lang_file, true, true), get_lang_file_map($lang_from, $lang_file, false, true));
+        $_lang_file_map_from = array_count_values($lang_file_map_from);
+
+        foreach (array_keys($_lang_string_changes) as $from) {
+            if (!array_key_exists($from, $_lang_file_map_from)) {
+                warn_exit('No strings for \'' . $from . '\'');
+            }
+
+            if ((!$allow_multiple_matches) && ($_lang_file_map_from[$from] > 1)) {
+                warn_exit('Multiple strings for \'' . $from . '\'');
+            }
+        }
+    }
+
+    if ($test_run) {
+        return;
+    }
+
+    // Make changes...
+
+    $lang_to_dir = get_custom_file_base() . '/lang_custom/' . $lang_to;
+    if (!file_exists($lang_to_dir)) {
+        mkdir($lang_to_dir, 0777);
+        fix_permissions($lang_to_dir);
+
+        cms_file_put_contents_safe($lang_to_dir . '/index.html', '');
+    }
+
+    foreach ($lang_string_changes as $lang_file => $_lang_string_changes) {
+        $lang_file_map_from = array_merge(get_lang_file_map($lang_from, $lang_file, true, true), get_lang_file_map($lang_from, $lang_file, false, true));
+        $lang_file_map_to = array_merge(get_lang_file_map($lang_to, $lang_file, true, true), get_lang_file_map($lang_to, $lang_file, false, true));
+
+        foreach ($_lang_string_changes as $from => $to) {
+            if ($to === null) {
+                $to = $from;
+            }
+
+            foreach ($lang_file_map_from as $key => $val) {
+                if ($val == $from) {
+                    $lang_file_map_to[$key] = $to;
+                }
+            }
+        }
+
+        $out = '[strings]' . "\n";
+        foreach ($lang_file_map_to as $key => $val) {
+            $out .= $key . '=' . $val . "\n";
+        }
+        cms_file_put_contents_safe($lang_to_dir . '/' . $lang_file . '.ini', $out);
+    }
+}
+
+/**
  * Edit a language string direct from something saved into the code.
  *
- * @param  ID_TEXT $codename The language string ID
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ID_TEXT $codename The language string codename
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  */
 function inline_language_editing(&$codename, $lang)
 {
@@ -159,9 +290,9 @@ function get_lang_files($lang = null)
 }
 
 /**
- * Search the database to find human-readable names for language string IDs.
+ * Search the database to find human-readable names for content language string IDs.
  *
- * @param  array $ids The language string IDs (array of AUTO_LINK)
+ * @param  array $ids The content language string IDs (array of AUTO_LINK)
  * @return array Human readable names (List of string against same IDs in input array or null for orphan strings)
  */
 function find_lang_content_names($ids)

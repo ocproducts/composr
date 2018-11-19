@@ -192,6 +192,7 @@
 								</li>
 							{+END}{+END}
 						{+END}
+						{+START,IF,{$CONFIG_OPTION,block_top_language}}<li>{$BLOCK,block=top_language}</li>{+END}
 					{+END}
 					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$DESKTOP}}
 						<ul class="horizontal-buttons">

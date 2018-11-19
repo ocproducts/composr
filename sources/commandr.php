@@ -329,7 +329,7 @@ class Virtual_shell
         if (($this->output[STREAM_STDCOMMAND] == '') && ($this->output[STREAM_STDHTML] == '') && ($this->output[STREAM_STDOUT] == '')) {
             // Exit with an error
             if ($this->output[STREAM_STDERR] != '') {
-                $this->output[STREAM_STDERR] = do_lang('PROBLEM_ACCESSING_RESPONSE') . "\n" . $this->output[STREAM_STDERR]; // Ugh...got to work with language strings designed for JavaScript
+                $this->output[STREAM_STDERR] = do_lang('PROBLEM_ACCESSING_RESPONSE') . "\n" . $this->output[STREAM_STDERR]; // Ugh... got to work with language strings designed for JavaScript
             } else {
                 $this->output[STREAM_STDERR] = do_lang('TERMINAL_PROBLEM_ACCESSING_RESPONSE');
             }

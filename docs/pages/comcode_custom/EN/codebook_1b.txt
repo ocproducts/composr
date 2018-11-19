@@ -399,7 +399,7 @@ The specific ones relating to URL monikers are...
 'table' => 'example', // The resource table
 'id_field' => 'id', // The field containing the ID number (what is used in URLs conventionally)
 'title_field' => 'title', // The field containing the resource title (what the moniker will generate from)
-'title_field_dereference' => true, // Whether the title_field is a language string field; if you are not using content translation it doesn't really matter
+'title_field_dereference' => true, // Whether the title_field is a content language string field; if you are not using content translation it doesn't really matter
 'view_page_link_pattern' => '_SEARCH:downloads:entry:_WILD', // The URL pattern we support the monikers on
 [/code]
 
@@ -695,7 +695,7 @@ The importer-file consists of an object that defines:
  - feature-import functions, which are named according to the code-names of the import features listed within the info data structure ([tt]import_<feature>[/tt]). The object only needs to define feature-import functions for those features it can import.
  - any other miscellaneous functions that the importer may use internally (sometimes importers have their own unique situations where moderately complex conversion of data between representation schemes is required, and support functions are often useful to keep the code tidy)
 
-If you need to import a feature for which no import code exists yet then you'll need to define it. They are defined by hook files in [tt]sources/hooks/modules/admin_import_types[/tt]. Each hook file has a function that returns a mapping between import codes and the language string identifiers that label them. e.g. the 'filedump' code is defined in [tt]sources/hooks/modules/admin_import_types/filedump.php[/tt] and is set to be labelled to the user with the language string 'FILEDUMP'. If you need to create a new import code put it in the most appropriate hook file that already exists (probably [tt]cns_forum.php[/tt]). Try and re-use an existing language string if one exists, otherwise create one in lang/EN/import.ini.
+If you need to import a feature for which no import code exists yet then you'll need to define it. They are defined by hook files in [tt]sources/hooks/modules/admin_import_types[/tt]. Each hook file has a function that returns a mapping between import codes and the language string codenames that label them. e.g. the [tt]filedump[/tt] code is defined in [tt]sources/hooks/modules/admin_import_types/filedump.php[/tt] and is set to be labelled to the user with the language string [tt]FILEDUMP[/tt]. If you need to create a new import code put it in the most appropriate hook file that already exists (probably [tt]cns_forum.php[/tt]). Try and re-use an existing language string if one exists, otherwise create one in lang/EN/import.ini.
 
 [title="5"]Flow[/title]
 
@@ -1050,7 +1050,7 @@ Often they also define the following:
  - [tt]browse[/tt], The function to show the screen when the module is loaded up. If we do not define this, [tt]browse[/tt] acts the same as [tt]add[/tt]. If you define a [tt]browse[/tt] method (which many CRUD modules do do) then you must call it yourself from your [tt]run_start[/tt] method. Often [tt]browse[/tt] methods are used with do-next-manager interfaces, to provide a front-end for choosing different options.
 
 CRUD modules usually define the following standard properties:
- - [tt]lang_type[/tt], the stem for languages strings the module would use. E.g. if you say 'FOO', the 'ADD_FOO', 'EDIT_FOO', and 'DELETE_FOO' language strings would all need to exist.
+ - [tt]lang_type[/tt], the stem for languages strings the module would use. E.g. if you say [tt]FOO[/tt], the [tt]ADD_FOO[/tt], [tt]EDIT_FOO[/tt], and [tt]DELETE_FOO[/tt] language strings would all need to exist.
  - [tt]archive_entry_point[/tt], an entry-point where a user can browse everything of the resource-type handled by the CRUD module.
  - [tt]view_entry_point[/tt], an entry-point where a resource handled by the CRUD module can be viewed, with '_ID' in place of where the ID value would be.
  - [tt]permissions_require[/tt], a value of either [tt]low[/tt], [tt]mid[/tt], or [tt]high[/tt] -- for the kind of permissions used for resources being edited.

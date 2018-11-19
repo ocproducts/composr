@@ -76,11 +76,11 @@ function init__notifications()
  * Wraps do_lang, keeping a record of the last call. You can use when building the notification $message.
  * This allows notification handlers to possibly repeat the call with a customised language string.
  *
- * @param  ID_TEXT $codename The language string ID
+ * @param  ID_TEXT $codename The language string codename
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
@@ -483,7 +483,7 @@ class Notification_dispatcher
 
         if (_notification_setting_available(A_INSTANT_SMS, $to_member_id)) {
             if (($setting & A_INSTANT_SMS) != 0) {
-                $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Language string ID may be modified to include {2}, but would cost more. Default just has {1}.
+                $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Language string codename may be modified to include {2}, but would cost more. Default just has {1}.
 
                 require_code('sms');
                 $successes = dispatch_sms($wrapped_message, array($to_member_id));

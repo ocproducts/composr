@@ -5,7 +5,7 @@
 	{WARNING_DETAILS}
 {+END}
 
-{TEXT}
+{$PARAGRAPH,{TEXT}}
 
 {+START,IF,{$NOT,{NEW}}}
 	{$SET,extra_buttons,<a class="btn btn-danger btn-scr" href="{DELETE_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</span></a>}

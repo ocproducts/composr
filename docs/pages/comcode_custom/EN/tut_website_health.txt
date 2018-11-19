@@ -222,6 +222,12 @@ Some kinds of cache may be turned off in the configuration, but leaving them on 
 If you can identify a situation where you need to rebuild or empty a cache that should not exist, please report it as a bug.
 [/surround]
 
+[title="4"]Self-learning cache[/title]
+
+The self-learning cache is quite a sophisticated cache mechanism to speed up Composr. It learns what resources are used by a page, and then bulk-loads them in the future.
+
+The self-learning cache is most relevant when it comes to language strings. To avoid having to load up all the language files a page might use (language files are relatively monolithic, so inefficient to load), it will remember what strings are used by a page. Pages may use different strings when executed in different contexts, so the cache will always fall-back to loading the full language files if it has to, with those strings then also being added to the cache for the future. However, what if a page is referencing a string that does not exist? The self-learning cache would always be loading the full language files to try and hunt for it. This is why the cache also learns [i]what strings are used by a page but do not actually exist even in the full language files[/i]. A ramification of this is that if you are developing and add the strings later, you will need to clear out the self-learning cache for Composr to be able to pick up on the new strings.
+
 [title="3"]Optimisers (advanced)[/title]
 
 [surround]

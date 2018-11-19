@@ -982,20 +982,17 @@ class Module_admin_newsletter extends Standard_crud_module
             attach_message(do_lang_tempcode('BLOCK_LIST_IN_PLACE', escape_html(number_format(count($blocked)))), 'notice');
         }
 
-        // If this is a periodic newsletter, we make some changes to the regular
-        // language strings.
+        // If this is a periodic newsletter, we make some changes to the regular language strings.
         $periodic_action_raw = post_param_string('periodic_choice', '');
         $periodic_subject = '';
         $defaults = null;
         switch (preg_replace('#_\d+$#', '', $periodic_action_raw)) {
             case 'remove_existing':
-                // Remove whatever is already set. We don't need any changes for
-                // this, but we do need a hidden form field.
+                // Remove whatever is already set. We don't need any changes for this, but we do need a hidden form field.
                 $periodic_action = 'remove';
                 break;
             case 'replace_existing':
-                // Make the current newsletter periodic. This requires language
-                // fiddling.
+                // Make the current newsletter periodic. This requires language fiddling.
                 $periodic_action = 'replace';
                 $periodic_subject = do_lang('PERIODIC_SUBJECT_HELP');
                 $periodic_id = intval(preg_replace('#^[^\d]+#', '', $periodic_action_raw));
@@ -1006,8 +1003,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 $defaults = $_defaults[0];
                 break;
             case 'make_periodic':
-                // Make the current newsletter periodic. This requires language
-                // fiddling.
+                // Make the current newsletter periodic. This requires language fiddling.
                 $periodic_action = 'make';
                 $periodic_subject = do_lang('PERIODIC_SUBJECT_HELP');
                 break;

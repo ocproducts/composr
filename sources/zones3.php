@@ -719,30 +719,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
         }
 
         // Got to rename various resources
-
-        $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_file), array('r_referer_id' => $file, 'r_referer_type' => 'comcode_page'));
-
-        if (addon_installed('catalogues')) {
-            update_catalogue_content_ref('comcode_page', $file, $new_file);
-        }
-
-        if (addon_installed('awards')) {
-            $types = $GLOBALS['SITE_DB']->query_select('award_types', array('id'), array('a_content_type' => 'comcode_page'));
-            foreach ($types as $type) {
-                $GLOBALS['SITE_DB']->query_update('award_archive', array('content_id' => $new_file), array('content_id' => $file, 'a_type_id' => $type['id']));
-            }
-        }
-
-        require_code('sitemap_xml');
-        notify_sitemap_node_delete($zone . ':' . $file);
-
-        require_code('sitemap_xml');
-        notify_sitemap_node_delete($zone . ':' . $file);
-
-        // Main page record rename
-        $GLOBALS['SITE_DB']->query_update('comcode_pages', array(
-            'p_parent_page' => $new_file,
-        ), array('the_zone' => $zone, 'p_parent_page' => $file));
+        rename_live_comcode_page($zone, $file, $zone, $new_file);
     }
 
     // Set metadata
@@ -823,6 +800,62 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
     }
 
     return $full_path;
+}
+
+/**
+ * Rename/move a Comcode page.
+ * Does create a redirect, if requested.
+ * Does not rename the actual .txt files or rebuild the Sitemap files or empty caches.
+ *
+ * @param  ID_TEXT $zone The old zone
+ * @param  ID_TEXT $file The old page
+ * @param  ID_TEXT $new_zone The new zone
+ * @param  ID_TEXT $new_file The new page
+ * @param  boolean $create_redirect Whether to create a redirect
+ */
+function rename_live_comcode_page($zone, $file, $new_zone, $new_file, $create_redirect = false)
+{
+    $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_id' => $new_zone . ':' . $new_file), array('r_referer_id' => $zone . ':' . $file, 'r_referer_type' => 'comcode_page'));
+
+    if (addon_installed('catalogues')) {
+        update_catalogue_content_ref('comcode_page', $zone . ':' . $file, $new_zone . ':' . $new_file);
+    }
+
+    if (addon_installed('awards')) {
+        $types = $GLOBALS['SITE_DB']->query_select('award_types', array('id'), array('a_content_type' => 'comcode_page'));
+        foreach ($types as $type) {
+            $GLOBALS['SITE_DB']->query_update('award_archive', array('content_id' => $new_zone . ':' . $new_file), array('content_id' => $zone . ':' . $file, 'a_type_id' => $type['id']));
+        }
+    }
+
+    $GLOBALS['SITE_DB']->query_update('seo_meta', array('meta_for_id' => $new_zone . ':' . $new_file), array('meta_for_id' => $zone . ':' . $file, 'meta_for_type' => 'comcode_page'), '', 1);
+    $GLOBALS['SITE_DB']->query_update('seo_meta_keywords', array('meta_for_id' => $new_zone . ':' . $new_file), array('meta_for_id' => $zone . ':' . $file, 'meta_for_type' => 'comcode_page'));
+
+    $GLOBALS['SITE_DB']->query_update('catalogue_entry_linkage', array('content_id' => $new_zone . ':' . $new_file), array('content_id' => $zone . ':' . $file, 'content_type' => 'comcode_page'), '', 1);
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_resource_page' => $new_file, 'm_resource_id' => $new_zone), array('m_resource_page' => $file, 'm_resource_id' => $zone), '', 1);
+
+    $GLOBALS['SITE_DB']->query_update('comcode_pages', array('p_parent_page' => $new_file), array('the_zone' => $zone, 'p_parent_page' => $file));
+
+    $GLOBALS['SITE_DB']->query_update('comcode_pages', array('the_zone' => $new_zone, 'the_page' => $new_file), array('the_zone' => $zone, 'the_page' => $file), '', 1);
+
+    $GLOBALS['SITE_DB']->query_update('cached_comcode_pages', array('the_zone' => $new_zone, 'the_page' => $new_file), array('the_zone' => $zone, 'the_page' => $file), '', 1);
+
+    $GLOBALS['SITE_DB']->query_update('sitemap_cache', array('page_link' => $new_zone . ':' . $new_file), array('page_link' => $zone . ':' . $file), '', 1);
+
+    if ($create_redirect) {
+        $GLOBALS['SITE_DB']->query_delete('redirects', array(
+            'r_from_page' => $file,
+            'r_from_zone' => $zone,
+        ), '', 1);
+        $GLOBALS['SITE_DB']->query_insert('redirects', array(
+            'r_from_page' => $file,
+            'r_from_zone' => $zone,
+            'r_to_page' => $new_file,
+            'r_to_zone' => $zone,
+            'r_is_transparent' => 0,
+        ));
+    }
 }
 
 /**

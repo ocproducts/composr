@@ -275,14 +275,35 @@
         });
     };
 
-
     $cms.templates.blockTopPersonalStats = function (params, container) {
         $dom.on(container, 'click', '.js-click-toggle-top-personal-stats', function (e) {
             e.preventDefault();
-            window.$coreNotifications.toggleMessagingBox('top-personal-stats');
+            $cms.ui.toggleTopBox('top-personal-stats');
         });
-        $dom.on(container, 'clickout', function () {
-            window.$coreNotifications.toggleMessagingBox('top-personal-stats', true);
+
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedInside = container.contains(e.target);
+
+            if (!clickedInside) {
+                $cms.ui.toggleTopBox('top-personal-stats', true);
+            }
+        });
+    };
+
+    $cms.templates.blockTopLanguage = function (params, container) {
+        $dom.on(container, 'click', '.js-click-toggle-top-language', function (e) {
+            e.preventDefault();
+            $cms.ui.toggleTopBox('top-language');
+        });
+
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedInside = container.contains(e.target);
+
+            if (!clickedInside) {
+                $cms.ui.toggleTopBox('top-language', true);
+            }
         });
     };
 

@@ -298,10 +298,10 @@ function _check_attachment_count()
 }
 
 /**
- * Insert some Comcode content that may contain attachments, and return the language string ID.
+ * Insert some Comcode content that may contain attachments, and return details of the content language string.
  *
  * @param  ID_TEXT $field_name The field name
- * @param  integer $level The level of importance this language string holds
+ * @param  integer $level The level of importance this content language string holds
  * @set 1 2 3 4
  * @param  LONG_TEXT $text The Comcode content
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
@@ -309,7 +309,7 @@ function _check_attachment_count()
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
- * @return array The language string ID save fields
+ * @return array The content language string save fields
  */
 function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'null', $id = '', $db = null, $insert_as_admin = false, $for_member = null)
 {

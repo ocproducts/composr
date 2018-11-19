@@ -62,7 +62,7 @@ function send_content_validated_notification($content_type, $content_id)
 /**
  * Send (by e-mail) a validation request for a submitted item to the admin.
  *
- * @param  ID_TEXT $type The validation request will say one of this type has been submitted. By convention it is the language string ID of what was done, e.g. ADD_DOWNLOAD
+ * @param  ID_TEXT $type The validation request will say one of this type has been submitted. By convention it is the language string codename of what was done, e.g. ADD_DOWNLOAD
  * @param  ?ID_TEXT $table The table saved into (null: unknown)
  * @param  boolean $non_integer_id Whether the ID field is not an integer
  * @param  ID_TEXT $id The validation request will say this ID has been submitted
@@ -131,7 +131,7 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
 /**
  * Give points to a member for submitting something, then returns the XHTML page to say so.
  *
- * @param  ID_TEXT $type One of this type has been submitted. By convention it is the language string ID of what was done, e.g. ADD_DOWNLOAD
+ * @param  ID_TEXT $type One of this type has been submitted. By convention it is the language string codename of what was done, e.g. ADD_DOWNLOAD
  * @param  ?MEMBER $member_id The member to give the points to (null: give to current member)
  * @return ?string A message about the member being given these submit points (null: no message)
  */

@@ -252,10 +252,10 @@ class Hook_import_cms_merge
     }
 
     /**
-     * Fetch and clean up a language string.
+     * Fetch and clean up a content language string.
      *
      * @param  object $db The database connector to import from
-     * @param  mixed $id The string ID
+     * @param  mixed $id The content language string ID
      * @return string The cleaned-up string
      */
     public function get_lang_string($db, $id)

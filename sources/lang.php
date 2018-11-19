@@ -20,15 +20,6 @@
 
 /*EXTRA FUNCTIONS: levenshtein*/
 
-/*
-Terminology:
-
-Language codename --> A particular pack's codename, e.g. EN
-Language file --> A .ini file
-Language string ID --> A particular string within a .ini file, e.g. MISSING_RESOURCE
-Language string --> A more general word and can *either* refer to a string within a .ini file ("code") *or* a translation within the database
-*/
-
 /**
  * Standard code module initialisation function.
  *
@@ -62,11 +53,11 @@ function init__lang()
     $LANGS_MAP_CACHE = null;
 
     global $USER_LANG_CACHED, $USER_LANG_EARLY_CACHED, $USER_LANG_LOOP, $REQUIRE_LANG_LOOP;
-    global $RECORD_LANG_STRINGS, $RECORDED_LANG_STRINGS, $RECORD_LANG_STRINGS_CONTENT, $RECORDED_LANG_STRINGS_CONTENT;
+    global $RECORD_LANG_STRINGS, $RECORDED_LANG_STRINGS, $RECORD_CONTENT_LANG_STRINGS, $RECORDED_CONTENT_LANG_STRINGS;
     $RECORD_LANG_STRINGS = false;
     $RECORDED_LANG_STRINGS = array();
-    $RECORD_LANG_STRINGS_CONTENT = false;
-    $RECORDED_LANG_STRINGS_CONTENT = array();
+    $RECORD_CONTENT_LANG_STRINGS = false;
+    $RECORDED_CONTENT_LANG_STRINGS = array();
     $USER_LANG_LOOP = false;
     $USER_LANG_CACHED = null;
     $USER_LANG_EARLY_CACHED = null;
@@ -161,14 +152,14 @@ function lang_load_runtime_processing()
 }
 
 /**
- * Get the human-readable form of a language string ID.
+ * Get the human-readable form of a language string codename.
  * Further documentation: https://www.youtube.com/watch?v=rinz9Avvq6A.
  *
- * @param  ID_TEXT $codename The language string ID
+ * @param  ID_TEXT $codename The language string codename
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
@@ -619,7 +610,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  * Include all the language files for use in the script.
  * NOTE: This may reduce performance, so you should only use it if you really have to.
  *
- * @param  ?LANGUAGE_NAME $lang The language to include files from (null: use current users language)
+ * @param  ?LANGUAGE_NAME $lang The language to include files from (null: use current user's language)
  * @param  boolean $only_if_for_lang Only load it up if it is specifically defined for our language
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
@@ -688,13 +679,13 @@ function protect_from_escaping($in)
 }
 
 /**
- * Get the human-readable form of a language string ID.
+ * Get the human-readable form of a language string codename.
  *
- * @param  ID_TEXT $codename The language string ID
+ * @param  ID_TEXT $codename The language string codename
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  *
@@ -781,7 +772,7 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
                 global $USER_LANG_LOOP, $REQUIRE_LANG_LOOP;
                 //print_r(debug_backtrace());
                 if ($USER_LANG_LOOP) {
-                    critical_error('RELAY', 'Missing language string ID: ' . escape_html($codename) . '. This language string ID is required to produce error messages, and thus a critical error was prompted by the non-ability to show less-critical error messages. It is likely the source language files (lang/' . fallback_lang() . '/*.ini) for Composr on this website have been corrupted.');
+                    critical_error('RELAY', 'Missing language string codename: ' . escape_html($codename) . '. This language string codename is required to produce error messages, and thus a critical error was prompted by the non-ability to show less-critical error messages. It is likely the source language files (lang/' . fallback_lang() . '/*.ini) for Composr on this website have been corrupted.');
                 }
                 if ($REQUIRE_LANG_LOOP >= 2) {
                     return ''; // Probably failing to load global.ini, so just output with some text missing
@@ -964,18 +955,18 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
 // =======
 
 /**
- * Insert a Comcode language string into the translation table, and returns the ID.
+ * Insert a Comcode content language string into the translation table, and return details of the content language string.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
- * @param  integer $level The level of importance this language string holds
+ * @param  integer $level The level of importance this content language string holds
  * @set 1 2 3 4
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
- * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this content language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
- * @return array The language string ID save fields
+ * @return array The content language string save fields
  */
 function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_admin = false, $pass_id = null, $preparse_mode = true, $save_as_volatile = false)
 {
@@ -992,22 +983,22 @@ function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_
 }
 
 /**
- * Insert a language string into the translation table, and returns the ID.
+ * Insert a content language string into the translation table, and return details of the content language string.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
- * @param  integer $level The level of importance this language string holds
+ * @param  integer $level The level of importance this content language string holds
  * @set 1 2 3 4
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
- * @param  ?integer $id The ID to use for the language string (null: work out next available)
+ * @param  ?integer $id The ID to use for the content language string (null: work out next available)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
- * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this content language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?string $text_parsed Assembled Tempcode portion (null: work it out)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
- * @return array The language string ID save fields
+ * @return array The content language string save fields
  */
 function insert_lang($field_name, $text, $level, $db = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $preparse_mode = true, $save_as_volatile = false)
 {
@@ -1016,16 +1007,16 @@ function insert_lang($field_name, $text, $level, $db = null, $comcode = false, $
 }
 
 /**
- * Remap the specified Comcode language string ID, and return the ID again - the ID isn't changed.
+ * Remap the specified Comcode content language string, and return details of the content language string.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  mixed $id The ID (if multi-lang-content on), or the string itself
  * @param  string $text The text to remap to
  * @param  ?object $db The database connector to use (null: standard site connector)
- * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this content language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
- * @return array The language string ID save fields
+ * @return array The content language string save fields
  */
 function lang_remap_comcode($field_name, $id, $text, $db = null, $pass_id = null, $source_user = null, $as_admin = false)
 {
@@ -1038,17 +1029,17 @@ function lang_remap_comcode($field_name, $id, $text, $db = null, $pass_id = null
 }
 
 /**
- * Remap the specified language string ID, and return the ID again - the ID isn't changed.
+ * Remap the specified content language string, and return details of the content language string.
  *
  * @param  ID_TEXT $field_name The field name
  * @param  mixed $id The ID (if multi-lang-content on), or the string itself
  * @param  string $text The text to remap to
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
- * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
+ * @param  ?string $pass_id The special identifier for this content language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
- * @return array The language string ID save fields
+ * @return array The content language string save fields
  */
 function lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pass_id = null, $source_user = null, $as_admin = false)
 {
@@ -1057,7 +1048,7 @@ function lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pass
 }
 
 /**
- * Delete the specified language string from the translation table.
+ * Delete the specified content language string from the translation table.
  *
  * @param  integer $id The ID
  * @param  ?object $db The database connector to use (null: standard site connector)
@@ -1084,7 +1075,7 @@ function delete_lang($id, $db = null)
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
+ * @param  boolean $as_admin Whether to force as_admin, even if the content language string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
@@ -1107,7 +1098,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $db = 
 }
 
 /**
- * This function is an offshoot of get_translated_text, it instead returns parsed Comcode that is linked to the specified language string ID.
+ * This function is an offshoot of get_translated_text, it instead returns parsed Comcode that is linked to the specified content language string ID.
  *
  * @param  ID_TEXT $table The table name
  * @param  array $row The table row. Must not have aspects of other tables in it (i.e. joins). Pre-filter using 'db_map_restrict' if required
@@ -1115,7 +1106,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $db = 
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
- * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
+ * @param  boolean $as_admin Whether to force as_admin, even if the content language string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @param  boolean $ignore_browser_decaching If we have just re-populated so will not decache
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
@@ -1134,14 +1125,14 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
         $entry = $row[$field_name];
 
         if ($entry == 0) {
-            trigger_error(do_lang('FAILED_ENTRY'), E_USER_NOTICE);
+            trigger_error(do_lang('ZERO_CONTENT_LANG_STRING'), E_USER_NOTICE);
             return new Tempcode();
         }
 
-        global $RECORD_LANG_STRINGS_CONTENT;
-        if ($RECORD_LANG_STRINGS_CONTENT) {
-            global $RECORDED_LANG_STRINGS_CONTENT;
-            $RECORDED_LANG_STRINGS_CONTENT[$entry] = $db->is_forum_db();
+        global $RECORD_CONTENT_LANG_STRINGS;
+        if ($RECORD_CONTENT_LANG_STRINGS) {
+            global $RECORDED_CONTENT_LANG_STRINGS;
+            $RECORDED_CONTENT_LANG_STRINGS[$entry] = $db->is_forum_db();
         }
 
         if ($lang === 'xxx') {
@@ -1233,7 +1224,7 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
 }
 
 /**
- * Try to return the human-readable version of the language string ID, passed in as $entry.
+ * Try to return the human-readable version of the content language string ID, passed in as $entry.
  *
  * @param  mixed $entry The ID (if multi-lang-content on), or the string itself
  * @param  ?object $db The database connector to use (null: standard site connector)
@@ -1248,22 +1239,22 @@ function get_translated_text($entry, $db = null, $lang = null, $force = false)
     }
 
     if ($entry == 0) {
-        trigger_error(do_lang('FAILED_ENTRY'), E_USER_NOTICE);
+        trigger_error(do_lang('ZERO_CONTENT_LANG_STRING'), E_USER_NOTICE);
         return '';
     }
 
     if ($entry === null) {
-        trigger_error(do_lang('NULL_LANG_STRING'), E_USER_WARNING);
+        trigger_error(do_lang('NULL_CONTENT_LANG_STRING'), E_USER_WARNING);
     }
 
     if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
-    global $RECORD_LANG_STRINGS_CONTENT;
-    if ($RECORD_LANG_STRINGS_CONTENT) {
-        global $RECORDED_LANG_STRINGS_CONTENT;
-        $RECORDED_LANG_STRINGS_CONTENT[$entry] = $db->is_forum_db();
+    global $RECORD_CONTENT_LANG_STRINGS;
+    if ($RECORD_CONTENT_LANG_STRINGS) {
+        global $RECORDED_CONTENT_LANG_STRINGS;
+        $RECORDED_CONTENT_LANG_STRINGS[$entry] = $db->is_forum_db();
     }
 
     if ($lang === null) {
@@ -1294,7 +1285,7 @@ function get_translated_text($entry, $db = null, $lang = null, $force = false)
     if (!isset($result[0])) {
         $member_id = function_exists('get_member') ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
         $db->query_insert('translate', array('id' => $entry, 'source_user' => $member_id, 'broken' => 0, 'importance_level' => 3, 'text_original' => '', 'text_parsed' => '', 'language' => $lang));
-        $msg = do_lang('LANGUAGE_CORRUPTION', strval($entry));
+        $msg = do_lang('FIXED_CONTENT_LANG_STRING', strval($entry));
         if ($GLOBALS['DEV_MODE']) {
             fatal_exit($msg);
         }
@@ -1313,7 +1304,7 @@ function get_translated_text($entry, $db = null, $lang = null, $force = false)
 /**
  * Convert a language string that is Comcode to Tempcode, with potential caching in the db.
  *
- * @param  ID_TEXT $lang_code The language string ID
+ * @param  ID_TEXT $lang_code The language string codename
  * @return Tempcode The parsed Comcode
  */
 function comcode_lang_string($lang_code)
@@ -1365,7 +1356,7 @@ function get_ordinal_suffix($index)
  */
 function table_id_locking_start($db, &$id, &$lock, $table = 'translate', $id_field = 'id')
 {
-    if (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'mysql') !== false)) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
+    if (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'mysql') !== false)) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a content language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
         $db->query('LOCK TABLES ' . $db->get_table_prefix() . $table, null, 0, true); // Suppress errors in case access denied
         $lock = true;
         $id = $db->query_select_value($table, 'MAX(' . $id_field . ')');
@@ -1410,7 +1401,7 @@ class LangFilter
     /**
      * Do a compile-time filter.
      *
-     * @param  ?string $key Language string ID (null: not a language string)
+     * @param  ?string $key Language string codename (null: not a language string)
      * @param  string $value String value
      * @param  ?LANGUAGE_NAME $lang Language (null: current language)
      * @return string The suffix
@@ -1423,7 +1414,7 @@ class LangFilter
     /**
      * Do a run-time filter. Only happens for strings marked for processing with a flag.
      *
-     * @param  string $key Language string ID
+     * @param  string $key Language string codename
      * @param  string $value Language string value
      * @param  string $flag Flag value assigned to the string
      * @param  array $parameters The parameters

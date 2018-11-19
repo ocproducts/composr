@@ -33,6 +33,7 @@ function init__menus2()
 
 /**
  * Export a menu structure to a CSV file.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
  *
  * @param  ?PATH $file_path The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv)
  */
@@ -227,7 +228,7 @@ function menu_management_script()
  * @param  SHORT_TEXT $url The URL (in entry point form)
  * @param  BINARY $expanded Whether it is an expanded branch
  * @param  BINARY $check_permissions Whether people who may not view the entry point do not see the link
- * @param  boolean $dereference_caption Whether the caption is a language string
+ * @param  boolean $dereference_caption Whether the caption is a content language string ID
  * @param  SHORT_TEXT $caption_long The tooltip (blank: none)
  * @param  BINARY $new_window Whether the link will open in a new window
  * @param  ID_TEXT $theme_image_code The theme image code
@@ -412,7 +413,7 @@ function delete_menu_item($id)
  */
 function delete_menu($menu_id)
 {
-    // Get language strings currently used
+    // Get content language strings currently used
     $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
     // Erase old stuff
@@ -542,7 +543,7 @@ function menu_items_being_saved()
  * @param  integer $id The ID of the menu item (i.e. what it is referenced as in POST)
  * @param  array $ids The map of IDs on the menu (ID=>parent)
  * @param  ?integer $parent The ID of the parent branch (null: no parent)
- * @param  array $old_menu_bits The map of menu id=>string language string IDs employed by items before the edit
+ * @param  array $old_menu_bits The map of menu id=>string content language string IDs employed by items before the edit
  * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
  */
 function save_add_menu_item_from_post($menu_id, $id, &$ids, $parent, &$old_menu_bits, &$order)

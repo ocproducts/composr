@@ -392,7 +392,7 @@ class Module_admin_lang
     }
 
     /**
-     * The UI to translate content.
+     * The UI to translate content language strings.
      *
      * @return Tempcode The UI
      */
@@ -529,7 +529,7 @@ class Module_admin_lang
     }
 
     /**
-     * The actualiser to translate content.
+     * The actualiser to translate content language strings.
      *
      * @return Tempcode The UI
      */

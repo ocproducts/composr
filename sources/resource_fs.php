@@ -1070,7 +1070,7 @@ function remap_portable_as_resource_id($resource_type, $portable_data)
 }
 
 /**
- * Find all translated strings for a language string ID. This is used as an intermediate step in creating multi-language portings.
+ * Find all translated strings for a content language string ID. This is used as an intermediate step in creating multi-language portings.
  *
  * @param  array $db_row Database row
  * @param  string $field Database field

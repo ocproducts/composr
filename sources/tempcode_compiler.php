@@ -361,7 +361,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 }
 
                 // Handle the level we just closed
-                $_escaped = str_split(preg_replace('#[^:\.`%\*=\;\#\-~\^\|\'&/@+]:?#', '', $_first_param)); // :? is so that the ":" in language string IDs does not get considered an escape
+                $_escaped = str_split(preg_replace('#[^:\.`%\*=\;\#\-~\^\|\'&/@+]:?#', '', $_first_param)); // :? is so that the ":" in language string codenames does not get considered an escape
                 $escaped = array();
                 foreach ($_escaped as $e) {
                     switch ($e) {

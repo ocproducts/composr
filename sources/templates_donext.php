@@ -22,7 +22,7 @@
  * Get the Tempcode for a do next manager, using hooks. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
  *
  * @param  ID_TEXT $title The title of what we are doing (a language string)
- * @param  ?mixed $text The language string ID for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
+ * @param  ?mixed $text The language string codename for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
  * @param  ID_TEXT $type The menu 'type' we are doing (filters out any icons that don't match it)
  * @param  ?string $main_title The title to use for the main links (a language string) (null: same as title)
  * @return Tempcode The do next manager
@@ -80,6 +80,17 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
 }
 
 /**
+ * Find whether we are running with a simplified do next system.
+ *
+ * @return boolean Whether we are
+ */
+function has_simplified_donext()
+{
+    $keep_simplified_donext = get_param_integer('keep_simplified_donext', null);
+    return ((($keep_simplified_donext !== 0) && (get_option('simplified_donext') == '1')) || ($keep_simplified_donext == 1));
+}
+
+/**
  * Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
  *
  * @param  ?Tempcode $title The title of what we just did (should have been passed through get_screen_title already) (null: don't do full page)
@@ -121,8 +132,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
     require_lang('do_next');
     require_css('do_next');
 
-    $keep_simplified_donext = get_param_integer('keep_simplified_donext', null);
-    $simplified = ((($keep_simplified_donext !== 0) && (get_option('simplified_donext') == '1')) || ($keep_simplified_donext == 1));
+    $simplified = has_simplified_donext();
 
     $sections = new Tempcode();
 

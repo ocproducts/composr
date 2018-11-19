@@ -6,6 +6,30 @@
     $cms.ui = {};
 
     /**
+     * @memberof $cms.ui
+     * @param name
+     * @param forceHide
+     */
+    $cms.ui.toggleTopBox = function toggleTopBox(name, forceHide) {
+        forceHide = Boolean(forceHide);
+
+        var popupEl = document.getElementById(name + '-rel'),
+            buttonEl = document.getElementById(name + '-button');
+
+        buttonEl.title = '';
+
+        if ((popupEl.style.display === 'none') && !forceHide) {
+            var tooltip = document.querySelector('body > .tooltip');
+            if (tooltip != null) { // Hide tooltip, to stop it being a mess
+                tooltip.style.display = 'none';
+            }
+            $dom.fadeIn(popupEl);
+        } else {
+            popupEl.style.display = 'none';
+        }
+    };
+
+    /**
      * Toggle a ToggleableTray
      * @memberof $cms.ui
      * @return {boolean} - true when it is opened, false when it is closed

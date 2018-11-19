@@ -440,7 +440,7 @@ class Module_admin_menus
                 $url = $_url->evaluate();
             }
         } else {
-            // Get language strings currently used
+            // Get content language strings currently used
             $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
             // Now, process everything on the root

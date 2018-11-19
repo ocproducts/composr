@@ -61,6 +61,7 @@ function init__failure()
 function suggest_fatalistic()
 {
     if ((may_see_stack_traces()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
+        require_code('urls');
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', array(), true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
@@ -584,7 +585,7 @@ function _inet_pton($ip)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
@@ -1074,6 +1075,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
+        (strpos($text, 'FTP server error') === false) && // LDAP error, misconfiguration
         (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
         (strpos($text, 'Can\'t contact LDAP server') === false) && // LDAP error, network issue
         (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free webhosts

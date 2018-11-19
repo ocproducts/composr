@@ -22,8 +22,8 @@
  * Add a custom Comcode tag.
  *
  * @param  ID_TEXT $tag Tag name
- * @param  mixed $title Tag title (string, or language string ID)
- * @param  mixed $description Tag description (string, or language string ID)
+ * @param  mixed $title Tag title (string, or content language string ID)
+ * @param  mixed $description Tag description (string, or content language string ID)
  * @param  LONG_TEXT $replace Tag replacement text
  * @param  LONG_TEXT $example Tag example
  * @param  SHORT_TEXT $parameters Tag parameters
@@ -92,8 +92,8 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
  *
  * @param  ID_TEXT $old_tag Current tag name
  * @param  ID_TEXT $tag New tag name
- * @param  SHORT_TEXT $title Tag title (string, or language string ID)
- * @param  LONG_TEXT $description Tag description (string, or language string ID)
+ * @param  SHORT_TEXT $title Tag title (string, or content language string ID)
+ * @param  LONG_TEXT $description Tag description (string, or content language string ID)
  * @param  LONG_TEXT $replace Tag replacement text
  * @param  LONG_TEXT $example Tag example
  * @param  SHORT_TEXT $parameters Tag parameters

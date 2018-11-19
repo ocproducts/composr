@@ -526,6 +526,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKET_ASSIGN
         TICKET_ASSIGNED_BODY
         TICKET_ASSIGNED_SUBJECT
+        TRANSLATING_IN_LANGUAGE
         ACCESS_DENIED__ATTACHMENT_ACCESS
         ACCESS_DENIED__ZONE_ACCESS_SESSION
         ACCEPT_IMAGES
@@ -4203,7 +4204,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_ORDER_SUB_ALPHA
         DESCRIPTION_ORGANISATION
         DESCRIPTION_ORIGINAL_FILENAME
-        DESCRIPTION_ORPHANED_LANG_STRINGS
+        DESCRIPTION_ORPHANED_CONTENT_LANG_STRINGS
         DESCRIPTION_ORPHANED_TAGS
         DESCRIPTION_ORPHANED_UPLOADS
         DESCRIPTION_OS_SHARE
@@ -4866,7 +4867,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EXTRA_BCC_ADDRESSES
         EXTRA_CC_ADDRESSES
         EXTRA_SUBSCRIPTION_MAIL
-        FAILED_ENTRY
+        ZERO_CONTENT_LANG_STRING
         FAILED_LOGINS
         FAILED_TO_UPLOAD_BACKUP_BODY
         FAILED_TO_UPLOAD_BACKUP_SUBJECT
@@ -5088,7 +5089,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FTP_SERVER_URL
         FTP_USERNAME
         FULL_BACKUP
-        FUSED_LANG_STRINGS
+        FUSED_CONTENT_LANG_STRINGS
         UPGRADER_ADDON_MANAGEMENT
         UPGRADER_ALL_CHMODDED_GOOD
         UPGRADER_AUTO_HANDLE
@@ -5465,7 +5466,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         KEYWORDS
         LAME_SPAM_HACK
         LANGUAGE_CACHE
-        LANGUAGE_CORRUPTION
+        FIXED_CONTENT_LANG_STRING
         LANGUAGE_FILE
         LANGUAGE_FINE
         LAST_BACKUP
@@ -5730,8 +5731,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MISSING_INSTALLATION_FILE
         MISSING_LANG_FILE
         MISSING_LANG_STRING
-        MISSING_LANG_STRINGS
-        MISSING_LANG_STRINGS_ZERO
+        MISSING_CONTENT_LANG_STRINGS
+        MISSING_CONTENT_LANG_STRINGS_ZERO
         MISSING_MENU
         MISSING_MODULE_FILE
         MISSING_OPTION
@@ -6091,7 +6092,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_UPLOAD
         NO_XML_ON_SERVER
         NO_ZIP_ON_SERVER
-        NULL_LANG_STRING
+        NULL_CONTENT_LANG_STRING
         NUM_DOWNLOADS
         NUM_NEW_SINCE
         NUM_QUEUE
@@ -6144,7 +6145,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ORIGINAL_FILENAME
         ORIGINAL_PAGE_NO_RENAME
         ORPHANED_IMAGES
-        ORPHANED_LANG_STRINGS
+        ORPHANED_CONTENT_LANG_STRINGS
         ORPHANED_TAGS
         ORPHANED_UPLOADS
         OS_SHARE

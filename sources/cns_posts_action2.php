@@ -239,7 +239,7 @@ function cns_send_topic_notification($url, $topic_id, $post_id, $forum_id, $send
  * @param  ?AUTO_LINK $last_post_id The ID of the last post in the topic (null: unknown)
  * @param  ?TIME $last_time The time of the last post in the topic (null: unknown)
  * @param  ?string $last_title The title of the last post in the topic (null: unknown)
- * @param  ?AUTO_LINK $last_post The ID of the last posts language string for the topic (null: unknown)
+ * @param  ?AUTO_LINK $last_post The ID of the last post's content language string for the topic (null: unknown)
  * @param  ?string $last_username The last username to post in the topic (null: unknown)
  * @param  ?MEMBER $last_member_id The ID of the last member to post in the topic (null: unknown)
  */

@@ -69,29 +69,39 @@
 
         $dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
             e.preventDefault();
-            notificationsMarkAllRead(e);
+            notificationsMarkAllRead();
         });
 
         $dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
             e.preventDefault();
-            $coreNotifications.toggleMessagingBox('web-notifications');
+            $cms.ui.toggleTopBox('web-notifications');
         });
 
-        $dom.on(container, 'clickout', '.js-clickout-hide-top-web-notifications', function () {
-            $coreNotifications.toggleMessagingBox('web-notifications', true);
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedIn = $dom.closest(e.target, '.js-clickout-hide-top-web-notifications', container);
+
+            if (!clickedIn) {
+                $cms.ui.toggleTopBox('web-notifications', true);
+            }
         });
 
-        $dom.on(container, 'mouseup', '.js-click-find-url-tab', function () {
+        $dom.on(container, 'click', '.js-click-find-url-tab', function () {
             $cms.ui.findUrlTab();
         });
 
         $dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
             e.preventDefault();
-            $coreNotifications.toggleMessagingBox('pts');
+            $cms.ui.toggleTopBox('pts');
         });
 
-        $dom.on(container, 'clickout', '.js-clickout-hide-top-pts', function () {
-            $coreNotifications.toggleMessagingBox('pts', true);
+        // Hide on click out
+        document.documentElement.addEventListener('click', function (e) {
+            var clickedIn = $dom.closest(e.target, '.js-clickout-hide-top-pts', container);
+
+            if (!clickedIn) {
+                $cms.ui.toggleTopBox('pts', true);
+            }
         });
 
         function notificationsMarkAllRead() {
@@ -103,7 +113,7 @@
             url += '&forced_update=1';
             url += $cms.keep();
             $cms.doAjaxRequest(url, _pollForNotifications);
-            $coreNotifications.toggleMessagingBox('web-notifications', true);
+            $cms.ui.toggleTopBox('web-notifications', true);
         }
     };
 
@@ -230,7 +240,7 @@
                 unread = responseXml.getElementsByTagName('unread_web_notifications');
                 $dom.html(spot, $dom.html(display[0]));
                 $dom.html(button.firstElementChild, $dom.html(unread[0]));
-                button.className = 'count-' + $dom.html(unread[0]);
+                button.className = 'count_' + $dom.html(unread[0]);
             }
         }
 
@@ -307,24 +317,6 @@
         }
     }
 
-    $coreNotifications.toggleMessagingBox = function toggleMessagingBox(name, forceHide) {
-        forceHide = Boolean(forceHide);
-
-        var popupEl = document.getElementById(name + '-rel'),
-            buttonEl = document.getElementById(name + '-button');
-
-        buttonEl.title = '';
-
-        if ((popupEl.style.display === 'none') && !forceHide) {
-            var tooltip = document.querySelector('body > .tooltip');
-            if (tooltip != null) { // Hide tooltip, to stop it being a mess
-                tooltip.style.display = 'none';
-            }
-            $dom.fadeIn(popupEl);
-        } else {
-            popupEl.style.display = 'none';
-        }
-    };
 }(window.$cms, window.$util, window.$dom));
 
 // LEGACY

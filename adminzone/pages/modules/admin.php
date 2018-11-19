@@ -1010,7 +1010,7 @@ class Module_admin
         }
         cms_profile_end_for('admin search: ' . $current_results_type);
 
-        // Language string names and contents
+        // Language string codenames and contents
         $current_results_type = do_lang('LANGUAGE');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_lang', get_module_zone('admin_lang')))) {

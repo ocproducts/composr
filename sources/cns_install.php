@@ -906,7 +906,7 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->create_table('f_moderator_logs', array(
             'id' => '*AUTO',
-            'l_the_type' => 'ID_TEXT', // Language string ID
+            'l_the_type' => 'ID_TEXT', // Language string codename
             'l_param_a' => 'SHORT_TEXT',
             'l_param_b' => 'SHORT_TEXT',
             'l_date_and_time' => 'TIME',

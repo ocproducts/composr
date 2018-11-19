@@ -6783,6 +6783,26 @@ div.proceed-button-left-2 {
 	padding-top: 0.5em;
 }
 
+#top-language-button {
+	width: 30px;
+	height: 24px;
+	display: inline-block;
+}
+
+#top-language-button > img {
+	padding: 0 5px;
+	vertical-align: middle;
+}
+
+#top-language-rel a,
+#top-language-rel img {
+	vertical-align: middle;
+}
+
+#top-language-rel a.current {
+	font-weight: bold;
+}
+
 /*
 NB: Form buttons are wrapped in either:
  - .shunted-button

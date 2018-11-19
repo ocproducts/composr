@@ -1230,7 +1230,7 @@ function fatal_exit($text, $log_error = true)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
