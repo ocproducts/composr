@@ -101,6 +101,7 @@ class Hook_addon_registry_setupwizard
     {
         return array(
             'themes/default/images/icons/menu/adminzone/setup/setupwizard.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/setup/setupwizard.svg',
             'sources/hooks/modules/admin_setupwizard_installprofiles/.htaccess',
             'sources_custom/hooks/modules/admin_setupwizard_installprofiles/.htaccess',
             'sources/hooks/modules/admin_setupwizard_installprofiles/index.html',

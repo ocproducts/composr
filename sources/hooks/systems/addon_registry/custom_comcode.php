@@ -100,6 +100,7 @@ class Hook_addon_registry_custom_comcode
     {
         return array(
             'themes/default/images/icons/menu/adminzone/setup/custom_comcode.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/setup/custom_comcode.svg',
             'sources/hooks/systems/resource_meta_aware/custom_comcode_tag.php',
             'sources/custom_comcode.php',
             'sources/hooks/systems/snippets/exists_tag.php',

@@ -102,6 +102,7 @@ class Hook_addon_registry_aggregate_types
     {
         return array(
             'themes/default/images/icons/menu/adminzone/structure/aggregate_types.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/structure/aggregate_types.svg',
             'sources/hooks/systems/addon_registry/aggregate_types.php',
             'sources/hooks/systems/resource_meta_aware/aggregate_type_instance.php',
             'lang/EN/aggregate_types.ini',

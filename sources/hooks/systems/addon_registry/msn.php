@@ -99,6 +99,7 @@ class Hook_addon_registry_msn
     {
         return array(
             'themes/default/images/icons/menu/adminzone/structure/multi_site_network.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/structure/multi_site_network.svg',
             'sources/hooks/systems/config/network_links.php',
             'sources/hooks/systems/addon_registry/msn.php',
             'sources/hooks/blocks/main_notes/msn.php',

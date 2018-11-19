@@ -101,6 +101,8 @@ class Hook_addon_registry_themewizard
         return array(
             'themes/default/images/icons/menu/adminzone/style/themes/logowizard.svg',
             'themes/default/images/icons/menu/adminzone/style/themes/themewizard.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/style/themes/logowizard.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/style/themes/themewizard.svg',
             'sources/hooks/systems/commandr_commands/themewizard_find_color.php',
             'sources/hooks/systems/commandr_commands/themewizard_compute_equation.php',
             'sources/hooks/modules/admin_themewizard/.htaccess',

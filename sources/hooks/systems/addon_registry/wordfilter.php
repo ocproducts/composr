@@ -100,6 +100,7 @@ class Hook_addon_registry_wordfilter
     {
         return array(
             'themes/default/images/icons/menu/adminzone/security/wordfilter.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/security/wordfilter.svg',
             'sources/hooks/systems/addon_registry/wordfilter.php',
             'sources/hooks/systems/page_groupings/wordfilter.php',
             'lang/EN/wordfilter.ini',

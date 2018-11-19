@@ -103,6 +103,9 @@ class Hook_addon_registry_realtime_rain
             'themes/default/images/icons/menu/adminzone/audit/realtime_rain.svg',
             'themes/default/images/icons/tool_buttons/realtime_rain_off.svg',
             'themes/default/images/icons/tool_buttons/realtime_rain_on.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/audit/realtime_rain.svg',
+            'themes/default/images/icons_monochrome/tool_buttons/realtime_rain_off.svg',
+            'themes/default/images/icons_monochrome/tool_buttons/realtime_rain_on.svg',
 
             'adminzone/pages/modules/admin_realtime_rain.php',
             'sources/realtime_rain.php',
@@ -129,9 +132,19 @@ class Hook_addon_registry_realtime_rain
             'themes/default/images/icons/realtime_rain/searchengine.svg',
             'themes/default/images/icons/realtime_rain/index.html',
 
+            'themes/default/images/icons_monochrome/realtime_rain/email.svg',
+            'themes/default/images/icons_monochrome/realtime_rain/news.svg',
+            'themes/default/images/icons_monochrome/realtime_rain/phone.svg',
+            'themes/default/images/icons_monochrome/realtime_rain/searchengine.svg',
+            'themes/default/images/icons_monochrome/realtime_rain/index.html',
+
             'themes/default/images/icons/realtime_rain/next_but.svg',
             'themes/default/images/icons/realtime_rain/pause_but.svg',
             'themes/default/images/icons/realtime_rain/previous_but.svg',
+
+            'themes/default/images/icons_monochrome/realtime_rain/next_but.svg',
+            'themes/default/images/icons_monochrome/realtime_rain/pause_but.svg',
+            'themes/default/images/icons_monochrome/realtime_rain/previous_but.svg',
 
             'themes/default/images/realtime_rain/news_bg.svg',
             'themes/default/images/realtime_rain/news_bot.svg',

@@ -99,6 +99,7 @@ class Hook_addon_registry_random_quotes
     {
         return array(
             'themes/default/images/icons/menu/adminzone/style/quotes.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/style/quotes.svg',
             'sources/hooks/blocks/main_notes/quotes.php',
             'sources/hooks/modules/admin_import_types/quotes.php',
             'sources/hooks/modules/admin_setupwizard/random_quotes.php',

@@ -177,6 +177,12 @@ You may wish to deny access to the usergroup and member directories when using t
             'themes/default/images/icons/booking/booking.svg',
             'themes/default/images/icons/booking/supplement.svg',
             'themes/default/images/icons/booking/index.html',
+            'themes/default/images/icons_monochrome/booking/book.svg',
+            'themes/default/images/icons_monochrome/booking/blacked.svg',
+            'themes/default/images/icons_monochrome/booking/bookable.svg',
+            'themes/default/images/icons_monochrome/booking/booking.svg',
+            'themes/default/images/icons_monochrome/booking/supplement.svg',
+            'themes/default/images/icons_monochrome/booking/index.html',
         );
     }
 }

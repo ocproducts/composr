@@ -101,6 +101,7 @@ class Hook_addon_registry_core_comcode_pages
     {
         return array(
             'themes/default/images/icons/menu/cms/comcode_page_edit.svg',
+            'themes/default/images/icons_monochrome/menu/cms/comcode_page_edit.svg',
             'sources/hooks/systems/config/points_COMCODE_PAGE_ADD.php',
             'sources/hooks/systems/addon_registry/core_comcode_pages.php',
             'themes/default/templates/COMCODE_PAGE_EDIT_ACTIONS.tpl',
@@ -154,6 +155,18 @@ class Hook_addon_registry_core_comcode_pages
             'themes/default/images/icons/tiers/index.html',
             'themes/default/images/icons/tiers/platinum.svg',
             'themes/default/images/icons/tiers/silver.svg',
+            'themes/default/images/icons_monochrome/menu/pages/guestbook.svg',
+            'themes/default/images/icons_monochrome/menu/pages/donate.svg',
+            'themes/default/images/icons_monochrome/menu/pages/advertise.svg',
+            'themes/default/images/icons_monochrome/contact_methods/address.svg',
+            'themes/default/images/icons_monochrome/contact_methods/email.svg',
+            'themes/default/images/icons_monochrome/contact_methods/index.html',
+            'themes/default/images/icons_monochrome/contact_methods/telephone.svg',
+            'themes/default/images/icons_monochrome/tiers/bronze.svg',
+            'themes/default/images/icons_monochrome/tiers/gold.svg',
+            'themes/default/images/icons_monochrome/tiers/index.html',
+            'themes/default/images/icons_monochrome/tiers/platinum.svg',
+            'themes/default/images/icons_monochrome/tiers/silver.svg',
             'sources/hooks/systems/config/search_comcode_pages.php',
         );
     }

@@ -99,6 +99,7 @@ class Hook_addon_registry_cns_member_titles
     {
         return array(
             'themes/default/images/icons/tabs/member_account/edit/title.svg',
+            'themes/default/images/icons_monochrome/tabs/member_account/edit/title.svg',
             'sources/hooks/systems/addon_registry/cns_member_titles.php',
             'sources/hooks/systems/profiles_tabs_edit/title.php',
             'sources/hooks/systems/config/max_member_title_length.php',

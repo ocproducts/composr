@@ -99,6 +99,7 @@ class Hook_addon_registry_cns_clubs
     {
         return array(
             'themes/default/images/icons/menu/cms/clubs.svg',
+            'themes/default/images/icons_monochrome/menu/cms/clubs.svg',
             'sources/hooks/systems/notifications/cns_club.php',
             'sources/hooks/systems/addon_registry/cns_clubs.php',
             'sources/hooks/modules/search/cns_clubs.php',

@@ -99,6 +99,7 @@ class Hook_addon_registry_polls
     {
         return array(
             'themes/default/images/icons/menu/social/polls.svg',
+            'themes/default/images/icons_monochrome/menu/social/polls.svg',
             'sources/polls2.php',
             'sources/hooks/systems/block_ui_renderers/polls.php',
             'sources/hooks/systems/notifications/poll_chosen.php',

@@ -65,6 +65,7 @@ class modularisation_test_set extends cms_test_case
                     if (preg_match('#^themes/default/images/icons/(.*)$#', $path, $matches) != 0) {
                         $this->assertTrue(in_array('themes/default/images/icons_monochrome/' . $matches[1], $d), 'Missing icons_monochrome equivalent to: ' . $path);
                     } else {
+                        preg_match('#^themes/default/images/icons_monochrome/(.*)$#', $path, $matches);
                         $this->assertTrue(in_array('themes/default/images/icons/' . $matches[1], $d), 'Missing icons equivalent to: ' . $path);
                     }
                 }

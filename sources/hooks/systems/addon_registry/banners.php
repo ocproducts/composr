@@ -99,6 +99,7 @@ class Hook_addon_registry_banners
     {
         return array(
             'themes/default/images/icons/menu/cms/banners.svg',
+            'themes/default/images/icons_monochrome/menu/cms/banners.svg',
             'sources/hooks/systems/config/enable_edit_banner_buttons.php',
             'themes/default/css/banners.css',
             'sources/hooks/systems/snippets/exists_banner.php',

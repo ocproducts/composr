@@ -100,6 +100,8 @@ class Hook_addon_registry_core_cleanup_tools
         return array(
             'themes/default/images/icons/menu/adminzone/tools/cleanup.svg',
             'themes/default/images/icons/menu/adminzone/tools/broken_urls.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/tools/cleanup.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/tools/broken_urls.svg',
             'sources/hooks/systems/config/is_on_block_cache.php',
             'sources/hooks/systems/config/is_on_comcode_page_cache.php',
             'sources/hooks/systems/config/is_on_lang_cache.php',

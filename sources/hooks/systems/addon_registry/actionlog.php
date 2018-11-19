@@ -100,6 +100,7 @@ class Hook_addon_registry_actionlog
     {
         return array(
             'themes/default/images/icons/menu/adminzone/audit/actionlog.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/audit/actionlog.svg',
             'sources/hooks/systems/notifications/actionlog.php',
             'sources/hooks/systems/realtime_rain/actionlog.php',
             'sources/hooks/systems/addon_registry/actionlog.php',
@@ -116,6 +117,7 @@ class Hook_addon_registry_actionlog
             'sources/revisions_engine_database.php',
             'adminzone/pages/modules/admin_revisions.php',
             'themes/default/images/icons/admin/revisions.svg',
+            'themes/default/images/icons_monochrome/admin/revisions.svg',
             'themes/default/templates/REVISIONS_SCREEN.tpl',
             'themes/default/templates/REVISIONS_WRAP.tpl',
             'themes/default/templates/REVISIONS_DIFF_ICON.tpl',

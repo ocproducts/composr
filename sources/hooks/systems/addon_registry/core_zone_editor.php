@@ -100,6 +100,7 @@ class Hook_addon_registry_core_zone_editor
     {
         return array(
             'themes/default/images/icons/menu/adminzone/structure/zones/zone_editor.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/structure/zones/zone_editor.svg',
             'sources/hooks/systems/resource_meta_aware/zone.php',
             'themes/default/css/zone_editor.css',
             'sources/hooks/systems/snippets/exists_zone.php',
