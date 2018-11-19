@@ -240,7 +240,7 @@
                 unread = responseXml.getElementsByTagName('unread_web_notifications');
                 $dom.html(spot, $dom.html(display[0]));
                 $dom.html(button.firstElementChild, $dom.html(unread[0]));
-                button.className = 'count_' + $dom.html(unread[0]);
+                button.className = 'count-' + $dom.html(unread[0]);
             }
         }
 
