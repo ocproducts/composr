@@ -100,6 +100,7 @@ class Hook_addon_registry_unvalidated
     {
         return array(
             'themes/default/images/icons/menu/adminzone/audit/unvalidated.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/audit/unvalidated.svg',
             'sources/hooks/systems/notifications/content_validated.php',
             'sources/hooks/systems/notifications/needs_validation.php',
             'sources/hooks/systems/addon_registry/unvalidated.php',

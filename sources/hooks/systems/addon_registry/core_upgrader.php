@@ -100,6 +100,7 @@ class Hook_addon_registry_core_upgrader
     {
         return array(
             'themes/default/images/icons/menu/adminzone/tools/upgrade.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/tools/upgrade.svg',
             'sources/hooks/systems/addon_registry/core_upgrader.php',
             'upgrader.php',
             'sources/upgrade.php',
@@ -114,6 +115,7 @@ class Hook_addon_registry_core_upgrader
             'lang/EN/upgrade.ini',
             'data/upgrader2.php',
             'themes/default/images/icons/admin/upgrade.svg',
+            'themes/default/images/icons_monochrome/admin/upgrade.svg',
         );
     }
 }

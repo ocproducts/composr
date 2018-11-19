@@ -101,6 +101,7 @@ class Hook_addon_registry_page_management
     {
         return array(
             'themes/default/images/icons/menu/adminzone/structure/sitemap/sitemap_editor.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/structure/sitemap/sitemap_editor.svg',
             'sources/hooks/systems/addon_registry/page_management.php',
             'themes/default/templates/WEBSTANDARDS_CHECK_SCREEN.tpl',
             'themes/default/templates/WEBSTANDARDS_CHECK_ERROR.tpl',

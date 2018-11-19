@@ -99,6 +99,7 @@ class Hook_addon_registry_errorlog
     {
         return array(
             'themes/default/images/icons/menu/adminzone/audit/errorlog.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/audit/errorlog.svg',
             'themes/default/css/errorlog.css',
             'sources/hooks/systems/addon_registry/errorlog.php',
             'lang/EN/errorlog.ini',

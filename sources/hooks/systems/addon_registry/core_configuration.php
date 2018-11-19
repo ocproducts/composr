@@ -102,6 +102,8 @@ class Hook_addon_registry_core_configuration
         return array(
             'themes/default/images/icons/menu/adminzone/setup/config/config.svg',
             'themes/default/images/icons/menu/adminzone/setup/oauth.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/setup/config/config.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/setup/oauth.svg',
             'sources/hooks/systems/sitemap/config_category.php',
             'sources/hooks/systems/config/mobile_pages.php',
             'sources/hooks/systems/config/zone_editor_enabled.php',

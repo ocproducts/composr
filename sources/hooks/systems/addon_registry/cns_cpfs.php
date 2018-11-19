@@ -99,6 +99,7 @@ class Hook_addon_registry_cns_cpfs
     {
         return array(
             'themes/default/images/icons/menu/adminzone/tools/users/custom_profile_fields.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/tools/users/custom_profile_fields.svg',
             'sources/hooks/systems/resource_meta_aware/cpf.php',
             'adminzone/pages/modules/admin_cns_customprofilefields.php',
             'themes/default/templates/CNS_CPF_STATS_SCREEN.tpl',

@@ -100,6 +100,8 @@ class Hook_addon_registry_core_addon_management
         return array(
             'themes/default/images/icons/menu/adminzone/structure/addons.svg',
             'themes/default/images/icons/admin/component.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/structure/addons.svg',
+            'themes/default/images/icons_monochrome/admin/component.svg',
             'themes/default/css/addons_editor.css',
             'sources/hooks/systems/addon_registry/core_addon_management.php',
             'sources/addons.php',
@@ -128,6 +130,8 @@ class Hook_addon_registry_core_addon_management
             'sources/hooks/systems/ajax_tree/choose_composr_homesite_addon.php',
             'themes/default/images/icons/admin/install.svg',
             'themes/default/images/icons/admin/reinstall.svg',
+            'themes/default/images/icons_monochrome/admin/install.svg',
+            'themes/default/images/icons_monochrome/admin/reinstall.svg',
             'themes/default/javascript/core_addon_management.js',
         );
     }

@@ -99,6 +99,7 @@ class Hook_addon_registry_welcome_emails
     {
         return array(
             'themes/default/images/icons/menu/adminzone/setup/welcome_emails.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/setup/welcome_emails.svg',
             'sources/hooks/systems/addon_registry/welcome_emails.php',
             'adminzone/pages/modules/admin_cns_welcome_emails.php',
             'lang/EN/cns_welcome_emails.ini',

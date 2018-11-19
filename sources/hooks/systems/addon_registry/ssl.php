@@ -99,6 +99,7 @@ class Hook_addon_registry_ssl
     {
         return array(
             'themes/default/images/icons/menu/adminzone/security/ssl.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/security/ssl.svg',
             'sources/hooks/systems/addon_registry/ssl.php',
             'themes/default/templates/SSL_CONFIGURATION_SCREEN.tpl',
             'adminzone/pages/modules/admin_ssl.php',

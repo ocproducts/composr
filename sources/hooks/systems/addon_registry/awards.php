@@ -99,6 +99,7 @@ class Hook_addon_registry_awards
     {
         return array(
             'themes/default/images/icons/menu/adminzone/setup/awards.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/setup/awards.svg',
             'sources/hooks/systems/addon_registry/awards.php',
             'sources/hooks/systems/resource_meta_aware/award_type.php',
             'themes/default/templates/AWARDED_CONTENT.tpl',

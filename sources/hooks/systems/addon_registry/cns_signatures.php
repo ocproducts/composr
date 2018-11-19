@@ -99,6 +99,7 @@ class Hook_addon_registry_cns_signatures
     {
         return array(
             'themes/default/images/icons/tabs/member_account/edit/signature.svg',
+            'themes/default/images/icons_monochrome/tabs/member_account/edit/signature.svg',
             'sources/hooks/systems/addon_registry/cns_signatures.php',
             'themes/default/templates/CNS_EDIT_SIGNATURE_TAB.tpl',
             'sources/hooks/systems/attachments/cns_signature.php',

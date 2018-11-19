@@ -99,6 +99,7 @@ class Hook_addon_registry_phpinfo
     {
         return array(
             'themes/default/images/icons/menu/adminzone/tools/phpinfo.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/tools/phpinfo.svg',
             'themes/default/css/phpinfo.css',
             'sources/hooks/systems/page_groupings/phpinfo.php',
             'sources/hooks/systems/addon_registry/phpinfo.php',

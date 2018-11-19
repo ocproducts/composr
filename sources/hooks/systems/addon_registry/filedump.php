@@ -99,6 +99,7 @@ class Hook_addon_registry_filedump
     {
         return array(
             'themes/default/images/icons/menu/cms/filedump.svg',
+            'themes/default/images/icons_monochrome/menu/cms/filedump.svg',
             'sources/hooks/systems/notifications/filedump.php',
             'sources/hooks/systems/config/filedump_show_stats_count_total_files.php',
             'sources/hooks/systems/config/filedump_show_stats_count_total_space.php',

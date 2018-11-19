@@ -99,6 +99,7 @@ class Hook_addon_registry_debrand
     {
         return array(
             'themes/default/images/icons/menu/adminzone/style/debrand.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/style/debrand.svg',
             'sources/hooks/systems/addon_registry/debrand.php',
             'adminzone/pages/modules/admin_debrand.php',
             'sources/hooks/systems/page_groupings/debrand.php',

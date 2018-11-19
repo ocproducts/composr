@@ -101,6 +101,8 @@ class Hook_addon_registry_authors
         return array(
             'themes/default/images/icons/menu/cms/author_set_own_profile.svg',
             'themes/default/images/icons/menu/rich_content/authors.svg',
+            'themes/default/images/icons_monochrome/menu/cms/author_set_own_profile.svg',
+            'themes/default/images/icons_monochrome/menu/rich_content/authors.svg',
             'themes/default/css/authors.css',
             'sources/hooks/systems/attachments/author.php',
             'sources/hooks/systems/addon_registry/authors.php',

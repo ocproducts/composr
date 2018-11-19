@@ -179,6 +179,9 @@ Additionally, there are blocks for rendering graphs and maps from CSV files. Thi
             'themes/default/images/icons/sortable_tables/filter.svg',
             'themes/default/images/icons/sortable_tables/sortable.svg',
             'themes/default/images/icons/sortable_tables/index.html',
+            'themes/default/images/icons_monochrome/sortable_tables/filter.svg',
+            'themes/default/images/icons_monochrome/sortable_tables/sortable.svg',
+            'themes/default/images/icons_monochrome/sortable_tables/index.html',
         );
     }
 }

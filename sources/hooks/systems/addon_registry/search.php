@@ -99,6 +99,7 @@ class Hook_addon_registry_search
     {
         return array(
             'themes/default/images/icons/menu/adminzone/audit/statistics/search.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/audit/statistics/search.svg',
             'sources/hooks/systems/config_categories/search.php',
             'sources/hooks/systems/realtime_rain/search.php',
             'themes/default/templates/TAGS.tpl',

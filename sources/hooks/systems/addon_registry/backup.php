@@ -99,6 +99,7 @@ class Hook_addon_registry_backup
     {
         return array(
             'themes/default/images/icons/menu/adminzone/tools/bulk_content_actions/backups.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/tools/bulk_content_actions/backups.svg',
             'sources/hooks/systems/config/backup_overwrite.php',
             'sources/hooks/systems/config/backup_server_hostname.php',
             'sources/hooks/systems/config/backup_server_password.php',

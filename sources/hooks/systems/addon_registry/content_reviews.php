@@ -111,6 +111,7 @@ class Hook_addon_registry_content_reviews
             'lang/EN/content_reviews.ini',
             'themes/default/templates/REVIEW_STATUS.tpl',
             'themes/default/images/icons/menu/adminzone/audit/content_reviews.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/audit/content_reviews.svg',
         );
     }
 

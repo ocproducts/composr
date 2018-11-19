@@ -100,6 +100,7 @@ class Hook_addon_registry_breadcrumbs
     {
         return array(
             'themes/default/images/icons/menu/adminzone/structure/breadcrumbs.svg',
+            'themes/default/images/icons_monochrome/menu/adminzone/structure/breadcrumbs.svg',
             'sources/hooks/systems/addon_registry/breadcrumbs.php',
             'data/xml_config/breadcrumbs.xml',
             'sources/breadcrumbs.php',
