@@ -185,13 +185,22 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
 {
     global $NOTIFICATIONS_ON;
     if (!$NOTIFICATIONS_ON) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return;
     }
 
     if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return; // We're not in a position to send a notification
     }
     if ((function_exists('get_member')) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_param_integer('keep_no_notifications', 0) == 1)) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return;
     }
 
@@ -202,6 +211,9 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
     require_lang('notifications');
 
     if (running_script('install')) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return;
     }
 
@@ -294,6 +306,9 @@ class Notification_dispatcher
     public function dispatch()
     {
         if (get_mass_import_mode()) {
+            require_code('files2');
+            clean_temporary_mail_attachments($this->attachments);
+
             return;
         }
 
@@ -314,6 +329,12 @@ class Notification_dispatcher
             if ((strpos($this->notification_code, '__') === false) && (get_page_name() != 'admin_setupwizard')) {// Setupwizard may have removed after register_shutdown_function was called
                 fatal_exit('Missing notification code: ' . $this->notification_code);
             }
+
+            require_code('files2');
+            clean_temporary_mail_attachments($this->attachments);
+
+            cms_profile_end_for('Notification_dispatcher', $subject);
+
             return;
         }
 
@@ -362,6 +383,9 @@ class Notification_dispatcher
 
             $start += $max;
         } while ($possibly_has_more);
+
+        require_code('files2');
+        clean_temporary_mail_attachments($this->attachments);
 
         cms_profile_end_for('Notification_dispatcher', $subject);
     }
@@ -559,7 +583,7 @@ function _find_member_statistical_notification_type($to_member_id, $notification
  * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
  * @range  1 5
  * @param  boolean $no_cc Whether to NOT CC to the CC address
- * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+ * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
  * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
  * @return boolean New $no_cc setting
  *

@@ -455,6 +455,11 @@ class Module_cms_banners extends Standard_crud_module
             content_review_set('banner', $name);
         }
 
+        require_code('templates_donext');
+        if (has_simplified_donext()) {
+            $tpl = null;
+        }
+
         return array($name, $tpl);
     }
 
@@ -805,7 +810,14 @@ class Module_cms_banners_cat extends Standard_crud_module
             content_review_set('banner_type', $id);
         }
 
-        return array($id, do_lang_tempcode('ADD_BANNER_TEMPLATING'));
+        $tpl = do_lang_tempcode('ADD_BANNER_TEMPLATING');
+
+        require_code('templates_donext');
+        if (has_simplified_donext()) {
+            $tpl = null;
+        }
+
+        return array($id, $tpl);
     }
 
     /**

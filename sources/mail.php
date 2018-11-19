@@ -579,7 +579,7 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  string $from_name The from name (blank: site name)
  * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
  * @range  1 5
- * @param  ?array $attachments An list of attachments (each attachment being a map, absolute path=>filename) (null: none)
+ * @param  ?array $attachments A list of attachments (each attachment being a map, absolute path=>filename) (null: none)
  * @param  boolean $no_cc Whether to NOT CC to the CC address
  * @param  ?MEMBER $as Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
  * @param  boolean $as_admin Replace above with arbitrary admin
@@ -595,10 +595,16 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
 function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
 {
     if (running_script('stress_test_loader')) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return false;
     }
 
     if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return false;
     }
 
@@ -610,6 +616,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
 
                 if (count($to_email) == 0) {
+                    require_code('files2');
+                    clean_temporary_mail_attachments($attachments);
+
                     return true;
                 }
             }
@@ -689,6 +698,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     global $SENDING_MAIL;
     if ($SENDING_MAIL) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return false;
     }
     $SENDING_MAIL = true;
@@ -710,6 +722,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $to_email = $to_email_new;
     if ($to_email == array()) {
         $SENDING_MAIL = false;
+
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return true;
     }
 
@@ -1012,10 +1028,24 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             require_code('site');
             attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
 
+            require_code('files2');
+            clean_temporary_mail_attachments($attachments);
+
+            if (!$coming_out_of_queue) {
+                cms_profile_end_for('mail_wrap', $subject_line);
+            }
+
             return false;
         }
 
         $SENDING_MAIL = false;
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
+        if (!$coming_out_of_queue) {
+            cms_profile_end_for('mail_wrap', $subject_line);
+        }
+
         return true;
     }
 
@@ -1291,10 +1321,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $SENDING_MAIL = false;
         require_code('site');
         attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+
         return false;
     }
 
     $SENDING_MAIL = false;
+
+    require_code('files2');
+    clean_temporary_mail_attachments($attachments);
+
     return true;
 }
 
