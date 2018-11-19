@@ -1604,6 +1604,7 @@ class DatabaseConnector
             cms_profile_end_for('_query:HIGH_VOLUME_ALERT');
         }
 
+        // Optimisation: Load language fields in advance so we don't need to do additional details when calling get_translated_* functions
         $lang_strings_expecting = array();
         if ($lang_fields !== null) {
             if (multi_lang_content()) {
