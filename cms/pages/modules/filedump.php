@@ -295,6 +295,7 @@ class Module_filedump
 
         // Find all files in the filedump directory
         $db_rows = array();
+        $something_editable = false;
         $files = array();
         $dir_contents = get_directory_contents(get_custom_file_base() . '/uploads/filedump' . $place, trim($place, '/'), false, $recurse == 1);
         foreach ($dir_contents as $filename) {
@@ -339,6 +340,11 @@ class Module_filedump
                     $timestamp = filemtime($_full);
                 }
 
+                $editable = ((!is_null($db_row)) && ($db_row['the_member'] == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'));
+                if ($editable) {
+                    $something_editable = true;
+                }
+
                 $files[] = array(
                     'filename' => $is_directory ? ($filename . '/') : $filename,
                     'place' => $_place,
@@ -347,6 +353,7 @@ class Module_filedump
                     '_time' => $timestamp,
                     'submitter' => isset($db_row) ? $db_row['the_member'] : null,
                     'is_directory' => $is_directory,
+                    'editable' => $editable,
                 );
             }
         }
@@ -404,7 +411,7 @@ class Module_filedump
                     $description_2 = ($is_directory) ? do_lang_tempcode('FOLDER') : new Tempcode();
                 }
 
-                $choosable = ((!is_null($db_row)) && ($db_row['the_member'] == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'));
+                $editable = $file['editable'];
 
                 $width = mixed();
                 $height = mixed();
@@ -420,7 +427,7 @@ class Module_filedump
                     'height' => $height,
                     'size' => clean_file_size($file['_size']),
                     'time' => is_null($file['_time']) ? null : get_timezoned_date($file['_time'], false),
-                    'choosable' => $choosable,
+                    'editable' => $editable,
                 );
 
                 if ($file['is_directory']) { // Directory
@@ -446,7 +453,7 @@ class Module_filedump
                 }
 
                 $choose_action = new Tempcode();
-                if ($file['choosable']) {
+                if ($file['editable']) {
                     $choose_action->attach(do_template('COLUMNED_TABLE_ROW_CELL_TICK', array(
                         '_GUID' => 'd5085d4d602d24f7df25bcaf24db0d79',
                         'LABEL' => do_lang_tempcode('CHOOSE'),
@@ -454,6 +461,8 @@ class Module_filedump
                         'VALUE' => rtrim($filename, '/'),
                         'HIDDEN' => form_input_hidden('place_file_' . strval($i), $_place),
                     )));
+                } else {
+                    $choose_action = do_lang_tempcode('NA_EM');
                 }
 
                 // Thumbnail
@@ -472,30 +481,38 @@ class Module_filedump
                     'WIDTH' => is_null($file['width']) ? '' : strval($file['width']),
                     'HEIGHT' => is_null($file['height']) ? '' : strval($file['height']),
                     'IS_DIRECTORY' => $file['is_directory'],
-                    'CHOOSABLE' => $file['choosable'],
+                    'CHOOSABLE' => $file['editable'],
                     'ACTIONS' => $choose_action,
                     'EMBED_URL' => $embed_url,
                 );
 
-                // Editable filename
-                $filename_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
-                    '_GUID' => 'bce082b134f751615785189bf1cedbe2',
-                    'LABEL' => do_lang_tempcode('FILENAME'),
-                    'NAME' => 'filename_value_' . strval($i),
-                    'VALUE' => rtrim($filename, '/'),
-                    'HIDDEN_NAME' => 'filename_file_' . strval($i),
-                    'HIDDEN_VALUE' => rtrim($filename, '/'),
-                ));
+                // Editable(?) filename
+                if ($file['editable']) {
+                    $filename_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
+                        '_GUID' => 'bce082b134f751615785189bf1cedbe2',
+                        'LABEL' => do_lang_tempcode('FILENAME'),
+                        'NAME' => 'filename_value_' . strval($i),
+                        'VALUE' => rtrim($filename, '/'),
+                        'HIDDEN_NAME' => 'filename_file_' . strval($i),
+                        'HIDDEN_VALUE' => rtrim($filename, '/'),
+                    ));
+                } else {
+                    $filename_field = escape_html($filename);
+                }
 
-                // Editable description
-                $description_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
-                    '_GUID' => '22ef464010277ceedb72f8f38f897af6',
-                    'LABEL' => do_lang_tempcode('DESCRIPTION'),
-                    'NAME' => 'description_value_' . strval($i),
-                    'VALUE' => $file['description'],
-                    'HIDDEN_NAME' => 'description_file_' . strval($i),
-                    'HIDDEN_VALUE' => rtrim($filename, '/'),
-                ));
+                // Editable(?) description
+                if ($file['editable']) {
+                    $description_field = do_template('COLUMNED_TABLE_ROW_CELL_LINE', array(
+                        '_GUID' => '22ef464010277ceedb72f8f38f897af6',
+                        'LABEL' => do_lang_tempcode('DESCRIPTION'),
+                        'NAME' => 'description_value_' . strval($i),
+                        'VALUE' => $file['description'],
+                        'HIDDEN_NAME' => 'description_file_' . strval($i),
+                        'HIDDEN_VALUE' => rtrim($filename, '/'),
+                    ));
+                } else {
+                    $description_field = escape_html($file['description']);
+                }
 
                 // Size
                 if (!is_null($file['width'])) {
@@ -650,6 +667,7 @@ class Module_filedump
             'OTHER_DIRECTORIES' => $other_directories,
             'FILTERED_DIRECTORIES' => $filtered_directories,
             'FILTERED_DIRECTORIES_MISSES' => $filtered_directories_misses,
+            'SOMETHING_EDITABLE' => $something_editable,
         ));
     }
 

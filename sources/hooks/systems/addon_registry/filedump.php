@@ -190,6 +190,7 @@ class Hook_addon_registry_filedump
                 'OTHER_DIRECTORIES' => array(lorem_word()),
                 'FILTERED_DIRECTORIES' => array(lorem_word()),
                 'FILTERED_DIRECTORIES_MISSES' => array(),
+                'SOMETHING_EDITABLE' => true,
             )), null, '', true)
         );
     }
