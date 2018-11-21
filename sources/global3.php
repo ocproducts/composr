@@ -274,7 +274,7 @@ function cms_file_get_contents_safe($path)
  * @param  ?resource $write_to_file File handle to write to (null: do not do that)
  * @param  ?string $referer The HTTP referer (null: none)
  * @param  ?array $auth A pair: authentication username and password (null: none)
- * @param  float $timeout The timeout
+ * @param  float $timeout The timeout (for connecting/stalling, not for overall download time); usually it is rounded up to the nearest second, depending on the downloader implementation
  * @param  boolean $raw_post Whether to treat the POST parameters as a raw POST (rather than using MIME)
  * @param  ?array $files Files to send. Map between field to file path (null: none)
  * @param  ?array $extra_headers Extra headers to send (null: none)

@@ -33,6 +33,18 @@ function abs($number)
 }
 
 /**
+ * Returns the floating point remainder (modulo) of the division of the arguments.
+ *
+ * @param  float $x The dividend
+ * @param  float $y The divisor
+ * @return mixed The remainder
+ */
+function fmod($x, $y)
+{
+    return 0.0;
+}
+
+/**
  * Counts all the values of an array.
  *
  * @param  array $input Input array.
@@ -5776,7 +5788,6 @@ acosh
 atanh
 expm1
 log1p
-fmod
 getopt
 settype
 dir
