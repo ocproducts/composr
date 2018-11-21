@@ -1748,7 +1748,7 @@ function ecv_METADATA($lang, $escaped, $param)
                         $keywords_array = array_merge($keywords_array, array_map('trim', explode(',', $keywords)));
                     }
                     foreach ($keywords_array as &$keyword) {
-                        $_keyword = do_lang('TAG_OVERRIDE_' . $keyword, null, null, null, null, false);
+                        $_keyword = do_lang('TAG_OVERRIDE_' . preg_replace('#[^\w]#', '_', $keyword), null, null, null, null, false);
                         if ($_keyword !== null) {
                             $keyword = $_keyword;
                         }

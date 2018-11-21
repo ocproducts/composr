@@ -127,6 +127,13 @@ E.g.
 TAG_OVERRIDE_defaultness=standardeinstellung
 [/code]
 
+If you have non-alphanumeric characters then they should be substituted with an [tt]_[/tt] (underscore) symbol in the language string name.
+
+E.g. for "An example":
+[code="ini"]
+TAG_OVERRIDE_An_example=ein Beispiel
+[/code]
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
