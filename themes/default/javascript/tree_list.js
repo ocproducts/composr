@@ -164,8 +164,8 @@
                         htmlNode = $dom.$id(that.name + 'tree-list-c-' + $dom.html(node));
                         expanding = (htmlNode.style.display !== 'block');
                         if (expanding) {
-                            if ($dom.$('#choose_' + that.name)) {
-                                $dom.$('#choose_' + that.name).click();
+                            if ($dom.$('#choose-' + that.name)) {
+                                $dom.$('#choose-' + that.name).click();
                             }
 
                             that.handleTreeClick(true, el);
@@ -179,8 +179,8 @@
                                 htmlNode = $dom.$id(that.name + 'tree-list-c-' + xmlNode.getAttribute('id'));
                                 expanding = (htmlNode.style.display !== 'block');
                                 if (expanding) {
-                                    if ($dom.$('#choose_' + that.name)) {
-                                        $dom.$('#choose_' + that.name).click();
+                                    if ($dom.$('#choose-' + that.name)) {
+                                        $dom.$('#choose-' + that.name).click();
                                     }
 
                                     that.handleTreeClick(true, el);
@@ -263,8 +263,8 @@
                     $dom.on(expandButton, 'click', function (e) {
                         e.preventDefault();
 
-                        if ($dom.$('#choose_' + that.name)) {
-                            $dom.$('#choose_' + that.name).click();
+                        if ($dom.$('#choose-' + that.name)) {
+                            $dom.$('#choose-' + that.name).click();
                         }
 
                         that.handleTreeClick(false, expandButton);
@@ -275,8 +275,8 @@
                         if (((event.keyCode ? event.keyCode : event.charCode) === 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                             event.preventDefault();
 
-                            if ($dom.$('#choose_' + that.name)) {
-                                $dom.$('#choose_' + that.name).click();
+                            if ($dom.$('#choose-' + that.name)) {
+                                $dom.$('#choose-' + that.name).click();
                             }
 
                             that.handleTreeClick(false, expandButton);
@@ -333,8 +333,8 @@
 
                     // Auto-expand
                     if (that.specialKeyPressed && !initiallyExpanded) {
-                        if ($dom.$('#choose_' + that.name)) {
-                            $dom.$('#choose_' + that.name).click();
+                        if ($dom.$('#choose-' + that.name)) {
+                            $dom.$('#choose-' + that.name).click();
                         }
 
                         that.handleTreeClick(false, expandButton);

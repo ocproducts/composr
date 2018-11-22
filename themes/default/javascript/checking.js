@@ -200,6 +200,7 @@
 
                 // Uploads pending
                 $cms.ui.alert({ notice: '{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}', single: true });
+
                 return $cms.form.startUploads(form);
             }).then(function () {
                 if (form.method.toLowerCase() === 'get') {
@@ -340,7 +341,7 @@
      * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
-        if ((typeof element === 'object') && (element instanceof window.RadioNodeList)) {
+        if ($util.isArrayLike(element) && (element.name === undefined) && (typeof element.value === 'string')) {
             // A RadioNodeList (returned by form.elements[<name of a radio input>])
             return element.value;
         }
@@ -430,7 +431,8 @@
 
         return new Promise(function (resolveCheckFormPromise) {
             var erroneous = false,
-                totalFileSize = 0, alerted = false,
+                totalFileSize = 0,
+                alerted = false,
                 errorElement = null,
                 theElements = arrVal(theForm.elements),
                 fieldCheckPromiseCalls = [];
@@ -493,7 +495,7 @@
 
                 // Try and workaround max_input_vars problem if lots of usergroups
                 if (!erroneous) {
-                    var deleteE = $dom.$id('delete'),
+                    var deleteE = document.getElementById('delete'),
                         isDelete = deleteE && (deleteE.type === 'checkbox') && deleteE.checked,
                         es = document.getElementsByTagName('select'), selectEl;
 
@@ -519,15 +521,15 @@
 
                 if (!recursing && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
                     var preid = theElement.id.replace(/_(day|month|year)$/, ''),
-                        el = $dom.$id(preid + '_day');
+                        el = document.getElementById(preid + '_day');
                     if (el !== theElement) {
                         autoResetError(el, true);
                     }
-                    el = $dom.$id(preid + '_month');
+                    el = document.getElementById(preid + '_month');
                     if (el !== theElement) {
                         autoResetError(el, true);
                     }
-                    el = $dom.$id(preid + '_year');
+                    el = document.getElementById(preid + '_year');
                     if (el !== theElement) {
                         autoResetError(el, true);
                     }
@@ -681,9 +683,9 @@
         });
 
         function getErrorMsgElement(id) {
-            var errorMsgElement = $dom.$id('error_' + id);
+            var errorMsgElement = document.getElementById('error-' + id);
             if (!errorMsgElement) {
-                errorMsgElement = $dom.$id('error_' + id.replace(/_day$/, '').replace(/_month$/, '').replace(/_year$/, '').replace(/_hour$/, '').replace(/_minute$/, ''));
+                errorMsgElement = document.getElementById('error-' + id.replace(/_day$/, '').replace(/_month$/, '').replace(/_year$/, '').replace(/_hour$/, '').replace(/_minute$/, ''));
             }
             return errorMsgElement;
         }
@@ -696,14 +698,14 @@
      * @param chosenOb
      */
     $cms.form.setLocked = function setLocked(field, isLocked, chosenOb) {
-        var radioButton = $dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
+        var radioButton = document.getElementById('choose-' + field.name.replace(/\[\]$/, ''));
         if (!radioButton) {
-            radioButton = $dom.$id('choose_' + field.name.replace(/_\d+$/, '_'));
+            radioButton = document.getElementById('choose-' + field.name.replace(/_\d+$/, '_'));
         }
 
         // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever
         // special input types are coded to observe their master input field readonly status)
-        var button = $dom.$id('upload-button-' + field.name.replace(/\[\]$/, ''));
+        var button = document.getElementById('upload-button-' + field.name.replace(/\[\]$/, ''));
 
         if (isLocked) {
             var labels = document.getElementsByTagName('label'), label = null;
@@ -746,7 +748,7 @@
         fieldName = strVal(fieldName);
         isRequired = Boolean(isRequired);
 
-        var radioButton = $dom.$('#choose_' + fieldName);
+        var radioButton = $dom.$('#choose-' + fieldName);
 
         if (!radioButton) {
             var requiredA = $dom.$('#form-table-field-name--' + fieldName),
@@ -778,10 +780,10 @@
         var element = $dom.$('#' + fieldName);
 
         if (element) {
-            element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
+            element.className = element.className.replace(/(input-[a-z-]+)-required/g, '$1');
 
             if (isRequired) {
-                element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
+                element.className = element.className.replace(/(input-[a-z-]+)/g, '$1-required');
             }
 
             if ($dom.data(element).pluploadObject != null) {
@@ -831,7 +833,6 @@
         }
     };
 
-
     /**
      * Set it up so a form field is known and can be monitored for changes
      * @memberof $cms.form
@@ -840,11 +841,11 @@
     $cms.form.setUpChangeMonitor = function setUpChangeMonitor(container) {
         var firstInp = $dom.$(container, 'input, select, textarea');
 
-        if (!firstInp || firstInp.id.includes('choose_')) {
+        if (!firstInp || firstInp.id.includes('choose-')) {
             return;
         }
 
-        $dom.on(container, 'blur change', function () {
+        $dom.on(container, 'focusout change', function () {
             container.classList.toggle('filledin', $cms.form.findIfChildrenSet(container));
         });
     };

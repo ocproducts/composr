@@ -478,8 +478,8 @@
 
     $cms.templates.formScreenInputHugeComcode = function formScreenInputHugeComcode(params) {
         var required = strVal(params.required),
-            textarea = $dom.$id(params.name),
-            input = $dom.$id('form-table-field-input--' + params.randomisedId);
+            textarea = document.getElementById(params.name),
+            input = document.getElementById('form-table-field-input--' + params.randomisedId);
 
         if (required.includes('wysiwyg') && window.$editing.wysiwygOn()) {
             textarea.readOnly = true;
@@ -531,8 +531,7 @@
         });
     };
 
-    $cms.templates.formScreenInputPermissionMatrix = function (params) {
-        var container = this;
+    $cms.templates.formScreenInputPermissionMatrix = function (params, container) {
         window.permServerid = params.serverId;
 
         $dom.on(container, 'click', '.js-click-permissions-toggle', function (e, clicked) {
@@ -1641,12 +1640,12 @@
 
         for (var i = 0; i < fields.length; i++) {
             if (fields[i][0] === undefined) {
-                if (fields[i].id.startsWith('choose_')) {
-                    fieldNames.push(fields[i].id.replace(/^choose_/, ''));
+                if (fields[i].id.startsWith('choose-')) {
+                    fieldNames.push(fields[i].id.replace(/^choose-/, ''));
                 }
             } else { // RadioNodeList
-                if (fields[i][0].id.startsWith('choose_')) {
-                    fieldNames.push(fields[i][0].id.replace(/^choose_/, ''));
+                if (fields[i][0].id.startsWith('choose-')) {
+                    fieldNames.push(fields[i][0].id.replace(/^choose-/, ''));
                 }
             }
         }
@@ -1689,7 +1688,7 @@
             // Hmm, force first one chosen then
             for (i = 0; i < fieldNames.length; i++) {
                 if (fieldNames[i] === '') {
-                    var radioButton = document.getElementById('choose_'); // Radio button handles field alternation
+                    var radioButton = document.getElementById('choose-'); // Radio button handles field alternation
                     radioButton.checked = true;
                     _standardAlternateFieldUpdateEditability(null, fields, somethingRequired);
                     return;
@@ -1727,9 +1726,9 @@
                     return;
                 }
 
-                var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
+                var radioButton = document.getElementById('choose-' + field.name.replace(/\[\]$/, ''));
                 if (!radioButton) {
-                    radioButton = document.getElementById('choose_' + field.name.replace(/_\d+$/, '_'));
+                    radioButton = document.getElementById('choose-' + field.name.replace(/_\d+$/, '_'));
                 }
 
                 $cms.form.setLocked(field, isLocked, chosenField);
@@ -1737,7 +1736,7 @@
                     $cms.form.setRequired(field.name.replace(/\[\]$/, ''), isChosen);
                 }
 
-                radioButton = $dom.$('#choose_' + field.name);
+                radioButton = $dom.$('#choose-' + field.name);
                 if (radioButton) {
                     radioButton.checked = isChosen;
                 }
@@ -1795,9 +1794,9 @@
 
                 var isSet = force || ((field.value !== '') && (field.value !== '-1'));
 
-                var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
+                var radioButton = document.getElementById('choose-' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
                 if (!radioButton) {
-                    radioButton = document.getElementById('choose_' + field.name.replace(/_\d+$/, '_'));
+                    radioButton = document.getElementById('choose-' + field.name.replace(/_\d+$/, '_'));
                 }
                 if (secondRun) {
                     if (radioButton) {
@@ -1828,9 +1827,9 @@
             }
 
             function __standardAlternateFieldCreateListeners(field, refreshFunction) {
-                var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
+                var radioButton = document.getElementById('choose-' + (field ? field.name : '').replace(/\[\]$/, ''));
                 if (!radioButton) {
-                    radioButton = document.getElementById('choose_' + field.name.replace(/_\d+$/, '_'));
+                    radioButton = document.getElementById('choose-' + field.name.replace(/_\d+$/, '_'));
                 }
                 if (radioButton) { // Radio button handles field alternation
                     radioButton.addEventListener('change', refreshFunction);
