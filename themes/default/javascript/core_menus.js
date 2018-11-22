@@ -443,26 +443,22 @@
                     $dom.append(span, document.createTextNode(' '));
 
                     var expand = $dom.create('a', {
-                        className: 'toggleable-tray-button',
+                        className: 'menu-sitemap-item-a toggleable-tray-button',
                         href: '#!',
                         dataset: {
                             clickTrayToggle: '#' + branchId
                         }
                     });
 
-                    var expandImg = $dom.create('img');
+                    /*{$SET,contract_icon,{+START,INCLUDE,ICON}NAME=trays/contract{+END}}*/
+                    /*{$SET,expand_icon,{+START,INCLUDE,ICON}NAME=trays/expand{+END}}*/
                     if (theLevel < 2) { // High-levels start expanded
-                        expandImg.alt = '{!CONTRACT;^}';
-                        expandImg.src = $util.srl('{$IMG;^,icons/trays/contract}');
+                        $dom.append(expand, '{$GET;^,contract_icon}');
                     } else {
-                        expandImg.alt = '{!EXPAND;^}';
-                        expandImg.src = $util.srl('{$IMG;^,icons/trays/expand}');
                         $dom.hide(ul);
+                        $dom.append(expand, '{$GET;^,expand_icon}');
                     }
-                    expandImg.width = '20';
-                    expandImg.height = '20';
 
-                    $dom.append(expand, expandImg);
                     $dom.append(span, expand);
 
                     // Show children...
