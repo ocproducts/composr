@@ -1051,13 +1051,6 @@
             handler.del = delegator;
             handler.i = set.length;
             handler.proxy = function proxy(e) {
-                if (handler.e === 'clickout') {
-                    if (!delegator && el.contains(e.target)) {
-                        return;
-                    }
-                    e = $dom.createEvent('clickout', { originalEvent: e });
-                }
-
                 var result = (delegator || fn).call(el, e, el);
                 if (result === false) {
                     e.stopPropagation();
@@ -1067,11 +1060,7 @@
             };
             set.push(handler);
 
-            if (handler.e === 'clickout') {
-                document.addEventListener('click', handler.proxy, eventCapture(handler, capture));
-            } else {
-                el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
-            }
+            el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
         });
     }
 
@@ -1096,11 +1085,7 @@
         (events || '').split(/\s/).forEach(function (event) {
             findHandlers(element, event, fn, selector).forEach(function (handler) {
                 delete eventHandlers[id][handler.i];
-                if (handler.e === 'clickout') {
-                    document.removeEventListener('click', handler.proxy, eventCapture(handler, capture));
-                } else {
-                    element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
-                }
+                element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture));
             });
         });
     }
@@ -1146,38 +1131,26 @@
 
         if (selector) {
             delegator = function (e) {
-                var clicked, matches, match;
+                var target = e.target;
 
-                if (e.type === 'clickout') {
-                    // Our custom 'clickout' event needs some special handling and may be fired on multiple matches
-                    clicked = e.originalEvent.target;
-                    matches = $dom.$$(el, selector);
-                    if (el.contains(clicked)) {
-                        matches = matches.filter(function (elem) {
-                            return !elem.contains(clicked);
-                        });
-                    }
-                } else {
-                    var target = e.target;
+                if (!target.nodeType && target.correspondingUseElement) {// SVGElementInstance?
+                    // Patch buggy behavior in IE for `event.target`s inside the shadow DOM in SVG <use> elements
+                    // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7998724/
+                    // https://bugs.jquery.com/ticket/13180
+                    target = target.correspondingUseElement;
+                }
 
-                    if (!target.nodeType && target.correspondingUseElement) {// SVGElementInstance?
-                        // Patch buggy behavior in IE for `event.target`s inside the shadow DOM in SVG <use> elements
-                        // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7998724/
-                        // https://bugs.jquery.com/ticket/13180
-                        target = target.correspondingUseElement;
-                    }
+                var match = $dom.closest(target, selector, el);
 
-                    match = $dom.closest(target, selector, el);
-                    if (match) {
-                        matches = [match];
-                    }
+                if (match == null) {
+                    return;
                 }
 
                 var args = $util.toArray(arguments);
-                (matches || []).forEach(function (match) {
-                    args[1] = match; // Set the `element` arg to the matched element
-                    return (autoRemove || callback).apply(match, args);
-                });
+
+                args[1] = match; // Set the `element` arg to the matched element
+
+                return (autoRemove || callback).apply(match, args);
             };
         }
 
