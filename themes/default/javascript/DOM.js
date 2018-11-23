@@ -1922,6 +1922,7 @@
      * @param el
      * @param { Number|String }[duration]
      * @param { String } [easing]
+     * @returns { Promise }
      */
     $dom.show = function show(el, duration, easing) {
         el = $dom.elArg(el);

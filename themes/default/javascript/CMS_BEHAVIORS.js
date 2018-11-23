@@ -60,7 +60,7 @@
                 hasBaseEl = Boolean(document.querySelector('base'));
 
             anchors.forEach(function (anchor) {
-                var href = strVal(anchor.href);
+                var href = strVal(anchor.getAttribute('href'));
                 // So we can change base tag especially when on debug mode
                 if (hasBaseEl && href.startsWith('#') && (href !== '#!')) {
                     anchor.href = window.location.href.replace(/#.*$/, '') + href;
@@ -859,14 +859,14 @@
                     e.preventDefault();
 
                     if (el.querySelector('img, video')) {
-                        openImageIntoLightbox(el, el.href.indexOf('.mp4') != -1 || el.href.indexOf('.m4v') != -1);
+                        openImageIntoLightbox(el, el.href.indexOf('.mp4') !== -1 || el.href.indexOf('.m4v') !== -1);
                     } else {
                         openLinkAsOverlay({ el: el });
                     }
 
-                    function openImageIntoLightbox(el) {
+                    function openImageIntoLightbox(el, isVideo) {
                         var hasFullButton = (el.firstElementChild == null) || (el.href !== el.firstElementChild.src);
-                        $cms.ui.openImageIntoLightbox(el.href, ((el.cmsTooltipTitle !== undefined) ? el.cmsTooltipTitle : el.title), null, null, hasFullButton);
+                        $cms.ui.openImageIntoLightbox(el.href, ((el.cmsTooltipTitle !== undefined) ? el.cmsTooltipTitle : el.title), null, null, hasFullButton, isVideo);
                     }
                 });
             });

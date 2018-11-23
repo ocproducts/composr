@@ -535,7 +535,7 @@
     }
 
     function findTagsInEditor(editor) {
-        if (!editor.document || !editor.document.$ || !editor.document.$.querySelector('body')) {
+        if (!editor.document || !editor.document.$ || !editor.document.$.body) {
             return;
         }
 
@@ -550,10 +550,6 @@
                 $cms.ui.deactivateTooltip(this);
             };
             comcode.onmousemove = function (event) {
-                if (event === undefined) {
-                    event = editor.window.$.event;
-                }
-
                 var eventCopy = {};
                 if (event) {
                     if (event.pageX) {
@@ -576,10 +572,6 @@
                 }
             };
             comcode.onmousedown = function (event) {
-                if (event === undefined) {
-                    event = editor.window.$.event;
-                }
-
                 if (event.altKey) {
                     // Mouse cursor to start
                     var range = document.selection.getRanges()[0];
@@ -619,10 +611,6 @@
             }
 
             comcode.onmouseover = function (event) { // Shows preview
-                if (event === undefined) {
-                    event = editor.window.$.event;
-                }
-
                 var tagText = '';
                 if (this.nodeName.toLowerCase() === 'input') {
                     tagText = this.origTitle;
@@ -647,34 +635,34 @@
                         eventCopy.clientY = 3000;
                     }
 
-                    var selfOb = this;
-                    if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText !== tagText)) {
-                        selfOb.tagText = tagText;
-                        selfOb.isOver = true;
+                    if ((this.renderedTooltip === undefined && !this.isOver) || (this.tagText !== tagText)) {
+                        this.tagText = tagText;
+                        this.isOver = true;
 
                         var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keep()));
                         if ($cms.getPageName() === 'topics') {
                             url += '&forum_db=1';
                         }
 
+                        var self = this;
                         $cms.doAjaxRequest(url, function (responseXml) {
                             var ajaxResult = responseXml && responseXml.querySelector('result');
 
                             if (ajaxResult) {
                                 var tmpRendered = ajaxResult.textContent;
                                 if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') === -1) {
-                                    selfOb.renderedTooltip = tmpRendered;
+                                    self.renderedTooltip = tmpRendered;
                                 }
                             }
-                            if (selfOb.renderedTooltip !== undefined) {
-                                if (selfOb.isOver) {
-                                    $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, 'auto', null, null, false, true);
-                                    selfOb.title = selfOb.origTitle;
+                            if (self.renderedTooltip !== undefined) {
+                                if (self.isOver) {
+                                    $cms.ui.activateTooltip(self, eventCopy, self.renderedTooltip, 'auto', null, null, false, true);
+                                    self.title = self.origTitle;
                                 }
                             }
                         }, 'data=' + encodeURIComponent('[semihtml]' + tagText.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
                     } else if (this.renderedTooltip !== undefined) {
-                        $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, '400px', null, null, false, true);
+                        $cms.ui.activateTooltip(this, eventCopy, this.renderedTooltip, '400px', null, null, false, true);
                     }
                 }
             };

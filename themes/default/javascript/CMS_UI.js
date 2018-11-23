@@ -1027,7 +1027,7 @@
 
                 var closedCaptionsUrl = '';
                 var videoUrl = initialImgUrl;
-                if ((initialImgUrl.indexOf('?') != -1) && (initialImgUrl.indexOf('vtt') != -1)) {
+                if ((initialImgUrl.indexOf('?') !== -1) && (initialImgUrl.indexOf('vtt') !== -1)) {
                     var parts = videoUrl.split('?', 2);
                     videoUrl = parts[0];
                     closedCaptionsUrl = window.decodeURIComponent(parts[1]);
@@ -1037,7 +1037,7 @@
                 source.src = videoUrl;
                 video.appendChild(source);
 
-                if (closedCaptionsUrl != '') {
+                if (closedCaptionsUrl !== '') {
                     var track = document.createElement('track');
                     track.src = closedCaptionsUrl;
                     track.kind = 'captions';
