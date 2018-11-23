@@ -590,7 +590,7 @@
                 }
             };
 
-            if (comcode.localName === 'input') {
+            if (comcode.localName === 'input' || comcode.localName === 'button') {
                 comcode.readOnly = true;
                 comcode.contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
                 comcode.ondblclick = function (e) {
