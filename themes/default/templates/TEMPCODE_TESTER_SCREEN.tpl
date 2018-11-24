@@ -10,7 +10,7 @@
 
 		<h2><label for="tempcode">Tempcode</label></h2>
 		<div>
-			<textarea id="tempcode" name="tempcode" cols="70" rows="17" class="form-control textarea-scroll"></textarea>
+			<textarea id="tempcode" name="tempcode" cols="70" rows="17" class="form-control form-control-wide textarea-scroll"></textarea>
 		</div>
 
 		<h2>{!PARAMETERS}</h2>
@@ -19,9 +19,9 @@
 			<div class="vertical-alignment">
 				<label class="accessibility-hidden" for="key_{_loop_var*}">{!TEMPCODE_PARAMETER} #{_loop_var*}</label>
 				<label class="accessibility-hidden" for="val_{_loop_var*}">{!TEMPCODE_VALUE} #{_loop_var*}</label>
-				<input type="text" id="key_{_loop_var*}" class="form-control form-control-inline" name="key_{_loop_var*}" size="10" />
+				<input type="text" id="key_{_loop_var*}" class="form-control" name="key_{_loop_var*}" size="10" />
 				&rarr;
-				<input type="text" id="val_{_loop_var*}" class="form-control form-control-inline" name="val_{_loop_var*}" size="60" />
+				<input type="text" id="val_{_loop_var*}" class="form-control" name="val_{_loop_var*}" size="60" />
 			</div>
 		{+END}
 

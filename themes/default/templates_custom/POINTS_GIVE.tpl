@@ -28,7 +28,7 @@
 			<p>
 				<label for="give-reason-pre">
 					Their role
-					<select id="give-reason-pre" class="form-control form-control-inline js-click-check-reason js-change-check-reason" name="reason_pre">
+					<select id="give-reason-pre" class="form-control js-click-check-reason js-change-check-reason" name="reason_pre">
 						{$GET,roles}
 					</select>
 				</label>:
@@ -36,12 +36,12 @@
 
 			<p>
 				<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
-				<input maxlength="255" size="26" id="give-reason" class="form-control form-control-inline input-line-required" placeholder="{!REASON}" type="text" name="reason" />
+				<input maxlength="255" size="26" id="give-reason" class="form-control input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 			</p>
 
 			<p>
 				<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-				<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control form-control-inline input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+				<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 				<label class="points-anon" for="give-anonymous">{!TICK_ANON}: <input type="checkbox" id="give-anonymous" name="anonymous" value="1" /></label>
 
@@ -70,7 +70,7 @@
 					<p>
 						<label for="give-reason-pre">
 							Their role
-							<select id="give-reason-pre" class="form-control form-control-inline js-click-check-reason js-change-check-reason" name="reason_pre">
+							<select id="give-reason-pre" class="form-control js-click-check-reason js-change-check-reason" name="reason_pre">
 								{$GET,roles}
 							</select>
 						</label>:
@@ -78,14 +78,14 @@
 
 					<p>
 						<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
-						<input maxlength="255" size="26" id="give-reason" class="form-control form-control-inline input-line-required" placeholder="{!REASON}" type="text" name="reason" />
+						<input maxlength="255" size="26" id="give-reason" class="form-control input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 					</p>
 
 					<p>
 						<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-						<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control form-control-inline input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+						<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-						<button id="give-points-submit" class="btn btn-primary btn-sm buttons--points" type="submit">{!PROCEED_SHORT}</button>
+						<button id="give-points-submit" class="btn btn-primary buttons--points" type="submit">{!PROCEED_SHORT}</button>
 					</p>
 				</div>
 

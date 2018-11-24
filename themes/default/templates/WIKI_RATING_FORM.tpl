@@ -5,7 +5,7 @@
 {+START,IF_EMPTY,{ERROR}}
 	{+START,LOOP,ALL_RATING_CRITERIA}
 		{+START,IF_EMPTY,{TITLE}}<span class="accessibility-hidden">{+END}<label accesskey="r" for="rating__{CONTENT_TYPE*}__{TYPE*}__{ID*}"><strong>{+START,IF_EMPTY,{TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}:{+END}</strong></label>{+START,IF_EMPTY,{TITLE}}</span>{+END}
-		<select id="rating__{CONTENT_TYPE*}__{TYPE*}__{ID*}" name="rating__{CONTENT_TYPE*}__{TYPE*}__{ID*}" class="form-control form-control-inline">
+		<select id="rating__{CONTENT_TYPE*}__{TYPE*}__{ID*}" name="rating__{CONTENT_TYPE*}__{TYPE*}__{ID*}" class="form-control">
 			<option value="10">5</option>
 			<option value="8">4</option>
 			<option value="6">3</option>

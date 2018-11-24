@@ -32,7 +32,7 @@
 			<p>
 				<input type="hidden" name="on0_{$ADD*,1,{_loop_key}}" value="Size" />
 				<label for="os0_{$ADD*,1,{_loop_key}}">Size of {PRODUCT_NAME*} <span class="associated-details">(if applicable)</span></label>
-				<select name="os0_{$ADD*,1,{_loop_key}}" id="os0_{$ADD*,1,{_loop_key}}" class="form-control form-control-inline">
+				<select name="os0_{$ADD*,1,{_loop_key}}" id="os0_{$ADD*,1,{_loop_key}}" class="form-control">
 					<option>Small</option>
 					<option selected="selected">Medium</option>
 					<option>Large</option>

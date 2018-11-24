@@ -57,7 +57,7 @@
 							<th class="form-table-field-name">{!FORUM_PATH}</th>
 							<td class="form-table-field-input">
 								<div class="accessibility-hidden"><label for="board_path">{!_FORUM_PATH}</label></div>
-								<div><input class="form-control" type="text" size="60" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
+								<div><input class="form-control form-control-wide" type="text" size="60" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
 							</td>
 						</tr>
 					</tbody>
@@ -101,7 +101,7 @@
 
 		<p>
 			<label for="db_type">{!DB_CHOICE}</label>:
-			<select id="db_type" name="db_type" class="form-control form-control-inline">
+			<select id="db_type" name="db_type" class="form-control">
 				{DATABASES}
 			</select>
 		</p>

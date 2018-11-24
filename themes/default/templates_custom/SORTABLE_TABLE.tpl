@@ -9,7 +9,7 @@
 						<span>{LABEL*}</span>
 						{$,	If you want the template to define sorting, uncomment this and remove table-filterable -- but it will not be sorted consistently
 							{+START,IF_NON_EMPTY,{FILTERABLE}}
-								<select class="form-control form-control-inline js-change-sortable-table-filter">
+								<select class="form-control js-change-sortable-table-filter">
 									<option value="">All</option>
 									{+START,LOOP,FILTERABLE}
 										<option>{_loop_var*}</option>

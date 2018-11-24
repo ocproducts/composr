@@ -10,7 +10,7 @@
 
 			<div>
 				<p class="accessibility-hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
-				<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control" /></p>
+				<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control form-control-wide" /></p>
 			</div>
 
 			<p class="proceed-button">

@@ -13,7 +13,7 @@
 						<div class="box box---permissions-tree-editor-screen"><div class="box-inner">
 							<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post" autocomplete="off">
 								<img alt="" width="19" height="11" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
-								<select id="group" name="group" class="form-control form-control-inline js-click-update-group js-change-update-group">
+								<select id="group" name="group" class="form-control js-click-update-group js-change-update-group">
 									{GROUPS}
 								</select>
 							</form>
@@ -23,7 +23,7 @@
 
 					<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 						<div class="accessibility-hidden"><label for="tree-list">{!ENTRY}</label></div>
-						<input class="form-control form-control-inline js-change-update-perm-box" style="display: none" type="text" id="tree-list" name="tree_list" value="{$_GET*,id}" />
+						<input class="form-control js-change-update-perm-box" style="display: none" type="text" id="tree-list" name="tree_list" value="{$_GET*,id}" />
 					</form>
 					<div id="tree-list--root-tree-list" class="tree-list--root-tree-list pt-editor">
 						<!-- List put in here -->

@@ -8,7 +8,7 @@
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow-speed">
 			{!SPEED_IN_SECS}
-			<input type="number" name="slideshow_from" class="form-control form-control-inline js-change-reset-slideshow-countdown js-mousedown-stop-slideshow-timer" id="slideshow_from" value="5" />
+			<input type="number" name="slideshow_from" class="form-control js-change-reset-slideshow-countdown js-mousedown-stop-slideshow-timer" id="slideshow_from" value="5" />
 		</label>
 		<input type="hidden" id="next_slide" name="next_slide" value="{SLIDESHOW_NEXT_URL*}" />
 		<input type="hidden" id="previous_slide" name="previous_slide" value="{SLIDESHOW_PREVIOUS_URL*}" />

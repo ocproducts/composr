@@ -15,7 +15,7 @@
 				<div class="clearfix ticket-filters">
 					<div class="inline ticket-type-filter">
 						<label class="field-name" for="ticket_type_id">{!TICKET_TYPE}:</label>
-						<select id="ticket_type_id" name="ticket_type_id" class="form-control form-control-inline input-list-required">
+						<select id="ticket_type_id" name="ticket_type_id" class="form-control input-list-required">
 							<option value="">&mdash;</option>
 							{+START,LOOP,TYPES}
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}

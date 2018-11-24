@@ -27,17 +27,17 @@
 				{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 				<div class="revisions-filter-item">
 					<label class="lonely-label" for="username">{!USERNAME}:</label>
-					<input class="form-control form-control-inline js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" name="username" id="username" value="{$_GET*,username}" />
+					<input class="form-control js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" name="username" id="username" value="{$_GET*,username}" />
 				</div>
 
 				<div class="revisions-filter-item">
 					<label class="lonely-label" for="resource_id">{!IDENTIFIER} <span class="associated-details">({!ADVANCED})</span>:</label>
-					<input type="text" name="resource_id" id="resource_id" class="form-control form-control-inline" value="{$_GET*,resource_id}" />
+					<input type="text" name="resource_id" id="resource_id" class="form-control" value="{$_GET*,resource_id}" />
 				</div>
 
 				<div class="revisions-filter-item">
 					<label class="lonely-label" for="category_id">{!CATEGORY} <span class="associated-details">({!ADVANCED})</span>:</label>
-					<input type="text" name="category_id" id="category_id" class="form-control form-control-inline" value="{$_GET*,category_id}" />
+					<input type="text" name="category_id" id="category_id" class="form-control" value="{$_GET*,category_id}" />
 				</div>
 
 				<div class="revisions-filter-item-button">

@@ -15,7 +15,7 @@
 					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
 						<img id="captcha-image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}&amp;cache_break={$RAND}{$KEEP*,0,1}" />
 					{+END}
-					<input maxlength="6" size="6" type="text" id="captcha" class="input-text-required form-control form-control-inline" name="captcha" />
+					<input maxlength="6" size="6" type="text" id="captcha" class="input-text-required form-control" name="captcha" />
 				</div></div>
 			</div>
 		{+END}

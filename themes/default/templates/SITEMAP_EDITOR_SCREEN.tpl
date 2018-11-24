@@ -31,7 +31,7 @@
 				<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<input style="display: none" type="text" id="tree-list" name="tree_list" value="{$_GET*,id}" class="form-control form-control-inline js-change-update-details-box" />
+					<input style="display: none" type="text" id="tree-list" name="tree_list" value="{$_GET*,id}" class="form-control js-change-update-details-box" />
 					<div id="tree-list--root-tree-list" class="sitemap-editor">
 						<!-- List put in here -->
 					</div>

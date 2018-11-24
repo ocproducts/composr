@@ -13,7 +13,7 @@
 
 		<div class="status-controls">
 			{+START,IF,{$ADDON_INSTALLED,chat}}
-				<select name="privacy" size="1" class="form-control form-control-inline">
+				<select name="privacy" size="1" class="form-control">
 					<option selected="selected">
 						{!PUBLIC}
 					</option>
@@ -31,7 +31,7 @@
 
 		<div class="status-box-outer">
 			<label class="accessibility-hidden" for="activity-status">{!TYPE_HERE}</label>
-			<textarea class="form-control form-control-inline status-box fade-input field-input-non-filled js-textarea-activity-status" name="status" id="activity-status" rows="2">{!TYPE_HERE}</textarea>
+			<textarea class="form-control status-box fade-input field-input-non-filled js-textarea-activity-status" name="status" id="activity-status" rows="2">{!TYPE_HERE}</textarea>
 		</div>
 	</form>
 </div>

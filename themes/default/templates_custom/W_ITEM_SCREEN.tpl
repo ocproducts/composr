@@ -15,12 +15,12 @@
 	<div class="wide-table-wrap"><table class="map-table autosized-table results-table wide-table responsive-blocked-table"><tbody>
 		<tr>
 			<th>{!NAME}</th>
-			<td><label class="accessibility-hidden" for="name">{!NAME}</label><input type="text" size="20" name="name" id="name" class="form-control form-control-inline" value="{+START,IF_PASSED,ITEM}{ITEM*}{+END}" /></td>
+			<td><label class="accessibility-hidden" for="name">{!NAME}</label><input type="text" size="20" name="name" id="name" class="form-control" value="{+START,IF_PASSED,ITEM}{ITEM*}{+END}" /></td>
 			<td>{!W_EG_ITEM_NAME}</td>
 		</tr>
 		<tr>
 			<th>{!DESCRIPTION}</th>
-			<td><label class="accessibility-hidden" for="description">{!DESCRIPTION}</label><input type="text" size="20" name="description" id="description" class="form-control form-control-inline" value="{DESCRIPTION*}" /></td>
+			<td><label class="accessibility-hidden" for="description">{!DESCRIPTION}</label><input type="text" size="20" name="description" id="description" class="form-control" value="{DESCRIPTION*}" /></td>
 			<td>{!W_EG_ITEM_DESCRIPTION}</td>
 		</tr>
 		<tr>
@@ -51,24 +51,24 @@
 		</tr>
 		<tr>
 			<th>{!W_PICTURE}</th>
-			<td><label class="accessibility-hidden" for="pic">{!W_PICTURE}</label><input type="file" size="20" name="pic" id="pic" class="form-control form-control-inline" /></td>
+			<td><label class="accessibility-hidden" for="pic">{!W_PICTURE}</label><input type="file" size="20" name="pic" id="pic" class="form-control" /></td>
 			<td>{!W_EG_ROOM_PICTURE}</td>
 		</tr>
 		<tr>
 			<th>{!URL}</th>
-			<td><label class="accessibility-hidden" for="url">{!URL}</label><input type="text" size="20" name="url" id="url" class="form-control form-control-inline" value="{PICTURE_URL*}" /></td>
+			<td><label class="accessibility-hidden" for="url">{!URL}</label><input type="text" size="20" name="url" id="url" class="form-control" value="{PICTURE_URL*}" /></td>
 			<td>{!DESCRIPTION_ALTERNATE_URL}</td>
 		</tr>
 		{+START,IF_PASSED,OWNER}
 			<tr>
 				<th>{!OWNER}</th>
-				<td><label class="accessibility-hidden" for="new_owner">{!OWNER}</label><input type="text" size="20" name="new_owner" id="new_owner" class="form-control form-control-inline" value="{OWNER*}" /></td>
+				<td><label class="accessibility-hidden" for="new_owner">{!OWNER}</label><input type="text" size="20" name="new_owner" id="new_owner" class="form-control" value="{OWNER*}" /></td>
 				<td>{!W_EG_OWNER}</td>
 			</tr>
 		{+END}
 		<tr>
 			<th>{!W_MAXIMUM_PER_PLAYER}</th>
-			<td><label class="accessibility-hidden" for="max_per_player">{!W_MAXIMUM_PER_PLAYER}</label><input type="text" size="20" name="max_per_player" id="max_per_player" class="form-control form-control-inline" value="{MAX_PER_PLAYER*}" /></td>
+			<td><label class="accessibility-hidden" for="max_per_player">{!W_MAXIMUM_PER_PLAYER}</label><input type="text" size="20" name="max_per_player" id="max_per_player" class="form-control" value="{MAX_PER_PLAYER*}" /></td>
 			<td>{!W_EG_MAXIMUM_PER_PLAYER}</td>
 		</tr>
 		<tr>

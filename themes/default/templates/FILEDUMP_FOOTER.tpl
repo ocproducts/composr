@@ -3,7 +3,7 @@
 <div class="clearfix">
 	<div class="left">
 		<label for="action-{I*}">{!ACTION}:</label>
-		<select id="action-{I*}" name="action" class="form-control form-control-inline">
+		<select id="action-{I*}" name="action" class="form-control">
 			{+START,IF,{$EQ,{I},1}}
 				<option value="">---</option>
 			{+END}

@@ -7,7 +7,7 @@
 
 	<div class="selCdt">
 		<label for="type_code">{!SUPPORT_CREDITS_BUY}</label>
-		<select name="type_code" id="type_code" class="form-control form-control-inline js-change-update-product-info-display">
+		<select name="type_code" id="type_code" class="form-control js-change-update-product-info-display">
 			{+START,LOOP,CREDIT_KINDS}
 				<option {+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
 			{+END}

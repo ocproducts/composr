@@ -38,7 +38,7 @@
 
 					<div>
 						<label for="vga-username">{!USERNAME}: </label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="form-control form-control-inline js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga-username" name="username" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="form-control js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga-username" name="username" />
 						<button class="btn btn-primary btn-scri admin--add" type="submit">{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD}</button>
 					</div>
 				</form>

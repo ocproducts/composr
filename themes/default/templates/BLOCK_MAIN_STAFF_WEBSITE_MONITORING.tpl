@@ -46,7 +46,7 @@
 
 					<div>
 						<label for="website_monitoring_list_edit" class="accessibility-hidden">{!EDIT}</label>
-						<textarea class="form-control" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITES_BEING_WATCHED}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
+						<textarea class="form-control form-control-wide" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITES_BEING_WATCHED}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
 					</div>
 
 					<div class="buttons-group">

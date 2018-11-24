@@ -10,7 +10,7 @@
 	<input type="hidden" name="type" value="answered" />
 
 	<p>
-		<label for="param">{QUESTION*}: <input type="text" id="param" class="form-control form-control-inline" name="param" /></label>
+		<label for="param">{QUESTION*}: <input type="text" id="param" class="form-control" name="param" /></label>
 	</p>
 
 	<p class="proceed-button">

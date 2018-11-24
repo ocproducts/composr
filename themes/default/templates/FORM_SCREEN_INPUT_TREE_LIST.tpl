@@ -4,7 +4,7 @@
 		RIGHT=1
 	{+END}
 
-	<input style="display: none" type="text" class="form-control form-control-inline input-line{REQUIRED*} hidden-but-needed js-input-change-update-mirror" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" />
+	<input style="display: none" type="text" class="form-control input-line{REQUIRED*} hidden-but-needed js-input-change-update-mirror" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" />
 	<div class="ajax-tree-list" id="tree-list--root-{NAME*}" role="tree">
 		<!-- List put in here -->
 	</div>

@@ -507,7 +507,7 @@
 
 	<label class="accessibility-hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
 	<div>
-		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="form-control js-ta-tpl-editor textarea-scroll">{CONTENTS*}</textarea>
+		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="form-control form-control-wide js-ta-tpl-editor textarea-scroll">{CONTENTS*}</textarea>
 	</div>
 </div>
 
@@ -619,14 +619,14 @@
 
 		<p class="vertical-alignment">
 			<label for="css-equation-{FILE_ID*}">{!CSS_EQUATION_HELPER}</label>
-			<input name="css_equation" id="css-equation-{FILE_ID*}" class="form-control form-control-inline" type="text" value="100% seed" />
+			<input name="css_equation" id="css-equation-{FILE_ID*}" class="form-control" type="text" value="100% seed" />
 
 			<button class="btn btn-primary btn-scri buttons--calculate js-btn-equation-helper" type="submit">{+START,INCLUDE,ICON}NAME=buttons/calculate{+END} {!CALCULATE}</button>
 
 			&rarr;
 
 			<label class="accessibility-hidden" for="css-result-{FILE_ID*}">{!RESULT}</label>
-			<output><input readonly="readonly" name="css_result" id="css-result-{FILE_ID*}" class="form-control form-control-inline" type="text" value="({!RESULT})" /></output>
+			<output><input readonly="readonly" name="css_result" id="css-result-{FILE_ID*}" class="form-control" type="text" value="({!RESULT})" /></output>
 		</p>
 	</div></section>
 {+END}

@@ -75,7 +75,7 @@
 							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility-hidden"><label for="search-content">{!SEARCH_FOR}</label></div>
 								<div>
-									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search-content form-control js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search-content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
+									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search-content form-control form-control-wide js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search-content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 								</div>
 
 								{+START,IF,{HAS_TEMPLATE_SEARCH}}
@@ -111,7 +111,7 @@
 								<div class="accessibility-hidden"><label for="search-author">{USER_LABEL*}</label></div>
 								<div>
 									<span class="invisible-ref-point"></span>
-									<input autocomplete="off" maxlength="80" class="form-control js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search-author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+									<input autocomplete="off" maxlength="80" class="form-control form-control-wide js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search-author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
 							</td>
 						</tr>
@@ -120,7 +120,7 @@
 								<th class="form-table-field-name">{DAYS_LABEL*}</th>
 								<td class="form-table-field-input" colspan="2">
 									<div class="accessibility-hidden"><label for="search-days">{DAYS_LABEL*}</label></div>
-									<select id="search-days" name="days" class="form-control form-control-inline">
+									<select id="search-days" name="days" class="form-control">
 										<option selected="selected" value="-1">{!NA}</option>
 										<option {+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
 										<option {+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>
@@ -179,7 +179,7 @@
 							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility-hidden"><label for="search-direction">{!DIRECTION}</label></div>
 								<div class="accessibility-hidden"><label for="search-sort">{!SORT_BY}</label></div>
-								<select id="search-sort" name="sort" class="form-control form-control-inline">
+								<select id="search-sort" name="sort" class="form-control">
 									<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 									<option {+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 									<option {+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
@@ -189,7 +189,7 @@
 										<option {+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
 									{+END}
 								</select>
-								<select id="search-direction" name="direction" class="form-control form-control-inline">
+								<select id="search-direction" name="direction" class="form-control">
 									<option {+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
 									<option {+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
 								</select>

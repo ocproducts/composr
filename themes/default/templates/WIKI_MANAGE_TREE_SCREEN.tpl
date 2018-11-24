@@ -44,7 +44,7 @@
 				{$REQUIRE_JAVASCRIPT,tree_list}
 				{$REQUIRE_JAVASCRIPT,wiki}
 
-				<input style="display: none" type="text" id="mtp-tree" name="tree" class="form-control form-control-inline js-change-input-tree-update-children-value" />
+				<input style="display: none" type="text" id="mtp-tree" name="tree" class="form-control js-change-input-tree-update-children-value" />
 				<div id="tree-list--root-mtp-tree">
 					<!-- List put in here -->
 				</div>

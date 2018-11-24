@@ -16,10 +16,10 @@
 
 			<div>
 				<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-				<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control form-control-inline input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+				<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 				<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
-				<input maxlength="255" size="26" id="give-reason" class="form-control form-control-inline input-line-required" placeholder="{!REASON}" type="text" name="reason" />
+				<input maxlength="255" size="26" id="give-reason" class="form-control input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 
 				<label class="points-anon" for="give-anonymous">{!TICK_ANON}: <input type="checkbox" id="give-anonymous" name="anonymous" value="1" /></label>
 
@@ -46,10 +46,10 @@
 			<div>
 				<div class="points-give-shared-options">
 					<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
-					<input maxlength="10" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control form-control-inline input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
+					<input maxlength="10" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="form-control input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 					<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
-					<input maxlength="255" size="18" id="give-reason" class="form-control form-control-inline input-line-required" placeholder="{!REASON}" type="text" name="reason" />
+					<input maxlength="255" size="18" id="give-reason" class="form-control input-line-required" placeholder="{!REASON}" type="text" name="reason" />
 
 					<button id="give-points-submit" class="btn btn-primary btn-scri buttons--points" type="submit">{!PROCEED_SHORT}</button>
 				</div>

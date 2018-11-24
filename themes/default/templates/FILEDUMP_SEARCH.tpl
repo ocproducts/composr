@@ -6,7 +6,7 @@
 
 			<p class="left">
 				<label class="accessibility-hidden" for="search-filedump-{I*}">{!SEARCH}</label>
-				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search-filedump-{I*}" class="form-control form-control-inline" name="search" placeholder="{!SEARCH*}" />
+				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search-filedump-{I*}" class="form-control" name="search" placeholder="{!SEARCH*}" />
 
 				<label class="recurse horiz-field-sep" for="recurse-filedump-{I*}">
 					{!INCLUDE_SUBFOLDERS}
@@ -17,7 +17,7 @@
 
 				<label class="type-filter-filedump horiz-field-sep" for="type-filter-filedump-{I*}">
 					{!SHOW}
-					<select id="type-filter-filedump-{I*}" name="type_filter" class="form-control form-control-inline">
+					<select id="type-filter-filedump-{I*}" name="type_filter" class="form-control">
 						<option {+START,IF,{$EQ,{TYPE_FILTER},}} selected="selected"{+END} value="">{!ALL}</option>
 						<option {+START,IF,{$EQ,{TYPE_FILTER},images}} selected="selected"{+END} value="images">{!IMAGES}</option>
 						<option {+START,IF,{$EQ,{TYPE_FILTER},videos}} selected="selected"{+END} value="videos">{!VIDEOS}</option>
@@ -28,7 +28,7 @@
 
 				<label class="jump-to-filedump horiz-field-sep" for="jump-to-filedump-{I*}">
 					{!JUMP_TO_FOLDER}
-					<select id="jump-to-filedump-{I*}" name="place" class="form-control form-control-inline">
+					<select id="jump-to-filedump-{I*}" name="place" class="form-control">
 						{+START,IF_NON_EMPTY,{FILTERED_DIRECTORIES_MISSES}}
 							<optgroup label="{!FILEDUMP_FOLDER_MATCHING}">
 						{+END}
@@ -52,7 +52,7 @@
 
 				<label class="sort-filedump horiz-field-sep" for="sort-filedump-{I*}">
 					{!SORT_BY}
-					<select id="sort-filedump-{I*}" name="sort" class="form-control form-control-inline">
+					<select id="sort-filedump-{I*}" name="sort" class="form-control">
 						<option {+START,IF,{$EQ,{SORT},time ASC}} selected="selected"{+END} value="time ASC">{!DATE_TIME},{!_ASCENDING}</option>
 						<option {+START,IF,{$EQ,{SORT},time DESC}} selected="selected"{+END} value="time DESC">{!DATE_TIME},{!_DESCENDING}</option>
 						<option {+START,IF,{$EQ,{SORT},name ASC}} selected="selected"{+END} value="name ASC">{!FILENAME},{!_ASCENDING}</option>

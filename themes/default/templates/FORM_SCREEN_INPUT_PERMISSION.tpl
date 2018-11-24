@@ -7,7 +7,7 @@
 			<label for="access_{GROUP_ID*}_presets">
 				<span class="accessibility-hidden">{!PINTERFACE_PRESETS} ({GROUP_NAME*})</span>
 
-				<select tabindex="{TABINDEX*}" id="access_{GROUP_ID*}_presets" name="access_{GROUP_ID*}_presets" class="form-control form-control-inline js-click-copy-perm-presets js-change-copy-perm-presets">
+				<select tabindex="{TABINDEX*}" id="access_{GROUP_ID*}_presets" name="access_{GROUP_ID*}_presets" class="form-control js-click-copy-perm-presets js-change-copy-perm-presets">
 					{+START,IF,{ALL_GLOBAL}}
 						<option selected="selected" value="-1">{!PINTERFACE_LEVEL_GLOBAL}</option>
 					{+END}

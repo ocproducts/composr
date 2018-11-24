@@ -684,6 +684,12 @@ h1, h2, h3 {
 	/*border-bottom: 1px solid {$GET,pale_border};*/
 }
 
+.contrast-box {
+	padding: 15px 30px;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: {$GET,border_radius};
+}
+
 /* An iframe screen */
 .opens-below h1 {
 	display: none;
@@ -4654,8 +4660,8 @@ ul.buttons-group, ul.associated-links-block-group {
 }
 
 .form-control {
-	display: block;
-	width: 100%;
+	display: inline-flex;
+	vertical-align: middle;
 	padding: 6px 12px;
 	font-size: 14px;
 	line-height: 1.5;
@@ -4667,10 +4673,9 @@ ul.buttons-group, ul.associated-links-block-group {
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.form-control-inline {
-	display: inline-block;
-	width: auto;
-	vertical-align: middle;
+.form-control-wide {
+	display: block;
+	width: 100%;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -7145,13 +7150,20 @@ NB: Form buttons are wrapped in either:
 }
 /*{+END}*/
 
-.cms-carousel-homepage-slider .cms-carousel-contrast-box {
+.cms-carousel-homepage-slider .contrast-box {
 	display: table;
 	margin: 0 auto;
-	padding: 15px 30px;
-	background-color: rgba(0, 0, 0, 0.5);
-	border-radius: {$GET,border_radius};
-	margin-bottom: 40px;
+}
+
+.cms-carousel-homepage-slider .staff-actions {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	z-index: 100;
+}
+
+.cms-carousel-homepage-slider .staff-actions .icon-buttons--settings {
+	display: none;
 }
 
 html.has-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {

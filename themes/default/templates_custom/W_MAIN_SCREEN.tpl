@@ -135,7 +135,7 @@
 				<form method="post" id="posting-form" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<div><input id="post" class="form-control form-control-inline" name="post" type="text" /> <input name="type" type="hidden" value="message" /> <select name="tmember" size="1">
+					<div><input id="post" class="form-control" name="post" type="text" /> <input name="type" type="hidden" value="message" /> <select name="tmember" size="1">
 						<option value="0">
 							{!W_EVERYONE}
 						</option>
@@ -376,7 +376,7 @@
 									&nbsp;
 								</td>
 								<td>
-									<input type="text" size="20" name="param" class="form-control form-control-inline" />
+									<input type="text" size="20" name="param" class="form-control" />
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="delete-message-by-person" />
@@ -396,7 +396,7 @@
 									{!NA}
 								</td>
 								<td>
-									<input type="text" size="20" name="param" class="form-control form-control-inline" />
+									<input type="text" size="20" name="param" class="form-control" />
 								</td>
 								<td>
 									<input type="hidden" name="type" value="findperson" />
@@ -416,7 +416,7 @@
 									{!NA}
 								</td>
 								<td>
-									<input type="text" size="20" name="param" class="form-control form-control-inline" />
+									<input type="text" size="20" name="param" class="form-control" />
 								</td>
 								<td>
 									<input type="hidden" name="type" value="teleport-person" />

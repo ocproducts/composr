@@ -7,7 +7,7 @@
 
 	<div>
 		<p class="lonely-label"><label for="given_password">{!PASSWORD}:</label></p>
-		<input id="given_password" class="form-control form-control-inline" type="password" name="given_password" />
+		<input id="given_password" class="form-control" type="password" name="given_password" />
 	</div>
 
 	<p>

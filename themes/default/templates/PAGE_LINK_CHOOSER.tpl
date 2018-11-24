@@ -6,7 +6,7 @@
 	{+END}
 		<div>
 			<div class="accessibility-hidden"><label for="{NAME*}">{!ENTRY}</label></div>
-			<input class="form-control form-control-inline js-input-page-link-chooser" style="display: none" type="text" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
+			<input class="form-control js-input-page-link-chooser" style="display: none" type="text" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
 			<div id="tree-list--root-{NAME*}">
 				<!-- List put in here -->
 			</div>

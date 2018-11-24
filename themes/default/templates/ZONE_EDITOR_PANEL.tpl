@@ -86,7 +86,7 @@
 		</div>
 				{+END}
 				<div>
-					<textarea rows="50" cols="20" class="form-control form-control-inline {$?,{IS_PANEL},ze-textarea,ze-textarea-middle} {CLASS*} js-ta-ze-comcode textarea-scroll" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
+					<textarea rows="50" cols="20" class="form-control {$?,{IS_PANEL},ze-textarea,ze-textarea-middle} {CLASS*} js-ta-ze-comcode textarea-scroll" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
 
 					{+START,IF_PASSED,DEFAULT_PARSED}
 						<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="edit_{ID*}_textarea_parsed">{DEFAULT_PARSED*}</textarea>
@@ -126,13 +126,13 @@
 						<label for="redirect_{ID*}" class="field-name">{!DRAWS_FROM}:</label>
 					</p>
 					{+START,IF_NON_EMPTY,{ZONES}}
-						<select class="form-control form-control-inline js-sel-zones-draw" id="redirect_{ID*}" name="redirect_{ID*}">
+						<select class="form-control js-sel-zones-draw" id="redirect_{ID*}" name="redirect_{ID*}">
 							<option value="{ZONE*}">{!NA}</option>
 							{ZONES}
 						</select>
 					{+END}
 					{+START,IF_EMPTY,{ZONES}}
-						<input maxlength="80" class="form-control form-control-inline js-inp-zones-draw" size="20" id="redirect_{ID*}" name="redirect_{ID*}" value="{CURRENT_ZONE*}" type="text" />
+						<input maxlength="80" class="form-control js-inp-zones-draw" size="20" id="redirect_{ID*}" name="redirect_{ID*}" value="{CURRENT_ZONE*}" type="text" />
 					{+END}
 				</form>
 			{+END}

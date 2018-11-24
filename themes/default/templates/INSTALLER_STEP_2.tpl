@@ -1,7 +1,7 @@
 <form title="{!TERMS}" class="installer-cms-licence" action="install.php" method="post" autocomplete="off">
 	<div class="installer-terms-title"><label for="licence">{!TERMS}</label></div>
 	<div>
-		<textarea readonly="readonly" class="mono-textbox form-control" id="licence" name="licence" cols="90" rows="17">{LICENCE*}</textarea>
+		<textarea readonly="readonly" class="mono-textbox form-control form-control-wide" id="licence" name="licence" cols="90" rows="17">{LICENCE*}</textarea>
 	</div>
 </form>
 
@@ -12,7 +12,7 @@
 		<div id="install-newsletter">
 			<p class="accessibility-hidden"><label for="email">{!EMAIL_ADDRESS}</label></p>
 			<div>
-				<input maxlength="255" class="form-control" id="email" name="email" type="text" alt="{!EMAIL_ADDRESS}" placeholder="{!EMAIL_ADDRESS_FOR_NEWSLETTER}" size="25" />
+				<input maxlength="255" class="form-control form-control-wide" id="email" name="email" type="text" alt="{!EMAIL_ADDRESS}" placeholder="{!EMAIL_ADDRESS_FOR_NEWSLETTER}" size="25" />
 			</div>
 
 			<p><input type="checkbox" checked="checked" value="1" name="advertise_on" id="advertise_on" /><label for="advertise_on">{!ADVERTISE_ON_COMPOSR}</label></p>

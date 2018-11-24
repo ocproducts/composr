@@ -34,13 +34,13 @@
 					<tr>
 						<td>
 							<label class="accessibility-hidden" for="gmt_username_{_loop_key*}">{!USERNAME}</label>
-							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="form-control form-control-inline input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
+							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="form-control input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
 						</td>
 
 						<td>
 							<label class="accessibility-hidden" for="gmt_group_id_{_loop_key*}">{!USERGROUP}</label>
 							<input name="gmt_old_group_id_{_loop_key*}" value="{GROUP_ID*}" type="hidden" />
-							<select id="gmt_group_id_{_loop_key*}" name="gmt_group_id_{_loop_key*}" class="form-control form-control-inline">
+							<select id="gmt_group_id_{_loop_key*}" name="gmt_group_id_{_loop_key*}" class="form-control">
 								{+START,LOOP,GROUPS}
 									<option value="{_loop_key*}"{+START,IF,{$EQ,{GROUP_ID},{_loop_key}}} selected="selected"{+END}>{_loop_var*}</option>
 								{+END}
@@ -56,12 +56,12 @@
 				<tr>
 					<td>
 						<label class="accessibility-hidden" for="gmt_username_new">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="form-control form-control-inline input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="form-control input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
 					</td>
 
 					<td>
 						<label class="accessibility-hidden" for="gmt_group_id_new">{!USERGROUP}</label>
-						<select id="gmt_group_id_new" name="gmt_group_id_new" class="form-control form-control-inline">
+						<select id="gmt_group_id_new" name="gmt_group_id_new" class="form-control">
 							<option value="">---</option>
 							{+START,LOOP,GROUPS}
 								<option value="{_loop_key*}">{_loop_var*}</option>

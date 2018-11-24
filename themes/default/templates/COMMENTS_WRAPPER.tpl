@@ -47,7 +47,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="comments_sort">{!SORT_BY}</label>
-						<select class="form-control form-control-inline js-change-select-submit-form" id="comments_sort" name="comments_sort">
+						<select class="form-control js-change-select-submit-form" id="comments_sort" name="comments_sort">
 							<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
 							<option {+START,IF,{$EQ,{SORT},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
 							<option {+START,IF,{$EQ,{SORT},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>

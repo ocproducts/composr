@@ -8,7 +8,7 @@
 
 		<div>
 			<p class="lonely-label"><label for="edit_content{$GET%,rndx}">{!EDIT}:</label></p>
-			<div><textarea class="form-control textarea-scroll" cols="60" rows="10" id="edit_content{$GET%,rndx}" name="edit_content">{FILE_CONTENTS*}</textarea></div>
+			<div><textarea class="form-control form-control-wide textarea-scroll" cols="60" rows="10" id="edit_content{$GET%,rndx}" name="edit_content">{FILE_CONTENTS*}</textarea></div>
 
 			<p>
 				<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>

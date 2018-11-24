@@ -18,7 +18,7 @@
 				<th>{!NAME}</th>
 				<td>
 					<label class="accessibility-hidden" for="name">{!NAME}</label>
-					<select name="name" id="name" class="form-control form-control-inline">
+					<select name="name" id="name" class="form-control">
 						{ITEMS}
 					</select>
 				</td>
@@ -40,30 +40,30 @@
 		</tr>
 		<tr>
 			<th>{!COST}</th>
-			<td><label class="accessibility-hidden" for="cost">{!COST}</label><input type="text" name="cost" id="cost" class="form-control form-control-inline" value="{COST*}" /></td>
+			<td><label class="accessibility-hidden" for="cost">{!COST}</label><input type="text" name="cost" id="cost" class="form-control" value="{COST*}" /></td>
 			<td>{!W_EG_ITEM_COPY_PRICE}</td>
 		</tr>
 		{+START,IF_PASSED,X}{+START,IF_PASSED,Y}{+START,IF_PASSED,REALM}
 			<tr>
 				<th>X</th>
-				<td><label class="accessibility-hidden" for="new_x">X</label><input type="text" size="20" id="new_x" class="form-control form-control-inline" name="new_x" value="{X*}" /></td>
+				<td><label class="accessibility-hidden" for="new_x">X</label><input type="text" size="20" id="new_x" class="form-control" name="new_x" value="{X*}" /></td>
 				<td>{!W_EG_MOVE_X}</td>
 			</tr>
 			<tr>
 				<th>Y</th>
-				<td><label class="accessibility-hidden" for="new_y">Y</label><input type="text" size="20" id="new_y" class="form-control form-control-inline" name="new_y" value="{Y*}" /></td>
+				<td><label class="accessibility-hidden" for="new_y">Y</label><input type="text" size="20" id="new_y" class="form-control" name="new_y" value="{Y*}" /></td>
 				<td>{!W_EG_MOVE_X}</td>
 			</tr>
 			<tr>
 				<th>{!W_REALM}</th>
-				<td><label class="accessibility-hidden" for="new_realm">{!W_REALM}</label><input type="text" size="20" id="new_realm" class="form-control form-control-inline" name="new_realm" value="{REALM*}" /></td>
+				<td><label class="accessibility-hidden" for="new_realm">{!W_REALM}</label><input type="text" size="20" id="new_realm" class="form-control" name="new_realm" value="{REALM*}" /></td>
 				<td>{!W_EG_MOVE_X}</td>
 			</tr>
 		{+END}{+END}{+END}
 		{+START,IF_PASSED,OWNER}
 			<tr>
 				<th>{!OWNER}</th>
-				<td><label class="accessibility-hidden" for="new_owner">{!OWNER}</label><input type="text" size="20" id="new_owner" class="form-control form-control-inline" name="new_owner" value="{OWNER*}" /></td>
+				<td><label class="accessibility-hidden" for="new_owner">{!OWNER}</label><input type="text" size="20" id="new_owner" class="form-control" name="new_owner" value="{OWNER*}" /></td>
 				<td>{!W_EG_OWNER}</td>
 			</tr>
 		{+END}

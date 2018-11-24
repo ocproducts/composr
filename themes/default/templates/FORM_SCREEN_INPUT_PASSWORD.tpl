@@ -7,5 +7,5 @@
 		</span>
 	{+END}
 
-	<input {+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} size="27" maxlength="255" tabindex="{TABINDEX*}" class="form-control form-control-inline input-password{REQUIRED*} js-input-change-check-password-strength" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
+	<input {+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} size="27" maxlength="255" tabindex="{TABINDEX*}" class="form-control input-password{REQUIRED*} js-input-change-check-password-strength" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
 </span>

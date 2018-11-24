@@ -5,5 +5,5 @@
 	</label>
 	<br />
 	<label for="j-{NAME|*}-other-custom" class="accessibility-hidden">{!TEXT}</label>
-	<input tabindex="{TABINDEX*}" type="text" id="j-{NAME|*}-other-custom" class="form-control form-control-inline" name="{NAME*}_custom" value="{VALUE*}"{+START,IF_EMPTY,{VALUE}} disabled="disabled"{+END} />
+	<input tabindex="{TABINDEX*}" type="text" id="j-{NAME|*}-other-custom" class="form-control" name="{NAME*}_custom" value="{VALUE*}"{+START,IF_EMPTY,{VALUE}} disabled="disabled"{+END} />
 </p>

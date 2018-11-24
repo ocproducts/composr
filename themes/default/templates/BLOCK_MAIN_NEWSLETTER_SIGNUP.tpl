@@ -14,7 +14,7 @@
 		<p class="accessibility-hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
 
 		<div class="form-group">
-			<input class="form-control" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />
+			<input class="form-control form-control-wide" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />
 		</div>
 
 		<p class="proceed-button">

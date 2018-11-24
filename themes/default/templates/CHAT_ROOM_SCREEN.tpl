@@ -19,7 +19,7 @@
 
 						<div style="display: inline;">
 							<p class="accessibility-hidden"><label for="post">{!MESSAGE}</label></p>
-							<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="form-control form-control-inline input-text-required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="37" rows="1"></textarea>
+							<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="form-control input-text-required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="37" rows="1"></textarea>
 							<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
 							<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
 						</div>
@@ -113,7 +113,7 @@
 							<label for="font_name">{!CHAT_OPTIONS_TEXT_NAME}:</label>
 						</p>
 						<p>
-							<select class="form-control form-control-inline js-select-click-font-change js-select-change-font-chage" id="font_name" name="font_name">
+							<select class="form-control js-select-click-font-change js-select-change-font-chage" id="font_name" name="font_name">
 								{+START,LOOP,={$FONTS}}
 									<option {$?,{$EQ,{FONT_NAME_DEFAULT},{_loop_var}},selected="selected" ,}value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
 								{+END}

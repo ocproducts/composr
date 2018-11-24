@@ -25,7 +25,7 @@
 <tr class="field-input">
 	<td id="form-table-field-input--{$GET,randomised_id}" colspan="2" class="form-table-huge-field{+START,IF,{REQUIRED}} required{+END}">
 		<div id="container-for-{NAME*}" class="container-for-wysiwyg">
-			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input-text{_REQUIRED} form-control{+START,IF,{SCROLLS}} textarea-scroll{+END}" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
+			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input-text{_REQUIRED} form-control form-control-wide{+START,IF,{SCROLLS}} textarea-scroll{+END}" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
 
 			{+START,IF_PASSED,DEFAULT_PARSED}
 				<textarea aria-hidden="true" cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>

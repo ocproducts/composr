@@ -89,7 +89,7 @@
 
 									<td class="vertical-alignment">
 										<label class="accessibility-hidden" for="bookable_{BOOKABLE_ID*}_quantity">{!QUANTITY}, {BOOKABLE_TITLE*}</label>
-										<select name="bookable_{BOOKABLE_ID*}_quantity" id="bookable_{BOOKABLE_ID*}_quantity" class="form-control form-control-inline">
+										<select name="bookable_{BOOKABLE_ID*}_quantity" id="bookable_{BOOKABLE_ID*}_quantity" class="form-control">
 											{$SET,quantity,0}
 											{+START,WHILE,{$LT,{$GET,quantity},{$ADD,{BOOKABLE_QUANTITY_AVAILABLE},1}}}
 												<option {+START,IF,{$EQ,{BOOKABLE_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{!UNIT_TYPE,{$NUMBER_FORMAT*,{$GET,quantity}}}</option>

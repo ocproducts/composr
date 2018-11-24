@@ -85,7 +85,7 @@
 			</div>
 
 			<div id="container-for-{NAME*}" class="container-for-wysiwyg">
-				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting-required{+END} form-control posting-field-textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
+				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting-required{+END} form-control form-control-wide posting-field-textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,COMCODE_PAGE_HINTS}{+START,IF_NON_EMPTY,{COMCODE_PAGE_HINTS}}
 					<p class="vertical-alignment left">

@@ -21,7 +21,7 @@
 								{+START,IF,{SUPPLEMENT_SUPPORTS_QUANTITY}}
 									{!QUANTITY}:
 
-									<select class="form-control form-control-inline js-change-recalculate-booking-price" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
+									<select class="form-control js-change-recalculate-booking-price" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
 										{$SET,quantity,0}
 										{+START,WHILE,{$LT,{$GET,quantity},51}}
 											<option {+START,IF,{$EQ,{SUPPLEMENT_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{$NUMBER_FORMAT*,{$GET,quantity}}</option>
@@ -40,7 +40,7 @@
 
 						{+START,IF,{SUPPLEMENT_SUPPORTS_NOTES}}
 							<p class="lonely-label"><label for="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes">{!NOTES_FOR_US}:</label></p>
-							<textarea cols="50" rows="1" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" class="form-control form-control-inline">{SUPPLEMENT_NOTES*}</textarea>
+							<textarea cols="50" rows="1" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" class="form-control">{SUPPLEMENT_NOTES*}</textarea>
 						{+END}
 					</div>
 				{+END}

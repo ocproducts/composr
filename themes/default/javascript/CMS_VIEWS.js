@@ -586,7 +586,7 @@
                         'id': 'overlay_prompt',
                         'type': this.inputType,
                         'size': '40',
-                        'className': 'form-control',
+                        'className': 'form-control form-control-wide',
                         'value': (this.defaultValue === null) ? '' : this.defaultValue
                     });
                     var inputWrap = $dom.create('div');

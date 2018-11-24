@@ -1052,7 +1052,7 @@ var SortableTable = (function(){
           }
           else {
             var selId = 'select-' + Math.floor(Math.random() * 100000);
-            var sel = '<select id="' + selId + '" class="form-control form-control-sm form-control-inline js-change-sortable-table-filter '+table.AutoFilterClassName+'"><option value="">'+table.FilterAllLabel+'</option>';
+            var sel = '<select id="' + selId + '" class="form-control form-control-sm js-change-sortable-table-filter '+table.AutoFilterClassName+'"><option value="">'+table.FilterAllLabel+'</option>';
             for (var i=0; i<colValues.length; i++) {
               if (colValues[i] != '')
                 sel += '<option value="'+colValues[i]+'">'+colValues[i]+'</option>';
@@ -1068,7 +1068,7 @@ var SortableTable = (function(){
 
       if (hasClass(cell,table.SearchableClassName)) {
           var inputId = 'input-' + Math.floor(Math.random() * 100000);
-          var sel = '<input id="' + inputId + '" placeholder="{!SEARCH;^}" type="text" class="form-control form-control-sm form-control-inline js-keyup-sortable-table-filter-input '+table.AutoFilterClassName+'" data-tp-searchable-substring="' + (cell.classList.contains(table.SearchableSubstringsClassName) ? 1 : 0) + '"/>';
+          var sel = '<input id="' + inputId + '" placeholder="{!SEARCH;^}" type="text" class="form-control form-control-sm js-keyup-sortable-table-filter-input '+table.AutoFilterClassName+'" data-tp-searchable-substring="' + (cell.classList.contains(table.SearchableSubstringsClassName) ? 1 : 0) + '"/>';
           cell.innerHTML += " "+sel;
           document.getElementById(inputId).onclick = function (event) {
               SortableTable.cancelBubble(event);

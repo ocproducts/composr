@@ -4,31 +4,31 @@
 	<td>
 		<div class="accessibility-hidden"><label for="from_zone_{I*}">{!REDIRECT_FROM_ZONE}</label></div>
 		{+START,IF_NON_EMPTY,{FROM_ZONES}}
-			<select class="quite-wide-field" id="from_zone_{I*}" name="from_zone_{I*}">{FROM_ZONES}</select>
+			<select class="form-control quite-wide-field" id="from_zone_{I*}" name="from_zone_{I*}">{FROM_ZONES}</select>
 		{+END}
 		{+START,IF_EMPTY,{FROM_ZONES}}
-			<input data-prevent-input="[^\*\w\.\-]" maxlength="80" size="10" class="quite-wide-field" id="from_zone_{I*}" name="from_zone_{I*}" value="{FROM_ZONE*}" type="text" />
+			<input data-prevent-input="[^\*\w\.\-]" maxlength="80" size="10" class="form-control quite-wide-field" id="from_zone_{I*}" name="from_zone_{I*}" value="{FROM_ZONE*}" type="text" />
 		{+END}
 		:
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="from_page_{I*}">{!REDIRECT_FROM_PAGE}</label></div>
-		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="quite-wide-field" id="from_page_{I*}" name="from_page_{I*}" value="{FROM_PAGE*}" type="text" />
+		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="form-control quite-wide-field" id="from_page_{I*}" name="from_page_{I*}" value="{FROM_PAGE*}" type="text" />
 		&rarr;
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="to_zone_{I*}">{!REDIRECT_TO_ZONE}</label></div>
 		{+START,IF_NON_EMPTY,{TO_ZONES}}
-			<select class="quite-wide-field" id="to_zone_{I*}" name="to_zone_{I*}">{TO_ZONES}</select>
+			<select class="form-control quite-wide-field" id="to_zone_{I*}" name="to_zone_{I*}">{TO_ZONES}</select>
 		{+END}
 		{+START,IF_EMPTY,{TO_ZONES}}
-			<input data-prevent-input="[^\*\w\.\-]" maxlength="80" size="10" class="quite-wide-field" id="to_zone_{I*}" name="to_zone_{I*}" value="{TO_ZONE*}" type="text" />
+			<input data-prevent-input="[^\*\w\.\-]" maxlength="80" size="10" class="form-control quite-wide-field" id="to_zone_{I*}" name="to_zone_{I*}" value="{TO_ZONE*}" type="text" />
 		{+END}
 		:
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="to_page_{I*}">{!REDIRECT_TO_PAGE}</label></div>
-		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="quite-wide-field" id="to_page_{I*}" name="to_page_{I*}" value="{TO_PAGE*}" type="text" />
+		<input data-prevent-input="[^\*\w\.\-]" maxlength="80" class="form-control quite-wide-field" id="to_page_{I*}" name="to_page_{I*}" value="{TO_PAGE*}" type="text" />
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="is_transparent_{I*}">{!IS_TRANSPARENT_REDIRECT}</label></div>

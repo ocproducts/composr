@@ -6,7 +6,7 @@
 
 		<p>
 			<label for="seconds_back" class="accessibility-hidden">{!FILTER}</label>
-			<select name="seconds_back" id="seconds_back" class="form-control form-control-inline js-select-change-form-submit">
+			<select name="seconds_back" id="seconds_back" class="form-control js-select-change-form-submit">
 				<option value="">{!POSTS_SINCE_LAST_VISIT}</option>
 				{+START,LOOP,5\,10\,30}
 					<option {+START,IF,{$EQ,{$_GET,seconds_back},{$MULT*,60,{_loop_var}}}} selected="selected"{+END} value="{$MULT*,60,{_loop_var}}">{!POSTS_SINCE_MINUTES,{$NUMBER_FORMAT*,{_loop_var}}}</option>

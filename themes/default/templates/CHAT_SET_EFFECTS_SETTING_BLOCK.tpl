@@ -36,7 +36,7 @@
 						</th>
 
 						<td id="form-table-field-input--select-{KEY*}{+START,IF_PASSED,MEMBER_ID}-{MEMBER_ID*}{+END}" class="form-table-field-input">
-							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-control form-control-inline">
+							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form-control">
 								{+START,IF_PASSED,USERNAME}
 									<option {+START,IF,{$EQ,-1,{VALUE}}} selected="selected"{+END} value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
 								{+END}

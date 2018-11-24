@@ -50,7 +50,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="assign-username" class="accessibility-hidden">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="form-control form-control-inline input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="form-control input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
 						<button class="btn btn-primary btn-sm buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!ASSIGN_TO}</button>
 					</form>
 				</li>
@@ -66,7 +66,7 @@
 						<span class="field-name"><label for="ticket_type_id">{!TICKET_TYPE}:</label></span>
 					</th>
 					<td>
-						<select id="ticket_type_id" name="ticket_type_id" class="input-list-required form-control">
+						<select id="ticket_type_id" name="ticket_type_id" class="input-list-required form-control form-control-wide">
 							<option value="">---</option>
 							{+START,LOOP,TYPES}
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}

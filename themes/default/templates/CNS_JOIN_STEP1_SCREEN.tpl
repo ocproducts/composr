@@ -26,7 +26,7 @@
 		{+START,IF_NON_EMPTY,{GROUP_SELECT}}
 			<p>
 				<label for="primary_group">{!CHOOSE_JOIN_USERGROUP}
-					<select id="primary_group" name="primary_group" class="form-control form-control-inline">
+					<select id="primary_group" name="primary_group" class="form-control">
 						{GROUP_SELECT}
 					</select>
 				</label>

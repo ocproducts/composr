@@ -43,7 +43,7 @@
 								{+START,IF,{$EQ,{_loop_key},0}}
 									<label for="{CUSTOM_NAME*}_value_{_loop_key*}">{!OTHER}</label>&hellip;<br />
 								{+END}
-								<input id="{CUSTOM_NAME*}_value_{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" class="form-control form-control-inline js-keypress-input-ensure-next-field" />
+								<input id="{CUSTOM_NAME*}_value_{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" class="form-control js-keypress-input-ensure-next-field" />
 							</div></div>
 						{+END}
 					{+END}
@@ -52,7 +52,7 @@
 						<div><div>
 							<input value="1" class="input-tick js-click-checkbox-toggle-value-field" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
 							<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated-details">({!fields:PLEASE_STATE})</span></label>
-							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" class="form-control form-control-inline js-change-input-toggle-value-checkbox" size="15" type="text" />
+							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" class="form-control js-change-input-toggle-value-checkbox" size="15" type="text" />
 						</div></div>
 					{+END}
 				</div>

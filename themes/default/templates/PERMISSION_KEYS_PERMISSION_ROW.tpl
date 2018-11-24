@@ -4,7 +4,7 @@
 	<td>
 		<label class="accessibility-hidden" for="key_{UID*}">{!MATCH_KEY}</label>
 		<div>
-			<input class="form-control" maxlength="80" type="text" id="key_{UID*}" name="key_{UID*}" value="{KEY*}" />
+			<input class="form-control form-control-wide" maxlength="80" type="text" id="key_{UID*}" name="key_{UID*}" value="{KEY*}" />
 		</div>
 	</td>
 	{CELLS}

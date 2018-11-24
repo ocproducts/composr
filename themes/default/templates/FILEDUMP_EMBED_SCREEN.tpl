@@ -16,7 +16,7 @@
 				<label for="generated_comcode" class="lonely-label">{!_COMCODE}:</label>
 				<form action="#" method="post" autocomplete="off">
 					<div>
-						<textarea id="generated_comcode" name="generated_comcode" class="form-control form-control-inline" cols="50" rows="10">{GENERATED*}</textarea>
+						<textarea id="generated_comcode" name="generated_comcode" class="form-control" cols="50" rows="10">{GENERATED*}</textarea>
 					</div>
 				</form>
 			</div>
@@ -36,7 +36,7 @@
 				{+START,LOOP,IMAGE_SIZES}
 					<li>
 						<label for="img_size_{SIZE_WIDTH*}">{LABEL*}</label>
-						<input class="form-control form-control-inline js-click-input-img-size-select" type="text" size="32" id="img_size_{SIZE_WIDTH*}" name="img_size_{SIZE_WIDTH*}" value="{SIZE_URL*}" />
+						<input class="form-control js-click-input-img-size-select" type="text" size="32" id="img_size_{SIZE_WIDTH*}" name="img_size_{SIZE_WIDTH*}" value="{SIZE_URL*}" />
 						<span class="associated-details">(<a rel="lightbox" href="{SIZE_URL*}">{!PREVIEW}</a>)</span>
 					</li>
 				{+END}

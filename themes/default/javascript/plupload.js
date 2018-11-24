@@ -14479,7 +14479,7 @@
             '<div id="main-div-' + name + '" style="display: inline-block;">' +
             '<div id="sub-div-' + name + '" class="vertical-alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
-            '<input type="text" id="txt_filename_' + name + '" name="txt_filename_' + name + '" class="form-control form-control-sm form-control-inline upload-response-field" size="24" disabled value="">' +
+            '<input type="text" id="txt_filename_' + name + '" name="txt_filename_' + name + '" class="form-control form-control-sm upload-response-field" size="24" disabled value="">' +
             '<button type="button" id="upload-button-' + name + '" class="btn btn-primary btn-sm buttons--upload">{$GET;^,icon_upload} {!BROWSE;^*}</button>' +
             '<button type="button" id="fs-clear-' + name + '" class="btn btn-secondary btn-sm buttons--clear clear-button">{$GET;^,icon_clear} {!CLEAR;^*}</button>' +
             '</div>' +

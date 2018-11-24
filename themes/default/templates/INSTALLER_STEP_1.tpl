@@ -21,7 +21,7 @@
 					<th class="form-table-field-name">{!PLEASE_CHOOSE_LANG} (&dagger;)</th>
 					<td class="form-table-field-input">
 						<div class="accessibility-hidden"><label for="default_lang">{!PLEASE_CHOOSE_LANG}</label></div>
-						<select id="default_lang" name="default_lang" class="form-control form-control-inline">
+						<select id="default_lang" name="default_lang" class="form-control">
 							{LANGUAGES}
 						</select>
 					</td>

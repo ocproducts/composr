@@ -19,7 +19,7 @@
 							{TREE}
 						{+END}
 						{+START,IF,{$NOT,{AJAX}}}
-							<select id="search_under" name="search_under" class="form-control form-control-inline">
+							<select id="search_under" name="search_under" class="form-control">
 								{TREE}
 							</select>
 						{+END}
