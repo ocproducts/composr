@@ -1355,7 +1355,7 @@
                     patternRgx = new RegExp(pattern);
 
                     links.forEach(function (link) {
-                        if ((link.href) && (!link.onmouseover) && !link.classList.contains('no-auto-tooltip')) {
+                        if (link.href && !link.getAttribute('href').startsWith('#') && (!link.onmouseover) && !link.classList.contains('no-auto-tooltip')) {
                             var id = link.href.match(patternRgx);
                             if (id) {
                                 applyComcodeTooltip(hook, id, link);
