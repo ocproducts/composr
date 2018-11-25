@@ -534,7 +534,6 @@ class Hook_addon_registry_core_themeing
             lorem_globalise(do_lorem_template('PREVIEW_SVG_SPRITE_ICON', array(
                 'SPRITE_URL' => find_theme_image('icons_sprite'),
                 'SYMBOL_ID' => $symbol_id,
-                'ICON_NAME' => str_replace('__', '/', $symbol_id),
             )), null, '', true)
         );
     }
