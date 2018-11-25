@@ -585,7 +585,7 @@
         var block = document.getElementById('field_set_' + params.name),
             radioBtn = document.getElementById('choose-' + params.name);
         block.addEventListener('click', function (e) {
-            if (e.target === radioBtn) {
+            if ((e.target === radioBtn) || $dom.closest(e.target, 'a')) {
                 return; // Prevent infinite loop
             }
 

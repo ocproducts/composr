@@ -226,7 +226,6 @@ class Module_admin_svg_sprites
             $icons->attach(do_template('PREVIEW_SVG_SPRITE_ICON', array(
                 'SPRITE_URL' => $sprite_url,
                 'SYMBOL_ID' => $symbol_id,
-                'ICON_NAME' => str_replace('__', '/', $symbol_id),
             )));
         }
 
