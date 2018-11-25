@@ -53,8 +53,7 @@
 				</li>
 			</ul>
 
-			{+START,INCLUDE,MASS_SELECT_DELETE_FORM}
-			{+END}
+			{+START,INCLUDE,MASS_SELECT_DELETE_FORM}{+END}
 		</div></div>
 	{+END}
 

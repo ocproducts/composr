@@ -7,6 +7,12 @@
 	background-image: none !important;
 }
 
+.box---points-profile::after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
 .points-give-box-header {
 	margin-top: 0;
 	font-size: 0.85em;

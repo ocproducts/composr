@@ -72,9 +72,10 @@ abbr.dtstart, abbr.dtend {
 	width: {$DIV_FLOAT,100,7}%;
 }
 
-.calendar-year-month-table .day-spacer, .calendar-year-month-day {
+.calendar-year-month-table .day-spacer, 
+.calendar-year-month-day {
 	height: 1.8em;
-	border: 1px solid {$GET,standard_border};
+	border: 1px solid {$GET,pale_border};
 }
 
 .calendar-year-month-day {
@@ -455,7 +456,7 @@ td.day-spacer:hover {
 }
 
 .side-calendar th {
-	border: 1px solid {$GET,standard_border};
+	border: 1px solid {$GET,pale_border};
 }
 
 .calendar-weekly-column {

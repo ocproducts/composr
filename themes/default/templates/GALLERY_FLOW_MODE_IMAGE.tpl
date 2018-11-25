@@ -76,11 +76,12 @@
 						</li>
 					{+END}
 					<li>
-						{+START,INCLUDE,ICON}
-							NAME=feedback/comment
-							SIZE=24
-						{+END}
-						<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+						<a href="{VIEW_URL*}">
+							{+START,INCLUDE,ICON}
+								NAME=feedback/comment
+								SIZE=24
+							{+END}{$COMMENT_COUNT,images,{ID}}
+						</a>
 					</li>
 				</ul>
 

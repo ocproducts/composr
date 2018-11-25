@@ -46,7 +46,8 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 .modern-tab-headers > div > a,
 .modern-tab-headers > div > a:hover {
 	display: block;
-	padding: 1em;
+	padding-top: 1em;
+	padding-bottom: 1em;
 	cursor: pointer;
 	font-weight: 500;
 	text-align: center;
@@ -82,8 +83,8 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 		padding: 0.3em 0; / * Will only take effect if wrapped * /
 	}*/
 
-	.modern-tab-headers>div>a>span {
-		min-width: 47px; /* Space things out - you may want to adjust this based on however many tabs you have */
+	.modern-tab-headers > div > a > span {
+		/*min-width: 47px; !* Space things out - you may want to adjust this based on however many tabs you have *!*/
 		display: inline-block;
 		padding-left: 3px;
 	}

@@ -40,7 +40,7 @@
 
 .menu-type--sitemap ul li {
 	margin-left: 29px;
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .menu-type--sitemap>ul>li>span>a.toggleable-tray-button .icon {
@@ -62,7 +62,7 @@
 	margin-left: 25px;
 }
 
-.menu-type--sitemap>ul>li>ul>li>span>a.toggleable-tray-button .icon {
+.menu-type--sitemap > ul > li > ul > li > span > a.toggleable-tray-button .icon {
 	margin-top: -3px;
 }
 
@@ -74,7 +74,7 @@
 	font-size: 0.9em;
 }
 
-.menu-type--sitemap ul ul ul .has-img>span>img {
+.menu-type--sitemap ul ul ul .has-img > span > img {
 	width: 17px;
 }
 

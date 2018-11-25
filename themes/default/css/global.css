@@ -1613,7 +1613,9 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	margin-bottom: 1em;
 }
 
-.global-message .icon-status--notice {
+.global-message .icon-status--inform,
+.global-message .icon-status--notice,
+.global-message .icon-status--warn {
 	float: left;
 	margin-right: 0.5em;
 }
@@ -1621,17 +1623,21 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 .global-message span, .global-message img {
 	vertical-align: middle;
 }
+
 .global-message strong {
 	text-shadow: 1px 0px 0px {$GET,message_highlighted_part};
 	font-weight: normal;
 }
+
 .global-message img {
 	margin-right: 0.5em;
 	float: left;
 }
+
 .global-message>span, .global-message>p {
 	padding-top: 3px;
 }
+
 .global-message>p {
 	margin-top: 0.6em;
 	margin-bottom: 0.6em;
@@ -2239,7 +2245,7 @@ div.red-alert, p.red-alert {
 }
 
 th.metadata-title {
-	font-weight: bold !important;
+	font-weight: 500 !important;
 }
 
 .help-jumpout {
@@ -2475,15 +2481,15 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box-inner>h1,
-.box-inner>h2,
-.box-inner>h3,
-.box-inner>h4,
-.box-inner>h5,
-.box-inner>h6,
+.box-inner > h1,
+.box-inner > h2,
+.box-inner > h3,
+.box-inner > h4,
+.box-inner > h5,
+.box-inner > h6,
 .toggleable-tray-title,
-#standalone-html-wrap .box .box .box-inner>h2,
-#standalone-html-wrap .box .box .box-inner>h3 {
+#standalone-html-wrap .box .box .box-inner > h2,
+#standalone-html-wrap .box .box .box-inner > h3 {
 	border-top-left-radius: {$GET,border_radius};
 	border-top-right-radius: {$GET,border_radius};
 	background-color: {$GET,box_title_background};
@@ -2499,21 +2505,25 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 0.5em 0.8em 0.5em 0.3em;
 	border-bottom: 1px solid {$GET,standard_border};
 }
-.box-inner>h1 + *,
-.box-inner>h2 + *,
-.box-inner>h3 + *,
-.box-inner>h4 + *,
-.box-inner>h5 + *,
-.box-inner>h6 + *,
+
+.box-inner > h1 + *,
+.box-inner > h2 + *,
+.box-inner > h3 + *,
+.box-inner > h4 + *,
+.box-inner > h5 + *,
+.box-inner > h6 + *,
 .toggleable-tray-title + * {
 	margin-top: 5px;
 }
+
 .box-inner>h2>.right .btn-scr {
 	vertical-align: top;
 }
+
 .box.box-prominent>.box-inner {
 	margin: 0;
 }
+
 .box.box-prominent>.box-inner>h2 {
 	padding: 0.8em;
 	margin: 0;
@@ -2521,41 +2531,44 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	font-size: 1.15em;
 }
 
-.box-inner>h1 a,
-.box-inner>h2 a,
-.box-inner>h3 a,
-.box-inner>h4 a,
-.box-inner>h5 a,
-.box-inner>h6 a,
+.box-inner > h1 a,
+.box-inner > h2 a,
+.box-inner > h3 a,
+.box-inner > h4 a,
+.box-inner > h5 a,
+.box-inner > h6 a,
 .toggleable-tray-title a,
-.box-inner>h1 a:visited,
-.box-inner>h2 a:visited,
-.box-inner>h3 a:visited,
-.box-inner>h4 a:visited,
-.box-inner>h5 a:visited,
-.box-inner>h6 a:visited,
+.box-inner > h1 a:visited,
+.box-inner > h2 a:visited,
+.box-inner > h3 a:visited,
+.box-inner > h4 a:visited,
+.box-inner > h5 a:visited,
+.box-inner > h6 a:visited,
 .toggleable-tray-title a:visited {
 	color: inherit;
 	text-decoration: underline;
 }
+
 a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
-.box-inner>h1 a:hover,
-.box-inner>h2 a:hover,
-.box-inner>h3 a:hover,
-.box-inner>h4 a:hover,
-.box-inner>h5 a:hover,
-.box-inner>h6 a:hover,
+
+.box-inner > h1 a:hover,
+.box-inner > h2 a:hover,
+.box-inner > h3 a:hover,
+.box-inner > h4 a:hover,
+.box-inner > h5 a:hover,
+.box-inner > h6 a:hover,
 .toggleable-tray-title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless-space .box-inner>h1 a:hover,
-.boxless-space .box-inner>h2 a:hover,
-.boxless-space .box-inner>h3 a:hover,
-.boxless-space .box-inner>h4 a:hover,
-.boxless-space .box-inner>h5 a:hover,
-.boxless-space .box-inner>h6 a:hover,
+
+.boxless-space .box-inner > h1 a:hover,
+.boxless-space .box-inner > h2 a:hover,
+.boxless-space .box-inner > h3 a:hover,
+.boxless-space .box-inner > h4 a:hover,
+.boxless-space .box-inner > h5 a:hover,
+.boxless-space .box-inner > h6 a:hover,
 .boxless-space .toggleable-tray-title a:hover {
 	color: inherit;
 }
@@ -2564,7 +2577,11 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .pale-box.box, .pale-box .box {
 	border: 1px solid {$GET,pale_border};
 }
-.pale-box.box h2, .pale-box .box h2, .pale-box.box h3, .pale-box .box h3 {
+
+.pale-box.box h2, 
+.pale-box .box h2, 
+.pale-box.box h3, 
+.pale-box .box h3 {
 	background-color: {$GET,point_of_interest_background} !important;
 	background-image: none;
 	color: {$GET,area_key_text};
@@ -3318,6 +3335,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .tooltip-ownlayout, 
 .tooltip-nolayout th.de-th, 
 .tooltip-nolayout td {
+	color: {$GET,WB};
 	background-color: {$GET,tooltip_background};
 }
 
@@ -4660,7 +4678,7 @@ ul.buttons-group, ul.associated-links-block-group {
 }
 
 .form-control {
-	display: inline-flex;
+	display: inline-block;
 	vertical-align: middle;
 	padding: 6px 12px;
 	font-size: 14px;

@@ -15,12 +15,6 @@
 .do-next-section-wrap {
 	margin: 2em auto;
 	text-align: center;
-	border: 1px solid {$GET,standard_border};
-	border-radius: {$GET,border_radius_lg};
-	background: #eee;
-	/*background-color: {$GET,area_background};*/
-	/*padding: 0.7em;*/
-	/*box-shadow: 0px 0px 20px {$GET,standard_border};*/
 }
 /*{+START,CSS_MODE,desktop}*/
 	.do-next-section-wrap {
@@ -38,8 +32,8 @@
 }
 
 .do-next-section {
-	/*border-left: 1px dotted {$GET,standard_border};*/
-	/*border-top: 1px dotted {$GET,standard_border};*/
+	border-left: 1px dotted {$GET,standard_border};
+	border-top: 1px dotted {$GET,standard_border};
 }
 
 .do-next-item {

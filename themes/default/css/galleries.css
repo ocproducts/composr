@@ -87,9 +87,9 @@
 
 .gallery-regular-thumb {
 	font-size: 0.85em;
-	border: 1px solid {$GET,standard_border};
+	border: 1px solid {$GET,pale_border};
+	border-radius: {$GET,border_radius};
 	background-color: {$GET,area_background};
-	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 
 .img-thumb-wrap a {

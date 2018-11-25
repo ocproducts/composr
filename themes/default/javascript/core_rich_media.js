@@ -46,17 +46,12 @@
             carouselNs = document.getElementById('carousel-ns-' + carouselId);
 
         this.mainEl = this.$('.main');
-
-        carouselNs.parentNode.removeChild(carouselNs);
         this.mainEl.appendChild(carouselNs);
-        this.el.style.display = 'block';
+
+        $dom.show(this.el);
 
         var self = this;
         $dom.load.then(function () {
-            self.$$('.js-btn-car-move').forEach(function (btn) {
-                btn.style.height = self.mainEl.offsetHeight + 'px';
-            });
-
             self.createFaders();
             self.updateFaders();
         });
@@ -79,7 +74,7 @@
             left.style.top = '0';
             left.width = '28';
             left.height = '252';
-            mainEl.parentNode.appendChild(left);
+            this.leftFaderImg = mainEl.parentNode.appendChild(left);
 
             var right = document.createElement('img');
             right.src = $util.srl('{$IMG;,carousel/fade_right}');
@@ -88,22 +83,12 @@
             right.style.top = '0';
             right.width = '28';
             right.height = '252';
-            mainEl.parentNode.appendChild(right);
+            this.rightFaderImg = mainEl.parentNode.appendChild(right);
         },
 
         updateFaders: function () {
-            var mainEl = this.mainEl,
-                imgs = mainEl.parentNode.getElementsByTagName('img'),
-                left = imgs[imgs.length - 2],
-                right = imgs[imgs.length - 1];
-
-            if (left.style.position === 'absolute') { // Check it really is a fader (stops bugs in other areas making bigger weirdness)
-                left.style.visibility = (mainEl.scrollLeft === 0) ? 'hidden' : 'visible';
-            }
-
-            if (right.style.position === 'absolute') { // Ditto
-                right.style.visibility = (mainEl.scrollLeft + mainEl.offsetWidth >= mainEl.scrollWidth - 1) ? 'hidden' : 'visible';
-            }
+            this.leftFaderImg.style.visibility = (this.mainEl.scrollLeft === 0) ? 'hidden' : 'visible';
+            this.rightFaderImg.style.visibility = (this.mainEl.scrollLeft + this.mainEl.offsetWidth >= this.mainEl.scrollWidth - 1) ? 'hidden' : 'visible';
         },
 
         move: function (e, btn) {

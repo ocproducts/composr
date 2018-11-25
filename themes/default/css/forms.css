@@ -167,6 +167,10 @@ Curved borders would be cool, but it does not work well with the carefully defin
 	}
 /*{+END}*/
 
+td.form-table-field-input .form-screen-input-multi-list {
+	display: inline-block; /* Prevent help icon moving to a new line */
+}
+
 .form-table-field-name h3 {
 	border: 0;
 	margin: 0;
@@ -226,6 +230,10 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 /*{+END}*/
 .form-table-field-input .form-control {
 	max-width: 100%;
+}
+
+.form-table-field-input .multi-field {
+	display: inline-block;
 }
 
 /* Tone it all down for forms inside tabs */
@@ -688,6 +696,10 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	height: 18px;
 }
 
+.btn-comcode-url .btn-comcode-text {
+	max-width: 2.5em;
+}
+
 .btn-comcode-code .icon {
 	width: 32px;
 	height: 32px;
@@ -837,6 +849,10 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	padding: 0.75em 0.5em;
 	border-radius: 5px;
 	border: 1px solid {$GET,pale_border};
+}
+
+.fields-set-item .form-control {
+	display: inline-block;
 }
 
 .fields-set-item + .fields-set-item {
