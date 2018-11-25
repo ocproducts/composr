@@ -56,10 +56,8 @@ if ($subdownloads->is_empty()) {
     $content = make_string_tempcode(/** @lang HTML */'
         <div id="carousel-' . $carousel_id . '" class="carousel" style="display: none" data-view="Carousel" data-view-params=\'{"carouselId":"' . $carousel_id . '"}\'>
             <div class="move-left js-btn-car-move" data-move-amount="-100">' . $icon_button_left->evaluate() . '</div>
+            <div class="main"></div>
             <div class="move-right js-btn-car-move" data-move-amount="+100">' . $icon_button_right->evaluate() . '</div>
-
-            <div class="main">
-            </div>
         </div>
 
         <div class="carousel-temp" id="carousel-ns-' . $carousel_id . '">

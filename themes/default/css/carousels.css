@@ -7,6 +7,8 @@
 	overflow: hidden;
 	white-space: nowrap !important;
 	position: relative;
+	display: flex;
+	padding-top: 10px;
 }
 
 .carousel-temp {
@@ -19,8 +21,8 @@
 
 .carousel .move-left,
 .carousel .move-right {
-	min-height: 16px;
-	width: 17px;
+	display: flex;
+	align-items: center;
 	position: relative;
 }
 
@@ -28,9 +30,6 @@
 .carousel .move-right .icon {
 	width: 16px;
 	height: 16px;
-	position: absolute;
-	top: 50%;
-	margin-top: -8px;
 }
 
 .carousel .move-left:hover .icon ,
@@ -40,25 +39,39 @@
 }
 
 .carousel .move-left {
-	margin-right: 20px;
 	padding-right: 5px;
-	float: left;
 	border-right: 1px dotted {$GET,standard_border};
 }
 
+.carousel .move-left::after {
+	content: '';
+	position: absolute;
+	width: 28px;
+	right: -28px;
+	top: 0;
+	bottom: 0;
+	background: linear-gradient(to right, white, rgba(255, 255, 255, 0));
+	z-index: 1;
+}
+
 .carousel .move-right {
-	margin-left: 20px;
 	padding-left: 5px;
-	float: right;
 	border-left: 1px dotted {$GET,standard_border};
+}
+
+.carousel .move-right::after {
+	content: '';
+	position: absolute;
+	width: 28px;
+	left: -28px;
+	top: 0;
+	bottom: 0;
+	background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+	z-index: 1;
 }
 
 .carousel .main {
 	overflow: hidden;
-	white-space: nowrap !important;
-}
-
-.carousel-temp {
 	white-space: nowrap !important;
 }
 

@@ -49,12 +49,6 @@
         this.mainEl.appendChild(carouselNs);
 
         $dom.show(this.el);
-
-        var self = this;
-        $dom.load.then(function () {
-            self.createFaders();
-            self.updateFaders();
-        });
     }
 
     $util.inherits(Carousel, $cms.View, /**@lends Carousel#*/{
@@ -63,32 +57,6 @@
                 'mousedown .js-btn-car-move': 'move',
                 'keypress .js-btn-car-move': 'move'
             };
-        },
-
-        createFaders: function () {
-            var mainEl = this.mainEl;
-            var left = document.createElement('img');
-            left.src = $util.srl('{$IMG;,carousel/fade_left}');
-            left.style.position = 'absolute';
-            left.style.left = '43px';
-            left.style.top = '0';
-            left.width = '28';
-            left.height = '252';
-            this.leftFaderImg = mainEl.parentNode.appendChild(left);
-
-            var right = document.createElement('img');
-            right.src = $util.srl('{$IMG;,carousel/fade_right}');
-            right.style.position = 'absolute';
-            right.style.right = '43px';
-            right.style.top = '0';
-            right.width = '28';
-            right.height = '252';
-            this.rightFaderImg = mainEl.parentNode.appendChild(right);
-        },
-
-        updateFaders: function () {
-            this.leftFaderImg.style.visibility = (this.mainEl.scrollLeft === 0) ? 'hidden' : 'visible';
-            this.rightFaderImg.style.visibility = (this.mainEl.scrollLeft + this.mainEl.offsetWidth >= this.mainEl.scrollWidth - 1) ? 'hidden' : 'visible';
         },
 
         move: function (e, btn) {
@@ -117,7 +85,6 @@
                 }
             }
 
-            this.updateFaders();
             var that = this;
             if (amount !== 0) {
                 setTimeout(function () {
