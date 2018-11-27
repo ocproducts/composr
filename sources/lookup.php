@@ -399,7 +399,7 @@ function find_user_metadata($include_referer = true, $member_id = null, $ip = nu
             $where .= ' OR member_id=' . strval($member_id);
         }
         if ($current_user) {
-            if ($session_id != '') {
+            if (get_session_id() != '') {
                 $where .= ' OR ' . db_string_equal_to('session_id', get_session_id());
             }
         }
