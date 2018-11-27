@@ -130,7 +130,7 @@ class Module_users_online
             if (substr($ip, -1) == '*') { // sessions IPs are not full so try and resolve to full
                 if (is_guest($member_id)) {
                     if (addon_installed('stats')) {
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('session_id' => $row['the_session']));
+                        $test = ($row['the_session'] == '') ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('session_id' => $row['the_session']));
                         if (($test !== null) && ($test != '')) {
                             $ip = $test;
                         } else {

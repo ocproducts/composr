@@ -331,7 +331,34 @@ function static_cache($mode)
                 $contents .= "\n\n" . '<!-- Served ' . htmlentities($fast_cache_path) . ' -->';
                 $contents .= '<failover />';
             }
-            exit($contents);
+
+            echo $contents;
+
+            // Add to stats
+            if (addon_installed('stats')) {
+                require_code('caches');
+                require_code('database');
+                require_code('config');
+                $browser = cms_mb_substr(get_browser_string(), 0, 255);
+                if ((get_option('bot_stats') == '0') || ((stripos($browser, 'http:') === false) && (stripos($browser, 'bot') === false) && (get_bot_type() === null))) {
+                    $GLOBALS['SITE_DB']->query_insert('stats', array(
+                        'access_denied_counter' => 0,
+                        'browser' => $browser,
+                        'operating_system' => cms_mb_substr(get_os_string(), 0, 255),
+                        'the_page' => '/static_caching',
+                        'ip' => get_ip_address(),
+                        'session_id' => '',
+                        'member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
+                        'date_and_time' => time(),
+                        'referer' => cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255),
+                        's_get' => '',
+                        'post' => '',
+                        'milliseconds' => 0,
+                    ), false, true);
+                }
+            }
+
+            exit();
         } else {
             @unlink($fast_cache_path);
             if (function_exists('sync_file')) {

@@ -29,7 +29,7 @@ function user_metadata_display_script()
     }
 
     require_code('lookup');
-    $metadata = find_user_metadata(false, $member_id, $advanced);
+    $metadata = find_user_metadata(false, $member_id, null, $advanced);
 
     require_code('templates_map_table');
 
