@@ -341,6 +341,7 @@ function static_cache($mode)
                 require_code('config');
                 $browser = cms_mb_substr(get_browser_string(), 0, 255);
                 if ((get_option('bot_stats') == '0') || ((stripos($browser, 'http:') === false) && (stripos($browser, 'bot') === false) && (get_bot_type() === null))) {
+                    load_user_stuff();
                     $GLOBALS['SITE_DB']->query_insert('stats', array(
                         'access_denied_counter' => 0,
                         'browser' => $browser,
