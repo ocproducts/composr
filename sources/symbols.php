@@ -3624,7 +3624,7 @@ function ecv_HIDDENS_FOR_GET_FORM($lang, $escaped, $param)
         foreach (explode('&', $url_bits['query']) as $exp) {
             $parts = explode('=', $exp, 2);
             if (count($parts) == 2) {
-                if ((!in_array($parts[0], $param)) && (!in_array(preg_replace('#\d+#', '*', $parts[0]), $param)) && (!in_array(preg_replace('#filter_\w+#', 'filter_*', $parts[0]), $param))) {
+                if ((!in_array($parts[0], $param)) && (!in_array(preg_replace('#\[\d+\]#', '[]', $parts[0]), $param)) && (!in_array(preg_replace('#\d+#', '*', $parts[0]), $param)) && (!in_array(preg_replace('#filter_\w+#', 'filter_*', $parts[0]), $param))) {
                     $_value->attach(form_input_hidden($parts[0], urldecode($parts[1])));
                 }
             }
