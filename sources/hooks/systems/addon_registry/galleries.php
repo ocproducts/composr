@@ -287,6 +287,7 @@ class Hook_addon_registry_galleries
             'templates/BLOCK_MAIN_PERSONAL_GALLERIES_LIST.tpl' => 'cns_member_profile_galleries',
             'templates/GALLERY_VIDEO_BOX.tpl' => 'gallery_video_box',
             'templates/GALLERY_IMAGE_BOX.tpl' => 'gallery_image_box',
+            'templates/BLOCK_MAIN_HERO_SLIDER.tpl' => 'block_main_hero_slider',
         );
     }
 
@@ -1045,6 +1046,29 @@ class Hook_addon_registry_galleries
                 'DESCRIPTION' => lorem_phrase(),
                 'VIDEO' => $video,
                 'WARNING_DETAILS' => '',
+            )), null, '', true),
+        );
+    }
+
+    public function tpl_preview__block_main_hero_slider()
+    {
+        $items = array(
+            array(
+                'BACKGROUND_IMAGE_URL' => placeholder_image_url(),
+                'CONTENT_HTML' => lorem_chunk_html(),
+            ),
+        );
+
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_HERO_SLIDER', array(
+                'BLOCK_ID' => placeholder_id(),
+                'EFFECT' => 'slide',
+                'FULLSCREEN' => '1',
+                'SHOW_INDICATORS' => '1',
+                'SHOW_SCROLL_DOWN' => '0',
+                'INTERVAL' => '0',
+                'ITEMS' => $items,
+                'HAS_MULTIPLE_ITEMS' => (count($items) > 1) ? '1' : '0',
             )), null, '', true),
         );
     }
