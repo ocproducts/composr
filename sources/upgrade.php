@@ -304,7 +304,7 @@ function upgrader_output_login($message = null)
     " . (($news_id === null) ? '' : ('<input type="hidden" name="news_id" value="' . strval($news_id) . '" />')) . "
     " . (($from_version === null) ? '' : ('<input type="hidden" name="from_version" value="' . escape_html($from_version) . '" />')) . "
     <p>
-        {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '', INPUT_FILTER_NONE)) . "\" />
+        {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '', INPUT_FILTER_NONE)) . "\" class=\"form-control\" />
     </p>
     ";
 

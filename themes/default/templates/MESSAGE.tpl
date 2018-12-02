@@ -1,4 +1,4 @@
-<div class="box box---message"><div class="box-inner">
+<div class="box box---message box---message-{TYPE*}"><div class="box-inner">
 	<div class="global-message" role="alert">
 		{+START,INCLUDE,ICON}
 			NAME=status/{TYPE}

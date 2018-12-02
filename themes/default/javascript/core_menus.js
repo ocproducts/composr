@@ -520,7 +520,7 @@
         }
 
         form.target = '_blank';
-        form.action = '{$FIND_SCRIPT;,preview}?page=admin_menus&menu_type=' + window.encodeURIComponent(menuType ? menuType : '') + $cms.keep();
+        form.action = '{$FIND_SCRIPT;,preview}?page=admin_menus&menu_type=' + encodeURIComponent(menuType ? menuType : '') + $cms.keep();
     }
 
     function doMenuSave(e, button) {

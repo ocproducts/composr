@@ -1161,28 +1161,22 @@
         }
     };
 
-    // Implementation for [data-cms-carousel]
+    // Implementation for [data-cms-slider]
     // Port of Bootstrap 4 Carousel http://getbootstrap.com/docs/4.1/components/carousel/
-    // Disables itself if Bootstrap version detected
-    $cms.behaviors.rideCarousel = {
+    $cms.behaviors.cmsSlider = {
         attach: function (context) {
-            if (window.jQuery && window.jQuery.fn.carousel) {
-                // Bootstrap Carousel already loaded!
-                return;
-            }
+            var sliders = $util.once($dom.$$$(context, '[data-cms-slider]'), 'behavior.cmsSlider');
 
-            var carousels = $util.once($dom.$$$(context, '[data-cms-carousel]'), 'behavior.rideCarousel');
-
-            carousels.forEach(function (carousel) {
+            sliders.forEach(function (slider) {
                 $dom.load.then(function () {
-                    $dom.Carousel._interface(carousel, $dom.data(carousel));
+                    $dom.Slider._interface(slider, $dom.data(slider));
                 });
             });
         }
     };
 
     (function () {
-        var DATA_KEY = 'cms.carousel';
+        var DATA_KEY = 'cms.slider';
         var EVENT_KEY = '.' + DATA_KEY;
         var DATA_API_KEY = '.data-api';
         var ARROW_LEFT_KEYCODE = 37; // KeyboardEvent.which value for left arrow key
@@ -1190,12 +1184,12 @@
         var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
 
         var Default = {
-            interval  : 5000,
-            keyboard  : true,
-            slide     : false,
-            pause     : 'hover',
-            wrap      : true,
-            animateHeight: false
+            interval     : 5000,
+            keyboard     : true,
+            slide        : false,
+            pause        : 'hover',
+            wrap         : true,
+            animateHeight: 600
         };
 
         var Direction = {
@@ -1217,30 +1211,30 @@
         };
 
         var ClassName = {
-            CAROUSEL : 'cms-carousel',
+            SLIDER   : 'cms-slider',
             ACTIVE   : 'active',
-            SLIDE    : 'cms-carousel-slide',
-            RIGHT    : 'cms-carousel-item-right',
-            LEFT     : 'cms-carousel-item-left',
-            NEXT     : 'cms-carousel-item-next',
-            PREV     : 'cms-carousel-item-prev',
-            ITEM     : 'cms-carousel-item'
+            SLIDE    : 'cms-slider-slide',
+            RIGHT    : 'cms-slider-item-right',
+            LEFT     : 'cms-slider-item-left',
+            NEXT     : 'cms-slider-item-next',
+            PREV     : 'cms-slider-item-prev',
+            ITEM     : 'cms-slider-item'
         };
 
         var Selector = {
             ACTIVE      : '.active',
-            ACTIVE_ITEM : '.active.cms-carousel-item',
-            ITEM        : '.cms-carousel-item',
-            NEXT_PREV   : '.cms-carousel-item-next, .cms-carousel-item-prev',
-            INDICATORS  : '.cms-carousel-indicators',
+            ACTIVE_ITEM : '.active.cms-slider-item',
+            ITEM        : '.cms-slider-item',
+            NEXT_PREV   : '.cms-slider-item-next, .cms-slider-item-prev',
+            INDICATORS  : '.cms-slider-indicators',
             DATA_SLIDE  : '[data-slide], [data-slide-to]'
         };
 
-        $dom.Carousel = Carousel;
+        $dom.Slider = Slider;
         /**
-         * @constructor Carousel
+         * @constructor Slider
          */
-        function Carousel(element, config) {
+        function Slider(element, config) {
             this._items = null;
             this._interval = null;
             this._intervalStartedAt = null;
@@ -1254,8 +1248,8 @@
             this._config = this._getConfig(config);
             this._element = element;
             this._indicatorsElement = this._element.querySelector(Selector.INDICATORS);
-            this._progressBarFillElement = this._element.querySelector('.cms-carousel-progress-bar-fill');
-            this._scrollDownElement = this._element.querySelector('.cms-carousel-scroll-button');
+            this._progressBarFillElement = this._element.querySelector('.cms-slider-progress-bar-fill');
+            this._scrollDownElement = this._element.querySelector('.cms-slider-scroll-button');
 
             this._addEventListeners();
 
@@ -1264,9 +1258,9 @@
             }
         }
 
-        Carousel.Default = Default;
+        Slider.Default = Default;
 
-        $util.properties(Carousel.prototype, /**@lends Carousel#*/{
+        $util.properties(Slider.prototype, /**@lends Slider#*/{
             // Public
             next: function next() {
                 if (!this._isSliding) {
@@ -1276,7 +1270,7 @@
 
             nextWhenVisible: function nextWhenVisible() {
                 // Don't call next when the page isn't visible
-                // or the carousel or its parent isn't visible
+                // or the slider or its parent isn't visible
                 if (!document.hidden && ($dom.isVisible(this._element) && $dom.css(this._element, 'visibility') !== 'hidden')) {
                     this.next();
                 }
@@ -1314,7 +1308,7 @@
                     this._intervalStartedAt = null;
                 }
 
-                if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-carousel-item').length > 1)) {
+                if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-slider-item').length > 1)) {
                     var self = this;
                     self._intervalStartedAt = Date.now();
                     this._interval = setInterval(function () {
@@ -1375,7 +1369,7 @@
                 var self = this;
 
                 if (self._scrollDownElement) {
-                    // Hide "Scroll Down" button when carousel is larger than viewport or it's mobile mode
+                    // Hide "Scroll Down" button when slider is larger than viewport or it's mobile mode
                     $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
 
                     $dom.on(window, 'resize orientationchange', function () {
@@ -1383,7 +1377,7 @@
                     });
                 }
 
-                $dom.on(this._element, 'click' + EVENT_KEY, '.cms-carousel-scroll-button', function () {
+                $dom.on(this._element, 'click' + EVENT_KEY, '.cms-slider-scroll-button', function () {
                     $dom.smoothScroll(self._element.nextElementSibling);
                 });
 
@@ -1397,9 +1391,9 @@
 
                     if ('ontouchstart' in document.documentElement) {
                         // If it's a touch-enabled device, mouseenter/leave are fired as
-                        // part of the mouse compatibility events on first tap - the carousel
+                        // part of the mouse compatibility events on first tap - the slider
                         // would stop cycling until user tapped out of it;
-                        // here, we listen for touchend, explicitly pause the carousel
+                        // here, we listen for touchend, explicitly pause the slider
                         // (as if it's the second time we tap on it, mouseenter compat event
                         // is NOT fired) and after a timeout (to allow for mouse compatibility
                         // events to fire) we explicitly restart cycling
@@ -1588,62 +1582,32 @@
             }
         });
 
-        Carousel._interface = function _interface(el, config) {
-            var data = $dom.data(el, DATA_KEY);
-            var _config = $util.extend({}, Default, $dom.data(el, 'cmsCarousel'));
+        Slider._interface = function _interface(el, config) {
+            var instance = $dom.data(el, DATA_KEY);
+            var _config = Object.assign({}, Default, $dom.data(el, 'cmsSlider'));
 
             if (typeof config === 'object') {
-                _config = $util.extend({}, _config, config);
+                _config = Object.assign({}, _config, config);
             }
 
             var action = typeof config === 'string' ? config : _config.slide;
 
-            if (!data) {
-                data = new Carousel(el, _config);
-                $dom.data(el, DATA_KEY, data);
+            if (!instance) {
+                instance = new Slider(el, _config);
+                $dom.data(el, DATA_KEY, instance);
             }
 
             if (typeof config === 'number') {
-                data.to(config);
+                instance.to(config);
             } else if (typeof action === 'string') {
-                if (typeof data[action] === 'undefined') {
+                if (typeof instance[action] === 'undefined') {
                     throw new TypeError('No method named "' + action + '"');
                 }
-                data[action]();
+                instance[action]();
             } else if (_config.interval) {
-                data.pause();
-                data.cycle();
+                instance.pause();
+                instance.cycle();
             }
-        };
-
-        Carousel._dataApiClickHandler = function _dataApiClickHandler(event) {
-            var selector = getSelectorFromElement(this);
-
-            if (!selector) {
-                return;
-            }
-
-            var target = document.querySelector(selector);
-
-            if (!target || !target.classList.contains(ClassName.CAROUSEL)) {
-                return;
-            }
-
-            var config = $util.extend({}, $dom.data(target), $dom.data(this));
-
-            var slideIndex = this.getAttribute('data-slide-to');
-
-            if (slideIndex) {
-                config.interval = false;
-            }
-
-            Carousel._interface(target, config);
-
-            if (slideIndex) {
-                $dom.data(target, DATA_KEY).to(slideIndex);
-            }
-
-            event.preventDefault();
         };
 
         function getSelectorFromElement(element) {
@@ -1669,7 +1633,35 @@
          * ------------------------------------------------------------------------
          */
 
-        $dom.on(document, Event.CLICK_DATA_API, Selector.DATA_SLIDE, Carousel._dataApiClickHandler);
+        $dom.on(document, Event.CLICK_DATA_API, Selector.DATA_SLIDE, function (event) {
+            var selector = getSelectorFromElement(this);
+
+            if (!selector) {
+                return;
+            }
+
+            var target = document.querySelector(selector);
+
+            if (!target || !target.classList.contains(ClassName.SLIDER)) {
+                return;
+            }
+
+            var config = Object.assign({}, $dom.data(target), $dom.data(this));
+
+            var slideIndex = this.getAttribute('data-slide-to');
+
+            if (slideIndex) {
+                config.interval = false;
+            }
+
+            Slider._interface(target, config);
+
+            if (slideIndex) {
+                $dom.data(target, DATA_KEY).to(slideIndex);
+            }
+
+            event.preventDefault();
+        });
     }());
 
     function openLinkAsOverlay(options) {

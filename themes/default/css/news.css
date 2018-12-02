@@ -131,3 +131,7 @@
 	bottom: 0;
 	position: absolute;
 }
+
+.box---news-entry-screen {
+	float: left;
+}

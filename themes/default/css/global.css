@@ -688,6 +688,7 @@ h1, h2, h3 {
 	padding: 15px 30px;
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: {$GET,border_radius};
+	color: {$GET,WB};
 }
 
 /* An iframe screen */
@@ -1180,11 +1181,11 @@ header .logo {
 	height: {$GET,header_modern_height};
 }
 
-.header-modern ~ .cms-carousel-homepage-slider {
+.header-modern ~ #slider-homepage-hero {
 	margin-top: -{$GET,header_modern_height};
 }
 
-.header-modern ~ .cms-carousel-homepage-slider .cms-carousel-item-inner {
+.header-modern ~ #slider-homepage-hero .cms-slider-item-inner {
 	padding-top: {$GET,header_modern_height};
 }
 
@@ -2501,7 +2502,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	letter-spacing: 0;
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
-	margin: -10px -15px 0 -15px;
+	margin: -10px -15px 10px -15px;
 	padding: 0.5em 0.8em 0.5em 0.3em;
 	border-bottom: 1px solid {$GET,standard_border};
 }
@@ -3924,6 +3925,10 @@ div.ajax-loading, p.ajax-loading {
 
 .post-buttons {
 	text-align: left !important; /* Overrides buttons-group */
+}
+
+.post-buttons .btn {
+	margin-right: 10px;
 }
 
 .post .post-buttons {
@@ -6851,16 +6856,16 @@ NB: Form buttons are wrapped in either:
 =========================
 */
 
-.cms-carousel {
+.cms-slider {
 	position: relative;
 }
 
-.cms-carousel-inner {
+.cms-slider-inner {
 	position: relative;
 	width: 100%;
 }
 
-.cms-carousel-item {
+.cms-slider-item {
 	position: relative;
 	display: none;
 	align-items: center;
@@ -6873,96 +6878,102 @@ NB: Form buttons are wrapped in either:
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
-	.cms-carousel-item {
+	.cms-slider-item {
 		transition: none;
 	}
 }
 
-.cms-carousel-item.active,
-.cms-carousel-item-next,
-.cms-carousel-item-prev {
+.cms-slider-item.active,
+.cms-slider-item-next,
+.cms-slider-item-prev {
 	display: block;
 }
 
-.cms-carousel-item-next,
-.cms-carousel-item-prev {
+.cms-slider-item-next,
+.cms-slider-item-prev {
 	position: absolute;
 	top: 0;
 }
 
-.cms-carousel-item-next.cms-carousel-item-left,
-.cms-carousel-item-prev.cms-carousel-item-right {
+.cms-slider-item-next.cms-slider-item-left,
+.cms-slider-item-prev.cms-slider-item-right {
 	transform: translateX(0);
 }
 
 @supports (transform-style: preserve-3d) {
-	.cms-carousel-item-next.cms-carousel-item-left,
-	.cms-carousel-item-prev.cms-carousel-item-right {
+	.cms-slider-item-next.cms-slider-item-left,
+	.cms-slider-item-prev.cms-slider-item-right {
 		transform: translate3d(0, 0, 0);
 	}
 }
 
-.cms-carousel-item-next,
-.active.cms-carousel-item-right {
+.cms-slider-item-next,
+.active.cms-slider-item-right {
 	transform: translateX(100%);
 }
 
 @supports (transform-style: preserve-3d) {
-	.cms-carousel-item-next,
-	.active.cms-carousel-item-right {
+	.cms-slider-item-next,
+	.active.cms-slider-item-right {
 		transform: translate3d(100%, 0, 0);
 	}
 }
 
-.cms-carousel-item-prev,
-.active.cms-carousel-item-left {
+.cms-slider-item-prev,
+.active.cms-slider-item-left {
 	transform: translateX(-100%);
 }
 
 @supports (transform-style: preserve-3d) {
-	.cms-carousel-item-prev,
-	.active.cms-carousel-item-left {
+	.cms-slider-item-prev,
+	.active.cms-slider-item-left {
 		transform: translate3d(-100%, 0, 0);
 	}
 }
 
-.cms-carousel-fade .cms-carousel-item {
+.cms-slider-fade .cms-slider-item {
 	opacity: 0;
 	transition-duration: .6s;
 	transition-property: opacity;
 }
 
-.cms-carousel-fade .cms-carousel-item.active,
-.cms-carousel-fade .cms-carousel-item-next.cms-carousel-item-left,
-.cms-carousel-fade .cms-carousel-item-prev.cms-carousel-item-right {
+.cms-slider-fade .cms-slider-item.active,
+.cms-slider-fade .cms-slider-item-next.cms-slider-item-left,
+.cms-slider-fade .cms-slider-item-prev.cms-slider-item-right {
 	opacity: 1;
 }
 
-.cms-carousel-fade .active.cms-carousel-item-left,
-.cms-carousel-fade .active.cms-carousel-item-right {
+.cms-slider-fade .active.cms-slider-item-left,
+.cms-slider-fade .active.cms-slider-item-right {
 	opacity: 0;
 }
 
-.cms-carousel-fade .cms-carousel-item-next,
-.cms-carousel-fade .cms-carousel-item-prev,
-.cms-carousel-fade .cms-carousel-item.active,
-.cms-carousel-fade .active.cms-carousel-item-left,
-.cms-carousel-fade .active.cms-carousel-item-prev {
+.cms-slider-fade .cms-slider-item-next,
+.cms-slider-fade .cms-slider-item-prev,
+.cms-slider-fade .cms-slider-item.active,
+.cms-slider-fade .active.cms-slider-item-left,
+.cms-slider-fade .active.cms-slider-item-prev {
 	transform: translateX(0);
 }
 
 @supports (transform-style: preserve-3d) {
-	.cms-carousel-fade .cms-carousel-item-next,
-	.cms-carousel-fade .cms-carousel-item-prev,
-	.cms-carousel-fade .cms-carousel-item.active,
-	.cms-carousel-fade .active.cms-carousel-item-left,
-	.cms-carousel-fade .active.cms-carousel-item-prev {
+	.cms-slider-fade .cms-slider-item-next,
+	.cms-slider-fade .cms-slider-item-prev,
+	.cms-slider-fade .cms-slider-item.active,
+	.cms-slider-fade .active.cms-slider-item-left,
+	.cms-slider-fade .active.cms-slider-item-prev {
 		transform: translate3d(0, 0, 0);
 	}
 }
 
-.cms-carousel-control-prev,
-.cms-carousel-control-next {
+/* Hide next/previous buttons when having single item */
+.cms-slider.has-single-item .cms-slider-control-prev,
+.cms-slider.has-single-item .cms-slider-control-next {
+	display: none;
+}
+
+.cms-slider-control-prev,
+.cms-slider-control-next {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -6975,25 +6986,26 @@ NB: Form buttons are wrapped in either:
 	opacity: 0.5;
 }
 
-.cms-carousel-control-prev:hover, .carousel-control-prev:focus,
-.cms-carousel-control-next:hover,
-.cms-carousel-control-next:focus {
+.cms-slider-control-prev:hover, 
+.cms-slider-control-prev:focus,
+.cms-slider-control-next:hover,
+.cms-slider-control-next:focus {
 	color: #fff;
 	text-decoration: none;
 	outline: 0;
 	opacity: .9;
 }
 
-.cms-carousel-control-prev {
+.cms-slider-control-prev {
 	left: 0;
 }
 
-.cms-carousel-control-next {
+.cms-slider-control-next {
 	right: 0;
 }
 
-.cms-carousel-control-prev-icon,
-.cms-carousel-control-next-icon {
+.cms-slider-control-prev-icon,
+.cms-slider-control-next-icon {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
@@ -7001,15 +7013,15 @@ NB: Form buttons are wrapped in either:
 	background-size: 100% 100%;
 }
 
-.cms-carousel-control-prev-icon {
+.cms-slider-control-prev-icon {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
 }
 
-.cms-carousel-control-next-icon {
+.cms-slider-control-next-icon {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
 }
 
-.cms-carousel-indicators {
+.cms-slider-indicators {
 	position: absolute;
 	right: 0;
 	bottom: 10px;
@@ -7025,7 +7037,7 @@ NB: Form buttons are wrapped in either:
 	list-style: none;
 }
 
-.cms-carousel-indicators li {
+.cms-slider-indicators li {
 	position: relative;
 	-ms-flex: 0 1 auto;
 	flex: 0 1 auto;
@@ -7038,7 +7050,7 @@ NB: Form buttons are wrapped in either:
 	background-color: rgba(255, 255, 255, 0.5);
 }
 
-.cms-carousel-indicators li::before {
+.cms-slider-indicators li::before {
 	position: absolute;
 	top: -10px;
 	left: 0;
@@ -7048,7 +7060,7 @@ NB: Form buttons are wrapped in either:
 	content: "";
 }
 
-.cms-carousel-indicators li::after {
+.cms-slider-indicators li::after {
 	position: absolute;
 	bottom: -10px;
 	left: 0;
@@ -7058,11 +7070,11 @@ NB: Form buttons are wrapped in either:
 	content: "";
 }
 
-.cms-carousel-indicators .active {
+.cms-slider-indicators .active {
 	background-color: #fff;
 }
 
-.cms-carousel-caption {
+.cms-slider-caption {
 	position: absolute;
 	right: 15%;
 	bottom: 20px;
@@ -7074,7 +7086,7 @@ NB: Form buttons are wrapped in either:
 	text-align: center;
 }
 
-.cms-carousel-scroll-button {
+.cms-slider-scroll-button {
 	position: absolute;
 	bottom: 20px;
 	z-index: 15;
@@ -7086,29 +7098,29 @@ NB: Form buttons are wrapped in either:
 	margin-left: -50px;
 }
 
-.cms-carousel-scroll-button:hover {
+.cms-slider-scroll-button:hover {
 	color: {$GET,WB};
 	opacity: 0.8;
 	text-decoration: none;
 }
 
-.cms-carousel-scroll-button-icon {
+.cms-slider-scroll-button-icon {
 	height: 24px;
 	width: 24px;
 	margin: 0 auto 10px auto;
 	position: relative;
 }
 
-.cms-carousel-scroll-button-icon .icon {
+.cms-slider-scroll-button-icon .icon {
 	width: 24px;
 	height: 24px;
 	left: 50%;
 	margin-left: -12px;
 	position: absolute;
-	animation: 1s linear 0s infinite alternate bounce-cms-carousel-scroll-button-icon;
+	animation: 1s linear 0s infinite alternate bounce-cms-slider-scroll-button-icon;
 }
 
-@keyframes bounce-cms-carousel-scroll-button-icon {
+@keyframes bounce-cms-slider-scroll-button-icon {
 	from {
 		top: 0;
 	}
@@ -7117,7 +7129,7 @@ NB: Form buttons are wrapped in either:
 	}
 }
 
-.cms-carousel-progress-bar {
+.cms-slider-progress-bar {
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -7125,70 +7137,71 @@ NB: Form buttons are wrapped in either:
 	height: 5px;
 }
 
-.cms-carousel-progress-bar-fill {
+.cms-slider-progress-bar-fill {
 	background: {$GET,seed};
 	width: 0%;
 	height: 5px;
 	/*transition: width 0.15s linear*/
 }
 
-.cms-carousel-homepage-slider {
+#slider-homepage-hero {
 	background: #555;
 	overflow: hidden;
 	position: relative;
 	color: {$GET,WB};
 }
 
-
-.cms-carousel-homepage-slider .cms-carousel-inner {
+#slider-homepage-hero .cms-slider-inner {
 	min-height: inherit;
 }
 
-.cms-carousel-homepage-slider .cms-carousel-item {
+#slider-homepage-hero .cms-slider-item {
 	min-height: inherit;
 	overflow: hidden;
+	background-position: center;
+	background-size: cover;
 }
 
-.cms-carousel-homepage-slider .cms-carousel-item-inner {
+#slider-homepage-hero .cms-slider-item-inner {
 	min-height: inherit;
 	overflow: hidden;
 	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
 }
 
-.cms-carousel-homepage-slider .cms-carousel-item-inner .container {
+#slider-homepage-hero .cms-slider-item-inner .container {
 	padding-top: 50px;
 	padding-bottom: 50px;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-.cms-carousel-homepage-slider .cms-carousel-item-inner {
+#slider-homepage-hero .cms-slider-item-inner {
 	 padding-top: 100px;
 	 padding-bottom: 0;
 }
 /*{+END}*/
 
-.cms-carousel-homepage-slider .contrast-box {
+#slider-homepage-hero .contrast-box {
 	display: table;
 	margin: 0 auto;
 }
 
-.cms-carousel-homepage-slider .staff-actions {
+#slider-homepage-hero .staff-actions {
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
 	z-index: 100;
 }
 
-.cms-carousel-homepage-slider .staff-actions .icon-buttons--settings {
+#slider-homepage-hero .staff-actions .icon-buttons--settings {
 	display: none;
 }
 
-html.has-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen {
+html.has-header-modern #slider-homepage-hero.cms-slider-fullscreen {
 	min-height: 100vmin;
 }
 
-html.has-header-modern .cms-carousel-homepage-slider.cms-carousel-fullscreen .cms-carousel-item-inner {
+html.has-header-modern #slider-homepage-hero.cms-slider-fullscreen .cms-slider-item-inner {
 	display: flex;
 	align-items: center;
 }

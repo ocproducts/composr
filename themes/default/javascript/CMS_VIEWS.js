@@ -1359,7 +1359,7 @@
 
                 // If clicking a download link then don't show the animation
                 if (document.activeElement && (document.activeElement.href != null)) {
-                    var url = document.activeElement.href.replace(/.*:\/\/[^\/:]+/, '');
+                    var url = document.activeElement.href.replace(/.*:\/\/[^/:]+/, '');
                     if (url.includes('download') || url.includes('export')) {
                         return;
                     }

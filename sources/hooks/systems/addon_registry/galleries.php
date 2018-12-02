@@ -244,6 +244,13 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/config/search_images.php',
             'sources/hooks/systems/config/search_videos.php',
             'sources/hooks/systems/actionlog/galleries.php',
+            // Hero slider
+            'sources/blocks/main_hero_slider.php',
+            'themes/default/templates/BLOCK_MAIN_HERO_SLIDER.tpl',
+            'uploads/galleries/root/homepage_hero_slider/index.html',
+            'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg',
+            'uploads/galleries/root/homepage_hero_slider/rustic.jpg',
+            'uploads/galleries/root/homepage_hero_slider/waterfall.jpg',
         );
     }
 

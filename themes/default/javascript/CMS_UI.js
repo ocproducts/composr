@@ -297,8 +297,6 @@
             });
         } else {
             $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function () {
-                event.stopPropagation();
-
                 if ($dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
                     $cms.ui.deactivateTooltip(el);
                 }

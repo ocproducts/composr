@@ -2,8 +2,15 @@
 
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
+{+START,SET,hero_slider}{+START,IF,{$ADDON_INSTALLED,galleries}}{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
+	{$BLOCK,block=main_hero_slider,block_id=homepage-hero,gallery_name=homepage_hero_slider,blank_if_empty=1,fullscreen={$THEME_OPTION,fullscreen_homepage_slider},show_scroll_down=1}
+{+END}{+END}{+END}
+
+{$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
+{$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
+
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-header-{$THEME_OPTION*,theme_header_type} {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-homepage-slider} {$?,{$THEME_OPTION,fullscreen_homepage_slider},has-fullscreen-homepage-slider}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-header-{$THEME_OPTION*,theme_header_type} {+START,IF,{$IS_NON_EMPTY,{$TRIM,{$GET,hero_slider}}}}has-homepage-slider {$?,{$THEME_OPTION,fullscreen_homepage_slider},has-fullscreen-homepage-slider}{+END} {$?,{$GET,has_left_panel},has-left-panel} {$?,{$GET,has_right_panel},has-right-panel}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -20,89 +27,8 @@
 			{+END}
 		{+END}
 
-		{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
-			{$,Replace the "cms-carousel-slide" class with "cms-carousel-fade" to make the carousel use fade effect instead of sliding}
-			<div id="homepage-slider" class="cms-carousel cms-carousel-slide {$?,{$THEME_OPTION,fullscreen_homepage_slider},cms-carousel-fullscreen} cms-carousel-homepage-slider has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
-				<!--<ol class="cms-carousel-indicators">-->
-					<!--<li data-target="#homepage-slider" data-slide-to="0" class="active"></li>-->
-					<!--<li data-target="#homepage-slider" data-slide-to="1"></li>-->
-					<!--<li data-target="#homepage-slider" data-slide-to="2"></li>-->
-				<!--</ol>-->
-				<a href="#!" class="cms-carousel-scroll-button" style="display: none;">
-					<div class="cms-carousel-scroll-button-icon">
-						{+START,INCLUDE,ICON}NAME=results/sortablefield_desc{+END}
-					</div>
-					<div class="cms-carousel-scroll-button-caption">Scroll Down</div>
-				</a>
-				<div class="cms-carousel-inner">
-					<div class="cms-carousel-item active" style="background-image: url('{$IMG;*,hero/bastei_bridge_3014467_1920}'); background-position: center; background-size: cover;">
-						<div class="cms-carousel-item-inner">
-							<div class="container">
-								<h1 class="cms-carousel-contrast-box">Content Management System for Next Generation Websites</h1>
-								<h3 class="cms-carousel-contrast-box">Need a website? Tired of primitive systems that don't meet your requirements?</h3>
-								<div style="max-width: 660px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
-									<div style="margin-bottom: 10px;">
-										Composr is Open Source so our community download runs without limits. Our services will give you that critical 'pro edge'.
-									</div>
-									<div style="margin-bottom: 10px;">
-										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="cms-carousel-item" style="background-image: url('{$IMG;*,hero/waterfall_1081997_1920}'); background-position: center; background-size: cover;">
-						<div class="cms-carousel-item-inner">
-							<div class="container">
-								<h1 class="cms-carousel-contrast-box">Leader In Design</h1>
-								<h3 class="cms-carousel-contrast-box">Form and Function Revolutionized!</h3>
-								<div style="max-width: 675px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
-									<div style="margin-bottom: 10px;">
-										We have created an awesome new theme that will help users, designers, developers,
-										and companies create websites for their startups quickly and easily.
-									</div>
-									<div style="margin-bottom: 10px;">
-										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="cms-carousel-item" style="background-image: url('{$IMG;*,hero/rustic_945421_1920}'); background-position: center; background-size: cover;">
-						<div class="cms-carousel-item-inner">
-							<div class="container">
-								<h1 class="cms-carousel-contrast-box">Think Ahead.</h1>
-								<h3 class="cms-carousel-contrast-box">Boost your online business growth!</h3>
-								<div style="max-width: 630px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
-									<div style="margin-bottom: 10px;">
-										With tons of features at your fingertips, let your creativity loose. Welcome your visitors with elegance and flexibility.
-									</div>
-									<div>
-										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<a class="cms-carousel-control-prev" href="#homepage-slider" role="button" data-slide="prev">
-					<span class="cms-carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="sr-only">Previous</span>
-				</a>
-				<a class="cms-carousel-control-next" href="#homepage-slider" role="button" data-slide="next">
-					<span class="cms-carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="sr-only">Next</span>
-				</a>
-				<!-- Slider progress bar becomes visible when the "interval" parameter to [data-cms-carousel] is set -->
-				<div class="cms-carousel-progress-bar">
-					<div class="cms-carousel-progress-bar-fill"></div>
-				</div>
-			</div>
-		{+END}
-
+		{$GET,hero_slider}
+		
 		<div class="container">
 			{$,By default the top panel contains the admin menu, community menu, member bar, etc}
 			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,top}}}
@@ -118,10 +44,8 @@
 	
 			{$,The main panels and content; .clearfix contains the layout into a rendering box so that the footer etc can sit underneath}
 			<div class="global-middle-outer">
-				{$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
-				{$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
 	
-				<article class="global-middle {$?,{$GET,has_left_panel},has-left-panel,has-no-left-panel} {$?,{$GET,has_right_panel},has-right-panel,has-no-right-panel}" role="main">
+				<article class="global-middle" role="main">
 					{$,Breadcrumbs}
 					{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
 						<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">

@@ -544,6 +544,7 @@
 
     /**
      * Copy all except undefined properties from one or more objects to the `target` object.
+     * @memberof $util
      * @param target
      * @param {...object} sources - Source objects
      * @returns {*}

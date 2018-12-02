@@ -185,7 +185,7 @@ END;
     $_ftp_username = code_editor_escape_html($ftp_username);
     echo <<<END
     <p>
-        <label for="given_password">Master Password: <input type="password" name="given_password" id="given_password" /></label>
+        <label for="given_password">Master Password: <input type="password" name="given_password" id="given_password" class="form-control" /></label>
     </p>
     <hr />
     <p>If you need to edit original Composr files (rather than overriding or making custom ones), then you probably need to enter FTP details below. This will allow this editor to save via FTP, and if no username is given, it will try and save directly.</p>

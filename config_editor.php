@@ -134,7 +134,7 @@ function ce_do_login()
         echo '<p><strong>Invalid password</strong></p>';
     }
     echo "
-        <label for=\"given_password\">Master Password: <input type=\"password\" name=\"given_password\" id=\"given_password\" /></label>
+        <label for=\"given_password\">Master Password: <input type=\"password\" name=\"given_password\" id=\"given_password\" class=\"form-control\" /></label>
         <p><button class=\"btn btn-primary btn-scr menu--site-meta--user-actions--login\" type=\"submit\">Log in</button></p>
     ";
 }
