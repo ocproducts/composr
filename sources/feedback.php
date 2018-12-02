@@ -167,14 +167,16 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
     require_code('crypt');
     $hash = ratchet_hash($serialized_options, get_site_salt()); // A little security, to ensure $serialized_options is not tampered with
 
-    // AJAX support
-    $comment_details->attach(do_template('COMMENT_AJAX_HANDLER', array(
-        '_GUID' => 'da533e0f637e4c90ca7ef5a9a23f3203',
-        'OPTIONS' => $serialized_options,
-        'HASH' => $hash,
-        'PAGE_NAME' => $page_name,
-        'IS_THREADED' => true,
-    )));
+    if (!$comment_details->is_empty()) {
+        // AJAX support
+        $comment_details->attach(do_template('COMMENT_AJAX_HANDLER', array(
+            '_GUID' => 'da533e0f637e4c90ca7ef5a9a23f3203',
+            'OPTIONS' => $serialized_options,
+            'HASH' => $hash,
+            'PAGE_NAME' => $page_name,
+            'IS_THREADED' => true,
+        )));
+    }
 
     return array($rating_details, $comment_details, $trackback_details);
 }
@@ -209,14 +211,16 @@ function post_comment_script()
     // Get new comments state
     $comment_details = get_comments($page_name, $allow_comments == 1, $content_id, false, $forum, null, null, false, null, $submitter, $allow_comments == 2);
 
-    // AJAX support
-    $comment_details->attach(do_template('COMMENT_AJAX_HANDLER', array(
-        '_GUID' => 'da533e0f637e4c90ca7ef5a9a23f3203',
-        'OPTIONS' => $options,
-        'HASH' => $hash,
-        'PAGE_NAME' => $page_name,
-        'IS_THREADED' => true,
-    )));
+    if (!$comment_details->is_empty()) {
+        // AJAX support
+        $comment_details->attach(do_template('COMMENT_AJAX_HANDLER', array(
+            '_GUID' => 'da533e0f637e4c90ca7ef5a9a23f3203',
+            'OPTIONS' => $options,
+            'HASH' => $hash,
+            'PAGE_NAME' => $page_name,
+            'IS_THREADED' => true,
+        )));
+    }
 
     // And output as text
     header('Content-Type: text/plain; charset=' . get_charset());
