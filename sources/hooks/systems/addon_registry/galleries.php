@@ -251,6 +251,10 @@ class Hook_addon_registry_galleries
             'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg',
             'uploads/galleries/root/homepage_hero_slider/rustic.jpg',
             'uploads/galleries/root/homepage_hero_slider/waterfall.jpg',
+            'uploads/galleries_thumbs/root/homepage_hero_slider/index.html',
+            'uploads/galleries_thumbs/root/homepage_hero_slider/bastei_bridge.jpg',
+            'uploads/galleries_thumbs/root/homepage_hero_slider/rustic.jpg',
+            'uploads/galleries_thumbs/root/homepage_hero_slider/waterfall.jpg',
         );
     }
 
