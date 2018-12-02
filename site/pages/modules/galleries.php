@@ -181,64 +181,58 @@ class Module_galleries
             add_gallery('homepage_hero_slider', 'Homepage Hero Slider', '', '', 'root', 1, 0, 0, 0, '', '', '', '', '', 0, 0);
             set_global_category_access('galleries', 'homepage_hero_slider');
 
-            ob_start();
-            ?>
-            <p class="h1 contrast-box">Content Management System for Next Generation Websites</p>
-            <br />
-            <h3 class="contrast-box">Need a website? Tired of primitive systems that don't meet your requirements?</h3>
-            <br />
-            <div style="max-width: 660px; line-height: 1.8;" class="h5 contrast-box">
-                <div style="margin-bottom: 10px;">
-                    Composr is Open Source so our community download runs without limits. Our services will give you that critical 'pro edge'.
+            $slide_1_contents = <<<HTML
+                <p class="h1 contrast-box">Content Management System for Next Generation Websites</p>
+                <br />
+                <h3 class="contrast-box">Need a website? Tired of primitive systems that don't meet your requirements?</h3>
+                <br />
+                <div style="max-width: 660px; line-height: 1.8;" class="h5 contrast-box">
+                    <div style="margin-bottom: 10px;">
+                        Composr is Open Source so our community download runs without limits. Our services will give you that critical 'pro edge'.
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
+                        <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
+                    </div>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-                    <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
-                </div>
-            </div>
-            <?php
-            $slide_1_contents = ob_get_clean();
+HTML;
 
-            ob_start();
-            ?>
-            <p class="h1 contrast-box">Leader In Design</p>
-            <br />
-            <h3 class="contrast-box">Form and Function Revolutionized!</h3>
-            <br />
-            <div style="max-width: 675px; line-height: 1.8;" class="h5 contrast-box">
-                <div style="margin-bottom: 10px;">
-                    We have created an awesome new theme that will help users, designers, developers,
-                    and companies create websites for their startups quickly and easily.
+            $slide_2_contents = <<<HTML
+                <p class="h1 contrast-box">Leader In Design</p>
+                <br />
+                <h3 class="contrast-box">Form and Function Revolutionized!</h3>
+                <br />
+                <div style="max-width: 675px; line-height: 1.8;" class="h5 contrast-box">
+                    <div style="margin-bottom: 10px;">
+                        We have created an awesome new theme that will help users, designers, developers,
+                        and companies create websites for their startups quickly and easily.
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
+                        <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
+                    </div>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-                    <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
-                </div>
-            </div>
-            <?php
-            $slide_2_contents = ob_get_clean();
+HTML;
 
-            ob_start();
-            ?>
-            <p class="h1 contrast-box">Think Ahead.</p>
-            <br />
-            <h3 class="contrast-box">Boost your online business growth!</h3>
-            <br />
-            <div style="max-width: 630px; line-height: 1.8;" class="h5 contrast-box">
-                <div style="margin-bottom: 10px;">
-                    With tons of features at your fingertips, let your creativity loose. Welcome your visitors with elegance and flexibility.
+            $slide_3_contents = <<<HTML
+                <p class="h1 contrast-box">Think Ahead.</p>
+                <br />
+                <h3 class="contrast-box">Boost your online business growth!</h3>
+                <br />
+                <div style="max-width: 630px; line-height: 1.8;" class="h5 contrast-box">
+                    <div style="margin-bottom: 10px;">
+                        With tons of features at your fingertips, let your creativity loose. Welcome your visitors with elegance and flexibility.
+                    </div>
+                    <div>
+                        <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
+                        <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
+                    </div>
                 </div>
-                <div>
-                    <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-                    <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
-                </div>
-            </div>
-            <?php
-            $slide_3_contents = ob_get_clean();
+HTML;
 
-            add_image('Slide 1', 'homepage_hero_slider', $slide_1_contents, 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
-            add_image('Slide 2', 'homepage_hero_slider', $slide_2_contents, 'uploads/galleries/root/homepage_hero_slider/rustic.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
-            add_image('Slide 3', 'homepage_hero_slider', $slide_3_contents, 'uploads/galleries/root/homepage_hero_slider/waterfall.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
+            add_image('Slide 1', 'homepage_hero_slider', trim($slide_1_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
+            add_image('Slide 2', 'homepage_hero_slider', trim($slide_2_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/rustic.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
+            add_image('Slide 3', 'homepage_hero_slider', trim($slide_3_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/waterfall.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 7)) {
