@@ -182,7 +182,7 @@ class Module_galleries
             set_global_category_access('galleries', 'homepage_hero_slider');
 
             $slide_1_contents = <<<HTML
-                <p class="h1 contrast-box">Content Management System for Next Generation Websites</p>
+                [semihtml]<p class="h1 contrast-box">Content Management System for Next Generation Websites</p>
                 <br />
                 <h3 class="contrast-box">Need a website? Tired of primitive systems that don't meet your requirements?</h3>
                 <br />
@@ -194,11 +194,11 @@ class Module_galleries
                         <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
                         <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
                     </div>
-                </div>
+                </div>[/semihtml]
 HTML;
 
             $slide_2_contents = <<<HTML
-                <p class="h1 contrast-box">Leader In Design</p>
+                [semihtml]<p class="h1 contrast-box">Leader In Design</p>
                 <br />
                 <h3 class="contrast-box">Form and Function Revolutionized!</h3>
                 <br />
@@ -211,11 +211,11 @@ HTML;
                         <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
                         <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
                     </div>
-                </div>
+                </div>[/semihtml]
 HTML;
 
             $slide_3_contents = <<<HTML
-                <p class="h1 contrast-box">Think Ahead.</p>
+                [semihtml]<p class="h1 contrast-box">Think Ahead.</p>
                 <br />
                 <h3 class="contrast-box">Boost your online business growth!</h3>
                 <br />
@@ -227,7 +227,7 @@ HTML;
                         <a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
                         <a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
                     </div>
-                </div>
+                </div>[/semihtml]
 HTML;
 
             add_image('Slide 1', 'homepage_hero_slider', trim($slide_1_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);

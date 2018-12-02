@@ -168,7 +168,9 @@ class Block_main_hero_slider
                 $full_url = get_custom_base_url() . '/' . $full_url;
             }
 
-            $description = get_translated_text($row['description']);
+            $just_media_row = db_map_restrict($row, array('id', 'description'));
+
+            $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
 
             $items[] = array(
                 'BACKGROUND_IMAGE_URL' => $full_url,
