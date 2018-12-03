@@ -142,18 +142,20 @@
         var form = delBtn.form;
 
         $dom.on(delBtn, 'click', function () {
-            confirmDelete(form, true, function () {
-                var idEl = $dom.$id('id'),
-                    ids = (idEl.value === '') ? [] : idEl.value.split(',');
+            $cms.ui.confirm('{!_ARE_YOU_SURE_DELETE;^}').then(function (result) {
+                if (result) {
+                    var idEl = $dom.$id('id'),
+                        ids = (idEl.value === '') ? [] : idEl.value.split(',');
 
-                for (var i = 0; i < ids.length; i++) {
-                    prepareMassSelectMarker('', params.type, ids[i], true);
+                    for (var i = 0; i < ids.length; i++) {
+                        prepareMassSelectMarker('', params.type, ids[i], true);
+                    }
+
+                    form.method = 'post';
+                    form.action = params.actionUrl;
+                    form.target = '_top';
+                    $dom.submit(form);
                 }
-
-                form.method = 'post';
-                form.action = params.actionUrl;
-                form.target = '_top';
-                $dom.submit(form);
             });
         });
 
@@ -170,9 +172,21 @@
     };
 
     $cms.templates.massSelectDeleteForm = function (e, form) {
+        var confirmedFor;
+
         $dom.on(form, 'submit', function (e) {
+            if (confirmedFor && (confirmedFor.getTime() === $cms.form.lastChangeTime(form).getTime())) {
+                return;
+            }
+
             e.preventDefault();
-            confirmDelete(form, true);
+
+            $cms.ui.confirm('{!_ARE_YOU_SURE_DELETE;^}').then(function (result) {
+                if (result) {
+                    confirmedFor = $cms.form.lastChangeTime(form);
+                    $dom.submit(form);
+                }
+            });
         });
     };
 
@@ -664,20 +678,6 @@
             });
         });
     };
-
-    function confirmDelete(form, multi, callback) {
-        multi = Boolean(multi);
-
-        $cms.ui.confirm(multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}').then(function (result) {
-            if (result) {
-                if (callback != null) {
-                    callback();
-                } else {
-                    $dom.submit(form);
-                }
-            }
-        });
-    }
 
     function prepareMassSelectMarker(set, type, id, checked) {
         var massDeleteForm = $dom.$id('mass-select-form--' + set);
