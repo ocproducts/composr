@@ -178,7 +178,7 @@ class Module_galleries
 
             /* Setup homepage hero slider slides */
 
-            add_gallery('homepage_hero_slider', 'Homepage Hero Slider', '', '', 'root', 1, 0, 0, 0, '', '', '', '', '', 0, 0);
+            add_gallery('homepage_hero_slider', 'Homepage Hero Slider', 'Slides for the homepage hero slider', '', 'root', 1, 1, 0, 0, '', '', '', '', '', 0, 0);
             set_global_category_access('galleries', 'homepage_hero_slider');
 
             $slide_1_contents = <<<HTML

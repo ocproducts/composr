@@ -270,7 +270,8 @@ abbr.dtstart, abbr.dtend {
 /*{+END}*/
 
 .calendar-main-page-hidden-data {
-	padding: 0.5em;
+	margin: 0.5em;
+	border-top: 1px solid {$GET,standard_border};
 }
 
 /*

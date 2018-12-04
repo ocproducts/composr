@@ -1,4 +1,4 @@
-<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header-classic with-seed-navbar">
+<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header header-classic with-seed-navbar">
 	{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 	<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
@@ -11,13 +11,13 @@
 	{+END}
 
 	{$,The main logo}
-	<h1 class="logo-outer container">
+	<h1 class="logo container">
 		<a class="logo-link" target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
 			{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
-			<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
+			<img class="logo-image" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
 			{+END}
 			{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
-			<span class="logo">{$SITE_NAME*}</span>
+			<span class="logo-text">{$SITE_NAME*}</span>
 			{+END}
 		</a>
 	</h1>

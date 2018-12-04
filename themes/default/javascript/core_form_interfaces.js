@@ -618,8 +618,14 @@
 
     $cms.templates.formScreenInputTick = function (params, el) {
         if (params.name === 'validated') {
+            if (el.previousElementSibling.classList.contains('validated-checkbox')) {
+                el.previousElementSibling.classList.toggle('checked', el.checked);
+            }
+
             $dom.on(el, 'click', function () {
-                el.previousElementSibling.className = 'validated-checkbox' + (el.checked ? ' checked' : '');
+                if (el.previousElementSibling.classList.contains('validated-checkbox')) {
+                    el.previousElementSibling.classList.toggle('checked', el.checked);
+                }
             });
         }
 

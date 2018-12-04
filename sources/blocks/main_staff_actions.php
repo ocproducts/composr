@@ -247,7 +247,7 @@ class Block_main_staff_actions
         }
         while (count($rows) > 0);
 
-        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), array(), null, 5, '1c8645bc2a3ff5bec2e003142185561g', false, 'tray_actionlog');
+        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), array(), null, 5, '1c8645bc2a3ff5bec2e003142185561g', false, 'tray-actionlog');
 
         // Render block wrapper template around actions table
         return do_template('BLOCK_MAIN_STAFF_ACTIONS', array(

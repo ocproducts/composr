@@ -1,19 +1,19 @@
 {$,Add CSS class .with-white-navbar for a white navbar, .with-seed-navbar for seed-colored navbar}
-<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header-modern with-white-navbar {+START,IF,{$THEME_OPTION,sticky_header}}is-sticky{+END}" {+START,IF,{$THEME_OPTION,sticky_header}}data-sticky-header="{}"{+END}>
+<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header header-modern with-white-navbar {+START,IF,{$THEME_OPTION,sticky_header}}is-sticky{+END}" {+START,IF,{$THEME_OPTION,sticky_header}}data-sticky-header="{}"{+END}>
 	{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 	<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
 	{$,Main menu}
 	<div class="global-navigation container">
 		{$,The main logo}
-		<h1 class="logo-outer">
+		<h1 class="logo">
 			<a class="logo-link" target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
 				{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
-				<img class="logo logo-color" src="{$IMG*,logo/small_logo}" alt="{$SITE_NAME*}" />
-				<img class="logo logo-white" src="{$IMG*,logo/small_white_logo}" alt="{$SITE_NAME*}" />
+				<img class="logo-image logo-image-color" src="{$IMG*,logo/small_logo}" alt="{$SITE_NAME*}" />
+				<img class="logo-image logo-image-white" src="{$IMG*,logo/small_white_logo}" alt="{$SITE_NAME*}" />
 				{+END}
 				{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
-				<span class="logo">{$SITE_NAME*}</span>
+				<span class="logo-text">{$SITE_NAME*}</span>
 				{+END}
 			</a>
 		</h1>

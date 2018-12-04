@@ -892,7 +892,6 @@
 
     // Implementation for [data-sticky-header]
     // Hides navbar when scrolling downwards, shows it again when scrolled upwards
-    // Adds .is-scrolled class when the navbar is scrolled along
     $cms.behaviors.stickyHeader = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-sticky-header]'), 'behavior.stickyHeader');

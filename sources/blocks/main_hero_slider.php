@@ -136,10 +136,9 @@ class Block_main_hero_slider
         }
 
         $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type,cat FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_image . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
-        // TODO: Implement background videos for slides?
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS content_type,cat FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_video . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'video\' AS content_type,cat FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_video . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
 
-        $all_rows = array_merge($image_rows, array()/*$video_rows to be implemented*/);
+        $all_rows = array_merge($image_rows, $video_rows);
 
         require_code('images');
 
@@ -168,12 +167,19 @@ class Block_main_hero_slider
                 $full_url = get_custom_base_url() . '/' . $full_url;
             }
 
+            $thumb_url = $row['thumb_url'];
+            if (url_is_local($thumb_url)) {
+                $thumb_url = get_custom_base_url() . '/' . $thumb_url;
+            }
+
             $just_media_row = db_map_restrict($row, array('id', 'description'));
 
             $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
 
             $items[] = array(
-                'BACKGROUND_IMAGE_URL' => $full_url,
+                'BACKGROUND_TYPE' => $row['content_type'],
+                'BACKGROUND_URL' => $full_url,
+                'BACKGROUND_THUMB_URL' => $thumb_url,
                 'CONTENT_HTML' => $description,
             );
         }

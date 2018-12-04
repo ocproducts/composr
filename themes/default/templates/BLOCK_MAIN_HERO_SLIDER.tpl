@@ -17,7 +17,17 @@
 	{+END}
 	<div class="cms-slider-inner">
 		{+START,LOOP,ITEMS}
-		<div class="cms-slider-item{+START,IF,{$EQ,{_loop_key},0}} active{+END}" style="background-image: url('{BACKGROUND_IMAGE_URL;*}');">
+		<div class="cms-slider-item{+START,IF,{$EQ,{_loop_key},0}} active{+END}" {+START,IF,{$EQ,{BACKGROUND_TYPE},image}}style="background-image: url('{BACKGROUND_URL*}');"{+END}>
+			{+START,IF,{$EQ,{BACKGROUND_TYPE},video}}
+			{+START,IF,{$MOBILE}}
+				<img class="cms-slider-item-background" src="{BACKGROUND_THUMB_URL*}">
+			{+END}
+			{+START,IF,{$NOT,{$MOBILE}}}
+				<video class="cms-slider-item-background" autoplay="autoplay" loop="loop" muted="muted">
+					<source src="{BACKGROUND_URL*}" type="video/mp4">
+				</video>
+			{+END}
+			{+END}
 			<div class="cms-slider-item-inner">
 				<div class="container">
 					{CONTENT_HTML}

@@ -424,7 +424,7 @@
             this.topWindow.document.body.appendChild(this.el);
 
             this.overlayEl = this.el.appendChild($dom.create('div', { // The main overlay
-                'className': 'box overlay cms-modal-overlay ' + this.type,
+                'className': 'box overlay cms-modal-overlay',
                 'role': 'dialog'
             }));
 

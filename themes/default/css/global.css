@@ -89,6 +89,7 @@ In mobile mode:
 
 /* Colours to mirror human understandings (i.e. non-thematic) */
 {$THEMEWIZARD_COLOR,#dc3545,danger,100% DC3545}
+{$THEMEWIZARD_COLOR,#28a745,success,100% 28A745}
 {$THEMEWIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
 {$THEMEWIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
 {$THEMEWIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
@@ -1050,7 +1051,7 @@ input.input-username::-webkit-calendar-picker-indicator {
 		}
 	/*{+END}*/
 
-	.logo-outer {
+	.logo {
 		padding-left: 0;
 		padding-right: 0;
 	}
@@ -1108,28 +1109,25 @@ header h1 {
 	font-size: 0.9em;
 }
 
-.logo-outer {
+.logo {
 	overflow: hidden;
 }
 
-.logo-outer a {
-	display: block;
+.logo-link {
+	font-size: 25px;
+	display: flex;
+	align-items: center;
 }
 
-.logo-outer a:hover {
+.logo-link:hover {
 	text-decoration: none;
 }
 
-.logo-outer .logo {
-	height: auto;
-	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
-}
-
-.logo-outer .logo-white {
+.header .logo-image-white {
 	display: none;
 }
 
-.header-classic .logo-outer .logo {
+.header-classic .logo-image {
 	width: 100%;
 }
 
@@ -1138,13 +1136,13 @@ header h1 {
 	min-height: 60px;
 }
 
-html.has-homepage-slider .header-modern:not(.is-sticky) .logo-outer .logo-color,
-html:not(.is-scrolled).has-homepage-slider .logo-outer .logo-color {
+html.has-homepage-slider .header-modern:not(.is-sticky) .header .logo-image-color,
+html:not(.is-scrolled).has-homepage-slider .header .logo-image-color {
 	display: none;
 }
 
-html.has-homepage-slider .header-modern:not(.is-sticky) .logo-outer .logo-white,
-html:not(.is-scrolled).has-homepage-slider .logo-outer .logo-white {
+html.has-homepage-slider .header-modern:not(.is-sticky) .header .logo-image-white,
+html:not(.is-scrolled).has-homepage-slider .header .logo-image-white {
 	display: block;
 }
 
@@ -1161,12 +1159,6 @@ html.is-scrolled header.is-sticky.with-white-navbar {
 	color: {$GET,a.link};
 	background-color: {$GET,WB};
 	border-bottom: 1px solid {$GET,standard_border};
-}
-
-header .logo {
-	font-size: 25px;
-	line-height: 69px;
-	display: block;
 }
 
 .header-modern {
@@ -1194,9 +1186,9 @@ html.is-scrolled .header-modern.is-sticky {
 }
 
 .header-modern .global-navigation,
-.header-modern .logo-outer,
+.header-modern .logo,
 .header-modern .logo-link,
-.header-modern .logo {
+.header-modern .logo-image {
 	height: inherit;
 }
 
@@ -1223,8 +1215,8 @@ header.is-sticky {
 	z-index: 100;
 }
 
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .logo,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .logo,
+html.has-homepage-slider header:not(.is-sticky).with-white-navbar .logo-link,
+html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .logo-link,
 html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link,
 html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
 html.has-homepage-slider header:not(.is-sticky).with-white-navbar .top-button,
@@ -1252,7 +1244,7 @@ header.with-seed-navbar .global-navigation {
 	background: {$GET,seed};
 }
 
-header.with-seed-navbar .logo,
+header.with-seed-navbar .logo-link,
 header.with-seed-navbar .menu-dropdown-item-a.toplevel-link,
 header.with-seed-navbar .top-button {
 	color: {$GET,WB};
@@ -1569,7 +1561,8 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 		display: none;
 	}
 
-	.overlay.alert .box-inner div, .overlay.confirm .box-inner div {
+	.cms-modal-type-alert .box-inner div, 
+	.cms-modal-type-confirm .box-inner div {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
 
@@ -3403,13 +3396,14 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .diff del {
 	color: {$GET,red_highlight_text};
 }
+
 .diff ins {
 	font-weight: bold;
 	text-decoration: none;
 }
 
 .results-table-under {
-	font-size: 0.85em;
+	font-size: 12px;
 	margin: 1em 0;
 }
 
@@ -3452,24 +3446,32 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	display: inline-block;
 }
 
-.pagination nav>a,
-.pagination nav>span,
+.pagination nav > a,
+.pagination nav > span,
 .results-launcher a,
 .results-launcher span {
-	border: 1px solid {$GET,standard_border};
+	border: 1px solid {$GET,pale_border};
 	border-left: 0;
 	background-color: {$GET,area_background};
 }
-.pagination nav>a:first-child,
-.pagination nav>span:first-child,
+
+.pagination nav > a:first-child,
+.pagination nav > span:first-child,
 .results-launcher a:first-child,
 .results-launcher span:first-child,
 .pagination .first-child,
 .results-launcher .first-child {
-	border-left: 1px solid {$GET,standard_border};
+	border-left: 1px solid {$GET,pale_border};
 }
-.pagination a:hover, .results-launcher a:hover {
+
+.pagination a:hover, 
+.results-launcher a:hover {
 	background-color: {$GET,area_hover_2_background} !important;
+}
+
+.pagination-per-page,
+.pagination-nav {
+	margin-right: 8px;
 }
 
 .pagination-load-more {
@@ -3529,7 +3531,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	.results-launcher a:visited,
 	.results-launcher a:hover,
 	.results-launcher span {
-		padding: 2px 6px !important;
+		padding: 4px 6px !important;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -3541,7 +3543,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	.results-launcher a:visited,
 	.results-launcher a:hover,
 	.results-launcher span {
-		padding: 2px 10px !important;
+		padding: 4px 10px !important;
 	}
 /*{+END}*/
 
@@ -3723,7 +3725,7 @@ div.ajax-loading, p.ajax-loading {
 /*{+END}*/
 
 .software-chat {
-	margin: 20px;
+	margin: 10px;
 	font-size: 0.9em;
 	float: right;
 	width: 260px;
@@ -4914,7 +4916,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 	width: 100%;
 	margin-top: 3px;
 	font-size: 80%;
-	color: #28a745;
+	color: {$GET,success};
 }
 
 .valid-tooltip {
@@ -4935,13 +4937,13 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .was-validated .form-control:valid, .form-control.is-valid, 
 .was-validated .custom-select:valid,
 .custom-select.is-valid {
-	border-color: #28a745;
+	border-color: {$GET,success};
 }
 
 .was-validated .form-control:valid:focus, .form-control.is-valid:focus, 
 .was-validated .custom-select:valid:focus,
 .custom-select.is-valid:focus {
-	border-color: #28a745;
+	border-color: {$GET,success};
 	box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
 }
 
@@ -4962,7 +4964,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
-	color: #28a745;
+	color: {$GET,success};
 }
 
 .was-validated .form-check-input:valid ~ .valid-feedback,
@@ -4972,7 +4974,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .was-validated .custom-control-input:valid ~ .custom-control-label, .custom-control-input.is-valid ~ .custom-control-label {
-	color: #28a745;
+	color: {$GET,success};
 }
 
 .was-validated .custom-control-input:valid ~ .custom-control-label::before, .custom-control-input.is-valid ~ .custom-control-label::before {
@@ -4994,7 +4996,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .was-validated .custom-file-input:valid ~ .custom-file-label, .custom-file-input.is-valid ~ .custom-file-label {
-	border-color: #28a745;
+	border-color: {$GET,success};
 }
 
 .was-validated .custom-file-input:valid ~ .custom-file-label::before, .custom-file-input.is-valid ~ .custom-file-label::before {
@@ -5016,7 +5018,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 	width: 100%;
 	margin-top: 3px;
 	font-size: 80%;
-	color: #dc3545;
+	color: {$GET,danger};
 }
 
 .invalid-tooltip {
@@ -5037,13 +5039,13 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .was-validated .form-control:invalid, .form-control.is-invalid, .was-validated
 .custom-select:invalid,
 .custom-select.is-invalid {
-	border-color: #dc3545;
+	border-color: {$GET,danger};
 }
 
 .was-validated .form-control:invalid:focus, .form-control.is-invalid:focus, .was-validated
 .custom-select:invalid:focus,
 .custom-select.is-invalid:focus {
-	border-color: #dc3545;
+	border-color: {$GET,danger};
 	box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
 }
 
@@ -5064,7 +5066,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {
-	color: #dc3545;
+	color: {$GET,danger};
 }
 
 .was-validated .form-check-input:invalid ~ .invalid-feedback,
@@ -5074,7 +5076,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .was-validated .custom-control-input:invalid ~ .custom-control-label, .custom-control-input.is-invalid ~ .custom-control-label {
-	color: #dc3545;
+	color: {$GET,danger};
 }
 
 .was-validated .custom-control-input:invalid ~ .custom-control-label::before, .custom-control-input.is-invalid ~ .custom-control-label::before {
@@ -5096,7 +5098,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .was-validated .custom-file-input:invalid ~ .custom-file-label, .custom-file-input.is-invalid ~ .custom-file-label {
-	border-color: #dc3545;
+	border-color: {$GET,danger};
 }
 
 .was-validated .custom-file-input:invalid ~ .custom-file-label::before, .custom-file-input.is-invalid ~ .custom-file-label::before {
@@ -5303,8 +5305,8 @@ fieldset:disabled a.btn {
 
 .btn-success {
 	color: {$GET,WB};
-	background-color: #28a745;
-	border-color: #28a745;
+	background-color: {$GET,success};
+	border-color: {$GET,success};
 }
 
 .btn-success:hover {
@@ -5314,13 +5316,13 @@ fieldset:disabled a.btn {
 }
 
 .btn-success:focus, .btn-success.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#28a745,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
 }
 
 .btn-success.disabled, .btn-success:disabled {
 	color: {$GET,WB};
-	background-color: #28a745;
-	border-color: #28a745;
+	background-color: {$GET,success};
+	border-color: {$GET,success};
 }
 
 .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
@@ -5332,7 +5334,7 @@ fieldset:disabled a.btn {
 
 .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#28a745,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
 }
 
 .btn-info {
@@ -5405,8 +5407,8 @@ fieldset:disabled a.btn {
 
 .btn-danger {
 	color: {$GET,WB};
-	background-color: #dc3545;
-	border-color: #dc3545;
+	background-color: {$GET,danger};
+	border-color: {$GET,danger};
 }
 
 .btn-danger:hover {
@@ -5416,13 +5418,13 @@ fieldset:disabled a.btn {
 }
 
 .btn-danger:focus, .btn-danger.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#dc3545,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
 }
 
 .btn-danger.disabled, .btn-danger:disabled {
 	color: {$GET,WB};
-	background-color: #dc3545;
-	border-color: #dc3545;
+	background-color: {$GET,danger};
+	border-color: {$GET,danger};
 }
 
 .btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,
@@ -5434,7 +5436,7 @@ fieldset:disabled a.btn {
 
 .btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus,
 .show > .btn-danger.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#dc3545,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
 }
 
 .btn-light {
@@ -5574,37 +5576,37 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-success {
-	color: #28a745;
+	color: {$GET,success};
 	background-color: transparent;
 	background-image: none;
-	border-color: #28a745;
+	border-color: {$GET,success};
 }
 
 .btn-outline-success:hover {
 	color: {$GET,WB};
-	background-color: #28a745;
-	border-color: #28a745;
+	background-color: {$GET,success};
+	border-color: {$GET,success};
 }
 
 .btn-outline-success:focus, .btn-outline-success.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#28a745,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
 }
 
 .btn-outline-success.disabled, .btn-outline-success:disabled {
-	color: #28a745;
+	color: {$GET,success};
 	background-color: transparent;
 }
 
 .btn-outline-success:not(:disabled):not(.disabled):active, .btn-outline-success:not(:disabled):not(.disabled).active,
 .show > .btn-outline-success.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #28a745;
-	border-color: #28a745;
+	background-color: {$GET,success};
+	border-color: {$GET,success};
 }
 
 .btn-outline-success:not(:disabled):not(.disabled):active:focus, .btn-outline-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-success.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#28a745,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
 }
 
 .btn-outline-info {
@@ -5676,37 +5678,37 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-danger {
-	color: #dc3545;
+	color: {$GET,danger};
 	background-color: transparent;
 	background-image: none;
-	border-color: #dc3545;
+	border-color: {$GET,danger};
 }
 
 .btn-outline-danger:hover {
 	color: {$GET,WB};
-	background-color: #dc3545;
-	border-color: #dc3545;
+	background-color: {$GET,danger};
+	border-color: {$GET,danger};
 }
 
 .btn-outline-danger:focus, .btn-outline-danger.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#dc3545,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
 }
 
 .btn-outline-danger.disabled, .btn-outline-danger:disabled {
-	color: #dc3545;
+	color: {$GET,danger};
 	background-color: transparent;
 }
 
 .btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active,
 .show > .btn-outline-danger.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #dc3545;
-	border-color: #dc3545;
+	background-color: {$GET,danger};
+	border-color: {$GET,danger};
 }
 
 .btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-danger.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#dc3545,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
 }
 
 .btn-outline-light {
@@ -6877,6 +6879,18 @@ NB: Form buttons are wrapped in either:
 	perspective: 1000px;
 }
 
+.cms-slider-item-background {
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	right: 0; 
+	bottom: 0;
+	object-position: center; 
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+}
+
 @media screen and (prefers-reduced-motion: reduce) {
 	.cms-slider-item {
 		transition: none;
@@ -7167,6 +7181,8 @@ NB: Form buttons are wrapped in either:
 	overflow: hidden;
 	background: rgba(0, 0, 0, 0.3);
 	text-align: center;
+	z-index: 1;
+	position: relative;
 }
 
 #slider-homepage-hero .cms-slider-item-inner .container {

@@ -3,7 +3,7 @@
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {+START,SET,hero_slider}{+START,IF,{$ADDON_INSTALLED,galleries}}{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
-	{$BLOCK,block=main_hero_slider,block_id=homepage-hero,gallery_name=homepage_hero_slider,blank_if_empty=1,fullscreen={$THEME_OPTION,fullscreen_homepage_slider},show_scroll_down=1}
+	{$BLOCK,block=main_hero_slider,block_id=homepage-hero,gallery_name=homepage_hero_slider,blank_if_empty=1,fullscreen={$THEME_OPTION,fullscreen_homepage_slider},show_scroll_down=1,check_perms=0}
 {+END}{+END}{+END}
 
 {$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}

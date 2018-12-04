@@ -375,16 +375,53 @@ span.validated-checkbox, span.validated-checkbox+input[name="validated"].input-t
 	display: inline-block;
 	cursor: pointer;
 }
+
 span.validated-checkbox {
-	content: "";
-	background: url('{$IMG;,editor/off}') no-repeat;
-	background-size: 86px 32px;
 	position: absolute;
+	color: {$GET,WB};
+	background: {$GET,danger};
+	border-radius: {$GET,border_radius};
+	font-size: 17px;
+	font-weight: 500;
+	padding: 3px;
 }
+
 span.validated-checkbox.checked {
-	background-image: url('{$IMG;,editor/on}') !important;
+	background: {$GET,success};
 }
-span.validated-checkbox+input[name="validated"].input-tick {
+
+span.validated-checkbox .on,
+span.validated-checkbox .off {
+	padding: 1px 5px;
+}
+
+span.validated-checkbox .on,
+span.validated-checkbox.checked .off {
+	display: none;
+}
+
+span.validated-checkbox .off,
+span.validated-checkbox.checked .on {
+	display: inline-block;
+}
+
+span.validated-checkbox::after {
+	content: '';
+	display: block;
+	height: 100%;
+	width: 50%;
+	border-radius: {$GET,border_radius};
+	background: {$GET,WB};
+	float: left;
+	margin-right: 4px;
+}
+
+span.validated-checkbox.checked::after {
+	float: right;
+	margin-right: 0;
+}
+
+span.validated-checkbox + input[name="validated"].input-tick {
 	padding-right: 0.5em;
 	z-index: 100;
 	position: relative;
