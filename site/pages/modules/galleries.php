@@ -230,9 +230,9 @@ HTML;
                 </div>[/semihtml]
 HTML;
 
-            add_image('Slide 1', 'homepage_hero_slider', trim($slide_1_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
-            add_image('Slide 2', 'homepage_hero_slider', trim($slide_2_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/rustic.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
-            add_image('Slide 3', 'homepage_hero_slider', trim($slide_3_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/waterfall.jpg', '', 1, 0, 0, 0, '', null, null, null, 0);
+            add_image('Slide 1', 'homepage_hero_slider', trim($slide_1_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/bastei_bridge.png', 1, 0, 0, 0, '', null, null, null, 0);
+            add_image('Slide 2', 'homepage_hero_slider', trim($slide_2_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/rustic.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/rustic.png', 1, 0, 0, 0, '', null, null, null, 0);
+            add_image('Slide 3', 'homepage_hero_slider', trim($slide_3_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/waterfall.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/waterfall.png', 1, 0, 0, 0, '', null, null, null, 0);
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 7)) {

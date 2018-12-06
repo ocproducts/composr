@@ -181,6 +181,12 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/images/progress_indicator/stage_future.svg',
             'themes/default/images/progress_indicator/stage_past.svg',
             'themes/default/images/progress_indicator/stage_present.svg',
+            'themes/default/images/icons/results/index.html',
+            'themes/default/images/icons/results/sortablefield_asc.svg',
+            'themes/default/images/icons/results/sortablefield_desc.svg',
+            'themes/default/images/icons_monochrome/results/index.html',
+            'themes/default/images/icons_monochrome/results/sortablefield_asc.svg',
+            'themes/default/images/icons_monochrome/results/sortablefield_desc.svg',
         );
     }
 
