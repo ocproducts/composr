@@ -35,7 +35,7 @@
 {+END}
 
 {+START,IF,{$NOT,{$MOBILE}}}
-	#main_website { background-image:url('{$IMG;,composr_homesite/body-bg}'); background-position:left top; background-repeat:repeat-x; }
+	#main_website { background:url('{$IMG;,xmas/body-bg}') left top repeat-x, url('{$IMG;,xmas/body-bg-2}') left top repeat-y; }
 	.website_body { margin:0; }
 {+END}
 

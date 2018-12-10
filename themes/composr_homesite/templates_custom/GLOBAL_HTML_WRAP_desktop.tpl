@@ -6,7 +6,7 @@
 
 			<div class="row">
 				<figure class="logo">
-					<a href="{$PAGE_LINK*,:}"><img width="316" height="119" alt="Composr logo" src="{$IMG*,composr_homesite/composr_full_logo}" /></a>
+					<a href="{$PAGE_LINK*,:}"><img width="316" height="119" alt="Composr logo" src="{$IMG*,xmas/composr_full_logo}" /></a>
 				</figure>
 
 				<div class="headRCol">
