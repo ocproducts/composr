@@ -160,6 +160,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ABSTRACTION_SYMBOL__THUMBNAIL
         ABSTRACT_FILE_MANAGEMENT
         ACCEPTED_MEDIA_TYPES
+        INVALID_BASE_URL
         WORDFILTER
         AUDIT
         DESCRIPTION_REORGANISE_UPLOADS
