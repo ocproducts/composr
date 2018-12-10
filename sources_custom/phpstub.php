@@ -1474,7 +1474,7 @@ function imagettftext($handle, $size, $angle, $x, $y, $colour, $fontfile, $text)
 /**
  * Return the image types supported by this execution environment.
  *
- * @return integer Bit field of constants: IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP.
+ * @return integer Bit field of constants: IMG_GIF | IMG_JPG | IMG_PNG.
  */
 function imagetypes()
 {
