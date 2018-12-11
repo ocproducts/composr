@@ -79,6 +79,7 @@ img, img a { border:none; outline:none; }
 {+START,IF,{$NOT,{$MOBILE}}}
 	header { padding:30px 0px 10px 0px; overflow:hidden; display:block; background-image:url('{$IMG;,composr_homesite/header-bg}'); background-position:50% 4px; background-repeat:no-repeat; }
 
+	.header_row { background: url('{$IMG;,xmas/header-bg1}') no-repeat; background-size: 100% auto; background-position: 0 4px; }
 	.row { margin:0px auto; width:960px; padding:0px 0px 10px 0px; overflow:hidden; display:block; }
 	.logo { margin:0; padding:0; float:left; width:320px; height:120px; }
 	.headRCol { float:right; width:600px; height:120px; }
