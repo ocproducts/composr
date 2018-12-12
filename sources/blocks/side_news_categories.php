@@ -79,7 +79,7 @@ class Block_side_news_categories
                 $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news p' . $join . ' WHERE validated=1 AND (news_entry_category=' . strval($category['id']) . ' OR news_category=' . strval($category['id']) . ')');
                 if ($count > 0) {
                     $category['_nc_title'] = get_translated_text($category['nc_title']);
-                    $categories[] = array($category, $count);
+                    $categories[] = array($category, $count, $category['_nc_title']);
                 }
             }
         }
@@ -89,12 +89,12 @@ class Block_side_news_categories
             foreach ($_categories as $category) {
                 if (has_category_access(get_member(), 'news', strval($category['id']))) {
                     $category['_nc_title'] = get_translated_text($category['nc_title']);
-                    $categories[] = array($category, $count);
+                    $categories[] = array($category, $count, $category['_nc_title']);
                 }
             }
         }
 
-        sort_maps_by($categories, '_nc_title');
+        sort_maps_by($categories, 2);
 
         $_categories = array();
         foreach ($categories as $_category) {
