@@ -278,3 +278,9 @@
 	width: 100%;
 	height: 600px;
 }
+
+.box---gallery-box .box-inner::after {
+	display: block;
+	clear: both;
+	content: '';
+}

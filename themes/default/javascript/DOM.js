@@ -1777,7 +1777,7 @@
      */
     $dom.animate = function animate(el, props, duration, easing) {
         el = $dom.elArg(el);
-        duration = ((typeof duration === 'string') ? ((duration in $dom.fx.speeds) ? $dom.fx.speeds[duration] : $dom.fx.speeds._default) : intVal(duration, $dom.fx.speeds._default));
+        duration = $dom.fx.off ? 0 : ((typeof duration === 'string') ? ((duration in $dom.fx.speeds) ? $dom.fx.speeds[duration] : $dom.fx.speeds._default) : intVal(duration, $dom.fx.speeds._default));
         easing = strVal(easing) || DOM_ANIMATE_DEFAULT_EASING;
 
         return new Promise(function (resolve) {

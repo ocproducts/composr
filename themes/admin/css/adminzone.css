@@ -140,6 +140,10 @@ footer .global-minilinks {
 	vertical-align: middle;
 }
 
+.adminzone-search .buttons--search {
+	margin-right: 5px;
+}
+
 /*{+START,CSS_MODE,mobile}*/
 	.adminzone-search .help {
 		display: none !important;

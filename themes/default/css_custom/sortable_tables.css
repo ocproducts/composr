@@ -18,33 +18,14 @@
 }
 
 /* Sorting */
-.sortable-table th.table-sortable span {
+
+.sortable-table th .icon {
 	cursor: pointer;
-	background-image: url('{$IMG;,icons/sortable_tables/sortable}');
-	background-size: 16px 16px;
-	background-position: center left;
-	background-repeat: no-repeat;
-	min-height: 16px;
-	padding-left: 16px;
+	float: left;
+	margin-top: 0.2em;
+	margin-right: 0.3em;
 }
-.sortable-table th.table-sorted-asc span {
-	background-image: url('{$IMG;,icons/sortable_tables/sorted_up}');
-	background-size: 16px 16px;
-	background-position: center left;
-	background-repeat: no-repeat;
-}
-.sortable-table th.table-sorted-desc span {
-	background-image: url('{$IMG;,icons/sortable_tables/sorted_down}');
-	background-size: 16px 16px;
-	background-position: center left;
-	background-repeat: no-repeat;
-}
-.sortable-table th.table-filtered span {
-	background-image: url('{$IMG;,icons/sortable_tables/filter}');
-	background-size: 16px 16px;
-	background-position: center left;
-	background-repeat: no-repeat;
-}
+
 .sortable-table select.table-autofilter, .sortable-table input.table-autofilter {
 	font-size: smaller;
 	float: right;

@@ -60,7 +60,7 @@
      * @param spriteUrl
      */
     function loadSvgSprite(spriteUrl) {
-        spriteUrl = $util.url(spriteUrl);
+        spriteUrl = $util.srl(spriteUrl);
 
         var xhr = new XMLHttpRequest();
         xhr.overrideMimeType('text/xml');
@@ -82,10 +82,10 @@
             for (var i = 0; i < uses.length; i++) {
                 var use = uses[i],
                     hrefParts = strVal(use.getAttribute('xlink:href')).split('#'),
-                    hrefUrl = $util.url(hrefParts[0]),
+                    hrefUrl = $util.srl(hrefParts[0]),
                     hrefId = hrefParts[1];
 
-                if (hrefUrl.toString() === spriteUrl.toString()) {
+                if (hrefUrl === spriteUrl) {
                     use.setAttribute('xlink:href', '#' + hrefId);
                 }
             }

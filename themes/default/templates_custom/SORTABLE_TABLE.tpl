@@ -6,6 +6,7 @@
 			<tr>
 				{+START,LOOP,HEADERS}
 					<th class="table-sortable:{SORTABLE_TYPE*}{+START,IF_NON_EMPTY,{FILTERABLE}} table-filterable{+END}{+START,IF,{SEARCHABLE}} table-searchable table-searchable-with-substrings{+END}">
+						{+START,INCLUDE,ICON}NAME=sortable_tables/sortable{+END}
 						<span>{LABEL*}</span>
 						{$,	If you want the template to define sorting, uncomment this and remove table-filterable -- but it will not be sorted consistently
 							{+START,IF_NON_EMPTY,{FILTERABLE}}

@@ -121,7 +121,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#dddddd,standard_border,100% dddddd}
 {$THEMEWIZARD_COLOR,#9b9b9b,dark_border,70% standard_border + 30% BW}
 {$THEMEWIZARD_COLOR,#b7d8fa,pale_border,33% seed + 67% WB}
-{$THEMEWIZARD_COLOR,#cecece,point_of_interest_border,50% dark_border + 50% WB}
+{$THEMEWIZARD_COLOR,#b7d8fa,point_of_interest_border,33% seed + 67% WB}
 
 /* Backgrounds (quiet a variety, as we need to be able to stack them, to have both hover and active effects, to have zebra striping, and various other levels of perceived focus) */
 {$THEMEWIZARD_COLOR,#e7f2fd,area_background,11% seed + 89% WB}
@@ -722,6 +722,7 @@ th, .fake-th {
 
 .table-header-sorting-link,
 .table-header-sorting-link:hover {
+	color: inherit;
 	text-decoration: none;
 }
 
@@ -1990,7 +1991,7 @@ a.fancy-user-link em {
 a.fancy-user-link, a.fancy-user-link:visited, a.fancy-user-link:hover {
 	font-size: 1em;
 	font-weight: bold;
-	border: 1px dashed {$GET,point_of_interest_border};
+	border: 1px solid {$GET,point_of_interest_border};
 	border-left: 0;
 	border-right: 0;
 	display: block;
@@ -2152,18 +2153,23 @@ body button.button-hyperlink:hover {
 }
 
 /* Error/status messages */
-span.red-alert, a.red-alert, strong.red-alert, em.red-alert {
+span.red-alert, 
+a.red-alert, 
+strong.red-alert, 
+em.red-alert {
 	color: {$GET,red_highlight_text};
 	font-weight: bold;
 }
+
 div.red-alert, p.red-alert, .inline-wip-message {
 	border-radius: {$GET,border_radius};
 	padding: 1em;
 }
-div.red-alert, p.red-alert {
+
+div.red-alert, 
+p.red-alert {
 	border: 1px solid {$GET,light_error_border};
 	background-color: {$GET,light_error_background};
-	background-size: 24px 24px;
 	overflow: hidden;
 }
 
@@ -2259,6 +2265,7 @@ th.metadata-title {
 
 .img-thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
 	opacity: 0.7;
+	transition: opacity 0.2s linear !important;
 }
 .img-thumb:not([width]):not([height]) {
 	max-width: 100%;
@@ -2266,7 +2273,6 @@ th.metadata-title {
 }
 .img-thumb:hover, .is-touch-enabled .img-thumb, .img-thumb-opaque .img-thumb {
 	opacity: 1.0;
-	transition: opacity 0.2s linear !important;
 }
 .img-thumb-opaque .img-thumb {
 	transition: none !important;
@@ -3103,6 +3109,11 @@ table.scrollable-inside {
 
 .highlighted-table-cell {
 	background-color: {$GET,area_4_background};
+}
+
+.highlighted-table-cell th,
+.highlighted-table-cell td {
+	border-color: {$GET,pale_border} !important;
 }
 
 .results-table {
@@ -6854,7 +6865,7 @@ NB: Form buttons are wrapped in either:
 
 /*
 =========================
-=========Carousel========
+==========Slider=========
 =========================
 */
 
@@ -6998,6 +7009,7 @@ NB: Form buttons are wrapped in either:
 	color: #fff;
 	text-align: center;
 	opacity: 0.5;
+	transition: opacity 0.2s linear;
 }
 
 .cms-slider-control-prev:hover, 
@@ -7155,7 +7167,18 @@ NB: Form buttons are wrapped in either:
 	background: {$GET,seed};
 	width: 0%;
 	height: 5px;
-	/*transition: width 0.15s linear*/
+}
+
+.cms-slider-item-edit-link {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s linear;
+}
+
+.cms-slider-item:hover .cms-slider-item-edit-link,
+.cms-slider-item-edit-link:focus {
+	opacity: 1;
+	visibility: visible;
 }
 
 #slider-homepage-hero {
@@ -7188,6 +7211,7 @@ NB: Form buttons are wrapped in either:
 #slider-homepage-hero .cms-slider-item-inner .container {
 	padding-top: 50px;
 	padding-bottom: 50px;
+	position: relative;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -7200,17 +7224,6 @@ NB: Form buttons are wrapped in either:
 #slider-homepage-hero .contrast-box {
 	display: table;
 	margin: 0 auto;
-}
-
-#slider-homepage-hero .staff-actions {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	z-index: 100;
-}
-
-#slider-homepage-hero .staff-actions .icon-buttons--settings {
-	display: none;
 }
 
 html.has-header-modern #slider-homepage-hero.cms-slider-fullscreen {

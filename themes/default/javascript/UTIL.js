@@ -65,7 +65,11 @@
 
         val = Number(val);
 
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+        if ((val === Infinity) || (val === -Infinity)) {
+            throw new TypeError('numVal(): Number over/underflow detected!')
+        }
+
+        return val ? val : 0;
     };
 
     /**

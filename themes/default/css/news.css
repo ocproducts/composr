@@ -74,8 +74,9 @@
 	padding-bottom: 0.5em;
 }
 
-.newscat-img-member, .newscat-img-author .news-by {
-	border: 1px dashed {$GET,point_of_interest_border};
+.newscat-img-member, 
+.newscat-img-author .news-by {
+	border: 1px solid {$GET,point_of_interest_border};
 	background-color: {$GET,point_of_interest_background};
 	padding: 0.5em;
 	font-size: 0.9em;

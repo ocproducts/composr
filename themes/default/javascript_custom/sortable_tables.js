@@ -12,6 +12,29 @@
                 SortableTable.filter(select, select, null, isSearchableSubstring);
             }, 0);
         });
+
+        updateIcons();
+        $dom.on(container, 'click change keyup', updateIcons);
+        
+        function updateIcons() {
+            container.querySelectorAll('th.table-sortable').forEach(function (th) {
+                var icon = th.querySelector('.icon');
+                
+                if (!icon) {
+                    return;
+                }
+
+                if (th.classList.contains('table-sorted-asc')) {
+                    $cms.setIcon(icon, 'sortable_tables/sorted_up', '{$IMG;,icons/sortable_tables/sorted_up}')
+                } else if (th.classList.contains('table-sorted-desc')) {
+                    $cms.setIcon(icon, 'sortable_tables/sorted_down', '{$IMG;,icons/sortable_tables/sorted_down}')
+                } else if (th.classList.contains('table-filtered')) {
+                    $cms.setIcon(icon, 'sortable_tables/filter', '{$IMG;,icons/sortable_tables/filter}')
+                } else {
+                    $cms.setIcon(icon, 'sortable_tables/sortable', '{$IMG;,icons/sortable_tables/sortable}');
+                }
+            });
+        }
     };
 }(window.$cms));
 
@@ -176,7 +199,7 @@ var SortableTable = (function(){
    */
   function classValue(o,prefix) {
     var c = o.className;
-    if (c.match(new RegExp("(^|\\s)"+prefix+"([^ ]+)"))) {
+    if ((typeof c === 'string') && c.match(new RegExp("(^|\\s)"+prefix+"([^ ]+)"))) {
       return RegExp.$2;
     }
     return null;

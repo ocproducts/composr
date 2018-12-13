@@ -52,6 +52,7 @@
 	bottom: 0;
 	background: linear-gradient(to right, white, rgba(255, 255, 255, 0));
 	z-index: 1;
+	pointer-events: none;
 }
 
 .carousel .move-right {
@@ -68,6 +69,7 @@
 	bottom: 0;
 	background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
 	z-index: 1;
+	pointer-events: none;
 }
 
 .carousel .main {

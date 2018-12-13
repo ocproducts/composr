@@ -253,7 +253,7 @@ textarea.mono-textbox {
 /* After Step 4 */
 
 .install-log-table {
-	border: 1px dashed {$GET,dark_border};
+	border: 1px solid {$GET,dark_border};
 	border-collapse: collapse;
 	display: inline-block;
 	background-color: {$GET,point_of_interest_background};

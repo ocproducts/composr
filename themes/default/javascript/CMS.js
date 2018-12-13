@@ -255,6 +255,8 @@
     var mobileModeMql = window.matchMedia('(max-width: 982px)'),
         desktopModeMql = window.matchMedia('(min-width: 983px)');
     /**
+     * Refer to $CSS_MODE calls in global.css
+     * 
      * @param {string} modeName
      * @return {boolean}
      */
@@ -1378,7 +1380,7 @@
     }
 
     /**
-     * JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
+     * JS port of the cms_urlencode function used by the tempcode filter '&' (UL_ESCAPED)
      * @memberof $cms.filter
      * @param {string} urlPart
      * @param {boolean} [canTryUrlSchemes]

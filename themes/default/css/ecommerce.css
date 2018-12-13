@@ -43,7 +43,7 @@
 /*{+END}*/
 
 .local-payment-merchant-details-wrap {
-	border: 1px dashed {$GET,point_of_interest_border};
+	border: 1px solid {$GET,point_of_interest_border};
 	background-color: {$GET,point_of_interest_background};
 }
 

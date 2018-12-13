@@ -1463,7 +1463,7 @@
 
             _setActiveIndicatorElement: function _setActiveIndicatorElement(element) {
                 if (this._indicatorsElement) {
-                    var indicators = [].slice.call(this._indicatorsElement.querySelectorAll(Selector.ACTIVE));
+                    var indicators = this._indicatorsElement.querySelectorAll(Selector.ACTIVE);
                     indicators.forEach(function (indicator) {
                         indicator.classList.remove(ClassName.ACTIVE);
                     });
@@ -1554,7 +1554,13 @@
                         ], Number(this._config.animateHeight));
                     }
 
-                    $dom.one(activeElement, 'transitionend', function () {
+                    $dom.on(activeElement, 'transitionend', function listener(e) {
+                        if (e.target !== activeElement) {
+                            return; // Skip transitions on child elements
+                        }
+
+                        $dom.off(activeElement, 'transitionend', listener); // Listen once only
+
                         nextElement.classList.remove(directionalClassName);
                         nextElement.classList.remove(orderClassName);
                         nextElement.classList.add(ClassName.ACTIVE);

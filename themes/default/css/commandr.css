@@ -33,7 +33,7 @@
 	color: {$GET,commandr_text};
 	background-color: {$GET,commandr_background};
 	border: 0;
-	border-bottom: 1px dashed {$GET,commandr_border_color};
+	border-bottom: 1px solid {$GET,commandr_border_color};
 	font-family: monospace;
 }
 /*{+START,CSS_MODE,desktop}*/

@@ -15,22 +15,23 @@
 		<div class="cms-slider-scroll-button-caption">{!SCROLL_DOWN*}</div>
 	</a>
 	{+END}
+
 	<div class="cms-slider-inner">
 		{+START,LOOP,ITEMS}
 		<div class="cms-slider-item{+START,IF,{$EQ,{_loop_key},0}} active{+END}" {+START,IF,{$EQ,{BACKGROUND_TYPE},image}}style="background-image: url('{BACKGROUND_URL*}');"{+END}>
 			{+START,IF,{$EQ,{BACKGROUND_TYPE},video}}
-			{+START,IF,{$MOBILE}}
-				<img class="cms-slider-item-background" src="{BACKGROUND_THUMB_URL*}">
-			{+END}
-			{+START,IF,{$NOT,{$MOBILE}}}
-				<video class="cms-slider-item-background" autoplay="autoplay" loop="loop" muted="muted">
+				<img class="cms-slider-item-background display-mobile" src="{BACKGROUND_THUMB_URL*}">
+				<video class="cms-slider-item-background display-desktop" autoplay="autoplay" loop="loop" muted="muted">
 					<source src="{BACKGROUND_URL*}" type="video/mp4">
 				</video>
-			{+END}
 			{+END}
 			<div class="cms-slider-item-inner">
 				<div class="container">
 					{CONTENT_HTML}
+
+					{+START,IF_PASSED,EDIT_URL}
+					<a href="{EDIT_URL*}" class="cms-slider-item-edit-link">{+START,INCLUDE,ICON}NAME=admin/edit_this{+END} {!EDIT}</a>
+					{+END}
 				</div>
 			</div>
 		</div>

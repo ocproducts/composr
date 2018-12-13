@@ -9,7 +9,7 @@
 	<div data-tpl="blockMainComcodePageChildren">
 		<h2>{!PAGES}</h2>
 		{+START,LOOP,CHILDREN}
-			<div class="box"><div class="box-inner">
+			<div class="box"><div class="box-inner clearfix">
 				{$SET,PAGE,{$PREG_REPLACE,<h1[^<>]*>.*</h1>,,{$PREG_REPLACE,<figure[^<>]*>.*</figure>,,{$PREG_REPLACE,<div class="box staff-actions">.*</div>,,{$PREG_REPLACE,Comments.*,,{$LOAD_PAGE,{PAGE},{ZONE},1,1}},Us},Us},Us}}
 				{$SET,IMAGE,{$?,{$IN_STR,{$GET,PAGE},<img},{$PREG_REPLACE,^.*(<img[^>]*>).*$,\1,{$GET,PAGE},sU},}}
 
