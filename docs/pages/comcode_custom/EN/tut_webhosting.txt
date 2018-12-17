@@ -76,7 +76,7 @@ The remainder of this section details Composr's requirements. If you have troubl
    - MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data.
    - Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost.
    - The [tt]max_allowed_packet[/tt] server system setting must be at least [tt]16M[/tt].
- - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
+ - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (additional guidance is provided in this tutorial)
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
   - If you want URL Schemes on Apache, [tt]mod_rewrite[/tt] must be enabled
@@ -182,6 +182,82 @@ Some lines in the default PHP ini ([tt]/etc/php.ini[/tt]) file need changing:
 [tt]upload_max_filesize = 2M[/tt] --> [tt]upload_max_filesize = 500M[/tt]
 [tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
 [tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
+
+[title="2"]Web server compatibility[/title]
+
+Composr is only tested on, and optimised for, Apache and IIS.
+However in principle it should work on any web server software.
+
+There are a few notes to give, although the only one of likely major significance is the URL Schemes one..
+
+{|
+! Note
+! Apache-approach
+! IIS-approach
+! Comments
+|-
+| URL Schemes
+| [tt]recommended.htaccess[/tt] file
+| [tt]web.config[/tt] file
+| If URL Schemes are desired then Rewrite rules will need manually writing for other servers, which will require expertise
+|-
+| Gzip/caching optimisation rules
+| [tt]themes/*/templates_cached/.htaccess[/tt], [tt]uploads/.htaccess[/tt], [tt]recommended.htaccess[/tt]
+| [i]None[/i]
+| For other servers just manually configure your preferred rules as desired
+|-
+| PHP base-line configuration
+| [tt]recommended.htaccess[/tt] file (for PHP-module installations only)
+| [i]None[/i]
+| Default configuration is usually okay, but sample [tt].ini[/tt]-based configuration is provided in the [page="_SEARCH:faq"]FAQ[/page]
+|-
+| 404 error configuration
+| [tt]recommended.htaccess[/tt] file
+| [tt]web.config[/tt] file
+| For other servers just manually configure if routing to Composr's 404 page is desired
+|-
+| Efficient IP bans
+| Written into [tt].htaccess[/tt] file
+| [i]None[/i]
+| For non-Apache servers bans are enforced only within Composr's bootstrapping process (a little slower); bans may be manually added to web server configuration as desired
+|-
+| Disabling PHP in certain directories
+| [tt].htaccess[/tt] files strewn around
+| [i]No default support[/i]
+| This is an extra layer of security but is not required because Composr prohibits the upload of [tt].php[/tt] files by users and white-lists accepted file-types
+|-
+| Disabling URL access in certain directories
+| [tt].htaccess[/tt] files strewn around
+| [tt]web.config[/tt] file
+| This is an extra layer of security but is not required because executable PHP files that are not meant to be executed don't have any code that would activate by URL, and private files are protected by filename randomisation
+|-
+| Disabling unauthorised log file downloading
+| [tt]data_custom/.htaccess[/tt] file
+| [tt]web.config[/tt] file
+| The Composr error log is the only log that exists, and download is protected as it is a [tt].php[/tt] file; if additional logs are created manually then the web server should be hand configured to prohibit direct access
+|-
+| [tt]failover_apache_rewritemap_file[/tt] option
+| Supported
+| [i]None[/i]
+| Fail-over mode can work for Apache users without PHP even working, if this particular configuration is carefully implemented; this is not a feature supported on any other web server
+|-
+| [tt]MATURITY_FILTER_REQUESTED[/tt] symbol
+| Supported (for PHP-module installations only)
+| [i]No default support[/i]
+| As documented in the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial, there is a workaround for configuring other servers
+|-
+| Documentation
+| Provided
+| Provided
+| While documentation is written with respect to Apache and IIS, concepts can be adapted by experienced users
+|-
+| Workarounds to quirks
+| Implemented
+| Implemented
+| Quirks present in Apache and IIS are worked around where required (such as ModSecurity, or maximum cookie size); it is not expected significant quirks will exist in other servers that can't be resolved by configuring of said servers
+|}
+
+In terms of operating system support, Composr is only tested on, and optimised for, Windows, Mac, and Linux. It may work on other operating systems supporting by PHP, such as BSD variants -- so long as they are Unix-like.
 
 [title="2"]Forum drivers (advanced)[/title]
 

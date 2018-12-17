@@ -274,7 +274,7 @@ function cms_file_get_contents_safe($path)
  * @param  ?resource $write_to_file File handle to write to (null: do not do that)
  * @param  ?string $referer The HTTP referer (null: none)
  * @param  ?array $auth A pair: authentication username and password (null: none)
- * @param  float $timeout The timeout
+ * @param  float $timeout The timeout (for connecting/stalling, not for overall download time); usually it is rounded up to the nearest second, depending on the downloader implementation
  * @param  boolean $raw_post Whether to treat the POST parameters as a raw POST (rather than using MIME)
  * @param  ?array $files Files to send. Map between field to file path (null: none)
  * @param  ?array $extra_headers Extra headers to send (null: none)
@@ -1324,6 +1324,15 @@ function sort_maps_by__strlen($rows, $sort_key)
 {
     global $M_SORT_KEY;
     $M_SORT_KEY = $sort_key;
+
+    if (count($rows) < 2) {
+        if (($GLOBALS['DEV_MODE']) && (count($rows) == 1)) {
+            call_user_func('_strlen_sort', current($rows), current($rows)); // Just to make sure there's no crash bug in the sort function
+        }
+
+        return;
+    }
+
     @uasort($rows, '_strlen_sort'); // @ is to stop PHP bug warning about altered array contents when Tempcode copies are evaluated internally
 }
 
@@ -1371,6 +1380,14 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
     if ($preserve_order_if_possible) {
         merge_sort($rows, '_multi_sort');
     } else {
+        if (count($rows) < 2) {
+            if (($GLOBALS['DEV_MODE']) && (count($rows) == 1)) {
+                call_user_func('_multi_sort', current($rows), current($rows)); // Just to make sure there's no crash bug in the sort function
+            }
+
+            return;
+        }
+
         $first_key = key($rows);
         if ((is_integer($first_key)) && (array_unique(array_map('is_integer', array_keys($rows))) === array(true))) {
             usort($rows, '_multi_sort');
@@ -1390,6 +1407,10 @@ function merge_sort(&$array, $cmp_function = 'strcmp')
 {
     // Arrays of size<2 require no action.
     if (count($array) < 2) {
+        if (($GLOBALS['DEV_MODE']) && (count($array) == 1)) {
+            call_user_func($cmp_function, current($array), current($array)); // Just to make sure there's no crash bug in the sort function
+        }
+
         return;
     }
 

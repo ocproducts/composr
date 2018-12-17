@@ -315,7 +315,7 @@ class Hook_pointstore_permission
             return warn_screen($title, do_lang_tempcode('_CANT_AFFORD', escape_html(integer_format($cost)), escape_html(integer_format($points_left))));
         }
 
-        return do_template('POINTSTORE_CUSTOM_ITEM_SCREEN', array('_GUID' => '879bd8389dcd6b4b8e0ec610d76bcb35', 'TITLE' => $title, 'COST' => integer_format($cost), 'REMAINING' => integer_format($points_left - $cost), 'NEXT_URL' => $next_url));
+        return do_template('POINTSTORE_CUSTOM_ITEM_SCREEN', array('_GUID' => '879bd8389dcd6b4b8e0ec610d76bcb35', 'TITLE' => $title, 'ONE_PER_MEMBER' => false, 'COST' => integer_format($cost), 'REMAINING' => integer_format($points_left - $cost), 'NEXT_URL' => $next_url));
     }
 
     /**
