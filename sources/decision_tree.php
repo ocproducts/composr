@@ -145,7 +145,7 @@ class DecisionTree
 
         $details = $this->decision_tree[$tree_position];
 
-        $title = get_screen_title($details['title'], false);
+        $title = get_screen_title(protect_from_escaping($details['title']), false);
 
         // Verify we can be on this screen
         if (isset($details['expects_parameters'])) {
@@ -213,7 +213,7 @@ class DecisionTree
     {
         $details = $this->decision_tree[$tree_position];
 
-        $title = get_screen_title($details['title'], false);
+        $title = get_screen_title(protect_from_escaping($details['title']), false);
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
