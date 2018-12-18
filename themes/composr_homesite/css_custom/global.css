@@ -2,7 +2,7 @@
 
 {+START,IF,{$MOBILE}}
 	.website_body_actual { width: 640px; }
-	.website_body { position:relative; background:url('{$IMG;,composr_homesite/mobile/body-bg}') no-repeat left top; margin:0; padding:0; }
+	.website_body { position:relative; background:url('{$IMG;,xmas/body-bg-mobile}') no-repeat left top; margin:0; padding:0; }
 
 	/*Top*/
 	header { margin:0; padding:25px 0 0 0; overflow:hidden; background:url('{$IMG;,composr_homesite/mobile/colored-line}') repeat-x 0 0; }
