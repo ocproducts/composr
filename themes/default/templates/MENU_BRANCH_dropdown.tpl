@@ -26,7 +26,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{TOP_LEVEL}}}
-		<li class="dropdown-menu-item nlevel{$?,{CURRENT},current,non-current} has-img{+START,IF,{$GET,HAS_CHILDREN}}  has-children js-mousemove-pop-up-menu{+END}" data-vw-rand="{$GET*,RAND}">
+		<li class="dropdown-menu-item nlevel {$?,{CURRENT},current,non-current} has-img{+START,IF,{$GET,HAS_CHILDREN}} has-children js-mousemove-pop-up-menu{+END}" data-vw-rand="{$GET*,RAND}">
 			<a{+START,IF_NON_EMPTY,{URL}}{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}{+END} class="dropdown-menu-item-a nlevel-link{+START,IF_EMPTY,{URL}} non-link{+END}{+START,IF,{$GET,HAS_CHILDREN}} js-click-toggle-sub-menu drawer{+END}"{+START,IF_EMPTY,{URL}} href="#!"{+END}{+START,IF,{$GET,HAS_CHILDREN}} data-vw-sub-menu-id="{MENU|*}-dexpand-{$GET*,RAND}"{+END}>
 				{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}
 				<span class="dropdown-menu-item-caption">{CAPTION}</span>
