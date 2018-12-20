@@ -218,11 +218,12 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
-{$SET,max_container_width,1349px} /* 1366px minus scrollbar */
+{$SET,max_container_width,1349px} /* 1366px minus 17px scrollbar */
 {$SET,header_modern_height,90px}
 {$SET,stickied_header_modern_height,70px}
 {$SET,border_radius,4px}
 {$SET,border_radius_lg,6px}
+{$SET,font_weight_medium,500} /* Varies by font: 500 for Roboto, 600 for Open Sans */
 
 {$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.075}}
 {$SET,box_shadow,0 7px 14px {$COLOR_RGBA,{$GET,BW},0.15}}
@@ -286,7 +287,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-	margin-top: 0;
+	margin-top: 14px;
 	margin-bottom: 14px;
 }
 
@@ -567,7 +568,7 @@ h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
 	margin-bottom: 7px;
 	font-family: inherit;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	line-height: 1.2;
 	color: inherit;
 }
@@ -710,7 +711,7 @@ th>p:last-child, td>p:last-child {
 th, .fake-th {
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	text-align: center;
 }
 [aria-sort="ascending"].table-header-sorted, [aria-sort="descending"].table-header-sorted {
@@ -830,7 +831,7 @@ img.icon {
 		word-wrap: break-word;
 	}
 
-	.display-desktop {
+	.desktop-only {
 		display: none !important;
 	}
 
@@ -877,7 +878,7 @@ img.icon {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.display-mobile {
+	.mobile-only {
 		display: none !important;;
 	}
 
@@ -1086,7 +1087,7 @@ header h1 {
 }
 /*{+START,CSS_MODE,mobile}*/
 	header h1 {
-		width: 100%;
+		/*width: 100%;*/
 		text-align: center;
 	}
 /*{+END}*/
@@ -1137,26 +1138,22 @@ header h1 {
 	min-height: 60px;
 }
 
-html.has-homepage-slider .header-modern:not(.is-sticky) .header .logo-image-color,
-html:not(.is-scrolled).has-homepage-slider .header .logo-image-color {
+header.is-see-through .logo-image-color {
 	display: none;
 }
 
-html.has-homepage-slider .header-modern:not(.is-sticky) .header .logo-image-white,
-html:not(.is-scrolled).has-homepage-slider .header .logo-image-white {
-	display: block;
+header.is-see-through .logo-image-white {
+	display: block !important;
 }
 
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar {
+header.is-see-through.with-white-navbar {
 	color: {$GET,WB};
 	background: rgba(0, 0, 0, 0.5);
 	border-bottom: 1px solid transparent;
 	transition: background-color 0.15s ease-in-out, height 0.15s ease-in-out;
 }
 
-html:not(.has-homepage-slider) header.with-white-navbar,
-html.is-scrolled header.is-sticky.with-white-navbar {
+header:not(.is-see-through).with-white-navbar {
 	color: {$GET,a.link};
 	background-color: {$GET,WB};
 	border-bottom: 1px solid {$GET,standard_border};
@@ -1186,11 +1183,17 @@ html.is-scrolled .header-modern.is-sticky {
 	height: {$GET,stickied_header_modern_height};
 }
 
+.header-modern .header-inner,
 .header-modern .global-navigation,
 .header-modern .logo,
 .header-modern .logo-link,
 .header-modern .logo-image {
 	height: inherit;
+}
+
+.header-modern .logo-image {
+	max-width: 100%;
+	object-fit: contain;
 }
 
 .header-modern .global-navigation {
@@ -1208,7 +1211,7 @@ html.is-scrolled .header-modern.is-sticky {
 	align-items: center;
 }
 
-header.is-sticky {
+.header-modern.is-sticky {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -1216,25 +1219,27 @@ header.is-sticky {
 	z-index: 100;
 }
 
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .logo-link,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .logo-link,
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .top-button,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .top-button {
+.header-modern.is-touch-interface .menu-dropdown-content {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+}
+
+/*{+START,CSS_MODE,desktop}*/
+header.is-see-through.with-white-navbar .logo-link,
+header.is-see-through.with-white-navbar .menu-dropdown-item-a.toplevel-link,
+header.is-see-through.with-white-navbar .top-button {
 	color: {$GET,WB};
 }
 
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item.toplevel:hover > a,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
-html.has-homepage-slider header:not(.is-sticky).with-white-navbar .top-button:hover,
-html:not(.is-scrolled).has-homepage-slider header.with-white-navbar .top-button:hover {
+header.is-see-through.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+header.is-see-through.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+header.is-see-through.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
+header.is-see-through.with-white-navbar .top-button:hover {
 	color: {$COLOR_RGBA,{$GET,WB},0.8};
 }
+/*{+END}*/
 
 html.is-scrolled .header-modern.is-sticky.with-white-navbar {
 	box-shadow: {$GET,box_shadow_sm};
@@ -1260,14 +1265,25 @@ header.with-seed-navbar .top-button:hover {
 
 .global-navigation .menu-dropdown {
 	display: flex;
+}
+
+/*{+START,CSS_MODE,desktop}*/
+.global-navigation .menu-dropdown {
 	margin-right: 20px;
 }
+/*{+END}*/
 
 .global-navigation .top-buttons, 
 .global-navigation .top-form {
 	display: flex;
 	margin-left: auto;
 }
+
+/*{+START,CSS_MODE,mobile}*/
+.global-navigation-items > .top-buttons {
+	display: none; /* On mobile it is moved by JS to .menu-dropdown-content */
+}
+/*{+END}*/
 
 .top-button-wrapper {
 	display: flex;
@@ -1281,6 +1297,13 @@ header.with-seed-navbar .top-button:hover {
 	padding: 0 10px;
 	text-decoration: none;
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
+}
+
+.header.is-touch-interface .top-button-wrapper.is-popup-open .top-button {
+	border-left: 1px solid {$GET,standard_border};
+	border-right: 1px solid {$GET,standard_border};
+	background: {$GET,WB};
+	color: {$GET,body_color};
 }
 
 .top-button > .icon {
@@ -1325,6 +1348,10 @@ header.with-seed-navbar .top-button:hover {
 	width: auto;
 }
 
+.global-navigation .top-login .bock-top-login-links > li {
+	display: inline-block;
+}
+
 .global-navigation .top-login .bock-top-login-links a {
 	color: inherit;
 	text-decoration: none;
@@ -1337,6 +1364,168 @@ header.with-seed-navbar .top-button:hover {
 	width: 24px;
 	height: 24px;
 }
+
+@media(max-width: 540px) {
+	.global-navigation .top-login .bock-top-login-links .li-join {
+		display: none;
+	}
+
+	.global-navigation .top-login .bock-top-login-links .li-login-text {
+		display: none;
+	}
+}
+
+/* Side Header */
+
+/*{+START,CSS_MODE,mobile}*/
+.header-side {
+	display: flex;
+	transition: height 0.15s ease-in-out;
+	height: 90px;
+	position: relative;
+	z-index: 1; /* Force on top of the home hero slider */
+}
+
+.header-side .header-inner {
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.header-sticky-placeholder {
+	height: {$GET,header_modern_height};
+}
+
+.header-side ~ #slider-homepage-hero {
+	margin-top: -{$GET,header_modern_height};
+}
+
+.header-side ~ #slider-homepage-hero .cms-slider-item-inner {
+	padding-top: {$GET,header_modern_height};
+}
+
+html.is-scrolled .header-side.is-sticky {
+	height: {$GET,stickied_header_modern_height};
+}
+
+.header-side .header-inner,
+.header-side .global-navigation,
+.header-side .logo,
+.header-side .logo-link,
+.header-side .logo-image {
+	height: inherit;
+}
+
+.header-side .global-navigation {
+	display: flex;
+}
+
+.header-side .global-navigation-items {
+	display: flex;
+	margin-left: auto;
+}
+
+.header-side .global-navigation .top-form {
+	padding: 0;
+	display: flex;
+	align-items: center;
+}
+
+.header-side.is-sticky {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	z-index: 100;
+}
+
+.header-side.is-touch-interface .menu-dropdown-content {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+}
+/*{+END}*/
+
+/*{+START,CSS_MODE,desktop}*/
+html.has-header-side #main-website-inner {
+	padding-left: 64px; /* Must be equal to side-header's width */
+}
+
+.header-side .global-navigation-items {
+	position: relative;
+}
+
+.header-side .global-navigation .top-buttons {
+	justify-content: space-evenly;
+}
+
+.header-side .global-navigation .top-button-wrapper {
+	position: static;
+}
+
+.header-side.is-touch-interface .menu-dropdown .menu-dropdown-content {
+	display: block;
+}
+
+.header-side .menu-dropdown-toggle-btn {
+	display: none;
+}
+
+.header-side .global-navigation .menu-dropdown {
+	margin-right: 0;
+}
+
+.header-side.is-touch-interface .logo {
+	margin-bottom: 10px;
+}
+
+.header-side .logo-image {
+	max-width: 100%;
+	object-fit: contain;
+}
+
+.header-side::before {
+	content: '';
+	display: block;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 100;
+	visibility: hidden;
+	transition: visibility 0.4s ease-in-out, background-color 0.4s ease-in-out;
+	/* X shape cursor */
+	cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAADFBMVEUAAAD///////////84wDuoAAAAA3RSTlMAYM+UUHBYAAAAPUlEQVR4AeXSwQkAIAwEwVzsv2fh3mMF+ssOQhBnMzjZyYE0QpogDZCOEA2+jo5FuDpEveJecM9X7/b8PhcNlwDl/m+bagAAAABJRU5ErkJggg==),not-allowed;
+}
+
+.header-side.is-side-menu-open::before {
+	background: {$COLOR_RGBA,{$GET,BW},0.7};
+	visibility: visible;
+}
+
+.header-side .header-inner {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: {$GET,WB};
+	box-shadow: {$GET,box_shadow};
+	z-index: 100;
+	max-width: 100vw;
+	overflow: auto; /* Show scrollbars when exceeding screen height*/
+}
+
+.header-side .header-inner .btn-side-menu-toggler {
+	float: right;
+	margin: 10px;
+}
+
+.header-side .header-inner .global-navigation {
+	clear: both;
+}
+/*{+END}*/
 
 /* This is applied to the screen title, which is specially included on each screen; in the case of Comcode pages it is the first level 1 title. The screen title is by default an h1, but we define the styles separately so we can style this special title independently (there are lots of cool things we could do to it) */
 .screen-title {
@@ -1568,12 +1757,12 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	}
 
 	#panel-left {
-		float: left;
+		/*float: left;*/
 		padding-left: 2px;
 		padding-right: 1px;
 	}
 	#panel-right {
-		float: left;
+		/*float: left;*/
 		padding-right: 2px;
 		padding-left: 1px;
 	}
@@ -1585,6 +1774,15 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	.global-side-panel {
 		width: 100% !important;
 	}
+
+	#panel-left.global-side-panel {
+		margin-right: 0;
+	}
+	
+	#panel-right.global-side-panel {
+		margin-left: 0;
+	}
+
 	.global-side-panel.with-both-panels {
 		width: 50%;
 	}
@@ -2189,7 +2387,7 @@ p.red-alert {
 }
 
 .field-name {
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 }
 
 /* Used when a label is the only thing in front of a textarea/list */
@@ -2711,7 +2909,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .toggleable-tray-button {
 	transition: opacity 0.2s linear;
 	outline: 0;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	text-decoration: none;
 	/*color: inherit;*/
 	cursor: pointer;
@@ -3988,10 +4186,10 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	background-color: {$GET,point_of_interest_background} !important;
 	padding: 1em !important;
 	margin-top: 1em;
-	border: 1px dotted {$GET,slightly_seeded_complement_text} !important;
+	border: 1px solid {$GET,pale_border} !important;
 }
 .comments-wrapper .boxless-space .comment-wrapper .highlighted-post.box {
-	border-top: 1px dotted {$GET,slightly_seeded_complement_text} !important; /* Needs to be more explicit as boxless-space rules will remove borders */
+	border-top: 1px solid {$GET,pale_border} !important; /* Needs to be more explicit as boxless-space rules will remove borders */
 }
 
 .reviews-average {
@@ -4033,7 +4231,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 /*{+END}*/
 
 .comments-posting-form-inner th {
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	border-right: 1px solid {$GET,standard_border};
 	text-align: right;
 }
@@ -4322,9 +4520,9 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	opacity: 0.4;
 	transition: opacity 0.6s linear;
 	padding-right: 5px;
-	background-origin: content-box;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	min-height: 26px;
+	overflow: hidden; /* To contain the settings cog icon */
 }
 .staff-actions:hover, 
 .is-touch-enabled .staff-actions {
@@ -4345,7 +4543,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 
 /*{+START,CSS_MODE,mobile}*/
 	.staff-actions ul.horizontal-links {
-		display: block !important;
+		/*display: block !important;*/ /* <- causes setting cog icon to go to new line :( */
 	}
 /*{+END}*/
 .global-middle .staff-actions li {
@@ -6810,11 +7008,11 @@ div.proceed-button-left-2 {
 
 .top-button-popup {
 	position: absolute;
-	z-index: 2000;
 	color: {$GET,body_color};
 	top: 110%;
 	right: 0;
 	min-width: 20em;
+	z-index: 2000;
 }
 
 .top-button-popup .associated-links-block-group, 
@@ -7101,6 +7299,7 @@ div:hover>.edit-menu-link-inline, div:hover>.edit-page-link-inline {
 }
 
 .edit-menu-link-inline {
+	height: 1em;
 	margin-left: -16px;
 }
 

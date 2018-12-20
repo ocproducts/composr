@@ -169,6 +169,7 @@ Curved borders would be cool, but it does not work well with the carefully defin
 
 td.form-table-field-input .form-screen-input-multi-list {
 	display: inline-block; /* Prevent help icon moving to a new line */
+	min-width: 10em;
 }
 
 .form-table-field-name h3 {
@@ -382,7 +383,7 @@ span.validated-checkbox {
 	background: {$GET,danger};
 	border-radius: {$GET,border_radius};
 	font-size: 17px;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	padding: 3px;
 }
 

@@ -24,6 +24,10 @@ For example:
 	list-style: none;
 }
 
+.menu-dropdown-items.nlevel {
+	display: none;
+}
+
 .menu-dropdown-item-a,
 .menu-dropdown-item-a:hover {
 	display: block;
@@ -41,118 +45,169 @@ For example:
 }
 
 .menu-dropdown-item-a.toplevel-link {
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
+}
+
+.menu-dropdown .top-buttons {
+	justify-content: space-around;
+	position: relative;
+	border-top: 1px solid {$GET,standard_border};
+	background-color: {$GET,area_5_background};
+	transition: box-shadow  0.15s ease-in-out
+}
+
+.menu-dropdown.is-items-main-scrolled-inside .top-buttons {
+	box-shadow: {$GET,box_shadow};
+}
+
+.menu-dropdown .top-button {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.menu-dropdown .top-button-wrapper {
+	position: static;
+}
+
+.menu-dropdown .top-button-popup {
+	top: 100%;
+	right: 0;
+	left: 0;
+}
+
+.menu-dropdown .top-button-popup > .box-arrow {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.menu-dropdown .top-button-popup > .box-arrow::before {
+	display: none;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.menu-dropdown-toggle-btn {
-		text-decoration: none;
-		color: {$GET,WB} !important;
-		position: absolute;
-		padding: 0.75em;
-	}
+.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn {
+	text-decoration: none;
+	padding: 0.75em;
+	display: flex;
+	align-items: center;
+}
 
-	.menu-dropdown-toggle-btn .icon {
-		width: 24px;
-		height: 24px;
-	}
+.menu-dropdown.is-see-through .menu-dropdown-toggle-btn {
+	color: {$GET,WB};
+}
 
-	.menu-dropdown-toggle-btn:hover {
-		color: {$GET,WB};
-	}
+.menu-dropdown.is-see-through .menu-dropdown-toggle-btn:hover,
+.menu-dropdown.is-see-through .menu-dropdown-toggle-btn:focus {
+	color: {$COLOR_RGBA,{$GET,WB},0.8};
+}
 
-	.menu-dropdown-toggle-btn:hover span {
-		text-decoration: underline;
-	}
-
-	.menu-dropdown-toggle-btn * {
-		vertical-align: middle;
-	}
-
-	.menu-dropdown-toggle-btn::after {
-		padding-left: 0.25em;
-		content: "\25bc"; /* Downward triangle arrow */
-		vertical-align: middle;
-		font-size: 0.85em;
-	}
-
-	.menu-dropdown-content {
-		display: none;
-		position: absolute;
-		top: 100%;
-		width: 100%;
-		left: 0;
-		z-index: 1000;
-		background-color: {$GET,area_5_background};
-	}
-
-	.menu-dropdown-item {
-		border-top: 1px solid {$GET,standard_border};
-		border-left: 1px solid {$GET,standard_border};
-		color: {$GET,BW};
-	}
-
-	.menu-dropdown-item.nlevel {
-		margin-left: 2em;
-	}
-
-	.menu-dropdown-item.toplevel,
-	.menu-dropdown-item.nlevel {
-		background-color: {$GET,area_5_background};
-	}
-
-	.menu-dropdown-a.toplevel-link,
-	.menu-dropdown-a.nlevel-link {
-		padding: 1.2em 3em 1.2em 1em;
-		background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
-		background-size: 24px 24px;
-	}
-
-	.menu-dropdown-item.toplevel:hover,
-	.menu-dropdown-item.nlevel:hover,
-	.menu-dropdown a.toplevel-link:hover,
-	.menu-dropdown a.nlevel-link:hover,
-	.menu-dropdown-item.current > a.toplevel-link,
-	.menu-dropdown-item.current > a.nlevel-link {
-		background-color: {$GET,area_hover_2_background};
-	}
+.menu-dropdown.is-touch-interface .menu-dropdown-content {
+	box-shadow: {$GET,box_shadow};
+}
 /*{+END}*/
 
-/*{+START,CSS_MODE,desktop}*/
-	.menu-dropdown-toggle-btn {
+.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .icon {
+	width: 24px;
+	height: 24px;
+	margin-right: 0.5em;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn:hover {
+	text-decoration: none;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-content {
+	display: none;
+	width: 100%;
+	background-color: {$GET,area_5_background};
+	border-bottom: 1px solid {$GET,standard_border};
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-items-main {
+	overflow: auto; /* So we can make it scrollable for sticky header on mobile */
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item {
+	color: {$GET,BW};
+	background-color: {$GET,area_5_background};
+	border-top: 1px solid {$GET,standard_border};
+	border-left: 1px solid {$GET,standard_border};
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item-a {
+	padding: 1.2em 1em;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item.nlevel {
+	margin-left: 2em;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item.has-children > .menu-dropdown-item-a::after {
+	content: '';
+	float: right;
+	width: 0;
+	height: 0;
+	margin-top: 5px;
+	border-style: solid;
+	border-width: 6px 6px 0 6px; /* Downward triangle */
+	border-color: currentColor transparent transparent transparent;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item.has-children.is-expanded > .menu-dropdown-item-a::after {
+	border-width: 0 6px 6px 6px; /* Upward triangle */
+	border-color: transparent transparent currentColor transparent;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item-a:hover,
+.menu-dropdown.is-touch-interface .menu-dropdown-item.current > .menu-dropdown-item-a {
+	background-color: {$GET,area_hover_2_background};
+}
+
+@media (max-width: 540px) {
+	.menu-dropdown-toggle-btn .icon {
+		margin-right: 0
+	}
+
+	.menu-dropdown-toggle-btn .text {
 		display: none;
 	}
-	
-	.menu-dropdown-content {
+}
+
+/*{+START,CSS_MODE,desktop}*/
+	.menu-dropdown.is-hover-interface .menu-dropdown-toggle-btn {
+		display: none;
+	}
+
+	.menu-dropdown.is-hover-interface .menu-dropdown-content {
 		display: flex;
 	}
 
-	.menu-dropdown-items-main {
-		display: flex;
-	}
-	
-	.menu-dropdown-item.toplevel {
+	.menu-dropdown.is-hover-interface .menu-dropdown-items-main {
 		display: flex;
 	}
 
-	.menu-dropdown-item-a {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.toplevel {
+		display: flex;
+	}
+
+	.menu-dropdown.is-hover-interface .menu-dropdown-item-a {
 		padding: 0.5em;
 	}
 
-	.menu-dropdown-item.toplevel.menu-spacer {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.toplevel.menu-spacer {
 		height: 2.5em;
 		width: 1em;
 		padding: 0.5em;
 		float: left;
 	}
 
-	.menu-dropdown-item-a.toplevel-link {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item-a.toplevel-link {
 		display: flex;
 		align-items: center;
 		padding: 0 16px;
 	}
 
-	.menu-dropdown-item.toplevel.has-children > a::after {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.toplevel.has-children > a::after {
 		font-family: sans-serif;
 		content: "\025BC"; /* Downward triangle */
 		vertical-align: middle;
@@ -163,7 +218,7 @@ For example:
 		transform: scale(1, 0.6);
 	}
 
-	.menu-dropdown-item.nlevel.has-children > a::after {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel.has-children > a::after {
 		font-family: sans-serif;
 		content: '\025BA'; /* Rightward triangle */
 		float: right;
@@ -172,7 +227,7 @@ For example:
 		transform: scale(0.6, 1);
 	}
 
-	.menu-dropdown-items.nlevel {
+	.menu-dropdown.is-hover-interface .menu-dropdown-items.nlevel {
 		border-top: 1px solid {$GET,standard_border};
 		border-left: 1px solid {$GET,standard_border};
 		border-right: 1px solid {$GET,standard_border};
@@ -180,46 +235,46 @@ For example:
 		border-bottom-right-radius: {$GET,border_radius};
 	}
 
-	.menu-dropdown-items.nlevel .menu-dropdown-item.last > a {
+	.menu-dropdown.is-hover-interface .menu-dropdown-items.nlevel .menu-dropdown-item.last > a {
 		border-bottom-left-radius: {$GET,border_radius};
 		border-bottom-right-radius: {$GET,border_radius};
 	}
 
-	.menu-dropdown-items.nlevel .menu-dropdown-items.nlevel {
+	.menu-dropdown.is-hover-interface .menu-dropdown-items.nlevel .menu-dropdown-items.nlevel {
 		margin-top: -1px; /* To compensate for border size */
 		border-top-right-radius: {$GET,border_radius};
 	}
 
-	.menu-dropdown-items.nlevel .menu-dropdown-items.nlevel .menu-dropdown-item.first > a {
+	.menu-dropdown.is-hover-interface .menu-dropdown-items.nlevel .menu-dropdown-items.nlevel .menu-dropdown-item.first > a {
 		border-top-right-radius: {$GET,border_radius};
 	}
 
-	.menu-dropdown .nlevel li {
+	.menu-dropdown.is-hover-interface .menu-dropdown .nlevel li {
 		white-space: nowrap;
 	}
 
-	.menu-dropdown-item.nlevel > a:hover, 
-	.menu-dropdown-item.nlevel > a:focus, 
-	.menu-dropdown-item.nlevel:hover > a,
-	.menu-dropdown-item.nlevel.current > a {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel > a:hover, 
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel > a:focus, 
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel:hover > a,
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel.current > a {
 		background-color: {$GET,dropdown_menu_item_background_hover};
 		color: {$GET,a.hover};
 	}
 
-	.menu-dropdown-item.nlevel > a, 
-	.menu-dropdown-item.nlevel .menu-spacer {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel > a, 
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel .menu-spacer {
 		background-color: {$GET,dropdown_menu_item_background};
 		font-weight: normal;
 		border-bottom: 1px solid {$GET,standard_border};
 	}
 
-	.menu-dropdown .nlevel .menu-spacer {
+	.menu-dropdown.is-hover-interface .menu-dropdown .nlevel .menu-spacer {
 		display: block;
 		padding-right: 0;
 	}
 	
-	.menu-dropdown-item.nlevel > a, 
-	.menu-dropdown-item.nlevel > a:visited {
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel > a, 
+	.menu-dropdown.is-hover-interface .menu-dropdown-item.nlevel > a:visited {
 		color: {$GET,a.link};
 	}
 /*{+END}*/

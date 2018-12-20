@@ -4,7 +4,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{+START,IF,{$DESKTOP}}
-				<div class="top-login-controls display-desktop">
+				<div class="top-login-controls desktop-only">
 					<div class="accessibility-hidden"><label for="s-login-username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" class="form-control" />
 					<div class="accessibility-hidden"><label for="s-password">{!PASSWORD}</label></div>
@@ -20,8 +20,8 @@
 			{+END}
 
 			<ul class="horizontal-links with-icons bock-top-login-links">
-				{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/join{+END}{!_JOIN}</a></li>{+END}
-				<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {+START,IF,{$DESKTOP}}<span class="inline-desktop">{!OPTIONS}</span>{+END}<span class="inline-mobile">{!_LOGIN}</span></a></li>
+				{+START,IF_NON_EMPTY,{JOIN_URL}}<li class="li-join"><a href="{JOIN_URL*}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/join{+END}{!_JOIN}</a></li>{+END}
+				<li class="li-login"><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {+START,IF,{$DESKTOP}}<span class="desktop-only">{!OPTIONS}</span>{+END}<span class="li-login-text mobile-only">{!_LOGIN}</span></a></li>
 			</ul>
 		</form>
 	</div>

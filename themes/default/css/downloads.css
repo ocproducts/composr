@@ -109,8 +109,10 @@
 	}
 /*{+END}*/
 
-.download-stats th, .download-stats td {
+.download-stats-wrapper .download-stats th, 
+.download-stats-wrapper .download-stats td {
 	background-color: {$GET,area_background};
 	font-size: 0.85em;
 	padding: 0.5em;
+	border-color: {$GET,pale_border};
 }

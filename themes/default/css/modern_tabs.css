@@ -49,7 +49,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	padding-top: 1em;
 	padding-bottom: 1em;
 	cursor: pointer;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	text-align: center;
 	text-decoration: none;
 }
@@ -168,7 +168,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	display: block;
 	cursor: pointer;
 	min-width: 160px;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 }
 
 .modern-subtab-headers>div>a, .modern-subtab-headers>div>a:visited, .modern-subtab-headers>div>a:active, .modern-subtab-headers>div>a:hover {

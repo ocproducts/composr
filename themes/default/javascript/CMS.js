@@ -286,7 +286,7 @@
     /**
      * @memberof $cms
      * @param forceSession
-     * @return {Window.URLSearchParams}
+     * @return { URLSearchParams }
      */
     $cms.pageKeepSearchParams = function pageKeepSearchParams(forceSession) {
         var keepSp = new window.URLSearchParams();

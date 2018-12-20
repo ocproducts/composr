@@ -31,7 +31,7 @@
 
 .email-footer {
 	overflow: hidden;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 }
 
 .email-footer .email-copyright {

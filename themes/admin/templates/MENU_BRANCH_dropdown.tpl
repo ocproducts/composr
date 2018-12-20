@@ -17,11 +17,11 @@
 		{+START,IF_NON_EMPTY,{$GET,img}}<span class="menu-dropdown-item-icon">{$GET,img_html}</span>{+END}
 		<span class="menu-dropdown-item-caption">{CAPTION}</span>
 	</a>
-	{+START,IF,{$GET,HAS_CHILDREN}}{+START,IF,{$DESKTOP}}
+	{+START,IF,{$GET,HAS_CHILDREN}}
 	<ul aria-haspopup="true" class="menu-dropdown-items nlevel" style="display: none">
 		{CHILDREN}
 	</ul>
-	{+END}{+END}
+	{+END}
 </li>
 {+END}
 

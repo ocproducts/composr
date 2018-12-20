@@ -96,7 +96,7 @@
 
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="display-desktop js-form-marked-post-actions" autocomplete="off">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="desktop-only js-form-marked-post-actions" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 							<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
 							<div class="input-group">

@@ -7,6 +7,13 @@
 	margin: 0.5em 0;
 }
 
+.poll-answer-bar {
+	min-width: 20px;
+	height: 15px;
+	border-radius: {$GET,border_radius};
+	background: {$GET,seed} linear-gradient(to bottom, {$COLOR_DARKEN,{$GET,seed},15%} 0%,{$COLOR_DARKEN,{$GET,seed},15%} 50%,{$GET,seed} 50%,{$GET,seed} 100%);
+}
+
 .poll-answer img {
 	vertical-align: text-bottom;
 }

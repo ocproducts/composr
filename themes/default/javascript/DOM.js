@@ -1760,8 +1760,8 @@
 
     $dom.fx.speeds = {
         slow: 600,
+        normal: 400,
         fast: 200,
-
         // Default speed
         _default: 400
     };

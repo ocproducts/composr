@@ -13,7 +13,7 @@
 		</ul>
 	</div>
 
-	<div class="left" style="width: 54em">
+	<div class="left" style="max-width: 54em">
 		<h2>Tutorials</h2>
 
 		{+START,LOOP,TUTORIALS}

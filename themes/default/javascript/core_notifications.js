@@ -64,7 +64,7 @@
         }
     };
 
-    $cms.templates.blockTopNotifications = function blockTopNotifications(params, container) {
+    $cms.templates.blockTopNotifications_webNotifications = function (params, container) { // eslint-disable-line camelcase
         window.maxNotificationsToShow = Number(params.max) || 0;
 
         $dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
@@ -72,36 +72,8 @@
             notificationsMarkAllRead();
         });
 
-        $dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
-            e.preventDefault();
-            $cms.ui.toggleTopBox('web-notifications');
-        });
-
-        // Hide on click out
-        document.documentElement.addEventListener('click', function (e) {
-            var clickedIn = $dom.closest(e.target, '.js-clickout-hide-top-web-notifications', container);
-
-            if (!clickedIn) {
-                $cms.ui.toggleTopBox('web-notifications', true);
-            }
-        });
-
         $dom.on(container, 'click', '.js-click-find-url-tab', function () {
             $cms.ui.findUrlTab();
-        });
-
-        $dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
-            e.preventDefault();
-            $cms.ui.toggleTopBox('pts');
-        });
-
-        // Hide on click out
-        document.documentElement.addEventListener('click', function (e) {
-            var clickedIn = $dom.closest(e.target, '.js-clickout-hide-top-pts', container);
-
-            if (!clickedIn) {
-                $cms.ui.toggleTopBox('pts', true);
-            }
         });
 
         function notificationsMarkAllRead() {
@@ -115,6 +87,12 @@
             $cms.doAjaxRequest(url, _pollForNotifications);
             $cms.ui.toggleTopBox('web-notifications', true);
         }
+    };
+
+    $cms.templates.blockTopNotifications_pts = function (params, container) { // eslint-disable-line camelcase
+        $dom.on(container, 'click', '.js-click-find-url-tab', function () {
+            $cms.ui.findUrlTab();
+        });
     };
 
     $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
@@ -157,7 +135,7 @@
         });
     };
 
-    $cms.templates.notificationTypes_item = function notificationTypes_item(params, container) {
+    $cms.templates.notificationTypes_item = function notificationTypes_item(params, container) { // eslint-disable-line camelcase
         $dom.on(container, 'click', '.js-click-handle-ntype-tick', function (e, checkbox) {
             var raw = Number(checkbox.dataset.tpRaw) || 0,
                 parentRow = $dom.closest(checkbox, 'tr'),

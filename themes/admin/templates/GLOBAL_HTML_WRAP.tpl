@@ -167,12 +167,10 @@
 						{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 							{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button,1}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
 								<li>
-									<a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">
+									<a id="commandr-button" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE*}" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">
 										{+START,INCLUDE,ICON}
 											NAME=tool_buttons/commandr_on
 											ICON_CLASS=commandr-img
-											ICON_TITLE={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
-											ICON_DESCRIPTION={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
 											ICON_SIZE=24
 										{+END}
 									</a>
@@ -180,12 +178,10 @@
 							{+END}{+END}{+END}{+END}
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
 								<li>
-									<a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat">
+									<a id="software-chat-button" title="{!SOFTWARE_CHAT*}" accesskey="-" href="#!" class="js-global-click-load-software-chat">
 										{+START,INCLUDE,ICON}
 											NAME=tool_buttons/software_chat
 											ICON_CLASS=software-chat-img
-											ICON_TITLE={!SOFTWARE_CHAT}
-											ICON_DESCRIPTION={!SOFTWARE_CHAT}
 											ICON_SIZE=24
 										{+END}
 									</a>

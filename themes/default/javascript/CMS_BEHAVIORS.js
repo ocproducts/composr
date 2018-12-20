@@ -890,56 +890,6 @@
         }
     };
 
-    // Implementation for [data-sticky-header]
-    // Hides navbar when scrolling downwards, shows it again when scrolled upwards
-    $cms.behaviors.stickyHeader = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-sticky-header]'), 'behavior.stickyHeader');
-
-            els.forEach(function (stickyHeader) {
-                var lastScrollY = 0,
-                    navbarHeight = $dom.height(stickyHeader),
-                    movement = 0,
-                    lastDirection = 0;
-
-                window.addEventListener('scroll', function () {
-                    if (window.scrollY === 0) {
-                        movement = 0;
-                        stickyHeader.style.marginTop = '';
-                        return;
-                    }
-
-                    if ($cms.isCssMode('mobile')) {
-                        // Mobile: hide navbar on scroll down and re-show on scroll up
-                        var margin;
-
-                        movement += window.scrollY - lastScrollY;
-
-                        if (window.scrollY > lastScrollY) { // Scrolled down
-                            if (lastDirection !== 1) {
-                                movement = 0;
-                            }
-                            margin = -Math.min(Math.abs(movement), navbarHeight);
-                            stickyHeader.style.marginTop = margin + 'px';
-
-                            lastDirection = 1;
-                        } else { // Scrolled up
-                            if (lastDirection !== -1) {
-                                movement = 0;
-                            }
-                            margin = Math.min(Math.abs(movement), navbarHeight) - navbarHeight;
-                            stickyHeader.style.marginTop = margin + 'px';
-
-                            lastDirection = -1;
-                        }
-
-                        lastScrollY = window.scrollY;
-                    }
-                });
-            });
-        }
-    };
-
     // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
     // Mark ajaxified containers with [data-ajaxify="{...}"]
     // Mark links and forms to ajaxify with [data-ajaxify-target="1"] or specify a selector with the "targetsSelector" option

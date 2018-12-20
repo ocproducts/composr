@@ -162,6 +162,18 @@
          */
         delegate: function (eventName, selector, listener) {
             //$util.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+
+            if ((eventName === 'clickout') && !selector) {
+                var self = this;
+                $dom.on(document.documentElement, ('click.delegateEvents' + $util.uid(this)), function (e) {
+                    if (self.el && !self.el.contains(e.target)) {
+                        listener(e);
+                    }
+                });
+
+                return this;
+            }
+
             $dom.on(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
             return this;
         },
@@ -176,6 +188,7 @@
             if (this.el) {
                 $dom.off(this.el, '.delegateEvents' + $util.uid(this));
             }
+            $dom.off(document.documentElement, 'click.delegateEvents' + $util.uid(this)); // For 'clickout' event handlers if any
             return this;
         },
 
@@ -184,6 +197,11 @@
          * @method
          */
         undelegate: function (eventName, selector, listener) {
+            if ((eventName === 'clickout') && !selector) {
+                $dom.off(document.documentElement, ('click.delegateEvents' + $util.uid(this)));
+                return this;
+            }
+
             $dom.off(this.el, (eventName + '.delegateEvents' + $util.uid(this)), selector, listener);
             return this;
         },
@@ -1651,6 +1669,252 @@
         }
     });
 
+    $cms.views.Header = Header;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
+    function Header() {
+        Header.base(this, 'constructor', arguments);
+
+        this.resizeLogic();
+        window.addEventListener('orientationchange', this.resizeLogic.bind(this));
+        window.addEventListener('resize', this.resizeLogic.bind(this));
+
+        this.scrollLogic();
+        window.addEventListener('scroll', this.scrollLogic.bind(this));
+
+        if (this.isSticky()) {
+            this.improveStickyForMobile();
+        }
+    }
+
+    $util.inherits(Header, $cms.View, /**@lends $cms.views.Header#*/{ 
+        events: function () {
+            return {
+                'click .btn-side-menu-toggler': 'toggleSideMenu',
+                'click .js-click-toggle-button-popup': 'toggleTopButtonPopup',
+
+                'click': 'handleClicking',
+                'clickout': 'handleClicking'
+            };
+        },
+
+        isSticky: function () {
+            return this.el.classList.contains('is-sticky');
+        },
+
+        isSideMenu: function (andOpen) {
+            return this.el.classList.contains('header-side') && (!andOpen || this.el.classList.contains('is-side-menu-open'));
+        },
+
+        /**
+         * @returns { $cms.views.DropdownMenu }
+         */
+        getMenuDropdownView: function () {
+            return this.$('.menu-dropdown') ? $dom.data(this.$('.menu-dropdown')).viewObject : null;
+        },
+
+        toggleSideMenu: function () {
+            var sideMenuEl = this.$('.js-side-menu-toggleable'),
+                btn = this.$('.btn-side-menu-toggler');
+
+            if ($dom.isDisplayed(sideMenuEl)) {
+                this.el.classList.remove('is-side-menu-open');
+                $cms.setIcon(btn.querySelector('.icon'), 'menus/mobile_menu');
+                $dom.hide(sideMenuEl, 'normal');
+
+                if (this.getMenuDropdownView() != null) {
+                    this.getMenuDropdownView().closeAllSubMenus();
+                }
+            } else {
+                this.el.classList.add('is-side-menu-open');
+                $cms.setIcon(btn.querySelector('.icon'), 'admin/delete3');
+                $dom.show(sideMenuEl, 'normal');
+            }
+        },
+
+        handleClicking: function (e) {
+            var topButtonsEl = this.$('.top-buttons'),
+                topButtonWrappers = this.$$('.top-button-wrapper');
+
+            topButtonWrappers.forEach(function (wrapperEl) {
+                var popupEl = wrapperEl.querySelector('.top-button-popup');
+
+                if (wrapperEl.contains(e.target) || $dom.notDisplayed(popupEl)) {
+                    return;
+                }
+
+                wrapperEl.classList.remove('is-popup-open');
+                topButtonsEl.style.marginBottom = '';
+                $dom.hide(popupEl);
+            });
+
+            if (this.isSideMenu(true) && !this.$('.header-inner').contains(e.target)) {
+                this.toggleSideMenu();
+            }
+        },
+
+        toggleTopButtonPopup: function (e, btn) {
+            e && e.preventDefault();
+
+            var topButtonsEl = this.$('.top-buttons'),
+                wrapperEl = $dom.parent(btn, '.top-button-wrapper'),
+                popupEl = wrapperEl.querySelector('.top-button-popup');
+
+            if ($dom.notDisplayed(popupEl)) {
+                wrapperEl.classList.add('is-popup-open');
+
+                if (this.el.classList.contains('is-touch-interface')) {
+                    var popupElHeight;
+
+                    $dom.show(popupEl);
+                    popupElHeight = popupEl.offsetHeight;
+                    $dom.hide(popupEl);
+
+                    topButtonsEl.style.marginBottom = '';
+                    $dom.animate(topButtonsEl, {
+                        marginBottom: popupElHeight + 'px'
+                    });
+
+                    $dom.slideDown(popupEl);
+                } else {
+                    $dom.fadeIn(popupEl);
+                }
+            } else {
+                wrapperEl.classList.remove('is-popup-open');
+
+                if (this.el.classList.contains('is-touch-interface')) {
+                    $dom.animate(topButtonsEl, {
+                        marginBottom: 0
+                    });
+
+                    $dom.slideUp(popupEl);
+                } else {
+                    $dom.hide(popupEl);
+                }
+            }
+        },
+
+        resizeLogic: function () {
+            var menuEl = this.$('.menu-dropdown'), // For forwarding CSS classes
+                isTouchInterface = $cms.isCssMode('mobile') || this.el.classList.contains('header-side');
+
+            this.el.classList.toggle('is-touch-interface', isTouchInterface);
+            this.el.classList.toggle('is-hover-interface', !isTouchInterface);
+
+            menuEl && menuEl.classList.toggle('is-touch-interface', isTouchInterface);
+            menuEl && menuEl.classList.toggle('is-hover-interface', !isTouchInterface);
+
+            if (!this.$('.top-button-wrapper.is-popup-open') || !isTouchInterface) {
+                this.$('.top-buttons').style.marginBottom = '';
+            }
+
+            this.moveTopButtons();
+
+            if (this.wasLastCssModeMobile == null) {
+                // First time executing
+                this.onCssModeChange(true);
+            } else if (this.wasLastCssModeMobile !== $cms.isCssMode('mobile')) {
+                // CSS mode changed
+                this.onCssModeChange(false);
+            }
+
+            this.wasLastCssModeMobile = $cms.isCssMode('mobile');
+        },
+
+        onCssModeChange: function (/*initializing*/) {
+            if (this.el.classList.contains('header-side')) {
+                this.setupSideHeaderToggleables();
+            }
+        },
+
+        scrollLogic: function () {
+            var menuEl = this.$('.menu-dropdown'); // For forwarding CSS classes
+
+            if (
+                this.el.classList.contains('header-modern')
+                && document.documentElement.classList.contains('has-homepage-slider')
+                && (!this.el.classList.contains('is-sticky') || (window.scrollY === 0))
+            ) {
+                this.el.classList.add('is-see-through');
+                menuEl && menuEl.classList.add('is-see-through');
+            } else {
+                this.el.classList.remove('is-see-through');
+                menuEl && menuEl.classList.remove('is-see-through');
+            }
+        },
+
+        setupSideHeaderToggleables: function () {
+            if ($cms.isCssMode('mobile')) {
+                $dom.show(this.$('.js-side-menu-toggleable'));
+                $dom.hide(this.$('.menu-dropdown-content'));
+            } else {
+                $dom.hide(this.$('.js-side-menu-toggleable'));
+                $dom.show(this.$('.menu-dropdown-content'));
+            }
+        },
+
+        moveTopButtons: function () {
+            var topButtonsEl = document.querySelector('.top-buttons');
+
+            if (!topButtonsEl) {
+                return;
+            }
+
+            if (this.el.classList.contains('is-touch-interface') && (topButtonsEl.parentElement !== this.$('.menu-dropdown-content'))) {
+                $dom.prepend(this.$('.menu-dropdown-content'), topButtonsEl);
+            } else if (this.el.classList.contains('is-hover-interface') && (topButtonsEl.parentElement !== this.$('.global-navigation-items'))) {
+                $dom.append(this.$('.global-navigation-items'), topButtonsEl);
+            }
+        },
+
+        // Hides sticky header when scrolling downwards on mobile, shows it again when scrolled upwards
+        improveStickyForMobile: function () {
+            var lastScrollY = 0,
+                movement = 0,
+                lastDirection = 0,
+                that = this;
+
+            window.addEventListener('scroll', function () {
+                if ((window.scrollY === 0) || that.$('.menu-dropdown').classList.contains('is-expanded')) {
+                    movement = 0;
+                    that.el.style.marginTop = '';
+                    return;
+                }
+
+                var headerHeight = $dom.height(that.el);
+
+                if ($cms.isCssMode('mobile')) {
+                    // Mobile: hide navbar on scroll down and re-show on scroll up
+                    var margin;
+
+                    movement += window.scrollY - lastScrollY;
+
+                    if (window.scrollY > lastScrollY) { // Scrolled down
+                        if (lastDirection !== 1) {
+                            movement = 0;
+                        }
+                        margin = -Math.min(Math.abs(movement), headerHeight);
+                        that.el.style.marginTop = margin + 'px';
+
+                        lastDirection = 1;
+                    } else { // Scrolled up
+                        if (lastDirection !== -1) {
+                            movement = 0;
+                        }
+                        margin = Math.min(Math.abs(movement), headerHeight) - headerHeight;
+                        that.el.style.marginTop = margin + 'px';
+
+                        lastDirection = -1;
+                    }
+
+                    lastScrollY = window.scrollY;
+                }
+            });
+        }
+    });
 
     $cms.views.Menu = Menu;
     /**
@@ -1687,18 +1951,17 @@
 
         this.menuContentEl = this.$('.menu-dropdown-content');
 
-        var that = this,
-            isMobile = $cms.isCssMode('mobile'),
-            delegateEvents = function () {
-                if (isMobile !== $cms.isCssMode('mobile')) {
-                    // CSS mode changed, re-attach event listeners
-                    isMobile = $cms.isCssMode('mobile');
-                    that.delegateEvents();
-                }
-            };
+        this.wasTouch = this.isTouchInterface();
+        this.responsiveLogic();
+        window.addEventListener('orientationchange', this.responsiveLogic.bind(this));
+        window.addEventListener('resize', this.responsiveLogic.bind(this));
 
-        window.addEventListener('orientationchange', delegateEvents);
-        window.addEventListener('resize', $util.debounce(delegateEvents, 200));
+        var that = this;
+
+        this.$('.menu-dropdown-items-main').addEventListener('scroll', function () {
+            that.el.classList.toggle('is-items-main-scrolled-inside', (this.scrollTop > 0));
+        });
+
         window.addEventListener('beforeunload', function () {
             that.unsetActiveMenuInstantly();
         });
@@ -1706,39 +1969,158 @@
 
     $util.inherits(DropdownMenu, Menu, /**@lends $cms.views.DropdownMenu#*/{
         events: function () {
-            var mobileEvents = {
+            var bothEvents = {
+                'click': 'handleClicking',
+                'clickout': 'handleClicking',
+            };
+
+            var touchEvents = {
                 'click .menu-dropdown-toggle-btn': 'toggleMenuContent',
                 'click .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'toggleSubMenu',
             };
 
-            var desktopEvents = {
+            var mouseEvents = {
                 'mouseover .menu-dropdown-item': 'mouseoverMenuItem',
                 'mouseout .menu-dropdown-item': 'mouseoutMenuItem',
 
                 'focusin .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'focusinMenuItemAnchor',
                 'focusin .menu-dropdown-item-a': 'toggleFocusClassOnMenuItems',
                 'focusout .menu-dropdown-item-a': 'toggleFocusClassOnMenuItems',
-
-                'clickout': 'unsetActiveMenuInstantly',
             };
 
-            return $cms.isCssMode('mobile') ? mobileEvents : desktopEvents;
+            return Object.assign(bothEvents, (this.isTouchInterface() ? touchEvents : mouseEvents));
         },
 
-        /* Mobile methods */
+        /**
+         * NB: Menus won't always be inside a header element so this can return null.
+         * @returns { $cms.views.Header }
+         */
+        getHeaderView: function () {
+            var headerEl = $dom.parent(this.el, '.header');
+
+            return (headerEl != null) ? $dom.data(headerEl).viewObject : null;
+        },
+
+        isTouchInterface: function () {
+            return this.el.classList.contains('is-touch-interface');
+        },
+
+        responsiveLogic: function () {
+            this.maybeMakeMenuItemsScrollable();
+
+            if (this.wasTouch === this.isTouchInterface()) {
+                // Interface mode didn't change
+                return;
+            }
+
+            this.wasTouch = this.isTouchInterface();
+
+            /* Interface mode changed, re-attach event listeners etc. */
+
+            this.delegateEvents();
+
+            if (this.isTouchInterface()) {
+                this.$$('.menu-dropdown-items.nlevel').forEach(function (miList) {
+                    // Clear up remnants of hover dropdown opening CSS
+                    Object.assign(miList.style, {
+                        position: '',
+                        left: '',
+                        minWidth: '',
+                        top: '',
+                        zIndex: '',
+                        display: ''
+                    });
+                });
+            } else {
+                this.$$('.menu-dropdown-items.nlevel').forEach(function (miList) {
+                    // Clear up remnants of touch dropdown opening CSS
+                    miList.style.display = '';
+                });
+
+                this.$$('.menu-dropdown-item.is-expanded').forEach(function (menuItem) {
+                    menuItem.classList.remove('is-expanded');
+                });
+
+                $cms.setIcon(this.$('.menu-dropdown-toggle-btn .icon'), 'menus/mobile_menu');
+
+                this.menuContentEl.style.removeProperty('display');
+            }
+        },
+
+        maybeMakeMenuItemsScrollable: function () {
+            var mainMenuItemsList = this.$('.menu-dropdown-items-main');
+
+            if ((this.getHeaderView() != null) && this.getHeaderView().isSticky() && $cms.isCssMode('mobile')) {
+                // Need to make the menu items section scrollable on mobile for when it exceeds screen size 
+                var top = mainMenuItemsList.getBoundingClientRect().top + 'px';
+                mainMenuItemsList.style.maxHeight = 'calc(100vh - ' + top + ')';
+            } else {
+                mainMenuItemsList.style.maxHeight = '';
+            }
+        },
+
+        handleClicking: function (e) {
+            if (!this.isTouchInterface()) {
+                if (!this.el.contains(e.target)) {
+                    this.unsetActiveMenuInstantly();
+                }
+            }
+        },
+
+        /* Touch methods */
 
         toggleMenuContent: function (e) {
             e.preventDefault();
-            $dom.toggle(this.menuContentEl);
+
+            if ($dom.isDisplayed(this.menuContentEl)) {
+                $dom.slideUp(this.menuContentEl);
+                this.closeAllSubMenus(this.el);
+                $cms.setIcon(this.$('.menu-dropdown-toggle-btn .icon'), 'menus/mobile_menu');
+                this.el.classList.remove('is-expanded');
+            } else {
+                $dom.slideDown(this.menuContentEl);
+                $cms.setIcon(this.$('.menu-dropdown-toggle-btn .icon'), 'admin/delete3');
+                this.el.classList.add('is-expanded');
+            }
+
+            this.maybeMakeMenuItemsScrollable()
         },
 
         toggleSubMenu: function (e, target) {
-            var popupEl = $dom.parent(target, '.menu-dropdown-item').querySelector('.menu-dropdown-items');
+            var parentMenuItem = $dom.parent(target, '.menu-dropdown-item'),
+                miList = parentMenuItem.querySelector('.menu-dropdown-items');
+
             e.preventDefault();
-            $dom.toggle(popupEl);
+
+            if ($dom.isDisplayed(miList)) {
+                $dom.slideUp(miList);
+                parentMenuItem.classList.remove('is-expanded');
+                this.closeAllSubMenus(miList);
+            } else {
+                $dom.slideDown(miList);
+                parentMenuItem.classList.add('is-expanded');
+                this.closeAllSubMenus(this.el, miList);
+            }
         },
 
-        /* Desktop methods */
+        closeAllSubMenus: function (parentEl, exceptHavingEl) {
+            var promises = [];
+
+            parentEl || (parentEl = this.el);
+
+            parentEl.querySelectorAll('.menu-dropdown-item.is-expanded').forEach(function (menuItem) {
+                var miList = menuItem.querySelector('.menu-dropdown-items');
+
+                if (!exceptHavingEl || !menuItem.contains(exceptHavingEl)) {
+                    promises.push($dom.slideUp(miList));
+                    menuItem.classList.remove('is-expanded');
+                }
+            });
+
+            return Promise.all(promises);
+        },
+
+        /* Mouse methods */
 
         mouseoverMenuItem: function (e, target) {
             if (target.contains(e.relatedTarget)) {
@@ -1753,7 +2135,6 @@
             if (target.classList.contains('has-children')) {
                 popupMenu(target.querySelector('.menu-dropdown-items'), target.classList.contains('toplevel') ? 'below' : 'right', this.menuId);
             }
-
         },
 
         mouseoutMenuItem: function (e, target) {

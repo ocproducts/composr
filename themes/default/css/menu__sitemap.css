@@ -40,7 +40,7 @@
 
 .menu-type--sitemap ul li {
 	margin-left: 29px;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 }
 
 .menu-type--sitemap>ul>li>span>a.toggleable-tray-button .icon {

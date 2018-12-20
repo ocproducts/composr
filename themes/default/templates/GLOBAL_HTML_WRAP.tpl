@@ -22,6 +22,9 @@
 			{+START,IF,{$EQ,{$THEME_OPTION,theme_header_type},modern}}
 				{+START,INCLUDE,HEADER_MODERN}{+END}
 			{+END}
+			{+START,IF,{$EQ,{$THEME_OPTION,theme_header_type},side}}
+				{+START,INCLUDE,HEADER_SIDE}{+END}
+			{+END}
 			{+START,IF,{$EQ,{$THEME_OPTION,theme_header_type},classic}}
 				{+START,INCLUDE,HEADER_CLASSIC}{+END}
 			{+END}
@@ -118,8 +121,8 @@
 						<li>
 							<a rel="back_to_top" accesskey="g" href="#" title="{!BACK_TO_TOP}">
 								{+START,INCLUDE,ICON}
-								NAME=tool_buttons/top
-								SIZE=24
+									NAME=tool_buttons/top
+									SIZE=24
 								{+END}
 							</a>
 						</li>
@@ -128,9 +131,9 @@
 						<li>
 							<a id="realtime-rain-button" data-btn-load-realtime-rain="{}" title="{!realtime_rain:REALTIME_RAIN}" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}">
 								{+START,INCLUDE,ICON}
-								NAME=tool_buttons/realtime_rain_on
-								ICON_ID=realtime-rain-img
-								ICON_SIZE=24
+									NAME=tool_buttons/realtime_rain_on
+									ICON_ID=realtime-rain-img
+									ICON_SIZE=24
 								{+END}
 							</a>
 						</li>
@@ -138,35 +141,30 @@
 						{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 						{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button,1}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
 						<li>
-							<a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">
+							<a id="commandr-button" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE*}" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">
 								{+START,INCLUDE,ICON}
-								NAME=tool_buttons/commandr_on
-								ICON_CLASS=commandr-img
-								ICON_TITLE={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
-								ICON_DESCRIPTION={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
-								ICON_SIZE=24
+									NAME=tool_buttons/commandr_on
+									ICON_CLASS=commandr-img
+									ICON_SIZE=24
 								{+END}
 							</a>
 						</li>
 						{+END}{+END}{+END}{+END}
 						<li>
-							<a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}">
+							<a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}" title="{!ADMIN_ZONE*}">
 								{+START,INCLUDE,ICON}
-								NAME=menu/adminzone/adminzone
-								ICON_TITLE={!ADMIN_ZONE}
-								ICON_SIZE=24
+									NAME=menu/adminzone/adminzone
+									ICON_SIZE=24
 								{+END}
 							</a>
 						</li>
 						{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
 						<li>
-							<a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat">
+							<a id="software-chat-button" title="{!SOFTWARE_CHAT*}" accesskey="-" href="#!" class="js-global-click-load-software-chat">
 								{+START,INCLUDE,ICON}
-								NAME=tool_buttons/software_chat
-								ICON_CLASS=software-chat-img
-								ICON_TITLE={!SOFTWARE_CHAT}
-								ICON_DESCRIPTION={!SOFTWARE_CHAT}
-								ICON_SIZE=24
+									NAME=tool_buttons/software_chat
+									ICON_CLASS=software-chat-img
+									ICON_SIZE=24
 								{+END}
 							</a>
 						</li>
@@ -223,11 +221,11 @@
 								{+END}
 								{+START,IF,{$CONFIG_OPTION,bottom_show_privacy_link}}
 								<li><a data-open-as-overlay="{}" rel="site_privacy" accesskey="8" href="{$PAGE_LINK*,_SEARCH:privacy}">{!PRIVACY}</a></li>
-							{+END}
-							{+START,IF,{$CONFIG_OPTION,bottom_show_feedback_link}}
+								{+END}
+								{+START,IF,{$CONFIG_OPTION,bottom_show_feedback_link}}
 								<li><a rel="site_contact" accesskey="9" href="{$PAGE_LINK*,_SEARCH:feedback:redirect={$SELF_URL&,1}}">{!_FEEDBACK}</a></li>
-							{+END}
-							{+START,IF,{$NOR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
+								{+END}
+								{+START,IF,{$NOR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
 								<li><form title="{!LOGOUT}" class="inline" method="post" action="{$PAGE_LINK*,_SELF:login:logout}" autocomplete="off"><button class="button-hyperlink" type="submit" title="{!_LOGOUT,{$USERNAME*}}">{!LOGOUT}</button></form></li>
 								{+END}
 								{+START,IF,{$OR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
@@ -236,8 +234,8 @@
 								{+START,IF,{$THEME_OPTION,mobile_support}}
 								{+START,IF,{$MOBILE}}
 								<li><a href="{$SELF_URL*,1,0,0,keep_mobile=0}">{!NONMOBILE_VERSION}</a>
-									{+END}
-									{+START,IF,{$DESKTOP}}
+								{+END}
+								{+START,IF,{$DESKTOP}}
 								<li><a href="{$SELF_URL*,1,0,0,keep_mobile=1}">{!MOBILE_VERSION}</a></li>
 								{+END}
 								{+END}

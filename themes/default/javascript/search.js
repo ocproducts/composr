@@ -105,19 +105,5 @@
         $dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e, searchType);
         });
-
-        $dom.on(container, 'click', '.js-click-toggle-top-search', function (e) {
-            e.preventDefault();
-            $cms.ui.toggleTopBox('top-search');
-        });
-
-        // Hide on click out
-        document.documentElement.addEventListener('click', function (e) {
-            var clickedInside = container.contains(e.target);
-
-            if (!clickedInside) {
-                $cms.ui.toggleTopBox('top-search', true);
-            }
-        });
     };
 }(window.$cms, window.$util, window.$dom));

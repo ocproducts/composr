@@ -20,10 +20,12 @@
 		{+START,LOOP,ITEMS}
 		<div class="cms-slider-item{+START,IF,{$EQ,{_loop_key},0}} active{+END}" {+START,IF,{$EQ,{BACKGROUND_TYPE},image}}style="background-image: url('{BACKGROUND_URL*}');"{+END}>
 			{+START,IF,{$EQ,{BACKGROUND_TYPE},video}}
-				<img class="cms-slider-item-background display-mobile" src="{BACKGROUND_THUMB_URL*}">
-				<video class="cms-slider-item-background display-desktop" autoplay="autoplay" loop="loop" muted="muted">
+				<img class="cms-slider-item-background {+START,IF,{$DESKTOP}}mobile-only{+END}" src="{BACKGROUND_THUMB_URL*}">
+				{+START,IF,{$DESKTOP}}
+				<video class="cms-slider-item-background desktop-only" autoplay="autoplay" loop="loop" muted="muted">
 					<source src="{BACKGROUND_URL*}" type="video/mp4">
 				</video>
+				{+END}
 			{+END}
 			<div class="cms-slider-item-inner">
 				<div class="container">

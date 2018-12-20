@@ -37,7 +37,7 @@ class Hook_config_theme_header_type
             'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_theme_header_type',
             'shared_hosting_restricted' => '0',
-            'list_options' => 'modern|classic',
+            'list_options' => 'modern|side|classic',
             'order_in_category_group' => 2,
             'theme_override' => true,
 
