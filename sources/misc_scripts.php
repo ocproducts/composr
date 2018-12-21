@@ -459,7 +459,7 @@ function iframe_script()
     $page = get_page_name();
     $ajax = (get_param_integer('ajax', 0) == 1);
 
-    process_url_monikers($page);
+    process_url_monikers(true, true, $page);
 
     // AJAX prep
     if ($ajax) {

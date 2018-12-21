@@ -108,7 +108,7 @@ class Block_main_include_module
         push_output_state();
 
         // Do it!
-        process_url_monikers($attributes['page'], false);
+        process_url_monikers(false, false, $attributes['page']);
         $ret = request_page($attributes['page'], false, $zone, null, true);
         $ret->handle_symbol_preprocessing();
         $_out = $ret->evaluate(); // So things are evaluated in the right context
