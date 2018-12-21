@@ -504,7 +504,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             $_bit = explode('=', $bit, 2);
 
             if (count($_bit) == 2) {
-                $attributes[$_bit[0]] = cms_url_decode_post_process($_bit[1]);
+                $attributes[$_bit[0]] = cms_url_decode_post_process(urldecode($_bit[1]));
                 if (strpos($attributes[$_bit[0]], ':') !== false) {
                     if ($perfect_only) {
                         return ''; // Could not convert this URL to a page-link, because it contains a colon
