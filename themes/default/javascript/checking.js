@@ -884,7 +884,7 @@
         alreadyShownMessage = Boolean(alreadyShownMessage);
 
         var value = field.value,
-            errorEl = $dom.$('#error_' + field.id);
+            errorEl = $dom.$('#error-' + field.id);
 
         if ((value.trim() === '') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
             if (errorEl != null) {
