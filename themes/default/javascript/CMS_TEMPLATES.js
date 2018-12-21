@@ -291,21 +291,7 @@
 
     $cms.templates.blockTopPersonalStats = function () {};
 
-    $cms.templates.blockTopLanguage = function (params, container) {
-        $dom.on(container, 'click', '.js-click-toggle-top-language', function (e) {
-            e.preventDefault();
-            $cms.ui.toggleTopBox('top-language');
-        });
-
-        // Hide on click out
-        document.documentElement.addEventListener('click', function (e) {
-            var clickedInside = container.contains(e.target);
-
-            if (!clickedInside) {
-                $cms.ui.toggleTopBox('top-language', true);
-            }
-        });
-    };
+    $cms.templates.blockTopLanguage = function () {};
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
         $dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {

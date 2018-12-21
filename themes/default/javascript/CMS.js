@@ -810,7 +810,7 @@
      * @memberof $cms
      * @param snippetHook
      * @param [post]
-     * @returns { Promise|string }
+     * @returns { Promise }
      */
     $cms.loadSnippet = function loadSnippet(snippetHook, post) {
         snippetHook = strVal(snippetHook);

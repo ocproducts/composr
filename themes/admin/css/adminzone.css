@@ -87,9 +87,9 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 /*{+END}*/
 
 .global-messages .box---message {
-	background-image: none !important;
-	background-color: #FFF !important;
-	border-color: #bdcde6 !important;
+	/*background-image: none !important;*/
+	/*background-color: #FFF !important;*/
+	/*border-color: #bdcde6 !important;*/
 	margin-top: 0;
 }
 
@@ -98,7 +98,8 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	margin-bottom: 0.75em;
 }
 
-.box---message .global-message>span, .box---message .global-message>p {
+.box---message .global-message > span, 
+.box---message .global-message > p {
 	padding-top: 0;
 }
 

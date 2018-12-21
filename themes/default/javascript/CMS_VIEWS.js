@@ -640,7 +640,7 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_cancel} ' + this.cancelButton,
-                        'className': 'btn btn-primary btn-scri buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                        'className': 'btn btn-secondary btn-scri buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
@@ -1672,7 +1672,7 @@
     $cms.views.Header = Header;
     /**
      * @memberof $cms.views
-     * @class
+     * @class Header
      * @extends $cms.View
      */
     function Header() {
@@ -1693,11 +1693,11 @@
     $util.inherits(Header, $cms.View, /**@lends $cms.views.Header#*/{ 
         events: function () {
             return {
-                'click .btn-side-menu-toggler': 'toggleSideMenu',
-                'click .js-click-toggle-button-popup': 'toggleTopButtonPopup',
-
                 'click': 'handleClicking',
-                'clickout': 'handleClicking'
+                'clickout': 'handleClicking',
+
+                'click .btn-side-menu-toggler': 'toggleSideMenu',
+                'click .js-click-toggle-button-popup': 'toggleTopButtonPopup'
             };
         },
 
@@ -1712,50 +1712,58 @@
         /**
          * @returns { $cms.views.DropdownMenu }
          */
-        getMenuDropdownView: function () {
+        getDropdownMenuView: function () {
             return this.$('.menu-dropdown') ? $dom.data(this.$('.menu-dropdown')).viewObject : null;
         },
 
         toggleSideMenu: function () {
             var sideMenuEl = this.$('.js-side-menu-toggleable'),
-                btn = this.$('.btn-side-menu-toggler');
+                btn = this.$('.btn-side-menu-toggler'),
+                promise;
 
             if ($dom.isDisplayed(sideMenuEl)) {
                 this.el.classList.remove('is-side-menu-open');
                 $cms.setIcon(btn.querySelector('.icon'), 'menus/mobile_menu');
-                $dom.hide(sideMenuEl, 'normal');
+                promise = $dom.hide(sideMenuEl, 'normal');
 
-                if (this.getMenuDropdownView() != null) {
-                    this.getMenuDropdownView().closeAllSubMenus();
+                if (this.getDropdownMenuView() != null) {
+                    this.getDropdownMenuView().closeAllSubMenus();
                 }
             } else {
                 this.el.classList.add('is-side-menu-open');
                 $cms.setIcon(btn.querySelector('.icon'), 'admin/delete3');
-                $dom.show(sideMenuEl, 'normal');
+                promise = $dom.show(sideMenuEl, 'normal');
             }
+
+            return promise;
         },
 
         handleClicking: function (e) {
             var topButtonsEl = this.$('.top-buttons'),
                 topButtonWrappers = this.$$('.top-button-wrapper');
 
-            topButtonWrappers.forEach(function (wrapperEl) {
-                var popupEl = wrapperEl.querySelector('.top-button-popup');
+            if (topButtonsEl != null) {
+                topButtonWrappers.forEach(function (wrapperEl) {
+                    var popupEl = wrapperEl.querySelector('.top-button-popup');
 
-                if (wrapperEl.contains(e.target) || $dom.notDisplayed(popupEl)) {
-                    return;
-                }
+                    if (wrapperEl.contains(e.target) || $dom.notDisplayed(popupEl)) {
+                        return;
+                    }
 
-                wrapperEl.classList.remove('is-popup-open');
-                topButtonsEl.style.marginBottom = '';
-                $dom.hide(popupEl);
-            });
+                    wrapperEl.classList.remove('is-popup-open');
+                    $dom.finish(topButtonsEl).then(function () {
+                        topButtonsEl.style.marginBottom = '';
+                    });
+                    $dom.hide(popupEl);
+                });
+            }
 
             if (this.isSideMenu(true) && !this.$('.header-inner').contains(e.target)) {
                 this.toggleSideMenu();
             }
         },
 
+        // Previously: $cms.ui.toggleTopBox()
         toggleTopButtonPopup: function (e, btn) {
             e && e.preventDefault();
 
@@ -1808,7 +1816,9 @@
             menuEl && menuEl.classList.toggle('is-hover-interface', !isTouchInterface);
 
             if (!this.$('.top-button-wrapper.is-popup-open') || !isTouchInterface) {
-                this.$('.top-buttons').style.marginBottom = '';
+                if (this.$('.top-buttons')) {
+                    this.$('.top-buttons').style.marginBottom = '';
+                }
             }
 
             this.moveTopButtons();
@@ -1857,7 +1867,7 @@
         },
 
         moveTopButtons: function () {
-            var topButtonsEl = document.querySelector('.top-buttons');
+            var topButtonsEl = this.$('.top-buttons');
 
             if (!topButtonsEl) {
                 return;
@@ -1878,7 +1888,7 @@
                 that = this;
 
             window.addEventListener('scroll', function () {
-                if ((window.scrollY === 0) || that.$('.menu-dropdown').classList.contains('is-expanded')) {
+                if ((window.scrollY === 0) || (that.$('.menu-dropdown') && that.$('.menu-dropdown').classList.contains('is-expanded'))) {
                     movement = 0;
                     that.el.style.marginTop = '';
                     return;

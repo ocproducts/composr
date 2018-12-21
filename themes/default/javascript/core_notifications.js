@@ -85,7 +85,6 @@
             url += '&forced_update=1';
             url += $cms.keep();
             $cms.doAjaxRequest(url, _pollForNotifications);
-            $cms.ui.toggleTopBox('web-notifications', true);
         }
     };
 

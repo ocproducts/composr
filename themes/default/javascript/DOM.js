@@ -139,7 +139,7 @@
                 el = $dom.$(elementOrSelector);
 
                 if (el == null) {
-                    throw new Error('elArg(): No element found for selector "' + strVal(elementOrSelector) + '".');
+                    throw new Error('$dom.elArg(): No element found for selector "' + strVal(elementOrSelector) + '".');
                 }
 
                 return el;
@@ -1541,8 +1541,8 @@
         priv.queue || (priv.queue = []);
 
         var doAnimation = function () {
-            var done = [],
-                always = [],
+            var onDone = [],
+                onAlways = [],
                 empty = !$util.hasEnumerable(props),
                 computed = getStyles(el),
                 startKeyframe = {},
@@ -1627,7 +1627,7 @@
 
                 if (origOverflow != null) {
                     el.style.overflow = 'hidden';
-                    always.push(function () {
+                    onAlways.push(function () {
                         el.style.overflow = origOverflow[0];
                         el.style.overflowX = origOverflow[1];
                         el.style.overflowY = origOverflow[2];
@@ -1655,7 +1655,7 @@
                     }
 
                     // eslint-disable-next-line no-loop-func
-                    done.push(function () {
+                    onDone.push(function () {
                         // The final step of a "hide" animation is actually hiding the element
                         if ( !hidden ) {
                             showHide( el );
@@ -1730,12 +1730,12 @@
 
                     animation.cancel(); // Remove animation fill (doesn't fire cancel event at this stage).
 
-                    done.forEach(function (func) {
+                    onDone.forEach(function (func) {
                         func();
                     });
                 }
 
-                always.forEach(function (func) {
+                onAlways.forEach(function (func) {
                     func();
                 });
 
@@ -2163,8 +2163,8 @@
             destY = $dom.findPosY($dom.$id(destY), true);
         }
 
-        if (!_recursing && document.querySelector('header.is-sticky')) {
-            destY -= document.querySelector('header.is-sticky').offsetHeight;
+        if (!_recursing && document.querySelector('.header.is-sticky')) {
+            destY -= document.querySelector('.header.is-sticky').offsetHeight;
         }
 
         if (destY < 0) {

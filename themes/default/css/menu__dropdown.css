@@ -109,7 +109,10 @@ For example:
 .menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .icon {
 	width: 24px;
 	height: 24px;
-	margin-right: 0.5em;
+}
+
+.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .text {
+	margin-left: 0.5em;
 }
 
 .menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn:hover {
@@ -132,6 +135,7 @@ For example:
 	background-color: {$GET,area_5_background};
 	border-top: 1px solid {$GET,standard_border};
 	border-left: 1px solid {$GET,standard_border};
+	transition: background-color 0.15s ease-in-out;
 }
 
 .menu-dropdown.is-touch-interface .menu-dropdown-item-a {
@@ -158,17 +162,27 @@ For example:
 	border-color: transparent transparent currentColor transparent;
 }
 
-.menu-dropdown.is-touch-interface .menu-dropdown-item-a:hover,
-.menu-dropdown.is-touch-interface .menu-dropdown-item.current > .menu-dropdown-item-a {
+/*.menu-dropdown.is-touch-interface .menu-dropdown-item-a:hover,*/
+/*.menu-dropdown.is-touch-interface .menu-dropdown-item.current > .menu-dropdown-item-a {*/
+	/*background-color: {$GET,area_hover_2_background};*/
+/*}*/
+
+.menu-dropdown.is-touch-interface .menu-dropdown-item:hover,
+.menu-dropdown.is-touch-interface .menu-dropdown-item.current,
+.menu-dropdown.is-touch-interface .menu-dropdown-item.ie-expanded {
 	background-color: {$GET,area_hover_2_background};
 }
 
-@media (max-width: 540px) {
-	.menu-dropdown-toggle-btn .icon {
-		margin-right: 0
+.menu-dropdown.is-touch-interface .menu-dropdown-item:focus-within {
+	background-color: {$GET,area_hover_2_background};
+}
+
+@media (max-width: 540px) {/* Extra-small screens */
+	.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn {
+		padding-right: 0;
 	}
 
-	.menu-dropdown-toggle-btn .text {
+	.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .text {
 		display: none;
 	}
 }
@@ -178,20 +192,15 @@ For example:
 		display: none;
 	}
 
-	.menu-dropdown.is-hover-interface .menu-dropdown-content {
-		display: flex;
-	}
-
-	.menu-dropdown.is-hover-interface .menu-dropdown-items-main {
-		display: flex;
-	}
-
+	.menu-dropdown.is-hover-interface .menu-dropdown-content,
+	.menu-dropdown.is-hover-interface .menu-dropdown-items-main,
 	.menu-dropdown.is-hover-interface .menu-dropdown-item.toplevel {
 		display: flex;
 	}
 
 	.menu-dropdown.is-hover-interface .menu-dropdown-item-a {
 		padding: 0.5em;
+		white-space: nowrap;
 	}
 
 	.menu-dropdown.is-hover-interface .menu-dropdown-item.toplevel.menu-spacer {

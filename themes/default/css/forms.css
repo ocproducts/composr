@@ -92,12 +92,13 @@ div.comcode-supported {
 	padding: 1em;
 	border: 1px solid {$GET,light_error_border};
 	background-color: {$GET,light_error_background};
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 	margin-top: 0.5em;
 }
 
 .input-error-here .icon {
 	margin-right: 0.3em;
+	color: {$GET,danger};
 }
 
 /* This is used to fix a problem on screen-readers (we don't want a paragraph used) */
@@ -220,16 +221,16 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.form-table-field-input .form-control {
+	.form-table-field-input .form-control-wide {
 		width: 26em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.form-table-field-input .form-control {
+	.form-table-field-input .form-control-wide {
 		width: 100%;
 	}
 /*{+END}*/
-.form-table-field-input .form-control {
+.form-table-field-input .form-control-wide {
 	max-width: 100%;
 }
 
@@ -326,7 +327,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 }
 
 .input-captcha {
-	display: inline-flex;
+	/*display: inline-flex;*/
 }
 
 .input-dimensions {

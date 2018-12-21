@@ -279,6 +279,12 @@
     };
 
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
+        var agreeCheckbox = container.querySelector('.js-chb-click-toggle-proceed-btn');
+
+        if (agreeCheckbox) {
+            document.getElementById('proceed-button').disabled = !agreeCheckbox.checked;
+        }
+
         $dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
             document.getElementById('proceed-button').disabled = !checkbox.checked;
         });

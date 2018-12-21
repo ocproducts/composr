@@ -584,6 +584,10 @@
 
     function doInputUrl(fieldName, va) {
         $cms.ui.prompt('{!javascript:ENTER_URL;^}', va, null, '{!comcode:INPUT_COMCODE_url;^}').then(function (url) {
+            if (url == null) {
+                return; // Cancel clicked
+            }
+
             url = strVal(url);
 
             if (!url.includes('://')) {

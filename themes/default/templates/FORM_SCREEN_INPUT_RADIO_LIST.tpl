@@ -4,7 +4,7 @@
 {+START,IF_PASSED,NAME}
 	<div id="error-{NAME*}" style="display: none" class="input-error-here">
 		{+START,INCLUDE,ICON}
-			NAME=status/notice
+			NAME=status/warn
 			ICON_SIZE=24
 		{+END}
 		<span class="js-error-message"></span>

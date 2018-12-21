@@ -1,15 +1,11 @@
-<div class="box box---message box---message-{TYPE*}"><div class="box-inner">
-	<div class="global-message" role="alert">
+<div class="box box---message box---message-{TYPE*}"><div class="box-inner">{$,Possible {TYPE}s: 'notice', 'inform', 'warn'}
+	<div class="global-message global-message-{TYPE*}" role="alert">
 		{+START,INCLUDE,ICON}
 			NAME=status/{TYPE}
 			ICON_SIZE=24
+			ICON_CLASS=global-message-icon
 		{+END}
 
-		{+START,IF,{$IN_STR,{MESSAGE},<p}}
-			{MESSAGE}
-		{+END}
-		{+START,IF,{$NOT,{$IN_STR,{MESSAGE},<p}}}
-			<span>{MESSAGE}</span>
-		{+END}
+		<div class="global-message-text">{MESSAGE}</div>
 	</div>
 </div></div>

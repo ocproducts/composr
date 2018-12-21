@@ -46,7 +46,7 @@
 
 		<div id="error-{$GET,randomised_id}" style="display: none" class="input-error-here"{+START,IF_PASSED,PATTERN_ERROR} data-errorRegexp="{PATTERN_ERROR*}"{+END}>
 			{+START,INCLUDE,ICON}
-				NAME=status/notice
+				NAME=status/warn
 				ICON_SIZE=24
 			{+END}
 			<span class="js-error-message"></span>

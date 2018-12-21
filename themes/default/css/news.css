@@ -136,3 +136,11 @@
 .box---news-entry-screen {
 	float: left;
 }
+
+.box---block-main-news .box.box---news-box {
+	padding-top: 0 !important;
+}
+
+.box---block-main-news .box---news-box > .box-inner {
+	margin: 0;
+}

@@ -6,30 +6,6 @@
     $cms.ui = {};
 
     /**
-     * @memberof $cms.ui
-     * @param name
-     * @param forceHide
-     */
-    $cms.ui.toggleTopBox = function toggleTopBox(name, forceHide) {
-        forceHide = Boolean(forceHide);
-
-        var popupEl = document.getElementById(name + '-rel'),
-            buttonEl = document.getElementById(name + '-button');
-
-        buttonEl.title = '';
-
-        if ((popupEl.style.display === 'none') && !forceHide) {
-            var tooltip = document.querySelector('body > .tooltip');
-            if (tooltip != null) { // Hide tooltip, to stop it being a mess
-                tooltip.style.display = 'none';
-            }
-            $dom.fadeIn(popupEl);
-        } else {
-            popupEl.style.display = 'none';
-        }
-    };
-
-    /**
      * Toggle a ToggleableTray
      * @memberof $cms.ui
      * @return {boolean} - true when it is opened, false when it is closed
@@ -233,18 +209,18 @@
     /**
      * Tooltips that can work on any element with rich HTML support
      * @memberof $cms.ui
-     * @param el - the element
-     * @param event - the event handler
-     * @param tooltip - the text for the tooltip
-     * @param width - width is in pixels (but you need 'px' on the end), can be null or auto
-     * @param pic - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
-     * @param height - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
-     * @param bottom - set to true if the tooltip should definitely appear upwards; rarely use this parameter
-     * @param noDelay - set to true if the tooltip should appear instantly
-     * @param lightsOff - set to true if the image is to be dimmed
-     * @param forceWidth - set to true if you want width to not be a max width
-     * @param win - window to open in
-     * @param haveLinks - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
+     * @param { Element } el - the element
+     * @param { Event } event - the event handler
+     * @param { string } tooltip - the text for the tooltip
+     * @param { string } width - width is in pixels (but you need 'px' on the end), can be null or auto
+     * @param { string } [pic] - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
+     * @param { string } [height] - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
+     * @param { boolean } [bottom] - set to true if the tooltip should definitely appear upwards; rarely use this parameter
+     * @param { boolean } [noDelay] - set to true if the tooltip should appear instantly
+     * @param { boolean } [lightsOff] - set to true if the image is to be dimmed
+     * @param { boolean } [forceWidth] - set to true if you want width to not be a max width
+     * @param { Window } [win] - window to open in
+     * @param { boolean } [haveLinks] - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
      */
     $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
         el = $dom.elArg(el);
@@ -287,7 +263,7 @@
         // Add in move/leave events if needed
         if (!haveLinks) {
             $dom.on(el, 'mouseout.cmsTooltip', function (e) {
-                if (!e.relatedTarget || !el.contains(e.relatedTarget)) {
+                if (!el.contains(e.relatedTarget)) {
                     $cms.ui.deactivateTooltip(el);
                 }
             });
@@ -296,8 +272,10 @@
                 $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function () {
-                if ($dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
+            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function (e) {
+                var tooltipEl = document.getElementById(el.tooltipId);
+
+                if ((tooltipEl != null) && $dom.isDisplayed(tooltipEl) && !tooltipEl.contains(e.target)) {
                     $cms.ui.deactivateTooltip(el);
                 }
             });
@@ -408,13 +386,13 @@
 
     /**
      * @memberof $cms.ui
-     * @param el
-     * @param event
-     * @param bottom
-     * @param starting
-     * @param tooltipElement
-     * @param forceWidth
-     * @param win
+     * @param { Element } el
+     * @param { Event } event
+     * @param { boolean } bottom
+     * @param { boolean } starting
+     * @param { Element } [tooltipElement]
+     * @param { boolean } [forceWidth]
+     * @param { Window } win
      */
     $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltipElement, forceWidth, win) {
         bottom = Boolean(bottom);
@@ -429,7 +407,7 @@
                 el.title = '';
             }
 
-            if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
+            if ((el.parentElement.localName === 'a') && el.parentElement.getAttribute('title') && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
                 el.parentElement.title = '';// Do not want second tooltips that are not useful
             }
         }
@@ -542,7 +520,7 @@
 
     /**
      * @memberof $cms.ui
-     * @param tooltipBeingOpened
+     * @param tooltipBeingOpened - ID for a tooltip element to avoid deactivating 
      */
     $cms.ui.clearOutTooltips = function clearOutTooltips(tooltipBeingOpened) {
         // Delete other tooltips, which due to browser bugs can get stuck

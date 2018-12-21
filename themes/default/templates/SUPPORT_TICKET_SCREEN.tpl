@@ -74,7 +74,7 @@
 						</select>
 						<div id="error-ticket-type-id" style="display: none" class="input-error-here">
 							{+START,INCLUDE,ICON}
-								NAME=status/notice
+								NAME=status/warn
 								ICON_SIZE=24
 							{+END}
 							<span class="js-error-message"></span>
