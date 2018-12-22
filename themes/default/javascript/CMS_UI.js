@@ -146,13 +146,14 @@
 
         var tabs = [], i, element;
 
-        element = $dom.$('#t-' + tab);
+        element = document.getElementById('t-' + tab);
 
         if (!element) {
             $util.fatal('$cms.ui.selectTab(): "#t-' + tab + '" element not found');
             return;
         }
 
+        // Find all sibling tags' IDs
         for (i = 0; i < element.parentElement.children.length; i++) {
             if (element.parentElement.children[i].id.startsWith('t-')) {
                 tabs.push(element.parentElement.children[i].id.substr(2));
@@ -160,28 +161,50 @@
         }
 
         for (i = 0; i < tabs.length; i++) {
-            element = $dom.$id(id + '-' + tabs[i]);
-            if (element) {
+            var tabContentEl = document.getElementById(id + '-' + tabs[i]),
+                tabSelectEl = document.getElementById('t-' + tabs[i]),
+                isTabBeingSelected = (tabs[i] === tab);
+
+            if (tabContentEl) {
                 if (tabs[i] === tab) {
                     if (window['load_tab__' + tab] === undefined) {
-                        $dom.fadeIn(element);
+                        $dom.fadeIn(tabContentEl);
                     } else {
-                        $dom.show(element);
+                        $dom.show(tabContentEl);
                     }
                 } else {
-                    $dom.hide(element);
+                    $dom.hide(tabContentEl);
                 }
             }
 
-            element = $dom.$id('t-' + tabs[i]);
-            if (element) {
-                element.classList.toggle('tab-active', (tabs[i] === tab));
+            if (tabSelectEl) {
+                tabSelectEl.classList.toggle('tab-active', isTabBeingSelected);
+
+                // Subtabs use a horizantal scrolling interface in mobile mode, ensure selected tab is scrolled into view
+                // Inspiration credit: https://stackoverflow.com/a/45411081/362006
+                if (isTabBeingSelected && $cms.isCssMode('mobile')) {
+                    var subtabHeaders = $dom.parent(tabSelectEl, '.modern-subtab-headers');
+
+                    if ((subtabHeaders != null) && (subtabHeaders.scrollWidth > subtabHeaders.offsetWidth)) {
+                        var subtabHeadersRect = subtabHeaders.getBoundingClientRect(),
+                            tabSelectElRect = tabSelectEl.getBoundingClientRect();
+
+                        var isViewable = (tabSelectElRect.left >= subtabHeadersRect.left) && (tabSelectElRect.left <= subtabHeadersRect.left + subtabHeaders.clientWidth);
+
+                        // If you can't see the child try to scroll parent
+                        if (!isViewable) {
+                            // Scroll by offset relative to parent
+                            subtabHeaders.scrollLeft = (tabSelectElRect.left + subtabHeaders.scrollLeft) - subtabHeadersRect.left
+                        }
+
+                    }
+                }
             }
         }
 
         if (window['load_tab__' + tab] !== undefined) {
             // Usually an AJAX loader
-            window['load_tab__' + tab](automated, $dom.$id(id + '-' + tab));
+            window['load_tab__' + tab](automated, document.getElementById(id + '-' + tab));
         }
     };
 

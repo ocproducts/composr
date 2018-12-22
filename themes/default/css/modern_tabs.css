@@ -22,17 +22,21 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	display: flex;
 }
 
+@media (max-width: 1200px) {/* Around when the tabs start wrapping better */
+	.modern-tab-headers {
+		flex-wrap: wrap;
+	}
+
+	.modern-tab-headers > div.tab-active {
+		box-shadow: inset 0px -3px 0px {$GET,seed};
+	}
+}
+
 .modern-tab-headers > div {
 	color: {$GET,a.link};
 	flex-grow: 1;
 	overflow: hidden;
 }
-
-/*{+START,CSS_MODE,mobile}*/
-	.modern-tab-headers>div {
-		width: 50%;
-	}
-/*{+END}*/
 
 .modern-tab-headers > div.tab-active {
 	background-color: {$GET,WB};
@@ -46,8 +50,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 .modern-tab-headers > div > a,
 .modern-tab-headers > div > a:hover {
 	display: block;
-	padding-top: 1em;
-	padding-bottom: 1em;
+	padding: 1em;
 	cursor: pointer;
 	font-weight: {$GET,font_weight_medium};
 	text-align: center;
@@ -59,17 +62,11 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	border-bottom-color: transparent;
 }
 
-/*{+START,CSS_MODE,desktop}*/
-	.modern-tab-headers>div>a {
-		border-right: 1px solid {$GET,standard_border};
-		border-bottom: 1px solid {$GET,standard_border};
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	.modern-tab-headers > div > a {
-		display: block;
-	}
-/*{+END}*/
+.modern-tab-headers > div > a {
+	border-right: 1px solid {$GET,standard_border};
+	border-bottom: 1px solid {$GET,standard_border};
+	display: block;
+}
 
 .modern-tab-headers > div:last-child > a {
 	border-right: 0;
@@ -90,9 +87,6 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	}
 /*{+END}*/
 
-.modern-tab-bodies {
-	overflow: hidden;
-}
 /*{+START,CSS_MODE,desktop}*/
 	.modern-tab-bodies {
 		padding: 1em 0.5em;
@@ -104,8 +98,13 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	}
 /*{+END}*/
 
-.modern-tab-bodies>div {
+/*{+START,CSS_MODE,desktop}*/
+.modern-tab-body.modern-tab-body-edit {
+	padding-left: 0;
+	padding-right: 0;
+	margin: -1em -0.5em;
 }
+/*{+END}*/
 
 /* Sub tabs, nested */
 
@@ -145,16 +144,16 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern-subtab-headers > div.tab-active::after, 
 .modern-subtab-headers > div:hover::after {
-	/*background: url('{$IMG;,tabs/modern_subtab_active}') no-repeat right center;*/
-	/*background-size: 8px 16px;*/
-	font-family: sans-serif;
-	content: '\025BA'; /* Rightward triangle */
-	color: {$GET,seed_secondary};
-	transform: scale(0.6, 1);
 	position: absolute;
-	right: -10px;
 	top: 50%;
-	margin-top: -0.5em;
+	right: -6px;
+	margin-top: -6px;
+	content: '';
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 6px 0 6px 6px;
+	border-color: transparent transparent transparent {$GET,seed_secondary};
 }
 
 .modern-subtab-headers > div * {
@@ -163,13 +162,18 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-subtab-headers > div > a {
-	padding: 1em 20px;
+	padding: 1em 15px;
 	border-bottom: 1px solid {$GET,standard_border};
 	display: block;
 	cursor: pointer;
-	min-width: 160px;
 	font-weight: {$GET,font_weight_medium};
 }
+
+/*{+START,CSS_MODE,desktop}*/
+.modern-subtab-headers > div > a {
+	min-width: 160px;
+}
+/*{+END}*/
 
 .modern-subtab-headers>div>a, .modern-subtab-headers>div>a:visited, .modern-subtab-headers>div>a:active, .modern-subtab-headers>div>a:hover {
 	text-decoration: none;
@@ -181,8 +185,43 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-subtab-bodies {
-	padding: 1.5em 1em 1.5em 0em;
+	padding: 0 1em;
 }
 
 .modern-subtab-bodies>div {
 }
+
+/*{+START,CSS_MODE,mobile}*/ /* Horizontally scrolling sub-tabs on mobile */
+.modern-tab-bodies,
+.modern-tab-bodies>div {
+	/*padding: 0;*/
+}
+
+.modern-subtabs {
+	display: block;
+}
+
+.modern-subtab-headers {
+	margin-right: 0;
+	overflow: auto;
+}
+
+/*.modern-subtab-headers::-webkit-scrollbar {*/
+	/*display: none;*/
+/*}*/
+
+.modern-subtab-headers > div {
+	display: table-cell;
+	text-align: center;
+}
+
+.modern-subtab-headers > div.tab-active::after,
+.modern-subtab-headers > div:hover::after {
+	display: none;
+}
+
+.modern-subtab-bodies {
+	padding: 0 10px;
+}
+
+/*{+END}*/

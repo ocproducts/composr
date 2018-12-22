@@ -73,7 +73,7 @@
             theElement = theElement.parentElement;
         }
 
-        theElement.classList.toggle('input-erroneous', (errorMsg !== ''));
+        theElement.classList.toggle('is-invalid', (errorMsg !== ''));
 
         function getErrorMsgElement(id) {
             var errorMsgElement = document.getElementById('error-' + id);
@@ -727,7 +727,7 @@
                     $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');
                 }
             }
-            field.classList.remove('input-erroneous');
+            field.classList.remove('is-invalid');
         } else if (!radioButton) {
             $cms.form.setFieldError(field, '');
         }

@@ -9,14 +9,14 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 {$REQUIRE_JAVASCRIPT,checking}
 
-<form data-tpl="cnsMemberProfileEdit" data-tpl-params="{+START,PARAMS_JSON,TABS}{_*}{+END}" class="form-table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main-form" autocomplete="off">
+<form data-tpl="cnsMemberProfileEdit" data-tpl-params="{+START,PARAMS_JSON,TABS}{_*}{+END}" class="form-table cns-member-profile-edit" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main-form" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{HIDDEN}
 
 	{+START,IF,{$GT,{TABS},1}}
-		<div class="{$?,{$MOBILE},modern-tabs,modern-subtabs}">
-			<div class="{$?,{$MOBILE},modern-tab-headers,modern-subtab-headers}">
+		<div class="modern-subtabs">
+			<div class="modern-subtab-headers">
 				{+START,LOOP,TABS}
 					<div id="t-edit--{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab-active tab-first{+END}{+START,IF,{TAB_LAST}} tab-last{+END}">
 						<a class="js-click-select-edit-tab" data-tp-tab-code="{TAB_CODE*}" aria-controls="g-edit--{$LCASE,{TAB_CODE|*}}" role="tab" href="#!">
@@ -31,7 +31,7 @@
 					</div>
 				{+END}
 			</div>
-			<div class="{$?,{$MOBILE},modern-tab-bodies,modern-subtab-bodies}">
+			<div class="modern-subtab-bodies">
 	{+END}
 				{+START,LOOP,TABS}
 					{+START,IF,{$GT,{TABS},1}}

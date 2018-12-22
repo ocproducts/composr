@@ -2147,14 +2147,14 @@
             }
         },
 
-        mouseoutMenuItem: function (e, target) {
-            if (target.contains(e.relatedTarget)) {
+        mouseoutMenuItem: function (e, menuItem) {
+            if (menuItem.contains(e.relatedTarget)) {
                 return;
             }
 
-            var isMisHovered = $dom.matches($dom.parent(target, '.menu-dropdown-items'), ':hover');
+            var itemsList = $dom.parent(menuItem, '.menu-dropdown-items');
 
-            if (isMisHovered) {
+            if ($dom.matches(itemsList, ':hover') || itemsList.querySelector(':focus')) {
                 return;
             }
 
