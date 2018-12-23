@@ -88,8 +88,10 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#fffcc4,floating_alert_background,100% fffcc4}
 
 /* Colours to mirror human understandings (i.e. non-thematic) */
-{$THEMEWIZARD_COLOR,#dc3545,danger,100% DC3545}
-{$THEMEWIZARD_COLOR,#28a745,success,100% 28A745}
+{$THEMEWIZARD_COLOR,#dc3545,danger_color,100% DC3545}
+{$THEMEWIZARD_COLOR,#28a745,success_color,100% 28A745}
+{$THEMEWIZARD_COLOR,#f8f9fa,light_color,100% F8F9Fa}
+{$THEMEWIZARD_COLOR,#343a40,dark_color,100% 343A40}
 {$THEMEWIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
 {$THEMEWIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
 {$THEMEWIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
@@ -1108,9 +1110,9 @@ header:not(.is-see-through).with-white-navbar {
 .header-modern {
 	display: flex;
 	transition: height 0.15s ease-in-out;
-	height: 90px;
+	height: {$GET,header_modern_height};
 	position: relative;
-	z-index: 3; /* Force on top of the home hero slider */
+	z-index: 5; /* Force on top of the home hero slider */
 }
 
 .header-sticky-placeholder {
@@ -1760,7 +1762,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 }
 
 .global-message-warn .global-message-icon {
-	color: {$GET,danger};
+	color: {$GET,danger_color};
 }
 
 .global-message strong {
@@ -2311,7 +2313,7 @@ p.red-alert {
 }
 
 .red-alert-icon {
-	color: {$GET,danger};
+	color: {$GET,danger_color};
 	margin-right: 0.5em;
 	flex-shrink: 0;
 }
@@ -2380,7 +2382,7 @@ p.red-alert {
 }
 
 th.metadata-title {
-	font-weight: 500 !important;
+	font-weight: {$GET,font_weight_medium} !important;
 }
 
 .help-jumpout {
@@ -2709,7 +2711,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 .toggleable-tray-title {
 	font-size: 1.1em;
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 	vertical-align: middle;
 	padding-top: 0.7em;
 	padding-bottom: 0.5em;
@@ -4755,31 +4757,27 @@ ul.buttons-group, ul.associated-links-block-group {
 }
 
 .form-control::-webkit-input-placeholder {
-	color: #6c757d;
+	color: {$GET,unfilled_input_text};
 	opacity: 1;
 }
 
 .form-control::-moz-placeholder {
-	color: #6c757d;
-	opacity: 1;
-}
-
-.form-control:-ms-input-placeholder {
-	color: #6c757d;
+	color: {$GET,unfilled_input_text};
 	opacity: 1;
 }
 
 .form-control::-ms-input-placeholder {
-	color: #6c757d;
+	color: {$GET,unfilled_input_text};
 	opacity: 1;
 }
 
 .form-control::placeholder {
-	color: #6c757d;
+	color: {$GET,unfilled_input_text};
 	opacity: 1;
 }
 
-.form-control:disabled, .form-control[readonly] {
+.form-control:disabled, 
+.form-control[readonly] {
 	background-color: #e9ecef;
 	opacity: 1;
 }
@@ -4944,21 +4942,21 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .form-control.is-valid {
-	border-color: {$GET,success};
+	border-color: {$GET,success_color};
 }
 
 .form-control.is-valid:focus {
-	border-color: {$GET,success};
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.25};
+	border-color: {$GET,success_color};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success_color},0.25};
 }
 
 .form-control.is-invalid {
-	border-color: {$GET,danger};
+	border-color: {$GET,danger_color};
 }
 
 .form-control.is-invalid:focus {
-	border-color: {$GET,danger};
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.25};
+	border-color: {$GET,danger_color};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger_color},0.25};
 }
 
 .form-inline {
@@ -5051,7 +5049,8 @@ input.magic-image-edit-link {
 	text-decoration: none;
 }
 
-.btn:focus, .btn.focus {
+.btn:focus,
+.btn.focus {
 	outline: 0;
 	box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
@@ -5086,7 +5085,8 @@ fieldset:disabled a.btn {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed},0.5};
 }
 
-.btn-primary.disabled, .btn-primary:disabled {
+.btn-primary.disabled, 
+.btn-primary:disabled {
 	color: {$GET,text_light};
 	background-color: {$GET,seed};
 	border-color: {$GET,seed};
@@ -5118,11 +5118,13 @@ fieldset:disabled a.btn {
 	border-color: {$COLOR_DARKEN,{$GET,seed_secondary},10%};
 }
 
-.btn-secondary:focus, .btn-secondary.focus {
+.btn-secondary:focus, 
+.btn-secondary.focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_secondary},0.5};
 }
 
-.btn-secondary.disabled, .btn-secondary:disabled {
+.btn-secondary.disabled, 
+.btn-secondary:disabled {
 	color: {$GET,text_light};
 	background-color: {$GET,seed_secondary};
 	border-color: {$GET,seed_secondary};
@@ -5144,110 +5146,122 @@ fieldset:disabled a.btn {
 
 .btn-success {
 	color: {$GET,WB};
-	background-color: {$GET,success};
-	border-color: {$GET,success};
+	background-color: {$GET,success_color};
+	border-color: {$GET,success_color};
 }
 
 .btn-success:hover {
 	color: {$GET,WB};
-	background-color: #218838;
-	border-color: #1e7e34;
+	background-color: {$COLOR_DARKEN,{$GET,success_color},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,success_color},10%};
 }
 
-.btn-success:focus, .btn-success.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
+.btn-success:focus, 
+.btn-success.focus {
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success_color},0.5};
 }
 
-.btn-success.disabled, .btn-success:disabled {
+.btn-success.disabled, 
+.btn-success:disabled {
 	color: {$GET,WB};
-	background-color: {$GET,success};
-	border-color: {$GET,success};
+	background-color: {$GET,success_color};
+	border-color: {$GET,success_color};
 }
 
-.btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+.btn-success:not(:disabled):not(.disabled):active, 
+.btn-success:not(:disabled):not(.disabled).active,
 .show > .btn-success.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #1e7e34;
-	border-color: #1c7430;
+	background-color: {$COLOR_DARKEN,{$GET,success_color},10%};
+	border-color: {$COLOR_DARKEN,{$GET,success_color},12.5%};
 }
 
-.btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+.btn-success:not(:disabled):not(.disabled):active:focus, 
+.btn-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success_color},0.5};
 }
 
 .btn-danger {
 	color: {$GET,WB};
-	background-color: {$GET,danger};
-	border-color: {$GET,danger};
+	background-color: {$GET,danger_color};
+	border-color: {$GET,danger_color};
 }
 
 .btn-danger:hover {
 	color: {$GET,WB};
-	background-color: #c82333;
-	border-color: #bd2130;
+	background-color: {$COLOR_DARKEN,{$GET,danger_color},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,danger_color},10%};
 }
 
-.btn-danger:focus, .btn-danger.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
+.btn-danger:focus, 
+.btn-danger.focus {
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger_color},0.5};
 }
 
-.btn-danger.disabled, .btn-danger:disabled {
+.btn-danger.disabled, 
+.btn-danger:disabled {
 	color: {$GET,WB};
-	background-color: {$GET,danger};
-	border-color: {$GET,danger};
+	background-color: {$GET,danger_color};
+	border-color: {$GET,danger_color};
 }
 
-.btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,
+.btn-danger:not(:disabled):not(.disabled):active, 
+.btn-danger:not(:disabled):not(.disabled).active,
 .show > .btn-danger.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #bd2130;
-	border-color: #b21f2d;
+	background-color: {$COLOR_DARKEN,{$GET,danger_color},10%};
+	border-color: {$COLOR_DARKEN,{$GET,danger_color},12.5%};
 }
 
-.btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus,
+.btn-danger:not(:disabled):not(.disabled):active:focus, 
+.btn-danger:not(:disabled):not(.disabled).active:focus,
 .show > .btn-danger.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger_color},0.5};
 }
 
 .btn-light {
 	color: #212529;
-	background-color: #f8f9fa;
-	border-color: #f8f9fa;
+	background-color: {$GET,light_color};
+	border-color: {$GET,light_color};
 }
 
 .btn-light:hover {
 	color: #212529;
-	background-color: #e2e6ea;
-	border-color: #dae0e5;
+	background-color: {$COLOR_DARKEN,{$GET,light_color},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,light_color},10%};
 }
 
-.btn-light:focus, .btn-light.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#f8f9fa,0.5};
+.btn-light:focus, 
+.btn-light.focus {
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,light_color},0.5};
 }
 
-.btn-light.disabled, .btn-light:disabled {
+.btn-light.disabled, 
+.btn-light:disabled {
 	color: #212529;
-	background-color: #f8f9fa;
-	border-color: #f8f9fa;
+	background-color: {$GET,light_color};
+	border-color: {$GET,light_color};
 }
 
-.btn-light:not(:disabled):not(.disabled):active, .btn-light:not(:disabled):not(.disabled).active,
+.btn-light:not(:disabled):not(.disabled):active, 
+.btn-light:not(:disabled):not(.disabled).active,
 .show > .btn-light.dropdown-toggle {
 	color: #212529;
-	background-color: #dae0e5;
-	border-color: #d3d9df;
+	background-color: {$COLOR_DARKEN,{$GET,light_color},10%};
+	border-color: {$COLOR_DARKEN,{$GET,light_color},12.5%};
 }
 
-.btn-light:not(:disabled):not(.disabled):active:focus, .btn-light:not(:disabled):not(.disabled).active:focus,
+.btn-light:not(:disabled):not(.disabled):active:focus, 
+.btn-light:not(:disabled):not(.disabled).active:focus,
 .show > .btn-light.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#f8f9fa,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,light_color},0.5};
 }
 
 .btn-dark {
 	color: {$GET,WB};
-	background-color: #343a40;
-	border-color: #343a40;
+	background-color: {$GET,dark_color};
+	border-color: {$GET,dark_color};
 }
 
 .btn-dark:hover {
@@ -5256,26 +5270,30 @@ fieldset:disabled a.btn {
 	border-color: #1d2124;
 }
 
-.btn-dark:focus, .btn-dark.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#343a40,0.5};
+.btn-dark:focus, 
+.btn-dark.focus {
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,dark_color},0.5};
 }
 
-.btn-dark.disabled, .btn-dark:disabled {
+.btn-dark.disabled, 
+.btn-dark:disabled {
 	color: {$GET,WB};
-	background-color: #343a40;
-	border-color: #343a40;
+	background-color: {$GET,dark_color};
+	border-color: {$GET,dark_color};
 }
 
-.btn-dark:not(:disabled):not(.disabled):active, .btn-dark:not(:disabled):not(.disabled).active,
+.btn-dark:not(:disabled):not(.disabled):active, 
+.btn-dark:not(:disabled):not(.disabled).active,
 .show > .btn-dark.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #1d2124;
-	border-color: #171a1d;
+	background-color: {$COLOR_DARKEN,{$GET,dark_color},10%};
+	border-color: {$COLOR_DARKEN,{$GET,dark_color},12.5%};
 }
 
-.btn-dark:not(:disabled):not(.disabled):active:focus, .btn-dark:not(:disabled):not(.disabled).active:focus,
+.btn-dark:not(:disabled):not(.disabled):active:focus, 
+.btn-dark:not(:disabled):not(.disabled).active:focus,
 .show > .btn-dark.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#343a40,0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,dark_color},0.5};
 }
 
 .btn-outline-primary {
@@ -5291,23 +5309,27 @@ fieldset:disabled a.btn {
 	border-color: {$GET,seed};
 }
 
-.btn-outline-primary:focus, .btn-outline-primary.focus {
+.btn-outline-primary:focus, 
+.btn-outline-primary.focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed},0.5};
 }
 
-.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+.btn-outline-primary.disabled, 
+.btn-outline-primary:disabled {
 	color: {$GET,seed};
 	background-color: transparent;
 }
 
-.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
+.btn-outline-primary:not(:disabled):not(.disabled):active, 
+.btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
 	color: {$GET,WB};
 	background-color: {$GET,seed};
 	border-color: {$GET,seed};
 }
 
-.btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
+.btn-outline-primary:not(:disabled):not(.disabled):active:focus, 
+.btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-primary.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed},0.5};
 }
@@ -5325,159 +5347,178 @@ fieldset:disabled a.btn {
 	border-color: {$GET,seed_secondary};
 }
 
-.btn-outline-secondary:focus, .btn-outline-secondary.focus {
+.btn-outline-secondary:focus, 
+.btn-outline-secondary.focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_secondary},0.5};
 }
 
-.btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
+.btn-outline-secondary.disabled, 
+.btn-outline-secondary:disabled {
 	color: {$GET,seed_secondary};
 	background-color: transparent;
 }
 
-.btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active,
+.btn-outline-secondary:not(:disabled):not(.disabled):active, 
+.btn-outline-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-secondary.dropdown-toggle {
 	color: {$GET,WB};
 	background-color: {$GET,seed_secondary};
 	border-color: {$GET,seed_secondary};
 }
 
-.btn-outline-secondary:not(:disabled):not(.disabled):active:focus, .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
+.btn-outline-secondary:not(:disabled):not(.disabled):active:focus, 
+.btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-secondary.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_secondary},0.5};
 }
 
 .btn-outline-success {
-	color: {$GET,success};
+	color: {$GET,success_color};
 	background-color: transparent;
 	background-image: none;
-	border-color: {$GET,success};
+	border-color: {$GET,success_color};
 }
 
 .btn-outline-success:hover {
 	color: {$GET,WB};
-	background-color: {$GET,success};
-	border-color: {$GET,success};
+	background-color: {$GET,success_color};
+	border-color: {$GET,success_color};
 }
 
-.btn-outline-success:focus, .btn-outline-success.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
+.btn-outline-success:focus, 
+.btn-outline-success.focus {
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success_color},0.5};
 }
 
 .btn-outline-success.disabled, .btn-outline-success:disabled {
-	color: {$GET,success};
+	color: {$GET,success_color};
 	background-color: transparent;
 }
 
-.btn-outline-success:not(:disabled):not(.disabled):active, .btn-outline-success:not(:disabled):not(.disabled).active,
+.btn-outline-success:not(:disabled):not(.disabled):active, 
+.btn-outline-success:not(:disabled):not(.disabled).active,
 .show > .btn-outline-success.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: {$GET,success};
-	border-color: {$GET,success};
+	background-color: {$GET,success_color};
+	border-color: {$GET,success_color};
 }
 
-.btn-outline-success:not(:disabled):not(.disabled):active:focus, .btn-outline-success:not(:disabled):not(.disabled).active:focus,
+.btn-outline-success:not(:disabled):not(.disabled):active:focus, 
+.btn-outline-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-success.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success_color},0.5};
 }
 
 .btn-outline-danger {
-	color: {$GET,danger};
+	color: {$GET,danger_color};
 	background-color: transparent;
 	background-image: none;
-	border-color: {$GET,danger};
+	border-color: {$GET,danger_color};
 }
 
 .btn-outline-danger:hover {
 	color: {$GET,WB};
-	background-color: {$GET,danger};
-	border-color: {$GET,danger};
+	background-color: {$GET,danger_color};
+	border-color: {$GET,danger_color};
 }
 
-.btn-outline-danger:focus, .btn-outline-danger.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
+.btn-outline-danger:focus, 
+.btn-outline-danger.focus {
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger_color},0.5};
 }
 
-.btn-outline-danger.disabled, .btn-outline-danger:disabled {
-	color: {$GET,danger};
+.btn-outline-danger.disabled, 
+.btn-outline-danger:disabled {
+	color: {$GET,danger_color};
 	background-color: transparent;
 }
 
-.btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active,
+.btn-outline-danger:not(:disabled):not(.disabled):active, 
+.btn-outline-danger:not(:disabled):not(.disabled).active,
 .show > .btn-outline-danger.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: {$GET,danger};
-	border-color: {$GET,danger};
+	background-color: {$GET,danger_color};
+	border-color: {$GET,danger_color};
 }
 
-.btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus,
+.btn-outline-danger:not(:disabled):not(.disabled):active:focus, 
+.btn-outline-danger:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-danger.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,danger_color},0.5};
 }
 
 .btn-outline-light {
-	color: #f8f9fa;
+	color: {$GET,light_color};
 	background-color: transparent;
 	background-image: none;
-	border-color: #f8f9fa;
+	border-color: {$GET,light_color};
 }
 
 .btn-outline-light:hover {
 	color: #212529;
-	background-color: #f8f9fa;
-	border-color: #f8f9fa;
+	background-color: {$GET,light_color};
+	border-color: {$GET,light_color};
 }
 
-.btn-outline-light:focus, .btn-outline-light.focus {
+.btn-outline-light:focus, 
+.btn-outline-light.focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,#212529,0.5};
 }
 
-.btn-outline-light.disabled, .btn-outline-light:disabled {
-	color: #f8f9fa;
+.btn-outline-light.disabled, 
+.btn-outline-light:disabled {
+	color: {$GET,light_color};
 	background-color: transparent;
 }
 
-.btn-outline-light:not(:disabled):not(.disabled):active, .btn-outline-light:not(:disabled):not(.disabled).active,
+.btn-outline-light:not(:disabled):not(.disabled):active, 
+.btn-outline-light:not(:disabled):not(.disabled).active,
 .show > .btn-outline-light.dropdown-toggle {
 	color: #212529;
-	background-color: #f8f9fa;
-	border-color: #f8f9fa;
+	background-color: {$GET,light_color};
+	border-color: {$GET,light_color};
 }
 
-.btn-outline-light:not(:disabled):not(.disabled):active:focus, .btn-outline-light:not(:disabled):not(.disabled).active:focus,
+.btn-outline-light:not(:disabled):not(.disabled):active:focus, 
+.btn-outline-light:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-light.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,#212529,0.5};
 }
 
 .btn-outline-dark {
-	color: #343a40;
+	color: {$GET,dark_color};
 	background-color: transparent;
 	background-image: none;
-	border-color: #343a40;
+	border-color: {$GET,dark_color};
 }
 
 .btn-outline-dark:hover {
 	color: {$GET,WB};
-	background-color: #343a40;
-	border-color: #343a40;
+	background-color: {$GET,dark_color};
+	border-color: {$GET,dark_color};
 }
 
-.btn-outline-dark:focus, .btn-outline-dark.focus {
+.btn-outline-dark:focus, 
+.btn-outline-dark.focus {
 	box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.5);
 }
 
-.btn-outline-dark.disabled, .btn-outline-dark:disabled {
-	color: #343a40;
+.btn-outline-dark.disabled, 
+.btn-outline-dark:disabled {
+	color: {$GET,dark_color};
 	background-color: transparent;
 }
 
-.btn-outline-dark:not(:disabled):not(.disabled):active, .btn-outline-dark:not(:disabled):not(.disabled).active,
+.btn-outline-dark:not(:disabled):not(.disabled):active, 
+.btn-outline-dark:not(:disabled):not(.disabled).active,
 .show > .btn-outline-dark.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #343a40;
-	border-color: #343a40;
+	background-color: {$GET,dark_color};
+	border-color: {$GET,dark_color};
 }
 
-.btn-outline-dark:not(:disabled):not(.disabled):active:focus, .btn-outline-dark:not(:disabled):not(.disabled).active:focus,
+.btn-outline-dark:not(:disabled):not(.disabled):active:focus, 
+.btn-outline-dark:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-dark.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.5);
 }
@@ -5760,7 +5801,7 @@ input[type="button"].btn-block {
 .dropdown-item:hover, .dropdown-item:focus {
 	color: #16181b;
 	text-decoration: none;
-	background-color: #f8f9fa;
+	background-color: {$GET,light_color};
 }
 
 .dropdown-item.active, .dropdown-item:active {

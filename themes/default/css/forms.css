@@ -98,7 +98,7 @@ div.comcode-supported {
 
 .input-error-here .icon {
 	margin-right: 0.3em;
-	color: {$GET,danger};
+	color: {$GET,danger_color};
 }
 
 /* This is used to fix a problem on screen-readers (we don't want a paragraph used) */
@@ -234,6 +234,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 	max-width: 100%;
 }
 
+.form-table-field-input .form-screen-input-text,
 .form-table-field-input .multi-field {
 	display: inline-block;
 }
@@ -381,7 +382,7 @@ span.validated-checkbox, span.validated-checkbox+input[name="validated"].input-t
 span.validated-checkbox {
 	position: absolute;
 	color: {$GET,WB};
-	background: {$GET,danger};
+	background: {$GET,danger_color};
 	border-radius: {$GET,border_radius};
 	font-size: 17px;
 	font-weight: {$GET,font_weight_medium};
@@ -389,7 +390,7 @@ span.validated-checkbox {
 }
 
 span.validated-checkbox.checked {
-	background: {$GET,success};
+	background: {$GET,success_color};
 }
 
 span.validated-checkbox .on,

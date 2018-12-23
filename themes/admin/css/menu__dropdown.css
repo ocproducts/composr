@@ -56,7 +56,7 @@ For example:
 }
 
 .menu-dropdown-item-a.toplevel-link {
-	font-weight: 500;
+	font-weight: {$GET,font_weight_medium};
 }
 
 /*{+START,CSS_MODE,mobile}*/
