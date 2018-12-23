@@ -664,6 +664,13 @@ h1, h2, h3 {
 	color: {$GET,WB};
 }
 
+/*{+START,CSS_MODE,mobile}*/
+.contrast-box {
+	padding-left: 15px;
+	padidng-right: 15px;
+}
+/*{+END}*/
+
 /* An iframe screen */
 .opens-below h1 {
 	display: none;
@@ -3052,6 +3059,7 @@ table.scrollable-inside {
 	overflow-x: auto;
 	overflow-y: hidden;
 	padding-right: 1px;
+	margin-bottom: 10px;
 }
 
 .wide-table {
@@ -5168,74 +5176,6 @@ fieldset:disabled a.btn {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
 }
 
-.btn-info {
-	color: {$GET,WB};
-	background-color: #17a2b8;
-	border-color: #17a2b8;
-}
-
-.btn-info:hover {
-	color: {$GET,WB};
-	background-color: #138496;
-	border-color: #117a8b;
-}
-
-.btn-info:focus, .btn-info.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#17a2b8,0.5};
-}
-
-.btn-info.disabled, .btn-info:disabled {
-	color: {$GET,WB};
-	background-color: #17a2b8;
-	border-color: #17a2b8;
-}
-
-.btn-info:not(:disabled):not(.disabled):active, .btn-info:not(:disabled):not(.disabled).active,
-.show > .btn-info.dropdown-toggle {
-	color: {$GET,WB};
-	background-color: #117a8b;
-	border-color: #10707f;
-}
-
-.btn-info:not(:disabled):not(.disabled):active:focus, .btn-info:not(:disabled):not(.disabled).active:focus,
-.show > .btn-info.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#17a2b8,0.5};
-}
-
-.btn-warning {
-	color: #212529;
-	background-color: #ffc107;
-	border-color: #ffc107;
-}
-
-.btn-warning:hover {
-	color: #212529;
-	background-color: #e0a800;
-	border-color: #d39e00;
-}
-
-.btn-warning:focus, .btn-warning.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#ffc107,0.5};
-}
-
-.btn-warning.disabled, .btn-warning:disabled {
-	color: #212529;
-	background-color: #ffc107;
-	border-color: #ffc107;
-}
-
-.btn-warning:not(:disabled):not(.disabled):active, .btn-warning:not(:disabled):not(.disabled).active,
-.show > .btn-warning.dropdown-toggle {
-	color: #212529;
-	background-color: #d39e00;
-	border-color: #c69500;
-}
-
-.btn-warning:not(:disabled):not(.disabled):active:focus, .btn-warning:not(:disabled):not(.disabled).active:focus,
-.show > .btn-warning.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#ffc107,0.5};
-}
-
 .btn-danger {
 	color: {$GET,WB};
 	background-color: {$GET,danger};
@@ -5438,74 +5378,6 @@ fieldset:disabled a.btn {
 .btn-outline-success:not(:disabled):not(.disabled):active:focus, .btn-outline-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-success.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,success},0.5};
-}
-
-.btn-outline-info {
-	color: #17a2b8;
-	background-color: transparent;
-	background-image: none;
-	border-color: #17a2b8;
-}
-
-.btn-outline-info:hover {
-	color: {$GET,WB};
-	background-color: #17a2b8;
-	border-color: #17a2b8;
-}
-
-.btn-outline-info:focus, .btn-outline-info.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#17a2b8,0.5};
-}
-
-.btn-outline-info.disabled, .btn-outline-info:disabled {
-	color: #17a2b8;
-	background-color: transparent;
-}
-
-.btn-outline-info:not(:disabled):not(.disabled):active, .btn-outline-info:not(:disabled):not(.disabled).active,
-.show > .btn-outline-info.dropdown-toggle {
-	color: {$GET,WB};
-	background-color: #17a2b8;
-	border-color: #17a2b8;
-}
-
-.btn-outline-info:not(:disabled):not(.disabled):active:focus, .btn-outline-info:not(:disabled):not(.disabled).active:focus,
-.show > .btn-outline-info.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#17a2b8,0.5};
-}
-
-.btn-outline-warning {
-	color: #ffc107;
-	background-color: transparent;
-	background-image: none;
-	border-color: #ffc107;
-}
-
-.btn-outline-warning:hover {
-	color: #212529;
-	background-color: #ffc107;
-	border-color: #ffc107;
-}
-
-.btn-outline-warning:focus, .btn-outline-warning.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#ffc107,0.5};
-}
-
-.btn-outline-warning.disabled, .btn-outline-warning:disabled {
-	color: #ffc107;
-	background-color: transparent;
-}
-
-.btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:not(:disabled):not(.disabled).active,
-.show > .btn-outline-warning.dropdown-toggle {
-	color: #212529;
-	background-color: #ffc107;
-	border-color: #ffc107;
-}
-
-.btn-outline-warning:not(:disabled):not(.disabled):active:focus, .btn-outline-warning:not(:disabled):not(.disabled).active:focus,
-.show > .btn-outline-warning.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,#ffc107,0.5};
 }
 
 .btn-outline-danger {
