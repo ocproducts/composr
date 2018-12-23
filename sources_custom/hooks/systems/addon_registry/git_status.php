@@ -98,7 +98,7 @@ This is useful when using Git for deployment on staging and live servers, where 
      */
     public function get_applicable_tutorials()
     {
-        return array();
+        return array('sup_staging_servers');
     }
 
     /**

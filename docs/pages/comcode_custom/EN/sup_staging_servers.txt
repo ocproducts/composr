@@ -82,6 +82,8 @@ alias git='echo Stop using git as the wrong user'
 
 You may want to run [tt]git config core.fileMode false[/tt], as you are unlikely to want file permissions to be tracked.
 
+There is a non-bundled addon called 'Git Status' which provides a nice UI to seeing what changes have been made on-server and off-server.
+
 [title="2"]Synching data[/title]
 
 Initially you can push a database live just by doing an SQL dump and import using standard MySQL tools. However, it becomes much more difficult to managing subsequent changes as your live server will have data that you cannot just overwrite with data from a development machine (you would lose live data and inject test data).
@@ -104,6 +106,8 @@ There are 4 plausible approaches for synching Content:[list="a"]
 [*] Make it on the staging site and copy it live by copying a pseudo-file [page="_SEARCH:tut_repository"]using WebDAV[/page]. This is only recommended for organisations that can invest in tuning and testing Composr's WebDAV implementation to their need; it's easy once a good workflow and understand is in place, but it does have some complexities under-the-hood.
 [*] Make it in code using the Composr API and run code to make it live. This is similar to the approach for Configuration, so is covered below.
 [/list]
+
+Page content is a special case. Because Comcode pages are stored as files, you may manage these directly through git. The 'Git Status' addon makes this easier -- you can easily download staging server changes to a development server, revert them, then pull them through properly using Git.
 
 [title="3"]Configuration and Structure[/title]
 
