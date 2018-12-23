@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_configuration
+ * @package    galleries
  */
 
 /**
  * Hook class.
  */
-class Hook_config_fullscreen_homepage_slider
+class Hook_config_homepage_slider_gallery
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,19 @@ class Hook_config_fullscreen_homepage_slider
     public function get_details()
     {
         return array(
-            'human_name' => 'FULLSCREEN_HOMEPAGE_SLIDER',
-            'type' => 'tick',
+            'human_name' => 'GALLERY',
+            'type' => 'line',
             'category' => 'THEME',
-            'group' => 'GENERAL',
-            'explanation' => 'CONFIG_OPTION_fullscreen_homepage_slider',
+            'group' => 'HOMEPAGE_HERO_SLIDER',
+            'explanation' => 'CONFIG_OPTION_homepage_slider_gallery',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 2,
             'theme_override' => true,
 
             'required' => true,
             'public' => false,
-            'addon' => 'core_configuration',
+            'addon' => 'galleries',
         );
     }
 
@@ -54,6 +54,6 @@ class Hook_config_fullscreen_homepage_slider
      */
     public function get_default()
     {
-        return '1';
+        return 'homepage_hero_slider';
     }
 }

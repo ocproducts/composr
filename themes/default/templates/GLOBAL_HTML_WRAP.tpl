@@ -2,15 +2,15 @@
 
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
-{+START,SET,hero_slider}{+START,IF,{$ADDON_INSTALLED,galleries}}{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
-	{$BLOCK,block=main_hero_slider,block_id=homepage-hero,gallery_name=homepage_hero_slider,blank_if_empty=1,fullscreen={$THEME_OPTION,fullscreen_homepage_slider},show_scroll_down=1,check_perms=0}
-{+END}{+END}{+END}
+{+START,SET,hero_slider}{+START,IF,{$ADDON_INSTALLED,galleries}}{+START,IF,{$THEME_OPTION,homepage_slider_enabled}}{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
+	{$BLOCK,block=main_hero_slider,block_id=homepage-hero,gallery_name={$THEME_OPTION,homepage_slider_gallery},blank_if_empty=1,effect={$THEME_OPTION,homepage_slider_effect},interval={$THEME_OPTION,homepage_slider_duration},fullscreen={$THEME_OPTION,homepage_slider_fullscreen},show_scroll_down=1,check_perms=0}
+{+END}{+END}{+END}{+END}
 
 {$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
 {$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-header-{$THEME_OPTION*,theme_header_type} {+START,IF,{$IS_NON_EMPTY,{$TRIM,{$GET,hero_slider}}}}has-homepage-slider {$?,{$THEME_OPTION,fullscreen_homepage_slider},has-fullscreen-homepage-slider}{+END} {$?,{$GET,has_left_panel},has-left-panel} {$?,{$GET,has_right_panel},has-right-panel}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="{+START,IF,{$SHOW_HEADER}}has-header-{$THEME_OPTION*,theme_header_type}{+END} {+START,IF,{$IS_NON_EMPTY,{$TRIM,{$GET,hero_slider}}}}has-homepage-slider {$?,{$THEME_OPTION,homepage_slider_fullscreen},has-homepage-slider-fullscreen}{+END} {$?,{$GET,has_left_panel},has-left-panel} {$?,{$GET,has_right_panel},has-right-panel}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>

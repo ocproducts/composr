@@ -245,6 +245,11 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/config/search_videos.php',
             'sources/hooks/systems/actionlog/galleries.php',
             // Hero slider
+            'sources/hooks/systems/config/homepage_slider_cycle_duration.php',
+            'sources/hooks/systems/config/homepage_slider_effect.php',
+            'sources/hooks/systems/config/homepage_slider_enabled.php',
+            'sources/hooks/systems/config/homepage_slider_fullscreen.php',
+            'sources/hooks/systems/config/homepage_slider_gallery.php',
             'sources/blocks/main_hero_slider.php',
             'themes/default/templates/BLOCK_MAIN_HERO_SLIDER.tpl',
             'uploads/galleries/root/homepage_hero_slider/index.html',
