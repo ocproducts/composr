@@ -166,6 +166,8 @@ class Hook_startup_upgrading
 I this example we have coded in 2 updates. The first update changes the [tt]wysiwyg_font_units[/tt] option and empties the template cache. The second changes the [tt]enable_previews[/tt] option and empties the template cache.
 Each update should contain all the code needed to move a site along for the code being pulled for that update.
 
+You may want a similar startup hook that customises database settings based upon domain name -- for those small configuration differences between dev/staging/live websites (e.g. the [tt]hc_is_test_site[/tt] setting).
+
 [title="3"]Tips[/title]
 
 Here are some assorted tips to help with portability:
