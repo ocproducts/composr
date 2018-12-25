@@ -707,22 +707,22 @@
             newestIdHere = null, newestTimestampHere = null;
 
         // Look through our messages
-        for (var i = 0; i < messages.length; i++) {
-            if (messages[i].localName === 'div') { // MESSAGE
+        messages.forEach(function (xmlEl) {
+            if (xmlEl.localName === 'div') { // MESSAGE
                 // Find out about our message
-                id = messages[i].getAttribute('id');
-                timestamp = messages[i].getAttribute('timestamp');
+                id = xmlEl.getAttribute('id');
+                timestamp = xmlEl.getAttribute('timestamp');
                 if (((window.topWindow.lastMessageId) && (parseInt(id) <= window.topWindow.lastMessageId)) && ((window.topWindow.lastTimestamp) && (parseInt(timestamp) <= window.topWindow.lastTimestamp))) {
-                    continue;
+                    return; // continue
                 }
 
                 // Find container to place message
                 if (!messageContainerGlobal) {
-                    roomId = messages[i].getAttribute('room_id');
+                    roomId = xmlEl.getAttribute('room_id');
                     currentRoomId = roomId;
                     messageContainer = null;
                 } else {
-                    currentRoomId = messages[i].getAttribute('room_id');
+                    currentRoomId = xmlEl.getAttribute('room_id');
                 }
 
                 if (document.getElementById('messages-window-' + currentRoomId)) {
@@ -736,7 +736,7 @@
                 }
 
                 if (!messageContainer) {
-                    continue; // Still no luck
+                    return; // Still no luck
                 }
 
                 // If we got this far, recognise the message as received
@@ -749,7 +749,7 @@
                 if (window.openedPopups['room_' + currentRoomId] !== undefined) {
                     var popupWin = window.openedPopups['room_' + currentRoomId];
                     if (!popupWin.document) { // We have nowhere to put the message
-                        continue;
+                        return; // continue
                     }
                     doc = popupWin.document;
 
@@ -765,12 +765,12 @@
                 }
 
                 if (doc.getElementById('chat_message__' + id)) { // Already there
-                    continue;
+                    return; // continue
                 }
 
                 // Clone the node so that we may insert it
                 clonedMessage = doc.createElement('div');
-                $dom.html(clonedMessage, (messages[i].xml !== undefined) ? messages[i].xml/*IE-only optimisation*/ : messages[i].firstElementChild.outerHTML);
+                $dom.html(clonedMessage, (xmlEl.xml !== undefined) ? xmlEl.xml/*IE-only optimisation*/ : xmlEl.firstElementChild.outerHTML);
                 clonedMessage = clonedMessage.firstElementChild;
                 clonedMessage.id = 'chat_message__' + id;
 
@@ -785,7 +785,7 @@
 
                     if (!firstSet) {// Only if no other message sound already for this event update
                         if (!skipIncomingSound) {
-                            playChatSound(document.hidden ? 'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
+                            playChatSound(document.hidden ? 'message_background' : 'message_received', xmlEl.getAttribute('sender_id'));
                         }
                         flashableAlert = true;
                     }
@@ -801,19 +801,19 @@
                 if (!messageContainerGlobal) {
                     currentRoomId = -1; // We'll be gathering for all rooms we're in now, because this messaging is coming through the master control window
                 }
-            } else if (messages[i].nodeName.toLowerCase() === 'chat_members_update') { // UPDATE MEMBERS LIST IN ROOM
+            } else if (xmlEl.nodeName.toLowerCase() === 'chat_members_update') { // UPDATE MEMBERS LIST IN ROOM
                 var membersElement = document.getElementById('chat-members-update');
                 if (membersElement) {
-                    $dom.html(membersElement, messages[i].textContent);
+                    $dom.html(membersElement, xmlEl.textContent);
                 }
-            } else if ((messages[i].nodeName.toLowerCase() === 'chat_event') && (window.imParticipantTemplate !== undefined)) { // Some kind of transitory event
-                eventType = messages[i].getAttribute('event_type');
-                roomId = messages[i].getAttribute('room_id');
-                memberId = messages[i].getAttribute('member_id');
-                username = messages[i].getAttribute('username');
-                avatarUrl = messages[i].getAttribute('avatar_url');
+            } else if ((xmlEl.nodeName.toLowerCase() === 'chat_event') && (window.imParticipantTemplate !== undefined)) { // Some kind of transitory event
+                eventType = xmlEl.getAttribute('event_type');
+                roomId = xmlEl.getAttribute('room_id');
+                memberId = xmlEl.getAttribute('member_id');
+                username = xmlEl.getAttribute('username');
+                avatarUrl = xmlEl.getAttribute('avatar_url');
 
-                id = messages[i].textContent;
+                id = xmlEl.textContent;
 
                 switch (eventType) {
                     case 'BECOME_ACTIVE':
@@ -909,7 +909,7 @@
                         break;
 
                     case 'JOIN_IM':
-                        addImMember(roomId, memberId, username, messages[i].getAttribute('away') === '1', avatarUrl);
+                        addImMember(roomId, memberId, username, xmlEl.getAttribute('away') === '1', avatarUrl);
 
                         var doc4 = document;
                         if ((window.openedPopups['room_' + roomId] !== undefined) && (!window.openedPopups['room_' + roomId].isShutdown)) {
@@ -931,7 +931,7 @@
                         break;
 
                     case 'PREINVITED_TO_IM':
-                        addImMember(roomId, memberId, username, messages[i].getAttribute('away') === '1', avatarUrl);
+                        addImMember(roomId, memberId, username, xmlEl.getAttribute('away') === '1', avatarUrl);
                         break;
 
                     case 'DEINVOLVE_IM':
@@ -971,17 +971,17 @@
                         }
                         break;
                 }
-            } else if ((messages[i].nodeName.toLowerCase() === 'chat_invite') && (window.imParticipantTemplate !== undefined)) { // INVITES
-                roomId = messages[i].textContent;
+            } else if ((xmlEl.nodeName.toLowerCase() === 'chat_invite') && (window.imParticipantTemplate !== undefined)) { // INVITES
+                roomId = xmlEl.textContent;
 
                 if ((!document.getElementById('room-' + roomId)) && ((window.openedPopups['room_' + roomId] === undefined) || (window.openedPopups['room_' + roomId].isShutdown))) {
-                    roomName = messages[i].getAttribute('room_name');
-                    avatarUrl = messages[i].getAttribute('avatar_url');
-                    participants = messages[i].getAttribute('participants');
-                    var byYou = (messages[i].getAttribute('inviter') === messages[i].getAttribute('you'));
+                    roomName = xmlEl.getAttribute('room_name');
+                    avatarUrl = xmlEl.getAttribute('avatar_url');
+                    participants = xmlEl.getAttribute('participants');
+                    var byYou = (xmlEl.getAttribute('inviter') === xmlEl.getAttribute('you'));
 
                     if ((!byYou) && (!window.instantGo) && (!document.getElementById('chat-lobby-convos-tabs'))) {
-                        createOverlayEvent(skipIncomingSound, messages[i].getAttribute('inviter'), '{!chat:IM_INFO_CHAT_WITH;^}'.replace('{' + '1}', roomName), function () {
+                        createOverlayEvent(skipIncomingSound, xmlEl.getAttribute('inviter'), '{!chat:IM_INFO_CHAT_WITH;^}'.replace('{' + '1}', roomName), function () {
                             window.lastMessageId = -1 /*Ensure messages re-processed*/;
                             detectedConversation(roomId, roomName, participants);
                             return false;
@@ -992,11 +992,11 @@
                     flashableAlert = true;
                 }
 
-            } else if (messages[i].nodeName.toLowerCase() === 'chat_tracking') { // TRACKING
-                window.topWindow.lastMessageId = messages[i].getAttribute('last_msg');
-                window.topWindow.lastEventId = messages[i].getAttribute('last_event');
+            } else if (xmlEl.nodeName.toLowerCase() === 'chat_tracking') { // TRACKING
+                window.topWindow.lastMessageId = xmlEl.getAttribute('last_msg');
+                window.topWindow.lastEventId = xmlEl.getAttribute('last_event');
             }
-        }
+        });
 
         // Get attention, to indicate something has happened
         if (flashableAlert) {
