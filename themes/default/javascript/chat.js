@@ -1066,21 +1066,21 @@
                 newParticipantInner = newParticipantInner.replace(/__room_id__/g, roomId);
                 newParticipantInner = newParticipantInner.replace(/__avatar_url__/g, avatarUrl);
                 if (avatarUrl === '') {
-                    newParticipantInner = newParticipantInner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
+                    newParticipantInner = newParticipantInner.replace('style="display: block" id="avatar--', 'style="display: none" id="avatar--');
                 }
                 newParticipantInner = newParticipantInner.replace(/__online__/g, away ? '{!chat:INACTIVE;^}' : '{!chat:ACTIVE;^}');
                 $dom.html(newParticipant, newParticipantInner);
                 newParticipant.id = 'participant__' + roomId + '__' + memberId;
-                var element = doc.getElementById('participants__' + roomId);
+                var element = doc.getElementById('participants--' + roomId);
                 if (element) {// If we've actually got the HTML for the room setup
                     var pList = $dom.html(element).toLowerCase();
 
-                    if ((pList.indexOf('<em class="none">') !== -1) || (pList.indexOf('<em class="loading">') !== -1)) {
+                    if (pList.includes('<em class="none">') || pList.includes('<em class="loading">')) {
                         $dom.html(element, '');
                     }
                     element.appendChild(newParticipant);
                     if (doc.getElementById('friend-img-' + memberId)) {
-                        doc.getElementById('friend__' + memberId).style.display = 'none';
+                        doc.getElementById('friend--' + memberId).style.display = 'none';
                     }
                 }
             }, 0);
