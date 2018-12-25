@@ -727,7 +727,7 @@
 
                 if (document.getElementById('messages-window-' + currentRoomId)) {
                     messageContainer = document.getElementById('messages-window-' + currentRoomId);
-                    tabElement = document.getElementById('tab_' + currentRoomId);
+                    tabElement = document.getElementById('tab-' + currentRoomId);
                     if ((tabElement) && (!tabElement.classList.contains('chat-lobby-convos-current-tab'))) {
                         tabElement.className = ((tabElement.classList.contains('chat-lobby-convos-tab-first')) ? 'chat-lobby-convos-tab-first ' : '') + 'chat-lobby-convos-tab-new-messages';
                     }
@@ -1127,7 +1127,7 @@
                 newDiv = document.createElement('div');
                 newDiv.className = 'chat-lobby-convos-tab-uptodate' + ((count === 0) ? ' chat-lobby-convos-tab-first' : '');
                 $dom.html(newDiv, $cms.filter.html(roomName));
-                newDiv.id = 'tab_' + roomId;
+                newDiv.id = 'tab-' + roomId;
                 newDiv.participants = participants;
                 $dom.on(newDiv, 'click', function () {
                     chatSelectTab(newDiv);
@@ -1338,8 +1338,8 @@
             if (justRefocus) {
                 try {
                     var roomId = window.topWindow.allConversations[people];
-                    if (document.getElementById('tab_' + roomId)) {
-                        chatSelectTab(document.getElementById('tab_' + roomId));
+                    if (document.getElementById('tab-' + roomId)) {
+                        chatSelectTab(document.getElementById('tab-' + roomId));
                     } else {
                         window.topWindow.openedPopups['room_' + roomId].focus();
                     }
@@ -1393,7 +1393,7 @@
             count = 0, i;
 
         for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
-            if (chatLobbyConvosTabs.children[i].id.substr(0, 4) === 'tab_') {
+            if (chatLobbyConvosTabs.children[i].id.substr(0, 4) === 'tab-') {
                 count++;
             }
         }
@@ -1415,7 +1415,7 @@
             return rooms;
         }
         for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
-            if (chatLobbyConvosTabs.children[i].id.substr(0, 4) === 'tab_') {
+            if (chatLobbyConvosTabs.children[i].id.substr(0, 4) === 'tab-') {
                 rooms.push(parseInt(chatLobbyConvosTabs.childNodes[i].id.substr(4)));
             }
         }
@@ -1460,7 +1460,7 @@
                 return;
             }
 
-            tabEl = document.getElementById('tab_' + roomId);
+            tabEl = document.getElementById('tab-' + roomId);
             element.style.display = 'none';
             tabEl.style.display = 'none';
 
@@ -1503,7 +1503,7 @@
                         document.getElementById('invite-ongoing-im-button').disabled = true;
                     }
                 } else {
-                    chatSelectTab(document.getElementById('tab_' + findImConvoRoomIds().pop()));
+                    chatSelectTab(document.getElementById('tab-' + findImConvoRoomIds().pop()));
                 }
             } else if (isPopup) {
                 window.onbeforeunload = null;
