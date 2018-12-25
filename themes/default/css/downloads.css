@@ -116,3 +116,8 @@
 	padding: 0.5em;
 	border-color: {$GET,pale_border};
 }
+
+
+.box---download-screen .tt-title-licence-agreement {
+	margin-top: 0;
+}

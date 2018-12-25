@@ -58,3 +58,7 @@ body table.results-table tbody tr.unclosed-ticket td {
 .ticket-page-text {
 	margin-bottom: 2em;
 }
+
+.support-ticket-screen .list-whos-read-ticket {
+	margin-bottom: 14px;
+}

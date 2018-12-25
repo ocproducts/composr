@@ -2,6 +2,7 @@
 {$REQUIRE_JAVASCRIPT,widget_color}
 {$REQUIRE_JAVASCRIPT,chat}
 {$REQUIRE_CSS,widget_color}
+{$REQUIRE_CSS,forms}
 
 <div data-view="ChatRoomScreen" data-view-params="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
 	{TITLE}

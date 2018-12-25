@@ -22,23 +22,10 @@ For example:
 }
 
 .menu-dropdown-item-a,
-.menu-dropdown-item-a:visited,
 .menu-dropdown-item-a:hover {
+	display: block;
 	text-decoration: none;
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
-}
-
-.menu-dropdown-item-a {
-	display: block;
-	text-decoration: none;
-}
-
-.menu-dropdown-item-a,
-.menu-dropdown-item-a:hover,
-.menu-dropdown-item-a:visited {
-	display: block;
-	text-decoration: none;
-	color: inherit;
 }
 
 .menu-dropdown-item-icon {
@@ -62,9 +49,16 @@ For example:
 /*{+START,CSS_MODE,mobile}*/
 	.menu-dropdown-toggle-btn {
 		text-decoration: none;
-		color: {$GET,WB} !important;
-		position: absolute;
 		padding: 0.75em;
+		display: flex;
+		align-items: center;
+		color: {$GET,WB};
+	}
+
+	.menu-dropdown-toggle-btn:hover,
+	.menu-dropdown-toggle-btn:focus {
+		text-decoration: none;
+		color: {$COLOR_RGBA,{$GET,WB},0.8};
 	}
 
 	.menu-dropdown-toggle-btn .icon {
@@ -72,23 +66,8 @@ For example:
 		height: 24px;
 	}
 
-	.menu-dropdown-toggle-btn:hover {
-		color: {$GET,WB};
-	}
-
-	.menu-dropdown-toggle-btn:hover span {
-		text-decoration: underline;
-	}
-
-	.menu-dropdown-toggle-btn * {
-		vertical-align: middle;
-	}
-
-	.menu-dropdown-toggle-btn::after {
-		padding-left: 0.25em;
-		content: "\25bc"; /* Downward triangle arrow */
-		vertical-align: middle;
-		font-size: 0.85em;
+	.menu-dropdown-toggle-btn .text {
+		margin-left: 0.5em;
 	}
 
 	.menu-dropdown-content {
@@ -99,38 +78,51 @@ For example:
 		left: 0;
 		z-index: 1000;
 		background-color: {$GET,area_5_background};
+		box-shadow: {$GET,box_shadow};
+		border-bottom: 1px solid {$GET,standard_border};
 	}
 
-	.menu-dropdown-item {
-		border-top: 1px solid {$GET,standard_border};
-		border-left: 1px solid {$GET,standard_border};
-		color: {$GET,BW};
-	}
+   .menu-dropdown-item {
+      color: {$GET,BW};
+      background-color: {$GET,area_5_background};
+      border-top: 1px solid {$GET,standard_border};
+      border-left: 1px solid {$GET,standard_border};
+      transition: background-color 0.15s ease-in-out;
+   }
+
+   .menu-dropdown-item-a {
+       padding: 1.2em 1em;
+   }
 
 	.menu-dropdown-item.nlevel {
 		margin-left: 2em;
 	}
 
-	.menu-dropdown-item.toplevel,
-	.menu-dropdown-item.nlevel {
-		background-color: {$GET,area_5_background};
-	}
+   .menu-dropdown-item.has-children > .menu-dropdown-item-a::after {
+       content: '';
+       float: right;
+       width: 0;
+       height: 0;
+       margin-top: 5px;
+       border-style: solid;
+       border-width: 6px 6px 0 6px; /* Downward triangle */
+       border-color: currentColor transparent transparent transparent;
+   }
 
-	.menu-dropdown-a.toplevel-link,
-	.menu-dropdown-a.nlevel-link {
-		padding: 1.2em 3em 1.2em 1em;
-		background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
-		background-size: 24px 24px;
-	}
+   .menu-dropdown-item.has-children.is-expanded > .menu-dropdown-item-a::after {
+       border-width: 0 6px 6px 6px; /* Upward triangle */
+       border-color: transparent transparent currentColor transparent;
+   }
 
-	.menu-dropdown-item.toplevel:hover,
-	.menu-dropdown-item.nlevel:hover,
-	.menu-dropdown a.toplevel-link:hover,
-	.menu-dropdown a.nlevel-link:hover,
-	.menu-dropdown-item.current > a.toplevel-link,
-	.menu-dropdown-item.current > a.nlevel-link {
-		background-color: {$GET,area_hover_2_background};
-	}
+   .menu-dropdown-item:hover,
+   .menu-dropdown-item.current,
+   .menu-dropdown-item.is-expanded {
+      background-color: {$GET,area_hover_2_background};
+   }
+
+   .menu-dropdown-item:focus-within {
+      background-color: {$GET,area_hover_2_background};
+   }
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
@@ -153,7 +145,13 @@ For example:
 
    .menu-dropdown-item-a {
        padding: 0.5em;
+		
    }
+
+	.menu-dropdown-item-a,
+	.menu-dropdown-item-a:hover {
+		color: inherit;
+	}
 
 	.menu-dropdown-item.toplevel.menu-spacer {
 		height: 1.15em;

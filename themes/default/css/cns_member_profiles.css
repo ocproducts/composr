@@ -29,13 +29,10 @@
 /*{+START,CSS_MODE,mobile}*/
 	.cns-profile-column {
 		padding: 0.5em;
-		font-size: 0.9em;
 	}
 
 	.cns-profile-main {
 		padding: 10px 0 0 0;
-		float: left;
-		width: 100%;
 	}
 
 	.cns-member-profile-avatar {
@@ -45,19 +42,23 @@
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.cns-profile-column {
-		float: right;
-		width: 17em;
-		padding: 1em;
-		font-size: 0.9em;
+	.cns-member-profile-about {
+		display: flex;
 	}
 
-	.cns-profile-column>h2:first-child {
+	.cns-profile-column {
+		min-width: 17em;
+		padding: 1em;
+		order: 1;
+	}
+
+	.cns-profile-column > h2:first-child {
 		margin-top: 0;
 	}
 
 	.cns-profile-main {
-		padding: 1em 16em 0 0;
+		padding-top: 1em;
+		padding-right: 1em;
 	}
 
 	.cns-member-profile-avatar {
@@ -74,7 +75,7 @@
 .cns-member-profile-usergroups {
 	padding: 0;
 	padding-left: 17px;
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
 	text-align: left;
 }
 
@@ -129,16 +130,24 @@ table.cns-profile-about-section .associated-details {
 	background: {$GET,area_5_background};
 }
 
+.cns-account-links {
+	border-top: 1px solid {$GET,pale_border};
+}
+
 .cns-account-links h2 {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	border-bottom: 1px solid {$GET,pale_border};
 }
 
-.cns-account-links ul.nl li {
+.cns-account-links-list li {
 	overflow: hidden;
 	margin-bottom: 0.5em;
 	padding-top: 4px;
+}
+
+.cns-account-links-list li .icon {
+	margin-right: 0.3em;
 }
 
 .cns-account-links .toggleable-tray-button .icon {

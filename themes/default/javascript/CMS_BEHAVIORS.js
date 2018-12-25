@@ -815,13 +815,13 @@
 
     // Implementation for [data-open-as-overlay]
     // Open page in overlay
-    $cms.behaviors.onclickOpenOverlay = {
+    $cms.behaviors.openAsOverlay = {
         attach: function (context) {
             if (!$cms.configOption('js_overlays')) {
                 return;
             }
 
-            var els = $util.once($dom.$$$(context, '[data-open-as-overlay]'), 'behavior.onclickOpenOverlay');
+            var els = $util.once($dom.$$$(context, '[data-open-as-overlay]'), 'behavior.openAsOverlay');
 
             els.forEach(function (el) {
                 $dom.on(el, 'click', function (e) {
@@ -1089,7 +1089,7 @@
                         }
                         stuckNav.parentNode.style.height = height + 'px';
                         stuckNav.style.position = 'fixed';
-                        stuckNav.style.top = document.querySelector('header.is-sticky') ? document.querySelector('header.is-sticky').offsetHeight + 'px' : '0px';
+                        stuckNav.style.top = document.querySelector('.header.is-sticky') ? document.querySelector('.header.is-sticky').offsetHeight + 'px' : '0px';
                         stuckNav.style.zIndex = '50';
                         stuckNav.style.width = stuckNavWidth + 'px';
                     } else {

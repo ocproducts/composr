@@ -664,7 +664,6 @@ span.validated-checkbox + input[name="validated"].input-tick {
 	}
 /*{+END}*/
 
-
 .btn-comcode {
 	color: {$GET,WB} !important;
 	position: relative;
@@ -727,7 +726,8 @@ span.validated-checkbox + input[name="validated"].input-tick {
 .btn-comcode-page .icon,
 .btn-comcode-quote .icon,
 .btn-comcode-code .icon,
-.btn-comcode-html .icon {
+.btn-comcode-html .icon,
+.btn-comcode-hide .icon {
 	position: absolute;
 	bottom: 3px;
 	left: 50%;

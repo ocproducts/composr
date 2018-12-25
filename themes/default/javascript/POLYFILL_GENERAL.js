@@ -155,6 +155,10 @@
         });
     }
 
+    if (NodeList.prototype.forEach === undefined) {
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    }
+
     if (Element.prototype.remove === undefined) {
         Element.prototype.remove = function remove() {
             if (this.parentNode !== null) {

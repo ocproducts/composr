@@ -233,10 +233,9 @@
      * @extends $cms.View
      */
     function ToggleableTray(params) {
-        var id;
-
         ToggleableTray.base(this, 'constructor', arguments);
 
+        var id;
         this.cookie = null;
         if (params.save) {
             id = $dom.id(this.el, 'tray-');
@@ -1763,10 +1762,8 @@
             }
         },
 
-        // Previously: $cms.ui.toggleTopBox()
+        // Previously: $cms.ui.toggleTopBox(), _toggle_messaging_box()
         toggleTopButtonPopup: function (e, btn) {
-            e && e.preventDefault();
-
             var topButtonsEl = this.$('.top-buttons'),
                 wrapperEl = $dom.parent(btn, '.top-button-wrapper'),
                 popupEl = wrapperEl.querySelector('.top-button-popup');
@@ -2038,13 +2035,13 @@
                         minWidth: '',
                         top: '',
                         zIndex: '',
-                        display: ''
+                        display: 'none'
                     });
                 });
             } else {
                 this.$$('.menu-dropdown-items.nlevel').forEach(function (miList) {
                     // Clear up remnants of touch dropdown opening CSS
-                    miList.style.display = '';
+                    miList.style.display = 'none';
                 });
 
                 this.$$('.menu-dropdown-item.is-expanded').forEach(function (menuItem) {

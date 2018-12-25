@@ -18,15 +18,15 @@
 <body class="website-body zone-running-{$REPLACE*,_,-,{$ZONE}} page-running-{$REPLACE*,_,-,{$PAGE}}" id="main-website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 	{$,This is the main site header}
 	{+START,IF,{$SHOW_HEADER}}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+		<header class="header header-admin" itemscope="itemscope" itemtype="http://schema.org/WPHeader" data-view="Header">
 			{$,The main logo}
-			<h1 class="logo-outer">
+			<h1 class="logo">
 				<a class="logo-link" target="_self" href="{$PAGE_LINK*,adminzone:}" rel="home">
 					{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
-					<img class="logo" src="{$IMG*,logo/small_white_logo}" alt="{$SITE_NAME*}" />
+					<img class="logo-image" src="{$IMG*,logo/small_white_logo}" alt="{$SITE_NAME*}" />
 					{+END}
 					{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
-					<span class="logo">{$SITE_NAME*}</span>
+					<span class="logo-text">{$SITE_NAME*}</span>
 					{+END}
 				</a>
 			</h1>

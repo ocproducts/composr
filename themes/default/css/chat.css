@@ -113,7 +113,7 @@
 
 	.chat-room-actions {
 		padding-left: 1em;
-		border-left: 1px solid {$GET,pale_border};
+		border-left: 1px solid {$GET,standard_border};
 	}
 
 	.chat-colour-option, .chat-font-option {
@@ -176,10 +176,10 @@
 .chat-message {
 	border: 1px solid {$GET,pale_border};
 	background: {$GET,area_background};
-	padding: 0.5em;
+	padding: 1em;
 	margin: 1em 0;
 	overflow: hidden;
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 }
 
 .chat-lobby-convos-area-messages .chat-message {
@@ -208,7 +208,7 @@
 }
 
 /* Post details */
-.chat-message>div {
+.chat-message > div {
 	border: 1px dotted {$GET,standard_border};
 	border-left: 0;
 	margin: 0.5em 0.5em 0.5em -0.5em;
@@ -219,15 +219,22 @@
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	margin-right: 60px;
 }
+
 .chat-lobby-convos-area-messages .chat-message>div {
 	margin-right: 40px;
 }
-.chat-message>div:hover, html.is-touch-enabled .chat-message>div {
+
+.chat-message > div:hover,
+html.is-touch-enabled .chat-message>div {
 	opacity: 1;
 }
-.chat-operator-staff a, .chat-operator-staff a:visited, .chat-operator-staff a:hover {
+
+.chat-operator-staff a, 
+.chat-operator-staff a:visited, 
+.chat-operator-staff a:hover {
 	color: {$GET,red_highlight_text};
 }
+
 .chat-message-by {
 	font-style: italic;
 }
@@ -524,7 +531,8 @@ ul.icon-links-block-group > li {
 	min-height: 15px;
 }
 
-ul.icon-links-block-group > li > .icon {
+ul.icon-links-block-group > li > a > .icon {
 	width: 14px;
 	height: 14px;
+	margin-right: 0.3em;
 }

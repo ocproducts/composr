@@ -36,6 +36,7 @@
 
 	.login-page-form label {
 		display: inline-block;
+		margin-bottom: 0;
 	}
 
 	.login-page-form label .must-show-together {

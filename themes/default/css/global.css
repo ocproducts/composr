@@ -949,13 +949,6 @@ input.input-username::-webkit-calendar-picker-indicator {
 	margin-left: auto;
 }
 
-/*{+START,CSS_MODE,mobile}*/
-.container {
-	padding-right: 10px;
-	padding-left: 10px;
-}
-/*{+END}*/
-
 .container-fluid {
 	width: 100%;
 	padding-right: 15px;
@@ -963,6 +956,14 @@ input.input-username::-webkit-calendar-picker-indicator {
 	margin-right: auto;
 	margin-left: auto;
 }
+
+/*{+START,CSS_MODE,mobile}*/
+.container,
+.container-fluid {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+/*{+END}*/
 
 /* Styles for fixed width mode */
 /*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
@@ -1294,6 +1295,7 @@ header.with-seed-navbar .top-button:hover {
 .global-navigation .top-login .bock-top-login-links {
 	margin-left: 0.8em;
 	width: auto;
+	display: flex;
 }
 
 .global-navigation .top-login .bock-top-login-links > li {
@@ -1313,11 +1315,8 @@ header.with-seed-navbar .top-button:hover {
 	height: 24px;
 }
 
-@media(max-width: 420px) {
-	.global-navigation .top-login .bock-top-login-links .li-join {
-		display: none;
-	}
-
+@media(max-width: 540px) {
+	.global-navigation .top-login .bock-top-login-links .li-join-text,
 	.global-navigation .top-login .bock-top-login-links .li-login-text {
 		display: none;
 	}
@@ -1625,12 +1624,10 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 }
 
 .global-side-panel h2 {
-	/*border-bottom: 1px solid;*/
 	text-transform: lowercase;
 	font-weight: normal;
-	/*width: 50%;*/
+	padding-top: 10px;
 	padding-left: 10px;
-	/*margin-left: 10px;*/
 }
 
 .global-side-panel {
@@ -3912,7 +3909,6 @@ div.ajax-loading, p.ajax-loading {
 }
 
 .post .post-title {
-	font-weight: bold;
 	padding-left: 0;
 	margin-bottom: 0.3em;
 }
@@ -4589,6 +4585,12 @@ ul.horizontal-links form {
 ul.buttons-group, ul.associated-links-block-group {
 	margin: 0; /* Margin will go on li elements if its a list */
 }
+
+.buttons-group .btn {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
 .force-normal-margin {
 	margin-top: 1em !important;
 }
@@ -6111,6 +6113,7 @@ input[type="button"].btn-block {
 	margin-right: -7px;
 }
 
+
 .proceed-button .btn {
 	margin-left: 7px;
 	margin-right: 7px;
@@ -6506,7 +6509,7 @@ td>.comcode-code-wrap>.comcode-quote, td>.comcode-code-wrap>.comcode-code {
 	margin: 0;
 }
 
-.comcode-quote>h4, .comcode-code>h4 {
+.comcode-quote > h4, .comcode-code > h4 {
 	border: 1px solid {$GET,code_border};
 	padding: 4px;
 	margin: 0;
@@ -6620,6 +6623,11 @@ pre .comcode-code-inner {
 	font-size: 0.9em;
 }
 
+.comcode-table-of-contents li {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
 .search-result .comcode-table-of-contents {
 	display: none;
 }
@@ -6642,7 +6650,7 @@ body div.comcode-table-of-contents>div.box-inner>ol>li {
 	text-align: center;
 	color: {$GET,area_key_text};
 	margin: 0.5em;
-	font-weight: bold;
+	font-weight: {$GET,font_weight_medium};
 }
 
 .comcode-italic {

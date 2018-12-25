@@ -48,7 +48,7 @@ html.is-touch-enabled .cns-information-bar-outer html.is-touch-enabled .toggleab
 
 /*{+START,CSS_MODE,desktop}*/
 	.cns-member-column {
-		height: 9em; /* 8em seems okay on Mac, 9em needed on Windows */
+		/*height: 9em; !* 8em seems okay on Mac, 9em needed on Windows *!*/
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -59,7 +59,7 @@ html.is-touch-enabled .cns-information-bar-outer html.is-touch-enabled .toggleab
 
 /*{+START,CSS_MODE,desktop}*/
 	.cns-guest-column {
-		height: 3em;
+		/*height: 3em;*/
 	}
 /*{+END}*/
 

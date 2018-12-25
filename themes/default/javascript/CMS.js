@@ -988,7 +988,7 @@
 
     /**
      * Change an icon to another one
-     * @param {SVGSVGElement|HTMLImageElement} iconEl
+     * @param { SVGSVGElement|HTMLImageElement } iconEl
      * @param {string} iconName
      * @param {string} imageSrc
      */
@@ -1017,7 +1017,7 @@
 
     /**
      * Find out whether an icon is a particular one
-     * @param {SVGSVGElement|HTMLImageElement} iconEl
+     * @param { SVGSVGElement|HTMLImageElement } iconEl
      * @param {string} iconName
      * @returns {boolean}
      */

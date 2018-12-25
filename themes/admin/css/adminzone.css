@@ -15,26 +15,31 @@ header {
 	margin-bottom: 1em;
 	display: flex;
 	border-bottom: none;
+	position: relative;
 }
 
-.logo-outer {
+.logo {
 	align-self: center;
 	margin: 0 25px;
 }
 
+.logo-image {
+	max-height: 100%;
+}
+
 @media (max-width: 1349px) { /* Hide admin logo on small screens to conserve space */
-	.logo-outer {
+	.logo {
 		display: none;
 	}
 }
 
-.logo-outer .logo {
+.logo .logo-link {
 	font-size: 20px;	
 	color: white;
 	height: 82px;
 }
 
-.logo-outer .logo:hover {
+.logo .logo-link:hover {
 	text-decoration: none;
 }
 
@@ -50,12 +55,8 @@ header {
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.admin-navigation {
-		border-top: 1px solid {$GET,standard_border};
-		border-bottom: 1px solid {$GET,standard_border};
-		background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});
 		color: {$GET,WB};
-		min-height: 3.4em;
-		position: relative;
+		margin-left: auto;
 	}
 
 	.admin-navigation-inner {

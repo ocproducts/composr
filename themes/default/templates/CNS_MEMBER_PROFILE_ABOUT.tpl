@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
 
-<div class="clearfix" data-tpl="cnsMemberProfileAbout">
+<div class="cns-member-profile-about" data-tpl="cnsMemberProfileAbout">
 	<div class="cns-profile-column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
 			<div class="cns-member-profile-avatar">
@@ -45,7 +45,7 @@
 					</h2>
 
 					<nav class="toggleable-tray js-tray-content" style="display: block">
-						<ul class="nl">
+						<ul class="cns-account-links-list nl">
 							{ACTIONS_contact}
 							{$GET,messenger_fields}
 						</ul>
@@ -66,7 +66,7 @@
 					</h2>
 
 					<nav class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-						<ul class="nl">
+						<ul class="cns-account-links-list nl">
 							{ACTIONS_content}
 						</ul>
 					</nav>
@@ -86,7 +86,7 @@
 					</h2>
 
 					<nav class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-						<ul class="nl">
+						<ul class="cns-account-links-list nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
 						</ul>
@@ -107,7 +107,7 @@
 					</h2>
 
 					<nav class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-						<ul class="nl">
+						<ul class="cns-account-links-list nl">
 							{ACTIONS_audit}
 						</ul>
 					</nav>

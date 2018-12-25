@@ -415,7 +415,7 @@
         } else {
             if (window.focus !== undefined) {
                 try {
-                    focus();
+                    window.focus();
                 }
                 catch (e) {
                     // continue

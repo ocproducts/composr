@@ -9,7 +9,7 @@
 {$SET,HAS_CHILDREN,{$HAS_ACTUAL_PAGE_ACCESS,admin,adminzone}}
 
 <div class="menu-dropdown menu-dropdown-admin" data-view="DropdownMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
-	<a href="{$PAGE_LINK*,:sitemap}" class="menu-dropdown-toggle-btn">{+START,INCLUDE,ICON}NAME=menus/mobile_menu{+END} <span class="text">{!MENU}</span></a>
+	<a href="#!" class="menu-dropdown-toggle-btn">{+START,INCLUDE,ICON}NAME=menus/mobile_menu{+END} <span class="text">{!MENU}</span></a>
 
 	<nav class="menu-dropdown-content">
 		<ul class="menu-dropdown-items menu-dropdown-items-main" id="{$GET*,menu_id}">

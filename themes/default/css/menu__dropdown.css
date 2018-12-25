@@ -169,7 +169,7 @@ For example:
 
 .menu-dropdown.is-touch-interface .menu-dropdown-item:hover,
 .menu-dropdown.is-touch-interface .menu-dropdown-item.current,
-.menu-dropdown.is-touch-interface .menu-dropdown-item.ie-expanded {
+.menu-dropdown.is-touch-interface .menu-dropdown-item.is-expanded {
 	background-color: {$GET,area_hover_2_background};
 }
 

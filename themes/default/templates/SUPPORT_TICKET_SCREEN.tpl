@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,tickets}
-<div data-tpl="supportTicketScreen" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
+<div class="support-ticket-screen" data-tpl="supportTicketScreen" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{TITLE}
 
 	{$SET,ticket_merge_into,{ID}}
@@ -50,7 +50,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="assign-username" class="accessibility-hidden">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="form-control input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="form-control form-control-sm input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
 						<button class="btn btn-primary btn-sm buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!ASSIGN_TO}</button>
 					</form>
 				</li>
@@ -205,7 +205,7 @@
 		{+START,IF_NON_EMPTY,{WHOS_READ}}
 			<h2>{!THIS_HAS_BEEN_READ_BY}</h2>
 
-			<ul class="nl">
+			<ul class="nl list-whos-read-ticket">
 				{+START,LOOP,WHOS_READ}
 					<li><a title="{USERNAME*}" href="{MEMBER_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a> {+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={MEMBER_ID}{+END} &ndash; <span class="associated-details">{DATE*}</span></li>
 				{+END}
