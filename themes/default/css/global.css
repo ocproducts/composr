@@ -4739,17 +4739,6 @@ ul.buttons-group, ul.associated-links-block-group {
 	width: 100%;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.form-control {
-		transition: none;
-	}
-}
-
-.form-control::-ms-expand {
-	background-color: transparent;
-	border: 0;
-}
-
 .form-control:focus {
 	color: #495057;
 	background-color: #fff;
@@ -4797,28 +4786,6 @@ select.form-control:focus::-ms-value {
 .form-control-range {
 	display: block;
 	width: 100%;
-}
-
-.col-form-label {
-	padding-top: 6px;
-	padding-bottom: 6px;
-	margin-bottom: 0;
-	font-size: inherit;
-	line-height: 1.5;
-}
-
-.col-form-label-lg {
-	padding-top: 8px;
-	padding-bottom: 8px;
-	font-size: 17px;
-	line-height: 1.5;
-}
-
-.col-form-label-sm {
-	padding-top: 4px;
-	padding-bottom: 4px;
-	font-size: 12px;
-	line-height: 1.5;
 }
 
 .form-control-plaintext {
@@ -4896,53 +4863,6 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 	margin-top: 3px;
 }
 
-.form-row {
-	display: flex;
-	flex-wrap: wrap;
-	margin-right: -5px;
-	margin-left: -5px;
-}
-
-.form-row > .col,
-.form-row > [class*="col-"] {
-	padding-right: 5px;
-	padding-left: 5px;
-}
-
-.form-check {
-	position: relative;
-	display: block;
-	padding-left: 17px;
-}
-
-.form-check-input {
-	position: absolute;
-	margin-top: 4px;
-	margin-left: -17px;
-}
-
-.form-check-input:disabled ~ .form-check-label {
-	color: #6c757d;
-}
-
-.form-check-label {
-	margin-bottom: 0;
-}
-
-.form-check-inline {
-	display: inline-flex;
-	align-items: center;
-	padding-left: 0;
-	margin-right: 10px;
-}
-
-.form-check-inline .form-check-input {
-	position: static;
-	margin-top: 0;
-	margin-right: 4px;
-	margin-left: 0;
-}
-
 .form-control.is-valid {
 	border-color: {$GET,success_color};
 }
@@ -4971,7 +4891,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 	width: 100%;
 }
 
-@media (min-width: 576px) {
+/*{+START,CSS_MODE,desktop}*/
 	.form-inline label {
 		display: flex;
 		align-items: center;
@@ -5010,7 +4930,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 		margin-right: 3px;
 		margin-left: 0;
 	}
-}
+/*{+END}*/
 
 /*
 =========================
@@ -5605,12 +5525,6 @@ input[type="button"].btn-block {
 	transition: opacity 0.15s linear;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.fade {
-		transition: none;
-	}
-}
-
 .fade:not(.show) {
 	opacity: 0;
 }
@@ -5624,12 +5538,6 @@ input[type="button"].btn-block {
 	height: 0;
 	overflow: hidden;
 	transition: height 0.35s ease;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.collapsing {
-		transition: none;
-	}
 }
 
 .dropup,
