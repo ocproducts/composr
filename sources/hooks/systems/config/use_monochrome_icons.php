@@ -54,6 +54,6 @@ class Hook_config_use_monochrome_icons
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }
