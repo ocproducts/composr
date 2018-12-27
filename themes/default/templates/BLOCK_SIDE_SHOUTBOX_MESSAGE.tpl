@@ -1,11 +1,11 @@
-<div class="box box---block-side-news-summary"><div class="box-inner">
-	<p class="tiny-paragraph associated-details">
-		{!BY_SIMPLE,{MEMBER}}
-	</p>
+<div class="box box---block-side-shoutbox-message"><div class="box-inner">
+	<a class="shoutbox-message-avatar" href="{MEMBER_URL*}" title="{!AVATAR}"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{MEMBER_ID}}}" alt="{!AVATAR}" width="20" height="20" /></a>
+	
+	<div class="shoutbox-message-header">
+		<p class="shoutbox-message-author associated-details">{MEMBER}</p>
 
-	<p class="tiny-paragraph associated-details">
-		{!POSTED_TIME_SIMPLE,{DATE*}}
-	</p>
+		<p class="shoutbox-message-time associated-details">{DATE*}</p>
+	</div>
 
 	<blockquote class="shoutbox-message">{$TRUNCATE_LEFT,{MESSAGE},92,1,1}</blockquote>
 </div></div>

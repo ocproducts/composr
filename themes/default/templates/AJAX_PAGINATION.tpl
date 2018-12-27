@@ -5,4 +5,4 @@
 {+END}
 {+END}
 
-<div class="tpl-placeholder" style="display: none;" data-tpl="ajaxPagination" data-tpl-params="{+START,PARAMS_JSON,WRAPPER_ID,infinite_scroll_call_url}{_*}{+END}"></div>
+<div class="tpl-placeholder" hidden="hidden" data-tpl="ajaxPagination" data-tpl-params="{+START,PARAMS_JSON,WRAPPER_ID,infinite_scroll_call_url}{_*}{+END}"></div>

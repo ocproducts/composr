@@ -88,7 +88,7 @@
 			</div>
 
 			{+START,IF_NON_EMPTY,{BUTTONS}}
-				<div class="post-buttons buttons-group">
+				<div class="post-buttons buttons-group" data-row-gap="10px">
 					{BUTTONS}
 				</div>
 			{+END}

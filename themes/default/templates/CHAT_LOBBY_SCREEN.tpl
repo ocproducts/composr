@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<div data-tpl="chatLobbyScreen" data-tpl-params="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_*}{+END}">
+<div data-tpl="chatLobbyScreen" data-tpl-params="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE,MEMBER_ID}{_*}{+END}">
 	{TITLE}
 
 	{+START,IF,{$HAS_FORUM,1}}
@@ -12,7 +12,24 @@
 	<div class="box box---chat-lobby-screen-rooms box-prominent"><div class="box-inner">
 		<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
 
-		<div class="clearfix">
+		<div class="chat-rooms-and-chat-actions">
+			<div class="chat-rooms">
+				<h3>{!SELECT_CHATROOM}</h3>
+
+				{+START,IF_NON_EMPTY,{CHATROOMS}}
+				<ul class="actions-list">
+					{+START,LOOP,CHATROOMS}
+					<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{URL*}">{NAME*}</a> <em class="associated-details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated-details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
+					{+END}
+				</ul>
+
+				<p class="chat-multi-tab">{+START,INCLUDE,ICON}NAME=help{+END} {!OPEN_CHATROOMS_IN_TABS}</p>
+				{+END}
+				{+START,IF_EMPTY,{CHATROOMS}}
+				<p class="nothing-here">{!NO_CATEGORIES,chat}</p>
+				{+END}
+			</div>
+			
 			{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}{PRIVATE_CHATROOM}{BLOCKING_LINK}{MOD_LINK}{SETEFFECTS_LINK}}
 				<nav class="chat-actions">
 					<h3>{!OTHER_ACTIONS}</h3>
@@ -38,23 +55,6 @@
 					</nav>
 				</nav>
 			{+END}
-
-			<div class="chat-rooms">
-				<h3>{!SELECT_CHATROOM}</h3>
-
-				{+START,IF_NON_EMPTY,{CHATROOMS}}
-					<ul class="actions-list">
-						{+START,LOOP,CHATROOMS}
-							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{URL*}">{NAME*}</a> <em class="associated-details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated-details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
-						{+END}
-					</ul>
-
-					<p class="chat-multi-tab">{+START,INCLUDE,ICON}NAME=help{+END} {!OPEN_CHATROOMS_IN_TABS}</p>
-				{+END}
-				{+START,IF_EMPTY,{CHATROOMS}}
-					<p class="nothing-here">{!NO_CATEGORIES,chat}</p>
-				{+END}
-			</div>
 		</div>
 	</div></div>
 
@@ -99,7 +99,7 @@
 						{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
 							<p>{!MUST_ADD_CONTACTS}</p>
 
-							<form class="js-form-submit-add-friend" data-submit-pd="1" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
+							<form class="form-add-friend js-form-submit-add-friend" data-submit-pd="1" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								<label class="accessibility-hidden" for="friend_username">{!USERNAME}: </label>

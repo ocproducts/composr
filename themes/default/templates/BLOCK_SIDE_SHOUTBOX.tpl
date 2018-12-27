@@ -14,7 +14,7 @@
 			</div>
 
 			<p class="proceed-button">
-				<button type="submit" class="btn btn-primary btn-scri buttons--send js-onsubmit-check-message-not-blank">{+START,INCLUDE,ICON}NAME=buttons/send{+END} {!SEND_MESSAGE}</button>
+				<button type="submit" class="btn btn-primary btn-scri buttons--send js-onclick-check-message-not-blank">{+START,INCLUDE,ICON}NAME=buttons/send{+END} {!SEND_MESSAGE}</button>
 			</p>
 		</form>
 	</div></section>

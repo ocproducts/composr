@@ -32,10 +32,5 @@
 			{+START,IF_NON_PASSED,STAFF_ACTIONS_TITLE}{!CONTROL_FUNCTIONS}:{+END}
 		</span>
 		<ul class="horizontal-links with-icons">{$GET,staff_actions}</ul>
-		{+START,INCLUDE,ICON}
-			NAME=buttons/settings
-			ICON_SIZE=24
-			ICON_CLASS=right
-		{+END}
 	</aside></div>
 {+END}

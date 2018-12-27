@@ -90,8 +90,8 @@
 				{+START,IF_PASSED,COMCODE_PAGE_HINTS}{+START,IF_NON_EMPTY,{COMCODE_PAGE_HINTS}}
 					<p class="vertical-alignment left">
 						{+START,LOOP,COMCODE_PAGE_HINTS}
-							<span{+START,IF,{$NEQ,{_loop_key},0}} class="mini-indent"{+END}>
-								<label for="comcode_page_hint__{NAME*}__{HINT_CODENAME*}">{HINT_LABEL*}<label>
+							<span {+START,IF,{$NEQ,{_loop_key},0}} class="mini-indent"{+END}>
+								<label for="comcode_page_hint__{NAME*}__{HINT_CODENAME*}">{HINT_LABEL*}</label>
 								<input title="{HINT_DESCRIPTION*}" type="checkbox" name="comcode_page_hint__{NAME*}__{HINT_CODENAME*}" id="comcode_page_hint__{NAME*}__{HINT_CODENAME*}" value="1"{+START,IF,{HINT_SELECTED}} checked="checked"{+END} />
 							</span>
 						{+END}
@@ -142,7 +142,7 @@
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 		{+END}
 
-		<div class="tpl-placeholder" style="display: none;" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}"></div>
+		<div class="tpl-placeholder" hidden="hidden" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}"></div>
 	</td>
 </tr>
 

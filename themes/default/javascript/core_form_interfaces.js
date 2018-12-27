@@ -1392,11 +1392,15 @@
                     var textValue = window.CKEDITOR.instances[post.name].getData();
                     var matches = textValue.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
                     var count = 0;
-                    if (matches) count = matches.length / 2;
-                    $dom.html(countElement, '{!WORDS;^}'.replace('\\{1\\}', count));
-                }
-                catch (e) {
-                }
+                    if (matches) {
+                        count = matches.length / 2;
+                    }
+                    var wordsText = $util.format('{!WORDS;^}', [count]);
+
+                    if ($dom.html(countElement) !== wordsText) {
+                        $dom.html(countElement, $util.format('{!WORDS;^}', [count]));
+                    }
+                } catch (e) {}
             }
         }, 1000);
     }

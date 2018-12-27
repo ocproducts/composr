@@ -31,7 +31,7 @@
 		<div class="box box---comments-wrapper"><div class="box-inner">
 			<h2 class="comments-header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 
-			<div class="clearfix">
+			<div class="clearfix" data-row-gap="1em">
 				<div class="comments-notification-buttons">
 					{+START,INCLUDE,NOTIFICATION_BUTTONS}
 						NOTIFICATIONS_TYPE=comment_posted

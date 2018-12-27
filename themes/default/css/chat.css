@@ -9,13 +9,18 @@
 	margin-top: 2em;
 }
 
+/*{+START,CSS_MODE,desktop}*/
+.chat-rooms-and-chat-actions {
+	display: flex;
+}
+/*{+END}*/
+
 .chat-rooms h3, .chat-actions h3 {
 	border-bottom: 0;
 }
 
 .chat-rooms {
-	width: 50%;
-	padding-left: 1em;
+	padding: 1em;
 }
 
 .chat-rooms .associated-details:last-child {
@@ -23,21 +28,23 @@
 }
 
 .chat-actions {
-	float: right;
-	width: 50%;
-	padding-left: 1em;
-	border-left: 1px solid {$GET,pale_border};
-	padding-bottom: 1em;
+	padding: 1em;
+	border-left: 1px solid {$GET,standard_border};
 }
+
+/*{+START,CSS_MODE,mobile}*/
+.chat-actions {
+	border-top: 1px solid {$GET,standard_border};
+	border-left: none;
+}
+/*{+END}*/
 
 .chat-actions li {
 	margin: 0.5em 0 !important;
 }
 
 .chat-multi-tab {
-	margin: 21px 0 8px 4px;
 	font-size: 0.9em;
-	width: 70%;
 }
 
 /* Chatrooms */
@@ -257,15 +264,22 @@ html.is-touch-enabled .chat-message>div {
 	margin-top: 3em;
 }
 
+/*{+START,CSS_MODE,desktop}*/
+.chat-im-convos-inner {
+	display: flex;
+}
+/*{+END}*/
+
 .alert-box-wrap {
 	padding-top: 3em;
 }
 
 .chat-lobby-friends {
+	padding: 1em;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.chat-lobby-friends {
-		float: left;
+		/*float: left;*/
 		/*width: 16.5em;*/
 	}
 /*{+END}*/
@@ -274,18 +288,21 @@ html.is-touch-enabled .chat-message>div {
 	vertical-align: middle;
 }
 
+.chat-lobby-friends .form-add-friend {
+	margin-bottom: 14px;
+}
+
+.chat-lobby-friends .form-add-friend .input-group {
+	display: inline-flex;
+	width: auto;
+}
+
 .chat-lobby-convos {
-	margin-top: 1em;
-	margin-left: 0.75em;
+	padding: 1em;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.chat-lobby-convos {
-		float: left;
-		width: 27em;
-		margin-right: 1em;
-		border-right: 1px solid {$GET,pale_border};
-		min-height: 29.5em;
-		padding-right: 0.5em;
+		border-right: 1px solid {$GET,standard_border};
 	}
 /*{+END}*/
 
@@ -319,8 +336,11 @@ html.is-touch-enabled .chat-message>div {
 	text-align: center;
 }
 
+/*{+START,CSS_MODE,desktop}*/
 .chat-lobby-convos-areas {
+	min-width: 26em;
 }
+/*{+END}*/
 
 .chat-participant-avatar {
 	display: block;
@@ -403,8 +423,12 @@ html.is-touch-enabled .chat-message>div {
 }
 
 .friend-actions {
-	margin-top: 1em;
-	margin-bottom: 1em;
+	/*margin-top: 1em;*/
+	/*margin-bottom: 1em;*/
+}
+
+.friend-actions .btn {
+	margin: 7px;
 }
 
 .friend-actions input {
@@ -484,10 +508,53 @@ html.is-touch-enabled .chat-message>div {
 
 /* Shoutbox */
 
+.box.box---block-side-shoutbox-message {
+	background-color: {$GET,WB};
+	margin-left: 30px;
+	position: relative;
+}
+
+.box---block-side-shoutbox-message::before {
+	content: '';
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 5px 5px 5px 0;
+	border-color: transparent {$GET,standard_border} transparent transparent;
+	position: absolute;
+	left: -5px;
+	top: 15px;
+}
+
+.shoutbox-message-avatar {
+	position: absolute;
+	left: -30px;
+}
+
+.shoutbox-message-avatar img {
+	width: 20px;
+	height: 20px;
+}
+
+.shoutbox-message-header {
+	overflow: hidden;
+}
+
+.shoutbox-message-author,
+.shoutbox-message-time {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+.shoutbox-message-author {
+	float: left;
+}
+
+.shoutbox-message-time {
+	float: right;
+}
+
 .shoutbox-message {
-	font-weight: bold;
-	font-size: 0.9em;
-	text-indent: 0;
 	margin: 0;
 }
 

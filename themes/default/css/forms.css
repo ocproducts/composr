@@ -54,7 +54,7 @@
 	font-weight: bold;
 	font-size: 0.85em;
 	margin: 1.5em 0 1em 0;
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -235,6 +235,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 }
 
 .form-table-field-input .form-screen-input-text,
+.form-table-field-input .form-screen-input-author,
 .form-table-field-input .multi-field {
 	display: inline-block;
 }

@@ -542,7 +542,7 @@
             $dom.on(btn, 'mousedown', function (e) {
                 var funcs = onmousedownCallFunctions.slice();
 
-                e.preventDefault();
+                // e.preventDefault();
 
                 funcs.forEach(function (func) {
                     func.push(e);

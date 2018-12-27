@@ -192,9 +192,9 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 /*{+START,CSS_MODE,mobile}*/ /* Horizontally scrolling sub-tabs on mobile */
-.modern-tab-bodies,
-.modern-tab-bodies>div {
-	/*padding: 0;*/
+.modern-tab-body-edit {
+	padding: 0;
+	margin: -3px;
 }
 
 .modern-subtabs {

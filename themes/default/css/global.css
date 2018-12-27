@@ -225,6 +225,7 @@ In mobile mode:
 {$SET,stickied_header_modern_height,70px}
 {$SET,border_radius,4px}
 {$SET,border_radius_lg,6px}
+{$SET,font_weight_light,300}
 {$SET,font_weight_medium,500} /* Varies by font: 500 for Roboto, 600 for Open Sans */
 
 {$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.075}}
@@ -1479,6 +1480,7 @@ html.has-header-side #main-website-inner {
 	margin-bottom: 0.8em;
 	min-width: 300px;
 	padding-bottom: 6px; /* For better alignment with breadcrumbs to the right */
+	font-weight: {$GET,font_weight_light};
 }
 .screen-title img {
 	vertical-align: middle;
@@ -1549,14 +1551,25 @@ html.has-header-side #main-website-inner {
 
 .breadcrumbs .sep::after, 
 .associated-breadcrumbs .sep::after {
-	content: " \00A0\00BB " !important;
+	/* Chevron */
+	border-style: solid;
+	border-width: 0.15em 0.15em 0 0;
+	content: '';
 	display: inline-block;
-	font-size: 0.9em;
-	opacity: 0.5;
-	vertical-align: text-top;
+	height: 0.5em;
+	left: 0.15em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(45deg);
+	vertical-align: 0.2em;
+	width: 0.5em;
+	margin-left: 0.3em;
+	margin-right: 0.6em;
+	opacity: 0.7;
 }
+
 .breadcrumbs .sep:last-child::after, .associated-breadcrumbs .sep:last-child::after {
-	content: "" !important;
+	display: none !important;
 }
 
 .breadcrumbs-img {
@@ -1615,7 +1628,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 }
 
 .global-middle-outer {
-	margin-top: 0.8em;
+	margin-top: 1em;
 }
 
 .global-middle img {
@@ -1669,11 +1682,10 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	}
 
 	.global-side-panel {
-		margin-top: -1em;
 		width: 20em;
 		/* Force the issue, as flex box can flex too much! */
-		min-width: 18em;
-		max-width: 18em;
+		min-width: 20em;
+		max-width: 20em;
 	}
 
 	#panel-bottom {
@@ -1743,6 +1755,10 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 .global-messages {
 	overflow: auto;
+}
+
+.global-messages .box---message:last-child {
+	margin-bottom: 0;
 }
 
 .global-message {
@@ -3962,7 +3978,8 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-.post-buttons>*[rel="add reply"], .post-buttons>a[rel="back_to_top"] {
+.post-buttons > *[rel="add reply"],
+.post-buttons > a[rel="back_to_top"] {
 	opacity: 1.0 !important;
 }
 
@@ -3970,6 +3987,10 @@ div .post-buttons>*, div .buttons-group-faded>* {
 .is-touch-enabled .post-buttons>*, 
 .buttons-group-faded:hover>*, 
 .is-touch-enabled .buttons-group-faded>* {
+	opacity: 1.0 !important;
+}
+
+.post-buttons:focus-within > * {
 	opacity: 1.0 !important;
 }
 
@@ -3996,6 +4017,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	padding: 1em !important;
 	margin-top: 1em;
 	border: 1px solid {$GET,pale_border} !important;
+	border-radius: {$GET,border_radius};
 }
 .comments-wrapper .boxless-space .comment-wrapper .highlighted-post.box {
 	border-top: 1px solid {$GET,pale_border} !important; /* Needs to be more explicit as boxless-space rules will remove borders */
@@ -4328,15 +4350,32 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.95em;
 	opacity: 0.4;
 	transition: opacity 0.6s linear;
-	padding-right: 5px;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	min-height: 26px;
 	overflow: hidden; /* To contain the settings cog icon */
 }
+
 .staff-actions:hover, 
 .is-touch-enabled .staff-actions {
-	opacity: 1.0;
+	opacity: 1;
 }
+
+.staff-actions:focus-within {
+	opacity: 1;
+}
+
+.staff-actions .box-inner {
+	background: transparent right center no-repeat;
+	/*{+START,IF,{$THEME_OPTION,use_monochrome_icons}}*/
+	background-image: url('{$IMG_INLINE;,icons_monochrome/buttons/settings}');
+	/*{+END}*/
+	/*{+START,IF,{$NOT,{$THEME_OPTION,use_monochrome_icons}}}*/
+	background-image: url('{$IMG_INLINE;,icons/buttons/settings}');
+	/*{+END}*/
+	background-size: 24px 24px;
+	padding-right: 25px;
+}
+
 .staff-actions .field-name.standard-field-name {
 	display: none;
 }
@@ -5502,6 +5541,7 @@ input[type="button"].btn-block {
 	display: flex;
 	margin-left: -7px;
 	margin-right: -7px;
+	flex-wrap: wrap;
 }
 
 .btn-row .btn {

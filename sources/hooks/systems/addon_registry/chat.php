@@ -406,6 +406,8 @@ class Hook_addon_registry_chat
     public function tpl_preview__block_side_shoutbox()
     {
         $tpl = do_lorem_template('BLOCK_SIDE_SHOUTBOX_MESSAGE', array(
+            'MEMBER_ID' => placeholder_id(),
+            'MEMBER_URL' => placeholder_url(),
             'MEMBER' => lorem_word(),
             'MESSAGE' => lorem_phrase(),
             '_TIME' => placeholder_date(),

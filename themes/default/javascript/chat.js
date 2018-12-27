@@ -344,8 +344,8 @@
     };
 
     $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
-        $dom.on(container, 'click', '.js-onsubmit-check-message-not-blank', function (e) {
-            if (!$cms.form.checkFieldForBlankness(document.getElementById('shoutbox_message'))) {
+        $dom.on(container, 'click', '.js-onclick-check-message-not-blank', function (e) {
+            if (!$cms.form.checkFieldForBlankness(document.getElementById('shoutbox-message'))) {
                 e.preventDefault();
             }
         });

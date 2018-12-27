@@ -26,3 +26,7 @@
 
 .coding-standards-tables th:nth-child(5), .coding-standards-tables td:nth-child(5) {
 }
+
+.box---tutorials-screen-tutorial .tutorial-thumbnail {
+	margin-right: 10px;
+}

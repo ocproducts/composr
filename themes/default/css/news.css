@@ -142,5 +142,6 @@
 }
 
 .box---block-main-news .box---news-box > .box-inner {
-	margin: 0;
+	margin-left: 0;
+	margin-right: 0;
 }

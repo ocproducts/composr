@@ -108,8 +108,10 @@
 	background: url('{$IMG;,cns_emoticons/party}') top right no-repeat;
 }
 
-.quiz-form tr.filledin.field-input th, .quiz-form tr.filledin.field-input td {
+.quiz-form tr.filledin.field-input th, 
+.quiz-form tr.filledin.field-input td {
 	opacity: 0.4;
+	transition: opacity 0.15s ease-in-out;
 }
 
 /*.quiz-form tr.field-input th, .quiz-form tr.field-input td {   Annoying assumption about mouse use
@@ -120,6 +122,11 @@
 .quiz-form tr.field-input:hover td, 
 html.is-touch-enabled .quiz-form tr.field-input th, 
 html.is-touch-enabled .quiz-form tr.field-input td {
+	opacity: 1.0 !important;
+}
+
+.quiz-form tr.field-input:focus-within th,
+.quiz-form tr.field-input:focus-within td {
 	opacity: 1.0 !important;
 }
 

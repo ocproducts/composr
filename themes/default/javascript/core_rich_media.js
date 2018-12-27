@@ -329,7 +329,7 @@
 
         function activateComcodeMemberLink(e, el) {
             el.cancelled = false;
-            $cms.loadSnippet('member_tooltip&member_id=' + params.memberId, null, true).then(function (result) {
+            $cms.loadSnippet('member_tooltip&member_id=' + params.memberId).then(function (result) {
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }
@@ -799,7 +799,7 @@
             }
         };
 
-        if (params.thumbUrl != '') {
+        if (params.thumbUrl) {
             playerOptions.image = $util.srl(params.thumbUrl);
         }
 
@@ -809,7 +809,7 @@
 
         playerOptions.autostart = (params.autostart === true);
 
-        if (params.closedCaptionsUrl != '') {
+        if (params.closedCaptionsUrl) {
             playerOptions.tracks = [
                 {
                     file: $util.srl(params.closedCaptionsUrl),
@@ -851,7 +851,7 @@
             }
         };
 
-        if (params.thumbUrl != '') {
+        if (params.thumbUrl) {
             playerOptions.image = $util.srl(params.thumbUrl);
         }
 
@@ -868,7 +868,7 @@
 
         playerOptions.autostart = (params.autostart === true);
 
-        if (params.closedCaptionsUrl != '') {
+        if (params.closedCaptionsUrl) {
             playerOptions.tracks = [
                 {
                     file: $util.srl(params.closedCaptionsUrl),

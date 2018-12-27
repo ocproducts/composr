@@ -1,4 +1,4 @@
-<div class="side-calendar-wrap">
+<div class="block-side side-calendar-wrap">
 	<div class="wide-table-wrap-internal-borders"><table class="spread-table autosized-table wide-table side-calendar calendar-year-month-table">
 		<colgroup>
 			<col class="calendar-weekly-column" />

@@ -220,7 +220,6 @@ For example:
 		font-family: sans-serif;
 		content: "\025BC"; /* Downward triangle */
 		vertical-align: middle;
-		padding-top: 0.5em;
 		padding-left: 0.5em;
 		font-size: 0.7em;
 		display: inline-block;

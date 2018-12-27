@@ -25,7 +25,6 @@
 
 .installer-main img {
 	display: inline-block;
-	box-shadow: 0 0 25px 2px {$GET,standard_border};
 }
 /*{+START,CSS_MODE,mobile}*/
 	.installer-main img {
@@ -43,11 +42,6 @@
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.installer-main-inner {
-		width: 80%;
-		margin: 0 10%;
-	}
-
 	.installer-main-min {
 		min-height: 350px;
 	}
@@ -195,6 +189,10 @@ textarea.mono-textbox {
 	padding: 0.5em;
 }
 /*{+START,CSS_MODE,desktop}*/
+	.installer-forums th {
+		background-color: {$GET,area_faded_background};
+	}
+
 	.installer-forums th>div {
 		width: 75%;
 		height: 100%;
@@ -241,7 +239,6 @@ textarea.mono-textbox {
 }
 /*{+START,CSS_MODE,desktop}*/
 	.installer-section {
-		width: 75%;
 		margin: 2em auto;
 	}
 /*{+END}*/
