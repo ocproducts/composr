@@ -149,6 +149,7 @@ Curved borders would be cool, but it does not work well with the carefully defin
 	text-align: left;
 	color: {$GET,slightly_seeded_text};
 	padding-top: 0.95em !important;
+	padding-left: 1em !important;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -336,7 +337,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 	display: inline-block;
 }
 .input-dimensions input {
-	width: 4em !important;
+	width: 6em !important;
 }
 .input-dimensions, .input-dimensions * {
 	vertical-align: middle;

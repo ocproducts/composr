@@ -1536,6 +1536,7 @@
     function toggleSubordinateFields(anchor, helpId) {
         var fieldInput = $dom.parent(anchor, '.form-table-field-spacer'),
             icon = fieldInput.querySelector('.toggleable-tray-button .icon'),
+            iconAnchor = $dom.parent(icon, 'a'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
@@ -1552,12 +1553,18 @@
         }
 
         if ((!next && $cms.isIcon(icon, 'trays/expand')) || (next && (next.style.display === 'none'))) {/* Expanding now */
-            $dom.parent(icon, 'a').title = '{!CONTRACT;^}';
+            iconAnchor.title = '{!CONTRACT;^}';
+            if (iconAnchor.cmsTooltipTitle != null) {
+                iconAnchor.cmsTooltipTitle = '{!CONTRACT;^}';
+            }
             $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons_monochrome/trays/contract}');
             newDisplayState = ''; // default state from CSS
             newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
-            $dom.parent(icon, 'a').title = '{!EXPAND;^}';
+            iconAnchor.title = '{!EXPAND;^}';
+            if (iconAnchor.cmsTooltipTitle != null) {
+                iconAnchor.cmsTooltipTitle = '{!EXPAND;^}';
+            }
             $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons_monochrome/trays/expand}');
             newDisplayState = 'none';
             newDisplayState2 = 'none';

@@ -3232,7 +3232,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 }
 
 .table-heading-cell {
-	padding: 1em 0.5em !important;
+	padding: 1em !important;
 	text-align: left !important;
 	background-color: {$GET,area_background} !important; /*  !important so precedence over th.dh */
 	font-weight: normal;

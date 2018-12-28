@@ -981,7 +981,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat', 'url'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
     }

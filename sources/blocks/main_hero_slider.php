@@ -177,8 +177,12 @@ class Block_main_hero_slider
             $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
 
             $edit_url = null;
-            if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $gallery_name)))) {
-                $edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => $row['id']), get_module_zone('cms_galleries'));
+            if ((has_actual_page_access(get_member(), 'cms_galleries')) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $gallery_name)))) {
+                $url_type = '_edit';
+                if ($row['content_type'] === 'video') {
+                    $url_type = '_edit_other';
+                }
+                $edit_url = build_url(array('page' => 'cms_galleries', 'type' => $url_type, 'id' => $row['id']), get_module_zone('cms_galleries'));
             }
 
             $items[] = array(

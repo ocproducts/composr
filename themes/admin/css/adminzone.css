@@ -56,7 +56,6 @@ header {
 /*{+START,CSS_MODE,mobile}*/
 	.admin-navigation {
 		color: {$GET,WB};
-		margin-left: auto;
 	}
 
 	.admin-navigation-inner {
