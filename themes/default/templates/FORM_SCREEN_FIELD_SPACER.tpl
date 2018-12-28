@@ -3,7 +3,7 @@
 	<th colspan="2" class="table-heading-cell vertical-alignment">
 		{+START,IF_PASSED,TITLE}
 			{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN}
-				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!" title="{!CONTRACT}">
+				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes-{TITLE|}" href="#!" title="{!CONTRACT}">
 					{+START,INCLUDE,ICON}
 						NAME=trays/contract
 						ICON_CLASS=right
@@ -20,7 +20,7 @@
 		{+END}
 
 		{+START,IF_PASSED,HELP}{+START,IF_NON_EMPTY,{HELP}}
-			<div {+START,IF_PASSED,TITLE} id="fes{TITLE|}-help"{+END}>
+			<div {+START,IF_PASSED,TITLE} id="fes-{TITLE|}-help"{+END}>
 				{$PARAGRAPH,{HELP*}}
 			</div>
 		{+END}{+END}

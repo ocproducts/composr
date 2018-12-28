@@ -596,23 +596,25 @@
     };
 
     $cms.templates.formScreenFieldSpacer = function (params, container) {
-        var title = $cms.filter.id(params.title),
+        var titleId = $cms.filter.id(params.title),
             sectionHidden = Boolean(params.sectionHidden);
 
-        $dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
-            toggleSubordinateFields(clicked, 'fes' + title + '_help');
-        });
+        if (titleId !== '') {
+            $dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
+                toggleSubordinateFields(clicked, 'fes-' + titleId + '-help');
+            });
 
-        $dom.on(container, 'keypress', '.js-keypress-toggle-subord-fields', function (e, pressed) {
-            toggleSubordinateFields(pressed, 'fes' + title + '_help');
-        });
+            $dom.on(container, 'keypress', '.js-keypress-toggle-subord-fields', function (e, pressed) {
+                toggleSubordinateFields(pressed, 'fes-' + titleId + '-help');
+            });
 
-        $dom.on(container, 'click', '.js-click-geolocate-address-fields', function () {
-            geolocateAddressFields();
-        });
+            $dom.on(container, 'click', '.js-click-geolocate-address-fields', function () {
+                geolocateAddressFields();
+            });
 
-        if (title && sectionHidden) {
-            $dom.trigger('#fes' + title, 'click');
+            if (sectionHidden) {
+                $dom.trigger('#fes-' + titleId, 'click');
+            }
         }
     };
 
