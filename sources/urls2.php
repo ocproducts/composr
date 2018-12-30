@@ -109,6 +109,10 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 
             if (is_array($val)) {
                 foreach ($val as $_key => $_val) { // We'll only support one level deep. Also no keep parameter array support.
+                    if (is_array($_val)) {
+                        continue; // Nested $_POST arrays should not happen in Composr, but may happen by hack-bots
+                    }
+
                     if (get_magic_quotes_gpc()) {
                         $_val = stripslashes($_val);
                     }
