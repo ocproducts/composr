@@ -45,19 +45,19 @@
 				},
 			{+END}
 			scales: {
-				{+START,IF_NON_EMPTY,{X_AXIS_LABEL}}
-					xAxes: [{
+				xAxes: [{
+					{+START,IF_NON_EMPTY,{X_AXIS_LABEL}}
 						scaleLabel: {
 							display: true,
 							labelString: '{X_AXIS_LABEL;/}',
 						},
-						{+START,IF_IN_ARRAY,X_LABELS,}{$,If blank labels have been placed we can assume this is to space things out manually}
-							ticks: {
-								autoSkip: false,
-							},
-						{+END}
-					}],
-				{+END}
+					{+END}
+					{+START,IF_IN_ARRAY,X_LABELS,}{$,If blank labels have been placed we can assume this is to space things out manually}
+						ticks: {
+							autoSkip: false,
+						},
+					{+END}
+				}],
 				yAxes: [{
 					{+START,IF_NON_EMPTY,{Y_AXIS_LABEL}}
 						scaleLabel: {
