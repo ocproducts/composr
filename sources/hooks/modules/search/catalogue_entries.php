@@ -170,7 +170,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
             default:
                 if (preg_match('#^f\d+\_actual\_value$#', $sort) != 0) {
-                    $remapped_orderer = str_replace('_actual_value', '_cv_value', $sort);
+                    $remapped_orderer = str_replace('_actual_value', '.cv_value', $sort);
                 }
                 break;
         }
