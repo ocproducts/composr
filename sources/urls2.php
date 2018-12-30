@@ -109,6 +109,10 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 
             if (is_array($val)) {
                 foreach ($val as $_key => $_val) { // We'll only support one level deep. Also no keep parameter array support.
+                    if (is_array($_val)) {
+                        continue; // Nested $_POST arrays should not happen in Composr, but may happen by hack-bots
+                    }
+
                     if (get_magic_quotes_gpc()) {
                         $_val = stripslashes($_val);
                     }
@@ -504,7 +508,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             $_bit = explode('=', $bit, 2);
 
             if (count($_bit) == 2) {
-                $attributes[$_bit[0]] = cms_url_decode_post_process($_bit[1]);
+                $attributes[$_bit[0]] = cms_url_decode_post_process(urldecode($_bit[1]));
                 if (strpos($attributes[$_bit[0]], ':') !== false) {
                     if ($perfect_only) {
                         return ''; // Could not convert this URL to a page-link, because it contains a colon

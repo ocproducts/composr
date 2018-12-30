@@ -1310,7 +1310,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
             $value = @html_entity_decode($value, ENT_QUOTES, get_charset());
         }
         if ((!isset($param[2])) || ($param[2] == '0')) {
-            $value = trim($value);
+            $value = trim(preg_replace('#(\s|&nbsp;)+#', ' ', $value));
         }
     }
 
