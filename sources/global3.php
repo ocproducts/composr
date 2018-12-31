@@ -1180,7 +1180,7 @@ function addon_installed($addon, $non_bundled_too = false)
         return $ADDON_INSTALLED_CACHE[$addon];
     }
 
-    $addon = filter_naughty($addon);
+    $addon = filter_naughty($addon, true);
     $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
     if ((!$answer) && ($non_bundled_too) && (!running_script('install'))) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
