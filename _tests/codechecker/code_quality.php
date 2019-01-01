@@ -38,6 +38,8 @@ ini_set('memory_limit', '-1');
 
 ini_set('display_errors', '1');
 
+ini_set('pcre.jit', '0'); // Compatibility issue in PHP 7.3, "JIT compilation failed: no more memory"
+
 $extra = array();
 if (isset($_SERVER['argv'])) {
     foreach ($_SERVER['argv'] as $index => $argv) {
@@ -162,7 +164,6 @@ $EXT_FUNCS = array(
     'getimagesize' => true,
     'image_type_to_extension' => true,
     'image_type_to_mime_type' => true,
-    'image2wbmp' => true,
     'imagealphablending' => true,
     'imageantialias' => true,
     'imagearc' => true,
@@ -197,7 +198,6 @@ $EXT_FUNCS = array(
     'imagecreatefromjpeg' => true,
     'imagecreatefrompng' => true,
     'imagecreatefromstring' => true,
-    'imagecreatefromwbmp' => true,
     'imagecreatefromxbm' => true,
     'imagecreatefromxpm' => true,
     'imagecreatetruecolor' => true,
@@ -252,12 +252,9 @@ $EXT_FUNCS = array(
     'imagettfbbox' => true,
     'imagettftext' => true,
     'imagetypes' => true,
-    'imagewbmp' => true,
     'imagexbm' => true,
     'iptcembed' => true,
     'iptcparse' => true,
-    'jpeg2wbmp' => true,
-    'png2wbmp' => true,
     'utf8_decode' => true,
     'utf8_encode' => true,
 );
@@ -847,10 +844,13 @@ function check_variable_list($LOCAL_VARIABLES, $offset = -1)
     }
 }
 
-function check_command($command, $depth, $function_guard = '', $nogo_parameters = null)
+function check_command($command, $depth, $function_guard = '', $nogo_parameters = null, $jump_structures = null)
 {
     if (is_null($nogo_parameters)) {
         $nogo_parameters = array();
+    }
+    if (is_null($jump_structures)) { // TODO: Change in v11 to pass array() default
+        $jump_structures = array();
     }
 
     global $LOCAL_VARIABLES, $CURRENT_CLASS, $FUNCTION_SIGNATURES;
@@ -916,7 +916,7 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                             infer_expression_type_to_variable_type($switch_type, $case[0]);
                         }
                     }
-                    check_command($case[1], $depth + 1, $function_guard, $nogo_parameters);
+                    check_command($case[1], $depth + 1, $function_guard, $nogo_parameters, array_merge($jump_structures, array('SWITCH')));
                 }
                 break;
             case 'ASSIGNMENT':
@@ -951,9 +951,9 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                         }
                     }
                 }
-                check_command($c[2], $depth, $temp_function_guard, $nogo_parameters);
+                check_command($c[2], $depth, $temp_function_guard, $nogo_parameters, $jump_structures);
                 if ($c[0] == 'IF_ELSE') {
-                    check_command($c[3], $depth, $function_guard, $nogo_parameters);
+                    check_command($c[3], $depth, $function_guard, $nogo_parameters, $jump_structures);
                 }
                 break;
             case 'INNER_FUNCTION':
@@ -971,10 +971,10 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                 }
                 break;
             case 'TRY':
-                check_command($c[1], $depth + 1, $function_guard, $nogo_parameters); // Goes first so that we get local variables defined inside loop for use in our loop conditional
+                check_command($c[1], $depth + 1, $function_guard, $nogo_parameters, $jump_structures); // Goes first so that we get local variables defined inside loop for use in our loop conditional
                 foreach ($c[2] as $catch) {
                     add_variable_reference($catch[1][0][1], $c_pos, false);
-                    check_command($catch[2], $depth + 1, $function_guard); // Goes first so that we get local variables defined inside loop for use in our loop conditional
+                    check_command($catch[2], $depth + 1, $function_guard, $nogo_parameters, $jump_structures); // Goes first so that we get local variables defined inside loop for use in our loop conditional
                 }
                 break;
             case 'FOREACH_map':
@@ -992,7 +992,7 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     log_warning('Re-using a loop variable, ' . $c[3][1], $c_pos);
                 }
 
-                check_command($c[4], $depth + 1, $function_guard, array_merge($nogo_parameters, array($c[2][1], $c[3][1])));
+                check_command($c[4], $depth + 1, $function_guard, array_merge($nogo_parameters, array($c[2][1], $c[3][1])), array_merge($jump_structures, array('FOREACH_map')));
                 break;
             case 'FOREACH_list':
                 $passes = ensure_type(array('array'), check_expression($c[1], false, false, $function_guard), $c_pos, 'Foreach must take array');
@@ -1005,21 +1005,21 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     log_warning('Re-using a loop variable, ' . $c[2][1], $c_pos);
                 }
 
-                check_command($c[3], $depth + 1, $function_guard, array_merge($nogo_parameters, array($c[2][1])));
+                check_command($c[3], $depth + 1, $function_guard, array_merge($nogo_parameters, array($c[2][1])), array_merge($jump_structures, array('FOREACH_list')));
                 break;
             case 'FOR':
                 if (!is_null($c[1])) {
-                    check_command(array($c[1]), $depth + 1, $function_guard);
+                    check_command(array($c[1]), $depth + 1, $function_guard, $nogo_parameters, array_merge($jump_structures, array('FOR')));
                 }
-                check_command(array($c[3]), $depth + 1, $function_guard);
+                check_command(array($c[3]), $depth + 1, $function_guard, $nogo_parameters, array_merge($jump_structures, array('FOR')));
                 $passes = ensure_type(array('boolean'), check_expression($c[2], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (for)', true);
                 if ($passes) {
                     infer_expression_type_to_variable_type('boolean', $c[2]);
                 }
-                check_command($c[4], $depth + 1, $function_guard, $nogo_parameters);
+                check_command($c[4], $depth + 1, $function_guard, $nogo_parameters, array_merge($jump_structures, array('FOR')));
                 break;
             case 'DO':
-                check_command($c[2], $depth + 1, $function_guard, $nogo_parameters); // Goes first so that we get local variables defined inside loop for use in our loop conditional
+                check_command($c[2], $depth + 1, $function_guard, $nogo_parameters, array_merge($jump_structures, array('DO'))); // Goes first so that we get local variables defined inside loop for use in our loop conditional
                 $passes = ensure_type(array('boolean'), check_expression($c[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (do)', true);
                 if ($passes) {
                     infer_expression_type_to_variable_type('boolean', $c[1]);
@@ -1030,14 +1030,29 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                 if ($passes) {
                     infer_expression_type_to_variable_type('boolean', $c[1]);
                 }
-                check_command($c[2], $depth + 1, $function_guard, $nogo_parameters);
+                check_command($c[2], $depth + 1, $function_guard, $nogo_parameters, array_merge($jump_structures, array('WHILE')));
                 break;
             case 'CONTINUE':
                 if (($c[1][0] == 'SOLO') && ($c[1][1][0] == 'LITERAL') && ($c[1][1][1][0] == 'INTEGER')) {
-                    if ($c[1][1][1][1] > $depth) {
+                    $continue_level = $c[1][1][1][1];
+                } elseif (($c[1][0] == 'LITERAL') && ($c[1][1][0] == 'INTEGER')) {
+                    $continue_level = $c[1][1][1];
+                } else {
+                    $continue_level = 1;
+                }
+
+                if ($continue_level > $depth) {
+                    if ($depth == 0) {
+                        log_warning('Nothing to continue out of', $c_pos);
+                    } else {
                         log_warning('Continue level greater than loop/switch depth', $c_pos);
                     }
+                } else {
+                    if ($jump_structures[count($jump_structures) - $continue_level] == 'SWITCH') {
+                        log_warning('Cannot continue by level ' . $continue_level . ', as it is a switch statement', $c_pos);
+                    }
                 }
+
                 $passes = ensure_type(array('integer'), check_expression($c[1], false, false, $function_guard), $c_pos, 'Loop/switch control must use integers (continue)');
                 if ($passes) {
                     infer_expression_type_to_variable_type('integer', $c[1]);
@@ -1048,6 +1063,11 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                 if ($passes) {
                     infer_expression_type_to_variable_type('integer', $c[1]);
                 }
+
+                if ($depth == 0) {
+                    log_warning('Nothing to break out of', $c_pos);
+                }
+
                 break;
             case 'PRE_DEC':
                 ensure_type(array('integer', 'float'), check_variable($c[1], false, $function_guard), $c_pos, 'Can only decrement numbers');
@@ -1072,7 +1092,7 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
         }
 
         if ($or) {
-            check_command(array($c[count($c) - 1]), $depth, $function_guard, $nogo_parameters);
+            check_command(array($c[count($c) - 1]), $depth, $function_guard, $nogo_parameters, $jump_structures);
         }
     }
 }

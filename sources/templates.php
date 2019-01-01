@@ -122,7 +122,7 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
     if ($dereference_lang) {
         $_title = do_lang_tempcode($title, array_shift($params), array_shift($params), $params);
     } else {
-        $_title = is_object($title) ? $title : make_string_tempcode($title);
+        $_title = is_object($title) ? $title : make_string_tempcode(escape_html($title));
     }
 
     if (function_exists('get_session_id')) {

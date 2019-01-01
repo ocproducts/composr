@@ -126,6 +126,7 @@ Positive advice:[list="1"]
 [/list]
 [*] [b]Include a physical mailing address[/b] in your newsletter footer. To be compliant with the US CAN-SPAM act you need to do this for commercial mailings (read as "advertising e-mail"). ISPs can't know if you are sending a commercial e-mail so are not likely to penalise you much if you don't, but you never know.
 [*] [b]Enable a [tt]List-Unsubscribe[/tt] header[/b]. You can do this with a Commandr command like [tt]:set_value('list_unsubscribe_target', 'mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me');[/tt].
+[*] If you find [tt]X-Authentication-Warning[/tt] headers are being included in outgoing e-mails you may need to edit your [tt]/etc/mail/trusted-users[/tt] file. Exact advice depends on your SMTP server.
 [/list]
 
 More extreme advice:[list="1"]

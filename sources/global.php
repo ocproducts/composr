@@ -644,6 +644,7 @@ if (function_exists('set_magic_quotes_runtime')) {
 safe_ini_set('html_errors', '1');
 safe_ini_set('docref_root', 'http://php.net/manual/en/');
 safe_ini_set('docref_ext', '.php');
+safe_ini_set('pcre.jit', '0'); // Compatibility issue in PHP 7.3, "JIT compilation failed: no more memory"
 
 // Get ready for some global variables
 global $REQUIRED_CODE, $CURRENT_SHARE_USER, $PURE_POST, $NO_QUERY_LIMIT, $NO_QUERY_LIMIT, $IN_MINIKERNEL_VERSION;

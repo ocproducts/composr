@@ -1,6 +1,6 @@
 {TITLE}
 
-{TEXT}
+{$PARAGRAPH,{TEXT}}
 
 {$,If not staff and adding banner then there's a chance you'll be using a banner network on your own website, so show details - staff can see this stuff in the docs anyway}
 {+START,IF,{$NOT,{$IS_STAFF}}}
@@ -11,7 +11,7 @@
 	</p>
 	<div>
 		<code>
-	{BANNER_CODE}
+{BANNER_CODE}
 		</code>
 	</div>
 {+END}

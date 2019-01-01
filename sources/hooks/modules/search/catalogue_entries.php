@@ -26,8 +26,8 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
     /**
      * Find details for this search hook.
      *
-     * @param  boolean $check_permissions Whether to check permissions.
-     * @return ?array Map of search hook details (null: hook is disabled).
+     * @param  boolean $check_permissions Whether to check permissions
+     * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
     public function info($check_permissions = true)
     {
@@ -37,7 +37,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
         if ($check_permissions) {
             if (!has_actual_page_access(get_member(), 'catalogues')) {
-                return null;
+                return false;
             }
         }
 
@@ -170,7 +170,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
             default:
                 if (preg_match('#^f\d+\_actual\_value$#', $sort) != 0) {
-                    $remapped_orderer = str_replace('_actual_value', '_cv_value', $sort);
+                    $remapped_orderer = str_replace('_actual_value', '.cv_value', $sort);
                 }
                 break;
         }

@@ -47,7 +47,7 @@ class modularisation_test_set extends cms_test_case
         $seen = array();
         foreach ($addon_data as $d) {
             foreach ($d as $file) {
-                if ((array_key_exists($file, $seen)) && (strpos($file, '_custom') === false)) {
+                if ((array_key_exists($file, $seen)) && (strpos($file, '_custom/') === false)) {
                     $this->assertTrue(false, 'Double referenced: ' . $file);
                 }
                 $seen[$file] = 1;

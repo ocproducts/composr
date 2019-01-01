@@ -11,6 +11,10 @@
 	max-width: 8em;
 }
 
+.filedump_filter #type_filter_filedump_1, .filedump_filter #type_filter_filedump_2 {
+	max-width: 5em;
+}
+
 .filedump_thumbnails .box {
 	float: left;
 	margin-top: 0;

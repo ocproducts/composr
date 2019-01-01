@@ -1161,6 +1161,12 @@ function step_5()
     // Cleanup base URL
     $_POST['base_url'] = normalise_idn_url($_POST['base_url']);
 
+    // Test URL
+    $parsed = @parse_url(post_param_string('base_url'));
+    if (($parsed === false) || (!array_key_exists('scheme', $parsed)) || (!array_key_exists('host', $parsed))) {
+        warn_exit(do_lang_tempcode('INVALID_BASE_URL', escape_html(post_param_string('base_url'))));
+    }
+
     // Check cookie settings. IF THIS CODE IS CHANGED ALSO CHANGE COPY&PASTED CODE IN CONFIG_EDITOR.PHP
     $cookie_path = post_param_string('cookie_path');
     $cookie_domain = trim(post_param_string('cookie_domain'));

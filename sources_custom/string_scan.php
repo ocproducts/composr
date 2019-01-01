@@ -181,6 +181,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ABSTRACTION_SYMBOL__THUMBNAIL
         ABSTRACT_FILE_MANAGEMENT
         ACCEPTED_MEDIA_TYPES
+        INVALID_BASE_URL
         WORDFILTER
         AUDIT
         DESCRIPTION_REORGANISE_UPLOADS
@@ -4787,6 +4788,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HTTPAUTH_IS_ENABLED
         HTTP_DOWNLOAD_BAD_URL
         HTTP_DOWNLOAD_CUT_SHORT
+        HTTP_DOWNLOAD_CONNECTION_STALLED
         HTTP_DOWNLOAD_NO_SERVER
         HTTP_DOWNLOAD_STATUS_NOT_FOUND
         HTTP_DOWNLOAD_STATUS_SERVER_ERROR

@@ -1269,7 +1269,7 @@ function get_autosave_url_stem()
 	{
 		name+=window.location.search.replace(/[\?&]redirect=.*/,'').replace(/[\?&]keep_\w+=.*/,'').replace(/[\?&]cat=.*/,'');
 	}
-	name=name.replace(/\./,'_'); // PHP can't use dots in field names
+	name=name.replace(/[\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]/g,'_'); // PHP can't use dots in field names, plus web application firewalls may not like special symbols
 	return name;
 }
 

@@ -322,6 +322,7 @@ class Hook_addon_registry_testing_platform
             //  Pedantry aside - we just want to test as effectively and efficiently and broadly as we can ;-).
             //   Whatever we can quickly achieve as a testing win for our total platform stability/coherence, we go with.
             //   Contributions for deeper, detailed, testing, are very welcome.
+            '_tests/sleep.php',
             '_tests/tests/unit_tests/.htaccess',
             '_tests/tests/unit_tests/calendar_event.php',
             '_tests/tests/unit_tests/calendar_event_type.php',
@@ -342,6 +343,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/antispam.php',
             '_tests/tests/unit_tests/clean_reinstall.php',
             '_tests/tests/unit_tests/authors.php',
+            '_tests/tests/unit_tests/http_timeouts.php',
             '_tests/tests/unit_tests/awards.php',
             '_tests/tests/unit_tests/comcode_code.php',
             '_tests/tests/unit_tests/xml_sitemaps.php',
@@ -405,6 +407,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/sitemap.php',
             '_tests/tests/unit_tests/cdn_config.php',
             '_tests/tests/unit_tests/_commandr_fs.php',
+            '_tests/tests/unit_tests/mail.php',
             '_tests/tests/unit_tests/broken_includes.php',
             '_tests/tests/unit_tests/rest.php',
             '_tests/tests/unit_tests/cpfs.php',

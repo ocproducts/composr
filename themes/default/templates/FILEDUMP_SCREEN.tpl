@@ -60,7 +60,9 @@
 					<p class="nothing_here">{!NO_ENTRIES}</p>
 				{+END}
 
-				{+START,INCLUDE,FILEDUMP_FOOTER}I=1{+END}
+				{+START,IF,{SOMETHING_EDITABLE}}
+					{+START,INCLUDE,FILEDUMP_FOOTER}I=1{+END}
+				{+END}
 			</form>
 
 			{+START,INCLUDE,NOTIFICATION_BUTTONS}
@@ -94,7 +96,9 @@
 					<p class="nothing_here">{!NO_ENTRIES}</p>
 				{+END}
 
-				{+START,INCLUDE,FILEDUMP_FOOTER}I=2{+END}
+				{+START,IF,{SOMETHING_EDITABLE}}
+					{+START,INCLUDE,FILEDUMP_FOOTER}I=2{+END}
+				{+END}
 			</form>
 
 			{+START,INCLUDE,NOTIFICATION_BUTTONS}

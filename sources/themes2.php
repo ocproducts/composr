@@ -23,7 +23,7 @@
  */
 function export_theme_images()
 {
-    header('Content-type: text/csv; charset=' . get_charset());
+    header('Content-Type: application/octet-stream' . '; authoritative=true;');
     header('Content-Disposition: attachment; filename="theme_images.tar"');
 
     require_code('tar');

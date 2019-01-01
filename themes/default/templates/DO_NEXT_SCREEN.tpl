@@ -1,7 +1,7 @@
 {TITLE}
 
 {+START,IF_PASSED,TEXT}
-	<p>{TEXT}</p>
+	{$PARAGRAPH,{TEXT}}
 {+END}
 
 {INTRO}

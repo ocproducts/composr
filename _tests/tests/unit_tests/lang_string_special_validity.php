@@ -35,7 +35,7 @@ class lang_string_special_validity_test_set extends cms_test_case
                     continue; // Not defined for language
                 }
                 if (is_array($_str)) {
-                    $_str[]= $lang;
+                    $_str[] = $lang;
                     $str = call_user_func_array(array($this, 'do_lang'), $_str);
                 } else {
                     $str = $this->do_lang($_str, null, null, null, $lang);
@@ -63,7 +63,7 @@ class lang_string_special_validity_test_set extends cms_test_case
                     continue; // Not defined for language
                 }
                 if (is_array($_str)) {
-                    $_str[]= $lang;
+                    $_str[] = $lang;
                     $str = call_user_func_array(array($this, 'do_lang'), $_str);
                 } else {
                     $str = $this->do_lang($_str, null, null, null, $lang);

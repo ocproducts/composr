@@ -31,7 +31,7 @@ class AndroidPushNotifications
      * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
      * @range  1 5
      * @param  boolean $no_cc Whether to NOT CC to the CC address
-     * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+     * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
      * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
      */
     private function android_dispatch($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from)

@@ -628,7 +628,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                     $tag_output->attach($close_list);
                                 }
                                 $status = CCP_STARTING_TAG;
-                                continue;
+                                continue 2;
                             }
                         }
                     } else {
@@ -636,7 +636,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $ahc = strpos($ahead, ']');
                             if ($ahc !== false) {
                                 $pos += $ahc + 1;
-                                continue;
+                                continue 2;
                             }
                         }
                     }
@@ -691,7 +691,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 if ($close !== false) {
                                     $pos = $close + 1;
                                 }
-                                continue;
+                                continue 2;
                             }
                         }
                     }
@@ -801,7 +801,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                     $pos = $scan_pos + 1;
                                     $just_ended = true;
                                     $none_wrap_length = 0;
-                                    continue;
+                                    continue 2;
                                 }
                             }
                         }

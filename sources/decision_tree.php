@@ -145,7 +145,7 @@ class DecisionTree
 
         $details = $this->decision_tree[$tree_position];
 
-        $title = get_screen_title($details['title'], false);
+        $title = get_screen_title(protect_from_escaping($details['title']), false);
 
         // Verify we can be on this screen
         if (isset($details['expects_parameters'])) {
@@ -213,7 +213,7 @@ class DecisionTree
     {
         $details = $this->decision_tree[$tree_position];
 
-        $title = get_screen_title($details['title'], false);
+        $title = get_screen_title(protect_from_escaping($details['title']), false);
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
@@ -337,6 +337,22 @@ class DecisionTree
 
         $next_tree_position = '_' . $tree_position; // Needs complex processing
         $next_url = $this->build_url($next_tree_position);
+
+        if ((array_key_exists('next', $details)) && (is_object($details['next']))) {
+            $ok = true;
+            if (isset($details['questions'])) {
+                foreach ($details['questions'] as $question_details) {
+                    if ((!empty($question_details['comcode_prepend'])) || (!empty($question_details['comcode_append']))) {
+                        $ok = false;
+                    }
+                }
+            }
+
+            if ($ok) {
+                // Actually it's a simple case: we can just jump straight to a Tempcode URL target (e.g. a support ticket posting URL)
+                $next_url = $details['next'];
+            }
+        }
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => '3164d2c849259902d0e3dc8dce1ad110',

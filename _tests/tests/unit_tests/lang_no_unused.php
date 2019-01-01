@@ -25,6 +25,8 @@ class lang_no_unused_test_set extends cms_test_case
 
         disable_php_memory_limit();
 
+        @set_time_limit(0);
+
         $all_code = '';
         $files = $this->do_dir(get_file_base(), '', 'php');
         foreach ($files as $file) {

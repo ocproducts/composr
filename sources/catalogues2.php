@@ -943,7 +943,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     delete_lang($myrow['cc_title']);
     delete_lang($myrow['cc_description']);
 
-    $old_parent_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_parent_id', array('id' => $id));
+    $old_parent_id = $myrow['cc_parent_id'];
 
     $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('id' => $id), '', 1);
 
