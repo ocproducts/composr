@@ -218,7 +218,7 @@ class Module_sites
         $fields->attach(form_input_line(do_lang_tempcode('SEARCH_UNDERNEATH'), do_lang_tempcode('DESCRIPTION_FTP_SEARCH_UNDER'), 'search_under', '/', false));
         $post_url = build_url(array('page' => '_SELF', 'type' => 'hostingcopy_step2'), '_SELF');
         $submit_name = do_lang('PROCEED');
-        return do_template('FORM_SCREEN', array('_GUID' => '32928b56f4f4b0e7d7e835673dc5aff8', 'TITLE' => $this->title, '_GUID' => 'e9f51de85f7cf800aa3097366a03ca5e', 'HIDDEN' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('CMS_COPYWAIT'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array('_GUID' => '32928b56f4f4b0e7d7e835673dc5aff8', 'TITLE' => $this->title, 'HIDDEN' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('CMS_COPYWAIT'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
     }
 
     /**

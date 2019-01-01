@@ -497,7 +497,7 @@ class Module_filedump
                         'HIDDEN_VALUE' => rtrim($filename, '/'),
                     ));
                 } else {
-                    $filename_field = escape_html($filename);
+                    $filename_field = make_string_tempcode(escape_html($filename));
                 }
 
                 // Editable(?) description
@@ -511,7 +511,7 @@ class Module_filedump
                         'HIDDEN_VALUE' => rtrim($filename, '/'),
                     ));
                 } else {
-                    $description_field = escape_html($file['description']);
+                    $description_field = make_string_tempcode(escape_html($file['description']));
                 }
 
                 // Size
