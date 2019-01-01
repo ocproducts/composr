@@ -80,7 +80,7 @@ function rebuild_sitemap_set($set_number, $last_time)
     $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
     $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($set_number) . '.xml';
     $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">';
     fwrite($sitemaps_out_file, $blob);
 
     // Nodes accessible by guests, and not deleted (ignore update time as we are rebuilding whole set)

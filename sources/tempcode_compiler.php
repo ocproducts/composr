@@ -189,7 +189,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $next_token = isset($bits[$i]) ? $bits[$i] : null;
                 if ($next_token === null) {
                     if ($tolerate_errors) {
-                        continue;
+                        continue 2;
                     }
                     warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                 }
@@ -518,21 +518,21 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         $past_level_mode = $current_level_mode;
                         if ($stack === array()) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         list($current_level_mode, $current_level_data, $current_level_params, $directive_level_mode, $directive_level_data, $directive_level_params, $num_preprocessable_bits) = array_pop($stack);
                         if (!is_array($directive_level_params)) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
                         $directive_opener_params = array_merge($directive_level_params, array($directive_level_data));
                         if (($directive_level_mode !== PARSE_DIRECTIVE) || ($directive_opener_params[0][0] !== '"START"')) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
@@ -540,7 +540,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         // Handle directive
                         if (count($directive_opener_params) === 1) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
                         }
