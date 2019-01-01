@@ -2124,7 +2124,11 @@ class Module_topics
                 $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));
             }
         } else {
-            $title = get_screen_title('_ADD_POST_UNDER', true, array(escape_html($topic_title), escape_html($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id)))));
+            $_poster_name_if_guest = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id));
+            if ($_poster_name_if_guest === null) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
+            }
+            $title = get_screen_title('_ADD_POST_UNDER', true, array(escape_html($topic_title), escape_html($_poster_name_if_guest)));
         }
 
         if (post_param_integer('add_poll', 0) == 1) {

@@ -729,7 +729,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             $addon_files = array_flip($addon_files);
         }
         if (isset($addon_files[strtolower($filepath)])) {
-            if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 && strpos($filepath, '_custom') === false) {
+            if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 && strpos($filepath, '_custom/') === false) {
                 return true;
             }
         }

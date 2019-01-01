@@ -55,7 +55,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
         }
 
         // Potential caching
-        $x = serialize(array($db_name, $db_host));
+        $x = serialize(array($db_user, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             return array($x, $db_name);
         }

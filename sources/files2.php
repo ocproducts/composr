@@ -217,12 +217,12 @@ function cms_get_temp_dir()
         make_missing_directory($local_path);
     }
     if (function_exists('sys_get_temp_dir')) {
-        $server_path = sys_get_temp_dir();
+        $server_path = rtrim(sys_get_temp_dir(), '/\\');
     } else {
         $server_path = '/tmp';
     }
     $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || (get_option('force_local_temp_dir') == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
-    $path = ($problem_saving ? $local_path : $server_path) . '/';
+    $path = ($problem_saving ? $local_path : $server_path);
     return array($path, $problem_saving, $server_path, $local_path);
 }
 
@@ -252,6 +252,51 @@ function _cms_tempnam($prefix = '')
         fix_permissions($local_path . '/' . $tempnam);
     }
     return $tempnam;
+}
+
+/**
+ * Find if a file is a temporary file.
+ *
+ * @param  PATH $path File path
+ * @return boolean Whether it is
+ */
+function is_temp_file($path)
+{
+    $path = realpath($path);
+
+    $_temp_dir = cms_get_temp_dir();
+    $temp_dirs = array(
+        realpath($_temp_dir[0]),
+        get_custom_file_base() . '/safe_mode_temp',
+    );
+
+    foreach ($temp_dirs as $temp_dir) {
+        if (substr($path, 0, strlen($temp_dir) + 1) == $temp_dir . '/') {
+            return true;
+        }
+        if (substr($path, 0, strlen($temp_dir) + 1) == $temp_dir . '\\') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Delete any attachment files from disk that were created as temporary files.
+ * We cannot do this after the mail_wrap function is called because the mail queue will need them - it has to be once the mail is finished with.
+ *
+ * @param  ?array $attachments A list of attachments (each attachment being a map, absolute path=>filename) (null: none)
+ */
+function clean_temporary_mail_attachments($attachments)
+{
+    if ($attachments !== null) {
+        foreach (array_keys($attachments) as $path) {
+            if (is_temp_file($path)) {
+                unlink($path);
+            }
+        }
+    }
 }
 
 /**
@@ -907,7 +952,7 @@ function check_shared_space_usage($extra)
  * @param  ?resource $write_to_file File handle to write to (null: do not do that)
  * @param  ?string $referer The HTTP referer (null: none)
  * @param  ?array $auth A pair: authentication username and password (null: none)
- * @param  float $timeout The timeout
+ * @param  float $timeout The timeout (for connecting/stalling, not for overall download time); usually it is rounded up to the nearest second, depending on the downloader implementation
  * @param  boolean $raw_post Whether to treat the POST parameters as a raw POST (rather than using MIME)
  * @param  ?array $files Files to send. Map between field to file path (null: none)
  * @param  ?array $extra_headers Extra headers to send (null: none)
@@ -1292,8 +1337,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
                                             // Misc settings
                                             //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
-                                            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
-                                            curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
+                                            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval(ceil($timeout)));
+                                            //curl_setopt($ch, CURLOPT_TIMEOUT, intval(ceil($timeout))); This does not do what we want (it would be an overall time limit for the response)
+                                            curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+                                            curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, intval(ceil($timeout)));
 
                                             // Request type
                                             if ($http_verb == 'HEAD') {
@@ -1386,6 +1433,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 // Error
                                                 $error = curl_error($ch);
                                                 curl_close($ch);
+
+                                                /*  We don't show error as we allow rolling on to another HTTP implementation, in case cURL is defective on this server
+                                                if ($trigger_error) {
+                                                    warn_exit($error);
+                                                } else {
+                                                    $HTTP_MESSAGE_B = protect_from_escaping($error);
+                                                }
+                                                */
                                             } else {
                                                 // Response metadata that cURL lets us gather easily
                                                 $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
@@ -1554,11 +1609,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     if ($mysock !== false) {
         if (function_exists('stream_set_timeout')) {
-            if (@stream_set_timeout($mysock, intval($timeout)) === false) {
+            if (@stream_set_timeout($mysock, intval($timeout), fmod($timeout, 1.0) / 1000000.0) === false) {
                 $mysock = false;
             }
         } elseif (function_exists('socket_set_timeout')) {
-            if (@socket_set_timeout($mysock, intval($timeout)) === false) {
+            if (@socket_set_timeout($mysock, intval($timeout), fmod($timeout, 1.0) / 1000000.0) === false) {
                 $mysock = false;
             }
         }
@@ -1601,31 +1656,36 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $data_started = false;
         $input = '';
         $input_len = 0;
-        $first_fail_time = mixed();
         $chunked = false;
         $buffer_unprocessed = '';
-        $time_init = time();
+        $_frh = array($mysock);
+        $_fwh = null;
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
-            $line = @fread($mysock, 32000);
-            if (($input === '') && ($time_init + $timeout < time())) {
-                $line = false; // Manual timeout
+            if ((function_exists('stream_select')) && (!stream_select($_frh, $_fwh, $_fwh, intval($timeout), fmod($timeout, 1.0) / 1000000.0))) {
+                if ((!$chunked) || ($buffer_unprocessed == '')) {
+                    if ($trigger_error) {
+                        warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_CONNECTION_STALLED', escape_html($url)));
+                    } else {
+                        $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_CONNECTION_STALLED', escape_html($url));
+                    }
+                    $DOWNLOAD_LEVEL--;
+                    $HTTP_MESSAGE = 'connection-stalled';
+                    if ($put !== null) {
+                        fclose($put);
+                        if (!$put_no_delete) {
+                            @unlink($put_path);
+                        }
+                    }
+                    return _detect_character_encoding($input);
+                }
             }
+
+            $line = @fread($mysock, 32000);
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;
                 }
                 $line = '';
-            }
-            if ($line == '') {
-                if ($first_fail_time !== null) {
-                    if ($first_fail_time < time() - 5) {
-                        break;
-                    }
-                } else {
-                    $first_fail_time = time();
-                }
-            } else {
-                $first_fail_time = null;
             }
             if ($data_started) {
                 $line = $buffer_unprocessed . $line;
@@ -1937,7 +1997,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
             $timeout_before = @ini_get('default_socket_timeout');
-            safe_ini_set('default_socket_timeout', strval(intval($timeout)));
+            safe_ini_set('default_socket_timeout', strval(intval(ceil($timeout))));
             if ($put !== null) {
                 $raw_payload .= file_get_contents($put_path);
             }

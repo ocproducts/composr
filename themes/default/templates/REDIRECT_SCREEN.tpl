@@ -5,7 +5,7 @@
 <div class="site_special_message">
 	<div class="site_special_message_inner">
 		<div class="box box___redirect_screen"><div class="box_inner">
-			<p>{TEXT}</p>
+			{$PARAGRAPH,{TEXT}}
 			{+START,IF_PASSED_AND_TRUE,REDIRECT_TEXT_NO_COMPLETE}
 				<p>{!REDIRECT_TEXT_NO_COMPLETE,{URL*}}</p>
 			{+END}

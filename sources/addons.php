@@ -99,10 +99,10 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
 
     if ($path === null) {
         $is_orig = false;
-        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon, true) . '.php';
         if (!is_file($path)) {
             $is_orig = true;
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon, true) . '.php';
         }
     } else {
         $is_orig = (strpos($path, '/sources_custom/hooks/systems/addon_registry/') !== false);

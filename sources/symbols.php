@@ -1310,7 +1310,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
             $value = @html_entity_decode($value, ENT_QUOTES, get_charset());
         }
         if ((!isset($param[2])) || ($param[2] == '0')) {
-            $value = trim($value);
+            $value = trim(preg_replace('#(\s|&nbsp;)+#', ' ', $value));
         }
     }
 
@@ -1500,7 +1500,7 @@ function ecv_PARAGRAPH($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        $is_blocky_already = ($param[0] == '') || (preg_match('#<(p|div|ul|ol|dl|blockquote|h1|h2|h3|h4|h5|h6|table|iframe)(\s.*)?' . '>#', $param[0]) != 0);
+        $is_blocky_already = (trim($param[0]) == '') || (preg_match('#<(p|div|ul|ol|dl|blockquote|h1|h2|h3|h4|h5|h6|table|iframe)(\s.*)?' . '>#', $param[0]) != 0);
         $value .= ($is_blocky_already ? '' : '<p>') . $param[0] . ($is_blocky_already ? '' : '</p>');
     }
 

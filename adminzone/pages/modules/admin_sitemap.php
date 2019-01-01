@@ -557,6 +557,8 @@ class Module_admin_sitemap
                     $_page = $page . '.php';
                 } elseif (substr($type, 0, 7) == 'comcode') {
                     $_page = $page . '.txt';
+
+                    rename_live_comcode_page($zone, $page, $new_zone, $page);
                 } elseif (substr($type, 0, 4) == 'html') {
                     $_page = $page . '.htm';
                 }

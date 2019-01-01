@@ -164,7 +164,9 @@ class CMS_RSS
                 }
             }
             if (xml_parse($xml_parser, $data, true) == 0) {
-                $this->error = do_lang('RSS_XML_ERROR', xml_error_string(xml_get_error_code($xml_parser)), strval(xml_get_current_line_number($xml_parser)));
+                $err_code = xml_get_error_code($xml_parser);
+                $err_msg = xml_error_string($err_code) . ' [#' . strval($err_code) . ' @ ' . strval(xml_get_current_line_number($xml_parser)) . ']';
+                $this->error = do_lang('RSS_XML_ERROR', $err_msg);
             }
             @xml_parser_free($xml_parser);
 
