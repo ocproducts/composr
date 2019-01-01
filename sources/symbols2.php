@@ -402,7 +402,7 @@ function ecv2_ADD($lang, $escaped, $param)
         $_value += floatval(str_replace(',', '', $p));
     }
 
-    $value = float_to_raw_string($_value);
+    $value = float_to_raw_string($_value, 20, true);
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -436,7 +436,7 @@ function ecv2_SUBTRACT($lang, $escaped, $param)
             }
         }
 
-        $value = float_to_raw_string($_value);
+        $value = float_to_raw_string($_value, 20, true);
     }
 
     if ($GLOBALS['XSS_DETECT']) {
