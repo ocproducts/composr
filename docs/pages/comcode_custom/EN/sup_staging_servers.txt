@@ -223,4 +223,4 @@ This code assumes the staging site is at [tt]staging.example.com[/tt].
  - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
  - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
 
-{$SET,tutorial_tags,Maintenance,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,Some advice about using a staging server.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Maintenance,expert,git_status}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,Some advice about using a staging server.}[block]main_tutorial_rating[/block]
