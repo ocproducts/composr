@@ -38,6 +38,8 @@ ini_set('memory_limit', '-1');
 
 ini_set('display_errors', '1');
 
+ini_set('pcre.jit', '0'); // Compatibility issue in PHP 7.3, "JIT compilation failed: no more memory"
+
 $extra = array();
 if (isset($_SERVER['argv'])) {
     foreach ($_SERVER['argv'] as $index => $argv) {
