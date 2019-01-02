@@ -36,6 +36,8 @@ class Hook_task_import_wordpress
      */
     public function run($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $import_wordpress_users)
     {
+        set_mass_import_mode();
+
         require_lang('news');
         require_code('news');
         require_code('news2');
@@ -428,6 +430,13 @@ class Hook_task_import_wordpress
                 }
             }
         }
+
+        decache('main_news');
+        decache('main_image_fader_news');
+        decache('side_news');
+        decache('side_news_archive');
+        decache('bottom_news');
+        decache('side_news_categories');
 
         $ret = do_lang_tempcode('IMPORT_WORDPRESS_DONE');
         return array('text/html', $ret);

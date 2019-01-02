@@ -33,6 +33,8 @@ class Hook_task_import_member_csv
      */
     public function run($default_password, $use_temporary_passwords, $path)
     {
+        set_mass_import_mode();
+
         require_lang('cns');
         require_code('cns_members_action');
         require_code('fields');
@@ -433,6 +435,11 @@ class Hook_task_import_member_csv
         }
 
         $outputted_messages->attach(do_lang_tempcode('NUM_MEMBERS_IMPORTED', escape_html(integer_format($num_added)), escape_html(integer_format($num_edited))));
+
+        decache('side_stats');
+        decache('main_members');
+        delete_value('cns_newest_member_id');
+        delete_value('cns_newest_member_username');
 
         @unlink($path);
         sync_file($path);

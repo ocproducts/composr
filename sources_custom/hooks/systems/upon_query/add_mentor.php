@@ -24,10 +24,6 @@ class Hook_upon_query_add_mentor
             return;
         }
 
-        if (get_mass_import_mode()) {
-            return;
-        }
-
         if (!isset($GLOBALS['FORUM_DB'])) {
             return;
         }
@@ -36,6 +32,10 @@ class Hook_upon_query_add_mentor
         }
 
         if (!$GLOBALS['SITE_DB']->table_exists('members_mentors')) {
+            return;
+        }
+
+        if (get_mass_import_mode()) {
             return;
         }
 

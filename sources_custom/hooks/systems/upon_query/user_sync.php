@@ -36,6 +36,10 @@ class Hook_upon_query_user_sync
             return;
         }
 
+        if (get_mass_import_mode()) {
+            return;
+        }
+
         if (get_value('user_sync_enabled') === '1') {
             $prefix = preg_quote($GLOBALS['FORUM_DB']->get_table_prefix(), '#');
 

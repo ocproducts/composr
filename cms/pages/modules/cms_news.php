@@ -803,8 +803,6 @@ class Module_cms_news extends Standard_crud_module
     {
         check_privilege('mass_import');
 
-        set_mass_import_mode();
-
         $is_validated = post_param_integer('auto_validate', 0);
         if (!addon_installed('unvalidated')) {
             $is_validated = 1;
