@@ -143,6 +143,7 @@ At the time of writing the list of check sections is:
  - Upkeep \ Composr version
  - Upkeep \ Copyright date
  - Upkeep \ PHP version
+ - Upkeep \ PHP version (if not distro default)
  - Upkeep \ Staff checklist
  - User-experience for mistakes \ 404 pages
  - User-experience for mistakes \ HTTPS redirection
@@ -180,6 +181,13 @@ The Composr ecosystem also has:
  - External scanning tools. The Health Check doesn\'t itself directly ensure your website is perfectly optimised, it just focuses on the more major issues, and does sign-posting to other tools. The Health Check will link to various external tools that can perform detailed scans, such as gauging your SSL security.
 
 Additionally you may want to check out Chris Graham's [url="Houndr project"]https://github.com/chrisgraham/houndr/[/url] which can be used to remind yourself of manually things to check, or tell you when social media is not being updated.
+
+[title="3"]Specific checks[/title]
+
+[title="4"]"Upkeep \ PHP version" vs "Upkeep \ PHP version (if not distro default)"[/title]
+
+The latter check is an alternative to the former check, and takes into account that some Linux distributions backport fixes to their older bundled PHP versions. It will not check the version of PHP so long that it is installed as [tt]/usr/bin/php[/tt].
+The latter check is only available on systems that support the [tt]which[/tt] command (essentially, on Linux).
 
 [title="2"]PHP-Info[/title]
 
