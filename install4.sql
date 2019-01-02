@@ -11,9 +11,9 @@ CREATE TABLE cms_member_privileges (
     PRIMARY KEY (member_id, privilege, the_page, module_the_name, category_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_member_privileges ADD INDEX member_privileges_member (member_id);
+ALTER TABLE cms_member_privileges ADD INDEX member_privileges_member (member_id);
 
-ALTER TABLE cms101_member_privileges ADD INDEX member_privileges_name (privilege,the_page,module_the_name,category_name);
+ALTER TABLE cms_member_privileges ADD INDEX member_privileges_name (privilege,the_page,module_the_name,category_name);
 
 DROP TABLE IF EXISTS cms_member_tracking;
 
@@ -27,11 +27,11 @@ CREATE TABLE cms_member_tracking (
     PRIMARY KEY (mt_member_id, mt_time, mt_page, mt_type, mt_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_member_tracking ADD INDEX mt_id (mt_page,mt_id,mt_type);
+ALTER TABLE cms_member_tracking ADD INDEX mt_id (mt_page,mt_id,mt_type);
 
-ALTER TABLE cms101_member_tracking ADD INDEX mt_page (mt_page);
+ALTER TABLE cms_member_tracking ADD INDEX mt_page (mt_page);
 
-ALTER TABLE cms101_member_tracking ADD INDEX mt_time (mt_time);
+ALTER TABLE cms_member_tracking ADD INDEX mt_time (mt_time);
 
 DROP TABLE IF EXISTS cms_member_zone_access;
 
@@ -42,9 +42,9 @@ CREATE TABLE cms_member_zone_access (
     PRIMARY KEY (zone_name, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_member_zone_access ADD INDEX mzamember_id (member_id);
+ALTER TABLE cms_member_zone_access ADD INDEX mzamember_id (member_id);
 
-ALTER TABLE cms101_member_zone_access ADD INDEX mzazone_name (zone_name);
+ALTER TABLE cms_member_zone_access ADD INDEX mzazone_name (zone_name);
 
 DROP TABLE IF EXISTS cms_menu_items;
 
@@ -69,11 +69,11 @@ CREATE TABLE cms_menu_items (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_menu_items ADD FULLTEXT i_caption (i_caption);
+ALTER TABLE cms_menu_items ADD FULLTEXT i_caption (i_caption);
 
-ALTER TABLE cms101_menu_items ADD FULLTEXT i_caption_long (i_caption_long);
+ALTER TABLE cms_menu_items ADD FULLTEXT i_caption_long (i_caption_long);
 
-ALTER TABLE cms101_menu_items ADD INDEX menu_extraction (i_menu);
+ALTER TABLE cms_menu_items ADD INDEX menu_extraction (i_menu);
 
 DROP TABLE IF EXISTS cms_messages_to_render;
 
@@ -86,7 +86,7 @@ CREATE TABLE cms_messages_to_render (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_messages_to_render ADD INDEX forsession (r_session_id);
+ALTER TABLE cms_messages_to_render ADD INDEX forsession (r_session_id);
 
 DROP TABLE IF EXISTS cms_modules;
 
@@ -245,31 +245,31 @@ CREATE TABLE cms_news (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_news ADD FULLTEXT news (news);
+ALTER TABLE cms_news ADD FULLTEXT news (news);
 
-ALTER TABLE cms101_news ADD FULLTEXT news_article (news_article);
+ALTER TABLE cms_news ADD FULLTEXT news_article (news_article);
 
-ALTER TABLE cms101_news ADD FULLTEXT news_search__combined (title,news,news_article);
+ALTER TABLE cms_news ADD FULLTEXT news_search__combined (title,news,news_article);
 
-ALTER TABLE cms101_news ADD FULLTEXT title (title);
+ALTER TABLE cms_news ADD FULLTEXT title (title);
 
-ALTER TABLE cms101_news ADD INDEX findnewscat (news_category);
+ALTER TABLE cms_news ADD INDEX findnewscat (news_category);
 
-ALTER TABLE cms101_news ADD INDEX ftjoin_ititle (title(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_ititle (title(250));
 
-ALTER TABLE cms101_news ADD INDEX ftjoin_nnews (news(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_nnews (news(250));
 
-ALTER TABLE cms101_news ADD INDEX ftjoin_nnewsa (news_article(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_nnewsa (news_article(250));
 
-ALTER TABLE cms101_news ADD INDEX headlines (date_and_time,id);
+ALTER TABLE cms_news ADD INDEX headlines (date_and_time,id);
 
-ALTER TABLE cms101_news ADD INDEX nes (submitter);
+ALTER TABLE cms_news ADD INDEX nes (submitter);
 
-ALTER TABLE cms101_news ADD INDEX newsauthor (author);
+ALTER TABLE cms_news ADD INDEX newsauthor (author);
 
-ALTER TABLE cms101_news ADD INDEX news_views (news_views);
+ALTER TABLE cms_news ADD INDEX news_views (news_views);
 
-ALTER TABLE cms101_news ADD INDEX nvalidated (validated);
+ALTER TABLE cms_news ADD INDEX nvalidated (validated);
 
 DROP TABLE IF EXISTS cms_news_categories;
 
@@ -290,9 +290,9 @@ INSERT INTO cms_news_categories (id, nc_title, nc_owner, nc_img, notes) VALUES (
 INSERT INTO cms_news_categories (id, nc_title, nc_owner, nc_img, notes) VALUES (6, 'Business', NULL, 'newscats/business', '');
 INSERT INTO cms_news_categories (id, nc_title, nc_owner, nc_img, notes) VALUES (7, 'Art', NULL, 'newscats/art', '');
 
-ALTER TABLE cms101_news_categories ADD FULLTEXT nc_title (nc_title);
+ALTER TABLE cms_news_categories ADD FULLTEXT nc_title (nc_title);
 
-ALTER TABLE cms101_news_categories ADD INDEX ncs (nc_owner);
+ALTER TABLE cms_news_categories ADD INDEX ncs (nc_owner);
 
 DROP TABLE IF EXISTS cms_news_category_entries;
 
@@ -302,7 +302,7 @@ CREATE TABLE cms_news_category_entries (
     PRIMARY KEY (news_entry, news_entry_category)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_news_category_entries ADD INDEX news_entry_category (news_entry_category);
+ALTER TABLE cms_news_category_entries ADD INDEX news_entry_category (news_entry_category);
 
 DROP TABLE IF EXISTS cms_news_rss_cloud;
 
@@ -347,9 +347,9 @@ CREATE TABLE cms_newsletter_drip_send (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_newsletter_drip_send ADD INDEX d_inject_time (d_inject_time);
+ALTER TABLE cms_newsletter_drip_send ADD INDEX d_inject_time (d_inject_time);
 
-ALTER TABLE cms101_newsletter_drip_send ADD INDEX d_to_email (d_to_email(250));
+ALTER TABLE cms_newsletter_drip_send ADD INDEX d_to_email (d_to_email(250));
 
 DROP TABLE IF EXISTS cms_newsletter_periodic;
 
@@ -381,7 +381,7 @@ CREATE TABLE cms_newsletter_subscribe (
     PRIMARY KEY (newsletter_id, email)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_newsletter_subscribe ADD INDEX peopletosendto (the_level);
+ALTER TABLE cms_newsletter_subscribe ADD INDEX peopletosendto (the_level);
 
 DROP TABLE IF EXISTS cms_newsletter_subscribers;
 
@@ -398,11 +398,11 @@ CREATE TABLE cms_newsletter_subscribers (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_newsletter_subscribers ADD INDEX code_confirm (code_confirm);
+ALTER TABLE cms_newsletter_subscribers ADD INDEX code_confirm (code_confirm);
 
-ALTER TABLE cms101_newsletter_subscribers ADD INDEX email (email(250));
+ALTER TABLE cms_newsletter_subscribers ADD INDEX email (email(250));
 
-ALTER TABLE cms101_newsletter_subscribers ADD INDEX welcomemails (join_time);
+ALTER TABLE cms_newsletter_subscribers ADD INDEX welcomemails (join_time);
 
 DROP TABLE IF EXISTS cms_newsletters;
 
@@ -415,9 +415,9 @@ CREATE TABLE cms_newsletters (
 
 INSERT INTO cms_newsletters (id, title, description) VALUES (1, 'General', 'General messages will be sent out in this newsletter.');
 
-ALTER TABLE cms101_newsletters ADD FULLTEXT description (description);
+ALTER TABLE cms_newsletters ADD FULLTEXT description (description);
 
-ALTER TABLE cms101_newsletters ADD FULLTEXT title (title);
+ALTER TABLE cms_newsletters ADD FULLTEXT title (title);
 
 DROP TABLE IF EXISTS cms_notification_lockdown;
 
@@ -438,11 +438,11 @@ CREATE TABLE cms_notifications_enabled (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_notifications_enabled ADD INDEX l_code_category (l_code_category(250));
+ALTER TABLE cms_notifications_enabled ADD INDEX l_code_category (l_code_category(250));
 
-ALTER TABLE cms101_notifications_enabled ADD INDEX l_member_id (l_member_id,l_notification_code);
+ALTER TABLE cms_notifications_enabled ADD INDEX l_member_id (l_member_id,l_notification_code);
 
-ALTER TABLE cms101_notifications_enabled ADD INDEX l_notification_code (l_notification_code);
+ALTER TABLE cms_notifications_enabled ADD INDEX l_notification_code (l_notification_code);
 
 DROP TABLE IF EXISTS cms_poll;
 
@@ -505,51 +505,51 @@ CREATE TABLE cms_poll (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_poll ADD FULLTEXT option1 (option1);
+ALTER TABLE cms_poll ADD FULLTEXT option1 (option1);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option10 (option10);
+ALTER TABLE cms_poll ADD FULLTEXT option10 (option10);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option2 (option2);
+ALTER TABLE cms_poll ADD FULLTEXT option2 (option2);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option3 (option3);
+ALTER TABLE cms_poll ADD FULLTEXT option3 (option3);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option4 (option4);
+ALTER TABLE cms_poll ADD FULLTEXT option4 (option4);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option5 (option5);
+ALTER TABLE cms_poll ADD FULLTEXT option5 (option5);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option6 (option6);
+ALTER TABLE cms_poll ADD FULLTEXT option6 (option6);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option7 (option7);
+ALTER TABLE cms_poll ADD FULLTEXT option7 (option7);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option8 (option8);
+ALTER TABLE cms_poll ADD FULLTEXT option8 (option8);
 
-ALTER TABLE cms101_poll ADD FULLTEXT option9 (option9);
+ALTER TABLE cms_poll ADD FULLTEXT option9 (option9);
 
-ALTER TABLE cms101_poll ADD FULLTEXT poll_search__combined (question,option1,option2,option3,option4,option5);
+ALTER TABLE cms_poll ADD FULLTEXT poll_search__combined (question,option1,option2,option3,option4,option5);
 
-ALTER TABLE cms101_poll ADD FULLTEXT question (question);
+ALTER TABLE cms_poll ADD FULLTEXT question (question);
 
-ALTER TABLE cms101_poll ADD INDEX date_and_time (date_and_time);
+ALTER TABLE cms_poll ADD INDEX date_and_time (date_and_time);
 
-ALTER TABLE cms101_poll ADD INDEX ftjoin_po1 (option1(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po1 (option1(250));
 
-ALTER TABLE cms101_poll ADD INDEX ftjoin_po2 (option2(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po2 (option2(250));
 
-ALTER TABLE cms101_poll ADD INDEX ftjoin_po3 (option3(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po3 (option3(250));
 
-ALTER TABLE cms101_poll ADD INDEX ftjoin_po4 (option4(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po4 (option4(250));
 
-ALTER TABLE cms101_poll ADD INDEX ftjoin_po5 (option5(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po5 (option5(250));
 
-ALTER TABLE cms101_poll ADD INDEX ftjoin_pq (question(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_pq (question(250));
 
-ALTER TABLE cms101_poll ADD INDEX get_current (is_current);
+ALTER TABLE cms_poll ADD INDEX get_current (is_current);
 
-ALTER TABLE cms101_poll ADD INDEX padd_time (add_time);
+ALTER TABLE cms_poll ADD INDEX padd_time (add_time);
 
-ALTER TABLE cms101_poll ADD INDEX poll_views (poll_views);
+ALTER TABLE cms_poll ADD INDEX poll_views (poll_views);
 
-ALTER TABLE cms101_poll ADD INDEX ps (submitter);
+ALTER TABLE cms_poll ADD INDEX ps (submitter);
 
 DROP TABLE IF EXISTS cms_poll_votes;
 
@@ -562,11 +562,11 @@ CREATE TABLE cms_poll_votes (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_poll_votes ADD INDEX v_voter_id (v_voter_id);
+ALTER TABLE cms_poll_votes ADD INDEX v_voter_id (v_voter_id);
 
-ALTER TABLE cms101_poll_votes ADD INDEX v_voter_ip (v_voter_ip);
+ALTER TABLE cms_poll_votes ADD INDEX v_voter_ip (v_voter_ip);
 
-ALTER TABLE cms101_poll_votes ADD INDEX v_vote_for (v_vote_for);
+ALTER TABLE cms_poll_votes ADD INDEX v_vote_for (v_vote_for);
 
 DROP TABLE IF EXISTS cms_post_tokens;
 
@@ -580,7 +580,7 @@ CREATE TABLE cms_post_tokens (
     PRIMARY KEY (token)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_post_tokens ADD INDEX generation_time (generation_time);
+ALTER TABLE cms_post_tokens ADD INDEX generation_time (generation_time);
 
 DROP TABLE IF EXISTS cms_privilege_list;
 
@@ -816,9 +816,9 @@ CREATE TABLE cms_quiz_question_answers (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_quiz_question_answers ADD FULLTEXT q_answer_text (q_answer_text);
+ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_answer_text (q_answer_text);
 
-ALTER TABLE cms101_quiz_question_answers ADD FULLTEXT q_explanation (q_explanation);
+ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_explanation (q_explanation);
 
 DROP TABLE IF EXISTS cms_quiz_questions;
 
@@ -838,9 +838,9 @@ CREATE TABLE cms_quiz_questions (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_quiz_questions ADD FULLTEXT q_question_extra_text (q_question_extra_text);
+ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_extra_text (q_question_extra_text);
 
-ALTER TABLE cms101_quiz_questions ADD FULLTEXT q_question_text (q_question_text);
+ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_text (q_question_text);
 
 DROP TABLE IF EXISTS cms_quiz_winner;
 
@@ -884,19 +884,19 @@ CREATE TABLE cms_quizzes (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_quizzes ADD FULLTEXT quiz_search__combined (q_start_text,q_name);
+ALTER TABLE cms_quizzes ADD FULLTEXT quiz_search__combined (q_start_text,q_name);
 
-ALTER TABLE cms101_quizzes ADD FULLTEXT q_end_text (q_end_text);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text (q_end_text);
 
-ALTER TABLE cms101_quizzes ADD FULLTEXT q_end_text_fail (q_end_text_fail);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text_fail (q_end_text_fail);
 
-ALTER TABLE cms101_quizzes ADD FULLTEXT q_name (q_name);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_name (q_name);
 
-ALTER TABLE cms101_quizzes ADD FULLTEXT q_start_text (q_start_text);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_start_text (q_start_text);
 
-ALTER TABLE cms101_quizzes ADD INDEX ftjoin_qstarttext (q_start_text(250));
+ALTER TABLE cms_quizzes ADD INDEX ftjoin_qstarttext (q_start_text(250));
 
-ALTER TABLE cms101_quizzes ADD INDEX q_validated (q_validated);
+ALTER TABLE cms_quizzes ADD INDEX q_validated (q_validated);
 
 DROP TABLE IF EXISTS cms_rating;
 
@@ -911,9 +911,9 @@ CREATE TABLE cms_rating (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_rating ADD INDEX alt_key (rating_for_type,rating_for_id);
+ALTER TABLE cms_rating ADD INDEX alt_key (rating_for_type,rating_for_id);
 
-ALTER TABLE cms101_rating ADD INDEX rating_for_id (rating_for_id);
+ALTER TABLE cms_rating ADD INDEX rating_for_id (rating_for_id);
 
 DROP TABLE IF EXISTS cms_redirects;
 
@@ -950,7 +950,7 @@ CREATE TABLE cms_review_supplement (
     PRIMARY KEY (r_post_id, r_rating_type)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_review_supplement ADD INDEX rating_for_id (r_rating_for_id);
+ALTER TABLE cms_review_supplement ADD INDEX rating_for_id (r_rating_for_id);
 
 DROP TABLE IF EXISTS cms_revisions;
 
@@ -970,13 +970,13 @@ CREATE TABLE cms_revisions (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_revisions ADD INDEX actionlog_link (r_actionlog_id);
+ALTER TABLE cms_revisions ADD INDEX actionlog_link (r_actionlog_id);
 
-ALTER TABLE cms101_revisions ADD INDEX lookup_by_cat (r_resource_type,r_category_id);
+ALTER TABLE cms_revisions ADD INDEX lookup_by_cat (r_resource_type,r_category_id);
 
-ALTER TABLE cms101_revisions ADD INDEX lookup_by_id (r_resource_type,r_resource_id);
+ALTER TABLE cms_revisions ADD INDEX lookup_by_id (r_resource_type,r_resource_id);
 
-ALTER TABLE cms101_revisions ADD INDEX moderatorlog_link (r_moderatorlog_id);
+ALTER TABLE cms_revisions ADD INDEX moderatorlog_link (r_moderatorlog_id);
 
 DROP TABLE IF EXISTS cms_searches_logged;
 
@@ -990,9 +990,9 @@ CREATE TABLE cms_searches_logged (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_searches_logged ADD FULLTEXT past_search_ft (s_primary);
+ALTER TABLE cms_searches_logged ADD FULLTEXT past_search_ft (s_primary);
 
-ALTER TABLE cms101_searches_logged ADD INDEX past_search (s_primary(250));
+ALTER TABLE cms_searches_logged ADD INDEX past_search (s_primary(250));
 
 DROP TABLE IF EXISTS cms_searches_saved;
 
@@ -1018,11 +1018,11 @@ CREATE TABLE cms_seo_meta (
 
 INSERT INTO cms_seo_meta (id, meta_for_type, meta_for_id, meta_description) VALUES (1, 'gallery', 'root', '');
 
-ALTER TABLE cms101_seo_meta ADD FULLTEXT meta_description (meta_description);
+ALTER TABLE cms_seo_meta ADD FULLTEXT meta_description (meta_description);
 
-ALTER TABLE cms101_seo_meta ADD INDEX alt_key (meta_for_type,meta_for_id);
+ALTER TABLE cms_seo_meta ADD INDEX alt_key (meta_for_type,meta_for_id);
 
-ALTER TABLE cms101_seo_meta ADD INDEX ftjoin_dmeta_description (meta_description(250));
+ALTER TABLE cms_seo_meta ADD INDEX ftjoin_dmeta_description (meta_description(250));
 
 DROP TABLE IF EXISTS cms_seo_meta_keywords;
 
@@ -1034,11 +1034,11 @@ CREATE TABLE cms_seo_meta_keywords (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_seo_meta_keywords ADD FULLTEXT meta_keyword (meta_keyword);
+ALTER TABLE cms_seo_meta_keywords ADD FULLTEXT meta_keyword (meta_keyword);
 
-ALTER TABLE cms101_seo_meta_keywords ADD INDEX ftjoin_dmeta_keywords (meta_keyword(250));
+ALTER TABLE cms_seo_meta_keywords ADD INDEX ftjoin_dmeta_keywords (meta_keyword(250));
 
-ALTER TABLE cms101_seo_meta_keywords ADD INDEX keywords_alt_key (meta_for_type,meta_for_id);
+ALTER TABLE cms_seo_meta_keywords ADD INDEX keywords_alt_key (meta_for_type,meta_for_id);
 
 DROP TABLE IF EXISTS cms_sessions;
 
@@ -1058,11 +1058,11 @@ CREATE TABLE cms_sessions (
     PRIMARY KEY (the_session)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_sessions ADD INDEX delete_old (last_activity);
+ALTER TABLE cms_sessions ADD INDEX delete_old (last_activity);
 
-ALTER TABLE cms101_sessions ADD INDEX member_id (member_id);
+ALTER TABLE cms_sessions ADD INDEX member_id (member_id);
 
-ALTER TABLE cms101_sessions ADD INDEX userat (the_zone,the_page,the_id);
+ALTER TABLE cms_sessions ADD INDEX userat (the_zone,the_page,the_id);
 
 DROP TABLE IF EXISTS cms_shopping_cart;
 
@@ -1076,11 +1076,11 @@ CREATE TABLE cms_shopping_cart (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_shopping_cart ADD INDEX ordered_by (ordered_by);
+ALTER TABLE cms_shopping_cart ADD INDEX ordered_by (ordered_by);
 
-ALTER TABLE cms101_shopping_cart ADD INDEX session_id (session_id);
+ALTER TABLE cms_shopping_cart ADD INDEX session_id (session_id);
 
-ALTER TABLE cms101_shopping_cart ADD INDEX type_code (type_code);
+ALTER TABLE cms_shopping_cart ADD INDEX type_code (type_code);
 
 DROP TABLE IF EXISTS cms_shopping_logging;
 
@@ -1094,7 +1094,7 @@ CREATE TABLE cms_shopping_logging (
     PRIMARY KEY (id, l_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_shopping_logging ADD INDEX cart_log (l_date_and_time);
+ALTER TABLE cms_shopping_logging ADD INDEX cart_log (l_date_and_time);
 
 DROP TABLE IF EXISTS cms_shopping_order_details;
 
@@ -1113,9 +1113,9 @@ CREATE TABLE cms_shopping_order_details (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_shopping_order_details ADD INDEX order_id (p_order_id);
+ALTER TABLE cms_shopping_order_details ADD INDEX order_id (p_order_id);
 
-ALTER TABLE cms101_shopping_order_details ADD INDEX type_code (p_type_code);
+ALTER TABLE cms_shopping_order_details ADD INDEX type_code (p_type_code);
 
 DROP TABLE IF EXISTS cms_shopping_orders;
 
@@ -1142,13 +1142,13 @@ CREATE TABLE cms_shopping_orders (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_shopping_orders ADD INDEX finddispatchable (order_status);
+ALTER TABLE cms_shopping_orders ADD INDEX finddispatchable (order_status);
 
-ALTER TABLE cms101_shopping_orders ADD INDEX soadd_date (add_date);
+ALTER TABLE cms_shopping_orders ADD INDEX soadd_date (add_date);
 
-ALTER TABLE cms101_shopping_orders ADD INDEX somember_id (member_id);
+ALTER TABLE cms_shopping_orders ADD INDEX somember_id (member_id);
 
-ALTER TABLE cms101_shopping_orders ADD INDEX sosession_id (session_id);
+ALTER TABLE cms_shopping_orders ADD INDEX sosession_id (session_id);
 
 DROP TABLE IF EXISTS cms_sitemap_cache;
 
@@ -1165,11 +1165,11 @@ CREATE TABLE cms_sitemap_cache (
     PRIMARY KEY (page_link)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_sitemap_cache ADD INDEX is_deleted (is_deleted);
+ALTER TABLE cms_sitemap_cache ADD INDEX is_deleted (is_deleted);
 
-ALTER TABLE cms101_sitemap_cache ADD INDEX last_updated (last_updated);
+ALTER TABLE cms_sitemap_cache ADD INDEX last_updated (last_updated);
 
-ALTER TABLE cms101_sitemap_cache ADD INDEX set_number (set_number,last_updated);
+ALTER TABLE cms_sitemap_cache ADD INDEX set_number (set_number,last_updated);
 
 DROP TABLE IF EXISTS cms_sms_log;
 
@@ -1181,9 +1181,9 @@ CREATE TABLE cms_sms_log (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_sms_log ADD INDEX sms_log_for (s_member_id,s_time);
+ALTER TABLE cms_sms_log ADD INDEX sms_log_for (s_member_id,s_time);
 
-ALTER TABLE cms101_sms_log ADD INDEX sms_trigger_ip (s_trigger_ip);
+ALTER TABLE cms_sms_log ADD INDEX sms_trigger_ip (s_trigger_ip);
 
 DROP TABLE IF EXISTS cms_staff_checklist_cus_tasks;
 
@@ -1197,17 +1197,17 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/home[/url]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1541781474, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1541781474, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/home[/url]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1546389479, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1546389479, 0, '', NULL);
 
 DROP TABLE IF EXISTS cms_staff_links;
 
@@ -1281,25 +1281,25 @@ CREATE TABLE cms_stats (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_stats ADD INDEX browser (browser(250));
+ALTER TABLE cms_stats ADD INDEX browser (browser(250));
 
-ALTER TABLE cms101_stats ADD INDEX date_and_time (date_and_time);
+ALTER TABLE cms_stats ADD INDEX date_and_time (date_and_time);
 
-ALTER TABLE cms101_stats ADD INDEX member_track_1 (member_id);
+ALTER TABLE cms_stats ADD INDEX member_track_1 (member_id);
 
-ALTER TABLE cms101_stats ADD INDEX member_track_2 (ip);
+ALTER TABLE cms_stats ADD INDEX member_track_2 (ip);
 
-ALTER TABLE cms101_stats ADD INDEX member_track_3 (member_id,date_and_time);
+ALTER TABLE cms_stats ADD INDEX member_track_3 (member_id,date_and_time);
 
-ALTER TABLE cms101_stats ADD INDEX member_track_4 (session_id);
+ALTER TABLE cms_stats ADD INDEX member_track_4 (session_id);
 
-ALTER TABLE cms101_stats ADD INDEX milliseconds (milliseconds);
+ALTER TABLE cms_stats ADD INDEX milliseconds (milliseconds);
 
-ALTER TABLE cms101_stats ADD INDEX operating_system (operating_system(250));
+ALTER TABLE cms_stats ADD INDEX operating_system (operating_system(250));
 
-ALTER TABLE cms101_stats ADD INDEX pages (the_page(250));
+ALTER TABLE cms_stats ADD INDEX pages (the_page(250));
 
-ALTER TABLE cms101_stats ADD INDEX referer (referer(250));
+ALTER TABLE cms_stats ADD INDEX referer (referer(250));
 
 DROP TABLE IF EXISTS cms_task_queue;
 
@@ -1335,7 +1335,7 @@ CREATE TABLE cms_theme_images (
     PRIMARY KEY (id, theme, lang)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_theme_images ADD INDEX theme (theme,lang);
+ALTER TABLE cms_theme_images ADD INDEX theme (theme,lang);
 
 DROP TABLE IF EXISTS cms_ticket_extra_access;
 
@@ -1367,7 +1367,7 @@ CREATE TABLE cms_ticket_types (
 INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (1, 'Other', 0, 0, NULL);
 INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (2, 'Complaint', 0, 0, NULL);
 
-ALTER TABLE cms101_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name);
+ALTER TABLE cms_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name);
 
 DROP TABLE IF EXISTS cms_tickets;
 
@@ -1394,11 +1394,11 @@ CREATE TABLE cms_trackbacks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_trackbacks ADD INDEX trackback_for_id (trackback_for_id);
+ALTER TABLE cms_trackbacks ADD INDEX trackback_for_id (trackback_for_id);
 
-ALTER TABLE cms101_trackbacks ADD INDEX trackback_for_type (trackback_for_type);
+ALTER TABLE cms_trackbacks ADD INDEX trackback_for_type (trackback_for_type);
 
-ALTER TABLE cms101_trackbacks ADD INDEX trackback_time (trackback_time);
+ALTER TABLE cms_trackbacks ADD INDEX trackback_time (trackback_time);
 
 DROP TABLE IF EXISTS cms_translate;
 
@@ -1413,13 +1413,13 @@ CREATE TABLE cms_translate (
     PRIMARY KEY (id, language)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_translate ADD FULLTEXT tsearch (text_original);
+ALTER TABLE cms_translate ADD FULLTEXT tsearch (text_original);
 
-ALTER TABLE cms101_translate ADD INDEX decache (text_parsed(2));
+ALTER TABLE cms_translate ADD INDEX decache (text_parsed(2));
 
-ALTER TABLE cms101_translate ADD INDEX equiv_lang (text_original(4));
+ALTER TABLE cms_translate ADD INDEX equiv_lang (text_original(4));
 
-ALTER TABLE cms101_translate ADD INDEX importance_level (importance_level);
+ALTER TABLE cms_translate ADD INDEX importance_level (importance_level);
 
 DROP TABLE IF EXISTS cms_tutorial_links;
 
@@ -1451,11 +1451,11 @@ CREATE TABLE cms_url_id_monikers (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_url_id_monikers ADD INDEX uim_moniker (m_moniker(250));
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_moniker (m_moniker(250));
 
-ALTER TABLE cms101_url_id_monikers ADD INDEX uim_monrev (m_moniker_reversed(250));
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_monrev (m_moniker_reversed(250));
 
-ALTER TABLE cms101_url_id_monikers ADD INDEX uim_page_link (m_resource_page,m_resource_type,m_resource_id);
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_page_link (m_resource_page,m_resource_type,m_resource_id);
 
 DROP TABLE IF EXISTS cms_url_title_cache;
 
@@ -1473,7 +1473,7 @@ CREATE TABLE cms_url_title_cache (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_url_title_cache ADD INDEX t_url (t_url(250));
+ALTER TABLE cms_url_title_cache ADD INDEX t_url (t_url(250));
 
 DROP TABLE IF EXISTS cms_urls_checked;
 
@@ -1485,7 +1485,7 @@ CREATE TABLE cms_urls_checked (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_urls_checked ADD INDEX url (url(200));
+ALTER TABLE cms_urls_checked ADD INDEX url (url(200));
 
 DROP TABLE IF EXISTS cms_usersonline_track;
 
@@ -1495,7 +1495,7 @@ CREATE TABLE cms_usersonline_track (
     PRIMARY KEY (date_and_time)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_usersonline_track ADD INDEX peak_track (peak);
+ALTER TABLE cms_usersonline_track ADD INDEX peak_track (peak);
 
 DROP TABLE IF EXISTS cms_usersubmitban_member;
 
@@ -1513,13 +1513,13 @@ CREATE TABLE cms_values (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1541781453);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1541781454);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1541781454);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.10', 1541781454);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.10', 1541781454);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1546389458);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1546389458);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1546389459);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.10', 1546389459);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.10', 1546389459);
 
-ALTER TABLE cms101_values ADD INDEX date_and_time (date_and_time);
+ALTER TABLE cms_values ADD INDEX date_and_time (date_and_time);
 
 DROP TABLE IF EXISTS cms_values_elective;
 
@@ -1530,7 +1530,7 @@ CREATE TABLE cms_values_elective (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1541781455);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1546389459);
 
 DROP TABLE IF EXISTS cms_video_transcoding;
 
@@ -1549,7 +1549,7 @@ CREATE TABLE cms_video_transcoding (
     PRIMARY KEY (t_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_video_transcoding ADD INDEX t_local_id (t_local_id);
+ALTER TABLE cms_video_transcoding ADD INDEX t_local_id (t_local_id);
 
 DROP TABLE IF EXISTS cms_videos;
 
@@ -1577,25 +1577,25 @@ CREATE TABLE cms_videos (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_videos ADD FULLTEXT description (description);
+ALTER TABLE cms_videos ADD FULLTEXT description (description);
 
-ALTER TABLE cms101_videos ADD FULLTEXT title (title);
+ALTER TABLE cms_videos ADD FULLTEXT title (title);
 
-ALTER TABLE cms101_videos ADD FULLTEXT video_search__combined (description,title);
+ALTER TABLE cms_videos ADD FULLTEXT video_search__combined (description,title);
 
-ALTER TABLE cms101_videos ADD INDEX category_list (cat);
+ALTER TABLE cms_videos ADD INDEX category_list (cat);
 
-ALTER TABLE cms101_videos ADD INDEX ftjoin_dtitle (title(250));
+ALTER TABLE cms_videos ADD INDEX ftjoin_dtitle (title(250));
 
-ALTER TABLE cms101_videos ADD INDEX ftjoin_vdescription (description(250));
+ALTER TABLE cms_videos ADD INDEX ftjoin_vdescription (description(250));
 
-ALTER TABLE cms101_videos ADD INDEX vadd_date (add_date);
+ALTER TABLE cms_videos ADD INDEX vadd_date (add_date);
 
-ALTER TABLE cms101_videos ADD INDEX video_views (video_views);
+ALTER TABLE cms_videos ADD INDEX video_views (video_views);
 
-ALTER TABLE cms101_videos ADD INDEX vs (submitter);
+ALTER TABLE cms_videos ADD INDEX vs (submitter);
 
-ALTER TABLE cms101_videos ADD INDEX v_validated (validated);
+ALTER TABLE cms_videos ADD INDEX v_validated (validated);
 
 DROP TABLE IF EXISTS cms_webstandards_checked_once;
 
@@ -1631,24 +1631,24 @@ CREATE TABLE cms_wiki_pages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1541781473, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be5b7d9036746.48332170_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be5b7d9036746.48332170_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be5b7d9036746.48332170_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1546389478, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c07dbeb7344.77578478_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c07dbeb7344.77578478_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c07dbeb7344.77578478_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms101_wiki_pages ADD FULLTEXT description (description);
+ALTER TABLE cms_wiki_pages ADD FULLTEXT description (description);
 
-ALTER TABLE cms101_wiki_pages ADD FULLTEXT title (title);
+ALTER TABLE cms_wiki_pages ADD FULLTEXT title (title);
 
-ALTER TABLE cms101_wiki_pages ADD FULLTEXT wiki_search__combined (title,description);
+ALTER TABLE cms_wiki_pages ADD FULLTEXT wiki_search__combined (title,description);
 
-ALTER TABLE cms101_wiki_pages ADD INDEX ftjoin_spd (description(250));
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spd (description(250));
 
-ALTER TABLE cms101_wiki_pages ADD INDEX ftjoin_spt (title(250));
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spt (title(250));
 
-ALTER TABLE cms101_wiki_pages ADD INDEX sadd_date (add_date);
+ALTER TABLE cms_wiki_pages ADD INDEX sadd_date (add_date);
 
-ALTER TABLE cms101_wiki_pages ADD INDEX sps (submitter);
+ALTER TABLE cms_wiki_pages ADD INDEX sps (submitter);
 
-ALTER TABLE cms101_wiki_pages ADD INDEX wiki_views (wiki_views);
+ALTER TABLE cms_wiki_pages ADD INDEX wiki_views (wiki_views);
 
 DROP TABLE IF EXISTS cms_wiki_posts;
 
@@ -1666,19 +1666,19 @@ CREATE TABLE cms_wiki_posts (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms101_wiki_posts ADD FULLTEXT the_message (the_message);
+ALTER TABLE cms_wiki_posts ADD FULLTEXT the_message (the_message);
 
-ALTER TABLE cms101_wiki_posts ADD INDEX cdate_and_time (date_and_time);
+ALTER TABLE cms_wiki_posts ADD INDEX cdate_and_time (date_and_time);
 
-ALTER TABLE cms101_wiki_posts ADD INDEX ftjoin_spm (the_message(250));
+ALTER TABLE cms_wiki_posts ADD INDEX ftjoin_spm (the_message(250));
 
-ALTER TABLE cms101_wiki_posts ADD INDEX posts_on_page (page_id);
+ALTER TABLE cms_wiki_posts ADD INDEX posts_on_page (page_id);
 
-ALTER TABLE cms101_wiki_posts ADD INDEX spos (member_id);
+ALTER TABLE cms_wiki_posts ADD INDEX spos (member_id);
 
-ALTER TABLE cms101_wiki_posts ADD INDEX svalidated (validated);
+ALTER TABLE cms_wiki_posts ADD INDEX svalidated (validated);
 
-ALTER TABLE cms101_wiki_posts ADD INDEX wiki_views (wiki_views);
+ALTER TABLE cms_wiki_posts ADD INDEX wiki_views (wiki_views);
 
 DROP TABLE IF EXISTS cms_wordfilter;
 
@@ -1752,7 +1752,7 @@ INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_tex
 INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('docs', 'Tutorials', 'tutorials', '', '-1', 0);
 INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('forum', 'Forums', 'forumview', 'Forum', '-1', 0);
 
-ALTER TABLE cms101_zones ADD FULLTEXT zone_header_text (zone_header_text);
+ALTER TABLE cms_zones ADD FULLTEXT zone_header_text (zone_header_text);
 
-ALTER TABLE cms101_zones ADD FULLTEXT zone_title (zone_title);
+ALTER TABLE cms_zones ADD FULLTEXT zone_title (zone_title);
 
