@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application xmlns="http://apstandard.com/ns/1" packaged="2018-11-09T02:07:19+00:00" version="1.2">
+<application xmlns="http://apstandard.com/ns/1" packaged="2019-01-02T00:08:26+00:00" version="1.2">
   <id>http://compo.sr/</id>
   <name>Composr</name>
-  <version>10.0.21</version>
+  <version>10.0.22</version>
   <release>1</release>
   <homepage>http://compo.sr/</homepage>
   <vendor>
@@ -31,6 +31,9 @@
       </description>
     </screenshot>
     <changelog>
+      <version release="1" version="10.0.22">
+        <entry>Composr 10.0.22 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.0.22</entry>
+      </version>
       <version release="1" version="10.0.21">
         <entry>Composr 10.0.21 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.0.21</entry>
       </version>

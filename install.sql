@@ -11,13 +11,13 @@ CREATE TABLE cms_actionlogs (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_actionlogs ADD INDEX aip (ip);
+ALTER TABLE cms_actionlogs ADD INDEX aip (ip);
 
-ALTER TABLE cms10_actionlogs ADD INDEX athe_type (the_type);
+ALTER TABLE cms_actionlogs ADD INDEX athe_type (the_type);
 
-ALTER TABLE cms10_actionlogs ADD INDEX ts (date_and_time);
+ALTER TABLE cms_actionlogs ADD INDEX ts (date_and_time);
 
-ALTER TABLE cms10_actionlogs ADD INDEX xas (member_id);
+ALTER TABLE cms_actionlogs ADD INDEX xas (member_id);
 
 DROP TABLE IF EXISTS cms_addons;
 
@@ -34,125 +34,125 @@ CREATE TABLE cms_addons (
     PRIMARY KEY (addon_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('actionlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Audit-trail functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('aggregate_types', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Define complex aggregate types in XML, and spawn them.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('apache_config_files', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sample .htaccess files to help achieve optimal configuration on the Apache web server.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('authors', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Certain kinds of content can have authors instead of submitters (e.g. \'ocProducts\'). The authors may be independently described and searched under.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('awards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Pick out content for featuring.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('backup', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Perform incremental or full backups of files and the database. Supports scheduling.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('banners', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and flash banners. Hotword activation support.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('bookmarks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to bookmark screens of the website. As the bookmarks are tied to their member profile they can access them from any computer they can log in on.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('breadcrumbs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced breadcrumb editing.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('calendar', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced community calendar.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('captcha', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Stop spam-bots from performing actions on the website.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('catalogues', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Describe your own custom data record types (by choosing and configuring fields) and populate with records. Supports tree structures, and most standard Composr features (e.g. ratings).', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('chat', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Chatrooms and instant messaging.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cartoon_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr (sketched characters)', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_clubs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Clubs for members, each of which comes with a forum.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_contact_member', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Off-site e-mailing of members (more private, and may be used by guests).', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cpfs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_forum', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Conversr forum- a modern advanced forum for members to interact on.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member avatars.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_photos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member photos.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_titles', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member titles.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_multi_moderations', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-moderations for the Conversr forum.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_post_templates', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post templates for the Conversr forum.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_reported_posts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post reporting with the Conversr forum.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_signatures', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member signatures.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_thematic_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_warnings', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member warnings and punishment.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('code_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'For programmers- A simple editor for editing Composr code files, with support for override support and saving via FTP.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('collaboration_zone', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaboration Zone.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('commandr', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A command-line environment for managing your website, designed for Linux/Unix lovers.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_privacy', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allows users to specify privacy level for their content.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_reviews', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Regularly review content for accuracy.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core Composr code)', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_components', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_addon_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Install or uninstall addons.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_adminzone_dashboard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The dashboard tools shown in the Admin Zone.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cleanup_tools', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Behind-the-scenes maintenance tasks.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cns', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Composr member/usergroup system.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_comcode_pages', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage new pages on the website, known as Comcode pages.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_configuration', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Set configuration options.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_database_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different kinds of database software.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_feedback_features', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features for user interaction with content.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core fields API)', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_form_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for forms.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_forum_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different forum/member systems.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_graphic_text', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for imagery.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_html_abstractions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_language_editing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Translate the software, or just change what it says for stylistic reasons.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_menus', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Edit menus.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_notifications', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sends out action-triggered notifications to members listening to them.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_permission_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage permissions.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_primary_layout', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_rich_media', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Comcode and attachments.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_themeing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Themeing the website, via CSS, HTML, and images.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_upgrader', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The upgrader code.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_webstandards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Web Standards checking tools.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_zone_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage zones (sub-sites).', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('counting_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks for hit counters, and count-downs.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('custom_comcode', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Create new Comcode tags.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('debrand', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow easy debranding of the website software.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('downloads', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Host a downloads directory.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ecommerce', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'eCommerce infrastructure, with support for digital purchase and usergroup subscriptions. Accounting functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('errorlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log of errors that have happened on the website.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('failover', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced system to detect if the site goes down, and provide an automatic fallback.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('filedump', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'File/media library, for use in attachments or for general ad-hoc sharing.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('forum_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to draw forum posts and topics into the main website.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('galleries', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Galleries, including support for video galleries, and member personal galleries.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('google_appengine', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for deploying to Google App Engine (for developers).', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('help_page', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A simple website help page. Note that removing this will not remove the menu link automatically.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('hphp_buildkit', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Scripts for supporting Facebook\'s HHVM.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('import', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Switch to Composr from other software. This addon provides the architecture for importing, and a number of prewritten importers.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('installer', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('language_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to allow visitors to choose their language.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ldap', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for integrating Conversr with an LDAP server, so usergroup and members can be the same as those already on the network', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('linux_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Bash shell scripts to help configure permissions on Linux/Unix servers.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('match_key_permissions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Match-key-permissions allow advanced setting of permissions on a screen-by-screen basis.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('msn', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features to support multi-site-networks (networks of linked sites that usually share a common member system).', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'News and blogging.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news_shared', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Common files needed for RSS and News addons)', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('newsletter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for users to join newsletters, and for the staff to send out newsletters to subscribers, and to specific usergroups.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('page_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage pages on the website.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('phpinfo', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Access PHP configurational information from inside Composr.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('points', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to accumulate points via a number of configurable activities, as well as exchange points with each other. Points act as a ranking system as well as a virtual currency.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('pointstore', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provide a number of virtual products to your members in exchange for the points they have accumulated by their activity', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('polls', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A poll (voting) system.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('printer_friendly_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to provide a link for the current screen to be turned into it\'s printer-friendly equivalent.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('quizzes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Construct competitions, surveys, and tests, for members to perform. Highly configurable, and comes with administrative tools to handle the results.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('random_quotes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to display random quotes on your website, and an administrative tool to choose them.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('realtime_rain', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Real-time/historic display of website activity.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('recommend', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to easily recommend the website to others.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('redirects_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage redirects between pages.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('rootkit_detector', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A tool to help power-user webmasters identify if a \"rootkit\" has been placed on the server.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('search', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-content search engine.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('securitylogging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log/display security alerts.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('setupwizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Quick-start setup wizard.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('shopping', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Online store functionality.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('sms', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provides an option for the software to send SMS messages, via the commercial Clickatell web service. By default this is only used by the notifications system.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ssl', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose which pages of your website run over HTTPS (SSL). Requires an SSL certificate to be installed on the webserver, and a dedicated IP address.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose and display a selection of staff from the super-administator/super-moderator usergroups. This is useful for multi-site networks, where members with privileges may not be considered staff on all websites on the network.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff_messaging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show advanced graphs (analytics) and dumps of raw data relating to your website activity.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show a selection of your website statistics to your visitors.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('supermember_directory', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show a list of all members in the configured \"Super member\" usergroup. Useful for communities that need to provide a list of VIPs.', 1541729194);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Syndicate RSS/Atom feeds of your content.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show RSS and Atom feeds from other websites.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('textbased_persistent_caching', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A persistent data cache, using disk files for data storage.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('themewizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromagraphic equations built into Composr.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('tickets', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A support ticket system.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('uninstaller', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The uninstaller.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('unvalidated', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Subject member\'s to validation (approval) of their content submissions, and enable/disable content.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('users_online_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show which users who are currently visiting the website, and birthdays.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('welcome_emails', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Welcome e-mails for new members.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wiki', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('windows_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A .bat script to help configure permissions on Windows servers.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wordfilter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Block rude/offensive/inappropriate words.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('xml_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced form field filtering.', 1541729195);
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('zone_logos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for having different logos for individual zones.', 1541729195);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('actionlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Audit-trail functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('aggregate_types', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Define complex aggregate types in XML, and spawn them.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('apache_config_files', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sample .htaccess files to help achieve optimal configuration on the Apache web server.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('authors', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Certain kinds of content can have authors instead of submitters (e.g. \'ocProducts\'). The authors may be independently described and searched under.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('awards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Pick out content for featuring.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('backup', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Perform incremental or full backups of files and the database. Supports scheduling.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('banners', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and flash banners. Hotword activation support.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('bookmarks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to bookmark screens of the website. As the bookmarks are tied to their member profile they can access them from any computer they can log in on.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('breadcrumbs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced breadcrumb editing.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('calendar', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced community calendar.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('captcha', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Stop spam-bots from performing actions on the website.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('catalogues', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Describe your own custom data record types (by choosing and configuring fields) and populate with records. Supports tree structures, and most standard Composr features (e.g. ratings).', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('chat', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Chatrooms and instant messaging.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cartoon_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr (sketched characters)', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_clubs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Clubs for members, each of which comes with a forum.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_contact_member', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Off-site e-mailing of members (more private, and may be used by guests).', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cpfs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_forum', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Conversr forum- a modern advanced forum for members to interact on.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member avatars.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_photos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member photos.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_titles', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member titles.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_multi_moderations', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-moderations for the Conversr forum.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_post_templates', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post templates for the Conversr forum.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_reported_posts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post reporting with the Conversr forum.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_signatures', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member signatures.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_thematic_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_warnings', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member warnings and punishment.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('code_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'For programmers- A simple editor for editing Composr code files, with support for override support and saving via FTP.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('collaboration_zone', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaboration Zone.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('commandr', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A command-line environment for managing your website, designed for Linux/Unix lovers.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_privacy', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allows users to specify privacy level for their content.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_reviews', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Regularly review content for accuracy.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core Composr code)', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_components', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_addon_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Install or uninstall addons.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_adminzone_dashboard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The dashboard tools shown in the Admin Zone.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cleanup_tools', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Behind-the-scenes maintenance tasks.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cns', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Composr member/usergroup system.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_comcode_pages', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage new pages on the website, known as Comcode pages.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_configuration', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Set configuration options.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_database_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different kinds of database software.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_feedback_features', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features for user interaction with content.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core fields API)', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_form_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for forms.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_forum_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different forum/member systems.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_graphic_text', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for imagery.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_html_abstractions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_language_editing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Translate the software, or just change what it says for stylistic reasons.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_menus', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Edit menus.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_notifications', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sends out action-triggered notifications to members listening to them.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_permission_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage permissions.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_primary_layout', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_rich_media', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Comcode and attachments.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_themeing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Themeing the website, via CSS, HTML, and images.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_upgrader', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The upgrader code.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_webstandards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Web Standards checking tools.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_zone_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage zones (sub-sites).', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('counting_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks for hit counters, and count-downs.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('custom_comcode', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Create new Comcode tags.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('debrand', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow easy debranding of the website software.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('downloads', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Host a downloads directory.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ecommerce', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'eCommerce infrastructure, with support for digital purchase and usergroup subscriptions. Accounting functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('errorlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log of errors that have happened on the website.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('failover', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced system to detect if the site goes down, and provide an automatic fallback.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('filedump', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'File/media library, for use in attachments or for general ad-hoc sharing.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('forum_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to draw forum posts and topics into the main website.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('galleries', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Galleries, including support for video galleries, and member personal galleries.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('google_appengine', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for deploying to Google App Engine (for developers).', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('help_page', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A simple website help page. Note that removing this will not remove the menu link automatically.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('hphp_buildkit', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Scripts for supporting Facebook\'s HHVM.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('import', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Switch to Composr from other software. This addon provides the architecture for importing, and a number of prewritten importers.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('installer', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('language_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to allow visitors to choose their language.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ldap', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for integrating Conversr with an LDAP server, so usergroup and members can be the same as those already on the network', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('linux_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Bash shell scripts to help configure permissions on Linux/Unix servers.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('match_key_permissions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Match-key-permissions allow advanced setting of permissions on a screen-by-screen basis.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('msn', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features to support multi-site-networks (networks of linked sites that usually share a common member system).', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'News and blogging.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news_shared', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Common files needed for RSS and News addons)', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('newsletter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for users to join newsletters, and for the staff to send out newsletters to subscribers, and to specific usergroups.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('page_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage pages on the website.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('phpinfo', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Access PHP configurational information from inside Composr.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('points', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to accumulate points via a number of configurable activities, as well as exchange points with each other. Points act as a ranking system as well as a virtual currency.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('pointstore', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provide a number of virtual products to your members in exchange for the points they have accumulated by their activity', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('polls', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A poll (voting) system.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('printer_friendly_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to provide a link for the current screen to be turned into it\'s printer-friendly equivalent.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('quizzes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Construct competitions, surveys, and tests, for members to perform. Highly configurable, and comes with administrative tools to handle the results.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('random_quotes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to display random quotes on your website, and an administrative tool to choose them.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('realtime_rain', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Real-time/historic display of website activity.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('recommend', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to easily recommend the website to others.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('redirects_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage redirects between pages.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('rootkit_detector', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A tool to help power-user webmasters identify if a \"rootkit\" has been placed on the server.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('search', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-content search engine.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('securitylogging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log/display security alerts.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('setupwizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Quick-start setup wizard.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('shopping', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Online store functionality.', 1546387682);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('sms', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provides an option for the software to send SMS messages, via the commercial Clickatell web service. By default this is only used by the notifications system.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ssl', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose which pages of your website run over HTTPS (SSL). Requires an SSL certificate to be installed on the webserver, and a dedicated IP address.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose and display a selection of staff from the super-administator/super-moderator usergroups. This is useful for multi-site networks, where members with privileges may not be considered staff on all websites on the network.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff_messaging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show advanced graphs (analytics) and dumps of raw data relating to your website activity.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show a selection of your website statistics to your visitors.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('supermember_directory', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show a list of all members in the configured \"Super member\" usergroup. Useful for communities that need to provide a list of VIPs.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Syndicate RSS/Atom feeds of your content.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show RSS and Atom feeds from other websites.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('textbased_persistent_caching', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A persistent data cache, using disk files for data storage.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('themewizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromagraphic equations built into Composr.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('tickets', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A support ticket system.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('uninstaller', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The uninstaller.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('unvalidated', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Subject member\'s to validation (approval) of their content submissions, and enable/disable content.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('users_online_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show which users who are currently visiting the website, and birthdays.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('welcome_emails', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Welcome e-mails for new members.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wiki', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('windows_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A .bat script to help configure permissions on Windows servers.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wordfilter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Block rude/offensive/inappropriate words.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('xml_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced form field filtering.', 1546387683);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('zone_logos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for having different logos for individual zones.', 1546387683);
 
 DROP TABLE IF EXISTS cms_addons_dependencies;
 
@@ -6574,7 +6574,7 @@ CREATE TABLE cms_aggregate_type_instances (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_aggregate_type_instances ADD INDEX aggregate_lookup (aggregate_label(250));
+ALTER TABLE cms_aggregate_type_instances ADD INDEX aggregate_lookup (aggregate_label(250));
 
 DROP TABLE IF EXISTS cms_alternative_ids;
 
@@ -6588,13 +6588,13 @@ CREATE TABLE cms_alternative_ids (
     PRIMARY KEY (resource_type, resource_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_alternative_ids ADD INDEX resource_guid (resource_guid);
+ALTER TABLE cms_alternative_ids ADD INDEX resource_guid (resource_guid);
 
-ALTER TABLE cms10_alternative_ids ADD INDEX resource_label (resource_label(250));
+ALTER TABLE cms_alternative_ids ADD INDEX resource_label (resource_label(250));
 
-ALTER TABLE cms10_alternative_ids ADD INDEX resource_moniker (resource_moniker,resource_type);
+ALTER TABLE cms_alternative_ids ADD INDEX resource_moniker (resource_moniker,resource_type);
 
-ALTER TABLE cms10_alternative_ids ADD INDEX resource_moniker_uniq (resource_moniker,resource_resource_fs_hook);
+ALTER TABLE cms_alternative_ids ADD INDEX resource_moniker_uniq (resource_moniker,resource_resource_fs_hook);
 
 DROP TABLE IF EXISTS cms_attachment_refs;
 
@@ -6622,9 +6622,9 @@ CREATE TABLE cms_attachments (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_attachments ADD INDEX attachmentlimitcheck (a_add_time);
+ALTER TABLE cms_attachments ADD INDEX attachmentlimitcheck (a_add_time);
 
-ALTER TABLE cms10_attachments ADD INDEX ownedattachments (a_member_id);
+ALTER TABLE cms_attachments ADD INDEX ownedattachments (a_member_id);
 
 DROP TABLE IF EXISTS cms_authors;
 
@@ -6641,11 +6641,11 @@ CREATE TABLE cms_authors (
     PRIMARY KEY (author)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_authors ADD FULLTEXT description (description);
+ALTER TABLE cms_authors ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_authors ADD FULLTEXT skills (skills);
+ALTER TABLE cms_authors ADD FULLTEXT skills (skills);
 
-ALTER TABLE cms10_authors ADD INDEX findmemberlink (member_id);
+ALTER TABLE cms_authors ADD INDEX findmemberlink (member_id);
 
 DROP TABLE IF EXISTS cms_autosave;
 
@@ -6658,7 +6658,7 @@ CREATE TABLE cms_autosave (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_autosave ADD INDEX myautosaves (a_member_id);
+ALTER TABLE cms_autosave ADD INDEX myautosaves (a_member_id);
 
 DROP TABLE IF EXISTS cms_award_archive;
 
@@ -6670,7 +6670,7 @@ CREATE TABLE cms_award_archive (
     PRIMARY KEY (a_type_id, date_and_time)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_award_archive ADD INDEX awardquicksearch (content_id);
+ALTER TABLE cms_award_archive ADD INDEX awardquicksearch (content_id);
 
 DROP TABLE IF EXISTS cms_award_types;
 
@@ -6687,12 +6687,12 @@ CREATE TABLE cms_award_types (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_award_types (id, a_title, a_description, a_points, a_content_type, a_hide_awardee, a_update_time_hours, a_description__text_parsed, a_description__source_user) VALUES (1, 'Download of the week', 'The best downloads in the download system, chosen every week.', 0, 'download', 1, 168, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba9390279.43512014_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba9390279.43512014_1\\\";s:129:\\\"\\$tpl_funcs[\'string_attach_5be4eba9390279.43512014_1\']=\\\"echo \\\\\\\"The best downloads in the download system, chosen every week.\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_award_types (id, a_title, a_description, a_points, a_content_type, a_hide_awardee, a_update_time_hours, a_description__text_parsed, a_description__source_user) VALUES (1, 'Download of the week', 'The best downloads in the download system, chosen every week.', 0, 'download', 1, 168, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e177e2c3.15835324_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e177e2c3.15835324_1\\\";s:129:\\\"\\$tpl_funcs[\'string_attach_5c2c00e177e2c3.15835324_1\']=\\\"echo \\\\\\\"The best downloads in the download system, chosen every week.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_award_types ADD FULLTEXT a_description (a_description);
+ALTER TABLE cms_award_types ADD FULLTEXT a_description (a_description);
 
-ALTER TABLE cms10_award_types ADD FULLTEXT a_title (a_title);
+ALTER TABLE cms_award_types ADD FULLTEXT a_title (a_title);
 
 DROP TABLE IF EXISTS cms_banned_ip;
 
@@ -6716,9 +6716,9 @@ CREATE TABLE cms_banner_clicks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_banner_clicks ADD INDEX clicker_ip (c_ip_address);
+ALTER TABLE cms_banner_clicks ADD INDEX clicker_ip (c_ip_address);
 
-ALTER TABLE cms10_banner_clicks ADD INDEX c_banner_id (c_banner_id);
+ALTER TABLE cms_banner_clicks ADD INDEX c_banner_id (c_banner_id);
 
 DROP TABLE IF EXISTS cms_banner_types;
 
@@ -6734,7 +6734,7 @@ CREATE TABLE cms_banner_types (
 
 INSERT INTO cms_banner_types (id, t_is_textual, t_image_width, t_image_height, t_max_file_size, t_comcode_inline) VALUES ('', 0, 728, 90, 150, 0);
 
-ALTER TABLE cms10_banner_types ADD INDEX hottext (t_comcode_inline);
+ALTER TABLE cms_banner_types ADD INDEX hottext (t_comcode_inline);
 
 DROP TABLE IF EXISTS cms_banners;
 
@@ -6764,26 +6764,26 @@ CREATE TABLE cms_banners (
     PRIMARY KEY (name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('advertise_here', NULL, 1, 'data/images/advertise_here.png', 2, '', 'Advertise here!', '', 0, 'http://localhost/composr/index.php?page=advertise', 0, 0, 0, 0, 10, 'Provided as a default. This is a fallback banner (it shows when others are not available).', 1, 1541729200, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_1\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_1\']=\\\"echo \\\\\\\"Advertise here!\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('advertise_here', NULL, 1, 'data/images/advertise_here.png', 2, '', 'Advertise here!', '', 0, 'http://localhost/composr/index.php?page=advertise', 0, 0, 0, 0, 10, 'Provided as a default. This is a fallback banner (it shows when others are not available).', 1, 1546387688, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_1\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_1\']=\\\"echo \\\\\\\"Advertise here!\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('donate', NULL, 1, 'data/images/donate.png', 0, '', 'Please donate to keep this site alive', '', 0, 'http://localhost/composr/index.php?page=donate', 0, 0, 0, 0, 30, 'Provided as a default.', 1, 1541729200, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_2\\\";s:105:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_2\']=\\\"echo \\\\\\\"Please donate to keep this site alive\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('donate', NULL, 1, 'data/images/donate.png', 0, '', 'Please donate to keep this site alive', '', 0, 'http://localhost/composr/index.php?page=donate', 0, 0, 0, 0, 30, 'Provided as a default.', 1, 1546387688, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_2\\\";s:105:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_2\']=\\\"echo \\\\\\\"Please donate to keep this site alive\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_banners ADD FULLTEXT caption (caption);
+ALTER TABLE cms_banners ADD FULLTEXT caption (caption);
 
-ALTER TABLE cms10_banners ADD INDEX badd_date (add_date);
+ALTER TABLE cms_banners ADD INDEX badd_date (add_date);
 
-ALTER TABLE cms10_banners ADD INDEX banner_child_find (b_type);
+ALTER TABLE cms_banners ADD INDEX banner_child_find (b_type);
 
-ALTER TABLE cms10_banners ADD INDEX bvalidated (validated);
+ALTER TABLE cms_banners ADD INDEX bvalidated (validated);
 
-ALTER TABLE cms10_banners ADD INDEX campaign_remaining (campaign_remaining);
+ALTER TABLE cms_banners ADD INDEX campaign_remaining (campaign_remaining);
 
-ALTER TABLE cms10_banners ADD INDEX expiry_date (expiry_date);
+ALTER TABLE cms_banners ADD INDEX expiry_date (expiry_date);
 
-ALTER TABLE cms10_banners ADD INDEX the_type (the_type);
+ALTER TABLE cms_banners ADD INDEX the_type (the_type);
 
-ALTER TABLE cms10_banners ADD INDEX topsites (hits_from,hits_to);
+ALTER TABLE cms_banners ADD INDEX topsites (hits_from,hits_to);
 
 DROP TABLE IF EXISTS cms_banners_types;
 
@@ -6911,13 +6911,13 @@ CREATE TABLE cms_cache (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_cache ADD INDEX cached_ford (date_and_time);
+ALTER TABLE cms_cache ADD INDEX cached_ford (date_and_time);
 
-ALTER TABLE cms10_cache ADD INDEX cached_fore (cached_for);
+ALTER TABLE cms_cache ADD INDEX cached_fore (cached_for);
 
-ALTER TABLE cms10_cache ADD INDEX cached_forf (cached_for,identifier,the_theme,lang,staff_status,the_member,is_bot);
+ALTER TABLE cms_cache ADD INDEX cached_forf (cached_for,identifier,the_theme,lang,staff_status,the_member,is_bot);
 
-ALTER TABLE cms10_cache ADD INDEX cached_forh (the_theme);
+ALTER TABLE cms_cache ADD INDEX cached_forh (the_theme);
 
 DROP TABLE IF EXISTS cms_cache_on;
 
@@ -6942,17 +6942,17 @@ CREATE TABLE cms_cached_comcode_pages (
     PRIMARY KEY (the_zone, the_page, the_theme)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_cached_comcode_pages ADD FULLTEXT cc_page_title (cc_page_title);
+ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT cc_page_title (cc_page_title);
 
-ALTER TABLE cms10_cached_comcode_pages ADD FULLTEXT page_search__combined (cc_page_title,string_index);
+ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT page_search__combined (cc_page_title,string_index);
 
-ALTER TABLE cms10_cached_comcode_pages ADD FULLTEXT string_index (string_index);
+ALTER TABLE cms_cached_comcode_pages ADD FULLTEXT string_index (string_index);
 
-ALTER TABLE cms10_cached_comcode_pages ADD INDEX ccp_join (the_page,the_zone);
+ALTER TABLE cms_cached_comcode_pages ADD INDEX ccp_join (the_page,the_zone);
 
-ALTER TABLE cms10_cached_comcode_pages ADD INDEX ftjoin_ccpt (cc_page_title(250));
+ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccpt (cc_page_title(250));
 
-ALTER TABLE cms10_cached_comcode_pages ADD INDEX ftjoin_ccsi (string_index(250));
+ALTER TABLE cms_cached_comcode_pages ADD INDEX ftjoin_ccsi (string_index(250));
 
 DROP TABLE IF EXISTS cms_calendar_events;
 
@@ -6996,27 +6996,27 @@ CREATE TABLE cms_calendar_events (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_calendar_events ADD FULLTEXT event_search__combined (e_title,e_content);
+ALTER TABLE cms_calendar_events ADD FULLTEXT event_search__combined (e_title,e_content);
 
-ALTER TABLE cms10_calendar_events ADD FULLTEXT e_content (e_content);
+ALTER TABLE cms_calendar_events ADD FULLTEXT e_content (e_content);
 
-ALTER TABLE cms10_calendar_events ADD FULLTEXT e_title (e_title);
+ALTER TABLE cms_calendar_events ADD FULLTEXT e_title (e_title);
 
-ALTER TABLE cms10_calendar_events ADD INDEX ces (e_submitter);
+ALTER TABLE cms_calendar_events ADD INDEX ces (e_submitter);
 
-ALTER TABLE cms10_calendar_events ADD INDEX eventat (e_start_year,e_start_month,e_start_day,e_start_hour,e_start_minute);
+ALTER TABLE cms_calendar_events ADD INDEX eventat (e_start_year,e_start_month,e_start_day,e_start_hour,e_start_minute);
 
-ALTER TABLE cms10_calendar_events ADD INDEX e_add_date (e_add_date);
+ALTER TABLE cms_calendar_events ADD INDEX e_add_date (e_add_date);
 
-ALTER TABLE cms10_calendar_events ADD INDEX e_type (e_type);
+ALTER TABLE cms_calendar_events ADD INDEX e_type (e_type);
 
-ALTER TABLE cms10_calendar_events ADD INDEX e_views (e_views);
+ALTER TABLE cms_calendar_events ADD INDEX e_views (e_views);
 
-ALTER TABLE cms10_calendar_events ADD INDEX ftjoin_econtent (e_content(250));
+ALTER TABLE cms_calendar_events ADD INDEX ftjoin_econtent (e_content(250));
 
-ALTER TABLE cms10_calendar_events ADD INDEX ftjoin_etitle (e_title(250));
+ALTER TABLE cms_calendar_events ADD INDEX ftjoin_etitle (e_title(250));
 
-ALTER TABLE cms10_calendar_events ADD INDEX validated (validated);
+ALTER TABLE cms_calendar_events ADD INDEX validated (validated);
 
 DROP TABLE IF EXISTS cms_calendar_interests;
 
@@ -7037,7 +7037,7 @@ CREATE TABLE cms_calendar_jobs (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_calendar_jobs ADD INDEX applicablejobs (j_time);
+ALTER TABLE cms_calendar_jobs ADD INDEX applicablejobs (j_time);
 
 DROP TABLE IF EXISTS cms_calendar_reminders;
 
@@ -7061,24 +7061,24 @@ CREATE TABLE cms_calendar_types (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (1, '(System command)', 'calendar/system_command', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_3\\\";s:84:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_3\']=\\\"echo \\\\\\\"(System command)\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (1, '(System command)', 'calendar/system_command', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_3\\\";s:84:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_3\']=\\\"echo \\\\\\\"(System command)\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (2, 'General', 'calendar/general', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_4\\\";s:75:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_4\']=\\\"echo \\\\\\\"General\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (2, 'General', 'calendar/general', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_4\\\";s:75:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_4\']=\\\"echo \\\\\\\"General\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (3, 'Birthday', 'calendar/birthday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_5\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_5\']=\\\"echo \\\\\\\"Birthday\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (3, 'Birthday', 'calendar/birthday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_5\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_5\']=\\\"echo \\\\\\\"Birthday\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (4, 'Public holiday', 'calendar/public_holiday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_6\\\";s:82:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_6\']=\\\"echo \\\\\\\"Public holiday\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (4, 'Public holiday', 'calendar/public_holiday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_6\\\";s:82:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_6\']=\\\"echo \\\\\\\"Public holiday\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (5, 'Vacation', 'calendar/vacation', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_7\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_7\']=\\\"echo \\\\\\\"Vacation\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (5, 'Vacation', 'calendar/vacation', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_7\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_7\']=\\\"echo \\\\\\\"Vacation\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (6, 'Appointment', 'calendar/appointment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_8\\\";s:79:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_8\']=\\\"echo \\\\\\\"Appointment\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (6, 'Appointment', 'calendar/appointment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_8\\\";s:79:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_8\']=\\\"echo \\\\\\\"Appointment\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (7, 'Task', 'calendar/commitment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4ebb0805bf9.56864899_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4ebb0805bf9.56864899_9\\\";s:72:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_9\']=\\\"echo \\\\\\\"Task\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (7, 'Task', 'calendar/commitment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e867fb54.43854840_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e867fb54.43854840_9\\\";s:72:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_9\']=\\\"echo \\\\\\\"Task\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (8, 'Anniversary', 'calendar/anniversary', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_10\\\";s:80:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_10\']=\\\"echo \\\\\\\"Anniversary\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (8, 'Anniversary', 'calendar/anniversary', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_10\\\";s:80:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_10\']=\\\"echo \\\\\\\"Anniversary\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_calendar_types ADD FULLTEXT t_title (t_title);
+ALTER TABLE cms_calendar_types ADD FULLTEXT t_title (t_title);
 
 DROP TABLE IF EXISTS cms_captchas;
 
@@ -7089,7 +7089,7 @@ CREATE TABLE cms_captchas (
     PRIMARY KEY (si_session_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_captchas ADD INDEX si_time (si_time);
+ALTER TABLE cms_captchas ADD INDEX si_time (si_time);
 
 DROP TABLE IF EXISTS cms_catalogue_cat_treecache;
 
@@ -7099,7 +7099,7 @@ CREATE TABLE cms_catalogue_cat_treecache (
     PRIMARY KEY (cc_id, cc_ancestor_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_cat_treecache ADD INDEX cc_ancestor_id (cc_ancestor_id);
+ALTER TABLE cms_catalogue_cat_treecache ADD INDEX cc_ancestor_id (cc_ancestor_id);
 
 DROP TABLE IF EXISTS cms_catalogue_categories;
 
@@ -7121,34 +7121,34 @@ CREATE TABLE cms_catalogue_categories (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (1, 'projects', 'Super-member projects', 'These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.', '', '', 1541729201, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_12\\\";s:197:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_12\']=\\\"echo \\\\\\\"These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (1, 'projects', 'Super-member projects', 'These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.', '', '', 1546387689, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_12\\\";s:197:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_12\']=\\\"echo \\\\\\\"These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (2, 'links', 'Links home', '', '', '', 1541729202, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (2, 'links', 'Links home', '', '', '', 1546387689, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (3, 'faqs', 'Frequently Asked Questions', 'If you have questions that are not covered in our FAQ, please post them in an appropriate forum.', '', '', 1541729202, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_16\\\";s:165:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_16\']=\\\"echo \\\\\\\"If you have questions that are not covered in our FAQ, please post them in an appropriate forum.\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (3, 'faqs', 'Frequently Asked Questions', 'If you have questions that are not covered in our FAQ, please post them in an appropriate forum.', '', '', 1546387689, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_16\\\";s:165:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_16\']=\\\"echo \\\\\\\"If you have questions that are not covered in our FAQ, please post them in an appropriate forum.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (4, 'contacts', 'Contacts', '', '', '', 1541729202, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (4, 'contacts', 'Contacts', '', '', '', 1546387689, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (5, 'products', 'Products home', '', '', '', 1541729202, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (5, 'products', 'Products home', '', '', '', 1546387689, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_catalogue_categories ADD FULLTEXT cat_cat_search__combined (cc_title,cc_description);
+ALTER TABLE cms_catalogue_categories ADD FULLTEXT cat_cat_search__combined (cc_title,cc_description);
 
-ALTER TABLE cms10_catalogue_categories ADD FULLTEXT cc_description (cc_description);
+ALTER TABLE cms_catalogue_categories ADD FULLTEXT cc_description (cc_description);
 
-ALTER TABLE cms10_catalogue_categories ADD FULLTEXT cc_title (cc_title);
+ALTER TABLE cms_catalogue_categories ADD FULLTEXT cc_title (cc_title);
 
-ALTER TABLE cms10_catalogue_categories ADD INDEX cataloguefind (c_name);
+ALTER TABLE cms_catalogue_categories ADD INDEX cataloguefind (c_name);
 
-ALTER TABLE cms10_catalogue_categories ADD INDEX catstoclean (cc_move_target);
+ALTER TABLE cms_catalogue_categories ADD INDEX catstoclean (cc_move_target);
 
-ALTER TABLE cms10_catalogue_categories ADD INDEX cc_order (cc_order);
+ALTER TABLE cms_catalogue_categories ADD INDEX cc_order (cc_order);
 
-ALTER TABLE cms10_catalogue_categories ADD INDEX cc_parent_id (cc_parent_id);
+ALTER TABLE cms_catalogue_categories ADD INDEX cc_parent_id (cc_parent_id);
 
-ALTER TABLE cms10_catalogue_categories ADD INDEX ftjoin_ccdescrip (cc_description(250));
+ALTER TABLE cms_catalogue_categories ADD INDEX ftjoin_ccdescrip (cc_description(250));
 
-ALTER TABLE cms10_catalogue_categories ADD INDEX ftjoin_cctitle (cc_title(250));
+ALTER TABLE cms_catalogue_categories ADD INDEX ftjoin_cctitle (cc_title(250));
 
 DROP TABLE IF EXISTS cms_catalogue_childcountcache;
 
@@ -7169,13 +7169,13 @@ CREATE TABLE cms_catalogue_efv_float (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_efv_float ADD INDEX cefv_f_combo (ce_id,cf_id);
+ALTER TABLE cms_catalogue_efv_float ADD INDEX cefv_f_combo (ce_id,cf_id);
 
-ALTER TABLE cms10_catalogue_efv_float ADD INDEX fce_id (ce_id);
+ALTER TABLE cms_catalogue_efv_float ADD INDEX fce_id (ce_id);
 
-ALTER TABLE cms10_catalogue_efv_float ADD INDEX fcf_id (cf_id);
+ALTER TABLE cms_catalogue_efv_float ADD INDEX fcf_id (cf_id);
 
-ALTER TABLE cms10_catalogue_efv_float ADD INDEX fcv_value (cv_value);
+ALTER TABLE cms_catalogue_efv_float ADD INDEX fcv_value (cv_value);
 
 DROP TABLE IF EXISTS cms_catalogue_efv_integer;
 
@@ -7187,13 +7187,13 @@ CREATE TABLE cms_catalogue_efv_integer (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_efv_integer ADD INDEX cefv_i_combo (ce_id,cf_id);
+ALTER TABLE cms_catalogue_efv_integer ADD INDEX cefv_i_combo (ce_id,cf_id);
 
-ALTER TABLE cms10_catalogue_efv_integer ADD INDEX ice_id (ce_id);
+ALTER TABLE cms_catalogue_efv_integer ADD INDEX ice_id (ce_id);
 
-ALTER TABLE cms10_catalogue_efv_integer ADD INDEX icf_id (cf_id);
+ALTER TABLE cms_catalogue_efv_integer ADD INDEX icf_id (cf_id);
 
-ALTER TABLE cms10_catalogue_efv_integer ADD INDEX itv_value (cv_value);
+ALTER TABLE cms_catalogue_efv_integer ADD INDEX itv_value (cv_value);
 
 DROP TABLE IF EXISTS cms_catalogue_efv_long;
 
@@ -7205,13 +7205,13 @@ CREATE TABLE cms_catalogue_efv_long (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_efv_long ADD FULLTEXT lcv_value (cv_value);
+ALTER TABLE cms_catalogue_efv_long ADD FULLTEXT lcv_value (cv_value);
 
-ALTER TABLE cms10_catalogue_efv_long ADD INDEX cefv_l_combo (ce_id,cf_id);
+ALTER TABLE cms_catalogue_efv_long ADD INDEX cefv_l_combo (ce_id,cf_id);
 
-ALTER TABLE cms10_catalogue_efv_long ADD INDEX lce_id (ce_id);
+ALTER TABLE cms_catalogue_efv_long ADD INDEX lce_id (ce_id);
 
-ALTER TABLE cms10_catalogue_efv_long ADD INDEX lcf_id (cf_id);
+ALTER TABLE cms_catalogue_efv_long ADD INDEX lcf_id (cf_id);
 
 DROP TABLE IF EXISTS cms_catalogue_efv_long_trans;
 
@@ -7225,15 +7225,15 @@ CREATE TABLE cms_catalogue_efv_long_trans (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_efv_long_trans ADD FULLTEXT cv_value (cv_value);
+ALTER TABLE cms_catalogue_efv_long_trans ADD FULLTEXT cv_value (cv_value);
 
-ALTER TABLE cms10_catalogue_efv_long_trans ADD INDEX cefv_lt_combo (ce_id,cf_id);
+ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX cefv_lt_combo (ce_id,cf_id);
 
-ALTER TABLE cms10_catalogue_efv_long_trans ADD INDEX ltce_id (ce_id);
+ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltce_id (ce_id);
 
-ALTER TABLE cms10_catalogue_efv_long_trans ADD INDEX ltcf_id (cf_id);
+ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltcf_id (cf_id);
 
-ALTER TABLE cms10_catalogue_efv_long_trans ADD INDEX ltcv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_long_trans ADD INDEX ltcv_value (cv_value(250));
 
 DROP TABLE IF EXISTS cms_catalogue_efv_short;
 
@@ -7245,15 +7245,15 @@ CREATE TABLE cms_catalogue_efv_short (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_efv_short ADD FULLTEXT scv_value (cv_value);
+ALTER TABLE cms_catalogue_efv_short ADD FULLTEXT scv_value (cv_value);
 
-ALTER TABLE cms10_catalogue_efv_short ADD INDEX cefv_s_combo (ce_id,cf_id);
+ALTER TABLE cms_catalogue_efv_short ADD INDEX cefv_s_combo (ce_id,cf_id);
 
-ALTER TABLE cms10_catalogue_efv_short ADD INDEX iscv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_short ADD INDEX iscv_value (cv_value(250));
 
-ALTER TABLE cms10_catalogue_efv_short ADD INDEX sce_id (ce_id);
+ALTER TABLE cms_catalogue_efv_short ADD INDEX sce_id (ce_id);
 
-ALTER TABLE cms10_catalogue_efv_short ADD INDEX scf_id (cf_id);
+ALTER TABLE cms_catalogue_efv_short ADD INDEX scf_id (cf_id);
 
 DROP TABLE IF EXISTS cms_catalogue_efv_short_trans;
 
@@ -7267,15 +7267,15 @@ CREATE TABLE cms_catalogue_efv_short_trans (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_efv_short_trans ADD FULLTEXT cv_value (cv_value);
+ALTER TABLE cms_catalogue_efv_short_trans ADD FULLTEXT cv_value (cv_value);
 
-ALTER TABLE cms10_catalogue_efv_short_trans ADD INDEX cefv_st_combo (ce_id,cf_id);
+ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX cefv_st_combo (ce_id,cf_id);
 
-ALTER TABLE cms10_catalogue_efv_short_trans ADD INDEX stce_id (ce_id);
+ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stce_id (ce_id);
 
-ALTER TABLE cms10_catalogue_efv_short_trans ADD INDEX stcf_id (cf_id);
+ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stcf_id (cf_id);
 
-ALTER TABLE cms10_catalogue_efv_short_trans ADD INDEX stcv_value (cv_value(250));
+ALTER TABLE cms_catalogue_efv_short_trans ADD INDEX stcv_value (cv_value(250));
 
 DROP TABLE IF EXISTS cms_catalogue_entries;
 
@@ -7297,17 +7297,17 @@ CREATE TABLE cms_catalogue_entries (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_entries ADD INDEX ces (ce_submitter);
+ALTER TABLE cms_catalogue_entries ADD INDEX ces (ce_submitter);
 
-ALTER TABLE cms10_catalogue_entries ADD INDEX ce_add_date (ce_add_date);
+ALTER TABLE cms_catalogue_entries ADD INDEX ce_add_date (ce_add_date);
 
-ALTER TABLE cms10_catalogue_entries ADD INDEX ce_cc_id (cc_id);
+ALTER TABLE cms_catalogue_entries ADD INDEX ce_cc_id (cc_id);
 
-ALTER TABLE cms10_catalogue_entries ADD INDEX ce_c_name (c_name);
+ALTER TABLE cms_catalogue_entries ADD INDEX ce_c_name (c_name);
 
-ALTER TABLE cms10_catalogue_entries ADD INDEX ce_validated (ce_validated);
+ALTER TABLE cms_catalogue_entries ADD INDEX ce_validated (ce_validated);
 
-ALTER TABLE cms10_catalogue_entries ADD INDEX ce_views (ce_views);
+ALTER TABLE cms_catalogue_entries ADD INDEX ce_views (ce_views);
 
 DROP TABLE IF EXISTS cms_catalogue_entry_linkage;
 
@@ -7318,7 +7318,7 @@ CREATE TABLE cms_catalogue_entry_linkage (
     PRIMARY KEY (catalogue_entry_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_catalogue_entry_linkage ADD INDEX custom_fields (content_type,content_id);
+ALTER TABLE cms_catalogue_entry_linkage ADD INDEX custom_fields (content_type,content_id);
 
 DROP TABLE IF EXISTS cms_catalogue_fields;
 
@@ -7373,9 +7373,9 @@ INSERT INTO cms_catalogue_fields (id, c_name, cf_name, cf_description, cf_type, 
 INSERT INTO cms_catalogue_fields (id, c_name, cf_name, cf_description, cf_type, cf_order, cf_defines_order, cf_visible, cf_searchable, cf_default, cf_required, cf_put_in_category, cf_put_in_search, cf_options) VALUES (31, 'products', 'Product weight', 'The weight, in whatever units are assumed by the shipping costs programmed-in to this website.', 'float', 8, 0, 0, 0, '', 1, 0, 0, '');
 INSERT INTO cms_catalogue_fields (id, c_name, cf_name, cf_description, cf_type, cf_order, cf_defines_order, cf_visible, cf_searchable, cf_default, cf_required, cf_put_in_category, cf_put_in_search, cf_options) VALUES (32, 'products', 'Product description', 'A concise description for this.', 'long_trans', 9, 0, 1, 1, '', 1, 1, 1, '');
 
-ALTER TABLE cms10_catalogue_fields ADD FULLTEXT cf_description (cf_description);
+ALTER TABLE cms_catalogue_fields ADD FULLTEXT cf_description (cf_description);
 
-ALTER TABLE cms10_catalogue_fields ADD FULLTEXT cf_name (cf_name);
+ALTER TABLE cms_catalogue_fields ADD FULLTEXT cf_name (cf_name);
 
 DROP TABLE IF EXISTS cms_catalogues;
 
@@ -7396,20 +7396,20 @@ CREATE TABLE cms_catalogues (
     PRIMARY KEY (c_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('projects', 'Super-member projects', '', 0, 0, '', 1541729201, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('projects', 'Super-member projects', '', 0, 0, '', 1546387689, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('links', 'Links', 'Warning: these sites are outside our control.', 2, 1, '', 1541729202, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_13\\\";s:114:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_13\']=\\\"echo \\\\\\\"Warning: these sites are outside our control.\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('links', 'Links', 'Warning: these sites are outside our control.', 2, 1, '', 1546387689, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_13\\\";s:114:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_13\']=\\\"echo \\\\\\\"Warning: these sites are outside our control.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('faqs', 'Frequently Asked Questions', '', 0, 0, '', 1541729202, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('faqs', 'Frequently Asked Questions', '', 0, 0, '', 1546387689, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('contacts', 'Contacts', 'A contacts/address-book.', 0, 0, '', 1541729202, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_17\\\";s:93:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_17\']=\\\"echo \\\\\\\"A contacts/address-book.\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('contacts', 'Contacts', 'A contacts/address-book.', 0, 0, '', 1546387689, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_17\\\";s:93:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_17\']=\\\"echo \\\\\\\"A contacts/address-book.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('products', 'Products', 'These are products for sale from this website.', 3, 1, '', 1541729202, 0, 1, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_19\\\";s:115:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_19\']=\\\"echo \\\\\\\"These are products for sale from this website.\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('products', 'Products', 'These are products for sale from this website.', 3, 1, '', 1546387689, 0, 1, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_19\\\";s:115:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_19\']=\\\"echo \\\\\\\"These are products for sale from this website.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_catalogues ADD FULLTEXT c_description (c_description);
+ALTER TABLE cms_catalogues ADD FULLTEXT c_description (c_description);
 
-ALTER TABLE cms10_catalogues ADD FULLTEXT c_title (c_title);
+ALTER TABLE cms_catalogues ADD FULLTEXT c_title (c_title);
 
 DROP TABLE IF EXISTS cms_chargelog;
 
@@ -7424,7 +7424,7 @@ CREATE TABLE cms_chargelog (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_chargelog ADD FULLTEXT reason (reason);
+ALTER TABLE cms_chargelog ADD FULLTEXT reason (reason);
 
 DROP TABLE IF EXISTS cms_chat_active;
 
@@ -7436,11 +7436,11 @@ CREATE TABLE cms_chat_active (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_chat_active ADD INDEX active_ordering (date_and_time);
+ALTER TABLE cms_chat_active ADD INDEX active_ordering (date_and_time);
 
-ALTER TABLE cms10_chat_active ADD INDEX member_select (member_id);
+ALTER TABLE cms_chat_active ADD INDEX member_select (member_id);
 
-ALTER TABLE cms10_chat_active ADD INDEX room_select (room_id);
+ALTER TABLE cms_chat_active ADD INDEX room_select (room_id);
 
 DROP TABLE IF EXISTS cms_chat_blocking;
 
@@ -7462,7 +7462,7 @@ CREATE TABLE cms_chat_events (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_chat_events ADD INDEX event_ordering (e_date_and_time);
+ALTER TABLE cms_chat_events ADD INDEX event_ordering (e_date_and_time);
 
 DROP TABLE IF EXISTS cms_chat_friends;
 
@@ -7490,11 +7490,11 @@ CREATE TABLE cms_chat_messages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_chat_messages ADD FULLTEXT the_message (the_message);
+ALTER TABLE cms_chat_messages ADD FULLTEXT the_message (the_message);
 
-ALTER TABLE cms10_chat_messages ADD INDEX ordering (date_and_time);
+ALTER TABLE cms_chat_messages ADD INDEX ordering (date_and_time);
 
-ALTER TABLE cms10_chat_messages ADD INDEX room_id (room_id);
+ALTER TABLE cms_chat_messages ADD INDEX room_id (room_id);
 
 DROP TABLE IF EXISTS cms_chat_rooms;
 
@@ -7514,15 +7514,15 @@ CREATE TABLE cms_chat_rooms (
 
 INSERT INTO cms_chat_rooms (id, room_name, room_owner, allow_list, allow_list_groups, disallow_list, disallow_list_groups, room_language, c_welcome, is_im) VALUES (1, 'General chat', NULL, '', '', '', '', 'EN', '', 0);
 
-ALTER TABLE cms10_chat_rooms ADD FULLTEXT c_welcome (c_welcome);
+ALTER TABLE cms_chat_rooms ADD FULLTEXT c_welcome (c_welcome);
 
-ALTER TABLE cms10_chat_rooms ADD INDEX allow_list (allow_list(30));
+ALTER TABLE cms_chat_rooms ADD INDEX allow_list (allow_list(30));
 
-ALTER TABLE cms10_chat_rooms ADD INDEX first_public (is_im,id);
+ALTER TABLE cms_chat_rooms ADD INDEX first_public (is_im,id);
 
-ALTER TABLE cms10_chat_rooms ADD INDEX is_im (is_im);
+ALTER TABLE cms_chat_rooms ADD INDEX is_im (is_im);
 
-ALTER TABLE cms10_chat_rooms ADD INDEX room_name (room_name(250));
+ALTER TABLE cms_chat_rooms ADD INDEX room_name (room_name(250));
 
 DROP TABLE IF EXISTS cms_chat_sound_effects;
 
@@ -7548,19 +7548,19 @@ CREATE TABLE cms_comcode_pages (
     PRIMARY KEY (the_zone, the_page)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_comcode', 'help', 1, NULL, 1541729192, 2, 0, 0);
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'keymap', 'help', 1, NULL, 1541729192, 2, 0, 0);
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_chatcode', 'help', 1, NULL, 1541729203, 2, 0, 0);
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'popup_blockers', 'help', 1, NULL, 1541729203, 2, 0, 0);
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'recommend_help', 'recommend', 1, NULL, 1541729214, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_comcode', 'help', 1, NULL, 1546387681, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'keymap', 'help', 1, NULL, 1546387681, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_chatcode', 'help', 1, NULL, 1546387690, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'popup_blockers', 'help', 1, NULL, 1546387690, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'recommend_help', 'recommend', 1, NULL, 1546387693, 2, 0, 0);
 
-ALTER TABLE cms10_comcode_pages ADD INDEX p_add_date (p_add_date);
+ALTER TABLE cms_comcode_pages ADD INDEX p_add_date (p_add_date);
 
-ALTER TABLE cms10_comcode_pages ADD INDEX p_order (p_order);
+ALTER TABLE cms_comcode_pages ADD INDEX p_order (p_order);
 
-ALTER TABLE cms10_comcode_pages ADD INDEX p_submitter (p_submitter);
+ALTER TABLE cms_comcode_pages ADD INDEX p_submitter (p_submitter);
 
-ALTER TABLE cms10_comcode_pages ADD INDEX p_validated (p_validated);
+ALTER TABLE cms_comcode_pages ADD INDEX p_validated (p_validated);
 
 DROP TABLE IF EXISTS cms_commandrchat;
 
@@ -7584,7 +7584,7 @@ CREATE TABLE cms_config (
     PRIMARY KEY (c_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_config ADD FULLTEXT c_value_trans (c_value_trans);
+ALTER TABLE cms_config ADD FULLTEXT c_value_trans (c_value_trans);
 
 DROP TABLE IF EXISTS cms_content_privacy;
 
@@ -7597,11 +7597,11 @@ CREATE TABLE cms_content_privacy (
     PRIMARY KEY (content_type, content_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_content_privacy ADD INDEX friend_view (friend_view);
+ALTER TABLE cms_content_privacy ADD INDEX friend_view (friend_view);
 
-ALTER TABLE cms10_content_privacy ADD INDEX guest_view (guest_view);
+ALTER TABLE cms_content_privacy ADD INDEX guest_view (guest_view);
 
-ALTER TABLE cms10_content_privacy ADD INDEX member_view (member_view);
+ALTER TABLE cms_content_privacy ADD INDEX member_view (member_view);
 
 DROP TABLE IF EXISTS cms_content_privacy__members;
 
@@ -7635,9 +7635,9 @@ CREATE TABLE cms_content_reviews (
     PRIMARY KEY (content_type, content_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_content_reviews ADD INDEX needs_review (next_review_time,content_type);
+ALTER TABLE cms_content_reviews ADD INDEX needs_review (next_review_time,content_type);
 
-ALTER TABLE cms10_content_reviews ADD INDEX next_review_time (next_review_time,review_notification_happened);
+ALTER TABLE cms_content_reviews ADD INDEX next_review_time (next_review_time,review_notification_happened);
 
 DROP TABLE IF EXISTS cms_cron_caching_requests;
 
@@ -7656,11 +7656,11 @@ CREATE TABLE cms_cron_caching_requests (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_cron_caching_requests ADD INDEX c_compound (c_codename,c_theme,c_lang,c_timezone);
+ALTER TABLE cms_cron_caching_requests ADD INDEX c_compound (c_codename,c_theme,c_lang,c_timezone);
 
-ALTER TABLE cms10_cron_caching_requests ADD INDEX c_is_bot (c_is_bot);
+ALTER TABLE cms_cron_caching_requests ADD INDEX c_is_bot (c_is_bot);
 
-ALTER TABLE cms10_cron_caching_requests ADD INDEX c_store_as_tempcode (c_store_as_tempcode);
+ALTER TABLE cms_cron_caching_requests ADD INDEX c_store_as_tempcode (c_store_as_tempcode);
 
 DROP TABLE IF EXISTS cms_custom_comcode;
 
@@ -7678,9 +7678,9 @@ CREATE TABLE cms_custom_comcode (
     PRIMARY KEY (tag_tag)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_custom_comcode ADD FULLTEXT tag_description (tag_description);
+ALTER TABLE cms_custom_comcode ADD FULLTEXT tag_description (tag_description);
 
-ALTER TABLE cms10_custom_comcode ADD FULLTEXT tag_title (tag_title);
+ALTER TABLE cms_custom_comcode ADD FULLTEXT tag_title (tag_title);
 
 DROP TABLE IF EXISTS cms_db_meta;
 
@@ -9098,11 +9098,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_end', 'LONG_TRANS');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_uhoh', 'LONG_TRANS');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_uses_primary', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'name', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'path', 'URLPATH');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'description', 'SHORT_TRANS');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'the_member', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_usergroup_sub_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point', 'ID_TEXT');
@@ -9117,26 +9112,11 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'ticket_id'
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'topic_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'forum_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'ticket_type', 'AUTO_LINK');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_member', '*MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_points', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'date_and_time', '*TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'ticket_type_name', 'SHORT_TRANS');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'guest_emails_mandatory', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'search_faq', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'cache_lead_time', '?TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'content_id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'block_cache_id', '*ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'run_period', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'running_now', 'BINARY');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'last_update', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'the_type', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_a', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_b', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'member_id', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'ip', 'IP');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'date_and_time', 'TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'parent_id', '*AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'child_id', '*AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'the_order', 'INTEGER');
@@ -9150,12 +9130,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'edit_da
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'wiki_views', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'hide_posts', 'BINARY');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'submitter', 'MEMBER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'id', '*AUTO');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_title', 'LONG_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'add_date', 'TIME');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_interval', 'INTEGER');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_every', 'ID_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_is_done', '?TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'page_id', 'AUTO_LINK');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'the_message', 'LONG_TRANS__COMCODE');
@@ -9164,6 +9138,33 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'validat
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'wiki_views', 'INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'member_id', 'MEMBER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'edit_date', '?TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_27', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'name', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'path', 'URLPATH');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'description', 'SHORT_TRANS');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'the_member', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_member', '*MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_points', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'date_and_time', '*TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'content_id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'block_cache_id', '*ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'run_period', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'running_now', 'BINARY');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'last_update', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'the_type', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_a', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_b', 'SHORT_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'member_id', 'MEMBER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'ip', 'IP');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'date_and_time', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'id', '*AUTO');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_title', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'add_date', 'TIME');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_interval', 'INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_every', 'ID_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_is_done', '?TIME');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link_title', 'SHORT_TEXT');
@@ -9173,7 +9174,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_tips_dismissed'
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_url', 'URLPATH');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_name', 'SHORT_TEXT');
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_27', '?INTEGER');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'id', '*AUTO');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'failed_account', 'ID_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'date_and_time', 'TIME');
@@ -9188,7 +9188,7 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_field
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_35', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_36', 'SHORT_TEXT');
 
-ALTER TABLE cms10_db_meta ADD INDEX findtransfields (m_type);
+ALTER TABLE cms_db_meta ADD INDEX findtransfields (m_type);
 
 DROP TABLE IF EXISTS cms_db_meta_indices;
 
@@ -9749,17 +9749,17 @@ CREATE TABLE cms_digestives_tin (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_digestives_tin ADD FULLTEXT d_message (d_message);
+ALTER TABLE cms_digestives_tin ADD FULLTEXT d_message (d_message);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_date_and_time (d_date_and_time);
+ALTER TABLE cms_digestives_tin ADD INDEX d_date_and_time (d_date_and_time);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_frequency (d_frequency);
+ALTER TABLE cms_digestives_tin ADD INDEX d_frequency (d_frequency);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_read (d_read);
+ALTER TABLE cms_digestives_tin ADD INDEX d_read (d_read);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_to_member_id (d_to_member_id);
+ALTER TABLE cms_digestives_tin ADD INDEX d_to_member_id (d_to_member_id);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX unread (d_to_member_id,d_read);
+ALTER TABLE cms_digestives_tin ADD INDEX unread (d_to_member_id,d_read);
 
 DROP TABLE IF EXISTS cms_download_categories;
 
@@ -9776,20 +9776,20 @@ CREATE TABLE cms_download_categories (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1541729203, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1546387690, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_download_categories ADD FULLTEXT category (category);
+ALTER TABLE cms_download_categories ADD FULLTEXT category (category);
 
-ALTER TABLE cms10_download_categories ADD FULLTEXT description (description);
+ALTER TABLE cms_download_categories ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_download_categories ADD FULLTEXT dl_cat_search__combined (category,description);
+ALTER TABLE cms_download_categories ADD FULLTEXT dl_cat_search__combined (category,description);
 
-ALTER TABLE cms10_download_categories ADD INDEX child_find (parent_id);
+ALTER TABLE cms_download_categories ADD INDEX child_find (parent_id);
 
-ALTER TABLE cms10_download_categories ADD INDEX ftjoin_dccat (category(250));
+ALTER TABLE cms_download_categories ADD INDEX ftjoin_dccat (category(250));
 
-ALTER TABLE cms10_download_categories ADD INDEX ftjoin_dcdescrip (description(250));
+ALTER TABLE cms_download_categories ADD INDEX ftjoin_dcdescrip (description(250));
 
 DROP TABLE IF EXISTS cms_download_downloads;
 
@@ -9828,39 +9828,39 @@ CREATE TABLE cms_download_downloads (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT additional_details (additional_details);
+ALTER TABLE cms_download_downloads ADD FULLTEXT additional_details (additional_details);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT description (description);
+ALTER TABLE cms_download_downloads ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT dl_search__combined (original_filename,download_data_mash);
+ALTER TABLE cms_download_downloads ADD FULLTEXT dl_search__combined (original_filename,download_data_mash);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT download_data_mash (download_data_mash);
+ALTER TABLE cms_download_downloads ADD FULLTEXT download_data_mash (download_data_mash);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT name (name);
+ALTER TABLE cms_download_downloads ADD FULLTEXT name (name);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT original_filename (original_filename);
+ALTER TABLE cms_download_downloads ADD FULLTEXT original_filename (original_filename);
 
-ALTER TABLE cms10_download_downloads ADD INDEX category_list (category_id);
+ALTER TABLE cms_download_downloads ADD INDEX category_list (category_id);
 
-ALTER TABLE cms10_download_downloads ADD INDEX ddl (download_licence);
+ALTER TABLE cms_download_downloads ADD INDEX ddl (download_licence);
 
-ALTER TABLE cms10_download_downloads ADD INDEX dds (submitter);
+ALTER TABLE cms_download_downloads ADD INDEX dds (submitter);
 
-ALTER TABLE cms10_download_downloads ADD INDEX downloadauthor (author);
+ALTER TABLE cms_download_downloads ADD INDEX downloadauthor (author);
 
-ALTER TABLE cms10_download_downloads ADD INDEX download_views (download_views);
+ALTER TABLE cms_download_downloads ADD INDEX download_views (download_views);
 
-ALTER TABLE cms10_download_downloads ADD INDEX dvalidated (validated);
+ALTER TABLE cms_download_downloads ADD INDEX dvalidated (validated);
 
-ALTER TABLE cms10_download_downloads ADD INDEX ftjoin_dadditional (additional_details(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dadditional (additional_details(250));
 
-ALTER TABLE cms10_download_downloads ADD INDEX ftjoin_ddescrip (description(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_ddescrip (description(250));
 
-ALTER TABLE cms10_download_downloads ADD INDEX ftjoin_dname (name(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dname (name(250));
 
-ALTER TABLE cms10_download_downloads ADD INDEX recent_downloads (add_date);
+ALTER TABLE cms_download_downloads ADD INDEX recent_downloads (add_date);
 
-ALTER TABLE cms10_download_downloads ADD INDEX top_downloads (num_downloads);
+ALTER TABLE cms_download_downloads ADD INDEX top_downloads (num_downloads);
 
 DROP TABLE IF EXISTS cms_download_licences;
 
@@ -9881,7 +9881,7 @@ CREATE TABLE cms_download_logging (
     PRIMARY KEY (id, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_download_logging ADD INDEX calculate_bandwidth (date_and_time);
+ALTER TABLE cms_download_logging ADD INDEX calculate_bandwidth (date_and_time);
 
 DROP TABLE IF EXISTS cms_edit_pings;
 
@@ -9895,7 +9895,7 @@ CREATE TABLE cms_edit_pings (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_edit_pings ADD INDEX edit_pings_on (the_page,the_type,the_id);
+ALTER TABLE cms_edit_pings ADD INDEX edit_pings_on (the_page,the_type,the_id);
 
 DROP TABLE IF EXISTS cms_email_bounces;
 
@@ -9908,9 +9908,9 @@ CREATE TABLE cms_email_bounces (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_email_bounces ADD INDEX b_email_address (b_email_address(250));
+ALTER TABLE cms_email_bounces ADD INDEX b_email_address (b_email_address(250));
 
-ALTER TABLE cms10_email_bounces ADD INDEX b_time (b_time);
+ALTER TABLE cms_email_bounces ADD INDEX b_time (b_time);
 
 DROP TABLE IF EXISTS cms_f_custom_fields;
 
@@ -9972,9 +9972,9 @@ INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_defa
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (35, 0, 'cms_lastname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 34, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (36, 0, 'cms_mobile_phone_number', 'This should be the mobile phone number in international format, devoid of any national or international outgoing access codes. For instance, a typical UK (44) number might be nationally known as \'01234 123456\', but internationally and without outgoing access codes would be \'441234123456\'.', '', 0, 0, 1, 'short_text', 0, 0, 0, 35, '', 0, 0, '');
 
-ALTER TABLE cms10_f_custom_fields ADD FULLTEXT cf_description (cf_description);
+ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_description (cf_description);
 
-ALTER TABLE cms10_f_custom_fields ADD FULLTEXT cf_name (cf_name);
+ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_name (cf_name);
 
 DROP TABLE IF EXISTS cms_f_emoticons;
 
@@ -10043,9 +10043,9 @@ INSERT INTO cms_f_emoticons (e_code, e_theme_img_code, e_relevance_level, e_use_
 INSERT INTO cms_f_emoticons (e_code, e_theme_img_code, e_relevance_level, e_use_topics, e_is_special) VALUES (':reallybadday:', 'cns_emoticons/reallybadday', 1, 0, 0);
 INSERT INTO cms_f_emoticons (e_code, e_theme_img_code, e_relevance_level, e_use_topics, e_is_special) VALUES (':christmas:', 'cns_emoticons/christmas', 1, 0, 0);
 
-ALTER TABLE cms10_f_emoticons ADD INDEX relevantemoticons (e_relevance_level);
+ALTER TABLE cms_f_emoticons ADD INDEX relevantemoticons (e_relevance_level);
 
-ALTER TABLE cms10_f_emoticons ADD INDEX topicemos (e_use_topics);
+ALTER TABLE cms_f_emoticons ADD INDEX topicemos (e_use_topics);
 
 DROP TABLE IF EXISTS cms_f_forum_groupings;
 
@@ -10108,42 +10108,42 @@ CREATE TABLE cms_f_forums (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Reported posts forum', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Reported posts forum', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba56d1390.45566034_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba56d1390.45566034_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00df260571.11861686_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00df260571.11861686_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (7, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1541729190, 'System', 1, 7, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (7, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1546387679, 'System', 1, 7, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (8, 'Website \"Contact Us\" messages', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba9390279.43512014_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba9390279.43512014_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba9390279.43512014_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba9390279.43512014_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5be4eba9390279.43512014_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5be4eba9390279.43512014_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (8, 'Website \"Contact Us\" messages', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e177e2c3.15835324_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e177e2c3.15835324_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00e177e2c3.15835324_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00e177e2c3.15835324_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c2c00e177e2c3.15835324_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c2c00e177e2c3.15835324_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_f_forums ADD FULLTEXT f_description (f_description);
+ALTER TABLE cms_f_forums ADD FULLTEXT f_description (f_description);
 
-ALTER TABLE cms10_f_forums ADD FULLTEXT f_intro_question (f_intro_question);
+ALTER TABLE cms_f_forums ADD FULLTEXT f_intro_question (f_intro_question);
 
-ALTER TABLE cms10_f_forums ADD INDEX cache_num_posts (f_cache_num_posts);
+ALTER TABLE cms_f_forums ADD INDEX cache_num_posts (f_cache_num_posts);
 
-ALTER TABLE cms10_f_forums ADD INDEX findnamedforum (f_name(250));
+ALTER TABLE cms_f_forums ADD INDEX findnamedforum (f_name(250));
 
-ALTER TABLE cms10_f_forums ADD INDEX f_position (f_position);
+ALTER TABLE cms_f_forums ADD INDEX f_position (f_position);
 
-ALTER TABLE cms10_f_forums ADD INDEX subforum_parenting (f_parent_forum);
+ALTER TABLE cms_f_forums ADD INDEX subforum_parenting (f_parent_forum);
 
 DROP TABLE IF EXISTS cms_f_group_join_log;
 
@@ -10155,11 +10155,11 @@ CREATE TABLE cms_f_group_join_log (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_group_join_log ADD INDEX join_time (join_time);
+ALTER TABLE cms_f_group_join_log ADD INDEX join_time (join_time);
 
-ALTER TABLE cms10_f_group_join_log ADD INDEX member_id (member_id);
+ALTER TABLE cms_f_group_join_log ADD INDEX member_id (member_id);
 
-ALTER TABLE cms10_f_group_join_log ADD INDEX usergroup_id (usergroup_id);
+ALTER TABLE cms_f_group_join_log ADD INDEX usergroup_id (usergroup_id);
 
 DROP TABLE IF EXISTS cms_f_group_member_timeouts;
 
@@ -10179,11 +10179,11 @@ CREATE TABLE cms_f_group_members (
     PRIMARY KEY (gm_group_id, gm_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_group_members ADD INDEX gm_group_id (gm_group_id);
+ALTER TABLE cms_f_group_members ADD INDEX gm_group_id (gm_group_id);
 
-ALTER TABLE cms10_f_group_members ADD INDEX gm_member_id (gm_member_id);
+ALTER TABLE cms_f_group_members ADD INDEX gm_member_id (gm_member_id);
 
-ALTER TABLE cms10_f_group_members ADD INDEX gm_validated (gm_validated);
+ALTER TABLE cms_f_group_members ADD INDEX gm_validated (gm_validated);
 
 DROP TABLE IF EXISTS cms_f_groups;
 
@@ -10229,29 +10229,29 @@ INSERT INTO cms_f_groups (id, g_name, g_is_default, g_is_presented_at_install, g
 INSERT INTO cms_f_groups (id, g_name, g_is_default, g_is_presented_at_install, g_is_super_admin, g_is_super_moderator, g_group_leader, g_title, g_promotion_target, g_promotion_threshold, g_flood_control_submit_secs, g_flood_control_access_secs, g_gift_points_base, g_gift_points_per_day, g_max_daily_upload_mb, g_max_attachments_per_post, g_max_avatar_width, g_max_avatar_height, g_max_post_length_comcode, g_max_sig_length_comcode, g_enquire_on_new_ips, g_rank_image, g_hidden, g_order, g_rank_image_pri_only, g_open_membership, g_is_private_club) VALUES (9, 'Newbie', 0, 0, 0, 0, NULL, 'Standard member', 8, 100, 0, 0, 25, 1, 70, 50, 100, 100, 30000, 700, 0, 'cns_rank_images/0', 0, 8, 1, 0, 0);
 INSERT INTO cms_f_groups (id, g_name, g_is_default, g_is_presented_at_install, g_is_super_admin, g_is_super_moderator, g_group_leader, g_title, g_promotion_target, g_promotion_threshold, g_flood_control_submit_secs, g_flood_control_access_secs, g_gift_points_base, g_gift_points_per_day, g_max_daily_upload_mb, g_max_attachments_per_post, g_max_avatar_width, g_max_avatar_height, g_max_post_length_comcode, g_max_sig_length_comcode, g_enquire_on_new_ips, g_rank_image, g_hidden, g_order, g_rank_image_pri_only, g_open_membership, g_is_private_club) VALUES (10, 'Probation', 0, 0, 0, 0, NULL, 'Placed on temporary probation', NULL, NULL, 0, 0, 25, 1, 70, 50, 100, 100, 30000, 700, 0, '', 0, 9, 1, 0, 0);
 
-ALTER TABLE cms10_f_groups ADD FULLTEXT groups_search__combined (g_name,g_title);
+ALTER TABLE cms_f_groups ADD FULLTEXT groups_search__combined (g_name,g_title);
 
-ALTER TABLE cms10_f_groups ADD FULLTEXT g_name (g_name);
+ALTER TABLE cms_f_groups ADD FULLTEXT g_name (g_name);
 
-ALTER TABLE cms10_f_groups ADD FULLTEXT g_title (g_title);
+ALTER TABLE cms_f_groups ADD FULLTEXT g_title (g_title);
 
-ALTER TABLE cms10_f_groups ADD INDEX ftjoin_gname (g_name(250));
+ALTER TABLE cms_f_groups ADD INDEX ftjoin_gname (g_name(250));
 
-ALTER TABLE cms10_f_groups ADD INDEX ftjoin_gtitle (g_title(250));
+ALTER TABLE cms_f_groups ADD INDEX ftjoin_gtitle (g_title(250));
 
-ALTER TABLE cms10_f_groups ADD INDEX gorder (g_order,id);
+ALTER TABLE cms_f_groups ADD INDEX gorder (g_order,id);
 
-ALTER TABLE cms10_f_groups ADD INDEX hidden (g_hidden);
+ALTER TABLE cms_f_groups ADD INDEX hidden (g_hidden);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_default (g_is_default);
+ALTER TABLE cms_f_groups ADD INDEX is_default (g_is_default);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_presented_at_install (g_is_presented_at_install);
+ALTER TABLE cms_f_groups ADD INDEX is_presented_at_install (g_is_presented_at_install);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_private_club (g_is_private_club);
+ALTER TABLE cms_f_groups ADD INDEX is_private_club (g_is_private_club);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_super_admin (g_is_super_admin);
+ALTER TABLE cms_f_groups ADD INDEX is_super_admin (g_is_super_admin);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_super_moderator (g_is_super_moderator);
+ALTER TABLE cms_f_groups ADD INDEX is_super_moderator (g_is_super_moderator);
 
 DROP TABLE IF EXISTS cms_f_invites;
 
@@ -10325,122 +10325,122 @@ CREATE TABLE cms_f_member_custom_fields (
     PRIMARY KEY (mf_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT field_1 (field_1);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_1 (field_1);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_7 (field_7);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_7 (field_7);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf1 (field_1(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf1 (field_1(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf10 (field_10);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf10 (field_10);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf11 (field_11(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf11 (field_11);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf12 (field_12(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf12 (field_12);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf13 (field_13(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf13 (field_13);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf14 (field_14(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf14 (field_14);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf15 (field_15(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf15 (field_15);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf16 (field_16);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf16 (field_16);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf20 (field_20);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf26 (field_26);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf26 (field_26(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf27 (field_27(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf27 (field_27);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf34 (field_34);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf34 (field_34(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf35 (field_35);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf35 (field_35(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf5 (field_5(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf5 (field_5(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf6 (field_6(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf6 (field_6(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf7 (field_7(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf7 (field_7(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf8 (field_8(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf8 (field_8(250));
 
 DROP TABLE IF EXISTS cms_f_member_known_login_ips;
 
@@ -10503,43 +10503,43 @@ CREATE TABLE cms_f_members (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1541729190, 'UTC', 1, 1541729190, 1541729190, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1546387679, 'UTC', 1, 1546387679, 1546387679, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1541729190, 'UTC', 2, 1541729190, 1541729190, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1546387679, 'UTC', 2, 1546387679, 1546387679, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1541729190, 'UTC', 9, 1541729190, 1541729190, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4eba56d1390.45566034_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4eba56d1390.45566034_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4eba56d1390.45566034_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1546387679, 'UTC', 9, 1546387679, 1546387679, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00df260571.11861686_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00df260571.11861686_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00df260571.11861686_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text);
+ALTER TABLE cms_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text);
 
-ALTER TABLE cms10_f_members ADD FULLTEXT m_signature (m_signature);
+ALTER TABLE cms_f_members ADD FULLTEXT m_signature (m_signature);
 
-ALTER TABLE cms10_f_members ADD FULLTEXT search_user (m_username);
+ALTER TABLE cms_f_members ADD FULLTEXT search_user (m_username);
 
-ALTER TABLE cms10_f_members ADD INDEX avatar_url (m_avatar_url(250));
+ALTER TABLE cms_f_members ADD INDEX avatar_url (m_avatar_url(250));
 
-ALTER TABLE cms10_f_members ADD INDEX birthdays (m_dob_day,m_dob_month);
+ALTER TABLE cms_f_members ADD INDEX birthdays (m_dob_day,m_dob_month);
 
-ALTER TABLE cms10_f_members ADD INDEX external_auth_lookup (m_pass_hash_salted(250));
+ALTER TABLE cms_f_members ADD INDEX external_auth_lookup (m_pass_hash_salted(250));
 
-ALTER TABLE cms10_f_members ADD INDEX ftjoin_msig (m_signature(250));
+ALTER TABLE cms_f_members ADD INDEX ftjoin_msig (m_signature(250));
 
-ALTER TABLE cms10_f_members ADD INDEX last_visit_time (m_dob_month,m_dob_day,m_last_visit_time);
+ALTER TABLE cms_f_members ADD INDEX last_visit_time (m_dob_month,m_dob_day,m_last_visit_time);
 
-ALTER TABLE cms10_f_members ADD INDEX menail (m_email_address(250));
+ALTER TABLE cms_f_members ADD INDEX menail (m_email_address(250));
 
-ALTER TABLE cms10_f_members ADD INDEX m_join_time (m_join_time);
+ALTER TABLE cms_f_members ADD INDEX m_join_time (m_join_time);
 
-ALTER TABLE cms10_f_members ADD INDEX primary_group (m_primary_group);
+ALTER TABLE cms_f_members ADD INDEX primary_group (m_primary_group);
 
-ALTER TABLE cms10_f_members ADD INDEX sort_post_count (m_cache_num_posts);
+ALTER TABLE cms_f_members ADD INDEX sort_post_count (m_cache_num_posts);
 
-ALTER TABLE cms10_f_members ADD INDEX user_list (m_username);
+ALTER TABLE cms_f_members ADD INDEX user_list (m_username);
 
-ALTER TABLE cms10_f_members ADD INDEX whos_validated (m_validated);
+ALTER TABLE cms_f_members ADD INDEX whos_validated (m_validated);
 
 DROP TABLE IF EXISTS cms_f_moderator_logs;
 
@@ -10571,7 +10571,7 @@ CREATE TABLE cms_f_multi_moderations (
 
 INSERT INTO cms_f_multi_moderations (id, mm_name, mm_post_text, mm_move_to, mm_pin_state, mm_sink_state, mm_open_state, mm_forum_multi_code, mm_title_suffix) VALUES (1, 'Trash', '', 4, 0, 0, 0, '*', '');
 
-ALTER TABLE cms10_f_multi_moderations ADD FULLTEXT mm_name (mm_name);
+ALTER TABLE cms_f_multi_moderations ADD FULLTEXT mm_name (mm_name);
 
 DROP TABLE IF EXISTS cms_f_password_history;
 
@@ -10584,7 +10584,7 @@ CREATE TABLE cms_f_password_history (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_password_history ADD INDEX p_member_id (p_member_id);
+ALTER TABLE cms_f_password_history ADD INDEX p_member_id (p_member_id);
 
 DROP TABLE IF EXISTS cms_f_poll_answers;
 
@@ -10691,40 +10691,40 @@ INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_
 
 A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.
 
-Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1541729190, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:7:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:1;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:2;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:3;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:4;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:5;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:6;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:7:{s:39:\\\"string_attach_5be4eba68ac0e2.84929550_1\\\";s:121:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_2\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_2\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_3\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_3\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_4\\\";s:210:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_4\']=\\\"echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_5\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_5\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_6\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_6\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_7\\\";s:329:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_7\']=\\\"echo \\\\\\\"Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");
+Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1546387679, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:7:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:1;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:2;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:3;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:4;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:5;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:6;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:7:{s:39:\\\"string_attach_5c2c00dfa89351.44545981_1\\\";s:121:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_2\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_2\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_3\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_3\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_4\\\";s:210:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_4\']=\\\"echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_5\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_5\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_6\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_6\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_7\\\";s:329:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_7\']=\\\"echo \\\\\\\"Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_f_posts ADD FULLTEXT posts_search__combined (p_post,p_title);
+ALTER TABLE cms_f_posts ADD FULLTEXT posts_search__combined (p_post,p_title);
 
-ALTER TABLE cms10_f_posts ADD FULLTEXT p_post (p_post);
+ALTER TABLE cms_f_posts ADD FULLTEXT p_post (p_post);
 
-ALTER TABLE cms10_f_posts ADD FULLTEXT p_title (p_title);
+ALTER TABLE cms_f_posts ADD FULLTEXT p_title (p_title);
 
-ALTER TABLE cms10_f_posts ADD INDEX deletebyip (p_ip_address);
+ALTER TABLE cms_f_posts ADD INDEX deletebyip (p_ip_address);
 
-ALTER TABLE cms10_f_posts ADD INDEX find_pp (p_intended_solely_for);
+ALTER TABLE cms_f_posts ADD INDEX find_pp (p_intended_solely_for);
 
-ALTER TABLE cms10_f_posts ADD INDEX in_topic (p_topic_id,p_time,id);
+ALTER TABLE cms_f_posts ADD INDEX in_topic (p_topic_id,p_time,id);
 
-ALTER TABLE cms10_f_posts ADD INDEX in_topic_change_order (p_topic_id,p_last_edit_time,p_time,id);
+ALTER TABLE cms_f_posts ADD INDEX in_topic_change_order (p_topic_id,p_last_edit_time,p_time,id);
 
-ALTER TABLE cms10_f_posts ADD INDEX postsinforum (p_cache_forum_id);
+ALTER TABLE cms_f_posts ADD INDEX postsinforum (p_cache_forum_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_by (p_poster,p_time);
+ALTER TABLE cms_f_posts ADD INDEX posts_by (p_poster,p_time);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_by_in_forum (p_poster,p_cache_forum_id);
+ALTER TABLE cms_f_posts ADD INDEX posts_by_in_forum (p_poster,p_cache_forum_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_by_in_topic (p_poster,p_topic_id);
+ALTER TABLE cms_f_posts ADD INDEX posts_by_in_topic (p_poster,p_topic_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_since (p_time,p_cache_forum_id);
+ALTER TABLE cms_f_posts ADD INDEX posts_since (p_time,p_cache_forum_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX post_order_time (p_time,id);
+ALTER TABLE cms_f_posts ADD INDEX post_order_time (p_time,id);
 
-ALTER TABLE cms10_f_posts ADD INDEX p_last_edit_time (p_last_edit_time);
+ALTER TABLE cms_f_posts ADD INDEX p_last_edit_time (p_last_edit_time);
 
-ALTER TABLE cms10_f_posts ADD INDEX p_validated (p_validated);
+ALTER TABLE cms_f_posts ADD INDEX p_validated (p_validated);
 
-ALTER TABLE cms10_f_posts ADD INDEX search_join (p_post(250));
+ALTER TABLE cms_f_posts ADD INDEX search_join (p_post(250));
 
 DROP TABLE IF EXISTS cms_f_read_logs;
 
@@ -10735,7 +10735,7 @@ CREATE TABLE cms_f_read_logs (
     PRIMARY KEY (l_member_id, l_topic_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_read_logs ADD INDEX erase_old_read_logs (l_time);
+ALTER TABLE cms_f_read_logs ADD INDEX erase_old_read_logs (l_time);
 
 DROP TABLE IF EXISTS cms_f_saved_warnings;
 
@@ -10790,51 +10790,51 @@ CREATE TABLE cms_f_topics (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1541729190, 'Welcome to the forums', '', 'System', 1, 1, 1541729190, 'Welcome to the forums', 'System', 1, 1, '', 1);
+INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1546387679, 'Welcome to the forums', '', 'System', 1, 1, 1546387679, 'Welcome to the forums', 'System', 1, 1, '', 1);
 
-ALTER TABLE cms10_f_topics ADD FULLTEXT t_cache_first_post (t_cache_first_post);
+ALTER TABLE cms_f_topics ADD FULLTEXT t_cache_first_post (t_cache_first_post);
 
-ALTER TABLE cms10_f_topics ADD FULLTEXT t_description (t_description);
+ALTER TABLE cms_f_topics ADD FULLTEXT t_description (t_description);
 
-ALTER TABLE cms10_f_topics ADD INDEX descriptionsearch (t_description(250));
+ALTER TABLE cms_f_topics ADD INDEX descriptionsearch (t_description(250));
 
-ALTER TABLE cms10_f_topics ADD INDEX forumlayer (t_cache_first_title(250));
+ALTER TABLE cms_f_topics ADD INDEX forumlayer (t_cache_first_title(250));
 
-ALTER TABLE cms10_f_topics ADD INDEX in_forum (t_forum_id);
+ALTER TABLE cms_f_topics ADD INDEX in_forum (t_forum_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX ownedtopics (t_cache_first_member_id);
+ALTER TABLE cms_f_topics ADD INDEX ownedtopics (t_cache_first_member_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order (t_cascading,t_pinned,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order (t_cascading,t_pinned,t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_2 (t_forum_id,t_cascading,t_pinned,t_sunk,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_2 (t_forum_id,t_cascading,t_pinned,t_sunk,t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_3 (t_forum_id,t_cascading,t_pinned,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_3 (t_forum_id,t_cascading,t_pinned,t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_time (t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_time (t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_time_2 (t_cache_first_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_time_2 (t_cache_first_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_first_post_id (t_cache_first_post_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_first_post_id (t_cache_first_post_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_last_member_id (t_cache_last_member_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_last_member_id (t_cache_last_member_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_last_post_id (t_cache_last_post_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_last_post_id (t_cache_last_post_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_num_posts (t_cache_num_posts);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_num_posts (t_cache_num_posts);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cascading (t_cascading);
+ALTER TABLE cms_f_topics ADD INDEX t_cascading (t_cascading);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cascading_or_forum (t_cascading,t_forum_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cascading_or_forum (t_cascading,t_forum_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_num_views (t_num_views);
+ALTER TABLE cms_f_topics ADD INDEX t_num_views (t_num_views);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_pt_from (t_pt_from);
+ALTER TABLE cms_f_topics ADD INDEX t_pt_from (t_pt_from);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_pt_to (t_pt_to);
+ALTER TABLE cms_f_topics ADD INDEX t_pt_to (t_pt_to);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_validated (t_validated);
+ALTER TABLE cms_f_topics ADD INDEX t_validated (t_validated);
 
-ALTER TABLE cms10_f_topics ADD INDEX unread_forums (t_forum_id,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX unread_forums (t_forum_id,t_cache_last_time);
 
 DROP TABLE IF EXISTS cms_f_usergroup_sub_mails;
 
@@ -10848,9 +10848,9 @@ CREATE TABLE cms_f_usergroup_sub_mails (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body);
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body);
 
-ALTER TABLE cms10_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject);
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject);
 
 DROP TABLE IF EXISTS cms_f_usergroup_subs;
 
@@ -10873,15 +10873,15 @@ CREATE TABLE cms_f_usergroup_subs (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_description (s_description);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_description (s_description);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_title (s_title);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_title (s_title);
 
 DROP TABLE IF EXISTS cms_f_warnings;
 
@@ -10902,7 +10902,7 @@ CREATE TABLE cms_f_warnings (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_warnings ADD INDEX warningsmemberid (w_member_id);
+ALTER TABLE cms_f_warnings ADD INDEX warningsmemberid (w_member_id);
 
 DROP TABLE IF EXISTS cms_f_welcome_emails;
 
@@ -10918,9 +10918,9 @@ CREATE TABLE cms_f_welcome_emails (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_welcome_emails ADD FULLTEXT w_subject (w_subject);
+ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_subject (w_subject);
 
-ALTER TABLE cms10_f_welcome_emails ADD FULLTEXT w_text (w_text);
+ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_text (w_text);
 
 DROP TABLE IF EXISTS cms_failedlogins;
 
@@ -10932,7 +10932,7 @@ CREATE TABLE cms_failedlogins (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_failedlogins ADD INDEX failedlogins_by_ip (ip);
+ALTER TABLE cms_failedlogins ADD INDEX failedlogins_by_ip (ip);
 
 DROP TABLE IF EXISTS cms_feature_lifetime_monitor;
 
@@ -10956,7 +10956,7 @@ CREATE TABLE cms_filedump (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_filedump ADD FULLTEXT description (description);
+ALTER TABLE cms_filedump ADD FULLTEXT description (description);
 
 DROP TABLE IF EXISTS cms_galleries;
 
@@ -10987,31 +10987,31 @@ CREATE TABLE cms_galleries (
     PRIMARY KEY (name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1541729205, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1546387690, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_galleries ADD FULLTEXT description (description);
+ALTER TABLE cms_galleries ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_galleries ADD FULLTEXT fullname (fullname);
+ALTER TABLE cms_galleries ADD FULLTEXT fullname (fullname);
 
-ALTER TABLE cms10_galleries ADD FULLTEXT gallery_search__combined (fullname,description);
+ALTER TABLE cms_galleries ADD FULLTEXT gallery_search__combined (fullname,description);
 
-ALTER TABLE cms10_galleries ADD INDEX ftjoin_gdescrip (description(250));
+ALTER TABLE cms_galleries ADD INDEX ftjoin_gdescrip (description(250));
 
-ALTER TABLE cms10_galleries ADD INDEX ftjoin_gfullname (fullname(250));
+ALTER TABLE cms_galleries ADD INDEX ftjoin_gfullname (fullname(250));
 
-ALTER TABLE cms10_galleries ADD INDEX gadd_date (add_date);
+ALTER TABLE cms_galleries ADD INDEX gadd_date (add_date);
 
-ALTER TABLE cms10_galleries ADD INDEX parent_id (parent_id);
+ALTER TABLE cms_galleries ADD INDEX parent_id (parent_id);
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_bottom_left (watermark_bottom_left(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_bottom_left (watermark_bottom_left(250));
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_bottom_right (watermark_bottom_right(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_bottom_right (watermark_bottom_right(250));
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_top_left (watermark_top_left(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_top_left (watermark_top_left(250));
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_top_right (watermark_top_right(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_top_right (watermark_top_right(250));
 
 DROP TABLE IF EXISTS cms_gifts;
 
@@ -11028,11 +11028,11 @@ CREATE TABLE cms_gifts (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_gifts ADD FULLTEXT reason (reason);
+ALTER TABLE cms_gifts ADD FULLTEXT reason (reason);
 
-ALTER TABLE cms10_gifts ADD INDEX giftsgiven (gift_from);
+ALTER TABLE cms_gifts ADD INDEX giftsgiven (gift_from);
 
-ALTER TABLE cms10_gifts ADD INDEX giftsreceived (gift_to);
+ALTER TABLE cms_gifts ADD INDEX giftsreceived (gift_to);
 
 DROP TABLE IF EXISTS cms_group_category_access;
 
@@ -11452,7 +11452,7 @@ INSERT INTO cms_group_page_access (page_name, zone_name, group_id) VALUES ('file
 INSERT INTO cms_group_page_access (page_name, zone_name, group_id) VALUES ('filedump', 'cms', 9);
 INSERT INTO cms_group_page_access (page_name, zone_name, group_id) VALUES ('filedump', 'cms', 10);
 
-ALTER TABLE cms10_group_page_access ADD INDEX group_id (group_id);
+ALTER TABLE cms_group_page_access ADD INDEX group_id (group_id);
 
 DROP TABLE IF EXISTS cms_group_privileges;
 
@@ -12028,6 +12028,12 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'autocomplete_keyword_comcode_page', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'autocomplete_title_comcode_page', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'autocomplete_title_comcode_page', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'view_others_tickets', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'view_others_tickets', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'support_operator', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'support_operator', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'wiki_manage_tree', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'wiki_manage_tree', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_anything_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_anything_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'upload_filedump', '', '', '', 1);
@@ -12042,14 +12048,8 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (10, 'upload_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'delete_anything_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'delete_anything_filedump', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'view_others_tickets', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'view_others_tickets', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'support_operator', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'support_operator', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'wiki_manage_tree', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'wiki_manage_tree', '', '', '', 1);
 
-ALTER TABLE cms10_group_privileges ADD INDEX group_id (group_id);
+ALTER TABLE cms_group_privileges ADD INDEX group_id (group_id);
 
 DROP TABLE IF EXISTS cms_group_zone_access;
 
@@ -12103,7 +12103,7 @@ INSERT INTO cms_group_zone_access (zone_name, group_id) VALUES ('site', 8);
 INSERT INTO cms_group_zone_access (zone_name, group_id) VALUES ('site', 9);
 INSERT INTO cms_group_zone_access (zone_name, group_id) VALUES ('site', 10);
 
-ALTER TABLE cms10_group_zone_access ADD INDEX group_id (group_id);
+ALTER TABLE cms_group_zone_access ADD INDEX group_id (group_id);
 
 DROP TABLE IF EXISTS cms_hackattack;
 
@@ -12123,9 +12123,9 @@ CREATE TABLE cms_hackattack (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_hackattack ADD INDEX h_date_and_time (date_and_time);
+ALTER TABLE cms_hackattack ADD INDEX h_date_and_time (date_and_time);
 
-ALTER TABLE cms10_hackattack ADD INDEX otherhacksby (ip);
+ALTER TABLE cms_hackattack ADD INDEX otherhacksby (ip);
 
 DROP TABLE IF EXISTS cms_https_pages;
 
@@ -12157,25 +12157,25 @@ CREATE TABLE cms_images (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_images ADD FULLTEXT description (description);
+ALTER TABLE cms_images ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_images ADD FULLTEXT image_search__combined (description,title);
+ALTER TABLE cms_images ADD FULLTEXT image_search__combined (description,title);
 
-ALTER TABLE cms10_images ADD FULLTEXT title (title);
+ALTER TABLE cms_images ADD FULLTEXT title (title);
 
-ALTER TABLE cms10_images ADD INDEX category_list (cat);
+ALTER TABLE cms_images ADD INDEX category_list (cat);
 
-ALTER TABLE cms10_images ADD INDEX ftjoin_dtitle (title(250));
+ALTER TABLE cms_images ADD INDEX ftjoin_dtitle (title(250));
 
-ALTER TABLE cms10_images ADD INDEX ftjoin_idescription (description(250));
+ALTER TABLE cms_images ADD INDEX ftjoin_idescription (description(250));
 
-ALTER TABLE cms10_images ADD INDEX iadd_date (add_date);
+ALTER TABLE cms_images ADD INDEX iadd_date (add_date);
 
-ALTER TABLE cms10_images ADD INDEX image_views (image_views);
+ALTER TABLE cms_images ADD INDEX image_views (image_views);
 
-ALTER TABLE cms10_images ADD INDEX i_validated (validated);
+ALTER TABLE cms_images ADD INDEX i_validated (validated);
 
-ALTER TABLE cms10_images ADD INDEX xis (submitter);
+ALTER TABLE cms_images ADD INDEX xis (submitter);
 
 DROP TABLE IF EXISTS cms_import_id_remap;
 
@@ -12265,7 +12265,7 @@ CREATE TABLE cms_link_tracker (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_link_tracker ADD INDEX c_url (c_url(250));
+ALTER TABLE cms_link_tracker ADD INDEX c_url (c_url(250));
 
 DROP TABLE IF EXISTS cms_logged_mail_messages;
 
@@ -12294,11 +12294,11 @@ CREATE TABLE cms_logged_mail_messages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_logged_mail_messages ADD INDEX combo (m_date_and_time,m_queued);
+ALTER TABLE cms_logged_mail_messages ADD INDEX combo (m_date_and_time,m_queued);
 
-ALTER TABLE cms10_logged_mail_messages ADD INDEX queued (m_queued);
+ALTER TABLE cms_logged_mail_messages ADD INDEX queued (m_queued);
 
-ALTER TABLE cms10_logged_mail_messages ADD INDEX recentmessages (m_date_and_time);
+ALTER TABLE cms_logged_mail_messages ADD INDEX recentmessages (m_date_and_time);
 
 DROP TABLE IF EXISTS cms_match_key_messages;
 
@@ -12311,7 +12311,7 @@ CREATE TABLE cms_match_key_messages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_match_key_messages ADD FULLTEXT k_message (k_message);
+ALTER TABLE cms_match_key_messages ADD FULLTEXT k_message (k_message);
 
 DROP TABLE IF EXISTS cms_member_category_access;
 
@@ -12323,9 +12323,9 @@ CREATE TABLE cms_member_category_access (
     PRIMARY KEY (module_the_name, category_name, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_category_access ADD INDEX mcamember_id (member_id);
+ALTER TABLE cms_member_category_access ADD INDEX mcamember_id (member_id);
 
-ALTER TABLE cms10_member_category_access ADD INDEX mcaname (module_the_name,category_name);
+ALTER TABLE cms_member_category_access ADD INDEX mcaname (module_the_name,category_name);
 
 DROP TABLE IF EXISTS cms_member_page_access;
 
@@ -12337,9 +12337,9 @@ CREATE TABLE cms_member_page_access (
     PRIMARY KEY (page_name, zone_name, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_page_access ADD INDEX mzamember_id (member_id);
+ALTER TABLE cms_member_page_access ADD INDEX mzamember_id (member_id);
 
-ALTER TABLE cms10_member_page_access ADD INDEX mzaname (page_name,zone_name);
+ALTER TABLE cms_member_page_access ADD INDEX mzaname (page_name,zone_name);
 
 DROP TABLE IF EXISTS cms_member_privileges;
 
@@ -12354,9 +12354,9 @@ CREATE TABLE cms_member_privileges (
     PRIMARY KEY (member_id, privilege, the_page, module_the_name, category_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_privileges ADD INDEX member_privileges_member (member_id);
+ALTER TABLE cms_member_privileges ADD INDEX member_privileges_member (member_id);
 
-ALTER TABLE cms10_member_privileges ADD INDEX member_privileges_name (privilege,the_page,module_the_name,category_name);
+ALTER TABLE cms_member_privileges ADD INDEX member_privileges_name (privilege,the_page,module_the_name,category_name);
 
 DROP TABLE IF EXISTS cms_member_tracking;
 
@@ -12370,11 +12370,11 @@ CREATE TABLE cms_member_tracking (
     PRIMARY KEY (mt_member_id, mt_time, mt_page, mt_type, mt_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_tracking ADD INDEX mt_id (mt_page,mt_id,mt_type);
+ALTER TABLE cms_member_tracking ADD INDEX mt_id (mt_page,mt_id,mt_type);
 
-ALTER TABLE cms10_member_tracking ADD INDEX mt_page (mt_page);
+ALTER TABLE cms_member_tracking ADD INDEX mt_page (mt_page);
 
-ALTER TABLE cms10_member_tracking ADD INDEX mt_time (mt_time);
+ALTER TABLE cms_member_tracking ADD INDEX mt_time (mt_time);
 
 DROP TABLE IF EXISTS cms_member_zone_access;
 
@@ -12385,9 +12385,9 @@ CREATE TABLE cms_member_zone_access (
     PRIMARY KEY (zone_name, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_zone_access ADD INDEX mzamember_id (member_id);
+ALTER TABLE cms_member_zone_access ADD INDEX mzamember_id (member_id);
 
-ALTER TABLE cms10_member_zone_access ADD INDEX mzazone_name (zone_name);
+ALTER TABLE cms_member_zone_access ADD INDEX mzazone_name (zone_name);
 
 DROP TABLE IF EXISTS cms_menu_items;
 
@@ -12412,11 +12412,11 @@ CREATE TABLE cms_menu_items (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_menu_items ADD FULLTEXT i_caption (i_caption);
+ALTER TABLE cms_menu_items ADD FULLTEXT i_caption (i_caption);
 
-ALTER TABLE cms10_menu_items ADD FULLTEXT i_caption_long (i_caption_long);
+ALTER TABLE cms_menu_items ADD FULLTEXT i_caption_long (i_caption_long);
 
-ALTER TABLE cms10_menu_items ADD INDEX menu_extraction (i_menu);
+ALTER TABLE cms_menu_items ADD INDEX menu_extraction (i_menu);
 
 DROP TABLE IF EXISTS cms_messages_to_render;
 
@@ -12429,7 +12429,7 @@ CREATE TABLE cms_messages_to_render (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_messages_to_render ADD INDEX forsession (r_session_id);
+ALTER TABLE cms_messages_to_render ADD INDEX forsession (r_session_id);
 
 DROP TABLE IF EXISTS cms_modules;
 
@@ -12530,6 +12530,11 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('search', 'Chris Graham', 'ocProducts', '', NULL, 5);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('shopping', 'Manuprathap', 'ocProducts', '', NULL, 7);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('staff', 'Chris Graham', 'ocProducts', '', NULL, 2);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('subscriptions', 'Chris Graham', 'ocProducts', '', NULL, 5);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('tickets', 'Chris Graham', 'ocProducts', '', NULL, 6);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('users_online', 'Chris Graham', 'ocProducts', '', NULL, 2);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('warnings', 'Chris Graham', 'ocProducts', '', NULL, 2);
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('wiki', 'Chris Graham', 'ocProducts', '', NULL, 9);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forumview', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('topics', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('topicview', 'Chris Graham', 'ocProducts', '', NULL, 2);
@@ -12550,17 +12555,12 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('cms_quiz', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('cms_wiki', 'Chris Graham', 'ocProducts', '', NULL, 4);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('filedump', 'Chris Graham', 'ocProducts', '', NULL, 4);
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('subscriptions', 'Chris Graham', 'ocProducts', '', NULL, 5);
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('tickets', 'Chris Graham', 'ocProducts', '', NULL, 6);
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('users_online', 'Chris Graham', 'ocProducts', '', NULL, 2);
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('warnings', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forums', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('join', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('login', 'Chris Graham', 'ocProducts', '', NULL, 3);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('lost_password', 'Chris Graham', 'ocProducts', '', NULL, 2);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('recommend', 'Chris Graham', 'ocProducts', '', NULL, 5);
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('supermembers', 'Chris Graham', 'ocProducts', '', NULL, 2);
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('wiki', 'Chris Graham', 'ocProducts', '', NULL, 9);
 
 DROP TABLE IF EXISTS cms_news;
 
@@ -12590,31 +12590,31 @@ CREATE TABLE cms_news (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_news ADD FULLTEXT news (news);
+ALTER TABLE cms_news ADD FULLTEXT news (news);
 
-ALTER TABLE cms10_news ADD FULLTEXT news_article (news_article);
+ALTER TABLE cms_news ADD FULLTEXT news_article (news_article);
 
-ALTER TABLE cms10_news ADD FULLTEXT news_search__combined (title,news,news_article);
+ALTER TABLE cms_news ADD FULLTEXT news_search__combined (title,news,news_article);
 
-ALTER TABLE cms10_news ADD FULLTEXT title (title);
+ALTER TABLE cms_news ADD FULLTEXT title (title);
 
-ALTER TABLE cms10_news ADD INDEX findnewscat (news_category);
+ALTER TABLE cms_news ADD INDEX findnewscat (news_category);
 
-ALTER TABLE cms10_news ADD INDEX ftjoin_ititle (title(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_ititle (title(250));
 
-ALTER TABLE cms10_news ADD INDEX ftjoin_nnews (news(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_nnews (news(250));
 
-ALTER TABLE cms10_news ADD INDEX ftjoin_nnewsa (news_article(250));
+ALTER TABLE cms_news ADD INDEX ftjoin_nnewsa (news_article(250));
 
-ALTER TABLE cms10_news ADD INDEX headlines (date_and_time,id);
+ALTER TABLE cms_news ADD INDEX headlines (date_and_time,id);
 
-ALTER TABLE cms10_news ADD INDEX nes (submitter);
+ALTER TABLE cms_news ADD INDEX nes (submitter);
 
-ALTER TABLE cms10_news ADD INDEX newsauthor (author);
+ALTER TABLE cms_news ADD INDEX newsauthor (author);
 
-ALTER TABLE cms10_news ADD INDEX news_views (news_views);
+ALTER TABLE cms_news ADD INDEX news_views (news_views);
 
-ALTER TABLE cms10_news ADD INDEX nvalidated (validated);
+ALTER TABLE cms_news ADD INDEX nvalidated (validated);
 
 DROP TABLE IF EXISTS cms_news_categories;
 
@@ -12635,9 +12635,9 @@ INSERT INTO cms_news_categories (id, nc_title, nc_owner, nc_img, notes) VALUES (
 INSERT INTO cms_news_categories (id, nc_title, nc_owner, nc_img, notes) VALUES (6, 'Business', NULL, 'newscats/business', '');
 INSERT INTO cms_news_categories (id, nc_title, nc_owner, nc_img, notes) VALUES (7, 'Art', NULL, 'newscats/art', '');
 
-ALTER TABLE cms10_news_categories ADD FULLTEXT nc_title (nc_title);
+ALTER TABLE cms_news_categories ADD FULLTEXT nc_title (nc_title);
 
-ALTER TABLE cms10_news_categories ADD INDEX ncs (nc_owner);
+ALTER TABLE cms_news_categories ADD INDEX ncs (nc_owner);
 
 DROP TABLE IF EXISTS cms_news_category_entries;
 
@@ -12647,7 +12647,7 @@ CREATE TABLE cms_news_category_entries (
     PRIMARY KEY (news_entry, news_entry_category)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_news_category_entries ADD INDEX news_entry_category (news_entry_category);
+ALTER TABLE cms_news_category_entries ADD INDEX news_entry_category (news_entry_category);
 
 DROP TABLE IF EXISTS cms_news_rss_cloud;
 
@@ -12692,9 +12692,9 @@ CREATE TABLE cms_newsletter_drip_send (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_newsletter_drip_send ADD INDEX d_inject_time (d_inject_time);
+ALTER TABLE cms_newsletter_drip_send ADD INDEX d_inject_time (d_inject_time);
 
-ALTER TABLE cms10_newsletter_drip_send ADD INDEX d_to_email (d_to_email(250));
+ALTER TABLE cms_newsletter_drip_send ADD INDEX d_to_email (d_to_email(250));
 
 DROP TABLE IF EXISTS cms_newsletter_periodic;
 
@@ -12726,7 +12726,7 @@ CREATE TABLE cms_newsletter_subscribe (
     PRIMARY KEY (newsletter_id, email)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_newsletter_subscribe ADD INDEX peopletosendto (the_level);
+ALTER TABLE cms_newsletter_subscribe ADD INDEX peopletosendto (the_level);
 
 DROP TABLE IF EXISTS cms_newsletter_subscribers;
 
@@ -12743,11 +12743,11 @@ CREATE TABLE cms_newsletter_subscribers (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_newsletter_subscribers ADD INDEX code_confirm (code_confirm);
+ALTER TABLE cms_newsletter_subscribers ADD INDEX code_confirm (code_confirm);
 
-ALTER TABLE cms10_newsletter_subscribers ADD INDEX email (email(250));
+ALTER TABLE cms_newsletter_subscribers ADD INDEX email (email(250));
 
-ALTER TABLE cms10_newsletter_subscribers ADD INDEX welcomemails (join_time);
+ALTER TABLE cms_newsletter_subscribers ADD INDEX welcomemails (join_time);
 
 DROP TABLE IF EXISTS cms_newsletters;
 
@@ -12760,9 +12760,9 @@ CREATE TABLE cms_newsletters (
 
 INSERT INTO cms_newsletters (id, title, description) VALUES (1, 'General', 'General messages will be sent out in this newsletter.');
 
-ALTER TABLE cms10_newsletters ADD FULLTEXT description (description);
+ALTER TABLE cms_newsletters ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_newsletters ADD FULLTEXT title (title);
+ALTER TABLE cms_newsletters ADD FULLTEXT title (title);
 
 DROP TABLE IF EXISTS cms_notification_lockdown;
 
@@ -12783,11 +12783,11 @@ CREATE TABLE cms_notifications_enabled (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_notifications_enabled ADD INDEX l_code_category (l_code_category(250));
+ALTER TABLE cms_notifications_enabled ADD INDEX l_code_category (l_code_category(250));
 
-ALTER TABLE cms10_notifications_enabled ADD INDEX l_member_id (l_member_id,l_notification_code);
+ALTER TABLE cms_notifications_enabled ADD INDEX l_member_id (l_member_id,l_notification_code);
 
-ALTER TABLE cms10_notifications_enabled ADD INDEX l_notification_code (l_notification_code);
+ALTER TABLE cms_notifications_enabled ADD INDEX l_notification_code (l_notification_code);
 
 DROP TABLE IF EXISTS cms_poll;
 
@@ -12850,51 +12850,51 @@ CREATE TABLE cms_poll (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_poll ADD FULLTEXT option1 (option1);
+ALTER TABLE cms_poll ADD FULLTEXT option1 (option1);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option10 (option10);
+ALTER TABLE cms_poll ADD FULLTEXT option10 (option10);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option2 (option2);
+ALTER TABLE cms_poll ADD FULLTEXT option2 (option2);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option3 (option3);
+ALTER TABLE cms_poll ADD FULLTEXT option3 (option3);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option4 (option4);
+ALTER TABLE cms_poll ADD FULLTEXT option4 (option4);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option5 (option5);
+ALTER TABLE cms_poll ADD FULLTEXT option5 (option5);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option6 (option6);
+ALTER TABLE cms_poll ADD FULLTEXT option6 (option6);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option7 (option7);
+ALTER TABLE cms_poll ADD FULLTEXT option7 (option7);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option8 (option8);
+ALTER TABLE cms_poll ADD FULLTEXT option8 (option8);
 
-ALTER TABLE cms10_poll ADD FULLTEXT option9 (option9);
+ALTER TABLE cms_poll ADD FULLTEXT option9 (option9);
 
-ALTER TABLE cms10_poll ADD FULLTEXT poll_search__combined (question,option1,option2,option3,option4,option5);
+ALTER TABLE cms_poll ADD FULLTEXT poll_search__combined (question,option1,option2,option3,option4,option5);
 
-ALTER TABLE cms10_poll ADD FULLTEXT question (question);
+ALTER TABLE cms_poll ADD FULLTEXT question (question);
 
-ALTER TABLE cms10_poll ADD INDEX date_and_time (date_and_time);
+ALTER TABLE cms_poll ADD INDEX date_and_time (date_and_time);
 
-ALTER TABLE cms10_poll ADD INDEX ftjoin_po1 (option1(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po1 (option1(250));
 
-ALTER TABLE cms10_poll ADD INDEX ftjoin_po2 (option2(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po2 (option2(250));
 
-ALTER TABLE cms10_poll ADD INDEX ftjoin_po3 (option3(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po3 (option3(250));
 
-ALTER TABLE cms10_poll ADD INDEX ftjoin_po4 (option4(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po4 (option4(250));
 
-ALTER TABLE cms10_poll ADD INDEX ftjoin_po5 (option5(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_po5 (option5(250));
 
-ALTER TABLE cms10_poll ADD INDEX ftjoin_pq (question(250));
+ALTER TABLE cms_poll ADD INDEX ftjoin_pq (question(250));
 
-ALTER TABLE cms10_poll ADD INDEX get_current (is_current);
+ALTER TABLE cms_poll ADD INDEX get_current (is_current);
 
-ALTER TABLE cms10_poll ADD INDEX padd_time (add_time);
+ALTER TABLE cms_poll ADD INDEX padd_time (add_time);
 
-ALTER TABLE cms10_poll ADD INDEX poll_views (poll_views);
+ALTER TABLE cms_poll ADD INDEX poll_views (poll_views);
 
-ALTER TABLE cms10_poll ADD INDEX ps (submitter);
+ALTER TABLE cms_poll ADD INDEX ps (submitter);
 
 DROP TABLE IF EXISTS cms_poll_votes;
 
@@ -12907,11 +12907,11 @@ CREATE TABLE cms_poll_votes (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_poll_votes ADD INDEX v_voter_id (v_voter_id);
+ALTER TABLE cms_poll_votes ADD INDEX v_voter_id (v_voter_id);
 
-ALTER TABLE cms10_poll_votes ADD INDEX v_voter_ip (v_voter_ip);
+ALTER TABLE cms_poll_votes ADD INDEX v_voter_ip (v_voter_ip);
 
-ALTER TABLE cms10_poll_votes ADD INDEX v_vote_for (v_vote_for);
+ALTER TABLE cms_poll_votes ADD INDEX v_vote_for (v_vote_for);
 
 DROP TABLE IF EXISTS cms_post_tokens;
 
@@ -12925,7 +12925,7 @@ CREATE TABLE cms_post_tokens (
     PRIMARY KEY (token)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_post_tokens ADD INDEX generation_time (generation_time);
+ALTER TABLE cms_post_tokens ADD INDEX generation_time (generation_time);
 
 DROP TABLE IF EXISTS cms_prices;
 
@@ -13117,12 +13117,12 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARC
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_past_search', 0);
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_keyword_comcode_page', 0);
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_title_comcode_page', 0);
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_anything_filedump', 0);
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_filedump', 1);
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'delete_anything_filedump', 0);
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUPPORT_TICKETS', 'view_others_tickets', 0);
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUPPORT_TICKETS', 'support_operator', 0);
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('WIKI', 'wiki_manage_tree', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_anything_filedump', 0);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_filedump', 1);
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'delete_anything_filedump', 0);
 
 DROP TABLE IF EXISTS cms_pstore_customs;
 
@@ -13140,13 +13140,13 @@ CREATE TABLE cms_pstore_customs (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_pstore_customs ADD FULLTEXT c_description (c_description);
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_description (c_description);
 
-ALTER TABLE cms10_pstore_customs ADD FULLTEXT c_mail_body (c_mail_body);
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_mail_body (c_mail_body);
 
-ALTER TABLE cms10_pstore_customs ADD FULLTEXT c_mail_subject (c_mail_subject);
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_mail_subject (c_mail_subject);
 
-ALTER TABLE cms10_pstore_customs ADD FULLTEXT c_title (c_title);
+ALTER TABLE cms_pstore_customs ADD FULLTEXT c_title (c_title);
 
 DROP TABLE IF EXISTS cms_pstore_permissions;
 
@@ -13170,13 +13170,13 @@ CREATE TABLE cms_pstore_permissions (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_pstore_permissions ADD FULLTEXT p_description (p_description);
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_description (p_description);
 
-ALTER TABLE cms10_pstore_permissions ADD FULLTEXT p_mail_body (p_mail_body);
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_mail_body (p_mail_body);
 
-ALTER TABLE cms10_pstore_permissions ADD FULLTEXT p_mail_subject (p_mail_subject);
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_mail_subject (p_mail_subject);
 
-ALTER TABLE cms10_pstore_permissions ADD FULLTEXT p_title (p_title);
+ALTER TABLE cms_pstore_permissions ADD FULLTEXT p_title (p_title);
 
 DROP TABLE IF EXISTS cms_quiz_entries;
 
@@ -13223,9 +13223,9 @@ CREATE TABLE cms_quiz_question_answers (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_quiz_question_answers ADD FULLTEXT q_answer_text (q_answer_text);
+ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_answer_text (q_answer_text);
 
-ALTER TABLE cms10_quiz_question_answers ADD FULLTEXT q_explanation (q_explanation);
+ALTER TABLE cms_quiz_question_answers ADD FULLTEXT q_explanation (q_explanation);
 
 DROP TABLE IF EXISTS cms_quiz_questions;
 
@@ -13245,9 +13245,9 @@ CREATE TABLE cms_quiz_questions (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_quiz_questions ADD FULLTEXT q_question_extra_text (q_question_extra_text);
+ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_extra_text (q_question_extra_text);
 
-ALTER TABLE cms10_quiz_questions ADD FULLTEXT q_question_text (q_question_text);
+ALTER TABLE cms_quiz_questions ADD FULLTEXT q_question_text (q_question_text);
 
 DROP TABLE IF EXISTS cms_quiz_winner;
 
@@ -13291,19 +13291,19 @@ CREATE TABLE cms_quizzes (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_quizzes ADD FULLTEXT quiz_search__combined (q_start_text,q_name);
+ALTER TABLE cms_quizzes ADD FULLTEXT quiz_search__combined (q_start_text,q_name);
 
-ALTER TABLE cms10_quizzes ADD FULLTEXT q_end_text (q_end_text);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text (q_end_text);
 
-ALTER TABLE cms10_quizzes ADD FULLTEXT q_end_text_fail (q_end_text_fail);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_end_text_fail (q_end_text_fail);
 
-ALTER TABLE cms10_quizzes ADD FULLTEXT q_name (q_name);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_name (q_name);
 
-ALTER TABLE cms10_quizzes ADD FULLTEXT q_start_text (q_start_text);
+ALTER TABLE cms_quizzes ADD FULLTEXT q_start_text (q_start_text);
 
-ALTER TABLE cms10_quizzes ADD INDEX ftjoin_qstarttext (q_start_text(250));
+ALTER TABLE cms_quizzes ADD INDEX ftjoin_qstarttext (q_start_text(250));
 
-ALTER TABLE cms10_quizzes ADD INDEX q_validated (q_validated);
+ALTER TABLE cms_quizzes ADD INDEX q_validated (q_validated);
 
 DROP TABLE IF EXISTS cms_rating;
 
@@ -13318,9 +13318,9 @@ CREATE TABLE cms_rating (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_rating ADD INDEX alt_key (rating_for_type,rating_for_id);
+ALTER TABLE cms_rating ADD INDEX alt_key (rating_for_type,rating_for_id);
 
-ALTER TABLE cms10_rating ADD INDEX rating_for_id (rating_for_id);
+ALTER TABLE cms_rating ADD INDEX rating_for_id (rating_for_id);
 
 DROP TABLE IF EXISTS cms_redirects;
 
@@ -13357,7 +13357,7 @@ CREATE TABLE cms_review_supplement (
     PRIMARY KEY (r_post_id, r_rating_type)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_review_supplement ADD INDEX rating_for_id (r_rating_for_id);
+ALTER TABLE cms_review_supplement ADD INDEX rating_for_id (r_rating_for_id);
 
 DROP TABLE IF EXISTS cms_revisions;
 
@@ -13377,13 +13377,13 @@ CREATE TABLE cms_revisions (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_revisions ADD INDEX actionlog_link (r_actionlog_id);
+ALTER TABLE cms_revisions ADD INDEX actionlog_link (r_actionlog_id);
 
-ALTER TABLE cms10_revisions ADD INDEX lookup_by_cat (r_resource_type,r_category_id);
+ALTER TABLE cms_revisions ADD INDEX lookup_by_cat (r_resource_type,r_category_id);
 
-ALTER TABLE cms10_revisions ADD INDEX lookup_by_id (r_resource_type,r_resource_id);
+ALTER TABLE cms_revisions ADD INDEX lookup_by_id (r_resource_type,r_resource_id);
 
-ALTER TABLE cms10_revisions ADD INDEX moderatorlog_link (r_moderatorlog_id);
+ALTER TABLE cms_revisions ADD INDEX moderatorlog_link (r_moderatorlog_id);
 
 DROP TABLE IF EXISTS cms_sales;
 
@@ -13409,9 +13409,9 @@ CREATE TABLE cms_searches_logged (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_searches_logged ADD FULLTEXT past_search_ft (s_primary);
+ALTER TABLE cms_searches_logged ADD FULLTEXT past_search_ft (s_primary);
 
-ALTER TABLE cms10_searches_logged ADD INDEX past_search (s_primary(250));
+ALTER TABLE cms_searches_logged ADD INDEX past_search (s_primary(250));
 
 DROP TABLE IF EXISTS cms_searches_saved;
 
@@ -13437,11 +13437,11 @@ CREATE TABLE cms_seo_meta (
 
 INSERT INTO cms_seo_meta (id, meta_for_type, meta_for_id, meta_description) VALUES (1, 'gallery', 'root', '');
 
-ALTER TABLE cms10_seo_meta ADD FULLTEXT meta_description (meta_description);
+ALTER TABLE cms_seo_meta ADD FULLTEXT meta_description (meta_description);
 
-ALTER TABLE cms10_seo_meta ADD INDEX alt_key (meta_for_type,meta_for_id);
+ALTER TABLE cms_seo_meta ADD INDEX alt_key (meta_for_type,meta_for_id);
 
-ALTER TABLE cms10_seo_meta ADD INDEX ftjoin_dmeta_description (meta_description(250));
+ALTER TABLE cms_seo_meta ADD INDEX ftjoin_dmeta_description (meta_description(250));
 
 DROP TABLE IF EXISTS cms_seo_meta_keywords;
 
@@ -13453,11 +13453,11 @@ CREATE TABLE cms_seo_meta_keywords (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_seo_meta_keywords ADD FULLTEXT meta_keyword (meta_keyword);
+ALTER TABLE cms_seo_meta_keywords ADD FULLTEXT meta_keyword (meta_keyword);
 
-ALTER TABLE cms10_seo_meta_keywords ADD INDEX ftjoin_dmeta_keywords (meta_keyword(250));
+ALTER TABLE cms_seo_meta_keywords ADD INDEX ftjoin_dmeta_keywords (meta_keyword(250));
 
-ALTER TABLE cms10_seo_meta_keywords ADD INDEX keywords_alt_key (meta_for_type,meta_for_id);
+ALTER TABLE cms_seo_meta_keywords ADD INDEX keywords_alt_key (meta_for_type,meta_for_id);
 
 DROP TABLE IF EXISTS cms_sessions;
 
@@ -13477,11 +13477,11 @@ CREATE TABLE cms_sessions (
     PRIMARY KEY (the_session)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_sessions ADD INDEX delete_old (last_activity);
+ALTER TABLE cms_sessions ADD INDEX delete_old (last_activity);
 
-ALTER TABLE cms10_sessions ADD INDEX member_id (member_id);
+ALTER TABLE cms_sessions ADD INDEX member_id (member_id);
 
-ALTER TABLE cms10_sessions ADD INDEX userat (the_zone,the_page,the_id);
+ALTER TABLE cms_sessions ADD INDEX userat (the_zone,the_page,the_id);
 
 DROP TABLE IF EXISTS cms_shopping_cart;
 
@@ -13502,11 +13502,11 @@ CREATE TABLE cms_shopping_cart (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_shopping_cart ADD INDEX ordered_by (ordered_by);
+ALTER TABLE cms_shopping_cart ADD INDEX ordered_by (ordered_by);
 
-ALTER TABLE cms10_shopping_cart ADD INDEX product_id (product_id);
+ALTER TABLE cms_shopping_cart ADD INDEX product_id (product_id);
 
-ALTER TABLE cms10_shopping_cart ADD INDEX session_id (session_id);
+ALTER TABLE cms_shopping_cart ADD INDEX session_id (session_id);
 
 DROP TABLE IF EXISTS cms_shopping_logging;
 
@@ -13520,7 +13520,7 @@ CREATE TABLE cms_shopping_logging (
     PRIMARY KEY (id, e_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_shopping_logging ADD INDEX calculate_bandwidth (date_and_time);
+ALTER TABLE cms_shopping_logging ADD INDEX calculate_bandwidth (date_and_time);
 
 DROP TABLE IF EXISTS cms_shopping_order;
 
@@ -13538,13 +13538,13 @@ CREATE TABLE cms_shopping_order (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_shopping_order ADD INDEX finddispatchable (order_status);
+ALTER TABLE cms_shopping_order ADD INDEX finddispatchable (order_status);
 
-ALTER TABLE cms10_shopping_order ADD INDEX soadd_date (add_date);
+ALTER TABLE cms_shopping_order ADD INDEX soadd_date (add_date);
 
-ALTER TABLE cms10_shopping_order ADD INDEX soc_member (c_member);
+ALTER TABLE cms_shopping_order ADD INDEX soc_member (c_member);
 
-ALTER TABLE cms10_shopping_order ADD INDEX sosession_id (session_id);
+ALTER TABLE cms_shopping_order ADD INDEX sosession_id (session_id);
 
 DROP TABLE IF EXISTS cms_shopping_order_addresses;
 
@@ -13564,7 +13564,7 @@ CREATE TABLE cms_shopping_order_addresses (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_shopping_order_addresses ADD INDEX order_id (order_id);
+ALTER TABLE cms_shopping_order_addresses ADD INDEX order_id (order_id);
 
 DROP TABLE IF EXISTS cms_shopping_order_details;
 
@@ -13582,9 +13582,9 @@ CREATE TABLE cms_shopping_order_details (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_shopping_order_details ADD INDEX order_id (order_id);
+ALTER TABLE cms_shopping_order_details ADD INDEX order_id (order_id);
 
-ALTER TABLE cms10_shopping_order_details ADD INDEX p_id (p_id);
+ALTER TABLE cms_shopping_order_details ADD INDEX p_id (p_id);
 
 DROP TABLE IF EXISTS cms_sitemap_cache;
 
@@ -13601,11 +13601,11 @@ CREATE TABLE cms_sitemap_cache (
     PRIMARY KEY (page_link)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_sitemap_cache ADD INDEX is_deleted (is_deleted);
+ALTER TABLE cms_sitemap_cache ADD INDEX is_deleted (is_deleted);
 
-ALTER TABLE cms10_sitemap_cache ADD INDEX last_updated (last_updated);
+ALTER TABLE cms_sitemap_cache ADD INDEX last_updated (last_updated);
 
-ALTER TABLE cms10_sitemap_cache ADD INDEX set_number (set_number,last_updated);
+ALTER TABLE cms_sitemap_cache ADD INDEX set_number (set_number,last_updated);
 
 DROP TABLE IF EXISTS cms_sms_log;
 
@@ -13617,9 +13617,9 @@ CREATE TABLE cms_sms_log (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_sms_log ADD INDEX sms_log_for (s_member_id,s_time);
+ALTER TABLE cms_sms_log ADD INDEX sms_log_for (s_member_id,s_time);
 
-ALTER TABLE cms10_sms_log ADD INDEX sms_trigger_ip (s_trigger_ip);
+ALTER TABLE cms_sms_log ADD INDEX sms_trigger_ip (s_trigger_ip);
 
 DROP TABLE IF EXISTS cms_staff_checklist_cus_tasks;
 
@@ -13633,17 +13633,17 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/home[/url]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1541729213, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1541729213, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/home[/url]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1546387693, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1546387693, 0, '', NULL);
 
 DROP TABLE IF EXISTS cms_staff_links;
 
@@ -13717,25 +13717,25 @@ CREATE TABLE cms_stats (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_stats ADD INDEX browser (browser(250));
+ALTER TABLE cms_stats ADD INDEX browser (browser(250));
 
-ALTER TABLE cms10_stats ADD INDEX date_and_time (date_and_time);
+ALTER TABLE cms_stats ADD INDEX date_and_time (date_and_time);
 
-ALTER TABLE cms10_stats ADD INDEX member_track_1 (member_id);
+ALTER TABLE cms_stats ADD INDEX member_track_1 (member_id);
 
-ALTER TABLE cms10_stats ADD INDEX member_track_2 (ip);
+ALTER TABLE cms_stats ADD INDEX member_track_2 (ip);
 
-ALTER TABLE cms10_stats ADD INDEX member_track_3 (member_id,date_and_time);
+ALTER TABLE cms_stats ADD INDEX member_track_3 (member_id,date_and_time);
 
-ALTER TABLE cms10_stats ADD INDEX member_track_4 (session_id);
+ALTER TABLE cms_stats ADD INDEX member_track_4 (session_id);
 
-ALTER TABLE cms10_stats ADD INDEX milliseconds (milliseconds);
+ALTER TABLE cms_stats ADD INDEX milliseconds (milliseconds);
 
-ALTER TABLE cms10_stats ADD INDEX operating_system (operating_system(250));
+ALTER TABLE cms_stats ADD INDEX operating_system (operating_system(250));
 
-ALTER TABLE cms10_stats ADD INDEX pages (the_page(250));
+ALTER TABLE cms_stats ADD INDEX pages (the_page(250));
 
-ALTER TABLE cms10_stats ADD INDEX referer (referer(250));
+ALTER TABLE cms_stats ADD INDEX referer (referer(250));
 
 DROP TABLE IF EXISTS cms_subscriptions;
 
@@ -13789,7 +13789,7 @@ CREATE TABLE cms_theme_images (
     PRIMARY KEY (id, theme, lang)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_theme_images ADD INDEX theme (theme,lang);
+ALTER TABLE cms_theme_images ADD INDEX theme (theme,lang);
 
 DROP TABLE IF EXISTS cms_ticket_extra_access;
 
@@ -13821,7 +13821,7 @@ CREATE TABLE cms_ticket_types (
 INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (1, 'Other', 0, 0, NULL);
 INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (2, 'Complaint', 0, 0, NULL);
 
-ALTER TABLE cms10_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name);
+ALTER TABLE cms_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name);
 
 DROP TABLE IF EXISTS cms_tickets;
 
@@ -13848,11 +13848,11 @@ CREATE TABLE cms_trackbacks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_trackbacks ADD INDEX trackback_for_id (trackback_for_id);
+ALTER TABLE cms_trackbacks ADD INDEX trackback_for_id (trackback_for_id);
 
-ALTER TABLE cms10_trackbacks ADD INDEX trackback_for_type (trackback_for_type);
+ALTER TABLE cms_trackbacks ADD INDEX trackback_for_type (trackback_for_type);
 
-ALTER TABLE cms10_trackbacks ADD INDEX trackback_time (trackback_time);
+ALTER TABLE cms_trackbacks ADD INDEX trackback_time (trackback_time);
 
 DROP TABLE IF EXISTS cms_trans_expecting;
 
@@ -13902,13 +13902,13 @@ CREATE TABLE cms_translate (
     PRIMARY KEY (id, language)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_translate ADD FULLTEXT tsearch (text_original);
+ALTER TABLE cms_translate ADD FULLTEXT tsearch (text_original);
 
-ALTER TABLE cms10_translate ADD INDEX decache (text_parsed(2));
+ALTER TABLE cms_translate ADD INDEX decache (text_parsed(2));
 
-ALTER TABLE cms10_translate ADD INDEX equiv_lang (text_original(4));
+ALTER TABLE cms_translate ADD INDEX equiv_lang (text_original(4));
 
-ALTER TABLE cms10_translate ADD INDEX importance_level (importance_level);
+ALTER TABLE cms_translate ADD INDEX importance_level (importance_level);
 
 DROP TABLE IF EXISTS cms_tutorial_links;
 
@@ -13940,11 +13940,11 @@ CREATE TABLE cms_url_id_monikers (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_url_id_monikers ADD INDEX uim_moniker (m_moniker(250));
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_moniker (m_moniker(250));
 
-ALTER TABLE cms10_url_id_monikers ADD INDEX uim_monrev (m_moniker_reversed(250));
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_monrev (m_moniker_reversed(250));
 
-ALTER TABLE cms10_url_id_monikers ADD INDEX uim_page_link (m_resource_page,m_resource_type,m_resource_id);
+ALTER TABLE cms_url_id_monikers ADD INDEX uim_page_link (m_resource_page,m_resource_type,m_resource_id);
 
 DROP TABLE IF EXISTS cms_url_title_cache;
 
@@ -13962,7 +13962,7 @@ CREATE TABLE cms_url_title_cache (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_url_title_cache ADD INDEX t_url (t_url(250));
+ALTER TABLE cms_url_title_cache ADD INDEX t_url (t_url(250));
 
 DROP TABLE IF EXISTS cms_urls_checked;
 
@@ -13974,7 +13974,7 @@ CREATE TABLE cms_urls_checked (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_urls_checked ADD INDEX url (url(200));
+ALTER TABLE cms_urls_checked ADD INDEX url (url(200));
 
 DROP TABLE IF EXISTS cms_usersonline_track;
 
@@ -13984,7 +13984,7 @@ CREATE TABLE cms_usersonline_track (
     PRIMARY KEY (date_and_time)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_usersonline_track ADD INDEX peak_track (peak);
+ALTER TABLE cms_usersonline_track ADD INDEX peak_track (peak);
 
 DROP TABLE IF EXISTS cms_usersubmitban_member;
 
@@ -14002,13 +14002,13 @@ CREATE TABLE cms_values (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1541729189);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1541729190);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1541729190);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1541729190);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1541729190);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1546387679);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1546387679);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1546387679);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1546387679);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1546387679);
 
-ALTER TABLE cms10_values ADD INDEX date_and_time (date_and_time);
+ALTER TABLE cms_values ADD INDEX date_and_time (date_and_time);
 
 DROP TABLE IF EXISTS cms_values_elective;
 
@@ -14019,7 +14019,7 @@ CREATE TABLE cms_values_elective (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1541729191);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1546387680);
 
 DROP TABLE IF EXISTS cms_video_transcoding;
 
@@ -14038,7 +14038,7 @@ CREATE TABLE cms_video_transcoding (
     PRIMARY KEY (t_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_video_transcoding ADD INDEX t_local_id (t_local_id);
+ALTER TABLE cms_video_transcoding ADD INDEX t_local_id (t_local_id);
 
 DROP TABLE IF EXISTS cms_videos;
 
@@ -14066,25 +14066,25 @@ CREATE TABLE cms_videos (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_videos ADD FULLTEXT description (description);
+ALTER TABLE cms_videos ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_videos ADD FULLTEXT title (title);
+ALTER TABLE cms_videos ADD FULLTEXT title (title);
 
-ALTER TABLE cms10_videos ADD FULLTEXT video_search__combined (description,title);
+ALTER TABLE cms_videos ADD FULLTEXT video_search__combined (description,title);
 
-ALTER TABLE cms10_videos ADD INDEX category_list (cat);
+ALTER TABLE cms_videos ADD INDEX category_list (cat);
 
-ALTER TABLE cms10_videos ADD INDEX ftjoin_dtitle (title(250));
+ALTER TABLE cms_videos ADD INDEX ftjoin_dtitle (title(250));
 
-ALTER TABLE cms10_videos ADD INDEX ftjoin_vdescription (description(250));
+ALTER TABLE cms_videos ADD INDEX ftjoin_vdescription (description(250));
 
-ALTER TABLE cms10_videos ADD INDEX vadd_date (add_date);
+ALTER TABLE cms_videos ADD INDEX vadd_date (add_date);
 
-ALTER TABLE cms10_videos ADD INDEX video_views (video_views);
+ALTER TABLE cms_videos ADD INDEX video_views (video_views);
 
-ALTER TABLE cms10_videos ADD INDEX vs (submitter);
+ALTER TABLE cms_videos ADD INDEX vs (submitter);
 
-ALTER TABLE cms10_videos ADD INDEX v_validated (validated);
+ALTER TABLE cms_videos ADD INDEX v_validated (validated);
 
 DROP TABLE IF EXISTS cms_webstandards_checked_once;
 
@@ -14120,24 +14120,24 @@ CREATE TABLE cms_wiki_pages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1541729213, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1546387693, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_wiki_pages ADD FULLTEXT description (description);
+ALTER TABLE cms_wiki_pages ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_wiki_pages ADD FULLTEXT title (title);
+ALTER TABLE cms_wiki_pages ADD FULLTEXT title (title);
 
-ALTER TABLE cms10_wiki_pages ADD FULLTEXT wiki_search__combined (title,description);
+ALTER TABLE cms_wiki_pages ADD FULLTEXT wiki_search__combined (title,description);
 
-ALTER TABLE cms10_wiki_pages ADD INDEX ftjoin_spd (description(250));
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spd (description(250));
 
-ALTER TABLE cms10_wiki_pages ADD INDEX ftjoin_spt (title(250));
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spt (title(250));
 
-ALTER TABLE cms10_wiki_pages ADD INDEX sadd_date (add_date);
+ALTER TABLE cms_wiki_pages ADD INDEX sadd_date (add_date);
 
-ALTER TABLE cms10_wiki_pages ADD INDEX sps (submitter);
+ALTER TABLE cms_wiki_pages ADD INDEX sps (submitter);
 
-ALTER TABLE cms10_wiki_pages ADD INDEX wiki_views (wiki_views);
+ALTER TABLE cms_wiki_pages ADD INDEX wiki_views (wiki_views);
 
 DROP TABLE IF EXISTS cms_wiki_posts;
 
@@ -14155,19 +14155,19 @@ CREATE TABLE cms_wiki_posts (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_wiki_posts ADD FULLTEXT the_message (the_message);
+ALTER TABLE cms_wiki_posts ADD FULLTEXT the_message (the_message);
 
-ALTER TABLE cms10_wiki_posts ADD INDEX cdate_and_time (date_and_time);
+ALTER TABLE cms_wiki_posts ADD INDEX cdate_and_time (date_and_time);
 
-ALTER TABLE cms10_wiki_posts ADD INDEX ftjoin_spm (the_message(250));
+ALTER TABLE cms_wiki_posts ADD INDEX ftjoin_spm (the_message(250));
 
-ALTER TABLE cms10_wiki_posts ADD INDEX posts_on_page (page_id);
+ALTER TABLE cms_wiki_posts ADD INDEX posts_on_page (page_id);
 
-ALTER TABLE cms10_wiki_posts ADD INDEX spos (member_id);
+ALTER TABLE cms_wiki_posts ADD INDEX spos (member_id);
 
-ALTER TABLE cms10_wiki_posts ADD INDEX svalidated (validated);
+ALTER TABLE cms_wiki_posts ADD INDEX svalidated (validated);
 
-ALTER TABLE cms10_wiki_posts ADD INDEX wiki_views (wiki_views);
+ALTER TABLE cms_wiki_posts ADD INDEX wiki_views (wiki_views);
 
 DROP TABLE IF EXISTS cms_wordfilter;
 
@@ -14241,7 +14241,7 @@ INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_tex
 INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('docs', 'Tutorials', 'tutorials', '', '-1', 0);
 INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_text, zone_theme, zone_require_session) VALUES ('forum', 'Forums', 'forumview', 'Forum', '-1', 0);
 
-ALTER TABLE cms10_zones ADD FULLTEXT zone_header_text (zone_header_text);
+ALTER TABLE cms_zones ADD FULLTEXT zone_header_text (zone_header_text);
 
-ALTER TABLE cms10_zones ADD FULLTEXT zone_title (zone_title);
+ALTER TABLE cms_zones ADD FULLTEXT zone_title (zone_title);
 

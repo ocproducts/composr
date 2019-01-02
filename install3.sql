@@ -82,40 +82,40 @@ INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_
 
 A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.
 
-Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1541729190, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:7:{i:0;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:1;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:2;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:3;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:4;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:5;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:6;a:5:{i:0;s:39:\\\"string_attach_5be4eba68ac0e2.84929550_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:7:{s:39:\\\"string_attach_5be4eba68ac0e2.84929550_1\\\";s:121:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_2\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_2\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_3\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_3\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_4\\\";s:210:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_4\']=\\\"echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_5\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_5\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_6\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_6\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5be4eba68ac0e2.84929550_7\\\";s:329:\\\"\\$tpl_funcs[\'string_attach_5be4eba68ac0e2.84929550_7\']=\\\"echo \\\\\\\"Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");
+Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1546387679, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:7:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:1;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:2;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:3;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:4;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:5;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:6;a:5:{i:0;s:39:\\\"string_attach_5c2c00dfa89351.44545981_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:7:{s:39:\\\"string_attach_5c2c00dfa89351.44545981_1\\\";s:121:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_2\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_2\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_3\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_3\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_4\\\";s:210:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_4\']=\\\"echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_5\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_5\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_6\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_6\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5c2c00dfa89351.44545981_7\\\";s:329:\\\"\\$tpl_funcs[\'string_attach_5c2c00dfa89351.44545981_7\']=\\\"echo \\\\\\\"Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_f_posts ADD FULLTEXT posts_search__combined (p_post,p_title);
+ALTER TABLE cms_f_posts ADD FULLTEXT posts_search__combined (p_post,p_title);
 
-ALTER TABLE cms10_f_posts ADD FULLTEXT p_post (p_post);
+ALTER TABLE cms_f_posts ADD FULLTEXT p_post (p_post);
 
-ALTER TABLE cms10_f_posts ADD FULLTEXT p_title (p_title);
+ALTER TABLE cms_f_posts ADD FULLTEXT p_title (p_title);
 
-ALTER TABLE cms10_f_posts ADD INDEX deletebyip (p_ip_address);
+ALTER TABLE cms_f_posts ADD INDEX deletebyip (p_ip_address);
 
-ALTER TABLE cms10_f_posts ADD INDEX find_pp (p_intended_solely_for);
+ALTER TABLE cms_f_posts ADD INDEX find_pp (p_intended_solely_for);
 
-ALTER TABLE cms10_f_posts ADD INDEX in_topic (p_topic_id,p_time,id);
+ALTER TABLE cms_f_posts ADD INDEX in_topic (p_topic_id,p_time,id);
 
-ALTER TABLE cms10_f_posts ADD INDEX in_topic_change_order (p_topic_id,p_last_edit_time,p_time,id);
+ALTER TABLE cms_f_posts ADD INDEX in_topic_change_order (p_topic_id,p_last_edit_time,p_time,id);
 
-ALTER TABLE cms10_f_posts ADD INDEX postsinforum (p_cache_forum_id);
+ALTER TABLE cms_f_posts ADD INDEX postsinforum (p_cache_forum_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_by (p_poster,p_time);
+ALTER TABLE cms_f_posts ADD INDEX posts_by (p_poster,p_time);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_by_in_forum (p_poster,p_cache_forum_id);
+ALTER TABLE cms_f_posts ADD INDEX posts_by_in_forum (p_poster,p_cache_forum_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_by_in_topic (p_poster,p_topic_id);
+ALTER TABLE cms_f_posts ADD INDEX posts_by_in_topic (p_poster,p_topic_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX posts_since (p_time,p_cache_forum_id);
+ALTER TABLE cms_f_posts ADD INDEX posts_since (p_time,p_cache_forum_id);
 
-ALTER TABLE cms10_f_posts ADD INDEX post_order_time (p_time,id);
+ALTER TABLE cms_f_posts ADD INDEX post_order_time (p_time,id);
 
-ALTER TABLE cms10_f_posts ADD INDEX p_last_edit_time (p_last_edit_time);
+ALTER TABLE cms_f_posts ADD INDEX p_last_edit_time (p_last_edit_time);
 
-ALTER TABLE cms10_f_posts ADD INDEX p_validated (p_validated);
+ALTER TABLE cms_f_posts ADD INDEX p_validated (p_validated);
 
-ALTER TABLE cms10_f_posts ADD INDEX search_join (p_post(250));
+ALTER TABLE cms_f_posts ADD INDEX search_join (p_post(250));
 
 DROP TABLE IF EXISTS cms_f_read_logs;
 
@@ -126,7 +126,7 @@ CREATE TABLE cms_f_read_logs (
     PRIMARY KEY (l_member_id, l_topic_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_read_logs ADD INDEX erase_old_read_logs (l_time);
+ALTER TABLE cms_f_read_logs ADD INDEX erase_old_read_logs (l_time);
 
 DROP TABLE IF EXISTS cms_f_saved_warnings;
 
@@ -181,51 +181,51 @@ CREATE TABLE cms_f_topics (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1541729190, 'Welcome to the forums', '', 'System', 1, 1, 1541729190, 'Welcome to the forums', 'System', 1, 1, '', 1);
+INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1546387679, 'Welcome to the forums', '', 'System', 1, 1, 1546387679, 'Welcome to the forums', 'System', 1, 1, '', 1);
 
-ALTER TABLE cms10_f_topics ADD FULLTEXT t_cache_first_post (t_cache_first_post);
+ALTER TABLE cms_f_topics ADD FULLTEXT t_cache_first_post (t_cache_first_post);
 
-ALTER TABLE cms10_f_topics ADD FULLTEXT t_description (t_description);
+ALTER TABLE cms_f_topics ADD FULLTEXT t_description (t_description);
 
-ALTER TABLE cms10_f_topics ADD INDEX descriptionsearch (t_description(250));
+ALTER TABLE cms_f_topics ADD INDEX descriptionsearch (t_description(250));
 
-ALTER TABLE cms10_f_topics ADD INDEX forumlayer (t_cache_first_title(250));
+ALTER TABLE cms_f_topics ADD INDEX forumlayer (t_cache_first_title(250));
 
-ALTER TABLE cms10_f_topics ADD INDEX in_forum (t_forum_id);
+ALTER TABLE cms_f_topics ADD INDEX in_forum (t_forum_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX ownedtopics (t_cache_first_member_id);
+ALTER TABLE cms_f_topics ADD INDEX ownedtopics (t_cache_first_member_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order (t_cascading,t_pinned,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order (t_cascading,t_pinned,t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_2 (t_forum_id,t_cascading,t_pinned,t_sunk,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_2 (t_forum_id,t_cascading,t_pinned,t_sunk,t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_3 (t_forum_id,t_cascading,t_pinned,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_3 (t_forum_id,t_cascading,t_pinned,t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_time (t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_time (t_cache_last_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX topic_order_time_2 (t_cache_first_time);
+ALTER TABLE cms_f_topics ADD INDEX topic_order_time_2 (t_cache_first_time);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_first_post_id (t_cache_first_post_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_first_post_id (t_cache_first_post_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_last_member_id (t_cache_last_member_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_last_member_id (t_cache_last_member_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_last_post_id (t_cache_last_post_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_last_post_id (t_cache_last_post_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cache_num_posts (t_cache_num_posts);
+ALTER TABLE cms_f_topics ADD INDEX t_cache_num_posts (t_cache_num_posts);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cascading (t_cascading);
+ALTER TABLE cms_f_topics ADD INDEX t_cascading (t_cascading);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_cascading_or_forum (t_cascading,t_forum_id);
+ALTER TABLE cms_f_topics ADD INDEX t_cascading_or_forum (t_cascading,t_forum_id);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_num_views (t_num_views);
+ALTER TABLE cms_f_topics ADD INDEX t_num_views (t_num_views);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_pt_from (t_pt_from);
+ALTER TABLE cms_f_topics ADD INDEX t_pt_from (t_pt_from);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_pt_to (t_pt_to);
+ALTER TABLE cms_f_topics ADD INDEX t_pt_to (t_pt_to);
 
-ALTER TABLE cms10_f_topics ADD INDEX t_validated (t_validated);
+ALTER TABLE cms_f_topics ADD INDEX t_validated (t_validated);
 
-ALTER TABLE cms10_f_topics ADD INDEX unread_forums (t_forum_id,t_cache_last_time);
+ALTER TABLE cms_f_topics ADD INDEX unread_forums (t_forum_id,t_cache_last_time);
 
 DROP TABLE IF EXISTS cms_f_usergroup_sub_mails;
 
@@ -239,9 +239,9 @@ CREATE TABLE cms_f_usergroup_sub_mails (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body);
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body);
 
-ALTER TABLE cms10_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject);
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject);
 
 DROP TABLE IF EXISTS cms_f_usergroup_subs;
 
@@ -264,15 +264,15 @@ CREATE TABLE cms_f_usergroup_subs (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_description (s_description);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_description (s_description);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh);
 
-ALTER TABLE cms10_f_usergroup_subs ADD FULLTEXT s_title (s_title);
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_title (s_title);
 
 DROP TABLE IF EXISTS cms_f_warnings;
 
@@ -293,7 +293,7 @@ CREATE TABLE cms_f_warnings (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_warnings ADD INDEX warningsmemberid (w_member_id);
+ALTER TABLE cms_f_warnings ADD INDEX warningsmemberid (w_member_id);
 
 DROP TABLE IF EXISTS cms_f_welcome_emails;
 
@@ -309,9 +309,9 @@ CREATE TABLE cms_f_welcome_emails (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_welcome_emails ADD FULLTEXT w_subject (w_subject);
+ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_subject (w_subject);
 
-ALTER TABLE cms10_f_welcome_emails ADD FULLTEXT w_text (w_text);
+ALTER TABLE cms_f_welcome_emails ADD FULLTEXT w_text (w_text);
 
 DROP TABLE IF EXISTS cms_failedlogins;
 
@@ -323,7 +323,7 @@ CREATE TABLE cms_failedlogins (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_failedlogins ADD INDEX failedlogins_by_ip (ip);
+ALTER TABLE cms_failedlogins ADD INDEX failedlogins_by_ip (ip);
 
 DROP TABLE IF EXISTS cms_feature_lifetime_monitor;
 
@@ -347,7 +347,7 @@ CREATE TABLE cms_filedump (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_filedump ADD FULLTEXT description (description);
+ALTER TABLE cms_filedump ADD FULLTEXT description (description);
 
 DROP TABLE IF EXISTS cms_galleries;
 
@@ -378,31 +378,31 @@ CREATE TABLE cms_galleries (
     PRIMARY KEY (name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1541729205, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5be4ebb0805bf9.56864899_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5be4ebb0805bf9.56864899_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5be4ebb0805bf9.56864899_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1546387690, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c2c00e867fb54.43854840_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c2c00e867fb54.43854840_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5c2c00e867fb54.43854840_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_galleries ADD FULLTEXT description (description);
+ALTER TABLE cms_galleries ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_galleries ADD FULLTEXT fullname (fullname);
+ALTER TABLE cms_galleries ADD FULLTEXT fullname (fullname);
 
-ALTER TABLE cms10_galleries ADD FULLTEXT gallery_search__combined (fullname,description);
+ALTER TABLE cms_galleries ADD FULLTEXT gallery_search__combined (fullname,description);
 
-ALTER TABLE cms10_galleries ADD INDEX ftjoin_gdescrip (description(250));
+ALTER TABLE cms_galleries ADD INDEX ftjoin_gdescrip (description(250));
 
-ALTER TABLE cms10_galleries ADD INDEX ftjoin_gfullname (fullname(250));
+ALTER TABLE cms_galleries ADD INDEX ftjoin_gfullname (fullname(250));
 
-ALTER TABLE cms10_galleries ADD INDEX gadd_date (add_date);
+ALTER TABLE cms_galleries ADD INDEX gadd_date (add_date);
 
-ALTER TABLE cms10_galleries ADD INDEX parent_id (parent_id);
+ALTER TABLE cms_galleries ADD INDEX parent_id (parent_id);
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_bottom_left (watermark_bottom_left(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_bottom_left (watermark_bottom_left(250));
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_bottom_right (watermark_bottom_right(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_bottom_right (watermark_bottom_right(250));
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_top_left (watermark_top_left(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_top_left (watermark_top_left(250));
 
-ALTER TABLE cms10_galleries ADD INDEX watermark_top_right (watermark_top_right(250));
+ALTER TABLE cms_galleries ADD INDEX watermark_top_right (watermark_top_right(250));
 
 DROP TABLE IF EXISTS cms_gifts;
 
@@ -419,11 +419,11 @@ CREATE TABLE cms_gifts (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_gifts ADD FULLTEXT reason (reason);
+ALTER TABLE cms_gifts ADD FULLTEXT reason (reason);
 
-ALTER TABLE cms10_gifts ADD INDEX giftsgiven (gift_from);
+ALTER TABLE cms_gifts ADD INDEX giftsgiven (gift_from);
 
-ALTER TABLE cms10_gifts ADD INDEX giftsreceived (gift_to);
+ALTER TABLE cms_gifts ADD INDEX giftsreceived (gift_to);
 
 DROP TABLE IF EXISTS cms_group_category_access;
 
@@ -843,7 +843,7 @@ INSERT INTO cms_group_page_access (page_name, zone_name, group_id) VALUES ('file
 INSERT INTO cms_group_page_access (page_name, zone_name, group_id) VALUES ('filedump', 'cms', 9);
 INSERT INTO cms_group_page_access (page_name, zone_name, group_id) VALUES ('filedump', 'cms', 10);
 
-ALTER TABLE cms10_group_page_access ADD INDEX group_id (group_id);
+ALTER TABLE cms_group_page_access ADD INDEX group_id (group_id);
 
 DROP TABLE IF EXISTS cms_group_privileges;
 
@@ -1419,6 +1419,12 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'autocomplete_keyword_comcode_page', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'autocomplete_title_comcode_page', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'autocomplete_title_comcode_page', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'view_others_tickets', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'view_others_tickets', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'support_operator', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'support_operator', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'wiki_manage_tree', '', '', '', 1);
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'wiki_manage_tree', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_anything_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_anything_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'upload_filedump', '', '', '', 1);
@@ -1433,14 +1439,8 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (10, 'upload_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'delete_anything_filedump', '', '', '', 1);
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'delete_anything_filedump', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'view_others_tickets', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'view_others_tickets', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'support_operator', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'support_operator', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'wiki_manage_tree', '', '', '', 1);
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'wiki_manage_tree', '', '', '', 1);
 
-ALTER TABLE cms10_group_privileges ADD INDEX group_id (group_id);
+ALTER TABLE cms_group_privileges ADD INDEX group_id (group_id);
 
 DROP TABLE IF EXISTS cms_group_zone_access;
 
@@ -1494,7 +1494,7 @@ INSERT INTO cms_group_zone_access (zone_name, group_id) VALUES ('site', 8);
 INSERT INTO cms_group_zone_access (zone_name, group_id) VALUES ('site', 9);
 INSERT INTO cms_group_zone_access (zone_name, group_id) VALUES ('site', 10);
 
-ALTER TABLE cms10_group_zone_access ADD INDEX group_id (group_id);
+ALTER TABLE cms_group_zone_access ADD INDEX group_id (group_id);
 
 DROP TABLE IF EXISTS cms_hackattack;
 
@@ -1514,9 +1514,9 @@ CREATE TABLE cms_hackattack (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_hackattack ADD INDEX h_date_and_time (date_and_time);
+ALTER TABLE cms_hackattack ADD INDEX h_date_and_time (date_and_time);
 
-ALTER TABLE cms10_hackattack ADD INDEX otherhacksby (ip);
+ALTER TABLE cms_hackattack ADD INDEX otherhacksby (ip);
 
 DROP TABLE IF EXISTS cms_https_pages;
 
@@ -1548,25 +1548,25 @@ CREATE TABLE cms_images (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_images ADD FULLTEXT description (description);
+ALTER TABLE cms_images ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_images ADD FULLTEXT image_search__combined (description,title);
+ALTER TABLE cms_images ADD FULLTEXT image_search__combined (description,title);
 
-ALTER TABLE cms10_images ADD FULLTEXT title (title);
+ALTER TABLE cms_images ADD FULLTEXT title (title);
 
-ALTER TABLE cms10_images ADD INDEX category_list (cat);
+ALTER TABLE cms_images ADD INDEX category_list (cat);
 
-ALTER TABLE cms10_images ADD INDEX ftjoin_dtitle (title(250));
+ALTER TABLE cms_images ADD INDEX ftjoin_dtitle (title(250));
 
-ALTER TABLE cms10_images ADD INDEX ftjoin_idescription (description(250));
+ALTER TABLE cms_images ADD INDEX ftjoin_idescription (description(250));
 
-ALTER TABLE cms10_images ADD INDEX iadd_date (add_date);
+ALTER TABLE cms_images ADD INDEX iadd_date (add_date);
 
-ALTER TABLE cms10_images ADD INDEX image_views (image_views);
+ALTER TABLE cms_images ADD INDEX image_views (image_views);
 
-ALTER TABLE cms10_images ADD INDEX i_validated (validated);
+ALTER TABLE cms_images ADD INDEX i_validated (validated);
 
-ALTER TABLE cms10_images ADD INDEX xis (submitter);
+ALTER TABLE cms_images ADD INDEX xis (submitter);
 
 DROP TABLE IF EXISTS cms_import_id_remap;
 
@@ -1656,7 +1656,7 @@ CREATE TABLE cms_link_tracker (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_link_tracker ADD INDEX c_url (c_url(250));
+ALTER TABLE cms_link_tracker ADD INDEX c_url (c_url(250));
 
 DROP TABLE IF EXISTS cms_logged_mail_messages;
 
@@ -1685,11 +1685,11 @@ CREATE TABLE cms_logged_mail_messages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_logged_mail_messages ADD INDEX combo (m_date_and_time,m_queued);
+ALTER TABLE cms_logged_mail_messages ADD INDEX combo (m_date_and_time,m_queued);
 
-ALTER TABLE cms10_logged_mail_messages ADD INDEX queued (m_queued);
+ALTER TABLE cms_logged_mail_messages ADD INDEX queued (m_queued);
 
-ALTER TABLE cms10_logged_mail_messages ADD INDEX recentmessages (m_date_and_time);
+ALTER TABLE cms_logged_mail_messages ADD INDEX recentmessages (m_date_and_time);
 
 DROP TABLE IF EXISTS cms_match_key_messages;
 
@@ -1702,7 +1702,7 @@ CREATE TABLE cms_match_key_messages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_match_key_messages ADD FULLTEXT k_message (k_message);
+ALTER TABLE cms_match_key_messages ADD FULLTEXT k_message (k_message);
 
 DROP TABLE IF EXISTS cms_member_category_access;
 
@@ -1714,9 +1714,9 @@ CREATE TABLE cms_member_category_access (
     PRIMARY KEY (module_the_name, category_name, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_category_access ADD INDEX mcamember_id (member_id);
+ALTER TABLE cms_member_category_access ADD INDEX mcamember_id (member_id);
 
-ALTER TABLE cms10_member_category_access ADD INDEX mcaname (module_the_name,category_name);
+ALTER TABLE cms_member_category_access ADD INDEX mcaname (module_the_name,category_name);
 
 DROP TABLE IF EXISTS cms_member_page_access;
 
@@ -1728,7 +1728,7 @@ CREATE TABLE cms_member_page_access (
     PRIMARY KEY (page_name, zone_name, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_member_page_access ADD INDEX mzamember_id (member_id);
+ALTER TABLE cms_member_page_access ADD INDEX mzamember_id (member_id);
 
-ALTER TABLE cms10_member_page_access ADD INDEX mzaname (page_name,zone_name);
+ALTER TABLE cms_member_page_access ADD INDEX mzaname (page_name,zone_name);
 
