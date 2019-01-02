@@ -88,7 +88,7 @@ function get_local_changes($include_metadata = false, $include_ignored = false)
 
     foreach ($lines as $line) {
         $matches = array();
-        if (preg_match('#^\s*([!\?MADRC])( .* ->)? (.*)$#', $line, $matches) != 0) {
+        if (preg_match('#^\s*([!\?MADRC])+( .* ->)? (.*)$#', $line, $matches) != 0) {
             switch ($matches[1]) {
                 case '!':
                     $git_status = GIT_STATUS__IGNORED;
