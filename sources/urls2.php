@@ -683,16 +683,18 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
             return $manually_chosen;
         }
 
-        // Deprecate old one if already exists
-        $old = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
-        if (!is_null($old)) {
+        // Deprecate old one(s) if already existing (there should only be 1 non-deprecated, but possible DB state may have gotten into a mess somehow)
+        $old_moniker_okay = null;
+        $old_monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_moniker'), array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
+        foreach (collapse_1d_complexity('m_moniker', $old_monikers) as $old) {
             // See if it is same as current
             if ($moniker === null) {
                 $scope = _give_moniker_scope($page, $type, $id, $zone, '');
                 $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, $old, $scope);
             }
             if ($moniker == $old) {
-                return $old; // hmm, ok it can stay actually
+                $old_moniker_okay = $old; // hmm, ok it can stay actually
+                continue;
             }
 
             // It's not. Although, the later call to _choose_moniker will allow us to use the same stem as the current active one, or even re-activate an old deprecated one, so long as it is on this same m_resource_page/m_resource_page/m_resource_id.
@@ -710,6 +712,10 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
                 $category_page = $parts[1];
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_deprecated=1 WHERE ' . db_string_equal_to('m_resource_page', $category_page) . ' AND m_moniker LIKE \'' . db_encode_like($old . '/%') . '\''); // Deprecate
             }
+        }
+
+        if ($old_moniker_okay !== null) {
+            return $old_moniker_okay;
         }
     }
 
