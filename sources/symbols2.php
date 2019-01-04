@@ -3025,6 +3025,42 @@ function ecv2_COLOR_RGBA($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string
  */
+function ecv2_COLOR_LIGHTEN($lang, $escaped, $param)
+{
+    require_code('themes');
+
+    $hex_color = $param[0];
+    $red   = hexdec(substr($hex_color, 1, 2));
+    $green = hexdec(substr($hex_color, 3, 2));
+    $blue  = hexdec(substr($hex_color, 5, 2));
+
+    $lighten_by = floatval(substr($param[1], 0, -1)) / 100; // Remove trailing '%' sign
+
+    list($h, $s, $l) = rgb_to_hsl($red, $green, $blue);
+
+    $l = min(1, max(0, ($l + $lighten_by)));
+
+    list($red, $green, $blue) = hsl_to_rgb($h, $s, $l);
+
+    $value = sprintf("#%02x%02x%02x", $red, $green, $blue);
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string
+ */
 function ecv2_COLOR_DARKEN($lang, $escaped, $param)
 {
     require_code('themes');
