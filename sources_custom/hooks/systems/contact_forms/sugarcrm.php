@@ -54,6 +54,6 @@ class Hook_contact_forms_sugarcrm
         $_title = do_lang('SUGARCRM_MESSAGING_SYNC');
         call_user_func_array__long_task($_title, null, 'sugarcrm_sync_message', array($subject, $body, $to_email, $to_name, $from_email, $from_name, $_attachments, $body_parts, $body_prefix, $body_suffix, $_GET, $_POST), false, false, false);
 
-        return (get_option('sugarcrm_exclusive_messaging') == '1');
+        return (get_option('sugarcrm_exclusive_messaging') == '1') || (post_param_integer('_sugarcrm_exclusive_messaging', 0) == 1);
     }
 }
