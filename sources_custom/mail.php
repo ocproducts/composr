@@ -459,7 +459,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // Interface with SwiftMailer
     // ==========================
 
-    require_code('Swift-4.1.1/lib/swift_required');
+    require_code('swift_mailer/lib/swift_required');
 
     // Read in SMTP settings
     $host = get_option('smtp_sockets_host');
@@ -472,15 +472,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Create the Transport
-    $transport = Swift_SmtpTransport::newInstance($host, $port)
+    $transport = (new Swift_SmtpTransport($host, $port))
         ->setUsername($username)
         ->setPassword($password);
     if (($port == 419) || ($port == 465) || ($port == 587)) {
+        $disabled_ssl_verify = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $host) === '1'));
+
         $transport->setEncryption('tls');
+        $transport->setStreamOptions(array(
+            'ssl' => array('allow_self_signed' => true, 'verify_peer' => false, 'verify_peer_name' => false,)
+        ));
     }
 
     // Create the Mailer using your created Transport
-    $mailer = Swift_Mailer::newInstance($transport);
+    $mailer = new Swift_Mailer($transport);
 
     // Create a message
     $to_array = array();
@@ -502,7 +507,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     ) {
         $website_email = $from_email;
     }
-    $message = Swift_Message::newInstance($subject)
+
+    $message = new Swift_Message($subject);
+    $message
         ->setFrom(array($website_email => $from_name))
         ->setReplyTo(array($from_email => $from_name))
         ->setTo($to_array)
@@ -543,14 +550,19 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // Send the message, and error collection
     $error = '';
     $worked = true;
+    $failures = array();
     try {
-        $result = $mailer->send($message);
+        $result = $mailer->send($message, $failures);
     } catch (Exception $e) {
         $error = $e->getMessage();
         $worked = false;
     }
     if (($error == '') && (!$result)) {
-        $error = 'Unknown error';
+        if (count($failures) == 0) {
+            $error = 'Unknown error';
+        } else {
+            $error = 'Rejected addresses: ' . implode(', ', $failures);
+        }
     }
 
     // Attachment cleanup
