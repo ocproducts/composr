@@ -41,6 +41,9 @@ class Hook_health_check_upkeep extends Hook_Health_Check
     {
         $this->process_checks_section('testComposrVersion', brand_name() . ' version', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testPHPVersion', 'PHP version', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        if (strpos(shell_exec('which php'), 'php') !== false) {
+            $this->process_checks_section('testPHPVersionDistroSafe', 'PHP version (if not distro default)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        }
         $this->process_checks_section('testAdminAccountStaleness', 'Admin account staleness', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testCopyrightDate', 'Copyright date', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testStaffChecklist', 'Staff checklist', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
@@ -102,10 +105,33 @@ class Hook_health_check_upkeep extends Hook_Health_Check
         }
 
         require_code('version2');
-
         $v = strval(PHP_MAJOR_VERSION) . '.' . strval(PHP_MINOR_VERSION);
-
         $this->assertTrue(is_php_version_supported($v) !== false, 'Unsupported PHP version ' . $v);
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testPHPVersionDistroSafe($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        if (php_function_allowed('shell_exec')) {
+            require_code('version2');
+            $v = strval(PHP_MAJOR_VERSION) . '.' . strval(PHP_MINOR_VERSION);
+            $this->assertTrue((trim(shell_exec('which php')) == '/usr/bin/php') || (is_php_version_supported($v) !== false), 'Unsupported PHP version ' . $v);
+        } else {
+            $this->stateCheckSkipped('PHP shell_exec function not available');
+        }
     }
 
     /**

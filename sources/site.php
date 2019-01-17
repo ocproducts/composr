@@ -161,7 +161,7 @@ function init__site()
     }
 
     if (running_script('index')) {
-        process_url_monikers(get_page_name());
+        process_url_monikers();
     }
 
     // Bulk advance loading
@@ -714,10 +714,15 @@ function set_short_title($title)
 /**
  * Process URL monikers, changing 'id' GET param to be correct.
  *
- * @param  ID_TEXT $page The page name to do it for
  * @param  boolean $redirect_if_non_canonical Do a redirect if we're not on the canonical URL
+ * @param  boolean $env_change Change environmental $_GET parameters (otherwise returns by reference)
+ * @param  ?ID_TEXT $page The page name to do it for (null: read from the environment)
+ * @param  ?ID_TEXT $zone The zone name to do it for (null: read from the environment)
+ * @param  ?ID_TEXT $type The screen type to do it for (null: read from the environment / really not passed)
+ * @param  ?ID_TEXT $url_id The ID to do it for (null: read from the environment / really not passed)
+ * @param  boolean $consider_nulls_as_unpassed If any nulls are passed it's considered as 'really not passed' rather than 'read from environment' for $type and $url_id
  */
-function process_url_monikers($page, $redirect_if_non_canonical = true)
+function process_url_monikers($redirect_if_non_canonical = true, $env_change = true, &$page = null, &$zone = null, &$type = null, &$url_id = null, $consider_nulls_as_unpassed = true)
 {
     static $run_once = false;
     if ($run_once) {
@@ -725,9 +730,18 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
     }
     $run_once = true;
 
-    $zone = get_zone_name();
-    $type = get_param_string('type', null, INPUT_FILTER_GET_COMPLEX);
-    $url_id = get_param_string('id', null, INPUT_FILTER_GET_COMPLEX);
+    if ($page === null) {
+        $page = get_page_name();
+    }
+    if ($zone === null) {
+        $zone = get_zone_name();
+    }
+    if (($type === null) && ($consider_nulls_as_unpassed)) {
+        $type = get_param_string('type', null, INPUT_FILTER_GET_COMPLEX);
+    }
+    if (($url_id === null) && ($consider_nulls_as_unpassed)) {
+        $url_id = get_param_string('id', null, INPUT_FILTER_GET_COMPLEX);
+    }
 
     if (url_monikers_enabled()) {
         // Monikers relative to the zone
@@ -758,17 +772,31 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
             if (array_key_exists(0, $test)) {
                 if (_request_page($test[0]['m_resource_page'], $zone) !== false) { // ... if operable within the zone we're in
                     // Bind to correct new values
-                    global $PAGE_NAME_CACHE, $GETTING_PAGE_NAME;
-                    $PAGE_NAME_CACHE = $test[0]['m_resource_page'];
-                    $GETTING_PAGE_NAME = false;
+                    if ($env_change) {
+                        global $PAGE_NAME_CACHE, $GETTING_PAGE_NAME;
+                        $PAGE_NAME_CACHE = $test[0]['m_resource_page'];
+                        $GETTING_PAGE_NAME = false;
+                    }
                     if ($test[0]['m_resource_type'] == '') {
-                        $_GET['page'] = $test[0]['m_resource_page'];
-                        unset($_GET['type']);
-                        unset($_GET['id']);
+                        if ($env_change) {
+                            $_GET['page'] = $test[0]['m_resource_page'];
+                            unset($_GET['type']);
+                            unset($_GET['id']);
+                        } else {
+                            $page = $test[0]['m_resource_page'];
+                            $type = null;
+                            $url_id = null;
+                        }
                     } else {
-                        $_GET['page'] = $test[0]['m_resource_page'];
-                        $_GET['type'] = $test[0]['m_resource_type'];
-                        $_GET['id'] = $test[0]['m_resource_id'];
+                        if ($env_change) {
+                            $_GET['page'] = $test[0]['m_resource_page'];
+                            $_GET['type'] = $test[0]['m_resource_type'];
+                            $_GET['id'] = $test[0]['m_resource_id'];
+                        } else {
+                            $page = $test[0]['m_resource_page'];
+                            $type = $test[0]['m_resource_type'];
+                            $url_id = $test[0]['m_resource_id'];
+                        }
                     }
                     return;
                 }
@@ -820,7 +848,11 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         }
 
                         // Map back 'id'
-                        $_GET['id'] = $monikers[0]['m_resource_id']; // We need to know the ID number rather than the moniker
+                        if ($env_change) {
+                            $_GET['id'] = $monikers[0]['m_resource_id']; // We need to know the ID number rather than the moniker
+                        } else {
+                            $url_id = $monikers[0]['m_resource_id'];
+                        }
 
                         $deprecated = $monikers[0]['m_deprecated'] == 1;
                         if (($deprecated) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {

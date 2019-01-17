@@ -3624,7 +3624,7 @@ function ecv_HIDDENS_FOR_GET_FORM($lang, $escaped, $param)
         foreach (explode('&', $url_bits['query']) as $exp) {
             $parts = explode('=', $exp, 2);
             if (count($parts) == 2) {
-                if ((!in_array($parts[0], $param)) && (!in_array(preg_replace('#\d+#', '*', $parts[0]), $param)) && (!in_array(preg_replace('#filter_\w+#', 'filter_*', $parts[0]), $param))) {
+                if ((!in_array($parts[0], $param)) && (!in_array(preg_replace('#\[\d+\]#', '[]', $parts[0]), $param)) && (!in_array(preg_replace('#\d+#', '*', $parts[0]), $param)) && (!in_array(preg_replace('#filter_\w+#', 'filter_*', $parts[0]), $param))) {
                     $_value->attach(form_input_hidden($parts[0], urldecode($parts[1])));
                 }
             }
@@ -6811,10 +6811,10 @@ function ecv_FAVICON($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them
+ * @return string The result
  */
 function ecv_TRANSLATION_LINKS($lang, $escaped, $param)
 {

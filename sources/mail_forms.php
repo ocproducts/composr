@@ -106,7 +106,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
     }
 
     // Send standard confirmation e-mail to current user
-    if ($from_email != '' && get_option('message_received_emails') == '1') {
+    if (($from_email != '') && (get_option('message_received_emails') == '1') && (post_param_integer('_no_confirm_email', 0) != 1)) {
         dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), $from_name, '', '', array('as' => get_member()));
     }
 }
@@ -140,7 +140,7 @@ function _form_to_email($extra_boring_fields = array(), $subject = null, $subjec
     if ($fields === null) {
         $fields = array();
         foreach (array_keys($_POST) as $key) {
-            if (is_control_field($key, true, false, $extra_boring_fields)) {
+            if ((is_control_field($key, true, false, $extra_boring_fields)) && (/*Actually best to just explicitly let it show*/!in_array($key, array('name', 'email')))) {
                 continue;
             }
 
@@ -177,11 +177,11 @@ function _form_to_email($extra_boring_fields = array(), $subject = null, $subjec
                 // Tie in to tagging
                 if (post_param_string('field_tagged__' . $field_name, '') == 'email') {
                     $from_email = $field_val;
-                    continue;
+                    //continue; Actually best to just explicitly let it show
                 }
                 if (post_param_string('field_tagged__' . $field_name, '') == 'name') {
                     $from_name = $field_val;
-                    continue;
+                    //continue; Actually best to just explicitly let it show
                 }
                 if (post_param_string('field_tagged__' . $field_name, '') == 'subject') {
                     $subject = $field_val;

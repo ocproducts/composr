@@ -2556,6 +2556,8 @@ function record_template_used($tpl_path_descrip)
  */
 function simplify_static_tempcode($text)
 {
+    push_no_keep_context();
+
     $symbols = array(
         'PAGE_LINK',
         'BASE_URL',
@@ -2588,6 +2590,8 @@ function simplify_static_tempcode($text)
         $text = $new_text;
     }
 
+    pop_no_keep_context();
+
     return $text;
 }
 
@@ -2600,8 +2604,23 @@ function simplify_static_tempcode($text)
 function reinstate_static_tempcode($text)
 {
     $_base_url = str_replace(array('http\://', 'https\://'), array('https?\://', 'https?\://'), preg_quote(escape_html(get_base_url() . '/'), '#'));
+
+    // Recognise what should be a page-link
+    $matches = array();
+    $num_matches = preg_match_all('#\shref="(' . $_base_url . '[^"\#]*)["\#]#', $text, $matches);
+    for ($i = 0; $i < $num_matches; $i++) {
+        $url_escaped = $matches[1][$i];
+        $page_link = url_to_page_link(html_entity_decode($url_escaped, ENT_QUOTES));
+        if ($page_link != '') {
+            $text = str_replace($url_escaped, '{$PAGE_LINK*,' . $page_link . '}', $text);
+        }
+    }
+
+    // Replace both http and https variants of base URL
     $text = preg_replace('#(<[^<>]*)' . $_base_url . '([^<>]*>)#', '$1{$BASE_URL*}/$2', $text);
-    $text = str_replace(get_base_url() . '/', '{$BASE_URL}/', $text);
+
+    // Simple base URL substitution
+    $text = str_replace(get_base_url() . '/', '{$BASE_URL*}/', $text);
 
     return $text;
 }

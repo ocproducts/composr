@@ -397,6 +397,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         return '';
     }
 
+    $url_in = $url;
+
     // Try and strip any variants of the base URL from our $url variable, to make it relative
     $non_www_base_url = str_replace('https://www.', 'https://', str_replace('http://www.', 'http://', get_base_url()));
     $www_base_url = str_replace('https://', 'https://www.', str_replace('http://', 'http://www.', get_base_url()));
@@ -494,7 +496,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             $_bit = explode('=', $bit, 2);
 
             if (count($_bit) == 2) {
-                $attributes[$_bit[0]] = cms_urldecode_post_process($_bit[1]);
+                $attributes[$_bit[0]] = cms_urldecode_post_process(urldecode($_bit[1]));
                 if (strpos($attributes[$_bit[0]], ':') !== false) {
                     if ($perfect_only) {
                         return ''; // Could not convert this URL to a page-link, because it contains a colon
@@ -507,6 +509,11 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 
     $page = fix_page_name_dashing($zone, $attributes['page']);
 
+    // Resolve monikers back to canonical URL parameters
+    $type = array_key_exists('type', $attributes) ? $attributes['type'] : null;
+    $id = array_key_exists('id', $attributes) ? $attributes['id'] : null;
+    process_url_monikers(false, false, $page, $zone, $type, $id, false);
+
     require_code('site');
     if (_request_page($page, $zone) === false) {
         return '';
@@ -514,12 +521,12 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 
     // Put it together
     $page_link = $zone . ':' . $page;
-    if (array_key_exists('type', $attributes)) {
-        $page_link .= ':' . $attributes['type'];
-    } elseif (array_key_exists('id', $attributes)) {
+    if ($type !== null) {
+        $page_link .= ':' . $type;
+    } elseif ($id !== null) {
         $page_link .= ':';
     }
-    if (array_key_exists('id', $attributes)) {
+    if ($id !== null) {
         if (!is_numeric($attributes['id'])) {
             $moniker_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_resource_type' => isset($attributes['type']) ? $attributes['type'] : 'browse', 'm_moniker' => $attributes['id']));
             if ($moniker_id !== null) {
@@ -542,6 +549,16 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     // Hash bit?
     if (array_key_exists('fragment', $parsed_url)) {
         $page_link .= '#' . $parsed_url['fragment'];
+    }
+
+    // Confirm it loops correctly
+    if ($perfect_only) {
+        push_no_keep_context();
+        $conv_url = page_link_to_url($page_link);
+        pop_no_keep_context();
+        if ($conv_url != $url_in) {
+            return '';
+        }
     }
 
     return $page_link;

@@ -1774,7 +1774,7 @@
     }
 
     function convertTooltip(el) {
-        var title = el.title;
+        var title = el.title ? el.title : el.alt;
 
         if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave-native-tooltip') || el.dataset['mouseoverActivateTooltip']) {
             return;

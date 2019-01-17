@@ -243,11 +243,12 @@ function find_security_alerts($where = array())
  *
  * @param  boolean $include_referer Whether to include the referer
  * @param  ?MEMBER $member_id Member to lookup (null: current user)
+ * @param  ?MEMBER $ip IP address (null: current / member's)
  * @return PATH The path of the file
  */
-function save_user_metadata($include_referer = false, $member_id = null)
+function save_user_metadata($include_referer = false, $member_id = null, $ip = null)
 {
-    $data = find_user_metadata($include_referer, $member_id);
+    $data = find_user_metadata($include_referer, $member_id, $ip);
 
     require_code('crypt');
     $path = get_custom_file_base() . '/temp/mail_' . get_secure_random_string() . '.txt';
@@ -264,16 +265,25 @@ function save_user_metadata($include_referer = false, $member_id = null)
  *
  * @param  boolean $include_referer Whether to include the referer
  * @param  ?MEMBER $member_id Member to lookup (null: current user)
+ * @param  ?MEMBER $ip IP address (null: current / member's)
  * @param  boolean $advanced Whether to include advanced data
  * @return array Data
  */
-function find_user_metadata($include_referer = true, $member_id = null, $advanced = false)
+function find_user_metadata($include_referer = true, $member_id = null, $ip = null, $advanced = false)
 {
     if ($member_id === null) {
         $member_id = get_member();
         $current_user = true;
     } else {
         $current_user = false;
+    }
+
+    if ($ip === null) {
+        if ($current_user) {
+            $ip = get_ip_address();
+        } else {
+            $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($member_id);
+        }
     }
 
     require_lang('lookup');
@@ -289,12 +299,6 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
         $member_data[do_lang('cns:PROFILE', null, null, null, get_site_default_lang())] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false);
     }
     $data[do_lang('ACCOUNT', null, null, null, get_site_default_lang())] = $member_data;
-
-    if ($current_user) {
-        $ip = get_ip_address();
-    } else {
-        $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($member_id);
-    }
 
     //$data['Session ID'] = get_session_id();   Don't want to pass this out too freely, not useful anyway
 
@@ -395,7 +399,9 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
             $where .= ' OR member_id=' . strval($member_id);
         }
         if ($current_user) {
-            $where .= ' OR ' . db_string_equal_to('session_id', get_session_id());
+            if (get_session_id() != '') {
+                $where .= ' OR ' . db_string_equal_to('session_id', get_session_id());
+            }
         }
 
         $tp = get_table_prefix();

@@ -41,6 +41,10 @@ class Hook_upon_query_sugarcrm
             return;
         }
 
+        if (get_mass_import_mode()) {
+            return;
+        }
+
         $prefix = preg_quote($GLOBALS['FORUM_DB']->get_table_prefix(), '#');
 
         $matches = array();
