@@ -1,4 +1,4 @@
-<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header header-classic with-seed-navbar">
+<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="header header-classic with-seed-navbar{+START,IF,{$MOBILE}} is-touch-interface{+END}{+START,IF,{$DESKTOP}} is-hover-interface{+END}" data-view="Header">
 	{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 	<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
@@ -14,7 +14,8 @@
 	<h1 class="logo container">
 		<a class="logo-link" target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}">
 			{+START,IF,{$NOT,{$THEME_OPTION,use_site_name_text_as_logo}}}
-			<img class="logo-image" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
+			<img class="logo-image logo-image-large" {+START,IF,{$MOBILE}}style="display: none;"{+END} src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />
+			<img class="logo-image logo-image-color" {+START,IF,{$DESKTOP}}style="display: none;"{+END} src="{$IMG*,logo/small_logo}" alt="{$SITE_NAME*}" />
 			{+END}
 			{+START,IF,{$THEME_OPTION,use_site_name_text_as_logo}}
 			<span class="logo-text">{$SITE_NAME*}</span>
@@ -25,7 +26,7 @@
 	{$,Main menu}
 	<div class="global-navigation">
 		<div class="container">
-			<div class="global-navigation-inner">
+			<div class="global-navigation-items">
 				{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}
 
 				{$,Login form for guests}

@@ -252,7 +252,7 @@
      */
     $cms.functions = {};
 
-    var mobileModeMql = window.matchMedia('(max-width: 982px)'),
+    var mobileModeMql = window.matchMedia('(max-width: 982.98px)'),
         desktopModeMql = window.matchMedia('(min-width: 983px)');
     /**
      * Refer to $CSS_MODE calls in global.css
@@ -993,6 +993,8 @@
      * @param {string} imageSrc
      */
     $cms.setIcon = function setIcon(iconEl, iconName, imageSrc) {
+        iconEl = $dom.elArg(iconEl);
+
         var symbolId, use, newSrc, newClass;
         if (iconEl.localName === 'svg') {
             symbolId = 'icon_' + iconName.replace(/\//g, '__');
@@ -1022,6 +1024,8 @@
      * @returns {boolean}
      */
     $cms.isIcon = function isIcon(iconEl, iconName) {
+        iconEl = $dom.elArg(iconEl);
+
         var src;
 
         if (iconEl.localName === 'svg') {

@@ -526,6 +526,10 @@ html.is-touch-enabled .chat-message>div {
 	top: 15px;
 }
 
+.boxless-space .box---block-side-shoutbox-message::before {
+	display: none;
+}
+
 .shoutbox-message-avatar {
 	position: absolute;
 	left: -30px;

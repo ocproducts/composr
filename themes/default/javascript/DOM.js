@@ -215,7 +215,7 @@
      * @memberof $dom
      * @param context
      * @param selector
-     * @returns { Array }
+     * @returns { Array<HTMLElement> }
      */
     $dom.$$ = function $$(context, selector) {
         var found;

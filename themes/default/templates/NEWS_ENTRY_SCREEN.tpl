@@ -4,25 +4,41 @@
 	{+START,IF_PASSED,WARNING_DETAILS}
 		{WARNING_DETAILS}
 	{+END}
-
-	<div class="meta-details" role="note">
-		<ul class="meta-details-list">
-			{+START,IF,{$INLINE_STATS}}<li>{!VIEWS_SIMPLE,{VIEWS*}}</li>{+END}
-			<li>{!ADDED_SIMPLE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{DATE*}</time>}</li>
-			{+START,IF_NON_EMPTY,{AUTHOR_URL}}
-				<li>
-					<span class="field-name">{!AUTHOR}:</span> <a rel="author" itemprop="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
-					{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
-				</li>
+	
+	<div class="news-entry-details">
+		<ul class="news-entry-details-col-start horizontal-links">
+			{+START,LOOP,CATEGORIES}
+			<li class="news-entry-category">
+				<a href="{$PAGE_LINK*,_SELF:_SELF:browse:{_loop_key}{$?,{BLOG},:blog=1,}}" class="btn btn-secondary">{_loop_var*}</a>
+			</li>
 			{+END}
-			{+START,IF_EMPTY,{AUTHOR_URL}}{+START,IF_NON_EMPTY,{$USERNAME,{SUBMITTER},1}}
-				<li>
-					{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>}
+			<li class="news-entry-date">
+				{+START,INCLUDE,ICON}NAME=menu/rich_content/calendar{+END}
+				<time class="news-entry-date" datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{DATE*}</time>
+			</li>
+			<li class="news-entry-author">
+				{+START,INCLUDE,ICON}NAME=content_types/member{+END}
+				{+START,IF_NON_EMPTY,{AUTHOR_URL}}
+					<a rel="author" itemprop="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
+					{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
+				{+END}
+				{+START,IF_EMPTY,{AUTHOR_URL}}{+START,IF_NON_EMPTY,{$USERNAME,{SUBMITTER},1}}
+					<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
 					{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
-				</li>
-			{+END}{+END}
+				{+END}{+END}
+			</li>
+		</ul>
+		<ul class="news-entry-details-col-end horizontal-links">
+			{+START,IF,{$INLINE_STATS}}<li class="news-entry-views">{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {!VIEWS_SIMPLE,{VIEWS*}}</li>{+END}
+			{+START,IF_PASSED,COMMENT_COUNT}<li class="news-entry-comments">{+START,INCLUDE,ICON}NAME=feedback/comment{+END} {$COMMENT_COUNT,news,{ID}}</li>{+END}
 		</ul>
 	</div>
+	
+	{+START,IF_PASSED,IMG_LARGE}
+	<div class="news-entry-image">
+		<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG_LARGE}}" alt="" />
+	</div>
+	{+END}
 
 	<div itemprop="articleBody" class="clearfix">
 		{NEWS_FULL}
@@ -54,6 +70,27 @@
 			4_ICON=buttons/report
 			4_REL=report
 		{+END}
+	{+END}
+	
+	{+START,SET,next_and_prev}
+		{+START,IF_PASSED,PREV_ARTICLE_URL}{+START,IF_PASSED,PREV_ARTICLE_TITLE}
+		<div class="news-entry-prev">
+			<p class="news-entry-prev-label">&larr; {!PREVIOUS_ARTICLE*}</p>
+			<h4 class="news-entry-prev-title"><a href="{PREV_ARTICLE_URL*}">{PREV_ARTICLE_TITLE*}</a></h4>
+		</div>
+		{+END}{+END}
+		{+START,IF_PASSED,NEXT_ARTICLE_URL}{+START,IF_PASSED,NEXT_ARTICLE_TITLE}
+		<div class="news-entry-next">
+			<p class="news-entry-next-label">{!NEXT_ARTICLE*} &rarr;</p>
+			<h4 class="news-entry-next-title"><a href="{NEXT_ARTICLE_URL*}">{NEXT_ARTICLE_TITLE*}</a></h4>
+		</div>
+		{+END}{+END}
+	{+END}
+
+	{+START,IF_NON_EMPTY,{$TRIM,{$GET,next_and_prev}}}
+	<div class="news-entry-next-and-prev">
+		{$GET,next_and_prev}
+	</div>
 	{+END}
 
 	<div class="clearfix lined-up-boxes">

@@ -546,6 +546,8 @@ class Module_news
      */
     public function news_archive()
     {
+        $content = new Tempcode();
+
         $blog = $this->blog;
         $select = $this->select;
         $select_and = $this->select_and;
@@ -555,7 +557,22 @@ class Module_news
         // Get category contents
         $inline = get_param_integer('inline', 0) == 1;
         $filter = either_param_string('active_filter', '');
-        $content = do_block('main_news', array(
+
+        $items_in_the_slider = 0;
+
+        if (($select === '*')  && ($select_and === '*') && !$inline && (get_param_integer('module_start', 0) === 0)) {
+            // ^ Only show the slider when not doing a custom query and not using pagination
+            $items_in_the_slider = 9;
+            $content->attach(do_block('main_news_slider', array(
+                'select' => $select,
+                'select_and' => $select_and,
+                'interval' => '6000',
+                'max' => $items_in_the_slider
+            )));
+        }
+
+        $content->attach(do_block('main_news_grid', array(
+            'block_id' => 'module',
             'param' => '0',
             'title' => '',
             'select' => $select,
@@ -564,14 +581,14 @@ class Module_news
             'member_based' => ($blog === 1) ? '1' : '0',
             'zone' => '_SELF',
             'days' => '0',
-            'fallback_full' => $inline ? '0' : strval($max),
+            'fallback_full' => $inline ? '0' : strval($max - $items_in_the_slider),
             'fallback_archive' => $inline ? strval($max) : '0',
             'no_links' => '1',
             'pagination' => '1',
             'attach_to_url_filter' => '1',
-            'block_id' => 'module',
             'filter' => $filter,
-        ));
+            'start' => $items_in_the_slider, // Pickup where 'main_news_slider' ends
+        )));
 
         // Management links
         if ((($blog !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission(($blog === 1) ? 'mid' : 'high', get_member(), get_ip_address(), 'cms_news'))) {
@@ -725,6 +742,38 @@ class Module_news
             }
         }
 
+        $show_comment_count = '0';
+        if ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($myrow['allow_comments'] >= 1)) {
+            $show_comment_count = '1';
+        }
+
+        $img_large = null;
+        if (!empty($img)) {
+            if (substr($img, -4) === '.svg') {
+                $img_large = $img;
+            } elseif ((substr($img, -4) === '.png') && starts_with($img, get_custom_base_url() . '/') && file_exists(substr($img, strlen(get_custom_base_url() . '/'), -4))) {
+                $img_large = substr($img, 0, -4); // Remove '.png' extension
+            }
+        }
+
+        $prev_article_url   = null;
+        $prev_article_title = null;
+        $next_article_url   = null;
+        $next_article_title = null;
+
+        $_prev_article_title = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'title', array('id' => $id - 1), '', true);
+        $_next_article_title = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'title', array('id' => $id + 1), '', true);
+
+        if (!empty($_prev_article_title)) {
+            $prev_article_title = $_prev_article_title;
+            $prev_article_url   = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id - 1), get_module_zone('news'));
+        }
+
+        if (!empty($_next_article_title)) {
+            $next_article_title = $_next_article_title;
+            $next_article_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id + 1), get_module_zone('news'));
+        }
+
         // Render
         return do_template('NEWS_ENTRY_SCREEN', array(
             '_GUID' => '7686b23934e22c493d4ac10ba6c475c4',
@@ -741,6 +790,7 @@ class Module_news
             'SUBMITTER' => strval($myrow['submitter']),
             'CATEGORY' => $category,
             'IMG' => $img,
+            'IMG_LARGE' => $img_large,
             'VIEWS' => integer_format($myrow['news_views']),
             'COMMENT_DETAILS' => $comment_details,
             'RATING_DETAILS' => $rating_details,
@@ -754,6 +804,11 @@ class Module_news
             'ARCHIVE_URL' => $archive_url,
             'SUBMIT_URL' => $submit_url,
             'WARNING_DETAILS' => $warning_details,
+            'COMMENT_COUNT' => $show_comment_count,
+            'PREV_ARTICLE_TITLE' => $prev_article_title,
+            'PREV_ARTICLE_URL' => $prev_article_url,
+            'NEXT_ARTICLE_TITLE' => $next_article_title,
+            'NEXT_ARTICLE_URL' => $next_article_url,
         ));
     }
 }

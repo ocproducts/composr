@@ -19,7 +19,7 @@
         function updateIcons() {
             container.querySelectorAll('th.table-sortable').forEach(function (th) {
                 var icon = th.querySelector('.icon');
-                
+
                 if (!icon) {
                     return;
                 }

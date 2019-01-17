@@ -375,7 +375,7 @@ END;
 
         <meta name="robots" content="noindex, nofollow" />
     </head>
-    <body class="website-body"><div class="global-middle">
+    <body class="website-body"><div class="container-fluid"><div class="global-middle">
         <h1 class="screen-title">{$upgrader_title}</h1>
         <p>{$upgrader_intro}</p><hr class="spaced-rule" />
 END;
@@ -387,7 +387,7 @@ END;
 function upgrader_output_footer()
 {
     echo <<<END
-    </div></body>
+    </div></div></body>
 </html>
 END;
 }
@@ -542,7 +542,7 @@ function upgrader_menu_screen()
 
             <h2 style=\"margin-top: 2em\">{$l_error_correction}&hellip;</h2>
 
-            <ul class=\"compact-list\">";
+            <ul class=\"spaced-list\">";
     if ($show_permission_buttons) {
         $out .= "
                 <li>{$l_check_perms} / {$l_fix_perms}</li>";

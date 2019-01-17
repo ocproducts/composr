@@ -47,8 +47,19 @@ class Block_main_hero_slider
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array($map)';
-        $info['ttl'] = 0;
+        $info['cache_on'] = <<<'PHP'
+            array(
+                isset($map['blank_if_empty']) ? !empty($map['blank_if_empty']) : false,
+                !empty($map['effect']) ? $map['effect'] : 'slide',
+                !empty($map['fullscreen']),
+                !empty($map['show_indicators']),
+                !empty($map['show_scroll_down']),
+                isset($map['interval']) ? strval(intval($map['interval'])) : false,
+                isset($map['check_perms']) ? !empty($map['check_perms']) : true,
+                $map['gallery_name'],
+            )
+PHP;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
         return $info;
     }
 
@@ -62,7 +73,7 @@ class Block_main_hero_slider
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-        $blank_if_empty = isset($map['blank_if_empty']) ? !empty($map['blank_if_empty']) : true;
+        $blank_if_empty = isset($map['blank_if_empty']) ? !empty($map['blank_if_empty']) : false;
 
         if (!addon_installed('galleries')) {
             return $blank_if_empty ? new Tempcode() : do_template('RED_ALERT', array('_GUID' => '8692692a208449e3862d6ff482dce94b', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('galleries'))));
@@ -74,7 +85,7 @@ class Block_main_hero_slider
 
         $block_id = get_block_id($map);
 
-        $effect = isset($map['effect']) ? $map['effect'] : 'slide'; // Valid values: 'fade' or 'slide'
+        $effect = !empty($map['effect']) ? $map['effect'] : 'slide'; // Valid values: 'fade' or 'slide'
 
         $fullscreen = !empty($map['fullscreen']);
 

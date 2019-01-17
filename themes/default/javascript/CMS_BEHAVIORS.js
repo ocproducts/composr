@@ -1155,6 +1155,92 @@
         }
     };
 
+    // Implementation for [data-calc-height]
+    var initialCalcHeight = true;
+    var settingHeight = new WeakMap();
+    $cms.behaviors.calcHeight = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-calc-height]'), 'behavior.calcHeight');
+
+            els.forEach( function (el) {
+                setHeight(el);
+
+                // var mo = new MutationObserver(function () {
+                //     mo.disconnect();
+                //     setHeight(el);
+                //     mo.observe(el, { characterData: true, childList: true, subtree: true });
+                // });
+                //
+                // mo.observe( el, { characterData: true, childList: true, subtree: true });
+
+                if (window.ResizeObserver) {
+                    var initialObserve = true;
+                    var ro = new window.ResizeObserver(function () {
+                        if (initialObserve) {
+                            initialObserve = false;
+                            return;
+                        }
+
+                        ro.disconnect();
+                        setHeight(el);
+                        initialObserve = true;
+                        ro.observe(el);
+                    });
+
+                    ro.observe(el);
+                }
+            });
+
+            if (initialCalcHeight) {
+                initialCalcHeight = false;
+
+                window.addEventListener( 'resize', function () {
+                    document.querySelectorAll('[data-calc-height]').forEach(setHeight);
+                });
+
+                window.addEventListener( 'orientationchange', function () {
+                    document.querySelectorAll('[data-calc-height]').forEach(setHeight);
+                });
+            }
+
+            function setHeight( el ) {
+                if (settingHeight.get(el)) {
+                    return; // Prevent infinite loop
+                }
+
+                console.log('setHeight()', el);
+
+                settingHeight.set(el, true);
+
+                var cs = getComputedStyle( el ),
+                    wasHidden = ( cs.display === 'none' ),
+                    prevDisplay, prevVisibility;
+
+                if ( wasHidden ) {
+                    // Get the element position to restore it later
+                    prevDisplay = el.style.display;
+                    prevVisibility = el.style.visibility;
+
+                    // Place it so it displays as usually
+                    el.style.display = $dom.initial( el, 'display' );
+                    el.style.visibility = 'hidden';
+                }
+
+
+                el.style.setProperty( 'height', 'auto', 'important' );
+                el.offsetHeight; // Redraw
+                el.style.height = cs.height;
+
+                if ( wasHidden ) {
+                    el.style.display = prevDisplay;
+                    el.style.visibility = prevVisibility;
+                }
+
+                settingHeight.delete(el);
+            }
+        }
+    };
+
     // Implementation for [data-cms-slider]
     // Port of Bootstrap 4 Carousel http://getbootstrap.com/docs/4.1/components/carousel/
     $cms.behaviors.cmsSlider = {
@@ -1178,12 +1264,13 @@
         var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
 
         var Default = {
-            interval     : 5000,
-            keyboard     : true,
-            slide        : false,
-            pause        : 'hover',
-            wrap         : true,
-            animateHeight: 600
+            interval      : 5000,
+            keyboard      : true,
+            slide         : false,
+            pause         : 'hover',
+            wrap          : true,
+            animateHeight : 600,
+            disableIntervalOnMobile: false,
         };
 
         var Direction = {
@@ -1302,7 +1389,7 @@
                     this._intervalStartedAt = null;
                 }
 
-                if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-slider-item').length > 1)) {
+                if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-slider-item').length > 1) && (!this._config.disableIntervalOnMobile || !$cms.isCssMode('mobile'))) {
                     var self = this;
                     self._intervalStartedAt = Date.now();
                     this._interval = setInterval(function () {

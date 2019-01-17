@@ -415,7 +415,7 @@
      * @param { boolean } starting
      * @param { Element } [tooltipElement]
      * @param { boolean } [forceWidth]
-     * @param { Window } win
+     * @param { Window } [win]
      */
     $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltipElement, forceWidth, win) {
         bottom = Boolean(bottom);
@@ -583,10 +583,11 @@
 
     /**
      * @memberof $cms.ui
-     * @param question
-     * @param callback
-     * @param title
-     * @param unescaped
+     * @param { string } question
+     * @param { function } [callback]
+     * @param { string } [title]
+     * @param { boolean } [unescaped]
+     * @returns { Promise<boolean> }
      */
     $cms.ui.confirm = function confirm(question, callback, title, unescaped) {
         question = strVal(question);
@@ -634,8 +635,8 @@
     /**
      * @memberof $cms.ui
      * @param notice
-     * @param title
-     * @param unescaped
+     * @param [title]
+     * @param [unescaped]
      * @returns { Promise }
      */
     $cms.ui.alert = function alert(notice, title, unescaped) {
@@ -880,8 +881,8 @@
     var tempDisabledButtons = {};
     /**
      * @memberof $cms.ui
-     * @param btn
-     * @param [permanent]
+     * @param { HTMLButtonElement|HTMLInputElement } btn
+     * @param { boolean } [permanent]
      */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = Boolean(permanent);

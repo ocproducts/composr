@@ -182,7 +182,8 @@ For example:
 		padding-right: 0;
 	}
 
-	.menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .text {
+	.header-modern .menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .text,
+	.header-side .menu-dropdown.is-touch-interface .menu-dropdown-toggle-btn .text {
 		display: none;
 	}
 }

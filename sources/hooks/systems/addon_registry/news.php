@@ -188,6 +188,14 @@ class Hook_addon_registry_news
             'sources/hooks/systems/config/search_news.php',
             'themes/default/javascript/news.js',
             'sources/hooks/systems/actionlog/news.php',
+            'sources/blocks/main_news_grid.php',
+            'themes/default/templates/BLOCK_MAIN_NEWS_GRID.tpl',
+            'themes/default/templates/BLOCK_MAIN_NEWS_GRID_ITEM.tpl',
+            'sources/blocks/main_news_slider.php',
+            'themes/default/templates/BLOCK_MAIN_NEWS_SLIDER.tpl',
+            'themes/default/templates/BLOCK_MAIN_NEWS_SLIDER_SLIDE.tpl',
+            'sources/blocks/bottom_latest_news.php',
+            'themes/default/templates/BLOCK_BOTTOM_LATEST_NEWS.tpl',
         );
     }
 
@@ -212,6 +220,11 @@ class Hook_addon_registry_news
             'templates/NEWS_BOX.tpl' => 'block_main_news',
             'templates/CNS_MEMBER_PROFILE_BLOG.tpl' => 'cns_member_profile_blog',
             'templates/BLOCK_MAIN_IMAGE_FADER_NEWS.tpl' => 'block_main_image_fader_news',
+            'templates/BLOCK_BOTTOM_LATEST_NEWS.tpl' => 'block_bottom_latest_news',
+            'templates/BLOCK_MAIN_NEWS_GRID.tpl' => 'block_main_news_grid',
+            'templates/BLOCK_MAIN_NEWS_GRID_ITEM.tpl' => 'block_main_news_grid',
+            'templates/BLOCK_MAIN_NEWS_SLIDER.tpl' => 'block_main_news_slider',
+            'templates/BLOCK_MAIN_NEWS_SLIDER_SLIDE.tpl' => 'block_main_news_slider',
         );
     }
 
@@ -616,6 +629,127 @@ class Hook_addon_registry_news
                 'ARCHIVE_URL' => placeholder_url(),
                 'SUBMIT_URL' => placeholder_url(),
                 'WARNING_DETAILS' => '',
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_bottom_latest_news()
+    {
+        require_lang('news');
+
+        $news_items = array();
+        foreach (placeholder_array() as $k => $v) {
+            $news_items[] = array(
+                'DATE' => placeholder_date(),
+                'FULL_URL' => placeholder_url(),
+                'NEWS_TITLE' => lorem_word(),
+                'IMG_URL' => placeholder_image_url(),
+            );
+        }
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_BOTTOM_LATEST_NEWS', array(
+                'TITLE' => lorem_title(),
+                'NEWS_ITEMS' => $news_items,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_main_news_grid()
+    {
+        require_lang('news');
+
+        $news_text = new Tempcode();
+        $news_text2 = new Tempcode();
+
+        foreach (placeholder_array() as $k => $v) {
+            $map2 = array(
+                'GIVE_CONTEXT' => false,
+                'TAGS' => '',
+                'ID' => strval(placeholder_random_id()),
+                'TRUNCATE' => false,
+                'BLOG' => false,
+                'SUBMITTER' => lorem_word(),
+                'CATEGORY' => lorem_word(),
+                'CATEGORY_URL' => placeholder_url(),
+                '_CATEGORY' => strval(lorem_word()),
+                'IMG' => placeholder_image_url(),
+                '_IMG' => placeholder_image_url(),
+                'IMG_LARGE' => placeholder_image_url(),
+                'DATE' => placeholder_date(),
+                'DATE_RAW' => strval(placeholder_date_raw()),
+                'NEWS_TITLE' => lorem_title(),
+                'NEWS_TITLE_PLAIN' => lorem_title(),
+                'AUTHOR' => lorem_word(),
+                'AUTHOR_URL' => placeholder_url(),
+                'NEWS' => lorem_paragraph(),
+                'FULL_URL' => placeholder_url(),
+            );
+
+            $news_text->attach(do_template('BLOCK_MAIN_NEWS_GRID_ITEM', $map2));
+        }
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWS_GRID', array(
+                'BLOG' => false,
+                'TITLE' => lorem_title(),
+                'CONTENT' => $news_text,
+                'BRIEF' => $news_text2,
+                'FILTER' => '',
+                'ARCHIVE_URL' => placeholder_url(),
+                'SUBMIT_URL' => placeholder_url(),
+                'RSS_URL' => placeholder_url(),
+                'ATOM_URL' => placeholder_url(),
+                'PAGINATION' => false,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_main_news_slider()
+    {
+        require_lang('news');
+
+        $slides = new Tempcode();
+        $slides_count = 0;
+
+        foreach (placeholder_array() as $k => $v) {
+            $map2 = array(
+                'BLOCK_ID' => lorem_word(),
+                'ACTIVE' => false,
+                'ITEMS_COUNT' => strval(3),
+                'NEWS_ITEMS' => new Tempcode(),
+            );
+
+            $slides->attach(do_template('BLOCK_MAIN_NEWS_SLIDER_SLIDE', $map2));
+            $slides_count++;
+        }
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWS_SLIDER', array(
+                'BLOCK_ID' => lorem_word(),
+                'BLOG' => false,
+                'SLIDES' => $slides,
+                'SLIDES_COUNT' => strval($slides_count),
+                'SLIDES_COUNT_ARRAY' => ($slides_count > 1) ? range(1, $slides_count) : null,
+                'INTERVAL' => strval(6000),
             )), null, '', true)
         );
     }

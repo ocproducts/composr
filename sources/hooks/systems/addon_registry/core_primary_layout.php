@@ -138,6 +138,9 @@ class Hook_addon_registry_core_primary_layout
             'templates/GLOBAL_HTML_WRAP.tpl' => 'global_html_wrap',
             'templates/GLOBAL_HELPER_PANEL.tpl' => 'global_html_wrap',
             'templates/SCREEN_TITLE.tpl' => 'screen_title',
+            'templates/HEADER_CLASSIC.tpl' => 'haeder_classic',
+            'templates/HEADER_MODERN.tpl' => 'header_modern',
+            'templates/HEADER_SIDE.tpl' => 'header_side',
         );
     }
 
@@ -293,6 +296,54 @@ class Hook_addon_registry_core_primary_layout
                 'TITLE' => lorem_phrase(),
                 'AWARDS' => $awards,
             )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__header_classic()
+    {
+        $out = do_lorem_template('HEADER_CLASSIC', array());
+
+        return array(
+            $out
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__header_modern()
+    {
+        $out = do_lorem_template('HEADER_MODERN', array());
+
+        return array(
+            $out
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__header_side()
+    {
+        $out = do_lorem_template('HEADER_SIDE', array());
+
+        return array(
+            $out
         );
     }
 }

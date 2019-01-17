@@ -5,6 +5,7 @@
 
 .do-next-page-question {
 	font-size: 1em;
+	text-align: center;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.do-next-page-question {
@@ -18,7 +19,7 @@
 }
 /*{+START,CSS_MODE,desktop}*/
 	.do-next-section-wrap {
-		width: 606px;
+		width: 600px;
 	}
 /*{+END}*/
 
@@ -26,7 +27,8 @@
 	margin-top: 0;
 }
 
-.do-next-section, .do-theme-items {
+.do-next-section, 
+.do-theme-items {
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -37,6 +39,8 @@
 }
 
 .do-next-item {
+	min-width: 150px;
+	flex: 1 1 0;
 	background-color: {$GET,WB};
 	min-height: 8.5em;
 	border-right: 1px solid {$GET,standard_border};
@@ -50,19 +54,24 @@
 	color: {$GET,WB}
 }
 
+.do-next-item a {
+	transition: color 0.15s ease-in-out;
+}
+
 .do-next-item:hover a,
 .do-next-item.focus a {
 	color: {$GET,WB};
-	transition: color  0.15s ease-in-out;
 }
 
-.do-next-item, .do-theme-items>div {
+.do-next-item, 
+.do-theme-items > div {
 	padding: 0.75em;
 	text-align: center;
 	font-size: 0.9em;
 }
 
-.active-item td, td.active-item {
+.active-item td,
+td.active-item {
 	background-color: {$GET,area_2_background} !important;
 }
 .active-item td.do-theme-items>div, td.active-item.do-theme-items>div {
@@ -81,6 +90,7 @@
 	padding-bottom: 0.5em;
 }
 
-.do-next-item a, .do-theme-items a {
+.do-next-item a, 
+.do-theme-items a {
 	text-decoration: none;
 }

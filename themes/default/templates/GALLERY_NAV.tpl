@@ -21,7 +21,7 @@
 				<a class="btn btn-primary btn-scr buttons--previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{BACK_URL}}
-				<span class="btn btn-primary btn-scr buttons--previous-none">{+START,INCLUDE,ICON}NAME=buttons/previous_none{+END}  <span>{!PREVIOUS}</span></span>
+				<span class="btn btn-primary disabled btn-scr">{+START,INCLUDE,ICON}NAME=buttons/previous_none{+END}  <span>{!PREVIOUS}</span></span>
 			{+END}
 		</div>
 
@@ -40,7 +40,7 @@
 				<a class="btn btn-primary btn-scr buttons--next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
 			{+END}
 			{+START,IF_EMPTY,{NEXT_URL}}
-				<span class="btn btn-primary btn-scr buttons--next-none"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next_none{+END}</span>
+				<span class="btn btn-primary disabled btn-scr"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next_none{+END}</span>
 			{+END}
 		</div>
 

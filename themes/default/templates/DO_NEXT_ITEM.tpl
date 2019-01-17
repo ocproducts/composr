@@ -1,6 +1,6 @@
 {$SET,rand_do_next_item,{$RAND}}
 
-<div id="do-next-item-{$GET,rand_do_next_item}" class="do-next-item" style="width: {$DIV*,100,{$MIN,5,{NUM_SIBLINGS}}}%" data-tpl="doNextItem" data-tpl-params="{+START,PARAMS_JSON,URL,TARGET,WARNING,AUTO_ADD,rand_do_next_item}{_*}{+END}">
+<div id="do-next-item-{$GET,rand_do_next_item}" class="do-next-item" data-tpl="doNextItem" data-tpl-params="{+START,PARAMS_JSON,URL,TARGET,WARNING,AUTO_ADD,rand_do_next_item}{_*}{+END}">
 
 	{+START,IF_NON_EMPTY,{DOC}}<div id="doc-{$GET,rand_do_next_item}" style="display: none">{DOC}</div>{+END}
 

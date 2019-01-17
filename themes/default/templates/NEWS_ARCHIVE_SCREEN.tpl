@@ -1,8 +1,9 @@
-{TITLE}
+<div class="news-archive-screen">
+	{TITLE}
 
-<div class="clearfix" itemprop="significantLinks">
-	{CONTENT}
-</div>
+	<div class="news-archive-screen-content clearfix" itemprop="significantLinks">
+		{CONTENT}
+	</div>
 
 {+START,IF_PASSED,CAT}
 	{$REVIEW_STATUS,news_category,{CAT}}
@@ -26,3 +27,4 @@
 	2_REL=edit
 	2_ICON=admin/edit_this_category
 {+END}
+</div>

@@ -169,4 +169,26 @@
             window.tickerTick(myId, 400);
         }, 50);
     };
+
+    $cms.templates.blockMainNewsSlider = function (params, container) {
+        $dom.on(container, 'focusin focusout', '.slide-news-item', function (e, target) {
+            if (target.contains(e.relatedTarget)) {
+                return;
+            }
+
+            target.classList.toggle('focus', e.type === 'focusin');
+        });
+
+        $dom.on(container, 'mouseover mouseout', '.slide-news-item', function (e, newsItemEl) {
+            if (newsItemEl.contains(e.relatedTarget) || !newsItemEl.querySelector('.slide-news-item-summary')) {
+                return;
+            }
+
+            if (e.type === 'mouseover') {
+                $dom.slideDown(newsItemEl.querySelector('.slide-news-item-summary'), 'fast');
+            } else {
+                $dom.slideUp(newsItemEl.querySelector('.slide-news-item-summary'), 'fast');
+            }
+        });
+    };
 }(window.$cms, window.$util, window.$dom));

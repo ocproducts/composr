@@ -3,12 +3,16 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-.box---block-main-bottom-bar>.box-inner {
+.box---block-main-bottom-bar > .box-inner {
 	margin: 0;
 }
 
-.box---block-main-bottom-bar>.box-inner>h2 {
+.box---block-main-bottom-bar > .box-inner > h2 {
 	margin: 0;
+}
+
+#panel-bottom .box---block-main-bottom-bar > .box-inner {
+	margin: 10px 15px;
 }
 
 .cns-bottom-bar-left-column {
@@ -26,6 +30,10 @@
 .cns-stats-table {
 	border: 0;
 	border-collapse: collapse;
+}
+
+#panel-bottom .cns-stats-table {
+	width: auto;
 }
 
 .cns-stats-usersonline-1, .cns-stats-main-1 {

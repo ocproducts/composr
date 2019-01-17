@@ -30,7 +30,9 @@
 			{+END}
 		{+END}
 
-		{$GET,hero_slider}
+		{+START,IF,{$IS_NON_EMPTY,{$TRIM,{$GET,hero_slider}}}}
+			{$GET,hero_slider}
+		{+END}
 		
 		<div class="container">
 			{$,By default the top panel contains the admin menu, community menu, member bar, etc}
@@ -82,30 +84,38 @@
 					</div>
 				{+END}
 			</div>
-	
-			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
-				<div id="panel-bottom" role="complementary">
+		</div>
+
+		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
+			<div id="panel-bottom" role="complementary">
+				<div class="panel-bottom-inner container">
 					{$LOAD_PANEL,bottom}
 				</div>
-			{+END}
-	
-			{+START,IF_NON_EMPTY,{$MESSAGES_BOTTOM}}
+			</div>
+		{+END}
+
+		{+START,IF_NON_EMPTY,{$MESSAGES_BOTTOM}}
+			<div class="container">
 				<div class="global-messages">
 					{$MESSAGES_BOTTOM}
 				</div>
-			{+END}
-	
-			{+START,IF,{$SHOW_FOOTER}}
-				{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
-			{+END}
-	
-			{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
-			{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
+			</div>
+		{+END}
+
+		{+START,IF,{$SHOW_FOOTER}}{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}
+			<div class="container">
+				{$CHAT_IM}
+			</div>
+		{+END}{+END}
+
+		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
+		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
+			<div class="container">
 				<div class="global-messages" id="global-messages-2">
 					{$LATE_MESSAGES}
 				</div>
-			{+END}
-		</div>
+			</div>
+		{+END}
 
 		<noscript>
 			{!JAVASCRIPT_REQUIRED}
@@ -113,7 +123,7 @@
 
 		{$,This is the main site footer}
 		{+START,IF,{$SHOW_FOOTER}}
-			<footer class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
+			<footer class="footer clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
 				<div class="footer-inner container">
 					<div class="global-footer-left block-desktop">
 						{+START,SET,FOOTER_BUTTONS}

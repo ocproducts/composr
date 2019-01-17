@@ -571,8 +571,8 @@
         var textLarge = $cms.filter.nl(params.textLarge);
 
         $dom.on(el, 'mouseover', function (e) {
-            var window = $cms.getMainCmsWindow(true);
-            window.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
+            var win = $cms.getMainCmsWindow(true);
+            win.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, win);
         });
     };
 

@@ -53,6 +53,6 @@ class Hook_config_google_fonts
      */
     public function get_default()
     {
-        return 'Open Sans';
+        return 'Roboto';
     }
 }

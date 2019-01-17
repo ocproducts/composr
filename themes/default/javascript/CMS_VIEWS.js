@@ -1401,7 +1401,7 @@
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
                 // Intentionally using $IMG instead of $IMG_INLINE as data URIs trigger a CSP warning when used during a 'beforeunload' event handler for some reason.
-                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" /></div>');
+                $dom.html(div, '<div aria-busy="true" class="loading-box box"><div class="box-inner"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" /></div></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($dom.$('#loading-image')) {
@@ -1646,7 +1646,7 @@
                 $cms.setIcon(helperPanelToggleIcon, 'helper_panel/hide', '{$IMG;,icons/helper_panel/hide}');
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
-                    $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
+                    $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}').then(function (answer) {
                         if (answer) {
                             _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle);
                         }
@@ -1704,6 +1704,14 @@
             return this.el.classList.contains('is-sticky');
         },
 
+        isClassic: function () {
+            return this.el.classList.contains('header-classic');
+        },
+
+        isModern: function () {
+            return this.el.classList.contains('header-modern');
+        },
+        
         isSideMenu: function (andOpen) {
             return this.el.classList.contains('header-side') && (!andOpen || this.el.classList.contains('is-side-menu-open'));
         },

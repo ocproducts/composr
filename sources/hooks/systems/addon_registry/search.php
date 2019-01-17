@@ -147,7 +147,8 @@ class Hook_addon_registry_search
             'sources/hooks/systems/config/maximum_autocomplete_suggestions.php',
             'sources/hooks/systems/config/minimum_autocomplete_past_search.php',
             'sources/hooks/systems/config/block_top_search.php',
-            'themes/default/javascript/search.js',
+            'sources/blocks/bottom_tag_cloud.php',
+            'themes/default/templates/BLOCK_BOTTOM_TAG_CLOUD.tpl',
         );
     }
 
@@ -180,6 +181,7 @@ class Hook_addon_registry_search
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_DATE.tpl' => 'search_form_screen',
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_DATE.tpl' => 'search_form_screen',
             'templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_TIME.tpl' => 'search_form_screen',
+            'templates/BLOCK_BOTTOM_TAG_CLOUD.tpl' => 'block_bottom_tag_cloud',
         );
     }
 
@@ -313,6 +315,33 @@ class Hook_addon_registry_search
         return array(
             do_lorem_template('OPENSEARCH', array(
                 'DESCRIPTION' => lorem_paragraph(),
+            ), null, false, null, '.xml', 'xml')
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_bottom_tag_cloud()
+    {
+        $tpl_tags = array();
+
+        foreach (placeholder_array() as $v) {
+            $tpl_tags = array(
+                'TAG' => lorem_word(),
+                'LINK' => placeholder_url(),
+            );
+        }
+
+        return array(
+            do_lorem_template('BLOCK_BOTTOM_TAG_CLOUD', array(
+                'BLOCK_ID' => lorem_word(),
+                'TITLE' => lorem_title(),
+                'TAGS' => $tpl_tags,
             ), null, false, null, '.xml', 'xml')
         );
     }

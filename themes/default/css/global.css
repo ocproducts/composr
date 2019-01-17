@@ -49,7 +49,7 @@ In mobile mode:
 {$CSS_MODE,smartphone_landscape,667-982,mobileModeMedia}/*Based on from iPhone6 landscape up to our tablet size; also good for small tablets in portrait mode*/
 {$CSS_MODE,tablet_fixed_viewport,982-982,mobileModeDiscard}/*This corresponds to the fixed width tablet mode viewport defined in HTML_HEAD.tpl optimised for landscape mode; fixed width is not on by default, so tablet is the same as desktop in that case*/
 {$CSS_MODE,regular_desktop,982-infinity,mobileModeMedia}/*1024 is considered the industry-standard, which is 982 with scrollbar; also good for small tablets in landscape mode and large tablets in portrait mode*/
-{$CSS_MODE,large_desktop,1200-infinity,mobileModeMedia}/*Also good for tablets in landscape mode*/
+{$CSS_MODE,large_desktop,1366-infinity,mobileModeMedia}/*Also good for large tablets in landscape mode*/
 
 /*
 =========================
@@ -120,7 +120,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#2388ef,site_name_text_color,100% seed}
 
 /* Borders */
-{$THEMEWIZARD_COLOR,#dddddd,standard_border,100% dddddd}
+{$THEMEWIZARD_COLOR,#dddddd,standard_border,100% DDDDDD}
 {$THEMEWIZARD_COLOR,#9b9b9b,dark_border,70% standard_border + 30% BW}
 {$THEMEWIZARD_COLOR,#b7d8fa,pale_border,33% seed + 67% WB}
 {$THEMEWIZARD_COLOR,#b7d8fa,point_of_interest_border,33% seed + 67% WB}
@@ -139,9 +139,10 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#d3e7fc,area_hover_2_background,20% seed + 80% WB}
 {$THEMEWIZARD_COLOR,#ffffff,area_current_background,100% WB}
 {$THEMEWIZARD_COLOR,#d7e6f5,point_of_interest_background,97% area_2_background + 2% BW}
+{$THEMEWIZARD_COLOR,#444444,panel_bottom_background,100% 444444}
 {$THEMEWIZARD_COLOR,#333333,footer_background,100% 333333}
-
 {$THEMEWIZARD_COLOR,#333333,tooltip_background,100% 333333}
+{$THEMEWIZARD_COLOR,#e9ecef,input_disabled_background,100% E9ECEF}
 
 /* Backgrounds, employing color wheel theory */
 {$THEMEWIZARD_COLOR,#d3e7fc,area_highlight_background,20% seed + 80% WB}
@@ -170,10 +171,10 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#5aa6f3,box_title_background_2,75% seed + 25% WB}
 
 /* Special colour for code/quote boxes */
-{$THEMEWIZARD_COLOR,#7bb8f5,code_title_background,60% seed + 40% WB}
+{$THEMEWIZARD_COLOR,#2388ef,code_title_background,100% seed}
 {$THEMEWIZARD_COLOR,#3e3f40,code_text,25% code_background + 85% BW}
 {$THEMEWIZARD_COLOR,#f9fcfe,code_background,25% area_background + 75% WB}
-{$THEMEWIZARD_COLOR,#6aaef5,code_border,68% seed + 32% WB}
+{$THEMEWIZARD_COLOR,#2388ef,code_border,100% seed}
 
 /* Drop down menus should look 'above' the site */
 {$THEMEWIZARD_COLOR,#f8f8f8,dropdown_menu_item_background,100% f8f8f8}
@@ -184,6 +185,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#f1f1f1,message_highlighted_part,40% standard_border + 60% WB}
 
 /* Footer */
+{$THEMEWIZARD_COLOR,#ffffff,panel_bottom_text,100% WB}
 {$THEMEWIZARD_COLOR,#78b6f5,footer_tinting,61% seed + 39% WB}
 {$THEMEWIZARD_COLOR,#ffffff,footer_text,100% WB}
 {$THEMEWIZARD_COLOR,#d0e6fc,inverted_text,35% footer_tinting + 65% WB}
@@ -225,7 +227,7 @@ In mobile mode:
 {$SET,stickied_header_modern_height,70px}
 {$SET,border_radius,4px}
 {$SET,border_radius_lg,6px}
-{$SET,font_weight_light,300}
+{$SET,font_weight_light,300} /**/
 {$SET,font_weight_medium,500} /* Varies by font: 500 for Roboto, 600 for Open Sans */
 
 {$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.075}}
@@ -271,7 +273,7 @@ body {
 	line-height: 1.5;
 	color: {$GET,body_color};
 	text-align: left;
-	background-color: #fff;
+	background-color: {$GET,WB};
 }
 
 [tabindex="-1"]:focus {
@@ -566,7 +568,6 @@ template {
 	display: none !important;
 }
 
-
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
 	margin-bottom: 7px;
@@ -578,6 +579,7 @@ h1, h2, h3, h4, h5, h6,
 
 h1, .h1 {
 	font-size: 35px;
+	font-weight: {$GET,font_weight_light};
 }
 
 h2, .h2 {
@@ -656,10 +658,6 @@ textarea, input, code {
 	font-size: 1em;
 }
 
-h1, h2, h3 {
-	/*border-bottom: 1px solid {$GET,pale_border};*/
-}
-
 .contrast-box {
 	padding: 15px 30px;
 	background-color: rgba(0, 0, 0, 0.5);
@@ -683,21 +681,31 @@ td, th {
 	vertical-align: top;
 	padding: 0.25em;
 }
-th>p:first-child, td>p:first-child, th>h2:first-child, td>h3:first-child {
+
+th > p:first-child,
+td > p:first-child,
+th > h2:first-child,
+td > h3:first-child {
 	margin-top: 0;
 }
-th>p:last-child, td>p:last-child {
+
+th > p:last-child, 
+td > p:last-child {
 	margin-bottom: 0;
 }
+
 th, .fake-th {
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 	font-weight: {$GET,font_weight_medium};
 	text-align: center;
 }
-[aria-sort="ascending"].table-header-sorted, [aria-sort="descending"].table-header-sorted {
+
+[aria-sort="ascending"].table-header-sorted, 
+[aria-sort="descending"].table-header-sorted {
 	font-style: italic;
 }
+
 .table-header-sorting {
 	float: right;
 }
@@ -1075,17 +1083,57 @@ header h1 {
 	text-decoration: none;
 }
 
+.logo-image {
+	max-width: 100%;
+	object-fit: contain;
+}
+
 .header .logo-image-white {
 	display: none;
+}
+
+.header-classic .logo {
+	padding: 0;
 }
 
 .header-classic .logo-image {
 	width: 100%;
 }
 
-.header-classic .global-navigation-inner {
+@media (max-width: 539.98px) {
+	.header-classic .logo-image-large {
+		display: none !important;
+	}
+	
+	.header-classic .logo-image-color {
+		display: block !important;
+	}
+}
+
+@media (min-width: 540px) {
+	.header-classic .logo-image-large {
+		display: block !important;
+	}
+
+	.header-classic .logo-image-color {
+		display: none !important;
+	}
+}
+
+.header-classic .global-navigation {
+	position: relative;
+}
+
+.header-classic .global-navigation-items {
 	display: flex;
 	min-height: 60px;
+}
+
+.header-classic.is-touch-interface .menu-dropdown-content {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
 }
 
 header.is-see-through .logo-image-color {
@@ -1141,11 +1189,6 @@ html.is-scrolled .header-modern.is-sticky {
 	height: inherit;
 }
 
-.header-modern .logo-image {
-	max-width: 100%;
-	object-fit: contain;
-}
-
 .header-modern .global-navigation {
 	display: flex;
 }
@@ -1195,14 +1238,17 @@ html.is-scrolled .header-modern.is-sticky.with-white-navbar {
 	box-shadow: {$GET,box_shadow_sm};
 }
 
-header.with-seed-navbar .global-navigation {
+.header-classic.with-seed-navbar .global-navigation,
+.header-modern.with-seed-navbar {
 	color: {$GET,WB};
 	background: {$GET,seed};
 }
 
+
 header.with-seed-navbar .logo-link,
-header.with-seed-navbar .menu-dropdown-item-a.toplevel-link,
-header.with-seed-navbar .top-button {
+header.with-seed-navbar .menu-dropdown-toggle-btn,
+header.with-seed-navbar.is-hover-interface .menu-dropdown-item-a.toplevel-link,
+header.with-seed-navbar.is-hover-interface .top-button {
 	color: {$GET,WB};
 }
 
@@ -1249,6 +1295,10 @@ header.with-seed-navbar .top-button:hover {
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
 }
 
+.top-button:hover {
+	text-decoration: none;
+}
+
 .header.is-touch-interface .top-button-wrapper.is-popup-open .top-button {
 	border-left: 1px solid {$GET,standard_border};
 	border-right: 1px solid {$GET,standard_border};
@@ -1262,11 +1312,9 @@ header.with-seed-navbar .top-button:hover {
 }
 
 .top-button-bubble {
-	position: absolute;
-	right: 2px;
 	border-radius: {$GET,border_radius};
-	top: 50%;
 	margin-top: -50%;
+	margin-left: -25%;
 	background: rgba(0, 0, 0, 0.7);
 	padding: 0 3px;
 	font-size: 11px;
@@ -1316,7 +1364,7 @@ header.with-seed-navbar .top-button:hover {
 	height: 24px;
 }
 
-@media(max-width: 540px) {
+@media(max-width: 539.98px) {
 	.global-navigation .top-login .bock-top-login-links .li-join-text,
 	.global-navigation .top-login .bock-top-login-links .li-login-text {
 		display: none;
@@ -1428,11 +1476,6 @@ html.has-header-side #main-website-inner {
 	margin-bottom: 10px;
 }
 
-.header-side .logo-image {
-	max-width: 100%;
-	object-fit: contain;
-}
-
 .header-side::before {
 	content: '';
 	display: block;
@@ -1480,7 +1523,6 @@ html.has-header-side #main-website-inner {
 	margin-bottom: 0.8em;
 	min-width: 300px;
 	padding-bottom: 6px; /* For better alignment with breadcrumbs to the right */
-	font-weight: {$GET,font_weight_light};
 }
 .screen-title img {
 	vertical-align: middle;
@@ -1561,14 +1603,15 @@ html.has-header-side #main-website-inner {
 	position: relative;
 	top: 0.15em;
 	transform: rotate(45deg);
-	vertical-align: 0.2em;
+	vertical-align: 0.3em;
 	width: 0.5em;
 	margin-left: 0.3em;
 	margin-right: 0.6em;
 	opacity: 0.7;
 }
 
-.breadcrumbs .sep:last-child::after, .associated-breadcrumbs .sep:last-child::after {
+.breadcrumbs .sep:last-child::after, 
+.associated-breadcrumbs .sep:last-child::after {
 	display: none !important;
 }
 
@@ -1658,6 +1701,66 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 #panel-right {
 	margin-left: 1em;
+}
+
+#panel-bottom {
+	color: {$GET,panel_bottom_text};
+	background-color: {$GET,panel_bottom_background};
+	overflow: hidden;
+	border-top: 5px solid {$GET,seed};
+}
+
+#panel-bottom .box {
+	border-radius: 0;
+	background-color: transparent;
+	border: none;
+}
+
+#panel-bottom .box > .box-inner > h1, 
+#panel-bottom .box > .box-inner > h2, 
+#panel-bottom .box > .box-inner > h3, 
+#panel-bottom .box > .box-inner > h4, 
+#panel-bottom .box > .box-inner > h5, 
+#panel-bottom .box > .box-inner > h6, 
+#panel-bottom .box > .toggleable-tray-title {
+	background: transparent;
+	text-align: left;
+	text-transform: uppercase;
+	border-radius: 0;
+	margin: 0.5em 0;
+	background-color: transparent !important;
+	color: {$GET,panel_bottom_text};
+	border-bottom: 1px solid {$GET,panel_bottom_text};
+	white-space: nowrap;
+}
+
+#panel-bottom td,
+#panel-bottom th.de-th,
+#panel-bottom th.de-th a,
+#panel-bottom th.de-th a:hover,
+#panel-bottom th.de-th a:visited {
+	color: {$GET,panel_bottom_text};
+}
+
+/*{+START,CSS_MODE,desktop}*/
+#panel-bottom .comcode-page {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#panel-bottom .comcode-page > * {
+	flex-grow: 1;
+	flex-basis: 0;
+	min-width: 25%;
+}
+/*{+END}*/
+
+#panel-bottom .edit-page-link-inline-wrapper {
+	display: none;
+}
+
+#panel-bottom ~ footer {
+	margin-top: 0;
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -1764,7 +1867,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 .global-message {
 	min-height: 21px;
 	margin-top: 0.75em;
-	margin-bottom: 1em;
+	margin-bottom: 0.75em;
 	display: flex;
 }
 
@@ -2222,6 +2325,15 @@ body button.button-hyperlink:hover {
 	cursor: inherit !important;
 }
 
+.subtle-link {
+	transition: color 0.15s ease-in-out;
+}
+
+.subtle-link:hover,
+.subtle-link:focus {
+	color: {$GET,a.hover} !important;
+}
+
 /* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */
 .trinav-wrap {
 	overflow: hidden;
@@ -2269,10 +2381,10 @@ body button.button-hyperlink:hover {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.trinav-mid.text>span::before {
+	.trinav-mid.text > span::before {
 		content: "(";
 	}
-	.trinav-mid.text>span::after {
+	.trinav-mid.text > span::after {
 		content: ")";
 	}
 /*{+END}*/
@@ -2333,8 +2445,6 @@ p.red-alert {
 
 .inline-wip-message {
 	border: 1px solid {$GET,dark_border};
-	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
-	background-size: 24px 24px;
 	color: {$GET,slightly_seeded_text};
 }
 
@@ -2427,6 +2537,35 @@ th.metadata-title {
 .img-thumb-opaque .img-thumb {
 	transition: none !important;
 }
+
+.chevron {
+	border-style: solid;
+	border-width: 0.25em 0.25em 0 0;
+	display: inline-block;
+	position: relative;
+	top: 0.15em;
+	left: 0.15em;
+	transform: rotate(-45deg);
+	vertical-align: 0.1em;
+	width: 0.8em;
+	height: 0.8em;
+}
+
+.chevron-right {
+	left: 0;
+	transform: rotate(45deg);
+}
+
+.chevron-bottom {
+	top: 0;
+	transform: rotate(135deg);
+}
+
+.chevron-left {
+	left: 0.25em;
+	transform: rotate(-135deg);
+}
+
 
 /*
 =========================
@@ -2655,7 +2794,8 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	margin-top: 1.5em;
 	padding-top: 0.5em;
 }
-.boxless-space .box .box + .box, .comments-wrapper .boxless-space .box + .box { /* Nested dividers more subtle */
+.boxless-space .box .box + .box, 
+.comments-wrapper .boxless-space .box + .box { /* Nested dividers more subtle */
 	border-top: 0 !important;
 }
 .global-side-panel .boxless-space .box .box + .box {
@@ -2682,29 +2822,29 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box-inner>h1,
-.box .box .box-inner>h2,
-.box .box .box-inner>h3,
-.box .box .box-inner>h4,
-.box .box .box-inner>h5,
-.box .box .box-inner>h6,
+.box .box .box-inner > h1,
+.box .box .box-inner > h2,
+.box .box .box-inner > h3,
+.box .box .box-inner > h4,
+.box .box .box-inner > h5,
+.box .box .box-inner > h6,
 .box .box .toggleable-tray-title,
-#standalone-html-wrap .box .box .box .box-inner>h2,
-#standalone-html-wrap .box .box .box .box-inner>h3 {
+#standalone-html-wrap .box .box .box .box-inner > h2,
+#standalone-html-wrap .box .box .box .box-inner > h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone-html-wrap) as those should show verbatim */
-.box .box .box-inner>h1 a,
-.box .box .box-inner>h2 a,
-.box .box .box-inner>h3 a,
-.box .box .box-inner>h4 a,
-.box .box .box-inner>h5 a,
-.box .box .box-inner>h6 a,
+.box .box .box-inner > h1 a,
+.box .box .box-inner > h2 a,
+.box .box .box-inner > h3 a,
+.box .box .box-inner > h4 a,
+.box .box .box-inner > h5 a,
+.box .box .box-inner > h6 a,
 .box .box .toggleable-tray-title a,
-#standalone-html-wrap .box .box .box .box-inner>h2 a,
-#standalone-html-wrap .box .box .box .box-inner>h3 a {
+#standalone-html-wrap .box .box .box .box-inner > h2 a,
+#standalone-html-wrap .box .box .box .box-inner > h3 a {
 	color: {$GET,a.hover};
 }
 
@@ -2870,13 +3010,13 @@ h3 .toggleable-tray-button .icon {
 .box.overlay {
 	box-shadow: 0px 0px 20px {$GET,dark_shadow};
 }
-.box.overlay.lightbox>.box-inner {
+.box.overlay.lightbox > .box-inner {
 	margin: 0;
 }
 .box.overlay .associated-links-block-group {
 	margin: 1em;
 }
-.box.overlay.lightbox>.box_inner video {
+.box.overlay.lightbox > .box-inner video {
 	display: block;
 }
 
@@ -4438,75 +4578,95 @@ ul.horizontal-links / ul.horizontal-links-comma - a group of associated links di
 There is 'actions-list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
 */
 
-ul.associated-links-block-group.horizontal-links>li:first-child::before, p.associated-link::before, div.associated-link::before {
+ul.associated-links-block-group.horizontal-links > li:first-child::before,
+p.associated-link::before,
+div.associated-link::before {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links>li:first-child::before, p.associated-link::before, div.associated-link::before {
+	ul.associated-links-block-group.horizontal-links > li:first-child::before,
+	p.associated-link::before, 
+	div.associated-link::before {
 		content: "( " !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group.horizontal-links>li:last-child::after, p.associated-link::after, div.associated-link::after {
+ul.associated-links-block-group.horizontal-links > li:last-child::after,
+p.associated-link::after,
+div.associated-link::after {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links>li:last-child::after, p.associated-link::after, div.associated-link::after {
+	ul.associated-links-block-group.horizontal-links>li:last-child::after,
+	p.associated-link::after,
+	div.associated-link::after {
 		content: " )" !important;
 	}
 /*{+END}*/
 span.associated-link, a.associated-link, form.associated-link {
 	white-space: nowrap;
 }
-ul.associated-links-block-group>li::before, span.associated-link::before, a.associated-link::before, form.associated-link::before {
+ul.associated-links-block-group>li::before,
+span.associated-link::before, 
+a.associated-link::before, 
+form.associated-link::before {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group>li::before, span.associated-link::before, a.associated-link::before, form.associated-link::before {
+	ul.associated-links-block-group > li:first-child::before,
+	span.associated-link::before, 
+	a.associated-link::before, 
+	form.associated-link::before {
 		content: "(" !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group>li:first-child::before, 
+ul.associated-links-block-group > li:first-child::before, 
 span.associated-link:first-child::before, 
 a.associated-link:first-child::before, 
 form.associated-link:first-child::before {
 	vertical-align: baseline !important;
 }
 
-ul.associated-links-block-group.horizontal-links>li::after { /* Undoes the above rules for if 'horizontal-links' is set (the rule further up will run instead and the middot one below) */
+ul.associated-links-block-group.horizontal-links > li::after { /* Undoes the above rules for if 'horizontal-links' is set (the rule further up will run instead and the middot one below) */
 	content: "" !important;
 }
-ul.associated-links-block-group>li::after, span.associated-link::after, a.associated-link::after, form.associated-link::after {
+ul.associated-links-block-group>li::after,
+span.associated-link::after,
+a.associated-link::after,
+form.associated-link::after {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group>li::after, span.associated-link::after, a.associated-link::after, form.associated-link::after {
+	ul.associated-links-block-group > li::after,
+	span.associated-link::after,
+	a.associated-link::after,
+	form.associated-link::after {
 		content: ")" !important;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links>li::before,
-	.horizontal-meta-details li::before,
-	.horizontal-links>li::before,
-	.horizontal-ticker li::before {
-		vertical-align: -20%;
-	}
-
-	ul.associated-links-block-group.horizontal-links>li::before,
-	.horizontal-meta-details li::before,
-	.horizontal-links>li::before,
-	.horizontal-ticker li::before {
-		padding: 0 0.5em;
-		content: "\00b7" !important; /* a &middot; */
+	ul.associated-links-block-group.horizontal-links > li:not(:first-child)::before,
+	.horizontal-meta-details li:not(:first-child)::before,
+	.horizontal-links > li:not(:first-child)::before,
+	.horizontal-ticker li:not(:first-child)::before {
+		/* CSS based middot */
+		margin: 0 0.5em;
+		content: "" !important;
+		border-radius: 50%;
+		width: 3px;
+		height: 3px;
+		background-color: {$GET,dark_border};
+		display: inline-block;
+		vertical-align: middle;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	ul.associated-links-block-group.horizontal-links>li::before,
-	.horizontal-meta-details li::before,
-	.horizontal-links>li::before,
-	.horizontal-ticker li::before {
+	ul.associated-links-block-group.horizontal-links > li:not(:first-child)::before,
+	.horizontal-meta-details li:not(:first-child)::before,
+	.horizontal-links > li:not(:first-child)::before,
+	.horizontal-ticker li:not(:first-child)::before {
 		padding: 0 0.5em;
 		content: "|" !important;
 		font-size: 0.8em;
@@ -4516,7 +4676,7 @@ ul.associated-links-block-group>li::after, span.associated-link::after, a.associ
 	.horizontal-meta-details li:first-child::before,
 	.horizontal-links > li:first-child::before,
 	.horizontal-ticker li:first-child::before {
-		display: none;
+		/*display: none;*/
 	}
 
 	.with-images ul.associated-links-block-group.horizontal-links>li::before,
@@ -4546,36 +4706,53 @@ ul.associated-links-block-group>li::after, span.associated-link::after, a.associ
 .horizontal-ticker li:first-child::before,
 .horizontal-links-comma li:first-child::before {
 	/* Undoes the middot/comma separator */
-	content: "" !important;
-	padding-left: 0 !important;
-	padding-right: 0 !important;
+	/*display: none;*/
 }
-ul.associated-link, ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal-ticker {
+ul.associated-link, 
+ul.horizontal-meta-details, 
+ul.horizontal-links, 
+ul.horizontal-links-comma, 
+ul.horizontal-buttons, 
+.horizontal-ticker {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
+
 .horizontal-buttons {
 	list-style: none;
 }
+
 ul.horizontal-links-comma {
 	vertical-align: baseline !important;
 	width: auto !important;
 }
+
 ul.associated-link {
 	display: block;
 }
-ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal-ticker {
+
+ul.horizontal-meta-details, 
+ul.horizontal-links, 
+ul.horizontal-links-comma, 
+ul.horizontal-buttons, 
+.horizontal-ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
 	display: inline-block;
 	width: 100%;
 }
-ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal-buttons>li, .horizontal-ticker>li {
+
+ul.associated-link > li, 
+.horizontal-meta-details > li, 
+.horizontal-links > li, 
+ul.horizontal-links-comma > li, 
+.horizontal-buttons > li, 
+.horizontal-ticker > li {
 	display: inline;
 	margin: 0;
 	padding: 0;
 }
-ul.associated-link>li {
+ul.associated-link > li {
 	display: block !important; /* Undoes "display: inline" above */
 }
 
@@ -4604,7 +4781,7 @@ ul.horizontal-links form {
 	}
 /*{+END}*/
 
-.associated-links-block-group>li{
+.associated-links-block-group > li{
 	margin: 0.5em 0 !important;
 	white-space: nowrap; /* To force breaking between links */
 }
@@ -4766,7 +4943,7 @@ ul.buttons-group, ul.associated-links-block-group {
 	font-size: 14px;
 	line-height: 1.5;
 	color: #495057;
-	background-color: #fff;
+	background-color: {$GET,WB};
 	background-clip: padding-box;
 	border: 1px solid {$GET,standard_border};
 	border-radius: {$GET,border_radius};
@@ -4780,10 +4957,10 @@ ul.buttons-group, ul.associated-links-block-group {
 
 .form-control:focus {
 	color: #495057;
-	background-color: #fff;
-	border-color: #80bdff;
+	background-color: {$GET,WB};
+	border-color: {$COLOR_LIGHTEN,{$GET,seed},25%};
 	outline: 0;
-	box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed},0.25};
 }
 
 .form-control::-webkit-input-placeholder {
@@ -4808,7 +4985,7 @@ ul.buttons-group, ul.associated-links-block-group {
 
 .form-control:disabled, 
 .form-control[readonly] {
-	background-color: #e9ecef;
+	background-color: {$GET,input_disabled_background};
 	opacity: 1;
 }
 
@@ -4818,7 +4995,7 @@ select.form-control:not([size]):not([multiple]) {
 
 select.form-control:focus::-ms-value {
 	color: #495057;
-	background-color: #fff;
+	background-color: {$GET,WB};
 }
 
 .form-control-file,
@@ -5539,14 +5716,12 @@ input[type="button"].btn-block {
 
 .btn-row {
 	display: flex;
-	margin-left: -7px;
-	margin-right: -7px;
+	margin: -7px;
 	flex-wrap: wrap;
 }
 
 .btn-row .btn {
-	margin-left: 7px;
-	margin-right: 7px;
+	margin: 7px;
 }
 
 .btn-row-centered {
@@ -5611,17 +5786,17 @@ input[type="button"].btn-block {
 	z-index: 1000;
 	display: none;
 	float: left;
-	min-width: 10rem;
-	padding: 0.5rem 0;
-	margin: 0.125rem 0 0;
-	font-size: 1rem;
+	min-width: 140px;
+	padding: 7px 0;
+	margin: 2px 0 0;
+	font-size: 14px;
 	color: #212529;
 	text-align: left;
 	list-style: none;
-	background-color: #fff;
+	background-color: {$GET,WB};
 	background-clip: padding-box;
 	border: 1px solid rgba(0, 0, 0, 0.15);
-	border-radius: 0.25rem;
+	border-radius: {$GET,border_radius};
 }
 
 .dropdown-menu-right {
@@ -5633,7 +5808,7 @@ input[type="button"].btn-block {
 	top: auto;
 	bottom: 100%;
 	margin-top: 0;
-	margin-bottom: 0.125rem;
+	margin-bottom: 2px;
 }
 
 .dropup .dropdown-toggle::after {
@@ -5658,7 +5833,7 @@ input[type="button"].btn-block {
 	right: auto;
 	left: 100%;
 	margin-top: 0;
-	margin-left: 0.125rem;
+	margin-left: 2px;
 }
 
 .dropright .dropdown-toggle::after {
@@ -5687,7 +5862,7 @@ input[type="button"].btn-block {
 	right: 100%;
 	left: auto;
 	margin-top: 0;
-	margin-right: 0.125rem;
+	margin-right: 2px;
 }
 
 .dropleft .dropdown-toggle::after {
@@ -5730,15 +5905,15 @@ input[type="button"].btn-block {
 
 .dropdown-divider {
 	height: 0;
-	margin: 0.5rem 0;
+	margin: 7px 0;
 	overflow: hidden;
-	border-top: 1px solid #e9ecef;
+	border-top: 1px solid {$GET,input_disabled_background};
 }
 
 .dropdown-item {
 	display: block;
 	width: 100%;
-	padding: 0.25rem 1.5rem;
+	padding: 4px 21px;
 	clear: both;
 	font-weight: 400;
 	color: #212529;
@@ -5755,7 +5930,7 @@ input[type="button"].btn-block {
 }
 
 .dropdown-item.active, .dropdown-item:active {
-	color: #fff;
+	color: {$GET,WB};
 	text-decoration: none;
 	background-color: {$GET,seed};
 }
@@ -5771,23 +5946,22 @@ input[type="button"].btn-block {
 
 .dropdown-header {
 	display: block;
-	padding: 0.5rem 1.5rem;
+	padding: 7px 21px;
 	margin-bottom: 0;
-	font-size: 0.875rem;
+	font-size: 12px;
 	color: #6c757d;
 	white-space: nowrap;
 }
 
 .dropdown-item-text {
 	display: block;
-	padding: 0.25rem 1.5rem;
+	padding: 4px 21px;
 	color: #212529;
 }
 
 .btn-group,
 .btn-group-vertical {
 	position: relative;
-	display: -ms-inline-flexbox;
 	display: inline-flex;
 	vertical-align: middle;
 }
@@ -5795,7 +5969,6 @@ input[type="button"].btn-block {
 .btn-group > .btn,
 .btn-group-vertical > .btn {
 	position: relative;
-	-ms-flex: 0 1 auto;
 	flex: 0 1 auto;
 }
 
@@ -5823,11 +5996,8 @@ input[type="button"].btn-block {
 }
 
 .btn-toolbar {
-	display: -ms-flexbox;
 	display: flex;
-	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
-	-ms-flex-pack: start;
 	justify-content: flex-start;
 }
 
@@ -5852,8 +6022,8 @@ input[type="button"].btn-block {
 }
 
 .dropdown-toggle-split {
-	padding-right: 0.5625rem;
-	padding-left: 0.5625rem;
+	padding-right: 8px;
+	padding-left: 8px;
 }
 
 .dropdown-toggle-split::after,
@@ -5866,22 +6036,21 @@ input[type="button"].btn-block {
 	margin-right: 0;
 }
 
-.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
-	padding-right: 0.375rem;
-	padding-left: 0.375rem;
+.btn-sm + .dropdown-toggle-split, 
+.btn-group-sm > .btn + .dropdown-toggle-split {
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {
-	padding-right: 0.75rem;
-	padding-left: 0.75rem;
+.btn-lg + .dropdown-toggle-split, 
+.btn-group-lg > .btn + .dropdown-toggle-split {
+	padding-right: 11px;
+	padding-left: 11px;
 }
 
 .btn-group-vertical {
-	-ms-flex-direction: column;
 	flex-direction: column;
-	-ms-flex-align: start;
 	align-items: flex-start;
-	-ms-flex-pack: center;
 	justify-content: center;
 }
 
@@ -5926,18 +6095,14 @@ input[type="button"].btn-block {
 
 .input-group {
 	position: relative;
-	display: -ms-flexbox;
 	display: flex;
-	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
-	-ms-flex-align: stretch;
 	align-items: stretch;
 	width: 100%;
 }
 
 .input-group > .form-control {
 	position: relative;
-	-ms-flex: 1 1 auto;
 	flex: 1 1 auto;
 	width: 1%;
 	margin-bottom: 0;
@@ -5963,7 +6128,6 @@ input[type="button"].btn-block {
 
 .input-group-prepend,
 .input-group-append {
-	display: -ms-flexbox;
 	display: flex;
 }
 
@@ -5993,21 +6157,19 @@ input[type="button"].btn-block {
 }
 
 .input-group-text {
-	display: -ms-flexbox;
 	display: flex;
-	-ms-flex-align: center;
 	align-items: center;
-	padding: 0.375rem 0.75rem;
+	padding: 5px 11px;
 	margin-bottom: 0;
-	font-size: 1rem;
+	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.5;
 	color: #495057;
 	text-align: center;
 	white-space: nowrap;
-	background-color: #e9ecef;
+	background-color: {$GET,input_disabled_background};
 	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
+	border-radius: {$GET,border_radius};
 }
 
 .input-group-text input[type="radio"],
@@ -6048,19 +6210,12 @@ input[type="button"].btn-block {
 	opacity: 0.5 !important;
 }
 
-.buttons--previous-none,
-.buttons--next-none {
-	opacity: 0.85 !important;
-	cursor: not-allowed;
-}
-
 .proceed-button {
 	display: flex;
 	justify-content: center;
 	margin-left: -7px;
 	margin-right: -7px;
 }
-
 
 .proceed-button .btn {
 	margin-left: 7px;
@@ -6457,15 +6612,23 @@ td>.comcode-code-wrap>.comcode-quote, td>.comcode-code-wrap>.comcode-code {
 	margin: 0;
 }
 
-.comcode-quote > h4, .comcode-code > h4 {
+.comcode-quote > h4, 
+.comcode-code > h4 {
 	border: 1px solid {$GET,code_border};
 	padding: 4px;
 	margin: 0;
-	background-image: linear-gradient(to right, {$GET,comcode_quote_left}, {$GET,comcode_quote_right});
+	background-color: {$GET,code_title_background};
+	border-top-left-radius: {$GET,border_radius};
+	border-top-right-radius: {$GET,border_radius};
+	color: {$GET,WB};
+	font-size: 16px;
 }
 
-.comcode-quote-inner, .comcode-code-inner {
+.comcode-quote-inner, 
+.comcode-code-inner {
 	border: 1px solid {$GET,code_border};
+	border-bottom-left-radius: {$GET,border_radius};
+	border-bottom-right-radius: {$GET,border_radius};
 	display: block;
 	padding: 5px;
 	margin-left: 8px;
@@ -7109,9 +7272,20 @@ span:not(:empty)+#lightbox-position-in-set::before, span:not(:empty)+#lightbox-f
 
 /*
 =========================
-======E-mail rules=======
+==========Misc===========
 =========================
 */
+
+.box---block-bottom-about-us .social-buttons .btn .icon {
+	width: 25px;
+	height: 25px;
+}
+
+	/*
+   =========================
+   ======E-mail rules=======
+   =========================
+   */
 
 .email-logo img {
 	max-width: 100%;

@@ -42,7 +42,7 @@
 				{+END}
 
 				{+START,IF,{$EQ,{NAME},panel_top,panel_bottom}}
-					<div>
+					<div class="edit-page-link-inline-wrapper">
 						<a class="edit-page-link-inline" href="{EDIT_URL*}" title="{!EDIT_PAGE}: {NAME*}">
 							{+START,INCLUDE,ICON}NAME=editor/comcode{+END}
 						</a>
