@@ -37,7 +37,7 @@ class Block_main_news_slider
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'member_based', 'select', 'select_and', 'blogs', 'historic', 'zone', 'title', 'show_in_full', 'no_links', 'attach_to_url_filter', 'filter', 'start', 'max', 'interval', 'as_guest', 'optimise', 'check');
+        $info['parameters'] = array('member_based', 'select', 'select_and', 'blogs', 'historic', 'zone', 'title', 'show_in_full', 'no_links', 'attach_to_url_filter', 'filter', 'start', 'max', 'interval', 'as_guest', 'optimise', 'check');
         return $info;
     }
 
@@ -62,7 +62,6 @@ class Block_main_news_slider
             array_key_exists('no_links', $map) ? $map['no_links'] : 0, array_key_exists('title', $map) ? $map['title'] : '',
             array_key_exists('member_based', $map) ? $map['member_based'] : '0', array_key_exists('blogs', $map) ? $map['blogs'] : '-1',
             array_key_exists('historic', $map) ? $map['historic'] : '', 
-            array_key_exists('param', $map) ? intval($map['param']) : 14,
             array_key_exists('select', $map) ? $map['select'] : '',
             array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news'),
             array_key_exists('select_and', $map) ? $map['select_and'] : '',
