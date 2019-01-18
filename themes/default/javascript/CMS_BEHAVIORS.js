@@ -161,51 +161,6 @@
         }
     };
 
-    var haveAttachedWindowRowGapListner = false;
-    // Implementation for [data-row-gap="{Gap Amount}"]
-    $cms.behaviors.rowGap = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-row-gap]'), 'behavior.rowGap');
-
-            els.forEach(function (el) {
-                setRowGap(el, el.dataset.rowGap);
-            });
-
-            if (!haveAttachedWindowRowGapListner) {
-                haveAttachedWindowRowGapListner = true;
-
-                $dom.on(window, 'resize orientationchange', function () {
-                    $dom.$$('[data-row-gap]').forEach(function (el) {
-                        setRowGap(el, el.dataset.rowGap);
-                    });
-                });
-            }
-        }
-    };
-
-    function setRowGap(containerEl, gapAmount) {
-        var children = $util.toArray(containerEl.children),
-            firstChildEl = children[0];
-
-        if (!firstChildEl) {
-            return; // Nothing to do
-        }
-
-        children.forEach(function (childEl, i) {
-            childEl.style.removeProperty('margin-top');
-
-            if (i === 0) {
-                return; // Don't need to set a gap on the first element
-            }
-
-            var childElTop = childEl.offsetTop;
-
-            if (childElTop !== firstChildEl.offsetTop) {
-                childEl.style.marginTop = gapAmount;
-            }
-        });
-    }
-
     // Implementation for [data-click-pd]
     // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
     $cms.behaviors.onclickPreventDefault = {
