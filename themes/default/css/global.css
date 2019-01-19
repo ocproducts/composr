@@ -759,7 +759,9 @@ th.de-th {
 	background-color: transparent;
 	background-image: none;
 }
-th.de-th a, th.de-th a:hover, th.de-th a:visited {
+th.de-th a,
+th.de-th a:hover,
+th.de-th a:visited {
 	color: {$GET,slightly_seeded_text};
 }
 
@@ -3403,20 +3405,42 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 
 /* This relies on some JavaScript running too, to set the data attributes; works great though for properly marked up thead'd tables*/
 /*{+START,CSS_MODE,mobile}*/
-	.responsive-table, .responsive-table>caption, .responsive-table>tbody, .responsive-table>tbody>tr, .responsive-table>tbody>tr>th, .responsive-table>tbody>tr>td, .responsive-table>tfoot, .responsive-table>tfoot>tr, .responsive-table>tfoot>tr>th, .responsive-table>tfoot>tr>td, .responsive-table>tr, .responsive-table>tr>th, .responsive-table>tr>td {
+	.responsive-table,
+	.responsive-table > caption,
+	.responsive-table > tbody,
+	.responsive-table > tbody > tr,
+	.responsive-table > tbody > tr > th,
+	.responsive-table > tbody > tr > td,
+	.responsive-table > tfoot,
+	.responsive-table > tfoot > tr,
+	.responsive-table > tfoot > tr > th,
+	.responsive-table > tfoot > tr > td,
+	.responsive-table > tr,
+	.responsive-table > tr > th,
+	.responsive-table > tr > td {
 		display: block;
 		width: auto;
 		overflow: hidden;
 		text-align: left !important;
 	}
-	.responsive-table>thead {
+	
+	.responsive-table > thead {
 		display: none !important;
 	}
-	.responsive-table>tbody>tr, .responsive-table>tfoot>tr, .responsive-table>tr {
+	
+	.responsive-table > tbody > tr,
+	.responsive-table > tfoot > tr,
+	.responsive-table > tr {
 		border-bottom: 1px solid {$GET,standard_border};
 		margin-bottom: 1em;
 	}
-	.responsive-table>tbody>tr>th[data-th]::before, .responsive-table>tbody>tr>td[data-th]::before, .responsive-table>tfoot>tr>th[data-th]::before, .responsive-table>tfoot>tr>td[data-th]::before, .responsive-table>tr>th[data-th]::before, .responsive-table>tr>td[data-th]::before {
+	
+	.responsive-table > tbody > tr > th[data-th]::before,
+	.responsive-table > tbody > tr > td[data-th]::before,
+	.responsive-table > tfoot > tr > th[data-th]::before,
+	.responsive-table > tfoot > tr > td[data-th]::before,
+	.responsive-table > tr > th[data-th]::before,
+	.responsive-table > tr > td[data-th]::before {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 7em;
@@ -3424,37 +3448,75 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 		display: inline-block;
 		vertical-align: top;
 	}
-	.responsive-table>tbody>tr>th, .responsive-table>tbody>tr>td, .responsive-table>tfoot>tr>th, .responsive-table>tfoot>tr>td, .responsive-table>tr>th, .responsive-table>tr>td {
+	
+	.responsive-table > tbody > tr > th,
+	.responsive-table > tbody > tr > td,
+	.responsive-table > tfoot > tr > th,
+	.responsive-table > tfoot > tr > td,
+	.responsive-table > tr > th,
+	.responsive-table > tr > td {
 		border-left: 1px solid {$GET,standard_border};
 		border-radius: 0 !important;
 	}
-	.responsive-table>tbody>tr>th .field-name, .responsive-table>tbody>tr>td .field-name, .responsive-table>tr>th .field-name, .responsive-table>tr>td .field-name {
+	
+	.responsive-table > tbody > tr > th .field-name,
+	.responsive-table > tbody > tr > td .field-name,
+	.responsive-table > tr > th .field-name,
+	.responsive-table > tr > td .field-name {
 		font-weight: normal;
 		font-style: italic;
 	}
-	.responsive-table>tbody>tr>th:empty, .responsive-table>tbody>tr>td:empty, .responsive-table>tfoot>tr>th:empty, .responsive-table>tfoot>tr>td:empty, .responsive-table>tr>th:empty, .responsive-table>tr>td:empty {
+	
+	.responsive-table > tbody > tr > th:empty,
+	.responsive-table > tbody > tr > td:empty,
+	.responsive-table > tfoot > tr > th:empty,
+	.responsive-table > tfoot > tr > td:empty,
+	.responsive-table > tr > th:empty,
+	.responsive-table > tr > td:empty {
 		display: none;
 	}
-	.responsive-table>tbody>tr:last-child>td, .responsive-table>tbody>tr.last>td, .responsive-table>tfoot>tr:last-child>td, .responsive-table>tfoot>tr.last>td, .responsive-table>tbody>tr:last-child>th {
+	
+	.responsive-table > tbody > tr:last-child > td,
+	.responsive-table > tbody > tr.last > td,
+	.responsive-table > tfoot > tr:last-child > td,
+	.responsive-table > tfoot > tr.last > td,
+	.responsive-table > tbody > tr:last-child > th {
 		border-bottom: 0;
 	}
-
+	
 	.responsive-table .form-table-field-spacer {
 		border: 0 !important;
 	}
+	
 	.responsive-table .form-table-field-spacer .table-heading-cell {
 		border: 0 !important;
 		padding: 0 !important;
 	}
-
-	.responsive-table-bolded-first-column>tbody>tr>th:first-child, .responsive-table-bolded-first-column>tbody>tr>td:first-child, .responsive-table-bolded-first-column>tfoot>tr>th:first-child, .responsive-table-bolded-first-column>tfoot>tr>td:first-child, .responsive-table-bolded-first-column>tr>th:first-child, .responsive-table-bolded-first-column>tr>td:first-child {
+	
+	.responsive-table-bolded-first-column > tbody > tr > th:first-child,
+	.responsive-table-bolded-first-column > tbody > tr > td:first-child,
+	.responsive-table-bolded-first-column > tfoot > tr > th:first-child,
+	.responsive-table-bolded-first-column > tfoot > tr > td:first-child,
+	.responsive-table-bolded-first-column > tr > th:first-child,
+	.responsive-table-bolded-first-column > tr > td:first-child {
 		font-weight: bold;
 	}
-	.responsive-table-bolded-first-column>tbody>tr>th[data-th]::before, .responsive-table-bolded-first-column>tbody>tr>td[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>th[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>td[data-th]::before, .responsive-table-bolded-first-column>tr>th[data-th]::before, .responsive-table-bolded-first-column>tr>td[data-th]::before {
+	
+	.responsive-table-bolded-first-column > tbody > tr > th[data-th]::before,
+	.responsive-table-bolded-first-column > tbody > tr > td[data-th]::before,
+	.responsive-table-bolded-first-column > tfoot > tr > th[data-th]::before,
+	.responsive-table-bolded-first-column > tfoot > tr > td[data-th]::before,
+	.responsive-table-bolded-first-column > tr > th[data-th]::before,
+	.responsive-table-bolded-first-column > tr > td[data-th]::before {
 		font-weight: normal; /* Overridden from above */
 	}
-
-	.responsive-table-separate-lines>tbody>tr>th[data-th]::before, .responsive-table-separate-lines>tbody>tr>td[data-th]::before, .responsive-table-separate-lines>tfoot>tr>th[data-th]::before, .responsive-table-separate-lines>tfoot>tr>td[data-th]::before, .responsive-table-separate-lines>tr>th[data-th]::before, .responsive-table-separate-lines>tr>td[data-th]::before {
+	
+	.responsive-table-separate-lines > tbody > tr > th[data-th]::before,
+	.responsive-table-separate-lines > tbody > tr > td[data-th]::before,
+	.responsive-table-separate-lines > tfoot > tr > th[data-th]::before,
+	.responsive-table-separate-lines > tfoot > tr > td[data-th]::before,
+	.responsive-table-separate-lines > tr > th[data-th]::before,
+	.responsive-table-separate-lines > tr > td[data-th]::before {
 		width: auto;
 		display: block;
 		margin-bottom: 0.5em;
@@ -4111,7 +4173,8 @@ div.ajax-loading, p.ajax-loading {
 	margin-top: 1.3em;
 }
 
-div .post-buttons>*, div .buttons-group-faded>* {
+div .post-buttons > *, 
+div .buttons-group-faded > * {
 	opacity: 0.25;
 	transition-property : opacity;
 	transition-duration : 0.5s;
@@ -4123,10 +4186,10 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	opacity: 1.0 !important;
 }
 
-.post-buttons:hover>*, 
-.is-touch-enabled .post-buttons>*, 
-.buttons-group-faded:hover>*, 
-.is-touch-enabled .buttons-group-faded>* {
+.post-buttons:hover > *, 
+.is-touch-enabled .post-buttons > *, 
+.buttons-group-faded:hover > *, 
+.is-touch-enabled .buttons-group-faded > * {
 	opacity: 1.0 !important;
 }
 
@@ -4191,12 +4254,14 @@ div .post-buttons>*, div .buttons-group-faded>* {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.comments-posting-form-inner th, .comments-posting-form-inner td.one-line {
+	.comments-posting-form-inner th, 
+	.comments-posting-form-inner td.one-line {
 		padding: 0.5em 1.5em 0.5em 0.5em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.comments-posting-form-inner th, .comments-posting-form-inner td.one-line {
+	.comments-posting-form-inner th, 
+	.comments-posting-form-inner td.one-line {
 		padding: 0.5em 1em 0.5em 0;
 	}
 /*{+END}*/
@@ -4211,7 +4276,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 		min-width: 4.5em;
 	}
 /*{+END}*/
-.comments-posting-form-inner th>* {
+.comments-posting-form-inner th > * {
 	text-align: right !important;
 }
 
@@ -4306,7 +4371,9 @@ div .post-buttons>*, div .buttons-group-faded>* {
 /*{+END}*/
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
-	.comments-captcha img, .comments-captcha iframe, .comments-captcha input {
+	.comments-captcha img,
+	.comments-captcha iframe,
+	.comments-captcha input {
 		vertical-align: middle;
 	}
 
