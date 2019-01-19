@@ -857,7 +857,7 @@
                     e.preventDefault();
 
                     if (el.querySelector('img, video')) {
-                        openImageIntoLightbox(el, el.href.indexOf('.mp4') !== -1 || el.href.indexOf('.m4v') !== -1);
+                        openImageIntoLightbox(el, el.href.includes('.mp4') || el.href.includes('.m4v'));
                     } else {
                         openLinkAsOverlay({ el: el });
                     }
