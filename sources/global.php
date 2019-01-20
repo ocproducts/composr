@@ -680,6 +680,7 @@ if (!GOOGLE_APPENGINE) {
     cms_ini_set('include_path', '');
     cms_ini_set('allow_url_fopen', '0');
 }
+cms_ini_set('allow_url_include', '0');
 cms_ini_set('display_errors', '0');
 cms_ini_set('suhosin.executor.disable_emodifier', '1'); // Extra security if suhosin is available
 cms_ini_set('suhosin.executor.multiheader', '1'); // Extra security if suhosin is available

@@ -318,8 +318,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
     if (GOOGLE_APPENGINE) {
         require_once('google/appengine/api/taskqueue/PushTask.php');
 
-        $pushtask = '\google\appengine\api\taskqueue\PushTask'; // So does not give a parser error on older versions of PHP
-        $task = new $pushtask('/data/tasks.php', array('id' => strval($id), 'secure_ref' => $secure_ref), array('name' => $hook . '_' . $secure_ref));
+        $task = new \google\appengine\api\taskqueue\PushTask('/data/tasks.php', array('id' => strval($id), 'secure_ref' => $secure_ref), array('name' => $hook . '_' . $secure_ref));
         $task_name = $task->add();
     }
 

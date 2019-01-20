@@ -15,6 +15,10 @@ php_value memory_limit "128M"
 php_value max_execution_time "30"
 php_value max_input_vars "2000"
 
+# General security strengthening that Composr can tolerate
+php_value expose_php "off"
+php_value allow_url_include "off"
+
 # This causes unstability (and is known/documented to) but some hosts turn it on
 php_value mbstring.func_overload "0"
 

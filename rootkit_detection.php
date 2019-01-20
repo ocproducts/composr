@@ -92,8 +92,7 @@ END;
         } else { // Put into the task queue
             require_once('google/appengine/api/taskqueue/PushTask.php');
 
-            $pushtask = '\google\appengine\api\taskqueue\PushTask'; // So does not give a parser error on older versions of PHP
-            $task = new $pushtask('/rootkit_detection.php', array('type' => 'go', 'settings' => serialize($settings)));
+            $task = new \google\appengine\api\taskqueue\PushTask('/rootkit_detection.php', array('type' => 'go', 'settings' => serialize($settings)));
             $task_name = $task->add();
 
             echo '<p>The task has been added to the GAE task queue.</p>';
@@ -222,8 +221,7 @@ END;
     if (!empty($settings['email'])) { // Will only be the case on Google App Engine
         require_once('google/appengine/api/mail/Message.php');
 
-        $message = '\google\appengine\api\mail\Message'; // So does not give a parser error on older versions of PHP
-        $task = new $message(array(
+        $task = new \google\appengine\api\mail\Message(array(
             'to' => $settings['email'],
             'subject' => 'Rootkit detection results',
             'textBody' => $results,
