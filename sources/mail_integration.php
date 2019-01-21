@@ -422,7 +422,7 @@ abstract class EmailIntegration
                     )
                 )
             ) {
-                $filename = $structure->parameters[0]->value;
+                $filename = isset($structure->dparameters[0]) ? $structure->dparameters[0]->value : 'unknown.dat';
 
                 $this->log_message('Found attachment, ' . $filename . $qualifier_exp);
 
