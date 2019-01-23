@@ -37,7 +37,7 @@
 	</div>
 </div>
 
-<div class="trinav-wrap nograd">
+<div class="trinav-wrap">
 	<div class="trinav-left">
 		<a class="btn btn-primary btn-scr buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
 	</div>
@@ -57,7 +57,9 @@
 
 {+START,IF_NON_EMPTY,{ADD_URL}}
 	<p class="buttons-group">
-		<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_CALENDAR_EVENT}</span></a>
+		<span class="buttons-group-inner">
+			<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_CALENDAR_EVENT}</span></a>
+		</span>
 	</p>
 {+END}
 

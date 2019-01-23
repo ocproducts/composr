@@ -34,6 +34,8 @@
 	{+END}{+END}
 
 	<div class="buttons-group proceed-button-left">
-		<a class="btn btn-primary btn-scri buttons--more" href="{URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
+		<div class="buttons-group-inner">
+			<a class="btn btn-primary btn-scri buttons--more" href="{URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
+		</div>
 	</div>
 </div></div>

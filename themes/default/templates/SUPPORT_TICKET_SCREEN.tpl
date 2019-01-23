@@ -164,41 +164,43 @@
 	{+END}
 
 	<div class="buttons-group buttons-group-faded">
-		{+START,IF,{$NEQ,{$_GET,type},ticket}}
-			{+START,INCLUDE,BUTTON_SCREEN}
-				TITLE={!CREATE_SUPPORT_TICKET}
-				IMG=buttons/add_ticket
-				URL={ADD_TICKET_URL}
-				IMMEDIATE=0
+		<div class="buttons-group-inner">
+			{+START,IF,{$NEQ,{$_GET,type},ticket}}
+				{+START,INCLUDE,BUTTON_SCREEN}
+					TITLE={!CREATE_SUPPORT_TICKET}
+					IMG=buttons/add_ticket
+					URL={ADD_TICKET_URL}
+					IMMEDIATE=0
+				{+END}
 			{+END}
-		{+END}
-
-		{+START,IF_PASSED,SET_TICKET_EXTRA_ACCESS_URL}
-			{+START,INCLUDE,BUTTON_SCREEN}
-				TITLE={!_SET_TICKET_EXTRA_ACCESS}
-				IMG=menu/adminzone/security/permissions/privileges
-				URL={SET_TICKET_EXTRA_ACCESS_URL}
-				IMMEDIATE=0
+	
+			{+START,IF_PASSED,SET_TICKET_EXTRA_ACCESS_URL}
+				{+START,INCLUDE,BUTTON_SCREEN}
+					TITLE={!_SET_TICKET_EXTRA_ACCESS}
+					IMG=menu/adminzone/security/permissions/privileges
+					URL={SET_TICKET_EXTRA_ACCESS_URL}
+					IMMEDIATE=0
+				{+END}
 			{+END}
-		{+END}
-
-		{+START,IF_PASSED,EDIT_URL}
-			{+START,INCLUDE,BUTTON_SCREEN}
-				TITLE={!EDIT_TICKET}
-				IMG=buttons/save
-				URL={EDIT_URL}
-				IMMEDIATE=0
+	
+			{+START,IF_PASSED,EDIT_URL}
+				{+START,INCLUDE,BUTTON_SCREEN}
+					TITLE={!EDIT_TICKET}
+					IMG=buttons/save
+					URL={EDIT_URL}
+					IMMEDIATE=0
+				{+END}
 			{+END}
-		{+END}
-
-		{+START,IF_PASSED,TOGGLE_TICKET_CLOSED_URL}
-			{+START,INCLUDE,BUTTON_SCREEN}
-				TITLE={$?,{CLOSED},{!OPEN_TICKET},{!CLOSE_TICKET}}
-				IMG={$?,{CLOSED},buttons/closed,buttons/undo}
-				IMMEDIATE=1
-				URL={TOGGLE_TICKET_CLOSED_URL}
+	
+			{+START,IF_PASSED,TOGGLE_TICKET_CLOSED_URL}
+				{+START,INCLUDE,BUTTON_SCREEN}
+					TITLE={$?,{CLOSED},{!OPEN_TICKET},{!CLOSE_TICKET}}
+					IMG={$?,{CLOSED},buttons/closed,buttons/undo}
+					IMMEDIATE=1
+					URL={TOGGLE_TICKET_CLOSED_URL}
+				{+END}
 			{+END}
-		{+END}
+		</div>
 	</div>
 
 	{+START,IF,{$HAS_PRIVILEGE,support_operator}}

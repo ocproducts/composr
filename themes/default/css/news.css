@@ -91,6 +91,12 @@
 	height: 24em;
 }
 
+
+ul.news-entry-details-col-start li,
+ul.news-entry-details-col-end li {
+	white-space: nowrap;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 .news-entry-details {
 	display: flex;
@@ -101,7 +107,6 @@ ul.news-entry-details-col-end {
 	width: auto;
 	display: flex;
 	align-items: center;
-	white-space: nowrap;
 }
 
 ul.news-entry-details-col-end {

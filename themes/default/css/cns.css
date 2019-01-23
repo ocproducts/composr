@@ -179,7 +179,7 @@ div.cns-table-footer>div>div {
 	.cns-buttons-screen {
 		text-align: right;
 		float: right;
-		margin: 1.5em -7px 1.5em 1em !important;
+		margin: 1.5em 0 1.5em 1em !important;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -449,10 +449,6 @@ div.cns-table-footer>div>div {
 	vertical-align: top;
 }
 
-.cns-post-main-column.buttons-group .btn {
-	margin-right: 10px;
-}
-
 /*{+START,CSS_MODE,desktop}*/
 	.cns-post-main-column.buttons-group {
 		padding: 1em;
@@ -481,7 +477,8 @@ div.cns-table-footer>div>div {
 	max-width: none;
 }
 
-.cns-topic-post-area>h2, .cns-topic-post-area>h3 {
+.cns-topic-post-area > h2, 
+.cns-topic-post-area > h3 {
 	margin-top: 0;
 }
 

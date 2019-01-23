@@ -25,7 +25,9 @@
 	<div class="clearfix">
 		<div class="trinav-left">
 			<p class="buttons-group">
-				{$GET,BUTTONS}
+				<span class="buttons-group-inner">
+					{$GET,BUTTONS}
+				</span>
 			</p>
 		</div>
 	</div>

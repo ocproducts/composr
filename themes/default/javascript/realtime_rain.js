@@ -102,7 +102,7 @@
             }
 
             if (e.parentNode) {
-                e.parentNode.parentNode.removeChild(e.parentNode);
+                e.parentNode.remove();
             }
 
             $cms.setIcon(img, 'tool_buttons/realtime_rain_on', '{$IMG;,icons/tool_buttons/realtime_rain_on}');

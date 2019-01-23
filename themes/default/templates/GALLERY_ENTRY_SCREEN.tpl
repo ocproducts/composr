@@ -10,84 +10,47 @@
 	{NAV}
 
 	{+START,SET,boxes}
-		<div class="gallery-entry-details right">
-			<table class="columned-table map-table results-table" role="note">
-				{+START,IF,{$DESKTOP}}
-					<colgroup>
-						<col class="gallery-entry-field-name-column" />
-						<col class="gallery-entry-field-value-column" />
-					</colgroup>
+	<div class="box gallery-entry-info">
+		<div class="box-inner">
+			<ul class="horizontal-links">
+				<li>{+START,INCLUDE,ICON}NAME=menu/rich_content/calendar{+END} {!ADDED} <time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time></li>
+	
+				{+START,IF_NON_EMPTY,{EDIT_DATE}}
+				<li>{!EDITED} {EDIT_DATE*}</li>
 				{+END}
-
-				<thead>
-					<tr>
-						<th colspan="2">
-							{!DETAILS}
-						</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<tr>
-						<th class="de-th metadata-title">{!ADDED}</th>
-						<td>
-							<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time>
-						</td>
-					</tr>
-
-					<tr>
-						<th class="de-th metadata-title">{!BY}</th>
-						<td>
-							<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
-
-							{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
-						</td>
-					</tr>
-
-					{+START,IF_NON_EMPTY,{RATING_DETAILS}}
-						{$SET,rating,{$RATING,{MEDIA_TYPE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
-						{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
-							<tr>
-								<th class="de-th metadata-title">{!RATING}</th>
-								<td>{$GET,rating}</td>
-							</tr>
-						{+END}
-					{+END}
-
-					{+START,IF_NON_EMPTY,{EDIT_DATE}}
-						<tr>
-							<th class="de-th metadata-title">{!EDITED}</th>
-							<td>{EDIT_DATE*}</td>
-						</tr>
-					{+END}
-
-					{+START,IF,{$INLINE_STATS}}
-						<tr>
-							<th class="de-th metadata-title">{!COUNT_VIEWS}</th>
-							<td>{VIEWS*}</td>
-						</tr>
-					{+END}
-
-					{+START,IF_NON_EMPTY,{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}}
-						<tr>
-							<td colspan="2">
-								{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}
-							</td>
-						</tr>
-					{+END}
-				</tbody>
-			</table>
-
-			{+START,IF,{$ADDON_INSTALLED,recommend}}{+START,IF,{$CONFIG_OPTION,enable_ecards}}
-				{+START,IF_NON_PASSED,VIDEO}
-					<p class="associated-link vertical-alignment">
-						<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">
-							{+START,INCLUDE,ICON}NAME=file_types/email_link{+END}{!SEND_AS_ECARD}
-						</a>
-					</p>
+				
+				<li>
+					{+START,INCLUDE,ICON}NAME=content_types/member{+END}
+					{!BY}
+					<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
+					{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
+				</li>
+				
+				{+START,IF,{$INLINE_STATS}}
+				<li>{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {VIEWS*} {!COUNT_VIEWS}</li>
 				{+END}
-			{+END}{+END}
+	
+				{+START,IF_NON_EMPTY,{RATING_DETAILS}}
+					{$SET,rating,{$RATING,{MEDIA_TYPE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
+					{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
+						<li>{!RATING} {$GET,rating}</li>
+					{+END}
+				{+END}
+	
+				{+START,IF_NON_EMPTY,{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}}
+				<li>{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}</li>
+				{+END}
+	
+				{+START,IF,{$ADDON_INSTALLED,recommend}}{+START,IF,{$CONFIG_OPTION,enable_ecards}}{+START,IF_NON_PASSED,VIDEO}
+				<li>
+					<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">
+						{+START,INCLUDE,ICON}NAME=file_types/email_link{+END} {!SEND_AS_ECARD}
+					</a>
+				</li>
+				{+END}{+END}{+END}
+			</ul>
 		</div>
+	</div>
 
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}{+START,IF_PASSED,MEMBER_ID}
 			<div class="gallery-member-details right">

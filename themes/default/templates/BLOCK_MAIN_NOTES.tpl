@@ -27,7 +27,9 @@
 					</div>
 
 					<div class="buttons-group">
-						<button data-disable-on-click="1" class="btn btn-primary btn-scri buttons--save js-hover-disable-textarea-size-change {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
+						<div class="buttons-group-inner">
+							<button data-disable-on-click="1" class="btn btn-primary btn-scri buttons--save js-hover-disable-textarea-size-change {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
+						</div>
 					</div>
 				</form>
 			</div>

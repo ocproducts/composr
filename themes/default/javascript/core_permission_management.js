@@ -145,8 +145,8 @@
                         cells.push(tds[k]);
                     }
                     for (k = 0; k < cells.length; k++) {
-                        if ((cells[k].className.match(/(^|\s)privilege-header($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_footer($|\s)/)) || (cells[k].className.match(/(^|\s)privilege-cell($|\s)/))) {
-                            cells[k].parentNode.removeChild(cells[k]);
+                        if (cells[k].classList.contains('privilege-header') || cells[k].classList.contains('privilege-footer') || cells[k].classList.contains('privilege-cell')) {
+                            cells[k].remove();
                         }
                     }
                 }
@@ -207,7 +207,7 @@
                                 newCell.id = 'privilege_header_' + privilege;
                                 $dom.html(newCell, '<img class="gd-text" data-gd-text="1" src="' + $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,gd_text}?color=' + window.columnColor + '&text=' + encodeURIComponent(privilegeTitle) + $cms.keep()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
-                                rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form-table-field-input privilege_footer'; // Footer cell
+                                rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form-table-field-input privilege-footer'; // Footer cell
 
                                 numPrivilegeTotal++;
 
@@ -475,7 +475,7 @@
         var usualSuspects = ['bypass_validation_xrange_content', 'edit_xrange_content', 'edit_own_xrange_content', 'delete_xrange_content', 'delete_own_xrange_content', 'submit_xrange_content', 'edit_cat_xrange_content'];
         var access = [2, 3, 2, 3, 2, 1, 3]; // The minimum access level that turns on each of the above permissions   NB: Also defined in resource_fs.php, so keep that in-sync
 
-        var holder = document.getElementById(name + '-privilege-container');
+        var holder = document.getElementById(name.replaceAll('_', '-') + '-privilege-container');
         var elements = holder.getElementsByTagName('select');
         var i, j, test, stub = name + '_privilege_', name2, x;
 

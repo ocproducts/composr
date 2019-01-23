@@ -11,15 +11,17 @@
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 			<div class="non-accessibility-redundancy cns-topic-buttons">
 				<div class="clearfix">
-					<div class="btn-row buttons-group cns-buttons-screen">
-						{+START,IF,{$NOT,{TICKET_FORUM}}}
-							{+START,INCLUDE,NOTIFICATION_BUTTONS}
-								NOTIFICATIONS_TYPE=cns_topic
-								NOTIFICATIONS_ID={ID}
-								NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					<div class="buttons-group cns-buttons-screen">
+						<div class="buttons-group-inner">
+							{+START,IF,{$NOT,{TICKET_FORUM}}}
+								{+START,INCLUDE,NOTIFICATION_BUTTONS}
+									NOTIFICATIONS_TYPE=cns_topic
+									NOTIFICATIONS_ID={ID}
+									NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+								{+END}
 							{+END}
-						{+END}
-						{BUTTON_SCREENS}
+							{BUTTON_SCREENS}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -145,15 +147,17 @@
 		{+START,IF_NON_EMPTY,{POSTS}}
 			<div class="clearfix cns-topic-buttons">
 				{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
-					<div class="btn-row buttons-group cns-buttons-screen">
-						{+START,IF,{$NOT,{TICKET_FORUM}}}
-							{+START,INCLUDE,NOTIFICATION_BUTTONS}
-								NOTIFICATIONS_TYPE=cns_topic
-								NOTIFICATIONS_ID={ID}
-								NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					<div class="buttons-group cns-buttons-screen">
+						<div class="buttons-group-inner">
+							{+START,IF,{$NOT,{TICKET_FORUM}}}
+								{+START,INCLUDE,NOTIFICATION_BUTTONS}
+									NOTIFICATIONS_TYPE=cns_topic
+									NOTIFICATIONS_ID={ID}
+									NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+								{+END}
 							{+END}
-						{+END}
-						{BUTTON_SCREENS}
+							{BUTTON_SCREENS}
+						</div>
 					</div>
 				{+END}
 

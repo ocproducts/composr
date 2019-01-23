@@ -12,6 +12,8 @@
 
 {+START,IF_PASSED,BUTTONS}
 	<div class="buttons-group">
-		{BUTTONS}
+		<div class="buttons-group-inner">
+			{BUTTONS}
+		</div>
 	</div>
 {+END}

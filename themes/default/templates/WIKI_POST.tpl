@@ -38,29 +38,31 @@
 		<div>
 			<div class="cns-left-post-buttons post-buttons cns-post-main-column">
 				<div class="buttons-group post-buttons wiki-post-buttons">
-					{BUTTONS}
-
-					{+START,INCLUDE,BUTTON_SCREEN_ITEM}
-						{+START,IF,{$ADDON_INSTALLED,tickets}}
-							URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:redirect={$SELF_URL&}}
-							TITLE={!report_content:REPORT_THIS}
-							FULL_TITLE={!report_content:REPORT_THIS}
-							IMG=buttons/report
-							IMMEDIATE=0
-							REL=report
+					<div class="buttons-group-inner">
+						{BUTTONS}
+	
+						{+START,INCLUDE,BUTTON_SCREEN_ITEM}
+							{+START,IF,{$ADDON_INSTALLED,tickets}}
+								URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:redirect={$SELF_URL&}}
+								TITLE={!report_content:REPORT_THIS}
+								FULL_TITLE={!report_content:REPORT_THIS}
+								IMG=buttons/report
+								IMMEDIATE=0
+								REL=report
+							{+END}
 						{+END}
-					{+END}
-
-					{+START,IF,{STAFF_ACCESS}}
-						<div id="cell-mark-{ID*}" class="cns-off mass-select-marker wiki-mass-select-marker">
-							<form class="webstandards-checker-off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
-								<div>
-									{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}" class="accessibility-hidden">{!MARKER} #{ID*}:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-									<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
-								</div>
-							</form>
-						</div>
-					{+END}
+	
+						{+START,IF,{STAFF_ACCESS}}
+							<div id="cell-mark-{ID*}" class="cns-off mass-select-marker wiki-mass-select-marker">
+								<form class="webstandards-checker-off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
+									<div>
+										{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}" class="accessibility-hidden">{!MARKER} #{ID*}:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
+										<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
+									</div>
+								</form>
+							</div>
+						{+END}
+					</div>
 				</div>
 
 				{+START,SET,commented_out}

@@ -103,5 +103,7 @@
 {+END}
 
 <p class="buttons-group">
-	<a class="btn btn-primary btn-scr buttons--proceed" rel="add" href="{$PAGE_LINK*,_SEARCH:purchase:type_filter={$PRODUCT_SUBSCRIPTION}}"><span>{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!START_NEW_SUBSCRIPTION}</span></a>
+	<span class="buttons-group-inner">
+		<a class="btn btn-primary btn-scr buttons--proceed" rel="add" href="{$PAGE_LINK*,_SEARCH:purchase:type_filter={$PRODUCT_SUBSCRIPTION}}"><span>{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!START_NEW_SUBSCRIPTION}</span></a>
+	</span>
 </p>

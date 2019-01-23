@@ -14,9 +14,6 @@
     $util.inherits(BlockMainStaffChecklistCustomTask, $cms.View, /**@lends BlockMainStaffChecklistCustomTask#*/{
         events: function () {
             return {
-                'mouseover': 'mouseover',
-                'mouseout': 'mouseout',
-
                 'click .js-click-confirm-delete': 'confirmDelete',
                 'click .js-click-mark-task': 'markTask',
                 'keypress .js-keypress-mark-task': 'markTask'

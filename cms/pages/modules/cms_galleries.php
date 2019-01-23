@@ -196,6 +196,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('galleries2');
         require_code('uploads');
         require_css('galleries');
+        require_javascript('galleries');
         require_lang('dearchive');
         require_code('urls2');
         require_code('images');
@@ -221,7 +222,6 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         if ($type == 'add_category') {
-            require_javascript('galleries');
             $this->cat_crud_module->js_function_calls[] = 'moduleCmsGalleriesRunStartAddCategory';
         }
 

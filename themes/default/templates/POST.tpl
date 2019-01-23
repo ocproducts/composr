@@ -89,7 +89,9 @@
 
 			{+START,IF_NON_EMPTY,{BUTTONS}}
 				<div class="post-buttons buttons-group">
-					{BUTTONS}
+					<div class="buttons-group-inner">
+						{BUTTONS}
+					</div>
 				</div>
 			{+END}
 

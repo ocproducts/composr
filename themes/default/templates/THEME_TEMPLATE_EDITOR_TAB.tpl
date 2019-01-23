@@ -514,23 +514,25 @@
 {$,Buttons}
 
 <div class="clearfix buttons-group">
-	<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--save js-btn-save-content" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
-
-	{+START,SET,preview_buttons}
-		{+START,IF_PASSED,LIVE_PREVIEW_URL}
-			<!-- Preview in live rendering -->
-			<button class="btn btn-primary btn-scr buttons--preview js-btn-live-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LIVE_PREVIEW}</button>
+	<div class="buttons-group-inner">
+		<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--save js-btn-save-content" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
+	
+		{+START,SET,preview_buttons}
+			{+START,IF_PASSED,LIVE_PREVIEW_URL}
+				<!-- Preview in live rendering -->
+				<button class="btn btn-primary btn-scr buttons--preview js-btn-live-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LIVE_PREVIEW}</button>
+			{+END}
+			{+START,IF_PASSED,SCREEN_PREVIEW_URL}
+				<!-- Preview in screen preview (Lorem ipsum) -->
+				<button class="btn btn-primary btn-scr buttons--preview js-btn-screen-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LOREM_PREVIEW}</button>
+			{+END}
 		{+END}
-		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
-			<!-- Preview in screen preview (Lorem ipsum) -->
-			<button class="btn btn-primary btn-scr buttons--preview js-btn-screen-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LOREM_PREVIEW}</button>
+		{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
+			{$GET,preview_buttons}
+	
+			<label for="mobile_preview_{FILE_ID*}"><input type="checkbox" name="mobile_preview_{FILE_ID*}" id="mobile_preview_{FILE_ID*}" value="1" /> {!MOBILE_VERSION}</label>
 		{+END}
-	{+END}
-	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
-		{$GET,preview_buttons}
-
-		<label for="mobile_preview_{FILE_ID*}"><input type="checkbox" name="mobile_preview_{FILE_ID*}" id="mobile_preview_{FILE_ID*}" value="1" /> {!MOBILE_VERSION}</label>
-	{+END}
+	</div>
 </div>
 
 {$,GUIDs}

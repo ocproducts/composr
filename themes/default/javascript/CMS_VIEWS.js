@@ -1711,7 +1711,7 @@
         isModern: function () {
             return this.el.classList.contains('header-modern');
         },
-        
+
         isSideMenu: function (andOpen) {
             return this.el.classList.contains('header-side') && (!andOpen || this.el.classList.contains('is-side-menu-open'));
         },

@@ -1485,13 +1485,13 @@
 
             if (tabs) {
                 if (element && (element.parentNode)) {
-                    element.parentNode.removeChild(element);
+                    element.remove();
                 }
                 if (!tabEl.parentNode) {
                     return;
                 }
 
-                tabEl.parentNode.removeChild(tabEl);
+                tabEl.remove();
 
                 // All gone?
                 var count = Number(countImConvos());
@@ -1525,7 +1525,7 @@
         return null;
     }
 
-    function chatSelectTab(element) {
+    function chatSelectTab(tabEl) {
         var i, chatLobbyConvosTabs = document.getElementById('chat-lobby-convos-tabs');
 
         for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
@@ -1536,11 +1536,13 @@
             }
         }
 
-        document.getElementById('room-' + element.id.substr(4)).style.display = 'block';
+        var tabId = tabEl.id.substr(4); // Remove leading 'tab-'
+
+        document.getElementById('room-' + tabId).style.display = 'block';
         try {
-            document.getElementById('post_' + element.id.substr(4)).focus();
+            document.getElementById('post_' + tabId).focus();
         } catch (ignore) {}
 
-        element.className = ((element.classList.contains('chat-lobby-convos-tab-first')) ? 'chat-lobby-convos-tab-first ' : '') + 'chat-lobby-convos-tab-uptodate chat-lobby-convos-current-tab';
+        tabEl.className = ((tabEl.classList.contains('chat-lobby-convos-tab-first')) ? 'chat-lobby-convos-tab-first ' : '') + 'chat-lobby-convos-tab-uptodate chat-lobby-convos-current-tab';
     }
 }(window.$cms, window.$util, window.$dom));

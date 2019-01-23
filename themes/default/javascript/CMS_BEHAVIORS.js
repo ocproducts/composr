@@ -595,7 +595,7 @@
 
             inputs.forEach(function (input) {
                 $dom.on(input, 'change', function () {
-                    $dom.trigger(input.form, 'submit');
+                    $dom.submit(input.form);
                 });
             });
         }

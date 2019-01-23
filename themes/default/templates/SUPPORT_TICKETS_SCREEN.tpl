@@ -72,6 +72,8 @@
 	{+END}
 
 	<p class="buttons-group">
-		<a class="btn btn-primary btn-scr buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/add_ticket{+END} {!ADD_TICKET}</span></a>
+		<span class="buttons-group-inner">
+			<a class="btn btn-primary btn-scr buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/add_ticket{+END} {!ADD_TICKET}</span></a>
+		</span>
 	</p>
 </div>

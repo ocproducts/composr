@@ -5,6 +5,10 @@
 
 /* Both flow mode and viewing entries */
 
+#gallery-nav .btn.buttons--slideshow {
+	margin-right: 10px;
+}
+
 .gallery-entry-details {
 	margin-bottom: 1em;
 }
@@ -23,12 +27,30 @@
 	width: 16em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.gallery-entry-field-name-column, .gallery-entry-field-value-column {
+	.gallery-entry-field-name-column,
+	.gallery-entry-field-value-column {
 		width: auto;
 	}
 /*{+END}*/
 
-.delete-cross-button, .delete-cross-button div {
+.gallery-entry-info {
+	
+}
+
+.gallery-entry-info ul.horizontal-links {
+	width: auto;
+	margin-top: -7px;
+	margin-bottom: -7px;
+}
+
+.gallery-entry-info ul.horizontal-links li {
+	display: inline-block;
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.delete-cross-button, 
+.delete-cross-button div {
 	display: inline;
 }
 .delete-cross-button input,
@@ -71,8 +93,8 @@
 /* Non flow-mode only */
 
 .gallery-grid-cell-wrap {
-	{$BETA_CSS_PROPERTY,display: flex;}
-	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+	display: flex;
+	flex-wrap: wrap;
 	margin: -0.5em 0 0 -0.5em;
 }
 
@@ -104,7 +126,7 @@
 .gallery-media-title-cropped * {
 	vertical-align: middle;
 }
-.gallery-media-title-cropped>span {
+.gallery-media-title-cropped > span {
 	white-space: nowrap;
 	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
 	overflow: hidden;
@@ -141,6 +163,7 @@
 	opacity: 0.7;
 	display: inline-block;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	transition: opacity 0.2s linear !important;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.flow-mode-thumb {
@@ -152,10 +175,12 @@
 		margin: 0 1em;
 	}
 /*{+END}*/
-.flow-mode-thumb:hover, html.is-touch-enabled .flow-mode-thumb {
+
+.flow-mode-thumb:hover,
+html.is-touch-enabled .flow-mode-thumb {
 	opacity: 1.0;
-	transition: opacity 0.2s linear !important;
 }
+
 .flow-mode-thumb .img-thumb {
 	opacity: 1.0;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
@@ -174,19 +199,21 @@
 
 .slideshow-speed {
 	position: absolute;
-	right: 2px;
-	top: 0;
+	right: 10px;
+	top: 10px;
 }
 
 .slideshow-speed input {
-	width: 3em;
+	margin-left: 5px;
+	width: 5em;
 }
 
 .media-box .box {
 	margin-top: 0;
 }
 
-.media-box embed, .media-box object {
+.media-box embed, 
+.media-box object {
 	max-width: 100%;
 }
 
@@ -232,7 +259,8 @@
 	margin-bottom: 1.5em;
 }
 
-.gallery-tease-pic-wrap h2, .gallery-tease-pic-wrap h3 {
+.gallery-tease-pic-wrap h2,
+.gallery-tease-pic-wrap h3 {
 	max-width: 18em;
 }
 
@@ -252,7 +280,7 @@
 	text-align: right;
 }
 
-.gallery-tease-pic>.box {
+.gallery-tease-pic > .box {
 	border-bottom-right-radius: 0;
 }
 
@@ -264,9 +292,12 @@
 .global-side-panel .gallery-tease-pic {
 	width: auto;
 }
-.global-side-panel .gallery-tease-pic-wrap h2, .global-side-panel .gallery-tease-pic-wrap h3 {
+
+.global-side-panel .gallery-tease-pic-wrap h2, 
+.global-side-panel .gallery-tease-pic-wrap h3 {
 	display: none;
 }
+
 .global-side-panel .img-thumb-wrap .img-thumb:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
@@ -334,7 +365,7 @@
 }
 
 html.has-header-modern #slider-homepage-hero.cms-slider-fullscreen,
-html.has-header-side #slider-homepage-hero.cms-slider-fullscreen{
+html.has-header-side #slider-homepage-hero.cms-slider-fullscreen {
 	min-height: 100vmin;
 }
 

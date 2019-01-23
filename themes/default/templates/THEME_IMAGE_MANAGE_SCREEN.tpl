@@ -12,7 +12,9 @@
 		<p>{!ADDING_THEME_IMAGE}</p>
 
 		<p class="buttons-group">
-			<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_THEME_IMAGE}</span></a>
+			<span class="buttons-group-inner">
+				<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_THEME_IMAGE}</span></a>
+			</span>
 		</p>
 	</div></div>
 </div>

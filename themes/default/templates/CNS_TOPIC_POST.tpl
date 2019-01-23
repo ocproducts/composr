@@ -149,7 +149,9 @@
 		</div>
 
 		<div class="buttons-group post-buttons cns-post-main-column">
-			{BUTTONS}
+			<div class="buttons-group-inner">
+				{BUTTONS}
+			</div>
 		</div>
 	</div>
 </div>

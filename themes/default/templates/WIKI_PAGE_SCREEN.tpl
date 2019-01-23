@@ -91,24 +91,26 @@
 		{+END}
 
 		<div class="buttons-group">
-			{+START,INCLUDE,NOTIFICATION_BUTTONS}
-				NOTIFICATIONS_TYPE=wiki
-				NOTIFICATIONS_ID={ID}
-			{+END}
-
-			{BUTTONS}
-
-			{+START,IF_NON_EMPTY,{POSTS}}
-				{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
-					<form class="inline" title="{!MERGE_WIKI_POSTS}" action="{$PAGE_LINK*,_SEARCH:wiki:merge:{ID},1}" method="post" autocomplete="off">
-						{$INSERT_SPAMMER_BLACKHOLE}
-
-						<div class="inline">
-							<button id="wiki-merge-button" style="display: none" class="btn btn-primary btn-scr admin--merge button-faded js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=admin/merge{+END} {!_MERGE_WIKI_POSTS}</button>
-						</div>
-					</form>
+			<div class="buttons-group-inner">
+				{+START,INCLUDE,NOTIFICATION_BUTTONS}
+					NOTIFICATIONS_TYPE=wiki
+					NOTIFICATIONS_ID={ID}
 				{+END}
-			{+END}
+	
+				{BUTTONS}
+	
+				{+START,IF_NON_EMPTY,{POSTS}}
+					{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
+						<form class="inline" title="{!MERGE_WIKI_POSTS}" action="{$PAGE_LINK*,_SEARCH:wiki:merge:{ID},1}" method="post" autocomplete="off">
+							{$INSERT_SPAMMER_BLACKHOLE}
+	
+							<div class="inline">
+								<button id="wiki-merge-button" style="display: none" class="btn btn-primary btn-scr admin--merge button-faded js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=admin/merge{+END} {!_MERGE_WIKI_POSTS}</button>
+							</div>
+						</form>
+					{+END}
+				{+END}
+			</div>
 		</div>
 
 		{$REVIEW_STATUS,wiki_page,{ID}}

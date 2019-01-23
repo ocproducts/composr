@@ -18,9 +18,11 @@
 	</div>
 
 	<div class="buttons-group">
-		{+START,IF_PASSED,ADD_TO_CART}
-			<a class="btn btn-primary btn-scri buttons--cart-add" href="{ADD_TO_CART*}" title="{!ADD_TO_CART}"><span>{+START,INCLUDE,ICON}NAME=buttons/cart_add{+END} {!BUY}</span></a>
-		{+END}
-		<a class="btn btn-primary btn-scri buttons--more" href="{VIEW_URL*}" title="{!VIEW_PRODUCT}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
+		<div class="buttons-group-inner">
+			{+START,IF_PASSED,ADD_TO_CART}
+				<a class="btn btn-primary btn-scri buttons--cart-add" href="{ADD_TO_CART*}" title="{!ADD_TO_CART}"><span>{+START,INCLUDE,ICON}NAME=buttons/cart_add{+END} {!BUY}</span></a>
+			{+END}
+			<a class="btn btn-primary btn-scri buttons--more" href="{VIEW_URL*}" title="{!VIEW_PRODUCT}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
+		</div>
 	</div>
 </div></section>
