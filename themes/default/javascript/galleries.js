@@ -122,21 +122,6 @@
 
             window.addEventListener('keypress', toggleSlideshowTimer);
 
-            document.getElementById('gallery-nav').addEventListener('click', function (event) {
-                if (event.altKey || event.metaKey) {
-                    var el = document.getElementById('gallery-entry-screen');
-                    if (el.webkitRequestFullScreen !== undefined) {
-                        el.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
-                    } else if (el.mozRequestFullScreenWithKeys !== undefined) {
-                        el.mozRequestFullScreenWithKeys();
-                    } else if (el.requestFullScreenWithKeys !== undefined) {
-                        el.requestFullScreenWithKeys();
-                    }
-                } else {
-                    toggleSlideshowTimer();
-                }
-            });
-
             slideshowShowSlide(window.slideshowCurrentPosition); // To ensure next is preloaded
         },
         events: function () {
@@ -144,7 +129,8 @@
                 'change .js-change-reset-slideshow-countdown': 'resetCountdown',
                 'mousedown .js-mousedown-stop-slideshow-timer': 'stopTimer',
                 'click .js-click-slideshow-backward': 'slideshowBackward',
-                'click .js-click-slideshow-forward': 'slideshowForward'
+                'click .js-click-slideshow-forward': 'slideshowForward',
+                'click .js-click-toggle-full-screen-or-slideshow-timer': 'toggleFullScreenOrSlideshowTimer'
             };
         },
         resetCountdown: function () {
@@ -159,6 +145,20 @@
         },
         slideshowForward: function () {
             slideshowForward();
+        },
+        toggleFullScreenOrSlideshowTimer: function (event) {
+            if (event.altKey || event.metaKey) {
+                var el = document.getElementById('gallery-entry-screen');
+                if (el.webkitRequestFullScreen !== undefined) {
+                    el.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
+                } else if (el.mozRequestFullScreenWithKeys !== undefined) {
+                    el.mozRequestFullScreenWithKeys();
+                } else if (el.requestFullScreenWithKeys !== undefined) {
+                    el.requestFullScreenWithKeys();
+                }
+            } else {
+                toggleSlideshowTimer();
+            }
         }
     });
 

@@ -5,8 +5,58 @@
 
 /* Both flow mode and viewing entries */
 
-#gallery-nav .btn.buttons--slideshow {
+.gallery-nav-inner {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.gallery-nav-prev-btn,
+.gallery-nav-next-btn {
+	border: 1px solid {$GET,standard_border};
+	padding: 5px;
+	background-color: {$GET,area_5_background};
+	border-radius: {$GET,border_radius};
+}
+
+.gallery-nav-prev-btn:hover,
+.gallery-nav-next-btn:hover {
+	text-decoration: none;
+}
+
+.gallery-nav-prev-btn .icon,
+.gallery-nav-next-btn .icon {
+	width: 30px;
+	height: 30px;
+}
+
+.gallery-nav-prev-btn .img-thumb,
+.gallery-nav-next-btn .img-thumb {
+	width: 80px;
+}
+
+@media (max-width: 460px) {
+	.gallery-nav-prev-btn .img-thumb,
+	.gallery-nav-next-btn .img-thumb {
+		display: none;
+	}
+}
+
+.gallery-nav-prev-btn .img-thumb {
+	margin-left: 10px;
+}
+
+.gallery-nav-next-btn .img-thumb {
 	margin-right: 10px;
+}
+
+.gallery-nav-status {
+	flex-grow: 1;
+	text-align: center;
+}
+
+.gallery-nav .btn.buttons--slideshow {
+	margin-right: 15px;
 }
 
 .gallery-entry-details {
@@ -34,7 +84,7 @@
 /*{+END}*/
 
 .gallery-entry-info {
-	
+	background-color: {$GET,area_5_background};
 }
 
 .gallery-entry-info ul.horizontal-links {

@@ -1553,16 +1553,56 @@ HTML;
         if ($back_id !== null) {
             $slideshow_previous_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'wide_high' => 1, 'id' => $back_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true); // Continues, but as slideshow
             $back_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'id' => $back_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
+
+            $next_row = $GLOBALS['SITE_DB']->query_select(($back_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $back_id));
+            $next_row = $next_row[0];
+
+            $entry_title = get_translated_text($next_row['title']);
+
+            if ($back_type === 'image') {
+                $thumb_url = ensure_thumbnail($next_row['url'], $next_row['thumb_url'], 'galleries', 'images', $next_row['id']);
+                $back_thumb = do_image_thumb($thumb_url, $entry_title);
+            } else {
+                $thumb_url = $next_row['thumb_url'];
+                if (($thumb_url != '') && (url_is_local($thumb_url))) {
+                    $thumb_url = get_custom_base_url() . '/' . $thumb_url;
+                }
+                if ($thumb_url == '') {
+                    $thumb_url = find_theme_image('na');
+                }
+                $back_thumb = do_image_thumb($thumb_url, $entry_title);
+            }
         } else {
             $slideshow_previous_url = new Tempcode();
             $back_url = new Tempcode();
+            $back_thumb = new Tempcode();
         }
         if ($next_id !== null) {
             $slideshow_next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'wide_high' => 1, 'id' => $next_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true); // Continues, but as slideshow
             $next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'id' => $next_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
+
+            $next_row = $GLOBALS['SITE_DB']->query_select(($back_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $next_id));
+            $next_row = $next_row[0];
+
+            $entry_title = get_translated_text($next_row['title']);
+
+            if ($back_type === 'image') {
+                $thumb_url = ensure_thumbnail($next_row['url'], $next_row['thumb_url'], 'galleries', 'images', $next_row['id']);
+                $next_thumb = do_image_thumb($thumb_url, $entry_title);
+            } else {
+                $thumb_url = $next_row['thumb_url'];
+                if (($thumb_url != '') && (url_is_local($thumb_url))) {
+                    $thumb_url = get_custom_base_url() . '/' . $thumb_url;
+                }
+                if ($thumb_url == '') {
+                    $thumb_url = find_theme_image('na');
+                }
+                $next_thumb = do_image_thumb($thumb_url, $entry_title);
+            }
         } else {
             $slideshow_next_url = new Tempcode();
             $next_url = new Tempcode();
+            $next_thumb = new Tempcode();
         }
 
         // Link to show more. Preserve info about where we were
@@ -1584,7 +1624,9 @@ HTML;
             'SLIDESHOW_NEXT_URL' => $slideshow_next_url,
             'SLIDESHOW_PREVIOUS_URL' => $slideshow_previous_url,
             'BACK_URL' => $back_url,
+            'BACK_THUMB' => $back_thumb,
             'NEXT_URL' => $next_url,
+            'NEXT_THUMB' => $next_thumb,
             'MORE_URL' => $more_url,
             'CATEGORY_NAME' => $category_name,
             'SLIDESHOW' => ($slideshow == 1),

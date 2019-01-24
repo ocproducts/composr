@@ -699,7 +699,7 @@
         promiseYouTubeIframeAPIReady.then(function () {
             var slideshowMode = document.getElementById('next_slide');
 
-            if ((!slideshow_mode) && (typeof window.YT == 'undefined')) {
+            if (!slideshowMode && (typeof window.YT === 'undefined')) {
                 return; /* Should not be needed but in case the YouTube API somehow failed to load fully */
             }
 

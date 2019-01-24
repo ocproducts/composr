@@ -4,7 +4,7 @@
 {$REQUIRE_JAVASCRIPT,galleries}
 {$REQUIRE_JAVASCRIPT,mediaelement-and-player}
 
-<div data-view="GalleryNav" data-view-params="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
+<div class="gallery-nav" data-view="GalleryNav" data-view-params="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow-speed">
 			{!SPEED_IN_SECS}
@@ -14,37 +14,17 @@
 		<input type="hidden" id="previous_slide" name="previous_slide" value="{SLIDESHOW_PREVIOUS_URL*}" />
 	{+END}
 
-	<div class="trinav-wrap" id="gallery-nav">
-		<div class="trinav-left">
-			{$,Back}
-			{+START,IF_NON_EMPTY,{BACK_URL}}
-				<a class="btn btn-primary btn-scr buttons--previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
-			{+END}
-			{+START,IF_EMPTY,{BACK_URL}}
-				<span class="btn btn-primary disabled btn-scr">{+START,INCLUDE,ICON}NAME=buttons/previous_none{+END}  <span>{!PREVIOUS}</span></span>
-			{+END}
-		</div>
+	<div class="gallery-nav-inner {+START,IF,{SLIDESHOW}}js-click-toggle-full-screen-or-slideshow-timer{+END}">
+		{$,Back}
+		{+START,IF_NON_EMPTY,{BACK_URL}}
+		<a class="gallery-nav-prev-btn {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}">
+			{+START,INCLUDE,ICON}NAME=buttons/previous{+END} 
+			<span>{!PREVIOUS}</span>
+			{BACK_THUMB}
+		</a>
+		{+END}
 
-		<div class="trinav-right">
-			{$,Start slideshow}
-			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
-				{+START,IF,{$DESKTOP}}
-					{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="btn btn-primary btn-scr buttons--slideshow inlineblock-desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
-					{+END}
-				{+END}
-			{+END}
-
-			{$,Next}
-			{+START,IF_NON_EMPTY,{NEXT_URL}}
-				<a class="btn btn-primary btn-scr buttons--next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
-			{+END}
-			{+START,IF_EMPTY,{NEXT_URL}}
-				<span class="btn btn-primary disabled btn-scr"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next_none{+END}</span>
-			{+END}
-		</div>
-
-		<div class="trinav-mid text">
+		<div class="gallery-nav-status">
 			<span>
 			{+START,IF,{SLIDESHOW}}
 				<span class="must-show-together">{!VIEWING_SLIDE,{X*},{N*}}</span>
@@ -63,16 +43,28 @@
 			{+END}
 			</span>
 		</div>
+
+		{$,Start slideshow}
+		{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}{+START,IF,{$DESKTOP}}{+START,IF,{$NOT,{SLIDESHOW}}}
+			<a class="btn btn-primary btn-scr buttons--slideshow desktop-only" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
+		{+END}{+END}{+END}
+
+		{$,Next}
+		{+START,IF_NON_EMPTY,{NEXT_URL}}
+		<a class="gallery-nav-next-btn {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}">
+			{NEXT_THUMB}
+			<span>{!NEXT}</span> 
+			{+START,INCLUDE,ICON}NAME=buttons/next{+END}
+		</a>
+		{+END}
 	</div>
 
 	{$,Different positioning of slideshow button for mobiles, due to limited space}
-	{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
-		{+START,IF,{$NOT,{SLIDESHOW}}}
-			<div class="clearfix block-mobile">
-				<div class="right block-mobile">
-					<a class="btn btn-primary btn-scr buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
-				</div>
+	{+START,IF_NON_EMPTY,{SLIDESHOW_URL}} {+START,IF,{$NOT,{SLIDESHOW}}}
+		<div class="clearfix mobile-only">
+			<div class="right">
+				<a class="btn btn-primary btn-scr buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
 			</div>
-		{+END}
-	{+END}
+		</div>
+	{+END}{+END}
 </div>
