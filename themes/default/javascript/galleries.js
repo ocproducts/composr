@@ -9,6 +9,63 @@
         window.slideshowTime = null;
     }
 
+    $cms.templates.galleryFlowModeScreen = function (params, container) {
+        var glideContainer = container.querySelector('.glide-other-gallery-images');
+
+        if (glideContainer != null) {
+            var glide = new window.Glide(glideContainer, {
+                perView: 5, // A number of slides visible on the single viewport.
+                bound: true, // Stop running perView number of slides from the end. Use this option if you don't want to have an empty space after a slider.
+                breakpoints: { // Collection of options applied at specified media breakpoints.
+                    400: {
+                        perView: 2
+                    },
+
+                    700: {
+                        perView: 3
+                    }
+                }
+            });
+            glide.mount();
+
+            $dom.on(glideContainer, 'click', '.btn-glide-prev', function () {
+                var perView = getCurrentPerView();
+
+                if (glide.index <= (perView - 1)) {
+                    glide.go('>>');
+                    return;
+                }
+
+                glide.go('=' + Math.max(glide.index - perView, 0));
+            });
+
+            $dom.on(glideContainer, 'click', '.btn-glide-next', function () {
+                var totalSlides = glideContainer.querySelectorAll('.glide__slide').length,
+                    perView = getCurrentPerView();
+
+                if (glide.index >= (totalSlides - perView)) {
+                    glide.go('<<');
+                    return;
+                }
+
+                glide.go('=' + Math.min(glide.index + perView, totalSlides - perView));
+            });
+        }
+
+        var bp400 = window.matchMedia('(max-width: 400px)'),
+            bp700 = window.matchMedia('(max-width: 700px)');
+
+        function getCurrentPerView() {
+            if (bp400.matches) {
+                return 2;
+            } else if (bp700.matches) {
+                return 3;
+            } else {
+                return 5;
+            }
+        }
+    };
+
     $cms.views.BlockMainImageFader = BlockMainImageFader;
     /**
      * @memberof $cms.views

@@ -14,10 +14,6 @@
 		<div class="box-inner">
 			<ul class="horizontal-links">
 				<li>{+START,INCLUDE,ICON}NAME=menu/rich_content/calendar{+END} {!ADDED} <time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time></li>
-	
-				{+START,IF_NON_EMPTY,{EDIT_DATE}}
-				<li>{!EDITED} {EDIT_DATE*}</li>
-				{+END}
 				
 				<li>
 					{+START,INCLUDE,ICON}NAME=content_types/member{+END}
@@ -25,6 +21,10 @@
 					<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
 					{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
 				</li>
+
+				{+START,IF_NON_EMPTY,{EDIT_DATE}}
+				<li>{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!EDITED} {EDIT_DATE*}</li>
+				{+END}
 				
 				{+START,IF,{$INLINE_STATS}}
 				<li>{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {VIEWS*} {!COUNT_VIEWS}</li>
@@ -71,7 +71,7 @@
 
 	<div class="media-box">
 		{+START,IF_NON_PASSED,VIDEO}
-			<img class="scale-down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
+			<img class="scale-down" {+START,IF_EMPTY,{E_TITLE}}alt="{!IMAGE*}"{+END} {+START,IF_NON_EMPTY,{E_TITLE}}alt="{E_TITLE*}"{+END} src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 		{+END}
 		{+START,IF_PASSED,VIDEO}
 			{+START,IF,{$GT,{$METADATA,video:width},500}}
@@ -111,7 +111,7 @@
 
 	{+START,IF,{$NOT,{SLIDESHOW}}}
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
-			<div itemprop="caption">
+			<div class="entry-description" itemprop="caption">
 				{$PARAGRAPH,{DESCRIPTION}}
 			</div>
 		{+END}

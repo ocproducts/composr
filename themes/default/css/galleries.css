@@ -111,7 +111,7 @@
 	top: 2px;
 	backface-visibility: hidden; /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	opacity: 0.0;
-	transition: opacity 0.2s linear !important;
+	transition: opacity 0.15s ease-in-out;
 }
 .gallery-regular-thumb .mass-select-marker,
 .flow-mode-thumb .mass-select-marker {
@@ -125,6 +125,7 @@
 .gallery-regular-thumb,
 .flow-mode-thumb {
 	position: relative;
+	text-align: center;
 }
 .gallery-regular-thumb:hover .delete-cross-button input,
 .flow-mode-thumb:hover .delete-cross-button input,
@@ -133,11 +134,18 @@
 	opacity: 0.5;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
+
+
 .gallery-regular-thumb .delete-cross-button input:hover,
 .flow-mode-thumb .delete-cross-button input:hover,
 .gallery-regular-thumb .mass-select-marker:hover,
 .flow-mode-thumb .mass-select-marker:hover {
 	opacity: 1.0;
+}
+
+.gallery-regular-thumb .mass-select-marker:focus-within,
+.flow-mode-thumb .mass-select-marker:focus-within {
+	opacity: 1;
 }
 
 /* Non flow-mode only */
@@ -199,7 +207,22 @@
 	margin-bottom: 0.85em;
 }
 
+.gallery-entry-screen .entry-description {
+	overflow: hidden;
+}
+
 /* Flow-mode only */
+
+.gallery-flow-mode-entry .entry-title,
+.gallery-flow-mode-entry .entry-description {
+	text-align: center;
+	overflow: hidden;
+}
+
+.gallery-flow-mode-entry .ratings {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
 
 .flow-mode-details .gallery-entry-details .box {
 	margin-top: 0 !important;
@@ -215,19 +238,13 @@
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	transition: opacity 0.2s linear !important;
 }
-/*{+START,CSS_MODE,mobile}*/
-	.flow-mode-thumb {
-		margin: 0.5em;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,desktop}*/
-	.flow-mode-thumb {
-		margin: 0 1em;
-	}
-/*{+END}*/
 
 .flow-mode-thumb:hover,
 html.is-touch-enabled .flow-mode-thumb {
+	opacity: 1.0;
+}
+
+.flow-mode-thumb:focus-within {
 	opacity: 1.0;
 }
 
@@ -237,7 +254,42 @@ html.is-touch-enabled .flow-mode-thumb {
 }
 
 .flow-mode-thumb img {
-	max-width: 150px; /* Smaller, for carousel */
+	max-width: 200px; /* Smaller, for carousel */
+}
+
+.glide-other-gallery-images .glide__slides {
+	align-items: center;
+}
+
+.glide-other-gallery-images .btn-glide-go {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	display: none;
+}
+
+.glide-other-gallery-images:hover .btn-glide-go,
+.is-touch-enabled .glide-other-gallery-images .btn-glide-go {
+	animation: fade-in-btn-glide-go 0.15s ease-in-out;
+	display: inline-block;
+}
+
+.glide-other-gallery-images:focus-within .btn-glide-go {
+	animation: fade-in-btn-glide-go 0.15s ease-in-out;
+	display: inline-block;
+}
+
+@keyframes fade-in-btn-glide-go {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.glide-other-gallery-images .btn-glide-prev {
+	left: 5px;
+}
+
+.glide-other-gallery-images .btn-glide-next {
+	right: 5px;
 }
 
 /* Viewing entries */

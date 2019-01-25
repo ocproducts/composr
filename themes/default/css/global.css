@@ -733,7 +733,7 @@ th a:visited,
 .fake-th a, 
 .fake-th a:hover, 
 .fake-th a:visited {
-	font-weight: bold;
+	font-weight: {$GET,font_weight_medium};
 	color: {$GET,box_title_text};
 }
 
@@ -4126,6 +4126,7 @@ div.ajax-loading, p.ajax-loading {
 .rating-star-highlight {
 	opacity: 1.0;
 	padding-right: 3px;
+	color: {$GET,seed};
 }
 .email-body .rating-star {
 	display: none;
@@ -6415,6 +6416,7 @@ div.proceed-button-left-2 {
 	width: 25px;
 	height: 25px;
 	margin: 0;
+	vertical-align: middle;
 }
 
 .top-button-popup {

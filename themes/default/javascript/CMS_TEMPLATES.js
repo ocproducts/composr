@@ -652,14 +652,15 @@
     };
 
     function prepareMassSelectMarker(set, type, id, checked) {
-        var massDeleteForm = $dom.$id('mass-select-form--' + set);
+        var massDeleteForm = document.getElementById('mass-select-form--' + set);
         if (!massDeleteForm) {
-            massDeleteForm = $dom.$id('mass-select-button').form;
+            massDeleteForm = document.getElementById('mass-select-button').form;
         }
         var key = type + '_' + id;
         var hidden;
         if (massDeleteForm.elements[key] === undefined) {
             hidden = document.createElement('input');
+            hidden.className = 'key-to-delete';
             hidden.type = 'hidden';
             hidden.name = key;
             massDeleteForm.appendChild(hidden);
@@ -667,6 +668,13 @@
             hidden = massDeleteForm.elements[key];
         }
         hidden.value = checked ? '1' : '0';
-        massDeleteForm.style.display = 'block';
+
+        var hasKeysToDelete = checked || Boolean(massDeleteForm.querySelector('input[value="1"].key-to-delete'));
+
+        if (hasKeysToDelete) {
+            $dom.fadeIn(massDeleteForm);
+        } else {
+            $dom.fadeOut(massDeleteForm);
+        }
     }
 }(window.$cms, window.$util, window.$dom));

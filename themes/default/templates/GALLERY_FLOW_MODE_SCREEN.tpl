@@ -1,4 +1,5 @@
-<div itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
+{$REQUIRE_JAVASCRIPT,galleries}
+<div itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryFlowModeScreen">
 	{TITLE}
 
 	{WARNING_DETAILS}
@@ -22,19 +23,19 @@
 		<div class="box box---gallery-flow-mode-screen--other"><div class="box-inner">
 			<h2>{!OTHER_IMAGES_IN_GALLERY}</h2>
 
-			{$REQUIRE_JAVASCRIPT,core_rich_media}
-			{$REQUIRE_CSS,carousels}
+			{$REQUIRE_CSS,widget_glide}
+			{$REQUIRE_JAVASCRIPT,glide}
 
-			{$SET,carousel_id,{$RAND}}
-
-			<div id="carousel-{$GET*,carousel_id}" class="carousel" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move-left js-btn-car-move" data-move-amount="-100">{+START,INCLUDE,ICON}NAME=carousel/button_left{+END}</div>
-				<div class="main" itemprop="significantLinks"></div>
-				<div class="move-right js-btn-car-move" data-move-amount="+100">{+START,INCLUDE,ICON}NAME=carousel/button_right{+END}</div>
-			</div>
-
-			<div class="carousel-temp" id="carousel-ns-{$GET*,carousel_id}">
-				{ENTRIES}
+			<div class="glide glide-other-gallery-images">
+				<div class="glide__track" data-glide-el="track">
+					<div class="glide__slides">
+						{ENTRIES}
+					</div>
+				</div>
+				<div class="glide__arrows">
+					<button class="btn btn-secondary btn-glide-go btn-glide-prev"><i class="chevron chevron-left"></i><span class="sr-only">{!PREVIOUS*}</span></button>
+					<button class="btn btn-secondary btn-glide-go btn-glide-next"><i class="chevron chevron-right"></i><span class="sr-only">{!NEXT*}</span></button>
+				</div>
 			</div>
 
 			<hr />

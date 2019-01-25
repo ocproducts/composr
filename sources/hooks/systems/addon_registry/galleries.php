@@ -244,6 +244,8 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/config/search_images.php',
             'sources/hooks/systems/config/search_videos.php',
             'sources/hooks/systems/actionlog/galleries.php',
+            'themes/default/javascript/glide.js',
+            'themes/default/css/widget_glide.js',
             // Hero slider
             'sources/hooks/systems/config/homepage_slider_cycle_duration.php',
             'sources/hooks/systems/config/homepage_slider_effect.php',
