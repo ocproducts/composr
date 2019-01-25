@@ -1581,12 +1581,12 @@ HTML;
             $slideshow_next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'wide_high' => 1, 'id' => $next_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true); // Continues, but as slideshow
             $next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'id' => $next_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
 
-            $next_row = $GLOBALS['SITE_DB']->query_select(($back_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $next_id));
+            $next_row = $GLOBALS['SITE_DB']->query_select(($next_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $next_id));
             $next_row = $next_row[0];
 
             $entry_title = get_translated_text($next_row['title']);
 
-            if ($back_type === 'image') {
+            if ($next_type === 'image') {
                 $thumb_url = ensure_thumbnail($next_row['url'], $next_row['thumb_url'], 'galleries', 'images', $next_row['id']);
                 $next_thumb = do_image_thumb($thumb_url, $entry_title);
             } else {
