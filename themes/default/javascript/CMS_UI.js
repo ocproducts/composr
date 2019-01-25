@@ -329,8 +329,8 @@
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results-table');
             tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip-ownlayout' : 'tooltip-nolayout') + ' boxless-space' + (haveLinks ? ' have-links' : '');
-            if (el.className.startsWith('tt-')) {
-                tooltipEl.className += ' ' + el.className;
+            if (el.getAttribute('class') && el.getAttribute('class').startsWith('tt-')) {
+                tooltipEl.className += ' ' + el.getAttribute('class');
             }
             if (tooltip.length < 50) { // Only break words on long tooltips. Otherwise it messes with alignment.
                 tooltipEl.style.wordWrap = 'normal';
@@ -531,7 +531,7 @@
             return;
         }
 
-        tooltipElement || (tooltipElement = $dom.$('#' + el.tooltipId));
+        tooltipElement || (tooltipElement = document.getElementById(el.tooltipId));
 
         if (tooltipElement) {
             $dom.off(tooltipElement, 'mouseout.cmsTooltip');
@@ -547,12 +547,10 @@
      */
     $cms.ui.clearOutTooltips = function clearOutTooltips(tooltipBeingOpened) {
         // Delete other tooltips, which due to browser bugs can get stuck
-        var selector = '.tooltip';
-        if (tooltipBeingOpened) {
-            selector += ':not(#' + tooltipBeingOpened + ')';
-        }
-        $dom.$$(selector).forEach(function (el) {
-            $cms.ui.deactivateTooltip(el.ac, el);
+        $dom.$$('.tooltip').forEach(function (el) {
+            if (!tooltipBeingOpened || (el.id !== tooltipBeingOpened)) {
+                $cms.ui.deactivateTooltip(el.ac, el);
+            }
         });
     };
 

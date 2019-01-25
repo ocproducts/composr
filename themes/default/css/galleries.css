@@ -150,6 +150,11 @@
 
 /* Non flow-mode only */
 
+.gallery-regular-mode-screen .gallery-sorter {
+	display: table;
+	margin-left: auto;
+}
+
 .gallery-grid-cell-wrap {
 	display: flex;
 	flex-wrap: wrap;
@@ -190,7 +195,8 @@
 	overflow: hidden;
 }
 
-.gallery-regular-thumb p, .gallery-regular-thumb .grating {
+.gallery-regular-thumb p, 
+.gallery-regular-thumb .grating {
 	margin: 0.5em;
 	min-height: 1.5em;
 }

@@ -314,6 +314,10 @@ ul.news-entry-details-col-end {
 	left: 10px;
 }
 
+.main-news-grid .news-grid-item-details li {
+	white-space: nowrap;
+}
+
 .main-news-grid .news-grid-item-details .comments-link {
 	text-transform: capitalize;
 }

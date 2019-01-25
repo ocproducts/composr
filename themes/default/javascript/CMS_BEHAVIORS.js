@@ -109,7 +109,7 @@
                     elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] elements in form.elements
 
                     for (j = 0; j < elements.length; j++) {
-                        if ((elements[j].title !== undefined) && !elements[j].classList.contains('no-tooltip')) {
+                        if (elements[j].title && !elements[j].classList.contains('no-tooltip')) {
                             convertTooltip(elements[j]);
                         }
                     }
@@ -395,6 +395,21 @@
 
             $util.once($dom.$$$(context, 'img:not([data-cms-rich-tooltip])'), 'behavior.imageTooltips').forEach(function (img) {
                 convertTooltip(img);
+            });
+        }
+    };
+
+    // Convert svg title elements into Composr tooltips
+    $cms.behaviors.svgTooltips = {
+        attach: function (context) {
+            if (!$cms.configOption('js_overlays')) {
+                return;
+            }
+
+            $util.once($dom.$$$(context, 'svg:not([data-cms-rich-tooltip])'), 'behavior.svgTooltips').forEach(function (svg) {
+                if (svg.querySelector('title')) {
+                    convertTooltip(svg);
+                }
             });
         }
     };
@@ -1729,18 +1744,22 @@
     }
 
     function convertTooltip(el) {
-        var title = el.title ? el.title : el.alt;
+        var title = el.title ? el.title : ((el.localName === 'img') ? el.alt : (((el.localName === 'svg') && el.querySelector('title')) ? $dom.html(el.querySelector('title')) : ''));
 
         if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave-native-tooltip') || el.dataset['mouseoverActivateTooltip']) {
             return;
         }
 
-        // Remove old tooltip
         if ((el.localName === 'img') && !el.alt) {
             el.alt = el.title;
         }
 
-        el.title = '';
+        // Remove old tooltip
+        if ((el.localName === 'svg') && el.querySelector('title')) {
+            el.querySelector('title').remove();
+        } else {
+            el.title = '';
+        }
 
         if (el.onmouseover || (el.firstElementChild && (el.firstElementChild.onmouseover || el.firstElementChild.title))) {
             // Only put on new tooltip if there's nothing with a tooltip inside the element

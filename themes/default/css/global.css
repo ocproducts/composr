@@ -3150,13 +3150,17 @@ hr.spaced-rule {
 .left {
 	float: left;
 }
+
 .left.float-separation {
 	margin-right: 1em;
 }
+
 .right {
 	float: right;
 }
-.right.float-separation, .inline.spaced {
+
+.right.float-separation, 
+.inline.spaced {
 	margin-left: 1em;
 }
 /*{+START,CSS_MODE,mobile}*/
@@ -3172,7 +3176,7 @@ hr.spaced-rule {
 	.right.responsive.float-separation {
 		margin-left: 0;
 	}
-	.responsive>.box {
+	.responsive > .box {
 		width: auto !important;
 	}
 /*{+END}*/
@@ -4132,6 +4136,10 @@ div.ajax-loading, p.ajax-loading {
 	display: none;
 }
 
+.rating-display-star {
+	color: {$GET,seed};
+}
+
 .rating-likers a+a {
 	padding-left: 2px;
 }
@@ -4154,6 +4162,11 @@ div.ajax-loading, p.ajax-loading {
 .comments-header {
 	margin: 0.4em 0 0 0;
 }
+
+.boxless-space .box > .box-inner > .comments-header {
+	margin-top: 0;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	.comments-header {
 		float: left;

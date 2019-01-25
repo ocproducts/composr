@@ -28,7 +28,7 @@
             });
             glide.mount();
 
-            $dom.on(glideContainer, 'click', '.btn-glide-prev', function () {
+            $dom.on(glideContainer, 'click', '.btn-glide-prev', function () { // Go to previous slides or the very end
                 var perView = getCurrentPerView();
 
                 if (glide.index <= (perView - 1)) {
@@ -39,7 +39,7 @@
                 glide.go('=' + Math.max(glide.index - perView, 0));
             });
 
-            $dom.on(glideContainer, 'click', '.btn-glide-next', function () {
+            $dom.on(glideContainer, 'click', '.btn-glide-next', function () { // Go to next slides or back to the start
                 var totalSlides = glideContainer.querySelectorAll('.glide__slide').length,
                     perView = getCurrentPerView();
 
@@ -255,10 +255,9 @@
         });
     };
 
-    $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params) {
-        var container = this,
-            carouselId = params.carouselId ? (String(params.carouselId)) : '',
-            blockCallUrl = params.blockCallUrl ? (String(params.blockCallUrl)) : '';
+    $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params, container) {
+        var carouselId = strVal(params.carouselId),
+            blockCallUrl = strVal(params.blockCallUrl);
 
         if (!carouselId|| !blockCallUrl) {
             return;

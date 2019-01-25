@@ -75,7 +75,6 @@
 						{+START,INCLUDE,ICON}
 							NAME=breadcrumbs
 							ICON_TITLE={!YOU_ARE_HERE}
-							ICON_DESCRIPTION={!YOU_ARE_HERE}
 							ICON_SIZE=24
 							ICON_CLASS=breadcrumbs-img
 						{+END}

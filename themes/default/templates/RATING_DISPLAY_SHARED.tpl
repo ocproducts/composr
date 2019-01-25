@@ -12,12 +12,12 @@
 	{$SET,rating_loop,0}
 	{+START,SET,rating_stars}{$ROUND,{$DIV_FLOAT,{RATING},2}}{+END}
 	{+START,WHILE,{$LT,{$GET,rating_loop},{$GET,rating_stars}}}
-		<a {$?,{$EQ,{$GET,rating_loop},0},title="{!HAS_RATING,{$GET,rating_stars}}"}>
-			{+START,INCLUDE,ICON}
-				NAME=feedback/rating
-				ICON_SIZE=14
-			{+END}
-		</a>
+		{+START,INCLUDE,ICON}
+			NAME=feedback/rating
+			ICON_SIZE=14
+			ICON_CLASS=rating-display-star
+			ICON_TITLE={$?,{$EQ,{$GET,rating_loop},0},{!HAS_RATING,{$GET,rating_stars}}}
+		{+END}
 		{$INC,rating_loop}
 	{+END}
 	{+START,IF_NON_PASSED_OR_FALSE,NO_PEOPLE_SHOWN}{+START,IF,{LIKES}}{+START,IF_PASSED,LIKED_BY}{+START,IF_NON_EMPTY,{LIKED_BY}}

@@ -18,7 +18,7 @@
 	{$SET,button_type,{BUTTON_TYPE}}
 {+END}
 {+START,IF_NON_PASSED,BUTTON_TYPE}
-	{$SET,button_type,button-scr}
+	{$SET,button_type,btn-scr}
 {+END}
 
 {+START,IF_PASSED,BUTTON_LABEL_ENABLE}

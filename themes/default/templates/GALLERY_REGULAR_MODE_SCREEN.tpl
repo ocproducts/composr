@@ -1,8 +1,8 @@
-<div itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
+<div class="gallery-regular-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
 	{TITLE}
 
-	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<div itemprop="description">
+	{+START,IF_NON_EMPTY,{$TRIM,{DESCRIPTION}}}
+		<div class="gallery-description" itemprop="description">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</div>
 	{+END}
@@ -15,12 +15,12 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		{ENTRIES}
-
-		<div class="box category-sorter inline-block"><div class="box-inner">
+		<div class="box category-sorter gallery-sorter"><div class="box-inner">
 			{$SET,show_sort_button,1}
 			{SORTING}
 		</div></div>
+	
+		{ENTRIES}
 	{+END}
 
 	{+START,IF_EMPTY,{ENTRIES}{CHILDREN}}
@@ -59,7 +59,7 @@
 		4_ICON=admin/add_one_category
 		5_ACCESSKEY=q
 		5_URL={EDIT_URL*}
-		5_TITLE={!EDIT_GALLERY}
+		5_TITLE={!EDIT_THIS_GALLERY}
 		5_REL=edit
 		5_ICON=admin/edit_this_category
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
