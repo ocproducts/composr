@@ -1,8 +1,19 @@
-<div class="clearfix" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
+<div class="gallery-flow-mode-entry is-video" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
 	<div class="media-box">
 		{VIDEO_PLAYER}
 	</div>
-	<div class="lined-up-boxes">
+
+	{+START,IF_NON_EMPTY,{_TITLE}}
+	<h2 class="entry-title">{+START,FRACTIONAL_EDITABLE,{_TITLE},title,_SEARCH:cms_galleries:__edit_other:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{_TITLE*}{+END}</h2>
+	{+END}
+
+	{+START,IF_PASSED,DESCRIPTION}
+		<div class="entry-description" itemprop="caption">
+			{$PARAGRAPH,{DESCRIPTION}}
+		</div>
+	{+END}
+
+	<div class="clearfix lined-up-boxes">
 		<div class="gallery-entry-details right">
 			<section class="box box---gallery-flow-mode-video"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
@@ -16,15 +27,6 @@
 					{+END}
 
 					<tbody>
-						{+START,IF_NON_EMPTY,{_TITLE}}
-							<tr>
-								<th class="de-th metadata-title">{!TITLE}</th>
-								<td>
-									{+START,FRACTIONAL_EDITABLE,{_TITLE},title,_SEARCH:cms_galleries:__edit_other:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{_TITLE*}{+END}
-								</td>
-							</tr>
-						{+END}
-
 						<tr>
 							<th class="de-th metadata-title">{!ADDED}</th>
 							<td>
@@ -73,7 +75,7 @@
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 				{+START,INCLUDE,STAFF_ACTIONS}
 					1_URL={EDIT_URL*}
-					1_TITLE={!EDIT_VIDEO}
+					1_TITLE={!EDIT_THIS_VIDEO}
 					1_ICON=admin/edit_this
 				{+END}
 			</div></section>
@@ -85,8 +87,3 @@
 	</div>
 </div>
 
-{+START,IF_PASSED,DESCRIPTION}
-	<div itemprop="caption">
-		{$PARAGRAPH,{DESCRIPTION}}
-	</div>
-{+END}

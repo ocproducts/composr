@@ -112,7 +112,7 @@
 		4_ICON=admin/add_one_category
 		5_ACCESSKEY=q
 		5_URL={EDIT_URL*}
-		5_TITLE={!EDIT_GALLERY}
+		5_TITLE={!EDIT_THIS_GALLERY}
 		5_REL=edit
 		5_ICON=admin/edit_this_category
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
