@@ -37,7 +37,7 @@ class Block_main_gallery_embed
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'pagination', 'root', 'guid', 'as_guest', 'check');
+        $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'pagination', 'root', 'as_guest', 'check');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_gallery_embed
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\').(array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'guid\',$map)?$map[\'guid\']:\'\',get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):null),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?$map[\'root\']:get_param_string(\'keep_gallery_root\',null),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',array_key_exists(\'days\',$map)?$map[\'days\']:\'\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'add_date DESC\',get_param_integer(\'mge_start\',0),array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',(($map === null) || (!array_key_exists(\'select\',$map)))?\'*\':$map[\'select\'],(($map === null) || (!array_key_exists(\'video_select\',$map)))?\'*\':$map[\'video_select\'],array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
+        $info['cache_on'] = '(preg_match(\'#<\w+>#\',(array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\').(array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\'))!=0)?null:array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,get_param_integer($block_id.\'_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):null),get_param_integer($block_id.\'_start\',array_key_exists(\'start\',$map)?intval($map[\'start\']):0),((array_key_exists(\'pagination\',$map)?$map[\'pagination\']:\'0\')==\'1\'),((array_key_exists(\'root\',$map)) && ($map[\'root\']!=\'\'))?$map[\'root\']:get_param_string(\'keep_gallery_root\',null),array_key_exists(\'filter\',$map)?$map[\'filter\']:\'\',array_key_exists(\'video_filter\',$map)?$map[\'video_filter\']:\'\',array_key_exists(\'render_if_empty\',$map)?$map[\'render_if_empty\']:\'0\',array_key_exists(\'days\',$map)?$map[\'days\']:\'\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'add_date DESC\',get_param_integer(\'mge_start\',0),array_key_exists(\'param\',$map)?$map[\'param\']:db_get_first_id(),array_key_exists(\'zone\',$map)?$map[\'zone\']:\'\',(($map === null) || (!array_key_exists(\'select\',$map)))?\'*\':$map[\'select\'],(($map === null) || (!array_key_exists(\'video_select\',$map)))?\'*\':$map[\'video_select\'],array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'check\',$map)?($map[\'check\']==\'1\'):true)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -86,7 +86,6 @@ class Block_main_gallery_embed
         $start = get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0);
         $do_pagination = ((array_key_exists('pagination', $map) ? $map['pagination'] : '0') == '1');
         $root = ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null);
-        $guid = array_key_exists('guid', $map) ? $map['guid'] : '';
 
         if (empty($map['param'])) {
             $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'cat', array(), 'GROUP BY cat ORDER BY COUNT(*) DESC');
@@ -269,7 +268,7 @@ class Block_main_gallery_embed
                         }
 
                         $entry_map = array(
-                            '_GUID' => ($guid != '') ? $guid : '043ac7d15ce02715ac02309f6e8340ff',
+                            '_GUID' => '043ac7d15ce02715ac02309f6e8340ff',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
                             'DESCRIPTION' => get_translated_tempcode('images', $just_media_row, 'description'),
@@ -289,7 +288,7 @@ class Block_main_gallery_embed
                             '_EDIT_URL' => $_edit_url,
                         );
                         $entry = do_template('GALLERY_IMAGE', $entry_map);
-                        $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => ($guid != '') ? $guid : '13134830e1ebea158ab44885eeec0953', 'ENTRY' => $entry) + $entry_map));
+                        $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => '13134830e1ebea158ab44885eeec0953', 'ENTRY' => $entry) + $entry_map));
 
                         break;
 
@@ -326,7 +325,7 @@ class Block_main_gallery_embed
                         }
 
                         $entry_map = array(
-                            '_GUID' => ($guid != '') ? $guid : '66b7fb4d3b61ef79d6803c170d102cbf',
+                            '_GUID' => '66b7fb4d3b61ef79d6803c170d102cbf',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
                             'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'description'),
@@ -346,7 +345,7 @@ class Block_main_gallery_embed
                             '_EDIT_URL' => $_edit_url,
                         );
                         $entry = do_template('GALLERY_VIDEO', $entry_map);
-                        $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => ($guid != '') ? $guid : 'a0ff010ae7fd1f7b3341993072ed23cf', 'ENTRY' => $entry) + $entry_map));
+                        $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => 'a0ff010ae7fd1f7b3341993072ed23cf', 'ENTRY' => $entry) + $entry_map));
 
                         break;
                 }
@@ -373,7 +372,7 @@ class Block_main_gallery_embed
                     }
                 }
                 return do_template('BLOCK_NO_ENTRIES', array(
-                    '_GUID' => ($guid != '') ? $guid : 'bf84d65b8dd134ba6cd7b1b7bde99de2',
+                    '_GUID' => 'bf84d65b8dd134ba6cd7b1b7bde99de2',
                     'BLOCK_ID' => $block_id,
                     'HIGH' => false,
                     'TITLE' => $title,
@@ -394,7 +393,7 @@ class Block_main_gallery_embed
 
         // Render
         return do_template('BLOCK_MAIN_GALLERY_EMBED', array(
-            '_GUID' => ($guid != '') ? $guid : 'b7b969c8fe8c398dd6e3af7ee06717ea',
+            '_GUID' => 'b7b969c8fe8c398dd6e3af7ee06717ea',
             'BLOCK_ID' => $block_id,
             'IMAGE_FILTER' => $map['filter'],
             'VIDEO_FILTER' => $map['video_filter'],

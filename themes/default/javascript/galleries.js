@@ -256,22 +256,7 @@
     };
 
     $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params, container) {
-        var carouselId = strVal(params.carouselId),
-            blockCallUrl = strVal(params.blockCallUrl);
 
-        if (!carouselId|| !blockCallUrl) {
-            return;
-        }
-
-        $dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
-            var ob = document.getElementById('carousel-ns-' + carouselId);
-
-            if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
-                return; // Not close enough to need more results
-            }
-
-            $cms.callBlock(blockCallUrl, 'raw=1,cache=0', ob, true);
-        });
     };
 
     $cms.templates.galleryImportScreen = function () {

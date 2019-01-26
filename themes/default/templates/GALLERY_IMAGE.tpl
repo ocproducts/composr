@@ -45,32 +45,26 @@
 	</div>
 {+END}
 
-{+START,IF,{$EQ,{_GUID},carousel}}
-	<a data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]" href="{VIEW_URL*}"><img alt="{TITLE}" height="140" src="{$THUMBNAIL*,{THUMB_URL},140x140,website_specific,,,height}" /></a>
-{+END}
-
-{+START,IF,{$NEQ,{_GUID},carousel}}
-	<div class="gallery-regular-thumb">
-		<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
-			{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
-				{+START,INCLUDE,MASS_SELECT_MARKER}
-					TYPE={MEDIA_TYPE}
-					ID={ID}
-				{+END}
+<div class="gallery-regular-thumb">
+	<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
+		{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
+			{+START,INCLUDE,MASS_SELECT_MARKER}
+				TYPE={MEDIA_TYPE}
+				ID={ID}
 			{+END}
+		{+END}
 
-			<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
-		</div>
-
-		<p class="gallery-media-title-cropped">
-			{+START,FRACTIONAL_EDITABLE,{TITLE},title,_SEARCH:cms_galleries:__edit:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{$TRUNCATE_LEFT,{TITLE},23,0,0}{+END}
-		</p>
-
-		{+START,IF_PASSED,RATING_DETAILS}{+START,IF_NON_EMPTY,{RATING_DETAILS}}
-			<div class="grating">{RATING_DETAILS}</div>
-		{+END}{+END}
-		<p class="gallery-regular-thumb-comments-count">
-			<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
-		</p>
+		<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
 	</div>
-{+END}
+
+	<p class="gallery-media-title-cropped">
+		{+START,FRACTIONAL_EDITABLE,{TITLE},title,_SEARCH:cms_galleries:__edit:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{$TRUNCATE_LEFT,{TITLE},23,0,0}{+END}
+	</p>
+
+	{+START,IF_PASSED,RATING_DETAILS}{+START,IF_NON_EMPTY,{RATING_DETAILS}}
+		<div class="grating">{RATING_DETAILS}</div>
+	{+END}{+END}
+	<p class="gallery-regular-thumb-comments-count">
+		<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+	</p>
+</div>

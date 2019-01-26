@@ -1426,7 +1426,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/sup_composr_custom_profile_fields_cpf.txt',
             'docs/pages/comcode_custom/EN/sup_composr_points_explained.txt',
             'docs/pages/comcode_custom/EN/sup_configure_the_news_display_in_composr.txt',
-            'docs/pages/comcode_custom/EN/sup_converting_an_composr_gallery_to_a_carousel.txt',
             'docs/pages/comcode_custom/EN/sup_creating_a_hidden_members_zone_in_composr.txt',
             'docs/pages/comcode_custom/EN/sup_creating_a_store_locator_for_your_composr_website.txt',
             'docs/pages/comcode_custom/EN/sup_customising_your_composr_websites_design.txt',

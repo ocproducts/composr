@@ -1,9 +1,3 @@
-{+START,IF,{$EQ,{_GUID},carousel}}
+<div class="gallery-grid-cell">
 	{ENTRY}
-{+END}
-
-{+START,IF,{$NEQ,{_GUID},carousel}}
-	<div class="gallery-grid-cell">
-		{ENTRY}
-	</div>
-{+END}
+</div>
