@@ -306,11 +306,17 @@
     };
 
     $cms.templates.memberTooltip = function (params, container) {
-        var submitter = strVal(params.submitter);
+        var submitter = strVal(params.submitter),
+            loadTooltipPromise;
 
         $dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
             el.cancelled = false;
-            $cms.loadSnippet('member_tooltip&member_id=' + submitter).then(function (result) {
+
+            if (loadTooltipPromise == null) {
+                loadTooltipPromise = $cms.loadSnippet('member_tooltip&member_id=' + submitter);
+            }
+
+            loadTooltipPromise.then(function (result) {
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }
