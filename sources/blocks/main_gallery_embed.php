@@ -245,13 +245,12 @@ class Block_main_gallery_embed
                         $row_image = $c[0];
                         $entry_title = get_translated_text($row_image['title']);
                         $view_url = build_url(array('page' => ($zone == '_SELF' && running_script('index')) ? get_page_name() : 'galleries', 'type' => 'image', 'id' => $row_image['id'], 'root' => $root), $zone);
-                        $thumb_url = ensure_thumbnail($row_image['url'], $row_image['thumb_url'], 'galleries', 'images', $row_image['id']);
-                        $thumb = do_image_thumb($thumb_url, $entry_title);
                         $full_url = $row_image['url'];
                         $file_size = url_is_local($full_url) ? file_exists(get_custom_file_base() . '/' . rawurldecode($full_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($full_url))) : '' : '';
                         if (url_is_local($full_url)) {
                             $full_url = get_custom_base_url() . '/' . $full_url;
                         }
+                        $thumb = do_image_thumb($full_url, '', false, false, 500, 500);
                         $thumb_url = $row_image['thumb_url'];
                         if (url_is_local($thumb_url)) {
                             $thumb_url = get_custom_base_url() . '/' . $thumb_url;
@@ -304,7 +303,7 @@ class Block_main_gallery_embed
                         if ($thumb_url == '') {
                             $thumb_url = find_theme_image('na');
                         }
-                        $thumb = do_image_thumb($thumb_url, $entry_title);
+                        $thumb = do_image_thumb($thumb_url);
                         $full_url = $row_video['url'];
                         if (url_is_local($full_url)) {
                             $full_url = get_custom_base_url() . '/' . $full_url;

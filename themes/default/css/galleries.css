@@ -104,8 +104,9 @@
 .delete-cross-button div {
 	display: inline;
 }
+
 .delete-cross-button input,
-.gallery-regular-thumb .mass-select-marker,
+.gallery-grid-item .mass-select-marker,
 .flow-mode-thumb .mass-select-marker {
 	position: absolute;
 	right: 2px;
@@ -114,96 +115,95 @@
 	opacity: 0.0;
 	transition: opacity 0.15s ease-in-out;
 }
-.gallery-regular-thumb .mass-select-marker,
+
+.gallery-grid-item .mass-select-marker,
 .flow-mode-thumb .mass-select-marker {
 	right: 7px !important;
 }
-.gallery-regular-thumb .mass-select-marker input,
+
+.gallery-grid-item .mass-select-marker input,
 .flow-mode-thumb .mass-select-marker input {
 	float: none !important;
 	margin: 0 0 0 0 !important;
 }
-.gallery-regular-thumb,
+
+.gallery-grid-item,
 .flow-mode-thumb {
 	position: relative;
-	text-align: center;
 }
-.gallery-regular-thumb:hover .delete-cross-button input,
+
+.gallery-grid-item:hover .delete-cross-button input,
 .flow-mode-thumb:hover .delete-cross-button input,
-.gallery-regular-thumb:hover .mass-select-marker,
+.gallery-grid-item:hover .mass-select-marker,
 .flow-mode-thumb:hover .mass-select-marker {
 	opacity: 0.5;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 
-.gallery-regular-thumb .delete-cross-button input:hover,
+.gallery-grid-item .delete-cross-button input:hover,
 .flow-mode-thumb .delete-cross-button input:hover,
-.gallery-regular-thumb .mass-select-marker:hover,
+.gallery-grid-item .mass-select-marker:hover,
 .flow-mode-thumb .mass-select-marker:hover {
 	opacity: 1.0;
 }
 
-.gallery-regular-thumb .mass-select-marker:focus-within,
+.gallery-grid-item .mass-select-marker:focus-within,
 .flow-mode-thumb .mass-select-marker:focus-within {
 	opacity: 1;
 }
 
-/* Non flow-mode only */
+/* Grid-mode only */
 
 .gallery-regular-mode-screen .gallery-sorter {
 	display: table;
 	margin-left: auto;
 }
 
+.gallery-grid-cell {
+	margin-bottom: 20px;
+}
+
+/*{+START,CSS_MODE,desktop}*/
 .gallery-grid-cell-wrap {
 	display: flex;
 	flex-wrap: wrap;
-	margin: -0.5em 0 0 -0.5em;
+	margin-left: -10px;
+	margin-right: -10px;
 }
 
 .gallery-grid-cell {
-	margin: 0.5em 0 0 0.5em;
+	width: 50%;
+	padding: 0 10px;
 }
-/*{+START,CSS_MODE,desktop}*/
-	.gallery-grid-cell {
-		width: calc(25% - 0.5em);
-	}
 /*{+END}*/
 
-.gallery-regular-thumb {
-	font-size: 0.85em;
-	border: 1px solid {$GET,pale_border};
-	border-radius: {$GET,border_radius};
-	background-color: {$GET,area_background};
+/*{+START,CSS_MODE,large_desktop}*/
+.gallery-grid-cell {
+	width: 33.33333%;
+}
+/*{+END}*/
+
+.gallery-grid-item .img-thumb-wrap {
+	margin-bottom: 10px;
 }
 
-.img-thumb-wrap a {
-	outline: 0;
-}
-
-.img-thumb-wrap .img-thumb {
+.gallery-grid-item .img-thumb-wrap .img-thumb {
 	width: 100%;
 	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
 }
 
-.gallery-media-title-cropped * {
-	vertical-align: middle;
-}
-.gallery-media-title-cropped > span {
-	white-space: nowrap;
-	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
-	overflow: hidden;
+.gallery-grid-item .img-thumb-wrap a {
+	display: block;
 }
 
-.gallery-regular-thumb p, 
-.gallery-regular-thumb .grating {
-	margin: 0.5em;
-	min-height: 1.5em;
+.gallery-grid-item .grating {
+	margin: 0.5em 0;
 }
 
-.gallery-regular-thumb .grating {
-	float: right;
+.gallery-grid-item .grating .rating-display-star {
+	width: 18px;
+	height: 18px;
 }
 
 .gallery-tooltip {
@@ -244,6 +244,7 @@
 	display: inline-block;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	transition: opacity 0.2s linear !important;
+	text-align: center;
 }
 
 .flow-mode-thumb:hover,

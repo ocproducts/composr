@@ -62,14 +62,14 @@
 					<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a>
 				{+END}{+END}
 			{+END}
-			{+START,IF_NON_EMPTY,{$GET,author_details}}
+			{+START,IF_NON_EMPTY,{$TRIM,{$GET,author_details}}}
 				<li>
 					{$GET,author_details}
 				</li>
 			{+END}
 			<li><a href="{FULL_URL*}" title="{DATE*}" class="subtle-link">{$FROM_TIMESTAMP,%e %b %Y,{DATE_RAW*}}</a></li>
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview,forum:forumview}}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
-			<li><a href="{FULL_URL*}#comments-wrapper" class="subtle-link comments-link">{$COMMENT_COUNT,news,{ID}}</a></li>
+				<li><a href="{FULL_URL*}#comments-wrapper" class="subtle-link comments-link">{$COMMENT_COUNT,news,{ID}}</a></li>
 			{+END}{+END}
 		</ul>
 	</div>

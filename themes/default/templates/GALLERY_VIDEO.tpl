@@ -1,54 +1,5 @@
-{+START,SET,TOOLTIP}
-	<div class="gallery-tooltip">
-		<table class="map-table results-table">
-			{+START,IF,{$DESKTOP}}
-				<colgroup>
-					<col class="gallery-entry-field-name-column" />
-					<col class="gallery-entry-field-value-column" />
-				</colgroup>
-			{+END}
-
-			<tbody>
-				<tr>
-					<th class="de-th metadata-title">{!ADDED}</th>
-					<td>{$DATE_TIME*,{ADD_DATE_RAW}}</td>
-				</tr>
-
-				<tr>
-					<th class="de-th metadata-title">{!BY}</th>
-					<td><a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a></td>
-				</tr>
-
-				{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
-					<tr>
-						<th class="de-th metadata-title">{!EDITED}</th>
-						<td>{$DATE_TIME*,{EDIT_DATE_RAW}}</td>
-					</tr>
-				{+END}
-
-				{+START,IF,{$INLINE_STATS}}
-					<tr>
-						<th class="de-th metadata-title">{!COUNT_VIEWS}</th>
-						<td>{VIEWS*}</td>
-					</tr>
-				{+END}
-
-				{$SET,rating,{$RATING,videos,{ID},1,{SUBMITTER}}}
-				{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
-					<tr>
-						<th class="de-th metadata-title">{!RATING}</th>
-						<td>{$GET,rating}</td>
-					</tr>
-				{+END}
-
-				{$PREG_REPLACE,</(table|div|tbody|colgroup|col)>,,{$PREG_REPLACE,<(table|div|tbody|colgroup|col)[^>]*>,,{VIDEO_DETAILS}}}
-			</tbody>
-		</table>
-	</div>
-{+END}
-
-<div class="gallery-regular-thumb">
-	<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
+<div class="gallery-grid-item is-video">
+	<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" {+START,IF,{$INLINE_STATS}}data-mouseover-activate-tooltip="['{VIEWS;^*} {!COUNT_VIEWS;^*}','auto',null,null,false,true]"{+END}>
 		{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
 			{+START,INCLUDE,MASS_SELECT_MARKER}
 				TYPE={MEDIA_TYPE}
@@ -59,15 +10,23 @@
 		<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
 	</div>
 
-	<p class="gallery-media-title-cropped">
-		{+START,FRACTIONAL_EDITABLE,{TITLE},title,_SEARCH:cms_galleries:__edit_other:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{$TRUNCATE_LEFT,{TITLE},23,0,0}{+END}
-	</p>
-
 	{+START,IF_PASSED,RATING_DETAILS}{+START,IF_NON_EMPTY,{RATING_DETAILS}}
-		<div class="grating">{RATING_DETAILS}</div>
+	<div class="grating">{RATING_DETAILS}</div>
 	{+END}{+END}
-	<p class="gallery-regular-thumb-comments-count">
-		<a href="{VIEW_URL*}">{$COMMENT_COUNT,videos,{ID}}</a>
-	</p>
+
+	<h3 class="gallery-grid-item-heading">
+		<a href="{VIEW_URL*}" class="subtle-link">{+START,FRACTIONAL_EDITABLE,{TITLE},title,_SEARCH:cms_galleries:__edit_other:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{$TRUNCATE_LEFT,{TITLE},23,0,0}{+END}</a>
+	</h3>
+
+	<div class="gallery-grid-item-details">
+		<ul class="horizontal-links">
+			<li>
+				{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={SUBMITTER}{+END}
+				<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a>
+			</li>
+			<li><a href="{VIEW_URL*}" title="{$DATE_TIME*,{ADD_DATE_RAW}}" class="subtle-link">{$FROM_TIMESTAMP,%e %b %Y,{ADD_DATE_RAW*}}</a></li>
+			<li><a href="{VIEW_URL*}" class="subtle-link">{$COMMENT_COUNT,videos,{ID}}</a></li>
+		</ul>
+	</div>
 </div>
 

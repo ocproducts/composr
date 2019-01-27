@@ -150,7 +150,7 @@ function get_max_image_size($consider_php_limits = true)
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @return Tempcode The thumbnail
  */
-function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_already = true, $width = null, $height = null, $only_make_smaller = false)
+function do_image_thumb($url, $caption = '', $js_tooltip = false, $is_thumbnail_already = true, $width = null, $height = null, $only_make_smaller = false)
 {
     if (is_object($caption)) {
         $js_tooltip = true;
@@ -191,10 +191,6 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         $url = get_custom_base_url() . '/' . $url;
     }
 
-    if ((!is_object($caption)) && ($caption == '')) {
-        $caption = do_lang('THUMBNAIL');
-        $js_tooltip = false;
-    }
     return do_template('IMG_THUMB', array('_GUID' => 'f1c130b7c3b2922fe273596563cb377c', 'JS_TOOLTIP' => $js_tooltip, 'CAPTION' => $caption, 'URL' => $url));
 }
 

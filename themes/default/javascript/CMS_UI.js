@@ -286,7 +286,9 @@
         // Add in move/leave events if needed
         if (!haveLinks) {
             $dom.on(el, 'mouseout.cmsTooltip', function (e) {
-                if (!el.contains(e.relatedTarget)) {
+                var tooltipEl = el.tooltipId ? document.getElementById(el.tooltipId) : null;
+
+                if (!el.contains(e.relatedTarget) && (!tooltipEl || !tooltipEl.contains(e.relatedTarget))) {
                     $cms.ui.deactivateTooltip(el);
                 }
             });
@@ -316,8 +318,8 @@
         }
 
         var tooltipEl;
-        if ((el.tooltipId != null) && ($dom.$id(el.tooltipId))) {
-            tooltipEl = $dom.$id(el.tooltipId);
+        if ((el.tooltipId != null) && document.getElementById(el.tooltipId)) {
+            tooltipEl = document.getElementById(el.tooltipId);
             tooltipEl.style.display = 'none';
             $dom.empty(tooltipEl);
             setTimeout(function () {

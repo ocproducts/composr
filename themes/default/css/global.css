@@ -3632,6 +3632,10 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	background-color: {$GET,tooltip_background};
 }
 
+.tooltip-ownlayout > .box:first-child > .box-inner > h3:first-child {
+	margin-top: 0;
+}
+
 .tooltip .box {
 	margin: 0;
 }

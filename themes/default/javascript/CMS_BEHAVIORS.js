@@ -759,7 +759,7 @@
 
             els.forEach(function (el) {
                 $dom.on(el, type, function (e) {
-                    if (!Array.isArray($dom.data(el, type + 'ActivateTooltip'))) {
+                    if (!Array.isArray($dom.data(el, type + 'ActivateTooltip')) || ((e.type === 'mouseover') && el.contains(e.relatedTarget))) {
                         return;
                     }
 
