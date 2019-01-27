@@ -162,6 +162,7 @@
 
 .gallery-grid-cell {
 	margin-bottom: 20px;
+
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -181,6 +182,12 @@
 /*{+START,CSS_MODE,large_desktop}*/
 .gallery-grid-cell {
 	width: 33.33333%;
+}
+/*{+END}*/
+
+/*{+START,CSS_MODE,mobile}*/
+.gallery-grid-cell {
+	border-bottom: 1px solid {$GET,standard_border};
 }
 /*{+END}*/
 
@@ -204,6 +211,10 @@
 .gallery-grid-item .grating .rating-display-star {
 	width: 18px;
 	height: 18px;
+}
+
+.gallery-grid-item-details {
+	margin-bottom: 10px;
 }
 
 .gallery-tooltip {
