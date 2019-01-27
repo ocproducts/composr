@@ -810,10 +810,10 @@ img.icon {
 
 /*{+START,CSS_MODE,mobile}*/
 	select {
-		max-width: 100px;
 		white-space: nowrap !important;
 	}
-	select[size]/* Not a drop-down */, .form-table-field-input select {
+	select[size]/* Not a drop-down */, 
+	.form-table-field-input select {
 		max-width: 100%;
 	}
 
@@ -2562,7 +2562,7 @@ th.metadata-title {
 
 .img-thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
 	opacity: 0.7;
-	transition: opacity 0.2s linear !important;
+	transition: opacity 0.2s linear;
 }
 .img-thumb:not([width]):not([height]) {
 	max-width: 100%;
@@ -2574,7 +2574,7 @@ th.metadata-title {
 	opacity: 1.0;
 }
 .img-thumb-opaque .img-thumb {
-	transition: none !important;
+	transition: none;
 }
 
 .chevron {
@@ -3632,7 +3632,8 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	background-color: {$GET,tooltip_background};
 }
 
-.tooltip-ownlayout > .box:first-child > .box-inner > h3:first-child {
+.tooltip-ownlayout > .box:first-child > .box-inner > h3:first-child,
+.tooltip-ownlayout > p:first-child {
 	margin-top: 0;
 }
 

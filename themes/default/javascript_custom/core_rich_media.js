@@ -19,7 +19,7 @@
                     }
                     if (document.getElementById('next_slide')) {
                         media.addEventListener('canplay', function () {
-                            window.$galleries.stopSlideshowTimer();
+                            window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
                             player.play();
                         });
                         media.addEventListener('ended', function () {
@@ -55,7 +55,7 @@
                         media.preload = 'auto';
                         media.loop = false;
                         media.addEventListener('canplay', function () {
-                            window.$galleries.stopSlideshowTimer();
+                            window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
                             player.play();
                         });
                         media.addEventListener('ended', function () {

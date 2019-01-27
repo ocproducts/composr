@@ -732,7 +732,7 @@
         // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
         $dom.load.then(function () {
             if (document.getElementById('next_slide')) {
-                window.$galleries.stopSlideshowTimer();
+                window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
 
                 setTimeout(function () {
                     var player = document.getElementById(params.playerId);
@@ -763,7 +763,7 @@
     $cms.templates.mediaVimeo = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         if (document.getElementById('next_slide')) {
-            window.$galleries.stopSlideshowTimer();
+            window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             setTimeout(function () {
                 window.addEventListener('message', window.$galleries.playerStopped, false);
 
@@ -792,7 +792,7 @@
                 },
                 onReady: function () {
                     if (document.getElementById('next_slide')) {
-                        window.$galleries.stopSlideshowTimer();
+                        window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
                         jwplayer(params.playerId).play(true);
                     }
                 }
@@ -844,7 +844,7 @@
                 },
                 onReady: function () {
                     if (document.getElementById('next_slide')) {
-                        window.$galleries.stopSlideshowTimer();
+                        window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
                         jwplayer(params.playerId).play(true);
                     }
                 }

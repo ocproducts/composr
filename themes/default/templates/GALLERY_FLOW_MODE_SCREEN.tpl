@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,galleries}
-<div itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryFlowModeScreen">
+<div class="gallery-flow-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryFlowModeScreen">
 	{TITLE}
 
 	{WARNING_DETAILS}
@@ -20,8 +20,24 @@
 	{$SET,support_mass_select,cms_galleries}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="box box---gallery-flow-mode-screen--other"><div class="box-inner">
-			<h2>{!OTHER_IMAGES_IN_GALLERY}</h2>
+		<div class="flow-mode-other-gallery-images">
+			<div class="head">
+				<h2 class="heading">{!OTHER_IMAGES_IN_GALLERY}</h2>
+
+				<div class="sorting-and-slideshow-btn">
+					<ul class="horizontal-links with-icons">
+						<li>
+							<a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">
+								{+START,INCLUDE,ICON}
+								NAME=buttons/proceed
+								ICON_SIZE=24
+								{+END}{!_SLIDESHOW}
+							</a>
+						</li>
+						<li>{SORTING}</li>
+					</ul>
+				</div>
+			</div>
 
 			{$REQUIRE_CSS,widget_glide}
 			{$REQUIRE_JAVASCRIPT,glide}
@@ -38,22 +54,8 @@
 				</div>
 			</div>
 
-			<hr />
-
-			<ul class="horizontal-links with-icons associated-links-block-group">
-				<li>{SORTING}</li>
-				<li>
-					<a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">
-						{+START,INCLUDE,ICON}
-							NAME=buttons/proceed
-							ICON_SIZE=24
-						{+END}{!_SLIDESHOW}
-					</a>
-				</li>
-			</ul>
-
 			{+START,INCLUDE,MASS_SELECT_DELETE_FORM}{+END}
-		</div></div>
+		</div>
 	{+END}
 
 	{$SET,support_mass_select,}

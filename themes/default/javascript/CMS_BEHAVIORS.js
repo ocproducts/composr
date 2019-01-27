@@ -749,6 +749,25 @@
         }
     };
 
+    // Implementation for [data-cms-tooltip="...Tooltip Contents..."]
+    $cms.behaviors.cmsTooltip = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-cms-tooltip]'), 'behavior.cmsTooltip');
+
+            els.forEach(function (el) {
+                var tooltipContents = $dom.data(el, 'cmsTooltip');
+
+                $dom.on(el, 'mouseover', function (e) {
+                    if (el.contains(e.relatedTarget)) {
+                        return;
+                    }
+
+                    $cms.ui.activateTooltip(el, e, tooltipContents);
+                });
+            });
+        }
+    };
+
     /**
      * @param { string} type - 'mouseover' or 'focus'
      * @returns { Function }

@@ -1,4 +1,4 @@
-<div class="gallery-regular-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
+<div class="gallery-regular-mode-screen" data-tpl="galleryRegularModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{$TRIM,{DESCRIPTION}}}
@@ -15,10 +15,12 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="box category-sorter gallery-sorter"><div class="box-inner">
+		<div class="gallery-actions">
+			<a class="btn btn-primary btn-slideshow js-set-href-to-slideshow-url" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="#!">{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</a>
+
 			{$SET,show_sort_button,1}
 			{SORTING}
-		</div></div>
+		</div>
 	
 		{ENTRIES}
 	{+END}

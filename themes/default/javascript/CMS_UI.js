@@ -235,7 +235,7 @@
      * @param { Element } el - the element
      * @param { Event } event - the event handler
      * @param { string } tooltip - the text for the tooltip
-     * @param { string } width - width is in pixels (but you need 'px' on the end), can be null or auto
+     * @param { string } [width] - width is in pixels (but you need 'px' on the end), can be null or auto
      * @param { string } [pic] - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
      * @param { string } [height] - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
      * @param { boolean } [bottom] - set to true if the tooltip should definitely appear upwards; rarely use this parameter

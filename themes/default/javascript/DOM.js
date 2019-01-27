@@ -2657,7 +2657,10 @@
      */
     $dom.remove = function remove(node) {
         node = $dom.nodeArg(node);
-        node.parentNode.removeChild(node);
+
+        if (node.parentNode != null) {
+            node.parentNode.removeChild(node);
+        }
     };
 
     /**

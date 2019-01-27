@@ -1,4 +1,4 @@
-<div class="gallery-flow-mode-entry" itemscope="itemscope" itemtype="http://schema.org/ImageObject">
+<div class="gallery-flow-mode-entry is-image" itemscope="itemscope" itemtype="http://schema.org/ImageObject">
 	<div class="media-box">
 		<img src="{THUMB_URL*}" {+START,IF_EMPTY,{_TITLE}}alt="{!IMAGE}"{+END} {+START,IF_NON_EMPTY,{_TITLE}}alt="{_TITLE*}"{+END} itemprop="contentURL" />
 	</div>
@@ -7,11 +7,11 @@
 	<h2 class="entry-title">{+START,FRACTIONAL_EDITABLE,{_TITLE},title,_SEARCH:cms_galleries:__edit:{ID},1,1,{$HAS_EDIT_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries,galleries,{CAT}}}{_TITLE*}{+END}</h2>
 	{+END}
 	
-	{+START,IF_PASSED,DESCRIPTION}
+	{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<div class="entry-description" itemprop="caption">
 			{$PARAGRAPH,{DESCRIPTION}}
 		</div>
-	{+END}
+	{+END}{+END}
 
 	<div class="clearfix lined-up-boxes">
 		<div class="box gallery-entry-info left">

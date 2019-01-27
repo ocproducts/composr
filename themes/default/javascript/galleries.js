@@ -9,20 +9,40 @@
         window.slideshowTime = null;
     }
 
+    $cms.templates.galleryRegularModeScreen = function (params, container) {
+        var slideshowBtn = container.querySelector('.js-set-href-to-slideshow-url'),
+            firstGridItemLink = container.querySelector('.gallery-grid-item-heading a');
+
+        if (slideshowBtn && firstGridItemLink) {
+            var firstGridItemUrl = $util.url(firstGridItemLink.href),
+                slideshowUrl = $util.pageUrl();
+
+            slideshowUrl.searchParams.set('type', firstGridItemUrl.searchParams.get('type'));
+            slideshowUrl.searchParams.set('wide_high', '1');
+            slideshowUrl.searchParams.set('id', firstGridItemUrl.searchParams.get('id'));
+            slideshowUrl.searchParams.set('slideshow', '1');
+
+            slideshowBtn.href = slideshowUrl;
+            $dom.show(slideshowBtn);
+        }
+    };
+
     $cms.templates.galleryFlowModeScreen = function (params, container) {
         var glideContainer = container.querySelector('.glide-other-gallery-images');
 
         if (glideContainer != null) {
             var glide = new window.Glide(glideContainer, {
-                perView: 5, // A number of slides visible on the single viewport.
+                perView: 6, // A number of slides visible on the single viewport.
                 bound: true, // Stop running perView number of slides from the end. Use this option if you don't want to have an empty space after a slider.
                 breakpoints: { // Collection of options applied at specified media breakpoints.
                     400: {
                         perView: 2
                     },
-
                     700: {
                         perView: 3
+                    },
+                    1300: {
+                        perView: 5
                     }
                 }
             });
@@ -52,16 +72,19 @@
             });
         }
 
-        var bp400 = window.matchMedia('(max-width: 400px)'),
-            bp700 = window.matchMedia('(max-width: 700px)');
+        var bp1 = window.matchMedia('(max-width: 400px)'),
+            bp2 = window.matchMedia('(max-width: 700px)'),
+            bp3 = window.matchMedia('(max-width: 1300px)');
 
         function getCurrentPerView() {
-            if (bp400.matches) {
+            if (bp1.matches) {
                 return 2;
-            } else if (bp700.matches) {
+            } else if (bp2.matches) {
                 return 3;
-            } else {
+            } else if (bp3.matches) {
                 return 5;
+            } else {
+                return 6;
             }
         }
     };
@@ -359,42 +382,41 @@
         slideshowShowSlide(window.slideshowCurrentPosition + 1);
     }
 
-    function slideshowEnsureLoaded(slide, callback) {
-        if (window.slideshowSlides[slide] !== undefined) {
-            if (callback !== undefined) {
-                callback();
-            }
-            return; // Already have it
-        }
-
-        if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
-            window.slideshowSlides[slide] = $dom.html('#gallery-entry-screen');
-            return;
-        }
-
-        if ((slide === window.slideshowCurrentPosition - 1) || (slide === window.slideshowCurrentPosition + 1)) {
-            var url;
-            if (slide === window.slideshowCurrentPosition + 1) {
-                url = document.getElementById('next_slide').value;
-            }
-            if (slide === window.slideshowCurrentPosition - 1) {
-                url = document.getElementById('previous_slide').value;
+    function slideshowEnsureLoaded(slide) {
+        return new Promise(function (resolve) {
+            if (window.slideshowSlides[slide] !== undefined) {
+                resolve();
+                return; // Already have it
             }
 
-            $cms.doAjaxRequest(url).then(function (xhr) {
-                window.slideshowSlides[slide] = xhr.responseText.replace(/<!DOCTYPE [^>]*>/i, '').replace(/(.|\n)*<div class="gallery-entry-screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
+            if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
+                window.slideshowSlides[slide] = $dom.html('#gallery-entry-screen');
+                resolve();
+                return;
+            }
 
-                if (callback !== undefined) {
-                    callback();
+            if ((slide === window.slideshowCurrentPosition - 1) || (slide === window.slideshowCurrentPosition + 1)) {
+                var url;
+                if (slide === window.slideshowCurrentPosition + 1) {
+                    url = document.getElementById('next_slide').value;
                 }
-            });
-        } else {
-            $cms.ui.alert('Internal error: should not be preloading more than one step ahead');
-        }
+                if (slide === window.slideshowCurrentPosition - 1) {
+                    url = document.getElementById('previous_slide').value;
+                }
+
+                $cms.doAjaxRequest(url).then(function (xhr) {
+                    window.slideshowSlides[slide] = xhr.responseText.replace(/<!DOCTYPE [^>]*>/i, '').replace(/(.|\n)*<div class="gallery-entry-screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
+                    resolve();
+                });
+            } else {
+                $cms.ui.alert('Internal error: should not be preloading more than one step ahead');
+            }
+        });
+
     }
 
     function slideshowShowSlide(slide) {
-        slideshowEnsureLoaded(slide, function () {
+        return slideshowEnsureLoaded(slide).then(function () {
             if (window.slideshowCurrentPosition !== slide) { // If not already here
                 var slideshowFromOld = document.getElementById('slideshow_from');
 
@@ -428,19 +450,19 @@
                 }
 
                 window.slideshowCurrentPosition = slide;
-            }
 
-            if (document.querySelector('.scale-down')) { // Is image
-                startSlideshowTimer();
-                resetSlideshowCountdown();
-            } else { // Is video
-                $galleries.stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
-            }
+                if (document.querySelector('.scale-down')) { // Is image
+                    startSlideshowTimer();
+                    resetSlideshowCountdown();
+                } else { // Is video
+                    $galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
+                }
 
-            if (window.slideshowCurrentPosition !== window.slideshowTotalSlides - 1) {
-                slideshowEnsureLoaded(slide + 1);
-            } else {
-                document.getElementById('gallery-entry-screen').style.cursor = '';
+                if (window.slideshowCurrentPosition !== (window.slideshowTotalSlides - 1)) {
+                    slideshowEnsureLoaded(slide + 1);
+                } else {
+                    document.getElementById('gallery-entry-screen').style.cursor = '';
+                }
             }
         });
     }
