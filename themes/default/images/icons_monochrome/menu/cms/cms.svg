@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
-	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
-]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-2.136 0 48 48">
 <path d="M23.983,6.822c-6.294,0-11.397,5.103-11.397,11.398c0,0.641,0.071,1.262,0.173,1.874h8.983l5.249-8.234l7.331,11.137
