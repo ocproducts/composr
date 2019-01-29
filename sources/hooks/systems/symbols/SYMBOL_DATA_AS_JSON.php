@@ -57,7 +57,6 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'IS_ADMIN'          => ecv_IS_ADMIN($lang, [], []),
             'IS_HTTPAUTH_LOGIN' => ecv_IS_HTTPAUTH_LOGIN($lang, [], []),
             'IS_A_COOKIE_LOGIN' => ecv_IS_A_COOKIE_LOGIN($lang, [], []),
-            'INLINE_STATS'      => ecv_INLINE_STATS($lang, [], []),
             'CSP_NONCE'         => ecv_CSP_NONCE($lang, [], []),
             'RUNNING_SCRIPT'    => current_script(),
         );
