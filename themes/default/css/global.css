@@ -2832,28 +2832,33 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	margin-top: 1.5em;
 	padding-top: 0.5em;
 }
+
 .boxless-space .box .box + .box, 
 .comments-wrapper .boxless-space .box + .box { /* Nested dividers more subtle */
 	border-top: 0 !important;
 }
+
 .global-side-panel .boxless-space .box .box + .box {
 	padding-top: 0;
 }
+
 .global-middle .boxless-space .box .box + .box::before {
 	content: "";
 	width: 60%;
 	display: block;
 	margin: 0 auto;
-	border-top: 2px solid {$GET,pale_border} !important;
+	border-top: 1px solid {$GET,pale_border} !important;
 	padding-top: 0.4em;
 }
+
 .comments-wrapper .boxless-space .box + .box::before {
 	content: "";
 	width: 60%;
 	display: block;
 	margin: 0 auto 2em auto;
-	border-top: 2px solid {$GET,pale_border} !important;
+	border-top: 1px solid {$GET,pale_border} !important;
 }
+
 .boxless-space .box + .fp-col-blocks-wrap {
 	padding-top: 0;
 }
@@ -4254,9 +4259,8 @@ div.ajax-loading, p.ajax-loading {
 
 div .post-buttons > *, 
 div .buttons-group-faded > * {
-	opacity: 0.25;
-	transition-property : opacity;
-	transition-duration : 0.5s;
+	opacity: 0.4;
+	transition: opacity 0.3s ease-in-out;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
@@ -4653,7 +4657,7 @@ dl.meta-details-list > dt, dl.meta-details-list>dd {
 	margin-top: 2em;
 	font-size: 0.95em;
 	opacity: 0.4;
-	transition: opacity 0.6s linear;
+	transition: opacity 0.3s ease-in-out;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	min-height: 26px;
 	overflow: hidden; /* To contain the settings cog icon */
@@ -4683,6 +4687,8 @@ dl.meta-details-list > dt, dl.meta-details-list>dd {
 .staff-actions .field-name.standard-field-name {
 	display: none;
 }
+
+
 .staff-actions ul.horizontal-links {
 	width: auto;
 	font-size: 1em;
@@ -4695,7 +4701,13 @@ dl.meta-details-list > dt, dl.meta-details-list>dd {
 
 /*{+START,CSS_MODE,mobile}*/
 	.staff-actions ul.horizontal-links {
-		display: block !important; /* <- causes setting cog icon to go to new line :( */
+		display: block;
+		margin: -5px;
+	}
+
+	.staff-actions ul.horizontal-links li {
+		display: inline-block;
+		margin: 5px;
 	}
 /*{+END}*/
 .global-middle .staff-actions li {
@@ -4810,45 +4822,27 @@ form.associated-link::after {
 	}
 /*{+END}*/
 
-/*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links > li:not(:first-child)::before,
-	.horizontal-meta-details li:not(:first-child)::before,
-	.horizontal-links > li:not(:first-child)::before,
-	.horizontal-ticker li:not(:first-child)::before {
-		/* CSS based middot */
-		margin: 0 0.5em;
-		content: "" !important;
-		border-radius: 50%;
-		width: 3px;
-		height: 3px;
-		background-color: {$GET,dark_border};
-		display: inline-block;
-		vertical-align: middle;
-	}
-/*{+END}*/
+ul.associated-links-block-group.horizontal-links > li:not(:first-child)::before,
+.horizontal-meta-details li:not(:first-child)::before,
+.horizontal-links > li:not(:first-child)::before,
+.horizontal-ticker li:not(:first-child)::before {
+	/* CSS based middot */
+	margin: 0 0.5em;
+	content: "" !important;
+	border-radius: 50%;
+	width: 3px;
+	height: 3px;
+	background-color: {$GET,dark_border};
+	display: inline-block;
+	vertical-align: middle;
+}
+
 /*{+START,CSS_MODE,mobile}*/
-	ul.associated-links-block-group.horizontal-links > li:not(:first-child)::before,
-	.horizontal-meta-details li:not(:first-child)::before,
-	.horizontal-links > li:not(:first-child)::before,
-	.horizontal-ticker li:not(:first-child)::before {
-		padding: 0 0.5em;
-		content: "|" !important;
-		font-size: 0.8em;
-	}
-
-	ul.associated-links-block-group.horizontal-links > li:first-child::before,
-	.horizontal-meta-details li:first-child::before,
-	.horizontal-links > li:first-child::before,
-	.horizontal-ticker li:first-child::before {
-		/*display: none;*/
-	}
-
-	.with-images ul.associated-links-block-group.horizontal-links>li::before,
+	.with-images ul.associated-links-block-group.horizontal-links > li::before,
 	.with-images .horizontal-meta-details li::before,
-	.with-images .horizontal-links>li::before,
+	.with-images .horizontal-links > li::before,
 	.with-images .horizontal-ticker li::before {
-		margin-left: 0.5em;
-		content: "" !important;
+		display: none;
 	}
 /*{+END}*/
 .horizontal-meta-details li::before {
