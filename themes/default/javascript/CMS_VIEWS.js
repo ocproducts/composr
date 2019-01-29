@@ -1473,7 +1473,7 @@
                     // Remove other edit links
                     var old = document.querySelectorAll('.magic-image-edit-link');
                     for (var i = old.length - 1; i >= 0; i--) {
-                        old[i].parentNode.removeChild(old[i]);
+                        old[i].remove();
                     }
 
                     // Add edit button

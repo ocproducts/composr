@@ -56,11 +56,10 @@
         },
 
         initReviewRatings: function () {
-            var view = this,
-                reviewRatingContainers = view.$$('.js-container-review-rating');
+            var self = this;
 
-            reviewRatingContainers.forEach(function (container) {
-                view.displayReviewRating(container);
+            this.$$('.js-container-review-rating').forEach(function (container) {
+                self.displayReviewRating(container);
             });
         },
 
