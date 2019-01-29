@@ -15,7 +15,7 @@
 {+END}
 
 {+START,IF,{$EQ,{STYLE},1}}
-	<div class="box" data-require-javascript="twitter_feed_integration_block" data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}"><div class="box-inner">
+	<div class="box" data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}"><div class="box-inner">
 		<div class="webstandards-checker-off">
 			{TWEET_TEXT`}
 		</div>
@@ -33,7 +33,7 @@
 {+END}
 
 {+START,IF,{$EQ,{STYLE},2}}
-	<div class="float-surrounder" style="margin-bottom: 1em" data-require-javascript="twitter_feed_integration_block" data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
+	<div class="float-surrounder" style="margin-bottom: 1em" data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
 		{+START,IF,{SHOW_PROFILE_IMAGE}}
 			<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{USER_PROFILE_IMG_URL}}" />
 		{+END}
@@ -74,7 +74,7 @@
 {+END}
 
 {+START,IF,{$EQ,{STYLE},3}}
-	<div class="float-surrounder" data-require-javascript="twitter_feed_integration_block" data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
+	<div class="float-surrounder" data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
 		{+START,IF,{SHOW_PROFILE_IMAGE}}
 			<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{USER_PROFILE_IMG_URL}}" />
 		{+END}

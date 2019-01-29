@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,ecommerce}
 
-<div data-require-javascript="ecommerce" data-view="PurchaseWizardScreen">
+<div data-view="PurchaseWizardScreen">
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{URL}}

@@ -7,7 +7,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{ISSUES}}
-	<div class="tracker-issues" data-require-javascript="composr_homesite_support_credits" data-tpl="mantisTracker">
+	<div class="tracker-issues" data-tpl="mantisTracker">
 		{+START,LOOP,ISSUES}
 			<div class="box"><div class="box-inner">
 				<h3>{CATEGORY*}: {SUMMARY*}</h3>

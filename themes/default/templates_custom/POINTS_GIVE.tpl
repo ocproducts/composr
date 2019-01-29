@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,idolisr}
 
-<div data-require-javascript="idolisr" data-tpl="pointsGive">
+<div data-tpl="pointsGive">
 	{+START,SET,roles}
 		<option value="">(Please select)</option>
 		<option value="Helpful soul">Helpful soul</option>

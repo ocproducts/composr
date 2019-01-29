@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,booking}
 
-<div data-require-javascript="booking" data-tpl="bookingFleshOutScreen">
+<div data-tpl="bookingFleshOutScreen">
 	{TITLE}
 
 	{+START,SET,fleshed}

@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
-<tr data-require-javascript="cns_forum" data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
+<tr data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
 	{+START,IF,{$DESKTOP}}
 		<td class="cns-forum-new-post-indicator cns-column1 cell-desktop">
 			<a title="{LANG_NEW_POST_OR_NOT*}">{+START,INCLUDE,ICON}

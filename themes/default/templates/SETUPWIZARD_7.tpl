@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,setupwizard}
 
-<div data-require-javascript="setupwizard" data-tpl="setupWizard7">
+<div data-tpl="setupWizard7">
 	{FORM}
 	<div class="box box---setupwizard-7-screen">
 		<div class="box-inner">

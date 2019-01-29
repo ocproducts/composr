@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,iotds}
 
-<div class="box box---iotd-box" data-require-javascript="iotds" data-tpl="iotdBox">
+<div class="box box---iotd-box" data-tpl="iotdBox">
 	<div class="box-inner">
 		{+START,IF,{GIVE_CONTEXT}}
 			{+START,SET,content_box_title}

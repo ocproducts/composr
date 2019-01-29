@@ -3,7 +3,7 @@
 {$REQUIRE_JAVASCRIPT,editing}
 {$REQUIRE_CSS,cns}
 
-<div class="box" data-require-javascript="password_censor" data-tpl="comcodeEncrypt"><div class="box-inner">
+<div class="box" data-tpl="comcodeEncrypt"><div class="box-inner">
 	<h3>Encrypted text</h3>
 
 	{+START,IF_NON_EMPTY,{$_POST,decrypt}}
