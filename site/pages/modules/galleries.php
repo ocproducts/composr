@@ -1165,7 +1165,7 @@ HTML;
         $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, array(), false);
 
         // Render
-        return do_template('GALLERY_REGULAR_MODE_SCREEN', array(
+        return do_template('GALLERY_GRID_MODE_SCREEN', array(
             '_GUID' => 'cec405597f47f5079b7c7f581fa6b5c2',
             'SORTING' => $sorting,
             '_TITLE' => $fullname,

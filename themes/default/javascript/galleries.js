@@ -9,7 +9,7 @@
         window.slideshowTime = null;
     }
 
-    $cms.templates.galleryRegularModeScreen = function (params, container) {
+    $cms.templates.galleryGridModeScreen = function (params, container) {
         var slideshowBtn = container.querySelector('.js-set-href-to-slideshow-url'),
             firstGridItemLink = container.querySelector('.gallery-grid-item-heading a');
 

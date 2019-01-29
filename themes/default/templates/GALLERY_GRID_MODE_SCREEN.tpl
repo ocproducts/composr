@@ -1,4 +1,4 @@
-<div class="gallery-regular-mode-screen" data-tpl="galleryRegularModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
+<div class="gallery-grid-mode-screen" data-tpl="galleryGridModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{$TRIM,{DESCRIPTION}}}
@@ -75,7 +75,7 @@
 	<div class="clearfix lined-up-boxes">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
-				<div class="box box---gallery-regular-mode-screen"><div class="box-inner">
+				<div class="box box---gallery-grid-mode-screen"><div class="box-inner">
 					<h2>{_TITLE*}</h2>
 
 					{MEMBER_DETAILS}

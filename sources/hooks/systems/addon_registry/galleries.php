@@ -171,7 +171,7 @@ class Hook_addon_registry_galleries
             'themes/default/templates/GALLERY_CAROUSEL_MODE_VIDEO.tpl',
             'themes/default/templates/GALLERY_VIDEO.tpl',
             'themes/default/templates/GALLERY_VIDEO_INFO.tpl',
-            'themes/default/templates/GALLERY_REGULAR_MODE_SCREEN.tpl',
+            'themes/default/templates/GALLERY_GRID_MODE_SCREEN.tpl',
             'themes/default/templates/BLOCK_SIDE_GALLERIES.tpl',
             'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE.tpl',
             'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE_CONTAINER.tpl',
@@ -277,21 +277,21 @@ class Hook_addon_registry_galleries
             'templates/GALLERY_IMPORT_SCREEN.tpl' => 'administrative__gallery_import_screen',
             'templates/GALLERY_POPULAR.tpl' => 'gallery_popular',
             'templates/GALLERY_IMAGE.tpl' => 'gallery_image',
-            'templates/GALLERY_ENTRY_WRAP.tpl' => 'gallery_regular_mode_screen',
-            'templates/GALLERY_VIDEO.tpl' => 'gallery_regular_mode_screen',
+            'templates/GALLERY_ENTRY_WRAP.tpl' => 'gallery_grid_mode_screen',
+            'templates/GALLERY_VIDEO.tpl' => 'gallery_grid_mode_screen',
             'templates/BLOCK_MAIN_GALLERY_EMBED.tpl' => 'block_main_gallery_embed',
             'templates/BLOCK_SIDE_GALLERIES_LINE_DEPTH.tpl' => 'block_side_galleries',
             'templates/BLOCK_SIDE_GALLERIES_LINE.tpl' => 'block_side_galleries',
             'templates/BLOCK_SIDE_GALLERIES_LINE_CONTAINER.tpl' => 'block_side_galleries',
             'templates/BLOCK_SIDE_GALLERIES.tpl' => 'block_side_galleries',
             'templates/GALLERY_VIDEO_INFO.tpl' => 'gallery_video_info',
-            'templates/GALLERY_BOX.tpl' => 'gallery_regular_mode_screen',
+            'templates/GALLERY_BOX.tpl' => 'gallery_grid_mode_screen',
             'templates/GALLERY_ENTRY_LIST_LINE.tpl' => 'gallery_entry_list_line',
             'templates/GALLERY_CAROUSEL_MODE_IMAGE.tpl' => 'gallery_carousel_mode_image',
             'templates/GALLERY_CAROUSEL_MODE_VIDEO.tpl' => 'gallery_carousel_mode_video',
             'templates/GALLERY_CAROUSEL_ENTRY.tpl' => 'gallery_carousel_mode_image',
             'templates/GALLERY_CAROUSEL_MODE_SCREEN.tpl' => 'gallery_carousel_mode_image',
-            'templates/GALLERY_REGULAR_MODE_SCREEN.tpl' => 'gallery_regular_mode_screen',
+            'templates/GALLERY_GRID_MODE_SCREEN.tpl' => 'gallery_grid_mode_screen',
             'templates/GALLERY_ENTRY_SCREEN.tpl' => 'gallery_entry_screen',
             'templates/GALLERY_NAV.tpl' => 'gallery_entry_screen',
             'templates/CNS_MEMBER_PROFILE_GALLERIES.tpl' => 'cns_member_profile_galleries',
@@ -871,7 +871,7 @@ class Hook_addon_registry_galleries
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__gallery_regular_mode_screen()
+    public function tpl_preview__gallery_grid_mode_screen()
     {
         $tags = do_lorem_template('TAGS', array(
             'LINK_FULLSCOPE' => lorem_word(),
@@ -969,7 +969,7 @@ class Hook_addon_registry_galleries
         ));
 
         return array(
-            lorem_globalise(do_lorem_template('GALLERY_REGULAR_MODE_SCREEN', array(
+            lorem_globalise(do_lorem_template('GALLERY_GRID_MODE_SCREEN', array(
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
                 'CAT' => lorem_word(),

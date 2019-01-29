@@ -156,16 +156,16 @@
 
 /* Grid-mode only */
 
-.gallery-regular-mode-screen .gallery-actions {
+.gallery-grid-mode-screen .gallery-actions {
 	display: table;
 	margin: 20px 0 20px auto;
 }
 
-.gallery-regular-mode-screen .gallery-actions .btn-slideshow {
+.gallery-grid-mode-screen .gallery-actions .btn-slideshow {
 	margin-right: 10px;
 }
 
-.gallery-regular-mode-screen .gallery-actions .pagination-sort {
+.gallery-grid-mode-screen .gallery-actions .pagination-sort {
 	margin-top: 10px;
 }
 
