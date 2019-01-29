@@ -59,8 +59,16 @@ class Hook_profiles_tabs_ecommerce_logs
             return array($title, null, $order, 'menu/rich_content/ecommerce/purchase');
         }
 
+        $sales_table = new Tempcode();
+        $pagination = new Tempcode();
+
         require_code('ecommerce_logs');
-        list($sales_table, $pagination) = build_sales_table($member_id_viewing);
+        $tmp = build_sales_table($member_id_viewing, false, false, 20, true);
+
+        if ($tmp !== null) {
+            $sales_table = $tmp[0];
+            $pagination = $tmp[1];
+        }
 
         $content = do_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array('_GUID' => 'e490d230b9521415616be0c610434d93', 'CONTENT' => $sales_table, 'PAGINATION' => $pagination));
 

@@ -34,9 +34,10 @@ This file only contains the code for the sales log and code for viewing an indiv
  * @param  boolean $show_username Whether to show the username column
  * @param  boolean $show_delete Whether to show the deletion column
  * @param  integer $max_default Default maximum number of records to show
- * @return array A pair: The sales table, pagination
+ * @param  boolean $empty_ok Whether empty results are okay (instead of exiting with a no entries message)
+ * @return ?array A pair: The sales table, pagination
  */
-function build_sales_table($filter_member_id, $show_username = false, $show_delete = false, $max_default = 20)
+function build_sales_table($filter_member_id, $show_username = false, $show_delete = false, $max_default = 20, $empty_ok = false)
 {
     require_code('templates_map_table');
     require_code('templates_results_table');
@@ -131,7 +132,12 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
 
         $sales_rows[] = $sales_row;
     }
+
     if (count($sales_rows) == 0) {
+        if ($empty_ok) {
+            return null;
+        }
+
         inform_exit(do_lang_tempcode('NO_ENTRIES'));
     }
 
