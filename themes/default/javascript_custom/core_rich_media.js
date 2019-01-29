@@ -12,7 +12,7 @@
                 pluginPath: '{$BASE_URL;}/data_custom/mediaelement/',
                 enableKeyboard: true,
                 success: function (media) {
-                    if (!$cms.isInlineStats()) {
+                    if (!$cms.configOption('show_inline_stats')) {
                         media.addEventListener('play', function () {
                             $cms.gaTrack(null, '{!VIDEO;}', url);
                         });
@@ -46,7 +46,7 @@
                 pluginPath: '{$BASE_URL;}/data_custom/mediaelement/',
                 enableKeyboard: true,
                 success: function (media) {
-                    if (!$cms.isInlineStats()) {
+                    if (!$cms.configOption('show_inline_stats')) {
                         media.addEventListener('play', function () {
                             $cms.gaTrack(null, '{!VIDEO;}', url);
                         });

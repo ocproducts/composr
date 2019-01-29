@@ -240,7 +240,7 @@
 	overflow: hidden;
 }
 
-/* Flow-mode only */
+/* Carousel-mode only */
 
 .gallery-carousel-mode-entry .entry-title,
 .gallery-carousel-mode-entry .entry-description {
@@ -248,7 +248,7 @@
 	overflow: hidden;
 }
 
-.gallery-carousel-mode-entry.is-image .ratings {
+.gallery-carousel-mode-entry .ratings {
 	margin-bottom: 1em;
 }
 

@@ -67,12 +67,6 @@
     /**
      * @memberof $cms
      * @method
-     * @returns {boolean}
-     */
-    $cms.isInlineStats = $util.constant(boolVal(symbols.INLINE_STATS));
-    /**
-     * @memberof $cms
-     * @method
      * @returns {number}
      */
     $cms.httpStatusCode = $util.constant(Number(symbols.HTTP_STATUS_CODE));
