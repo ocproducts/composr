@@ -1113,6 +1113,7 @@ function show_gallery_video_media($url, $thumb_url, $width, $height, $length, $s
         'length' => strval($length),
         'mime_type' => get_mime_type(get_file_extension($url), $as_admin), // will not render as dangerous stuff (svg's etc), unless admin
         'context' => 'gallery_video',
+        'responsive' => '1',
     );
 
     if (get_option('allow_audio_videos') != '0') {
