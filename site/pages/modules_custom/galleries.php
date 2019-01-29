@@ -47,9 +47,9 @@ function init__site__pages__modules_custom__galleries($code)
         $code
     );
 
-    // Add workflow warnings to flow mode galleries. This has to be done for images...
+    // Add workflow warnings to carousel mode galleries. This has to be done for images...
     $code = override_str_replace_exactly(
-        "\$current_entry = do_template('GALLERY_FLOW_MODE_IMAGE'",
+        "\$current_entry = do_template('GALLERY_CAROUSEL_MODE_IMAGE'",
         "
         // Add the workflow form if this entry is non-validated
         if (\$row['validated'] == 0) {
@@ -70,7 +70,7 @@ function init__site__pages__modules_custom__galleries($code)
 
     // ...and videos separately.
     $code = override_str_replace_exactly(
-        "\$current_entry = do_template('GALLERY_FLOW_MODE_VIDEO'",
+        "\$current_entry = do_template('GALLERY_CAROUSEL_MODE_VIDEO'",
         "
         // Add the workflow form if this entry is non-validated
         if (\$row['validated'] == 0) {

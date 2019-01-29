@@ -1,4 +1,4 @@
-<div class="gallery-flow-mode-entry is-image" itemscope="itemscope" itemtype="http://schema.org/ImageObject">
+<div class="gallery-carousel-mode-entry is-image" itemscope="itemscope" itemtype="http://schema.org/ImageObject">
 	<div class="media-box">
 		<img src="{THUMB_URL*}" {+START,IF_EMPTY,{_TITLE}}alt="{!IMAGE}"{+END} {+START,IF_NON_EMPTY,{_TITLE}}alt="{_TITLE*}"{+END} itemprop="contentURL" />
 	</div>

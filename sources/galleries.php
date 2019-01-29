@@ -25,6 +25,20 @@
  */
 function init__galleries()
 {
+    if (!defined('GALLERY_LAYOUT_MODE_GRID')) {
+        define('GALLERY_LAYOUT_MODE_GRID', 'grid');
+        define('GALLERY_LAYOUT_MODE_CAROUSEL', 'carousel');
+        define('GALLERY_LAYOUT_MODE_MOSAIC', 'mosaic');
+    }
+
+    if (!defined('GALLERY_LAYOUT_MODE_DEFAULT')) {
+        define('GALLERY_LAYOUT_MODE_DEFAULT', GALLERY_LAYOUT_MODE_GRID);
+    }
+
+    if (!defined('GALLERY_LAYOUT_MODES')) {
+        define('GALLERY_LAYOUT_MODES', array(GALLERY_LAYOUT_MODE_GRID, GALLERY_LAYOUT_MODE_CAROUSEL, GALLERY_LAYOUT_MODE_MOSAIC));
+    }
+
     require_code('images');
 }
 

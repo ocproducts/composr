@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_gallery_entries_flow_per_page
+class Hook_config_gallery_entries_carousel_per_page
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_gallery_entries_flow_per_page
     public function get_details()
     {
         return array(
-            'human_name' => 'GALLERY_ENTRIES_FLOW_PER_PAGE',
+            'human_name' => 'GALLERY_ENTRIES_CAROUSEL_PER_PAGE',
             'type' => 'integer',
             'category' => 'GALLERY',
             'group' => 'BROWSING_GALLERIES',
-            'explanation' => 'CONFIG_OPTION_gallery_entries_flow_per_page',
+            'explanation' => 'CONFIG_OPTION_gallery_entries_carousel_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,

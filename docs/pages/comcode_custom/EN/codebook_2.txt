@@ -388,7 +388,7 @@ However, things aren't always so simple. There are some exceptions because some 
  - the calendar system display is organised by date. Therefore we have a custom [tt]side_calendar[/tt] block.
  - the catalogue system comes with a range of available display types, not just boxes. This is because we need to give catalogue authors a wide-palette due to lack of ability to code in any assumptions. Therefore we have a custom [tt]main_cc_embed[/tt] block.
  - the Personal Galleries feature may mean that empty galleries may be left around, and also download galleries need to be skipped.
- - the gallery provides a flow-mode display type which is inherently module-based.
+ - the gallery provides a carousel-mode display type which is inherently module-based.
  - other modules use very fine-tuned listings for display categories/content. For example, the chat lobby shows rooms as a compact list.
  - other modules make custom content queries which don't match up to what the parameters for existing blocks can achieve. For example, the [tt]authors[/tt] module shows what downloads and news belongs to a particular author.
 

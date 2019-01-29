@@ -77,7 +77,7 @@ function init__cms__pages__modules_custom__cms_galleries($code)
     // parent by default, but their parent is chosen on the form. Thus we add an
     // option to inherit the parent's workflow
     $code = override_str_replace_exactly(
-        "\$fields->attach(form_input_tick(do_lang_tempcode('FLOW_MODE_INTERFACE'), do_lang_tempcode('DESCRIPTION_FLOW_MODE_INTERFACE'), 'flow_mode_interface', \$flow_mode_interface == 1));",
+        "\$fields->attach(form_input_radio(do_lang_tempcode('LAYOUT_MODE'), do_lang_tempcode('DESCRIPTION_LAYOUT_MODE'), 'layout_mode', \$radios));",
         "
         <ditto>
         require_code('workflows');

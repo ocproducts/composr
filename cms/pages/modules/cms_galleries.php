@@ -1976,7 +1976,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      * @param  ?BINARY $accept_images Whether images may be put in this gallery (null: work out statistically)
      * @param  ?BINARY $accept_videos Whether videos may be put in this gallery (null: work out statistically)
      * @param  BINARY $is_member_synched Whether the gallery serves as a container for automatically created member galleries
-     * @param  ?BINARY $flow_mode_interface Whether the gallery uses the flow mode interface (null: pick statistically based on current usage of other galleries)
+     * @param  ?ID_TEXT $layout_mode Whether the gallery uses the grid, carousel or mosaic layout mode (null: pick statistically based on current usage of other galleries)
      * @param  ?URLPATH $rep_image The representative image of the gallery (null: none)
      * @param  ?URLPATH $watermark_top_left Watermark (null: none)
      * @param  ?URLPATH $watermark_top_right Watermark (null: none)
@@ -1986,7 +1986,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($name = '', $fullname = '', $description = '', $notes = '', $parent_id = '', $accept_images = null, $accept_videos = null, $is_member_synched = 0, $flow_mode_interface = null, $rep_image = null, $watermark_top_left = null, $watermark_top_right = null, $watermark_bottom_left = null, $watermark_bottom_right = null, $allow_rating = null, $allow_comments = null)
+    public function get_form_fields($name = '', $fullname = '', $description = '', $notes = '', $parent_id = '', $accept_images = null, $accept_videos = null, $is_member_synched = 0, $layout_mode = null, $rep_image = null, $watermark_top_left = null, $watermark_top_right = null, $watermark_bottom_left = null, $watermark_bottom_right = null, $allow_rating = null, $allow_comments = null)
     {
         list($allow_rating, $allow_comments,) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, 1);
 
@@ -1995,12 +1995,12 @@ class Module_cms_galleries_cat extends Standard_crud_module
 
         $hidden = new Tempcode();
 
-        if ($flow_mode_interface === null) {
-            $cnt = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
-            if ($cnt < 5000) {
-                $flow_mode_interface = @intval(round($GLOBALS['SITE_DB']->query_select_value('galleries', 'AVG(flow_mode_interface)'))); // Determine default based on what is 'the norm' currently. Sometimes maths is beautiful :)
-            } else {
-                $flow_mode_interface = @intval(round($GLOBALS['SITE_DB']->query_select_value('galleries', 'AVG(flow_mode_interface)', array('parent_id' => 'root')))); // Determine default based on what is 'the norm' currently. Sometimes maths is beautiful :)
+        if ($layout_mode === null) {
+            $layout_mode = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'layout_mode', array(), 'GROUP BY layout_mode ORDER BY COUNT(layout_mode) DESC');  // Determine default based on what is 'the norm' currently.
+
+            if ($layout_mode === null) {
+                // No galleries exist
+                $layout_mode = GALLERY_LAYOUT_MODE_DEFAULT;
             }
         }
 
@@ -2040,14 +2040,18 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('accept_videos', '1'));
         }
         $gallery_mode_is = get_option('gallery_mode_is');
-        if (($name != '') && ($gallery_mode_is != 'choice') && ($flow_mode_interface != (($gallery_mode_is == 'flow') ? 1 : 0))) {
+        if (($name != '') && ($gallery_mode_is !== 'choice') && ($layout_mode !== $gallery_mode_is)) {
             $gallery_mode_is = 'choice'; // Continue current but allow a choice to change
         }
-        if ($gallery_mode_is != 'choice') {
-            $hidden->attach(form_input_hidden('flow_mode_interface', ($gallery_mode_is == 'flow') ? '1' : '0'));
+        if ($gallery_mode_is !== 'choice') {
+            $hidden->attach(form_input_hidden('layout_mode', $gallery_mode_is));
         } else {
-            $fields->attach(form_input_tick(do_lang_tempcode('FLOW_MODE_INTERFACE'), do_lang_tempcode('DESCRIPTION_FLOW_MODE_INTERFACE'), 'flow_mode_interface', $flow_mode_interface == 1));
+            $radios = form_input_radio_entry('layout_mode', GALLERY_LAYOUT_MODE_GRID, $layout_mode === GALLERY_LAYOUT_MODE_GRID, do_lang_tempcode('GRID_MODE'));
+            $radios->attach(form_input_radio_entry('layout_mode', GALLERY_LAYOUT_MODE_CAROUSEL, $layout_mode === GALLERY_LAYOUT_MODE_CAROUSEL, do_lang_tempcode('CAROUSEL_MODE')));
+            $radios->attach(form_input_radio_entry('layout_mode', GALLERY_LAYOUT_MODE_MOSAIC, $layout_mode === GALLERY_LAYOUT_MODE_MOSAIC, do_lang_tempcode('MOSAIC_MODE')));
+            $fields->attach(form_input_radio(do_lang_tempcode('LAYOUT_MODE'), do_lang_tempcode('DESCRIPTION_LAYOUT_MODE'), 'layout_mode', $radios));
         }
+
         $request_rep_image = (get_option('gallery_rep_image') == '1') || ($rep_image != '');
         $request_member_synced = (get_option('gallery_member_synced') == '1') || ($is_member_synched == 1) || ($name == 'root');
         if ($request_rep_image || $request_member_synced) {
@@ -2132,7 +2136,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        return $this->get_form_fields($id, get_translated_text($myrow['fullname']), get_translated_text($myrow['description']), $myrow['notes'], $myrow['parent_id'], $myrow['accept_images'], $myrow['accept_videos'], $myrow['is_member_synched'], $myrow['flow_mode_interface'], $myrow['rep_image'], $myrow['watermark_top_left'], $myrow['watermark_top_right'], $myrow['watermark_bottom_left'], $myrow['watermark_bottom_right'], $myrow['allow_rating'], $myrow['allow_comments']);
+        return $this->get_form_fields($id, get_translated_text($myrow['fullname']), get_translated_text($myrow['description']), $myrow['notes'], $myrow['parent_id'], $myrow['accept_images'], $myrow['accept_videos'], $myrow['is_member_synched'], $myrow['layout_mode'], $myrow['rep_image'], $myrow['watermark_top_left'], $myrow['watermark_top_right'], $myrow['watermark_bottom_left'], $myrow['watermark_bottom_right'], $myrow['allow_rating'], $myrow['allow_comments']);
     }
 
     /**
@@ -2153,7 +2157,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $accept_images = post_param_integer('accept_images', 0);
         $accept_videos = post_param_integer('accept_videos', 0);
         $is_member_synched = post_param_integer('is_member_synched', 0);
-        $flow_mode_interface = post_param_integer('flow_mode_interface', 0);
+        $layout_mode = post_param_string('layout_mode', null);
 
         require_code('themes2');
         $url = resize_rep_image(post_param_image('image', 'uploads/repimages', null, false));
@@ -2168,7 +2172,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('gallery', null);
 
-        add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $url, $watermark_top_left[0], $watermark_top_right[0], $watermark_bottom_left[0], $watermark_bottom_right[0], $allow_rating, $allow_comments, false, $metadata['add_time'], $metadata['submitter']);
+        add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $layout_mode, $url, $watermark_top_left[0], $watermark_top_right[0], $watermark_bottom_left[0], $watermark_bottom_right[0], $allow_rating, $allow_comments, false, $metadata['add_time'], $metadata['submitter']);
 
         set_url_moniker('gallery', $name);
 
@@ -2201,7 +2205,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $accept_images = post_param_integer('accept_images', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $accept_videos = post_param_integer('accept_videos', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $is_member_synched = post_param_integer('is_member_synched', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        $flow_mode_interface = post_param_integer('flow_mode_interface', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        $layout_mode = post_param_string('layout_mode', null);
 
         if (!fractional_edit()) {
             require_code('themes2');
@@ -2245,7 +2249,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $accept_images,
             $accept_videos,
             $is_member_synched,
-            $flow_mode_interface,
+            $layout_mode,
             $url,
             $watermark_top_left[0],
             $watermark_top_right[0],

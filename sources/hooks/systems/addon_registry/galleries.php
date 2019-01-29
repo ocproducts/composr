@@ -162,13 +162,13 @@ class Hook_addon_registry_galleries
             'themes/default/templates/GALLERY_IMAGE_BOX.tpl',
             'themes/default/templates/GALLERY_VIDEO_BOX.tpl',
             'themes/default/templates/GALLERY_ENTRY_SCREEN.tpl',
-            'themes/default/templates/GALLERY_FLOW_ENTRY.tpl',
-            'themes/default/templates/GALLERY_FLOW_MODE_SCREEN.tpl',
+            'themes/default/templates/GALLERY_CAROUSEL_ENTRY.tpl',
+            'themes/default/templates/GALLERY_CAROUSEL_MODE_SCREEN.tpl',
             'themes/default/templates/GALLERY_ENTRY_LIST_LINE.tpl',
             'themes/default/templates/GALLERY_NAV.tpl',
             'themes/default/templates/GALLERY_IMAGE.tpl',
-            'themes/default/templates/GALLERY_FLOW_MODE_IMAGE.tpl',
-            'themes/default/templates/GALLERY_FLOW_MODE_VIDEO.tpl',
+            'themes/default/templates/GALLERY_CAROUSEL_MODE_IMAGE.tpl',
+            'themes/default/templates/GALLERY_CAROUSEL_MODE_VIDEO.tpl',
             'themes/default/templates/GALLERY_VIDEO.tpl',
             'themes/default/templates/GALLERY_VIDEO_INFO.tpl',
             'themes/default/templates/GALLERY_REGULAR_MODE_SCREEN.tpl',
@@ -225,8 +225,8 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/block_ui_renderers/galleries.php',
             'sources/hooks/systems/config/galleries_default_sort_order.php',
             'sources/hooks/systems/config/galleries_subcat_narrowin.php',
-            'sources/hooks/systems/config/gallery_entries_flow_per_page.php',
-            'sources/hooks/systems/config/gallery_entries_regular_per_page.php',
+            'sources/hooks/systems/config/gallery_entries_carousel_per_page.php',
+            'sources/hooks/systems/config/gallery_entries_grid_per_page.php',
             'sources/hooks/systems/config/gallery_feedback_fields.php',
             'sources/hooks/systems/config/gallery_member_synced.php',
             'sources/hooks/systems/config/gallery_mode_is.php',
@@ -287,10 +287,10 @@ class Hook_addon_registry_galleries
             'templates/GALLERY_VIDEO_INFO.tpl' => 'gallery_video_info',
             'templates/GALLERY_BOX.tpl' => 'gallery_regular_mode_screen',
             'templates/GALLERY_ENTRY_LIST_LINE.tpl' => 'gallery_entry_list_line',
-            'templates/GALLERY_FLOW_MODE_IMAGE.tpl' => 'gallery_flow_mode_image',
-            'templates/GALLERY_FLOW_MODE_VIDEO.tpl' => 'gallery_flow_mode_video',
-            'templates/GALLERY_FLOW_ENTRY.tpl' => 'gallery_flow_mode_image',
-            'templates/GALLERY_FLOW_MODE_SCREEN.tpl' => 'gallery_flow_mode_image',
+            'templates/GALLERY_CAROUSEL_MODE_IMAGE.tpl' => 'gallery_carousel_mode_image',
+            'templates/GALLERY_CAROUSEL_MODE_VIDEO.tpl' => 'gallery_carousel_mode_video',
+            'templates/GALLERY_CAROUSEL_ENTRY.tpl' => 'gallery_carousel_mode_image',
+            'templates/GALLERY_CAROUSEL_MODE_SCREEN.tpl' => 'gallery_carousel_mode_image',
             'templates/GALLERY_REGULAR_MODE_SCREEN.tpl' => 'gallery_regular_mode_screen',
             'templates/GALLERY_ENTRY_SCREEN.tpl' => 'gallery_entry_screen',
             'templates/GALLERY_NAV.tpl' => 'gallery_entry_screen',
@@ -633,9 +633,9 @@ class Hook_addon_registry_galleries
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__gallery_flow_mode_video()
+    public function tpl_preview__gallery_carousel_mode_video()
     {
-        $video = do_lorem_template('GALLERY_FLOW_MODE_VIDEO', array(
+        $video = do_lorem_template('GALLERY_CAROUSEL_MODE_VIDEO', array(
             'MAIN' => lorem_phrase(),
             '_TITLE' => lorem_phrase(),
             'DESCRIPTION' => lorem_paragraph_html(),
@@ -663,7 +663,7 @@ class Hook_addon_registry_galleries
 
         $entries = new Tempcode();
         foreach (placeholder_array(10) as $k => $v) {
-            $entries->attach(do_lorem_template('GALLERY_FLOW_ENTRY', array(
+            $entries->attach(do_lorem_template('GALLERY_CAROUSEL_ENTRY', array(
                 'DESCRIPTION' => lorem_paragraph_html(),
                 '_TITLE' => lorem_title(),
                 'ID' => strval($k),
@@ -704,7 +704,7 @@ class Hook_addon_registry_galleries
         ));
 
         return array(
-            lorem_globalise(do_lorem_template('GALLERY_FLOW_MODE_SCREEN', array(
+            lorem_globalise(do_lorem_template('GALLERY_CAROUSEL_MODE_SCREEN', array(
                 '_TITLE' => lorem_phrase(),
                 'VIEW_URL' => placeholder_url(),
                 'FULL_URL' => placeholder_url(),
@@ -754,9 +754,9 @@ class Hook_addon_registry_galleries
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__gallery_flow_mode_image()
+    public function tpl_preview__gallery_carousel_mode_image()
     {
-        $image = do_lorem_template('GALLERY_FLOW_MODE_IMAGE', array(
+        $image = do_lorem_template('GALLERY_CAROUSEL_MODE_IMAGE', array(
             'MAIN' => lorem_phrase(),
             '_TITLE' => lorem_phrase(),
             'DESCRIPTION' => lorem_paragraph_html(),
@@ -783,7 +783,7 @@ class Hook_addon_registry_galleries
 
         $entries = new Tempcode();
         foreach (placeholder_array(10) as $k => $v) {
-            $entries->attach(do_lorem_template('GALLERY_FLOW_ENTRY', array(
+            $entries->attach(do_lorem_template('GALLERY_CAROUSEL_ENTRY', array(
                 'DESCRIPTION' => lorem_paragraph_html(),
                 '_TITLE' => lorem_title(),
                 'ID' => strval($k),
@@ -824,7 +824,7 @@ class Hook_addon_registry_galleries
         ));
 
         return array(
-            lorem_globalise(do_lorem_template('GALLERY_FLOW_MODE_SCREEN', array(
+            lorem_globalise(do_lorem_template('GALLERY_CAROUSEL_MODE_SCREEN', array(
                 '_TITLE' => lorem_phrase(),
                 'VIEW_URL' => placeholder_url(),
                 'FULL_URL' => placeholder_url(),
@@ -1115,16 +1115,16 @@ class Hook_addon_registry_galleries
         require_code('galleries2');
 
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => 'lorem_1')) === null) {
-            add_gallery('lorem_1', lorem_phrase(), lorem_chunk(), '', 'root', 1, 1, 0, 0);
+            add_gallery('lorem_1', lorem_phrase(), lorem_chunk(), '', 'root', 1, 1, 0);
             require_code('permissions2');
             set_global_category_access('gallery', 'lorem_1');
         }
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => 'lorem_2')) === null) {
-            add_gallery('lorem_2', lorem_phrase(), lorem_chunk(), '', 'root', 1, 1, 1, 1);
+            add_gallery('lorem_2', lorem_phrase(), lorem_chunk(), '', 'root', 1, 1, 1, GALLERY_LAYOUT_MODE_CAROUSEL);
             require_code('permissions2');
             set_global_category_access('gallery', 'lorem_2');
 
-            add_gallery('member_' . strval(get_member()) . '_lorem_2', lorem_phrase(), lorem_chunk(), '', 'lorem_2', 1, 1, 1, 1);
+            add_gallery('member_' . strval(get_member()) . '_lorem_2', lorem_phrase(), lorem_chunk(), '', 'lorem_2', 1, 1, 1, GALLERY_LAYOUT_MODE_CAROUSEL);
             require_code('permissions2');
             set_global_category_access('gallery', 'lorem_2');
         }

@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,galleries}
-<div class="gallery-flow-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryFlowModeScreen">
+<div class="gallery-carousel-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryFlowModeScreen">
 	{TITLE}
 
 	{WARNING_DETAILS}
@@ -20,7 +20,7 @@
 	{$SET,support_mass_select,cms_galleries}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="flow-mode-other-gallery-images">
+		<div class="carousel-mode-other-gallery-images">
 			<div class="head">
 				<h2 class="heading">{!OTHER_IMAGES_IN_GALLERY}</h2>
 
@@ -73,10 +73,10 @@
 		RIGHT=1
 	{+END}
 
-	<div class="clearfix lined-up-boxes flow-mode-details">
+	<div class="clearfix lined-up-boxes carousel-mode-details">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
-				<div class="box box---gallery-flow-mode-screen--member"><div class="box-inner">
+				<div class="box box---gallery-carousel-mode-screen--member"><div class="box-inner">
 					<h2>{_TITLE*}</h2>
 
 					{MEMBER_DETAILS}

@@ -127,7 +127,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $accept_images = $this->_default_property_int_modeavg($properties, 'accept_images', 'galleries', 1);
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');
-        $flow_mode_interface = $this->_default_property_int($properties, 'flow_mode_interface');
+        $layout_mode = $this->_default_property_str($properties, 'layout_mode');
         $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
         $watermark_top_left = $this->_default_property_urlpath($properties, 'watermark_top_left');
         $watermark_top_right = $this->_default_property_urlpath($properties, 'watermark_top_right');
@@ -139,7 +139,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $g_owner = $this->_default_property_member_null($properties, 'owner');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-        $name = add_gallery($name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $allow_rating, $allow_comments, false, $add_date, $g_owner, $meta_keywords, $meta_description, true);
+        $name = add_gallery($name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $layout_mode, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $allow_rating, $allow_comments, false, $add_date, $g_owner, $meta_keywords, $meta_description, true);
 
         $this->_resource_save_extend($this->folder_resource_type, $name, $filename, $label, $properties);
 
@@ -173,7 +173,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             'accept_images' => $row['accept_images'],
             'accept_videos' => $row['accept_videos'],
             'is_member_synched' => $row['is_member_synched'],
-            'flow_mode_interface' => $row['flow_mode_interface'],
+            'layout_mode' => $row['layout_mode'],
             'rep_image' => remap_urlpath_as_portable($row['rep_image']),
             'watermark_top_left' => remap_urlpath_as_portable($row['watermark_top_left']),
             'watermark_top_right' => remap_urlpath_as_portable($row['watermark_top_right']),
@@ -220,7 +220,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $accept_images = $this->_default_property_int_modeavg($properties, 'accept_images', 'galleries', 1);
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');
-        $flow_mode_interface = $this->_default_property_int($properties, 'flow_mode_interface');
+        $layout_mode = $this->_default_property_str($properties, 'layout_mode');
         $rep_image = $this->_default_property_urlpath($properties, 'rep_image', true);
         $watermark_top_left = $this->_default_property_urlpath($properties, 'watermark_top_left', true);
         $watermark_top_right = $this->_default_property_urlpath($properties, 'watermark_top_right', true);
@@ -233,7 +233,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        $name = edit_gallery($resource_id, $name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $meta_keywords, $meta_description, $allow_rating, $allow_comments, $g_owner, $add_time, true, true);
+        $name = edit_gallery($resource_id, $name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $layout_mode, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $meta_keywords, $meta_description, $allow_rating, $allow_comments, $g_owner, $add_time, true, true);
 
         $this->_resource_save_extend($this->folder_resource_type, $name, $filename, $label, $properties);
 

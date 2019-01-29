@@ -1,4 +1,4 @@
-<div class="gallery-flow-mode-entry is-video" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
+<div class="gallery-carousel-mode-entry is-video" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
 	<div class="media-box">
 		{VIDEO_PLAYER}
 	</div>
@@ -15,7 +15,7 @@
 
 	<div class="clearfix lined-up-boxes">
 		<div class="gallery-entry-details right">
-			<section class="box box---gallery-flow-mode-video"><div class="box-inner">
+			<section class="box box---gallery-carousel-mode-video"><div class="box-inner">
 				<h3>{!DETAILS}</h3>
 
 				<table class="map-table results-table">

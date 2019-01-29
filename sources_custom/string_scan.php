@@ -3039,15 +3039,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_galleries_default_sort_order_VALUE_url__ASC
         CONFIG_OPTION_galleries_default_sort_order_VALUE_url__DESC
         CONFIG_OPTION_galleries_subcat_narrowin
-        CONFIG_OPTION_gallery_entries_flow_per_page
-        CONFIG_OPTION_gallery_entries_regular_per_page
+        CONFIG_OPTION_gallery_entries_carousel_per_page
+        CONFIG_OPTION_gallery_entries_grid_per_page
         CONFIG_OPTION_gallery_feedback_fields
         CONFIG_OPTION_gallery_media_title_required
         CONFIG_OPTION_gallery_member_synced
         CONFIG_OPTION_gallery_mode_is
         CONFIG_OPTION_gallery_mode_is_VALUE_choice
-        CONFIG_OPTION_gallery_mode_is_VALUE_flow
-        CONFIG_OPTION_gallery_mode_is_VALUE_regular
+        CONFIG_OPTION_gallery_mode_is_VALUE_grid
+        CONFIG_OPTION_gallery_mode_is_VALUE_carousel
+        CONFIG_OPTION_gallery_mode_is_VALUE_mosaic
         CONFIG_OPTION_gallery_name_order
         CONFIG_OPTION_gallery_permissions
         CONFIG_OPTION_gallery_rep_image
@@ -4063,7 +4064,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_FIX_PAST_RECURRENCES
         DESCRIPTION_FLOOD_CONTROL_ACCESS_SECS
         DESCRIPTION_FLOOD_CONTROL_SUBMIT_SECS
-        DESCRIPTION_FLOW_MODE_INTERFACE
+        DESCRIPTION_CAROUSEL_MODE_INTERFACE
         DESCRIPTION_FOLDER_NAME
         DESCRIPTION_FORCE_TEMPORARY_PASSWORD
         DESCRIPTION_FORUM_GROUPING
@@ -5004,7 +5005,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FLOOD_CONTROL_SCREEN
         FLOOD_CONTROL_SUBMIT_SECS
         FLOOD_TIMELIMIT
-        FLOW_MODE_INTERFACE
         FOLDER_DELETE_ERROR
         FOLDER_OVERWRITE_ERROR
         FOOTER_LINKS
@@ -5165,8 +5165,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GAE_BUCKET_NAME
         GALLERIES_DEFAULT_SORT_ORDER
         GALLERIES_SUBCAT_NARROWIN
-        GALLERY_ENTRIES_FLOW_PER_PAGE
-        GALLERY_ENTRIES_REGULAR_PER_PAGE
+        GALLERY_ENTRIES_CAROUSEL_PER_PAGE
+        GALLERY_ENTRIES_GRID_PER_PAGE
         GALLERY_FEATURES
         GALLERY_FEEDBACK_FIELDS
         GALLERY_FOR_DOWNLOAD

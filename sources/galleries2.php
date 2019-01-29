@@ -1240,7 +1240,7 @@ function _watermark_corner($source, $watermark_url, $x, $y)
  * @param  BINARY $accept_images Whether images may be put in this gallery
  * @param  BINARY $accept_videos Whether videos may be put in this gallery
  * @param  BINARY $is_member_synched Whether the gallery serves as a container for automatically created member galleries
- * @param  BINARY $flow_mode_interface Whether the gallery uses the flow mode interface
+ * @param  ?ID_TEXT $layout_mode The layout mode this gallery uses
  * @param  URLPATH $rep_image The representative image of the gallery (blank: none)
  * @param  URLPATH $watermark_top_left Watermark (blank: none)
  * @param  URLPATH $watermark_top_right Watermark (blank: none)
@@ -1256,8 +1256,12 @@ function _watermark_corner($source, $watermark_url, $x, $y)
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $flow_mode_interface = 0, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $allow_rating = 1, $allow_comments = 1, $skip_exists_check = false, $add_date = null, $g_owner = null, $meta_keywords = '', $meta_description = '', $uniqify = false)
+function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $layout_mode = GALLERY_LAYOUT_MODE_DEFAULT, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $allow_rating = 1, $allow_comments = 1, $skip_exists_check = false, $add_date = null, $g_owner = null, $meta_keywords = '', $meta_description = '', $uniqify = false)
 {
+    if ($layout_mode === null) {
+        $layout_mode = GALLERY_LAYOUT_MODE_DEFAULT;
+    }
+
     if ($add_date === null) {
         $add_date = time();
     }
@@ -1291,7 +1295,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
         'rep_image' => $rep_image,
         'accept_videos' => $accept_videos,
         'is_member_synched' => $is_member_synched,
-        'flow_mode_interface' => $flow_mode_interface,
+        'layout_mode' => $layout_mode,
         'allow_rating' => $allow_rating,
         'allow_comments' => $allow_comments,
         'g_owner' => $g_owner,
@@ -1350,7 +1354,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  * @param  BINARY $accept_images Whether images may be put in this gallery
  * @param  BINARY $accept_videos Whether videos may be put in this gallery
  * @param  BINARY $is_member_synched Whether the gallery serves as a container for automatically created member galleries
- * @param  BINARY $flow_mode_interface Whether the gallery uses the flow mode interface
+ * @param  ?ID_TEXT $layout_mode The layout mode this gallery uses
  * @param  URLPATH $rep_image The representative image of the gallery (blank: none)
  * @param  URLPATH $watermark_top_left Watermark (blank: none)
  * @param  URLPATH $watermark_top_right Watermark (blank: none)
@@ -1366,7 +1370,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent_id = null, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $flow_mode_interface = 0, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $meta_keywords = null, $meta_description = null, $allow_rating = 1, $allow_comments = 1, $g_owner = null, $add_time = null, $null_is_literal = false, $uniqify = false)
+function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent_id = null, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $layout_mode = null, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $meta_keywords = null, $meta_description = null, $allow_rating = 1, $allow_comments = 1, $g_owner = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $name), '', 1);
     if (!array_key_exists(0, $rows)) {
@@ -1445,10 +1449,13 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         'accept_images' => $accept_images,
         'accept_videos' => $accept_videos,
         'is_member_synched' => $is_member_synched,
-        'flow_mode_interface' => $flow_mode_interface,
         'allow_rating' => $allow_rating,
         'allow_comments' => $allow_comments,
     );
+
+    if ($layout_mode !== null) {
+        $update_map['layout_mode'] = $layout_mode;
+    }
     $update_map += lang_remap_comcode('fullname', $myrow['fullname'], $fullname);
     $update_map += lang_remap_comcode('description', $myrow['description'], $description);
 
@@ -1559,7 +1566,7 @@ function delete_gallery($name)
         foreach ($videos as $video) {
             delete_video($video['id'], false);
         }
-    } while ($images != array());
+    } while ($videos != array());
     //... but the subgalleries remain
     $GLOBALS['SITE_DB']->query_update('galleries', array('parent_id' => $rows[0]['parent_id']), array('parent_id' => $name));
 
@@ -1621,14 +1628,14 @@ function make_member_gallery_if_needed($cat)
         if (!has_privilege($member_id, 'have_personal_category', 'cms_galleries')) {
             return;
         }
-        $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'flow_mode_interface', 'fullname'), array('name' => $parent_id), '', 1);
+        $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'layout_mode', 'fullname'), array('name' => $parent_id), '', 1);
         if (!array_key_exists(0, $_parent_info)) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $parent_info = $_parent_info[0];
 
         $member_gallery_title = get_potential_gallery_title($cat);
-        add_gallery($cat, $member_gallery_title, '', '', $parent_id, $parent_info['accept_images'], $parent_info['accept_videos'], 0, $parent_info['flow_mode_interface']);
+        add_gallery($cat, $member_gallery_title, '', '', $parent_id, $parent_info['accept_images'], $parent_info['accept_videos'], 0, $parent_info['layout_mode']);
 
         $rows = $GLOBALS['SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => 'galleries', 'category_name' => $parent_id));
         foreach ($rows as $row) {
@@ -1654,7 +1661,7 @@ function get_potential_gallery_title($cat)
 
         // Find about parent (new gallery inherits)
         $parent_id = $parts[2];
-        $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'flow_mode_interface', 'fullname'), array('name' => $parent_id), '', 1);
+        $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'layout_mode', 'fullname'), array('name' => $parent_id), '', 1);
         if (!array_key_exists(0, $_parent_info)) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

@@ -107,7 +107,7 @@
 
 .delete-cross-button input,
 .gallery-grid-item .mass-select-marker,
-.flow-mode-thumb .mass-select-marker {
+.carousel-mode-thumb .mass-select-marker {
 	position: absolute;
 	right: 2px;
 	top: 2px;
@@ -118,39 +118,39 @@
 }
 
 .gallery-grid-item .mass-select-marker,
-.flow-mode-thumb .mass-select-marker {
+.carousel-mode-thumb .mass-select-marker {
 	right: 7px !important;
 }
 
 .gallery-grid-item .mass-select-marker input,
-.flow-mode-thumb .mass-select-marker input {
+.carousel-mode-thumb .mass-select-marker input {
 	float: none !important;
 	margin: 0 0 0 0 !important;
 }
 
 .gallery-grid-item,
-.flow-mode-thumb {
+.carousel-mode-thumb {
 	position: relative;
 }
 
 .gallery-grid-item:hover .delete-cross-button input,
-.flow-mode-thumb:hover .delete-cross-button input,
+.carousel-mode-thumb:hover .delete-cross-button input,
 .gallery-grid-item:hover .mass-select-marker,
-.flow-mode-thumb:hover .mass-select-marker {
+.carousel-mode-thumb:hover .mass-select-marker {
 	opacity: 0.5;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 
 .gallery-grid-item .delete-cross-button input:hover,
-.flow-mode-thumb .delete-cross-button input:hover,
+.carousel-mode-thumb .delete-cross-button input:hover,
 .gallery-grid-item .mass-select-marker:hover,
-.flow-mode-thumb .mass-select-marker:hover {
+.carousel-mode-thumb .mass-select-marker:hover {
 	opacity: 1.0;
 }
 
 .gallery-grid-item .mass-select-marker:focus-within,
-.flow-mode-thumb .mass-select-marker:focus-within {
+.carousel-mode-thumb .mass-select-marker:focus-within {
 	opacity: 1;
 }
 
@@ -242,51 +242,51 @@
 
 /* Flow-mode only */
 
-.gallery-flow-mode-entry .entry-title,
-.gallery-flow-mode-entry .entry-description {
+.gallery-carousel-mode-entry .entry-title,
+.gallery-carousel-mode-entry .entry-description {
 	text-align: center;
 	overflow: hidden;
 }
 
-.gallery-flow-mode-entry.is-image .ratings {
+.gallery-carousel-mode-entry.is-image .ratings {
 	margin-bottom: 1em;
 }
 
-.flow-mode-details .gallery-entry-details .box {
+.carousel-mode-details .gallery-entry-details .box {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
 }
-.flow-mode-details .gallery-entry-details .box.staff-actions {
+.carousel-mode-details .gallery-entry-details .box.staff-actions {
 	margin-top: 1em !important;
 }
 
-.flow-mode-thumb {
+.carousel-mode-thumb {
 	display: inline-block;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	text-align: center;
 }
 
-.flow-mode-thumb .img-thumb {
+.carousel-mode-thumb .img-thumb {
 	opacity: 1.0;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
-.flow-mode-other-gallery-images {
+.carousel-mode-other-gallery-images {
 }
 
-.flow-mode-other-gallery-images .head {
+.carousel-mode-other-gallery-images .head {
 	display: flex;
 	align-items: center;
 	margin-bottom: 10px;
 }
 
 /*{+START,CSS_MODE,mobile__overlay}*/
-.flow-mode-other-gallery-images .head {
+.carousel-mode-other-gallery-images .head {
 	display: block;
 }
 /*{+END}*/
 
-.flow-mode-other-gallery-images .sorting-and-slideshow-btn {
+.carousel-mode-other-gallery-images .sorting-and-slideshow-btn {
 	margin-left: auto;
 	white-space: nowrap;
 }
