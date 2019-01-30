@@ -955,31 +955,23 @@ HTML;
             $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
         }
         $max_entries = intval(get_option('gallery_entries_carousel_per_page'));
-        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries + 1, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries + 1, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        // ^ Set max to $max_entries + 1 to account for the currently viewed entry being possibly included in the results (which will be discarded).
 
-        // See if there is a numbering system to sort by
-        $all_are = null;
-        foreach ($query_rows_images as $q) {
-            $this_are = strtolower(preg_replace('#\d#', '', $q['url']));
-            if ($all_are === null) {
-                $all_are = $this_are;
-            }
-            if ($all_are != $this_are) {
-                $all_are = null;
-                break;
-            }
-        }
-        if ($all_are !== null) {
-            sort_maps_by($query_rows_images, 'url');
-        }
+        $query_rows = array_merge($query_rows_images, $query_rows_videos);
+
+        list($sort_name, $sort_dir) = explode(' ', $sort, 2);
+
+        sort_maps_by($query_rows, ($sort_dir == 'DESC') ? '!' . $sort_name : $sort_name);
 
         // Show media
-        $query_rows = array_merge($query_rows_images, $query_rows_videos);
+        $i = 0;
         foreach ($query_rows as $row) {
             $type = array_key_exists('video_length', $row) ? 'video' : 'image';
 
             if (($type == $probe_type) && ($row['r_id'] == $probe_id)) {
+                // Currently viewed entry
                 continue;
             }
 
@@ -1026,6 +1018,12 @@ HTML;
                 '_EDIT_URL' => $_edit_url,
                 'CAT' => $cat,
             )));
+
+            $i++;
+
+            if ($i === $max_entries) {
+                break;
+            }
         }
 
         // Member details
