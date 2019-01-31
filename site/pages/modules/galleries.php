@@ -1596,16 +1596,16 @@ HTML;
             $slideshow_previous_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'wide_high' => 1, 'id' => $back_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true); // Continues, but as slideshow
             $back_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'id' => $back_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
 
-            $next_row = $GLOBALS['SITE_DB']->query_select(($back_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $back_id));
-            $next_row = $next_row[0];
+            $prev_row = $GLOBALS['SITE_DB']->query_select(($back_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $back_id));
+            $prev_row = $prev_row[0];
 
-            $entry_title = get_translated_text($next_row['title']);
+            $entry_title = get_translated_text($prev_row['title']);
 
             if ($back_type === 'image') {
-                $thumb_url = ensure_thumbnail($next_row['url'], $next_row['thumb_url'], 'galleries', 'images', $next_row['id']);
+                $thumb_url = ensure_thumbnail($prev_row['url'], $prev_row['thumb_url'], 'galleries', 'images', $prev_row['id']);
                 $back_thumb = do_image_thumb($thumb_url, $entry_title);
             } else {
-                $thumb_url = $next_row['thumb_url'];
+                $thumb_url = $prev_row['thumb_url'];
                 if (($thumb_url != '') && (url_is_local($thumb_url))) {
                     $thumb_url = get_custom_base_url() . '/' . $thumb_url;
                 }
