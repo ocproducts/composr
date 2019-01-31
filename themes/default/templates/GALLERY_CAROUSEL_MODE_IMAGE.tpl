@@ -13,7 +13,7 @@
 		</div>
 	{+END}{+END}
 
-	<div class="clearfix lined-up-boxes">
+	<div class="entry-boxes lined-up-boxes">
 		<div class="box gallery-entry-info left">
 			<div class="box-inner">
 				<ul class="horizontal-links">

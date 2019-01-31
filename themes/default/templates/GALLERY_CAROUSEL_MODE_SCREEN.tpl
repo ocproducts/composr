@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,galleries}
-<div class="gallery-carousel-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryFlowModeScreen">
+<div class="gallery-carousel-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryCarouselModeScreen">
 	{TITLE}
 
 	{WARNING_DETAILS}

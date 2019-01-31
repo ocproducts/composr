@@ -521,9 +521,13 @@ hr.cns-sig-barrier {
 	}
 /*{+END}*/
 
+.cns-topic-control-functions > .box-inner {
+	margin: 0;
+}
+
 .cns-topic-control-functions form {
 	display: inline-flex;
-	margin-right: 1em;
+	padding: 10px;
 }
 
 .cns-topic-control-functions label {
@@ -535,7 +539,6 @@ hr.cns-sig-barrier {
 .cns-topic-control-functions select {
 	max-width: 10.5em;
 }
-
 
 /*{+START,CSS_MODE,mobile}*/
 	.cns-topic-control-functions form {

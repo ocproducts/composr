@@ -248,6 +248,9 @@
 .gallery-carousel-mode-entry .entry-title,
 .gallery-carousel-mode-entry .entry-description {
 	text-align: center;
+}
+
+.gallery-carousel-mode-entry .entry-boxes {
 	overflow: hidden;
 }
 
@@ -279,6 +282,7 @@
 }
 
 .carousel-mode-other-gallery-images {
+	margin-top: 10px;
 }
 
 .carousel-mode-other-gallery-images .head {
