@@ -749,20 +749,29 @@
         }
     };
 
-    // Implementation for [data-cms-tooltip="...Tooltip Contents..."]
+    // Implementation for [data-cms-tooltip="{ ...options... }"]
     $cms.behaviors.cmsTooltip = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-cms-tooltip]'), 'behavior.cmsTooltip');
 
             els.forEach(function (el) {
-                var tooltipContents = $dom.data(el, 'cmsTooltip');
+                var options = $dom.data(el, 'cmsTooltip');
+
+                if (typeof options !== 'object') {
+                    options = {
+                        contents: options, // Tooltip contents
+                        instant: false, // Whether to show the tooltip instantly
+                        trigger: 'hover', // Or 'click'
+                    };
+                }
 
                 $dom.on(el, 'mouseover', function (e) {
                     if (el.contains(e.relatedTarget)) {
                         return;
                     }
 
-                    $cms.ui.activateTooltip(el, e, tooltipContents);
+                    // Arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
+                    $cms.ui.activateTooltip(el, e, options.contents, null, null, null, null, options.instant, false, false, null, (options.trigger === 'click'));
                 });
             });
         }

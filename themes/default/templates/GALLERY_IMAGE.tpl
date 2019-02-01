@@ -1,5 +1,5 @@
 <div class="gallery-grid-item is-image">
-	<div class="img-thumb-wrap img-thumb-opaque" {+START,IF,{$INLINE_STATS}}data-mouseover-activate-tooltip="['{VIEWS;^*} {!COUNT_VIEWS;^*}','auto',null,null,false,true]"{+END}>
+	<div class="img-thumb-wrap img-thumb-opaque" {+START,IF,{$INLINE_STATS}}data-cms-tooltip="{ contents: '{VIEWS;^*} {!COUNT_VIEWS;^*}', instant: true }"{+END}>
 		{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
 			{+START,INCLUDE,MASS_SELECT_MARKER}
 				TYPE={MEDIA_TYPE}
