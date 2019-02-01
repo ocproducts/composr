@@ -1107,7 +1107,7 @@ function is_browser_decaching()
     }
 
     if (GOOGLE_APPENGINE) {
-        $BROWSER_DECACHING_CACHE = false;
+        $browser_decaching_cache = false;
         return false; // Decaching by mistake is real-bad when Google Cloud Storage is involved
     }
 
@@ -1117,13 +1117,13 @@ function is_browser_decaching()
         $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
-        $BROWSER_DECACHING_CACHE = true;
+        $browser_decaching_cache = true;
         return true;
     }
 
     if (get_value('ran_once') === null) { // Track whether Composr has run at least once
         set_value('ran_once', '1');
-        $BROWSER_DECACHING_CACHE = true;
+        $browser_decaching_cache = true;
         return true;
     }
 
