@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-/* Both flow mode and viewing entries */
+/* All layout modes and viewing entries */
 
 .gallery-nav-inner {
 	display: flex;
@@ -146,7 +146,7 @@
 .carousel-mode-thumb .delete-cross-button input:hover,
 .gallery-grid-item .mass-select-marker:hover,
 .carousel-mode-thumb .mass-select-marker:hover {
-	opacity: 1.0;
+	opacity: 1;
 }
 
 .gallery-grid-item .mass-select-marker:focus-within,
@@ -154,20 +154,23 @@
 	opacity: 1;
 }
 
-/* Grid-mode only */
-
+.gallery-mosaic-mode-screen .gallery-actions,
 .gallery-grid-mode-screen .gallery-actions {
 	display: table;
 	margin: 20px 0 20px auto;
 }
 
-.gallery-grid-mode-screen .gallery-actions .btn-slideshow {
+.gallery-mosaic-mode-screen .gallery-actions .btn-slideshow,
+.gallery-mosaic-mode-screen .gallery-actions .btn-slideshow {
 	margin-right: 10px;
 }
 
-.gallery-grid-mode-screen .gallery-actions .pagination-sort {
+.gallery-grid-mode-screen .gallery-actions .pagination-sort,
+.gallery-mosaic-mode-screen .gallery-actions .pagination-sort {
 	margin-top: 10px;
 }
+
+/* Grid-mode only */
 
 .gallery-grid-cell {
 	margin-bottom: 20px;
@@ -229,18 +232,6 @@
 
 .gallery-grid-item-details {
 	margin-bottom: 10px;
-}
-
-.gallery-tooltip {
-	font-size: 0.85em;
-}
-
-.gallery-tooltip h3 {
-	margin-bottom: 0.85em;
-}
-
-.gallery-entry-screen .entry-description {
-	overflow: hidden;
 }
 
 /* Carousel-mode only */
@@ -337,11 +328,121 @@
 	right: 5px;
 }
 
+/* Mosaic-mode only */
+
+.gallery-mosaic-items {
+	position: relative;
+}
+
+.gallery-mosaic-item,
+.gallery-mosaic-masonry-sizer {
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+/*{+START,CSS_MODE,desktop}*/
+.gallery-mosaic-items {
+	margin-right: -10px;
+}
+
+.gallery-mosaic-item,
+.gallery-mosaic-masonry-sizer {
+	width: calc(50% - 10px);
+}
+/*{+END}*/
+
+/*{+START,CSS_MODE,large_desktop}*/
+.gallery-mosaic-item,
+.gallery-mosaic-masonry-sizer {
+	width: calc(100% / 3 - 10px);
+}
+/*{+END}*/
+
+.gallery-mosaic-item-inner {
+	display: block;
+	width: 100%;
+	height: 100%;
+	color: {$GET,WB};
+	overflow: hidden;
+}
+
+.gallery-mosaic-item-inner:hover {
+	color: {$GET,WB};
+}
+
+.gallery-mosaic-item .img-thumb {
+	width: 100%;
+	transition: transform 0.3s ease-in-out;
+}
+
+.gallery-mosaic-item-inner:hover .img-thumb {
+	transform: scale(1.1);
+}
+
+.gallery-mosaic-item-inner:focus-within .img-thumb {
+	transform: scale(1.1);
+}
+
+/*{+START,CSS_MODE,desktop}*/
+html:not(.is-touch-enabled) .gallery-mosaic-item-overlay {
+	display: none;
+}
+
+.gallery-mosaic-item-inner:hover .gallery-mosaic-item-overlay,
+.gallery-mosaic-item-inner:focus .gallery-mosaic-item-overlay {
+	animation: fade-in-mosaic-overlay 0.3s ease-in-out;
+	display: block;
+}
+/*{+END}*/
+
+@keyframes fade-in-mosaic-overlay {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.gallery-mosaic-item-overlay-top {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	padding: 5px 10px;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.gallery-mosaic-item-overlay-top .views {
+	margin-right: 5px;
+}
+
+.gallery-mosaic-item-overlay-top .comments strong {
+	font-weight: normal;
+}
+
+.gallery-mosaic-item-overlay-top .comments span {
+	display: none;
+}
+
+.gallery-mosaic-item-overlay-bottom {
+	position: absolute;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	padding: 5px 10px;
+	background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+}
+
+.gallery-mosaic-item-overlay-bottom .title {
+	margin-bottom: 0;
+}
+
 /* Viewing entries */
 
 .gallery-entry-screen {
 	width: 100%;
 	min-height: 100%;
+}
+
+.gallery-entry-screen .entry-description {
+	overflow: hidden;
 }
 
 .slideshow-speed {

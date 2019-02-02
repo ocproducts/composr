@@ -246,7 +246,14 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/actionlog/galleries.php',
             'themes/default/javascript/glide.js',
             'themes/default/css/widget_glide.css',
-            // Hero slider
+            // Mosaic mode:
+            'sources/blocks/main_gallery_mosaic.php',
+            'themes/default/templates/GALLERY_MOSAIC_MODE_SCREEN.tpl',
+            'themes/default/templates/BLOCK_MAIN_GALLERY_MOSAIC.tpl',
+            'themes/default/templates/GALLERY_MOSAIC_IMAGE.tpl',
+            'themes/default/templates/GALLERY_MOSAIC_VIDEO.tpl',
+            'themes/default/javascript/masonry.js',
+            // Hero slider:
             'sources/hooks/systems/config/homepage_slider_cycle_duration.php',
             'sources/hooks/systems/config/homepage_slider_effect.php',
             'sources/hooks/systems/config/homepage_slider_enabled.php',

@@ -21,7 +21,7 @@
 /**
  * Block class.
  */
-class Block_main_gallery_embed
+class Block_main_gallery_mosaic
 {
     /**
      * Find details of the block.
@@ -35,7 +35,7 @@ class Block_main_gallery_embed
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 1;
         $info['locked'] = false;
         $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'pagination', 'root', 'as_guest', 'check');
         return $info;
@@ -166,7 +166,6 @@ PHP;
         $extra_filter_sql = '';
         $extra_join_sql = '';
         require_code('filtercode');
-        $content_type = 'image';
         if (!array_key_exists('filter', $map)) {
             $map['filter'] = '';
         }
@@ -270,7 +269,7 @@ PHP;
                         if (url_is_local($full_url)) {
                             $full_url = get_custom_base_url() . '/' . $full_url;
                         }
-                        $thumb = do_image_thumb($full_url, '', false, false, 500, 500);
+                        $thumb = do_image_thumb($full_url, '', false, false, 500, 500, true);
                         $thumb_url = $row_image['thumb_url'];
                         if (url_is_local($thumb_url)) {
                             $thumb_url = get_custom_base_url() . '/' . $thumb_url;
@@ -287,7 +286,7 @@ PHP;
                         }
 
                         $entry_map = array(
-                            '_GUID' => '043ac7d15ce02715ac02309f6e8340ff',
+                            '_GUID' => '13c77543f8034f14adff4bd27ec5112e',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
                             'DESCRIPTION' => get_translated_tempcode('images', $just_media_row, 'description'),
@@ -306,8 +305,7 @@ PHP;
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
                         );
-                        $entry = do_template('GALLERY_IMAGE', $entry_map);
-                        $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => '13134830e1ebea158ab44885eeec0953', 'ENTRY' => $entry) + $entry_map));
+                        $entries->attach(do_template('GALLERY_MOSAIC_IMAGE', $entry_map));
 
                         break;
 
@@ -344,7 +342,7 @@ PHP;
                         }
 
                         $entry_map = array(
-                            '_GUID' => '66b7fb4d3b61ef79d6803c170d102cbf',
+                            '_GUID' => 'f98f86cc362c45d9bdccd93be062a286',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
                             'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'description'),
@@ -363,15 +361,12 @@ PHP;
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
                         );
-                        $entry = do_template('GALLERY_VIDEO', $entry_map);
-                        $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => 'a0ff010ae7fd1f7b3341993072ed23cf', 'ENTRY' => $entry) + $entry_map));
-
+                        $entries->attach(do_template('GALLERY_MOSAIC_VIDEO', $entry_map));
                         break;
                 }
             }
 
-            $i++;
-            if ($i == $start + $max) {
+            if (($i + 1) === $start + $max) {
                 break;
             }
         }
@@ -391,7 +386,7 @@ PHP;
                     }
                 }
                 return do_template('BLOCK_NO_ENTRIES', array(
-                    '_GUID' => 'bf84d65b8dd134ba6cd7b1b7bde99de2',
+                    '_GUID' => 'ee9810cf08be42d788086ebb09d83963',
                     'BLOCK_ID' => $block_id,
                     'HIGH' => false,
                     'TITLE' => $title,
@@ -411,8 +406,8 @@ PHP;
         }
 
         // Render
-        return do_template('BLOCK_MAIN_GALLERY_EMBED', array(
-            '_GUID' => 'b7b969c8fe8c398dd6e3af7ee06717ea',
+        return do_template('BLOCK_MAIN_GALLERY_MOSAIC', array(
+            '_GUID' => '87187ebeb42d4c029b74d7cf773c49bd',
             'BLOCK_ID' => $block_id,
             'IMAGE_FILTER' => $map['filter'],
             'VIDEO_FILTER' => $map['video_filter'],
@@ -426,7 +421,6 @@ PHP;
             'TOTAL_VIDEOS' => strval($total_videos),
             'TOTAL_IMAGES' => strval($total_images),
             'TOTAL' => strval($total_videos + $total_images),
-
             'START' => strval($start),
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',

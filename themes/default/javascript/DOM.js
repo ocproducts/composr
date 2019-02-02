@@ -447,7 +447,7 @@
         var resourcesToLoad = new window.Set();
         resourceEls.forEach(function (el) {
             if (!$util.isEl(el)) {
-                $util.fatal('$dom.waitForResources(): Invalid item of type "' + $util.typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                $util.fatal('$dom.waitForResources(): Invalid item of type "' + $util.typeName(el) + '" in the `resourceEls` parameter.');
                 return;
             }
 

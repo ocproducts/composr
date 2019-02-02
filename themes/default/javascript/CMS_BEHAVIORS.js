@@ -761,12 +761,12 @@
                     options = {
                         contents: options, // Tooltip contents
                         instant: false, // Whether to show the tooltip instantly
-                        trigger: 'hover', // Or 'click'
+                        trigger: 'hover', // Or 'click'. What triggers the tooltip.
                     };
                 }
 
-                $dom.on(el, 'mouseover', function (e) {
-                    if (el.contains(e.relatedTarget)) {
+                $dom.on(el, ((options.trigger === 'click') ? 'click' : 'mouseover'), function (e) {
+                    if ((options.trigger === 'hover') && el.contains(e.relatedTarget)) {
                         return;
                     }
 

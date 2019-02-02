@@ -1,4 +1,4 @@
-<div class="gallery-grid-mode-screen" data-tpl="galleryGridModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
+<div class="gallery-mosaic-mode-screen" data-tpl="galleryMosaicModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{$TRIM,{DESCRIPTION}}}

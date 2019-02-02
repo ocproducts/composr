@@ -44,6 +44,7 @@ In mobile mode:
 {$CSS_MODE,desktop__overlay,780-infinity,mobileModeDiscard}
 
 /* Extra ones; useful if you are providing better specificity for particular tested ranges (make sure the base-line of each range works for the rules you set; assuming we are using retina/hi-dpi properly rather than to cram more onto the screen) */
+{$CSS_MODE,smartphone,0-420,mobileModeMedia}
 {$CSS_MODE,smartphone_fixed_viewport,320-320,mobileModeMedia}/*This would only be used if you set a fixed (non-responsive) viewport of 320 (QVGA, portrait mode); not used by default*/
 {$CSS_MODE,smartphone_portrait,320-666,mobileModeMedia}/*Based on up to what iPhone6 can do; higher-res phones like phablets may fall under the smartphone_landscape range even in portrait mode which is fine*/
 {$CSS_MODE,smartphone_landscape,667-982,mobileModeMedia}/*Based on from iPhone6 landscape up to our tablet size; also good for small tablets in portrait mode*/

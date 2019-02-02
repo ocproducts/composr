@@ -11,15 +11,33 @@
 
     $cms.templates.galleryGridModeScreen = function (params, container) {
         var slideshowBtn = container.querySelector('.js-set-href-to-slideshow-url'),
-            firstGridItemLink = container.querySelector('.gallery-grid-item-heading a');
+            firstItemLink = container.querySelector('.gallery-grid-item-heading a');
 
-        if (slideshowBtn && firstGridItemLink) {
-            var firstGridItemUrl = $util.url(firstGridItemLink.href),
+        if (slideshowBtn && firstItemLink) {
+            var firstItemUrl = $util.url(firstItemLink.href),
                 slideshowUrl = $util.pageUrl();
 
-            slideshowUrl.searchParams.set('type', firstGridItemUrl.searchParams.get('type'));
+            slideshowUrl.searchParams.set('type', firstItemUrl.searchParams.get('type'));
             slideshowUrl.searchParams.set('wide_high', '1');
-            slideshowUrl.searchParams.set('id', firstGridItemUrl.searchParams.get('id'));
+            slideshowUrl.searchParams.set('id', firstItemUrl.searchParams.get('id'));
+            slideshowUrl.searchParams.set('slideshow', '1');
+
+            slideshowBtn.href = slideshowUrl;
+            $dom.show(slideshowBtn);
+        }
+    };
+
+    $cms.templates.galleryMosaicModeScreen = function (params, container) {
+        var slideshowBtn = container.querySelector('.js-set-href-to-slideshow-url'),
+            firstItemLink = container.querySelector('.gallery-mosaic-item a');
+
+        if (slideshowBtn && firstItemLink) {
+            var firstItemUrl = $util.url(firstItemLink.href),
+                slideshowUrl = $util.pageUrl();
+
+            slideshowUrl.searchParams.set('type', firstItemUrl.searchParams.get('type'));
+            slideshowUrl.searchParams.set('wide_high', '1');
+            slideshowUrl.searchParams.set('id', firstItemUrl.searchParams.get('id'));
             slideshowUrl.searchParams.set('slideshow', '1');
 
             slideshowBtn.href = slideshowUrl;
@@ -280,6 +298,30 @@
 
     $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed() {
 
+    };
+
+    $cms.templates.blockMainGalleryMosaic = function blockMainGalleryMosaic(params, container) {
+        var itemsContainer = container.querySelector('.gallery-mosaic-items');
+
+        if (itemsContainer) {
+            var masonrySizer = $dom.create('div', { className: 'gallery-mosaic-masonry-sizer' });
+
+            itemsContainer.appendChild(masonrySizer);
+
+            /* global Masonry:false */
+            var masonry = new Masonry(itemsContainer, {
+                columnWidth: masonrySizer,
+                itemSelector: '.gallery-mosaic-item',
+                gutter: 10,
+                percentPosition: true,
+            });
+
+            itemsContainer.addEventListener('load', function (e) {
+                if (e.target.localName === 'img') {
+                    masonry.layout();
+                }
+            }, true);
+        }
     };
 
     $cms.templates.galleryImportScreen = function () {
