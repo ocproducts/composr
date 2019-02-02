@@ -1,5 +1,5 @@
 {$SET,id,slider-{$REPLACE,_,-,{$REPLACE|,-,_,{BLOCK_ID}}}}
-<div class="cms-slider-item{+START,IF_PASSED_AND_TRUE,ACTIVE} active{+END}">
+<div class="cms-slider-item{+START,IF,{$EQ,{ACTIVE},1}} active{+END}">
 	<div class="cms-slider-item-inner {$?,{$EQ,{ITEMS_COUNT},1},has-1-news-item,has-{ITEMS_COUNT*}-news-items}">
 		{+START,LOOP,NEWS_ITEMS}
 			<div class="slide-news-item">
