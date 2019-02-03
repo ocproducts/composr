@@ -10,47 +10,48 @@
 	{NAV}
 
 	{+START,SET,boxes}
-	<div class="box gallery-entry-info">
-		<div class="box-inner">
-			<ul class="horizontal-links">
-				<li>{+START,INCLUDE,ICON}NAME=menu/rich_content/calendar{+END} {!ADDED} <time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time></li>
-				
-				<li>
-					{+START,INCLUDE,ICON}NAME=content_types/member{+END}
-					{!BY}
-					<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
-					{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
-				</li>
-
-				{+START,IF_NON_EMPTY,{EDIT_DATE}}
-				<li>{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!EDITED} {EDIT_DATE*}</li>
-				{+END}
-				
-				{+START,IF,{$INLINE_STATS}}
-				<li>{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {VIEWS*} {!COUNT_VIEWS}</li>
-				{+END}
+		<div class="box gallery-entry-info left">
+			<div class="box-inner">
+				<ul class="horizontal-links">
+					<li>{+START,INCLUDE,ICON}NAME=menu/rich_content/calendar{+END} {!ADDED} <time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time></li>
+					
+					<li>
+						{+START,INCLUDE,ICON}NAME=content_types/member{+END}
+						{!BY}
+						<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
+						{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
+					</li>
 	
-				{+START,IF_NON_EMPTY,{RATING_DETAILS}}
-					{$SET,rating,{$RATING,{MEDIA_TYPE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
-					{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
-						<li>{!RATING} {$GET,rating}</li>
+					{+START,IF_NON_EMPTY,{EDIT_DATE}}
+					<li>{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!EDITED} {EDIT_DATE*}</li>
 					{+END}
-				{+END}
-	
-				{+START,IF_NON_EMPTY,{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}}
-				<li>{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}</li>
-				{+END}
-	
-				{+START,IF,{$ADDON_INSTALLED,recommend}}{+START,IF,{$CONFIG_OPTION,enable_ecards}}{+START,IF_NON_PASSED,VIDEO}
-				<li>
-					<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">
-						{+START,INCLUDE,ICON}NAME=file_types/email_link{+END} {!SEND_AS_ECARD}
-					</a>
-				</li>
-				{+END}{+END}{+END}
-			</ul>
+					
+					{+START,IF,{$INLINE_STATS}}
+					<li>{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {VIEWS*} {!COUNT_VIEWS}</li>
+					{+END}
+		
+					{+START,IF_NON_EMPTY,{RATING_DETAILS}}
+						{$SET,rating,{$RATING,{+START,IF_PASSED,VIDEO}videos{+END}{+START,IF_NON_PASSED,VIDEO}images{+END},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
+						{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
+							<li>{!RATING} {$GET,rating}</li>
+						{+END}
+					{+END}
+		
+					{+START,IF_NON_EMPTY,{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}}
+					<li>{$REVIEW_STATUS,{MEDIA_TYPE},{ID}}</li>
+					{+END}
+		
+					{+START,IF,{$ADDON_INSTALLED,recommend}}{+START,IF,{$CONFIG_OPTION,enable_ecards}}{+START,IF_NON_PASSED,VIDEO}
+					<li>
+						{+START,INCLUDE,ICON}NAME=file_types/email_link{+END}
+						<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{URL*},{$SITE_NAME}}:ecard=1}">
+							{!SEND_AS_ECARD}
+						</a>
+					</li>
+					{+END}{+END}{+END}
+				</ul>
+			</div>
 		</div>
-	</div>
 
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}{+START,IF_PASSED,MEMBER_ID}
 			<div class="gallery-member-details right">
@@ -74,38 +75,20 @@
 			<img class="scale-down" {+START,IF_EMPTY,{E_TITLE}}alt="{!IMAGE*}"{+END} {+START,IF_NON_EMPTY,{E_TITLE}}alt="{E_TITLE*}"{+END} src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 		{+END}
 		{+START,IF_PASSED,VIDEO}
-			{+START,IF,{$GT,{$METADATA,video:width},500}}
-				{VIDEO}
-			{+END}
-
-			{$,If the video is not large, we will put the boxes right alongside it}
-			{+START,IF,{$NOT,{$GT,{$METADATA,video:width},500}}}
-				<div class="clearfix">
-					<div class="lined-up-boxes">
-						{$GET,boxes}
-					</div>
-
-					<div class="left">
-						{VIDEO}
-					</div>
-				</div>
-			{+END}
-
+			{VIDEO}
 			<!-- <p><a href="{URL*}">{!TO_DOWNLOAD_VIDEO}</a></p> -->
 		{+END}
 	</div>
 
 	{+START,IF,{SLIDESHOW}}
-		{+START,IF_NON_EMPTY,{E_TITLE}{COMMENT_DETAILS}}
-			<p itemprop="caption">
-				{+START,IF_NON_EMPTY,{E_TITLE}}
-					<strong>{E_TITLE*}</strong>
-				{+END}
+		{+START,IF_NON_EMPTY,{E_TITLE}}
+			<h4 itemprop="caption">
+				{E_TITLE*}
+			</h4>
+		{+END}
 
-				{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
-					{COMMENT_DETAILS}
-				{+END}
-			</p>
+		{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
+			{COMMENT_DETAILS}
 		{+END}
 	{+END}
 
@@ -115,12 +98,10 @@
 				{$PARAGRAPH,{DESCRIPTION}}
 			</div>
 		{+END}
-
-		{+START,IF,{$OR,{$NEQ,{MEDIA_TYPE},video},{$GT,{$METADATA,video:width},500}}}
-			<div class="clearfix lined-up-boxes">
-				{$GET,boxes}
-			</div>
-		{+END}
+	
+		<div class="clearfix lined-up-boxes">
+			{$GET,boxes}
+		</div>
 
 		{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,{MEDIA_TYPE},{ID}}}
 		{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
