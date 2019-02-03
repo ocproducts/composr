@@ -21,13 +21,11 @@
 		</div>
 
 		{$,We do not show errors for likes as it is too informal to go into details}
-		{+START,IF,{$NOT,{LIKES}}}
-			{+START,IF_NON_EMPTY,{ERROR}}
-				<div class="rating-error">
-					{ERROR}
-				</div>
-			{+END}
-		{+END}
+		{+START,IF,{$NOT,{LIKES}}}{+START,IF_NON_EMPTY,{ERROR}}
+			<div class="rating-error">
+				{ERROR}
+			</div>
+		{+END}{+END}
 
 		{+START,IF_NON_EMPTY,{$TRIM,{RATING_FORM}}}
 			<div class="rating-form">

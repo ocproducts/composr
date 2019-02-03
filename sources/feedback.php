@@ -361,13 +361,17 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
 
         // Work out possible errors that mighr prevent rating being allowed
         $error = new Tempcode();
+        $allow_rating = true;
         $rate_url = new Tempcode();
         if ((get_option('allow_own_rate') == '0') && ($submitter === get_member()) && (!is_guest())) {
-            $error = do_lang_tempcode('RATE_DENIED_OWN');
+            // $error = do_lang_tempcode('RATE_DENIED_OWN'); Commented out because it's a bit much
+            $allow_rating = false;
         } elseif (!has_privilege(get_member(), 'rate', get_page_name())) {
-            $error = do_lang_tempcode('RATE_DENIED');
+            // $error = do_lang_tempcode('RATE_DENIED'); Commented out because it's a bit much
+            $allow_rating = false;
         } elseif (already_rated(array_keys($all_rating_criteria), $content_id)) {
             $error = do_lang_tempcode('NORATE');
+            $allow_rating = false;
         } else {
             static $self_url = null;
             if ($self_url === null) {
@@ -381,6 +385,7 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
             '_GUID' => 'x28e21cdbc38a3037d083f619bb311af',
             'CONTENT_URL' => $content_url,
             'CONTENT_TITLE' => $content_title,
+            'ALLOW_RATING' => $allow_rating,
             'ERROR' => $error,
             'CONTENT_TYPE' => $content_type,
             'ID' => $content_id,
