@@ -161,6 +161,30 @@
         }
     };
 
+    // We need to keep track of faded in elements so we can apply fade out later in CSS
+    var trackingCssFadeIn = false;
+    $cms.behaviors.trackCssFadeIn = {
+        attach: function () {
+            if (trackingCssFadeIn) {
+                return;
+            }
+
+            trackingCssFadeIn = true;
+
+            document.addEventListener('animationstart', function (e) {
+                if (e.animationName === 'cms-fade-in') {
+                    e.target && e.target.classList && e.target.classList.add('did-fade-in');
+                }
+            });
+
+            document.addEventListener('animationend', function (e) {
+                if (e.animationName === 'cms-fade-out') {
+                    e.target && e.target.classList && e.target.classList.remove('did-fade-in');
+                }
+            });
+        }
+    };
+
     // Implementation for [data-click-pd]
     // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
     $cms.behaviors.onclickPreventDefault = {

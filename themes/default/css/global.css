@@ -7763,6 +7763,16 @@ span:not(:empty)+#lightbox-position-in-set::before, span:not(:empty)+#lightbox-f
 	height: 25px;
 }
 
+@keyframes cms-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes cms-fade-out {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+
 /*
 =========================
 ======E-mail rules=======
