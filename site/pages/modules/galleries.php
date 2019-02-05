@@ -1689,7 +1689,7 @@ HTML;
         }
 
         // Link to show more. Preserve info about where we were
-        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'wide_high' => 1, 'id' => $first_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
+        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $current_type, 'wide_high' => 1, 'id' => $current_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
         $more_url = ($cat === null) ? null : build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'module_start' => ($start == 0) ? null : $start, 'module_max' => ($max == get_default_gallery_max()) ? null : $max, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF');
 
         // Only one entry?
