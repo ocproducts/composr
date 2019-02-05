@@ -48,8 +48,19 @@ switch (get_param_string('type')) {
         break;
 
     case 'http_status_check':
-        http_download_file(get_param_string('url'), 0);
-        $result = $GLOBALS['HTTP_MESSAGE'];
+        $url = get_param_string('url');
+
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            http_download_file($url, 0, false);
+            $result = $GLOBALS['HTTP_MESSAGE'];
+
+            if ($result === '200') {
+                break;
+            }
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
+            }
+        }
         break;
 
     default:
