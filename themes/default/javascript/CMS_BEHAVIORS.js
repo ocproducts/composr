@@ -185,6 +185,31 @@
         }
     };
 
+    // Implementation for [data-focus-class="css-class-name"]
+    // Toggles a class name based on whether the "focus" is inside an element
+    // Needs to be used until we have wider browser support for the ":focus-within" pseudo class
+    $cms.behaviors.focusClass = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-focus-class]'), 'behavior.focusClass');
+
+            els.forEach(function (el) {
+                var cssClass = strVal(el.dataset.focusClass);
+
+                if (document.querySelector(':focus') && el.contains(document.querySelector(':focus'))) {
+                    el.classList.add(cssClass);
+                }
+
+                $dom.on(el, 'focusin focusout', function (e) {
+                    if (el.contains(e.relatedTarget)) {
+                        return;
+                    }
+
+                    el.classList.toggle(cssClass, (e.type === 'focusin'));
+                });
+            });
+        }
+    };
+
     // Implementation for [data-click-pd]
     // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
     $cms.behaviors.onclickPreventDefault = {
