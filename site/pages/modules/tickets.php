@@ -592,7 +592,7 @@ class Module_tickets
             } else {
                 $comments = new Tempcode();
                 $has_staff_only = false;
-                $ticket_type_details = get_ticket_type(null);
+                $ticket_type_details = get_ticket_type($default_ticket_type);
             }
 
             // Posting form
