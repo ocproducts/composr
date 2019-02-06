@@ -139,11 +139,9 @@ class Hook_addon_registry_realtime_rain
             'themes/default/images/icons_monochrome/realtime_rain/index.html',
 
             'themes/default/images/icons/realtime_rain/next_but.svg',
-            'themes/default/images/icons/realtime_rain/pause_but.svg',
             'themes/default/images/icons/realtime_rain/previous_but.svg',
 
             'themes/default/images/icons_monochrome/realtime_rain/next_but.svg',
-            'themes/default/images/icons_monochrome/realtime_rain/pause_but.svg',
             'themes/default/images/icons_monochrome/realtime_rain/previous_but.svg',
 
             'themes/default/images/realtime_rain/news_bg.svg',

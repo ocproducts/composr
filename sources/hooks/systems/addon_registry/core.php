@@ -198,6 +198,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons/admin/back.svg', // Red, used as a full-size icon
             'themes/default/images/icons/buttons/back.svg', // Yellow, used within a button
             'themes/default/images/icons/menu/adminzone/setup/config/base_config.svg',
+            'themes/default/images/icons/buttons/pause.svg',
             'themes/default/images/icons/buttons/cancel.svg',
             'themes/default/images/icons/buttons/choose.svg',
             'themes/default/images/icons/buttons/closed.svg',
@@ -395,6 +396,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons_monochrome/admin/back.svg', // Red, used as a full-size icon
             'themes/default/images/icons_monochrome/buttons/back.svg', // Yellow, used within a button
             'themes/default/images/icons_monochrome/menu/adminzone/setup/config/base_config.svg',
+            'themes/default/images/icons_monochrome/buttons/pause.svg',
             'themes/default/images/icons_monochrome/buttons/cancel.svg',
             'themes/default/images/icons_monochrome/buttons/choose.svg',
             'themes/default/images/icons_monochrome/buttons/closed.svg',

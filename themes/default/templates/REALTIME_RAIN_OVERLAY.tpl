@@ -30,7 +30,7 @@
 				<div id="pause-but">
 					<a class="js-click-toggle-window-pausing" title="{!PAUSE}" href="#!">
 						{+START,INCLUDE,ICON}
-							NAME=realtime_rain/pause_but
+							NAME=buttons/pause
 							ICON_SIZE=30
 						{+END}
 					</a>
@@ -39,7 +39,7 @@
 				<div id="pre-but">
 					<a class="js-click-rain-slow-down" title="{!SLOW_DOWN}" href="#!">
 						{+START,INCLUDE,ICON}
-							NAME=realtime_rain/pause_but
+							NAME=buttons/pause
 							ICON_SIZE=30
 						{+END}
 					</a>
