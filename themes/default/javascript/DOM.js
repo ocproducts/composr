@@ -1745,9 +1745,15 @@
                     priv.queue[0]();
                 }
 
-                callback(e.type === 'finish');
+                doAnimation.callbacks.forEach(function (cb) {
+                    cb(e.type === 'finish');
+                });
             }
         };
+
+        doAnimation.callbacks = [];
+
+        doAnimation.callbacks.push(callback);
 
         priv.queue.push(doAnimation);
 

@@ -288,11 +288,11 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     }
     if ($pic == '') {
         $pic = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'thumb_url', array('cat' => $myrow['name'], 'validated' => 1), $thumb_order);
-        if ($pic === '') {
-            require_code('images');
-            $temp = $GLOBALS['SITE_DB']->query_select('images', array('id', 'url'), array('cat' => $myrow['name'], 'validated' => 1), $thumb_order, 1);
-            $thumb_url = ensure_thumbnail($temp[0]['url'], '', 'galleries', 'images', $temp[0]['id']);
-        }
+    }
+    if ($pic === '') {
+        require_code('images');
+        $temp = $GLOBALS['SITE_DB']->query_select('images', array('id', 'url'), array('cat' => $myrow['name'], 'validated' => 1), $thumb_order, 1);
+        $pic = ensure_thumbnail($temp[0]['url'], '', 'galleries', 'images', $temp[0]['id']);
     }
     if ($pic === null) {
         $pic = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'thumb_url', array('cat' => $myrow['name'], 'validated' => 1), $thumb_order);
@@ -316,6 +316,31 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($myrow['name'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, !$attach_to_url_filter));
     }
 
+    $slideshow_url = null;
+
+    if (($num_videos + $num_images) > 0) {
+        $sort = 'add_date DESC';
+
+        $first_image = $GLOBALS['SITE_DB']->query_select('images', array('id', 'add_date'), array('cat' => $myrow['name'], 'validated' => 1), 'ORDER BY ' . $sort, 1);
+        $first_image = isset($first_image[0]) ? $first_image[0] : null;
+
+        $first_video = $GLOBALS['SITE_DB']->query_select('videos', array('id', 'add_date'), array('cat' => $myrow['name'], 'validated' => 1), 'ORDER BY ' . $sort, 1);
+        $first_video = isset($first_video[0]) ? $first_video[0] : null;
+
+        if ($first_image === null) {
+            $first_type = 'video';
+            $first_id = $first_video['id'];
+        } elseif ($first_video === null) {
+            $first_type = 'image';
+            $first_id = $first_image['id'];
+        } else {
+            $first_type = ($first_image['add_date'] > $first_video['add_date']) ? 'image' : 'video';
+            $first_id = ($first_image['add_date'] > $first_video['add_date']) ? $first_image['id'] : $first_video['id'];
+        }
+
+        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'wide_high' => 1, 'id' => $first_id, 'sort' => ($sort === get_option('galleries_default_sort_order')) ? null : $sort, 'slideshow' => 1), '_SELF', array(), true);
+    }
+
     // Render
     return do_template('GALLERY_BOX', array(
         '_GUID' => ($guid != '') ? $guid : '0dbec2f11de63b0402471fe5c8b32865',
@@ -334,6 +359,10 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         'TITLE' => $_title,
         'DESCRIPTION' => $description,
         'BREADCRUMBS' => $breadcrumbs,
+        'OWNER' => ($myrow['g_owner'] !== null) ? strval($myrow['g_owner']) : null,
+        'COMMENT_COUNT' => (get_option('is_on_comments') == '1') && (!has_no_forum()) && ($myrow['allow_comments'] >= 1),
+        'VIEWS' => strval($myrow['gallery_views']),
+        'SLIDESHOW_URL' => $slideshow_url,
     ));
 }
 

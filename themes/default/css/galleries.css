@@ -154,20 +154,25 @@
 	opacity: 1;
 }
 
-.gallery-mosaic-mode-screen .gallery-actions,
-.gallery-grid-mode-screen .gallery-actions {
+.gallery-mode-screen .gallery-actions  {
 	display: table;
-	margin: 20px 0 20px auto;
+	margin: 0 0 20px auto;
 }
 
-.gallery-mosaic-mode-screen .gallery-actions .btn-slideshow,
-.gallery-mosaic-mode-screen .gallery-actions .btn-slideshow {
+.gallery-mode-screen .gallery-actions .btn-slideshow {
 	margin-right: 10px;
 }
 
-.gallery-grid-mode-screen .gallery-actions .pagination-sort,
-.gallery-mosaic-mode-screen .gallery-actions .pagination-sort {
+.gallery-mode-screen .gallery-actions .pagination-sort {
 	margin-top: 10px;
+}
+
+.gallery-mode-screen .heading-subgalleries {
+	margin-bottom: 30px;
+}
+
+.gallery-mode-screen .heading-images-and-videos {
+	margin-top: 40px;
 }
 
 /* Grid-mode only */
@@ -245,6 +250,10 @@
 	overflow: hidden;
 }
 
+.gallery-carousel-mode-entry .entry-title + .entry-boxes {
+	margin-top: 20px;
+}
+
 .gallery-carousel-mode-entry .ratings {
 	margin-bottom: 1em;
 }
@@ -274,6 +283,8 @@
 
 .carousel-mode-other-gallery-images {
 	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid {$GET,standard_border};
 }
 
 .carousel-mode-other-gallery-images .head {
@@ -287,6 +298,10 @@
 	display: block;
 }
 /*{+END}*/
+
+.carousel-mode-other-gallery-images .glide {
+	background-color: {$GET,main_2_background};
+}
 
 .carousel-mode-other-gallery-images .sorting-and-slideshow-btn {
 	margin-left: auto;
@@ -304,20 +319,16 @@
 	display: none;
 }
 
-.glide-other-gallery-images:hover .btn-glide-go,
-.is-touch-enabled .glide-other-gallery-images .btn-glide-go {
-	animation: fade-in-btn-glide-go 0.15s ease-in-out;
+.glide-other-gallery-images.has-multiple-views:hover .btn-glide-go,
+.glide-other-gallery-images.has-multiple-views.focus-within .btn-glide-go,
+.is-touch-enabled .glide-other-gallery-images.has-multiple-views .btn-glide-go {
 	display: inline-block;
+	animation: cms-fade-in 0.3s ease-in-out;
 }
 
-.glide-other-gallery-images:focus-within .btn-glide-go {
-	animation: fade-in-btn-glide-go 0.15s ease-in-out;
+html:not(.is-touch-enabled) .glide-other-gallery-images.has-multiple-views:not(:hover):not(.focus-within) .btn-glide-go.did-fade-in {
 	display: inline-block;
-}
-
-@keyframes fade-in-btn-glide-go {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	animation: cms-fade-out 0.3s ease-in-out;
 }
 
 .glide-other-gallery-images .btn-glide-prev {
@@ -358,6 +369,36 @@
 }
 /*{+END}*/
 
+.gallery-mosaic-item .mass-select-marker {
+	display: none;
+}
+
+/*{+START,CSS_MODE,desktop}*/
+.gallery-mosaic-item.is-mass-selected {
+	outline: 5px solid {$GET,seed};
+}
+
+.gallery-mosaic-item .mass-select-marker {
+	position: absolute;
+	right: -32px;
+	top: 0;
+	z-index: 1;  
+	background: {$GET,WB};
+}
+
+.gallery-mosaic-item:hover .mass-select-marker,
+.gallery-mosaic-item.focus-within .mass-select-marker,
+.gallery-mosaic-item.is-mass-selected .mass-select-marker {
+	display: block;
+	animation: cms-fade-in 0.3s ease-in-out;
+}
+
+.gallery-mosaic-item:not(:hover):not(.focus-within):not(.is-mass-selected) .mass-select-marker.did-fade-in {
+	display: block;
+	animation: cms-fade-out 0.3s ease-in-out;
+}
+/*{+END}*/
+
 .gallery-mosaic-item-inner {
 	display: block;
 	width: 100%;
@@ -375,11 +416,8 @@
 	transition: transform 0.3s ease-in-out;
 }
 
-.gallery-mosaic-item-inner:hover .img-thumb {
-	transform: scale(1.1);
-}
-
-.gallery-mosaic-item-inner:focus-within .img-thumb {
+.gallery-mosaic-item:hover .img-thumb,
+.gallery-mosaic-item.focus-within .img-thumb {
 	transform: scale(1.1);
 }
 
@@ -388,17 +426,17 @@ html:not(.is-touch-enabled) .gallery-mosaic-item-overlay {
 	display: none;
 }
 
-.gallery-mosaic-item-inner:hover .gallery-mosaic-item-overlay,
-.gallery-mosaic-item-inner:focus .gallery-mosaic-item-overlay {
-	animation: fade-in-mosaic-overlay 0.3s ease-in-out;
+.gallery-mosaic-item:hover .gallery-mosaic-item-overlay,
+.gallery-mosaic-item.focus-within .gallery-mosaic-item-overlay {
 	display: block;
+	animation: cms-fade-in 0.3s ease-in-out;
+}
+
+.gallery-mosaic-item:not(:hover):not(.focus-within) .gallery-mosaic-item-overlay.did-fade-in {
+	display: block;
+	animation: cms-fade-out 0.3s ease-in-out;
 }
 /*{+END}*/
-
-@keyframes fade-in-mosaic-overlay {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
 
 .gallery-mosaic-item-overlay-top {
 	position: absolute;
@@ -409,6 +447,10 @@ html:not(.is-touch-enabled) .gallery-mosaic-item-overlay {
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
 }
 
+.gallery-mosaic-item-overlay-top .rating-display-star {
+	color: {$GET,WB};
+}
+
 .gallery-mosaic-item-overlay-top .views {
 	margin-right: 5px;
 }
@@ -417,9 +459,12 @@ html:not(.is-touch-enabled) .gallery-mosaic-item-overlay {
 	font-weight: normal;
 }
 
+/*{+START,CSS_MODE,desktop}*/
+.gallery-mosaic-item-overlay-top .views span,
 .gallery-mosaic-item-overlay-top .comments span {
 	display: none;
 }
+/*{+END}*/
 
 .gallery-mosaic-item-overlay-bottom {
 	position: absolute;
@@ -558,11 +603,64 @@ html:not(.is-touch-enabled) .gallery-mosaic-item-overlay {
 	height: 600px;
 }
 
-.box---gallery-box .box-inner::after {
-	display: block;
-	clear: both;
-	content: '';
+.gallery-box {
+	display: flex;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid {$GET,standard_border};
 }
+
+.gallery-box-thumb {
+	min-width: 40%;
+	overflow: hidden;
+}
+
+.gallery-box-thumb .img-thumb {
+	width: 100%;
+	opacity: 1;
+	background: {$GET,main_2_background};
+	transition: transform 0.3s ease-in-out;
+}
+
+.gallery-box-thumb:hover .img-thumb {
+	transform: scale(1.1);
+}
+
+.gallery-box-details {
+	padding: 0 20px;
+	flex-grow: 1;
+}
+
+.gallery-box-contents-list {
+	padding-left: 1.5em;
+}
+
+.gallery-box .buttons-group {
+	text-align: left;
+	margin-bottom: 0;
+}
+
+.gallery-box-meta {
+	padding: 10px 0;
+	border-top: 1px solid {$GET,standard_border};
+	border-bottom: 1px solid {$GET,standard_border};
+	margin-bottom: 14px;
+}
+
+/*{+START,CSS_MODE,mobile}*/
+.gallery-box {
+	display: block;
+}
+
+.gallery-box-thumb {
+	min-width: auto;
+	margin-bottom: 10px;
+}
+
+.gallery-box-details {
+	padding: 0;
+}
+/*{+END}*/
 
 /* Homepage Hero Slider */
 

@@ -285,6 +285,11 @@
 
     $cms.templates.massSelectMarker = function (params, container) {
         $dom.on(container, 'click', '.js-chb-prepare-mass-select', function (e, checkbox) {
+            var massSelectablEl = $dom.parent(checkbox, '[data-mass-selectable]');
+            if (massSelectablEl != null) {
+                massSelectablEl.classList.toggle('is-mass-selected', checkbox.checked);
+            }
+
             prepareMassSelectMarker(params.supportMassSelect, params.type, params.id, checkbox.checked);
         });
     };

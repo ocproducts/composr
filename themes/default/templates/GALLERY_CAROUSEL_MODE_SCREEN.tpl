@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,galleries}
-<div class="gallery-carousel-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryCarouselModeScreen">
+<div class="gallery-mode-screen gallery-carousel-mode-screen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery" data-tpl="galleryCarouselModeScreen">
 	{TITLE}
 
 	{WARNING_DETAILS}
@@ -13,7 +13,13 @@
 	{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,gallery,{CAT}}}
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
-	{CHILDREN}
+	{+START,IF_NON_EMPTY,{CHILDREN}}
+		<h2 class="heading-subgalleries">{!SUBGALLERIES}</h2>
+	
+		{CHILDREN}
+
+		<h2 class="heading-images-and-videos">{!IMAGES_AND_VIDEOS_IN,{_TITLE}}</h2>
+	{+END}
 
 	{CURRENT_ENTRY}
 
@@ -42,7 +48,7 @@
 			{$REQUIRE_CSS,widget_glide}
 			{$REQUIRE_JAVASCRIPT,glide}
 
-			<div class="glide glide-other-gallery-images">
+			<div class="glide glide-other-gallery-images" data-focus-class="focus-within">
 				<div class="glide__track" data-glide-el="track">
 					<div class="glide__slides">
 						{ENTRIES}

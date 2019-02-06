@@ -1,4 +1,4 @@
-<div class="gallery-mosaic-mode-screen" data-tpl="galleryMosaicModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
+<div class="gallery-mode-screen gallery-mosaic-mode-screen" data-tpl="galleryMosaicModeScreen" itemscope="itemscope" itemtype="http://schema.org/ImageGallery">
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{$TRIM,{DESCRIPTION}}}
@@ -11,8 +11,14 @@
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 	{+START,IF_NON_EMPTY,{CHILDREN}}
+		<h2 class="heading-subgalleries">{!SUBGALLERIES}</h2>
+	
 		{CHILDREN}
 	{+END}
+
+	{+START,IF_NON_EMPTY,{CHILDREN}}{+START,IF_NON_EMPTY,{ENTRIES}}
+		<h2 class="heading-images-and-videos">{!IMAGES_AND_VIDEOS_IN,{_TITLE}}</h2>
+	{+END}{+END}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
 		<div class="gallery-actions">
@@ -75,7 +81,7 @@
 	<div class="clearfix lined-up-boxes">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
-				<div class="box box---gallery-grid-mode-screen"><div class="box-inner">
+				<div class="box box---gallery-member-details"><div class="box-inner">
 					<h2>{_TITLE*}</h2>
 
 					{MEMBER_DETAILS}

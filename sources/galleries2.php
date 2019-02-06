@@ -452,6 +452,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     delete_cache_entry('side_galleries');
     delete_cache_entry('main_personal_galleries_list');
     delete_cache_entry('main_gallery_embed');
+    delete_cache_entry('main_gallery_mosaic');
     delete_cache_entry('main_image_fader');
     delete_cache_entry('main_image_slider');
 

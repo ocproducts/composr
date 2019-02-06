@@ -22,6 +22,10 @@
             slideshowUrl.searchParams.set('id', firstItemUrl.searchParams.get('id'));
             slideshowUrl.searchParams.set('slideshow', '1');
 
+            if (firstItemUrl.searchParams.has('sort')) {
+                slideshowUrl.searchParams.set('sort', firstItemUrl.searchParams.get('sort'));
+            }
+
             slideshowBtn.href = slideshowUrl;
             $dom.show(slideshowBtn);
         }
@@ -40,16 +44,24 @@
             slideshowUrl.searchParams.set('id', firstItemUrl.searchParams.get('id'));
             slideshowUrl.searchParams.set('slideshow', '1');
 
+            if (firstItemUrl.searchParams.has('sort')) {
+                slideshowUrl.searchParams.set('sort', firstItemUrl.searchParams.get('sort'));
+            }
+
             slideshowBtn.href = slideshowUrl;
             $dom.show(slideshowBtn);
         }
     };
 
     $cms.templates.galleryCarouselModeScreen = function (params, container) {
-        var glideContainer = container.querySelector('.glide-other-gallery-images');
+        var glideContainer = container.querySelector('.glide-other-gallery-images'),
+            bp1 = window.matchMedia('(max-width: 400px)'),
+            bp2 = window.matchMedia('(max-width: 700px)'),
+            bp3 = window.matchMedia('(max-width: 1300px)');
 
         if (glideContainer != null) {
-            var glide = new window.Glide(glideContainer, {
+            /* global Glide:false */
+            var glide = new Glide(glideContainer, {
                 perView: 6, // A number of slides visible on the single viewport.
                 bound: true, // Stop running perView number of slides from the end. Use this option if you don't want to have an empty space after a slider.
                 breakpoints: { // Collection of options applied at specified media breakpoints.
@@ -65,6 +77,12 @@
                 }
             });
             glide.mount();
+
+            setViewCountClass();
+            $dom.on(window, 'resize orientationchange', setViewCountClass);
+
+            var mo = new MutationObserver(setViewCountClass);
+            mo.observe(glideContainer, { childList: true, subtree: true });
 
             $dom.on(glideContainer, 'click', '.btn-glide-prev', function () { // Go to previous slides or the very end
                 var perView = getCurrentPerView();
@@ -90,10 +108,6 @@
             });
         }
 
-        var bp1 = window.matchMedia('(max-width: 400px)'),
-            bp2 = window.matchMedia('(max-width: 700px)'),
-            bp3 = window.matchMedia('(max-width: 1300px)');
-
         function getCurrentPerView() {
             if (bp1.matches) {
                 return 2;
@@ -104,6 +118,13 @@
             } else {
                 return 6;
             }
+        }
+
+        function setViewCountClass() {
+            var totalSlides = glideContainer.querySelectorAll('.glide__slide').length;
+
+            glideContainer.classList.toggle('has-single-view', totalSlides <= getCurrentPerView());
+            glideContainer.classList.toggle('has-multiple-views', totalSlides > getCurrentPerView());
         }
     };
 
