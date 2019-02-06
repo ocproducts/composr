@@ -46,6 +46,21 @@
         $dom.elementsLoaded.set(loadedEl, hasLoaded);
     }
 
+    // Are we dealing with a touch device?
+    document.documentElement.classList.toggle('is-touch-enabled', 'ontouchstart' in document.documentElement);
+
+    // Do we have a mouse?
+    var isMouseEnabled = window.matchMedia('(pointer:fine)').matches || (navigator.userAgent.toLowerCase().indexOf('msie') !== -1) || (navigator.userAgent.toLowerCase().indexOf('trident') !== -1);
+
+    document.documentElement.classList.toggle('is-mouse-enabled', isMouseEnabled);
+
+    // Is the document scrolled down?
+    document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
+
+    window.addEventListener('scroll', function () {
+        document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
+    });
+
     // Prevent url change for clicks on anchor tags with a placeholder href
     window.addEventListener('click', function (e) {
         var anchor = e.target;
@@ -70,10 +85,15 @@
     }, /*useCapture*/true);
     
     // Prevent form submission until the DOM is ready
-    $dom.preventFormSubmissionUntilDomReadyListener = function preventFormSubmissionUntilDomReadyListener(e) {
+    function preventFormSubmissionListener(e) {
         e.preventDefault();
         window.alert('Please wait for the page to load then try again.');
-    };
+    }
 
-    window.addEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
+    window.addEventListener('submit', preventFormSubmissionListener, /*useCapture*/true);
+
+    $dom.ready.then(function () {
+        // Allow form submissions after DOM ready
+        window.removeEventListener('submit', preventFormSubmissionListener, /*useCapture*/true);
+    });
 }(window.$dom || (window.$dom = {})));

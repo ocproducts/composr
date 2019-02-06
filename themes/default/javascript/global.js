@@ -29,21 +29,7 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    // Are we dealing with a touch device?
-    document.documentElement.classList.toggle('is-touch-enabled', 'ontouchstart' in document.documentElement);
-
-    // Is the document scrolled down?
-    document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
-
-    window.addEventListener('scroll', function () {
-        document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
-    });
-
     $dom.ready.then(function () {
-        // Allow form submissions by removing this listener attached early in dom_init.js
-        window.removeEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
-        delete $dom.preventFormSubmissionUntilDomReadyListener;
-
         if ($cms.browserMatches('ie')) {
             /*{+START,SET,icons_sprite_url}{$IMG,icons{$?,{$THEME_OPTION,use_monochrome_icons},_monochrome}_sprite}{+END}*/
             loadSvgSprite('{$GET;,icons_sprite_url}');
