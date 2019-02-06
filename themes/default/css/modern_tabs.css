@@ -185,7 +185,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-subtab-bodies {
-	padding: 0 1em;
+	padding: 0;
 }
 
 .modern-subtab-bodies>div {

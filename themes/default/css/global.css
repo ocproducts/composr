@@ -287,11 +287,6 @@ hr {
 	overflow: visible;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	margin-top: 0;
-	margin-bottom: 7px;
-}
-
 p {
 	margin-top: 14px;
 	margin-bottom: 14px;
@@ -571,7 +566,8 @@ template {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-	margin-bottom: 7px;
+	margin-top: 0;
+	margin-bottom: 10px;
 	font-family: inherit;
 	font-weight: {$GET,font_weight_medium};
 	line-height: 1.2;
@@ -4080,6 +4076,7 @@ div.ajax-loading, p.ajax-loading {
 	.lined-up-boxes .right {
 		width: 100%;
 		float: none;
+		margin-bottom: 20px;
 	}
 
 	.lined-up-boxes .left {
@@ -4907,7 +4904,7 @@ ul.associated-link > li,
 ul.horizontal-links-comma > li, 
 .horizontal-buttons > li, 
 .horizontal-ticker > li {
-	display: inline;
+	display: inline-block;
 	margin: 0;
 	padding: 0;
 }
@@ -4937,6 +4934,14 @@ ul.horizontal-links form {
 	ul.horizontal-links a, 
 	ul.horizontal-links form {
 		white-space: nowrap !important;
+	}
+
+	ul.horizontal-links {
+		margin: -5px -5px -5px 0;
+	}
+
+	ul.horizontal-links > li {
+		margin: 5px 5px 5px 0;
 	}
 /*{+END}*/
 
