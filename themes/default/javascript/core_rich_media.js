@@ -324,12 +324,19 @@
     };
 
     $cms.templates.comcodeMemberLink = function comcodeMemberLink(params, container) {
+        var loadTooltipPromise = null;
+
         $dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
         $dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);
 
         function activateComcodeMemberLink(e, el) {
             el.cancelled = false;
-            $cms.loadSnippet('member_tooltip&member_id=' + params.memberId).then(function (result) {
+
+            if (loadTooltipPromise == null) {
+                loadTooltipPromise = $cms.loadSnippet('member_tooltip&member_id=' + params.memberId);
+            }
+
+            loadTooltipPromise.then(function (result) {
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, 0);
                 }
