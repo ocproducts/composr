@@ -1439,12 +1439,12 @@
                             }
                             if (link.renderedTooltip !== undefined) {
                                 if (link.isOver) {
-                                    $cms.ui.activateTooltip(link, event, link.renderedTooltip, '400px', null, null, false, false, false, true);
+                                    $cms.ui.activateTooltip(link, event, link.renderedTooltip, '400px', null, null, false, 0, false, true);
                                 }
                             }
                         });
                     } else {
-                        $cms.ui.activateTooltip(link, event, link.renderedTooltip, '400px', null, null, false, false, false, true);
+                        $cms.ui.activateTooltip(link, event, link.renderedTooltip, '400px', null, null, false, null, false, true);
                     }
                 });
             }

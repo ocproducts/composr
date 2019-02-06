@@ -331,7 +331,7 @@
             el.cancelled = false;
             $cms.loadSnippet('member_tooltip&member_id=' + params.memberId).then(function (result) {
                 if (!el.cancelled) {
-                    $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
+                    $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, 0);
                 }
             });
         }

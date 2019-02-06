@@ -23,7 +23,7 @@
 					{+START,SET,posts}{+START,LOOP,POSTS}{+START,IF,{$NEQ,{I},0}}
 
 	{+END}{POST}{+END}{+END}
-					<a data-mouseover-activate-tooltip="['{!PREPARE_EMAIL_DESCRIPTION;^*}','700px']" ohref="mailto:?subject={!PREPARE_EMAIL_SUBJECT.*,{$SITE_NAME},{USERNAME},{DOMAIN}}&amp;body={!PREPARE_EMAIL_BODY.*,{USERNAME},{$GET,posts},{$SITE_NAME},{DOMAIN}}">{!PREPARE_EMAIL}</a>
+					<a data-mouseover-activate-tooltip="['{!PREPARE_EMAIL_DESCRIPTION;^*}','700px']" href="mailto:?subject={!PREPARE_EMAIL_SUBJECT.*,{$SITE_NAME},{USERNAME},{DOMAIN}}&amp;body={!PREPARE_EMAIL_BODY.*,{USERNAME},{$GET,posts},{$SITE_NAME},{DOMAIN}}">{!PREPARE_EMAIL}</a>
 				</td>
 			</tr>
 		{+END}

@@ -239,20 +239,20 @@
      * @param { string } [pic] - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
      * @param { string } [height] - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
      * @param { boolean } [bottom] - set to true if the tooltip should definitely appear upwards; rarely use this parameter
-     * @param { boolean } [noDelay] - set to true if the tooltip should appear instantly
+     * @param { number } [delay] - Wait before showing the tooltip
      * @param { boolean } [lightsOff] - set to true if the image is to be dimmed
      * @param { boolean } [forceWidth] - set to true if you want width to not be a max width
      * @param { Window } [win] - window to open in
      * @param { boolean } [haveLinks] - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
      */
-    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
+    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks) {
         el = $dom.elArg(el);
         event || (event = {});
         width = strVal(width) || 'auto';
         pic = strVal(pic);
         height = strVal(height) || 'auto';
         bottom = Boolean(bottom);
-        noDelay = Boolean(noDelay);
+        delay = (delay != null) ? Number(delay) : 600;
         lightsOff = Boolean(lightsOff);
         forceWidth = Boolean(forceWidth);
         win || (win = window);
@@ -377,11 +377,11 @@
         }
 
         var eventCopy = { // Needs to be copied as it will get erased on IE after this function ends
-            'pageX': Number(event.pageX) || 0,
-            'pageY': Number(event.pageY) || 0,
-            'clientX': Number(event.clientX) || 0,
-            'clientY': Number(event.clientY) || 0,
-            'type': event.type || ''
+            type: event.type || '',
+            pageX: Number(event.pageX) || 0,
+            pageY: Number(event.pageY) || 0,
+            clientX: Number(event.clientX) || 0,
+            clientY: Number(event.clientY) || 0,
         };
 
         setTimeout(function () {
@@ -399,14 +399,14 @@
                 tooltipEl.style.width = (Math.min($dom.width(tooltipEl), 1024) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
             }
 
-            if (!noDelay) {
+            if (delay > 0) {
                 // If delayed we will sub in what the currently known global mouse coordinate is
                 eventCopy.pageX = win.currentMouseX;
                 eventCopy.pageY = win.currentMouseY;
             }
 
             $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, forceWidth, win);
-        }, noDelay ? 0 : 600);
+        }, delay);
     };
 
     /**

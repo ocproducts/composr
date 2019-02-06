@@ -221,7 +221,7 @@ function display_version_upgrade_path($higher_version)
         <!-- Details -->
         <span class="version-details">(<?= escape_html($higher_version['version_pretty']) ?>, released <?= display_time_period(time() - $higher_version['add_date']) ?> ago)</span>
         <span class="version-note"><?= $note ?></span>
-        <img class="version-help-icon" onmouseout="$cms.ui.deactivateTooltip(this);" onmousemove="$cms.ui.repositionTooltip(this,event);" onmouseover="if (this.parentNode.title != null) { this.parentNode.title = ''; } $cms.ui.activateTooltip(this, event, <?= escape_html(json_encode($tooltip->evaluate())) ?>, '600px', null, null, false, true);" alt="Help" src="<?= escape_html(find_theme_image('icons/help')) ?>" />
+        <img class="version-help-icon" onmouseout="$cms.ui.deactivateTooltip(this);" onmousemove="$cms.ui.repositionTooltip(this,event);" onmouseover="if (this.parentNode.title != null) { this.parentNode.title = ''; } $cms.ui.activateTooltip(this, event, <?= escape_html(json_encode($tooltip->evaluate())) ?>, '600px', null, null, false, 0);" alt="Help" src="<?= escape_html(find_theme_image('icons/help')) ?>" />
     </p>
     <?php
 }

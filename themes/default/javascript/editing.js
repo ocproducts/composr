@@ -656,13 +656,13 @@
                             }
                             if (self.renderedTooltip !== undefined) {
                                 if (self.isOver) {
-                                    $cms.ui.activateTooltip(self, eventCopy, self.renderedTooltip, 'auto', null, null, false, true);
+                                    $cms.ui.activateTooltip(self, eventCopy, self.renderedTooltip, 'auto', null, null, false, 0);
                                     self.title = self.origTitle;
                                 }
                             }
                         }, 'data=' + encodeURIComponent('[semihtml]' + tagText.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
                     } else if (this.renderedTooltip !== undefined) {
-                        $cms.ui.activateTooltip(this, eventCopy, this.renderedTooltip, '400px', null, null, false, true);
+                        $cms.ui.activateTooltip(this, eventCopy, this.renderedTooltip, '400px', null, null, false, 0);
                     }
                 }
             };

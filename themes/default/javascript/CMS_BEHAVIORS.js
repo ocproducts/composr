@@ -774,8 +774,8 @@
                     }
 
                     try {
-                        //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
-                        $cms.ui.activateTooltip(el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true);
+                        //arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
+                        $cms.ui.activateTooltip(el, e, el.ttitle, 'auto', null, null, false, 0, false, false, window, true);
                     } catch (ex) {
                         //$util.fatal('$cms.behaviors.cmsRichTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
                     }
@@ -808,20 +808,35 @@
 
                 if (typeof options !== 'object') {
                     options = {
-                        contents: options, // Tooltip contents
-                        instant: false, // Whether to show the tooltip instantly
-                        trigger: 'hover', // Or 'click'. What triggers the tooltip.
+                        contents: options,
                     };
+                } else {
+                    options.contents = strVal(options.contents); // Tooltip contents
                 }
 
-                $dom.on(el, ((options.trigger === 'click') ? 'click' : 'mouseover'), function (e) {
-                    if ((options.trigger === 'hover') && el.contains(e.relatedTarget)) {
-                        return;
-                    }
+                if (options.delay != null) { // Delay before showing tooltip
+                    options.delay = Number(options.delay) || 0;
+                }
 
-                    // Arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
-                    $cms.ui.activateTooltip(el, e, options.contents, null, null, null, null, options.instant, false, false, null, (options.trigger === 'click'));
-                });
+                if (options.triggers == null) { // What triggers the tooltip, values: 'click', 'hover' and 'focus'.
+                    options.triggers = ['hover'];
+                } else if (!Array.isArray(options.triggers)) {
+                    options.triggers = strVal(options.triggers).trim().split(/\s+/);
+                }
+
+                if (options.triggers.includes('hover')) {
+                    $dom.on(el, 'mouseenter', function (e) {
+                        // Arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
+                        $cms.ui.activateTooltip(el, e, options.contents, null, null, null, null, options.delay);
+                    });
+                }
+
+                if (options.triggers.includes('click')) {
+                    $dom.on(el, 'click', function (e) {
+                        // Arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
+                        $cms.ui.activateTooltip(el, e, options.contents, null, null, null, null, options.delay, false, false, null, true);
+                    });
+                }
             });
         }
     };
@@ -1858,7 +1873,7 @@
         el.cmsTooltipTitle = $cms.filter.html(title);
 
         $dom.on(el, 'mouseover.convertTooltip', function (event) {
-            global.$cms.ui.activateTooltip(el, event, el.cmsTooltipTitle, 'auto', '', null, false, false, false, false, global);
+            global.$cms.ui.activateTooltip(el, event, el.cmsTooltipTitle, 'auto', '', null, false, null, false, false, global);
         });
     }
 }(window.$cms, window.$util, window.$dom));

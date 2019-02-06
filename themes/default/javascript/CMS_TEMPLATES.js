@@ -583,7 +583,7 @@
 
         $dom.on(el, 'mouseover', function (e) {
             var win = $cms.getMainCmsWindow(true);
-            win.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, win);
+            win.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, null, false, false, win);
         });
     };
 
