@@ -172,7 +172,7 @@ class Module_galleries
             add_privilege('GALLERIES', 'no_personal_gallery_limit', false);
 
             // Add root gallery
-            add_gallery('root', do_lang('GALLERIES_HOME'), '', '', '', 1, 1, 0, GALLERY_LAYOUT_MODE_CAROUSEL);
+            add_gallery('root', do_lang('GALLERIES_HOME'), '', '', '', 1, 1, 0, GALLERY_LAYOUT_MODE_GRID);
             require_code('permissions2');
             set_global_category_access('galleries', 'root');
 
