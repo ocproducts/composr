@@ -1,6 +1,6 @@
 {+START,IF,{IS_SPACER_POST}}
 	{+START,IF,{$NOT,{$IN_STR,{POST},<div}}}
-		<div class="box box---post"><div class="box-inner">
+		<div id="box-post-{ID*}" class="box box---post"><div class="box-inner">
 			{POST}
 		</div></div>
 	{+END}
@@ -11,7 +11,7 @@
 {+END}
 
 {+START,IF,{$NOT,{IS_SPACER_POST}}}
-	<div class="box box---post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted-post{+END}"><div class="box-inner">
+	<div id="box-post-{ID*}" class="box box---post{+START,IF,{$OR,{IS_UNREAD},{HIGHLIGHT}}} highlighted-post{+END}"><div class="box-inner">
 		<div id="post-wrap-{ID*}" class="post time-{TIME_RAW*}" itemprop="reviews" itemscope="itemscope" itemtype="http://schema.org/Review">
 			{+START,IF_NON_EMPTY,{ID}}<a id="post-{ID*}"></a>{+END}
 
@@ -95,11 +95,11 @@
 				</div>
 			{+END}
 
-			{+START,IF_PASSED,CHILDREN}
+			{+START,IF_PASSED,CHILDREN}{+START,IF_NON_EMPTY,{CHILDREN}}
 				<div id="post-children-{ID*}" class="post-thread-children">
 					{CHILDREN}
 				</div>
-			{+END}
+			{+END}{+END}
 			{+START,INCLUDE,POST_CHILD_LOAD_LINK}{+END}
 		</div>
 	</div></div>

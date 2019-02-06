@@ -2856,6 +2856,14 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	border-top: 1px solid {$GET,pale_border} !important;
 }
 
+.comments-wrapper .boxless-space .box + .box.highlighted-post::before {
+	display: none;
+}
+
+.comments-wrapper .box.highlighted-post .buttons-group {
+	margin-bottom: 0;
+}
+
 .boxless-space .box + .fp-col-blocks-wrap {
 	padding-top: 0;
 }

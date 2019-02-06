@@ -363,12 +363,10 @@
             }
 
             // Note what posts are shown now
-            var knownPosts = commentsWrapper.querySelectorAll('.post'),
-                knownTimes = [];
-
-            for (var i = 0; i < knownPosts.length; i++) {
-                knownTimes.push(knownPosts[i].className.replace(/^post /, ''));
-            }
+            var knownPostBoxIds = [];
+            commentsWrapper.querySelectorAll('.box---post').forEach(function (boxEl) {
+                knownPostBoxIds.push(boxEl.id);
+            });
 
             // Fire off AJAX request
             var post = 'options=' + encodeURIComponent(options) + '&hash=' + encodeURIComponent(hash),
@@ -410,12 +408,12 @@
                     }
 
                     // Set fade for posts not shown before
-                    var knownPosts = commentsWrapper.querySelectorAll('.post');
-                    for (var i = 0; i < knownPosts.length; i++) {
-                        if (!knownTimes.includes(knownPosts[i].className.replace(/^post /, ''))) {
-                            $dom.fadeIn(knownPosts[i]);
+                    commentsWrapper.querySelectorAll('.box---post').forEach(function (boxEl) {
+                        if (!knownPostBoxIds.includes(boxEl.id)) {
+                            boxEl.style.opacity = 0;
+                            $dom.fadeTo(boxEl, null, 1);
                         }
-                    }
+                    });
                 } else { // Error: do a normal post so error can be seen
                     commentsForm.submit();
                 }
