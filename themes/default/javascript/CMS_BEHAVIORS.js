@@ -827,7 +827,7 @@
                 if (options.triggers.includes('hover')) {
                     $dom.on(el, 'mouseenter', function (e) {
                         // Arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
-                        $cms.ui.activateTooltip(el, e, options.contents, options.width, options.img, options.height, options.position === 'bottom', options.options.dimImg);
+                        $cms.ui.activateTooltip(el, e, options.contents, options.width, options.img, options.height, options.position === 'bottom', options.delay, options.dimImg);
                     });
                 }
 
