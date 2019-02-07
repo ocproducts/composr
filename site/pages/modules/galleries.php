@@ -697,7 +697,7 @@ HTML;
         if ($myrow['layout_mode'] === GALLERY_LAYOUT_MODE_CAROUSEL) {
             return $this->do_gallery_carousel_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $rep_image, $start, $max, $fullname, $sorting, $myrow);
         } elseif ($myrow['layout_mode'] === GALLERY_LAYOUT_MODE_MOSAIC) {
-            return $this->do_gallery_mosaic_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $sorting, $myrow);
+            return $this->do_gallery_mosaic_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $myrow);
         } else {
             return $this->do_gallery_grid_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $sorting, $myrow);
         }
@@ -1176,11 +1176,10 @@ HTML;
      * @param  Tempcode $submit_video_url The URL to "submit a video to this gallery"
      * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  string $fullname The gallery title
-     * @param  Tempcode $sorting Sorting UI
      * @param  array $gallery_row The gallery row
      * @return Tempcode The UI
      */
-    public function do_gallery_mosaic_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting, $gallery_row)
+    public function do_gallery_mosaic_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $gallery_row)
     {
         // Entries
         if (get_option('galleries_subcat_narrowin') == '1') {
@@ -1193,7 +1192,7 @@ HTML;
         $video_select = get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX);
         $sort = get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_gallery_mosaic', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_grid_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module', 'render_if_empty' => '1'));
+        $entries = do_block('main_gallery_mosaic', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_grid_per_page'), 'show_sorting' => '1', 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module', 'render_if_empty' => '1'));
 
         // Member gallery?
         $member_id = get_member_id_from_gallery_name($cat, null, true);
@@ -1206,7 +1205,6 @@ HTML;
         // Render
         return do_template('GALLERY_MOSAIC_MODE_SCREEN', array(
             '_GUID' => 'cec405597f47f5079b7c7f581fa6b5c2',
-            'SORTING' => $sorting,
             '_TITLE' => $fullname,
             'MEMBER_ID' => ($member_id === null) ? '' : strval($member_id),
             'TAGS' => get_loaded_tags('galleries'),

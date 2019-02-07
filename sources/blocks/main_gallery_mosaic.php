@@ -37,7 +37,7 @@ class Block_main_gallery_mosaic
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'pagination', 'root', 'as_guest', 'check');
+        $info['parameters'] = array('param', 'filter', 'video_filter', 'select', 'video_select', 'zone', 'title', 'sort', 'days', 'render_if_empty', 'max', 'start', 'show_sorting', 'pagination', 'root', 'as_guest', 'check');
         return $info;
     }
 
@@ -55,6 +55,7 @@ class Block_main_gallery_mosaic
                     array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false, 
                     get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : null), 
                     get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0), 
+                    ((array_key_exists('show_sorting', $map) ? $map['show_sorting'] : '0') == '1'), 
                     ((array_key_exists('pagination', $map) ? $map['pagination'] : '0') == '1'), 
                     ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null), 
                     array_key_exists('filter', $map) ? $map['filter'] : '', 
@@ -104,6 +105,7 @@ PHP;
 
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : get_default_gallery_max());
         $start = get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0);
+        $show_sorting = ((array_key_exists('show_sorting', $map) ? $map['show_sorting'] : '0') == '1');
         $do_pagination = ((array_key_exists('pagination', $map) ? $map['pagination'] : '0') == '1');
         $root = ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null);
 
@@ -397,6 +399,29 @@ PHP;
             }
         }
 
+        // Sorting
+        $sorting = null;
+        if ($show_sorting) {
+            $_selectors = array();
+            if (get_option('is_on_rating') == '1') {
+                $_selectors['average_rating DESC'] = 'RATING';
+                $_selectors['compound_rating DESC'] = 'POPULARITY';
+            }
+            $_selectors = array_merge($_selectors, array(
+                'url ASC' => 'FILENAME',
+                'add_date ASC' => 'OLDEST_FIRST',
+                'add_date DESC' => 'NEWEST_FIRST',
+                'title ASC' => 'TITLE',
+            ));
+            $selectors = new Tempcode();
+            foreach ($_selectors as $selector_value => $selector_name) {
+                $selected = ($sort == $selector_value);
+                $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '2cda0eb8456ba50801d803f33b2e1e9b', 'SELECTED' => $selected, 'NAME' => do_lang_tempcode($selector_name), 'VALUE' => $selector_value)));
+            }
+            $sort_url = get_self_url(false, false, array('sort' => null), false, true);
+            $sorting = do_template('PAGINATION_SORT', array('_GUID' => '148c9f69ea1640fb2a6d1f6ca2e201f2', 'SORT' => 'sort', 'URL' => $sort_url, 'SELECTORS' => $selectors));
+        }
+
         // Pagination
         $pagination = new Tempcode();
         if ($do_pagination) {
@@ -414,6 +439,7 @@ PHP;
             'DAYS' => $_days,
             'SORT' => $sort,
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
+            'SORTING' => $sorting,
             'PAGINATION' => $pagination,
             'TITLE' => $title,
             'CAT' => $cat_raw,

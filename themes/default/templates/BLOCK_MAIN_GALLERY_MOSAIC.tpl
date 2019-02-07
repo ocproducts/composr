@@ -5,7 +5,25 @@
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
-<div data-tpl="blockMainGalleryMosaic" data-tpl-params="{+START,PARAMS_JSON,START,MAX,block_call_url}{_*}{+END}">
+<div class="block-main-gallery-mosaic" data-tpl="blockMainGalleryMosaic" data-tpl-params="{+START,PARAMS_JSON,START,MAX,BLOCK_ID,block_call_url}{_*}{+END}">
+	{+START,IF_NON_EMPTY,{ENTRIES}}
+		<div class="gallery-actions">
+			{+START,IF_PASSED,SLIDESHOW_URL}
+			<a class="btn btn-primary btn-slideshow" rel="nofollow" href="{SLIDESHOW_URL*}">{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</a>
+			{+END}
+
+			{+START,IF_PASSED,SORTING}
+				{$SET,show_sort_button,1}
+				{SORTING}
+			{+END}
+			
+			<div class="toggle-details mobile-only">
+				<label for="toggle-details-{BLOCK_ID*}">Show Details</label>
+				<input type="checkbox" id="toggle-details-{BLOCK_ID*}" class="js-checkbox-toggle-details" />
+			</div>
+		</div>
+	{+END}
+
 	{$SET,ajax_block_main_gallery_mosaic_wrapper,ajax-block-main-gallery-embed-wrapper-{$RAND%}}
 	<div id="{$GET*,ajax_block_main_gallery_mosaic_wrapper}" data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 		<div class="gallery-mosaic-items raw-ajax-grow-spot">

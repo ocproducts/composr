@@ -343,6 +343,30 @@
                 }
             }, true);
         }
+
+        var checkboxToggleDetails = container.querySelector('.js-checkbox-toggle-details'),
+            savedValue;
+
+        if (checkboxToggleDetails != null) {
+            if ($cms.isCssMode('mobile')) {
+                try {
+                    savedValue = window.localStorage.getItem('block-' + params.blockId + '-is-enabled-show-details');
+                } catch (ignore) { } // The user may have their browser configured to deny permission to persist data for the specified origin.
+
+                if (savedValue === '1') {
+                    checkboxToggleDetails.checked = true;
+                    container.classList.add('is-enabled-show-details');
+                }
+            }
+
+            $dom.on(checkboxToggleDetails, 'change', function () {
+                container.classList.toggle('is-enabled-show-details', checkboxToggleDetails.checked);
+
+                try {
+                    window.localStorage.setItem('block-' + params.blockId + '-is-enabled-show-details', checkboxToggleDetails.checked ? '1' : '0');
+                } catch (ignore) { }
+            });
+        }
     };
 
     $cms.templates.galleryImportScreen = function () {
