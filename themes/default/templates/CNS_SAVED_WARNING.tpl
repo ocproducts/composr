@@ -11,7 +11,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
-						<button type="submit" class="button-hyperlink js-mouseover-activate-tooltip" data-vw-tooltip="{$ESCAPE*,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML},NULL_ESCAPED}">{!LOAD} {TITLE*}</button>
+						<button type="submit" class="button-hyperlink" data-cms-tooltip="{ contents: '{$ESCAPE;^*,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML},NULL_ESCAPED}', width: '700px' }">{!LOAD} {TITLE*}</button>
 					</div>
 				</form>
 			</li>

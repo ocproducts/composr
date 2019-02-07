@@ -254,7 +254,7 @@
                         '<div>' +
                         '    <a class="ajax-tree-expand-icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" id="' + that.name + 'texp-c-' + node.getAttribute('id') + '">' + (initiallyExpanded ? '{$GET;^,tree_field_collapse_icon}' : '{$GET;^,tree_field_expand_icon}') + '</a>' +
                         '    <img class="ajax-tree-cat-icon" alt="{!CATEGORY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl) + '" />' +
-                        '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax-tree-magic-button ' + colour + '"> <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
+                        '    <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '"' + (node.getAttribute('description_html') ? '' : ' data-cms-tooltip="' + $cms.filter.html(descriptionInUse) + '"') + ' class="ajax-tree-magic-button ' + colour + '"> <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label>' +
                         '    <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span>' +
                         '</div>');
                     var expandButton = nodeSelf.querySelector('.ajax-tree-expand-icon');
@@ -366,7 +366,7 @@
                         imgUrl2 = node.getAttribute('img_url');
                     }
                     $dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" width="14" height="14" src="' + $cms.filter.html(imgUrl2) + '" /> ' +
-                        '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax-tree-magic-button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse2.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
+                        '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax-tree-magic-button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '"' + (node.getAttribute('description_html') ? '' : ' data-cms-tooltip="{ contents: \'' + descriptionInUse2.replace(/\n/g, '').replace(/'/g, '\\\'') + '\', width: \'800px\'}"') + '>' +
                         '<input' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' id="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" />' + escapedTitle + '</label>' + extra + '</div>');
 
                     label = nodeSelf.querySelector('label');

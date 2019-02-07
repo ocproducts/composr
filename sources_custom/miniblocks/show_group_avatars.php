@@ -83,7 +83,7 @@ foreach ($rows as $row) {
         <div class="box left float-separation"><div class="box-inner">
             <a href="' . escape_html($url->evaluate()) . '"><img src="' . escape_html($avatar_url) . '" /></a><br />
 
-            <a href="' . escape_html($url->evaluate()) . '" data-focus-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-mouseover-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-blur-deactivate-tooltip>' . escape_html($username) . '</a><br />
+            <a href="' . escape_html($url->evaluate()) . '" data-cms-tooltip="{ contents: \'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\', triggers: \'hover focus\' }">' . escape_html($username) . '</a><br />
         </div></div>
     ';
 }

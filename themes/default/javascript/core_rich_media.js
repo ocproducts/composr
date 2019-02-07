@@ -326,8 +326,8 @@
     $cms.templates.comcodeMemberLink = function comcodeMemberLink(params, container) {
         var loadTooltipPromise = null;
 
-        $dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
-        $dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);
+        $dom.on(container, 'mouseover', '.js-comcode-member-link', activateComcodeMemberLink);
+        $dom.on(container, 'focusin', '.js-comcode-member-link', activateComcodeMemberLink);
 
         function activateComcodeMemberLink(e, el) {
             el.cancelled = false;
@@ -343,7 +343,11 @@
             });
         }
 
-        $dom.on(container, 'mouseout', '.js-mouseout-comcode-member-link', function (e, el) {
+        $dom.on(container, 'mouseout focusout', '.js-comcode-member-link', function (e, el) {
+            if (el.contains(e.relatedTarget)) {
+                return;
+            }
+
             $cms.ui.deactivateTooltip(el);
             el.cancelled = true;
         });

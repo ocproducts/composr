@@ -818,7 +818,7 @@
                     options.delay = Number(options.delay) || 0;
                 }
 
-                if (options.triggers == null) { // What triggers the tooltip, values: 'click', 'hover' and 'focus'.
+                if (options.triggers == null) { // What triggers the tooltip, values: 'hover', 'click', and 'focus'.
                     options.triggers = ['hover'];
                 } else if (!Array.isArray(options.triggers)) {
                     options.triggers = strVal(options.triggers).trim().split(/\s+/);
@@ -827,68 +827,27 @@
                 if (options.triggers.includes('hover')) {
                     $dom.on(el, 'mouseenter', function (e) {
                         // Arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
-                        $cms.ui.activateTooltip(el, e, options.contents, null, null, null, null, options.delay);
+                        $cms.ui.activateTooltip(el, e, options.contents, options.width, options.img, options.height, options.position === 'bottom', options.options.dimImg);
                     });
                 }
 
                 if (options.triggers.includes('click')) {
                     $dom.on(el, 'click', function (e) {
                         // Arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
-                        $cms.ui.activateTooltip(el, e, options.contents, null, null, null, null, options.delay, false, false, null, true);
+                        $cms.ui.activateTooltip(el, e, options.contents, options.width, options.img, options.height, options.position === 'bottom', options.delay, options.dimImg, false, null, true);
                     });
                 }
-            });
-        }
-    };
 
-    /**
-     * @param { string} type - 'mouseover' or 'focus'
-     * @returns { Function }
-     */
-    function activateTooltipBehaviorFn(type) {
-        return function (context) {
-            var els = $util.once($dom.$$$(context, '[data-' + type + '-activate-tooltip]'), 'behavior.on' + type + 'ActivateTooltip');
+                if (options.triggers.includes('focus')) {
+                    $dom.on(el, 'focus', function (e) {
+                        // Arguments: el, event, tooltip, width, pic, height, bottom, delay, lightsOff, forceWidth, win, haveLinks
+                        $cms.ui.activateTooltip(el, e, options.contents, options.width, options.img, options.height, options.position === 'bottom', options.delay, options.dimImg, false, null, true);
+                    });
 
-            els.forEach(function (el) {
-                $dom.on(el, type, function (e) {
-                    if (!Array.isArray($dom.data(el, type + 'ActivateTooltip')) || ((e.type === 'mouseover') && el.contains(e.relatedTarget))) {
-                        return;
-                    }
-
-                    var args = arrVal($dom.data(el, type + 'ActivateTooltip'));
-
-                    args.unshift(el, e);
-
-                    try {
-                        //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
-                        $cms.ui.activateTooltip.apply(undefined, args);
-                    } catch (ex) {
-                        $util.fatal('$cms.behaviors.on' + type + 'ActivateTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
-                    }
-                });
-            });
-        };
-    }
-
-    // Implementation for [data-mouseover-activate-tooltip]
-    $cms.behaviors.onmouseoverActivateTooltip = {
-        attach: activateTooltipBehaviorFn('mouseover')
-    };
-
-    // Implementation for [data-focus-activate-tooltip]
-    $cms.behaviors.onfocusActivateTooltip = {
-        attach: activateTooltipBehaviorFn('focus')
-    };
-
-    // Implementation for [data-blur-deactivate-tooltip]
-    $cms.behaviors.onblurDeactivateTooltip = {
-        attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-blur-deactivate-tooltip]'), 'behavior.onblurDeactivateTooltip');
-
-            els.forEach(function (el) {
-                $dom.on(el, 'blur', function () {
-                    $cms.ui.deactivateTooltip(el);
-                });
+                    $dom.on(el, 'blur', function () {
+                        $cms.ui.deactivateTooltip(el);
+                    });
+                }
             });
         }
     };

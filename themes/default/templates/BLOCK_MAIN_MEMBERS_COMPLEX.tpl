@@ -4,7 +4,7 @@
 <div class="block-main-members block-main-members--{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has-item-width{+END} clearfix">
 	{+START,LOOP,MEMBER_BOXES}
 		{+START,IF,{$EQ,{DISPLAY_MODE},avatars,photos}}
-			<div data-mouseover-activate-tooltip="['{BOX;^*}','auto']"{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}>
+			<div data-cms-tooltip="{BOX*}"{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}>
 				<p>
 					{+START,IF,{$EQ,{DISPLAY_MODE},avatars}}
 						{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,{$IMG,cns_default_avatars/default},pad,both,FFFFFF00}}
@@ -37,7 +37,7 @@
 
 						<ul class="horizontal-links associated-links-block-group">
 							<li>
-								<a data-mouseover-activate-tooltip="['{BOX;^*}','auto']" data-focus-activate-tooltip="['{BOX;^*}','auto']" data-blur-deactivate-tooltip="" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{$USERNAME*,{MEMBER_ID}}</a>
+								<a data-cms-tooltip="{ contents: '{BOX;^*}', triggers: 'hover focus' }" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{$USERNAME*,{MEMBER_ID}}</a>
 							</li>
 						</ul>
 					</div></div>

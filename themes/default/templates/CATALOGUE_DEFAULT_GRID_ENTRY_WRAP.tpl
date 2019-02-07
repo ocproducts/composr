@@ -19,11 +19,11 @@
 		{+START,IF_NON_EMPTY,{FIELD_1_THUMB}}
 			<div class="catalogue-entry-box-thumbnail">
 				{+START,IF_NON_EMPTY,{$GET,view_url}}
-					<a data-mouseover-activate-tooltip="['{$TRIM*;^,{$GET,TOOLTIP}}','500px']" href="{$GET*,view_url}">{FIELD_1_THUMB}</a>
+					<a data-cms-tooltip="{ contents: '{$TRIM*;^,{$GET,TOOLTIP}}', width: '500px' }" href="{$GET*,view_url}">{FIELD_1_THUMB}</a>
 				{+END}
 
 				{+START,IF_EMPTY,{$GET,view_url}}
-					<span data-mouseover-activate-tooltip="['{$TRIM*;^,{$GET,TOOLTIP}}','500px']">{FIELD_1_THUMB}</span>
+					<span data-cms-tooltip="{ contents: '{$TRIM*;^,{$GET,TOOLTIP}}', width: '500px' }">{FIELD_1_THUMB}</span>
 				{+END}
 			</div>
 
@@ -34,7 +34,7 @@
 	{+START,IF,{$NOT,{$GET,displayed_thumb}}}
 		{+START,IF_NON_EMPTY,{$GET,view_url}}
 			<p>
-				<a data-mouseover-activate-tooltip="['{$TRIM*;^,{$GET,TOOLTIP}}','500px']" href="{$GET*,view_url}">{!VIEW}</a>
+				<a data-cms-tooltip="{ contents: '{$TRIM*;^,{$GET,TOOLTIP}}', width: '500px' }" href="{$GET*,view_url}">{!VIEW}</a>
 			</p>
 		{+END}
 

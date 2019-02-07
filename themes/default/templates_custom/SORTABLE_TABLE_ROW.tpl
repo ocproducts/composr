@@ -13,7 +13,7 @@
 	{+END}
 {+END}
 
-<tr {+START,IF_NON_EMPTY,{$TRIM,{$GET,tooltip}}} style="cursor: pointer" data-mouseover-activate-tooltip="['{$GET*;^,tooltip}','auto']"{+END}>
+<tr {+START,IF_NON_EMPTY,{$TRIM,{$GET,tooltip}}} style="cursor: pointer" data-cms-tooltip="{$GET*,tooltip}"{+END}>
 	{+START,LOOP,VALUES}
 		{$SET,header,{+START,OF,{_loop_key}}HEADERS{+END}}
 		<td data-th="{$GET*,header}" style="{+START,OF,STYLINGS}{_loop_key}{+END}">{_loop_var*}</td>

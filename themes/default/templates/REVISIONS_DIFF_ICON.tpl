@@ -6,7 +6,7 @@
 
 {+START,IF,{$DESKTOP}}
 	<span class="inline-desktop">
-		<a data-tpl="revisionsDiffIcon" class="button-icon" data-mouseover-activate-tooltip="['{$GET;^*,tooltip}','500px',null,'auto',true,true]" href="#!">
+		<a data-tpl="revisionsDiffIcon" class="button-icon" data-cms-tooltip="{ contents: '{$GET;^*,tooltip}', width: '500px', delay: 0, position: 'bottom' }" href="#!">
 			{+START,INCLUDE,ICON}
 				NAME=help
 				ICON_SIZE=24

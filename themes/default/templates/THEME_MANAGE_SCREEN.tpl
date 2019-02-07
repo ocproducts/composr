@@ -35,7 +35,7 @@
 										{+END}
 									{+END}
 
-									<strong class="comcode-concept-inline" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}', 'auto']">{TITLE*}</strong>
+									<strong class="comcode-concept-inline" data-cms-tooltip="{$GET*,TOOLTIP}">{TITLE*}</strong>
 								</div>
 							{+END}
 							<div class="block-mobile">

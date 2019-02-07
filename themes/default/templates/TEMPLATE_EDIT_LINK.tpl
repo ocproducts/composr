@@ -8,7 +8,7 @@
 
 	{+START,SET,tpl_marker_link}
 		{$,NB: We do not use an anchor tag because nested anchors make a mess}
-		<span data-tpl="templateEditLink" data-tpl-params="{+START,PARAMS_JSON,EDIT_URL}{_*}{+END}" data-mouseover-activate-tooltip="['&lt;p&gt;{!TEMPLATES_WITH_EDIT_LINKS_PARAMETERS;^=}&lt;/p&gt;{PARAM_INFO;^*}','800px',null,null,null,true]" class="template-edit-link associated-link">
+		<span data-tpl="templateEditLink" data-tpl-params="{+START,PARAMS_JSON,EDIT_URL}{_*}{+END}" data-cms-tooltip="{ contents: '&lt;p&gt;{!TEMPLATES_WITH_EDIT_LINKS_PARAMETERS;^=}&lt;/p&gt;{PARAM_INFO;^*}', width: '800px', delay: 0 }" class="template-edit-link associated-link">
 			<span class="js-click-open-edit-url js-keypress-open-edit-url"><kbd>{CODENAME*}.tpl</kbd></span>
 		</span>
 	{+END}

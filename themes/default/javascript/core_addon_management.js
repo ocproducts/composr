@@ -30,7 +30,6 @@
         events: function () {
             return {
                 'click .js-click-check-uninstall-all': 'checkUninstallAll',
-                'mouseover .js-mouseover-activate-tooltip': 'activateTooltip'
             };
         },
 
@@ -40,13 +39,6 @@
             checkboxes.forEach(function (el) {
                 el.checked = true;
             });
-        },
-
-        activateTooltip: function (e, el) {
-            var text = el.dataset.vwTooltip;
-            if (text) {
-                $cms.ui.activateTooltip(el, e, text, '50%');
-            }
         }
     });
 }());

@@ -6,7 +6,7 @@
 		{+START,IF_PASSED,DESCRIPTION}
 			{+START,IF,{$DESKTOP}}
 				<span class="inline-desktop">
-					<a class="button-icon" data-mouseover-activate-tooltip="['{DESCRIPTION;^=}','auto']">
+					<a class="button-icon" data-cms-tooltip="{DESCRIPTION=}">
 						{+START,INCLUDE,ICON}
 							NAME=help
 							ICON_SIZE=24

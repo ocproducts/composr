@@ -1,5 +1,5 @@
 <span class="vertical-alignment">
-	<img width="18" height="18" data-mouseover-activate-tooltip="['{BOX;^*}','auto']" src="{$THUMBNAIL*,{$?,{$IS_EMPTY,{AVATAR_URL}},{$IMG,cns_default_avatars/default},{AVATAR_URL}},18x18,,,{$IMG,cns_default_avatars/default}}" alt="" />
+	<img width="18" height="18" data-cms-tooltip="{BOX*}" src="{$THUMBNAIL*,{$?,{$IS_EMPTY,{AVATAR_URL}},{$IMG,cns_default_avatars/default},{AVATAR_URL}},18x18,,,{$IMG,cns_default_avatars/default}}" alt="" />
 
 	<a href="{URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>
 

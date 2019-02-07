@@ -8,7 +8,7 @@
 		</td>
 	{+END}
 	<td>
-		<form data-mouseover-activate-tooltip="['{DESCRIPTION;^*}','auto',null,null,null,true]" data-focus-activate-tooltip="['{DESCRIPTION;^*}','auto',null,null,null,true]" data-blur-deactivate-tooltip="" class="inline" action="{+START,IF_PASSED,PRICE}{$PAGE_LINK*,_SELF:_SELF:buy:item={NAME}:member={MEMBER}}{+END}{+START,IF_NON_PASSED,PRICE}{$PAGE_LINK*,_SELF:_SELF:take:item={NAME}:member={MEMBER}}{+END}" method="post" autocomplete="off"><button class="button-hyperlink" type="submit">{ACTION*}</button></form>
+		<form data-cms-tooltip="{ contents: '{DESCRIPTION;^*}', triggers: 'hover focus', delay: 0 }" class="inline" action="{+START,IF_PASSED,PRICE}{$PAGE_LINK*,_SELF:_SELF:buy:item={NAME}:member={MEMBER}}{+END}{+START,IF_NON_PASSED,PRICE}{$PAGE_LINK*,_SELF:_SELF:take:item={NAME}:member={MEMBER}}{+END}" method="post" autocomplete="off"><button class="button-hyperlink" type="submit">{ACTION*}</button></form>
 
 		{+START,IF,{EDIT_ACCESS}}<a class="associated-link suggested-link" title="{!EDIT}: {NAME*}" href="{$PAGE_LINK*,_SELF:_SELF:edititemcopy:item={NAME}:member={MEMBER}}">{!EDIT}</a>{+END}
 

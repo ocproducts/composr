@@ -32,7 +32,7 @@
 	</td>
 	<td>
 		<div class="accessibility-hidden"><label for="is_transparent_{I*}">{!IS_TRANSPARENT_REDIRECT}</label></div>
-		<input data-mouseover-activate-tooltip="['{!IS_TRANSPARENT_REDIRECT;^=}','40%']" title="{!IS_TRANSPARENT_REDIRECT}" class="input-tick" type="checkbox" id="is_transparent_{I*}" name="is_transparent_{I*}"{+START,IF,{IS_TRANSPARENT}} checked="checked"{+END} value="1" />
+		<input data-cms-tooltip="{ contents: '{!IS_TRANSPARENT_REDIRECT;^=}', width: '40%' }" title="{!IS_TRANSPARENT_REDIRECT}" class="input-tick" type="checkbox" id="is_transparent_{I*}" name="is_transparent_{I*}"{+START,IF,{IS_TRANSPARENT}} checked="checked"{+END} value="1" />
 	</td>
 	<td>
 		{+START,IF,{$NEQ,{I},new}}
