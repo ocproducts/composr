@@ -187,11 +187,11 @@
 									{+START,IF_NON_EMPTY,{FIRST_POST}{RULES_TEXT}}
 									<ul class="associated-links-block-group">
 										{+START,IF_NON_EMPTY,{FIRST_POST}}
-										<li><a class="non-link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-cms-tooltip="{ contents: '{FIRST_POST;^*}', triggers: 'hover focus', delay: 0, width: '320px' }">{!cns:FIRST_POST}</a></li>
+										<li><a class="non-link js-click-pd-on-mobile" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-cms-tooltip="{ contents: '{FIRST_POST;^*}', triggers: 'hover focus', delay: 0, width: '320px' }">{!cns:FIRST_POST}</a></li>
 										{+END}
 
 										{+START,IF_NON_EMPTY,{RULES_TEXT}}
-										<li><a class="non-link" href="{$PAGE_LINK*,:rules}" data-cms-tooltip="{ contents: '{$TRUNCATE_LEFT;^*,{RULES_TEXT},1000,0,1}', triggers: 'hover focus', delay: 0, width: '320px' }">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline-mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
+										<li><a class="non-link js-click-pd-on-mobile" href="{$PAGE_LINK*,:rules}" data-cms-tooltip="{ contents: '{$TRUNCATE_LEFT;^*,{RULES_TEXT},1000,0,1}', triggers: 'hover focus', delay: 0, width: '320px' }">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline-mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
 										{+END}
 									</ul>
 									{+END}

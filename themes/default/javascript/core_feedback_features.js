@@ -51,7 +51,9 @@
 
                 'focus .js-focus-textarea-post': 'focusTexareaPost',
 
-                'click .js-click-open-site-emoticon-chooser-window': 'openEmoticonChooserWindow'
+                'click .js-click-open-site-emoticon-chooser-window': 'openEmoticonChooserWindow',
+
+                'click .js-click-pd-on-mobile': 'preventDefaultOnMobile',
             };
         },
 
@@ -111,6 +113,12 @@
 
         openEmoticonChooserWindow: function () {
             $cms.ui.open($util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.keep())), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+        },
+
+        preventDefaultOnMobile: function (e) {
+            if ($cms.isCssMode('mobile')) {
+                e.preventDefault();
+            }
         },
 
         clickBtnSubmit: function (e, button) {
