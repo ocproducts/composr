@@ -273,7 +273,7 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('is_on_anonymous_posts')));
 
-        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_auto_mark_read', 'BINARY');
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_auto_mark_read', 'BINARY', 1);
 
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'db_meta_indices WHERE i_name LIKE \'#mcf%\'');
 
