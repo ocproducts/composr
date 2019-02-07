@@ -1,5 +1,5 @@
 <div class="gallery-grid-item is-video">
-	<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" {+START,IF,{$INLINE_STATS}}data-cms-tooltip="{ contents: '{VIEWS;^*} {!COUNT_VIEWS;^*}', instant: true }"{+END}>
+	<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" {+START,IF,{$INLINE_STATS}}data-cms-tooltip="{ contents: '{VIEWS;^*} {!COUNT_VIEWS;^*}', delay: 0 }"{+END}>
 		{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
 			{+START,INCLUDE,MASS_SELECT_MARKER}
 				TYPE={MEDIA_TYPE}

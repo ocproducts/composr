@@ -154,25 +154,25 @@
 	opacity: 1;
 }
 
-.block-main-gallery-mosaic .gallery-actions  {
+.gallery-actions  {
 	display: table;
 	margin: 0 0 15px auto;
 }
 
-.block-main-gallery-mosaic .gallery-actions .btn-slideshow {
+.gallery-actions .btn-slideshow {
 	margin: 5px;
 }
 
-.block-main-gallery-mosaic .gallery-actions .pagination-sort {
+.gallery-actions .pagination-sort {
 	margin: 5px;
 }
 
-.block-main-gallery-mosaic .gallery-actions .toggle-details {
+.gallery-actions .toggle-details {
 	display: inline-block;
 	margin: 5px;
 }
 
-.block-main-gallery-mosaic .gallery-actions .toggle-details input {
+.gallery-actions .toggle-details input {
 	width: 25px;
 	height: 25px;
 	vertical-align: middle;
