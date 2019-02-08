@@ -215,12 +215,10 @@ class Module_cms_comcode_pages
             }
 
             $_out = array();
-            if ($lang != get_site_default_lang()) {
-                $_out += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-                $_out += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+            foreach (array_unique(array(fallback_lang(), get_site_default_lang(), $lang)) as $_lang) {
+                $_out += find_all_pages($zone, 'comcode_custom/' . $_lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+                $_out += find_all_pages($zone, 'comcode/' . $_lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
             }
-            $_out += find_all_pages($zone, 'comcode_custom/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-            $_out += find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
 
             foreach ($_out as $page => $subdir) {
                 if (is_integer($page)) {
