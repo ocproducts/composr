@@ -18,7 +18,7 @@
 			{+END}
 			
 			<div class="toggle-details mobile-only">
-				<label for="toggle-details-{BLOCK_ID*}">Show Details</label>
+				<label for="toggle-details-{BLOCK_ID*}">{!SHOW_DETAILS}</label>
 				<input type="checkbox" id="toggle-details-{BLOCK_ID*}" class="js-checkbox-toggle-details" />
 			</div>
 		</div>

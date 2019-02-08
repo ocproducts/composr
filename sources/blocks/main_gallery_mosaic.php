@@ -55,14 +55,15 @@ class Block_main_gallery_mosaic
                     array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false, 
                     get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : null), 
                     get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0), 
-                    ((array_key_exists('show_sorting', $map) ? $map['show_sorting'] : '0') == '1'), 
+                    empty($map['sort']) && ((array_key_exists('show_sorting', $map) ? $map['show_sorting'] : '0') == '1'), 
                     ((array_key_exists('pagination', $map) ? $map['pagination'] : '0') == '1'), 
                     ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null), 
                     array_key_exists('filter', $map) ? $map['filter'] : '', 
                     array_key_exists('video_filter', $map) ? $map['video_filter'] : '', 
                     array_key_exists('render_if_empty', $map) ? $map['render_if_empty'] : '0', 
                     array_key_exists('days', $map) ? $map['days'] : '', 
-                    array_key_exists('sort', $map) ? $map['sort'] : 'add_date DESC', get_param_integer('mge_start', 0),
+                    !empty($map['sort']) ? $map['sort'] : get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX), 
+                    get_param_integer('mge_start', 0),
                     array_key_exists('param', $map) ? $map['param'] : db_get_first_id(), 
                     array_key_exists('zone', $map) ? $map['zone'] : '', 
                     (($map === null) || (!array_key_exists('select', $map))) ? '*' : $map['select'], 
@@ -105,7 +106,7 @@ PHP;
 
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : get_default_gallery_max());
         $start = get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0);
-        $show_sorting = ((array_key_exists('show_sorting', $map) ? $map['show_sorting'] : '0') == '1');
+        $show_sorting = empty($map['sort']) && ((array_key_exists('show_sorting', $map) ? $map['show_sorting'] : '0') == '1');
         $do_pagination = ((array_key_exists('pagination', $map) ? $map['pagination'] : '0') == '1');
         $root = ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null);
 
@@ -158,7 +159,7 @@ PHP;
         }
 
         // Sorting
-        $sort = array_key_exists('sort', $map) ? $map['sort'] : 'add_date DESC';
+        $sort = !empty($map['sort']) ? $map['sort'] : get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         if (($sort != 'fixed_random ASC') && ($sort != 'average_rating DESC') && ($sort != 'average_rating ASC') && ($sort != 'compound_rating DESC') && ($sort != 'compound_rating ASC') && ($sort != 'add_date DESC') && ($sort != 'add_date ASC') && ($sort != 'edit_date DESC') && ($sort != 'edit_date ASC') && ($sort != 'url DESC') && ($sort != 'url ASC')) {
             $sort = 'add_date DESC';
         }
