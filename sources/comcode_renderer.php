@@ -196,6 +196,8 @@ function _custom_comcode_import($connection)
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_custom_bbcode')) {
             $custom_bbcode = $GLOBALS['FORUM_DRIVER']->get_custom_bbcode();
             foreach ($custom_bbcode as $code) {
+                $code['tag'] = strtolower($code['tag']);
+
                 $VALID_COMCODE_TAGS[$code['tag']] = true;
                 if ($code['block_tag'] == 1) {
                     $BLOCK_TAGS[$code['tag']] = true;
@@ -228,6 +230,8 @@ function _custom_comcode_import($connection)
             $tags = array_merge($tags, $connection->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
         }
         foreach ($tags as $tag) {
+            $tag['tag_tag'] = strtolower($tag['tag_tag']);
+
             $VALID_COMCODE_TAGS[$tag['tag_tag']] = true;
             if ($tag['tag_block_tag'] == 1) {
                 $BLOCK_TAGS[$tag['tag_tag']] = true;
@@ -248,6 +252,8 @@ function _custom_comcode_import($connection)
             $object = object_factory('Hook_comcode_' . filter_naughty_harsh($hook), true);
 
             $tag = $object->get_tag();
+
+            $tag['tag_tag'] = strtolower($tag['tag_tag']);
 
             $VALID_COMCODE_TAGS[$tag['tag_tag']] = true;
             if ($tag['tag_block_tag'] == 1) {
