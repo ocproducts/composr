@@ -23,12 +23,18 @@
  *
  * @param  GROUP $group_id The usergroup.
  * @param  MEMBER $member_id The member.
+ * @param  ?array $group_row Database row for usergroup, passed for performance optimisation (null: lookup).
  * @return boolean The answer.
  */
-function cns_may_control_group($group_id, $member_id)
+function cns_may_control_group($group_id, $member_id, $group_row = null)
 {
-    $leader = cns_get_group_property($group_id, 'group_leader');
-    $is_super_admin = cns_get_group_property($group_id, 'is_super_admin');
+    if ($group_row === null) {
+        $leader = cns_get_group_property($group_id, 'group_leader');
+        $is_super_admin = cns_get_group_property($group_id, 'is_super_admin');
+    } else {
+        $leader = $group_row['g_group_leader'];
+        $is_super_admin = $group_row['g_is_super_admin'];
+    }
     return (($member_id === $leader) || ($GLOBALS['CNS_DRIVER']->is_super_admin($member_id)) || ((has_privilege($member_id, 'control_usergroups')) && ($is_super_admin == 0)));
 }
 

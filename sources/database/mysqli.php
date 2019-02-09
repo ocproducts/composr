@@ -310,22 +310,23 @@ class Database_Static_mysqli extends Database_super_mysql
                 $name = $names[$j];
                 $type = $types[$j];
 
-                if (($type === 'int') || ($type === 'integer') || ($type === 'real') || ($type === 1) || ($type === 3) || ($type === 8)) {
-                    if ((($v === null)) || ($v === '')) { // Roadsend returns empty string instead of null
+                if (($type === 1) || ($type === 2) || ($type === 3) || ($type === 8) || ($type === 9)) { // Integer field of some kind
+                    if ($v === null) {
                         $newrow[$name] = null;
                     } else {
-                        $_v = intval($v);
-                        if (strval($_v) !== $v) {
-                            $newrow[$name] = floatval($v);
-                        } else {
-                            $newrow[$name] = $_v;
-                        }
-                    }
-                } elseif (($type === 16) || ($type === 'bit')) {
-                    if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {
-                        $newrow[$name] = ord($v); // 0/1 char for BIT field
-                    } else {
                         $newrow[$name] = intval($v);
+                    }
+                } elseif (($type === 4) || ($type === 5) || ($type === 246)) { // Decimal field of some kind
+                    if ($v === null) {
+                        $newrow[$name] = null;
+                    } else {
+                        $newrow[$name] = floatval($v);
+                    }
+                } elseif ($type === 16) { // Bit field
+                    if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {
+                        $newrow[$name] = ord($v); // 0/1 char format
+                    } else {
+                        $newrow[$name] = intval($v); // Int-as-string format
                     }
                 } else {
                     $newrow[$name] = $v;

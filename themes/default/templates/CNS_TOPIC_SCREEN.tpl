@@ -92,10 +92,11 @@
 
 					<div class="inline">
 						<label for="tma_type" class="accessibility_hidden">{!TOPIC_ACTIONS}:</label>
-						<select class="dropdown_actions" id="tma_type" name="type">
+						<select class="dropdown_actions" id="tma_type" name="type" onchange="/*guarded*/this.form.submit();">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input class="button_micro buttons__proceed" type="submit" onclick="if (document.getElementById('tma_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; }  return false;" value="{!PROCEED}" />
+						</select>
+						{+START,IF,{$NOT,{$JS_ON}}}<input onclick="if (document.getElementById('tma_type').selectedIndex!=0) { disable_button_just_clicked(this); return true; } return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />{+END}
 					</div>
 				</form>
 			{+END}
@@ -108,12 +109,13 @@
 
 							<div class="inline">
 								<label for="mpa_type">{!_MARKED_POST_ACTIONS}:</label>
-								<select id="mpa_type" name="type">
+								<select{+START,IF,{$JS_ON}} onchange="/*guarded*/if (add_form_marked_posts(this.form,'mark_')) form.submit(); else { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); this.selectedIndex=0; }"{+END} id="mpa_type" name="type">
 									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><input class="button_micro buttons__proceed" type="submit" onclick="if (!add_form_marked_posts(this.form,'mark_')) { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false; } if (document.getElementById('mpa_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; } return false;" value="{!PROCEED}" />
+								</select>
+								{+START,IF,{$NOT,{$JS_ON}}}<input onclick="if (add_form_marked_posts(this.form,'mark_') &amp;&amp; document.getElementById('mpa_type').selectedIndex!=0) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />{+END}
 							</div>
 						</form>
 					{+END}
@@ -126,14 +128,14 @@
 
 					<div class="inline">
 						<label for="comments_sort">{!SORT}:</label>
-						<select id="comments_sort" name="comments_sort">
+						<select{+START,IF,{$JS_ON}} onchange="/*guarded*/this.form.submit();"{+END} name="comments_sort" id="comments_sort">
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 						</select>
-						<input type="submit" value="{!SORT}" class="button_micro buttons__sort" />
+						{+START,IF,{$NOT,{$JS_ON}}}<input onclick="disable_button_just_clicked(this);" class="button_micro buttons__sort" type="submit" value="{!SORT}" />{+END}
 					</div>
 				</form>
 			{+END}

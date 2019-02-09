@@ -35,7 +35,9 @@ class Hook_task_import_ftp_downloads
      */
     public function run($destination, $server_url, $subfolders)
     {
+        set_mass_import_mode();
         require_code('downloads2');
+
         require_lang('downloads');
 
         // Firstly, parse the server URL, to make sure it is fine

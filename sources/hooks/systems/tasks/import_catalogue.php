@@ -45,6 +45,8 @@ class Hook_task_import_catalogue
      */
     public function run($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_path)
     {
+        set_mass_import_mode();
+
         require_code('catalogues2');
         require_lang('catalogues');
 

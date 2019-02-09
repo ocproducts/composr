@@ -114,7 +114,7 @@ function rss_backend_script()
         header('Content-Type: text/xsl');
         require_css('rss');
         $js = get_custom_base_url() . substr(javascript_enforce('xsl_mopup'), strlen(get_custom_file_base()));
-        $echo = do_template('OPML_XSLT', array('_GUID' => 'c0c6bd1d7a0e263768a2208061f799f5', 'XSL_MOPUP' => $js), null, false, null, '.xml', 'xml');
+        $echo = do_template('OPML_XSLT', array('_GUID' => 'c0c6bd1d7a0e263768a2208061f799f5', 'JAVASCRIPT_XSL_MOPUP' => $js), null, false, null, '.xml', 'xml');
         $echo->evaluate_echo();
         return;
     }
