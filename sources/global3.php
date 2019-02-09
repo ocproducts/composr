@@ -1027,7 +1027,7 @@ function cms_mb_ucwords($in)
         return @mb_convert_case($in, MB_CASE_TITLE, get_charset());
     }
 
-    return is_ascii_string($in) ? ucwords($in) : $in;
+    return ucwords($in);
 }
 
 /**
@@ -1046,7 +1046,7 @@ function cms_mb_strtolower($in)
         return @mb_strtolower($in, get_charset());
     }
 
-    return is_ascii_string($in) ? strtolower($in) : $in;
+    return strtolower($in);
 }
 
 /**
@@ -1065,7 +1065,7 @@ function cms_mb_strtoupper($in)
         return @mb_strtoupper($in, get_charset());
     }
 
-    return is_ascii_string($in) ? strtoupper($in) : $in;
+    return strtoupper($in);
 }
 
 /**

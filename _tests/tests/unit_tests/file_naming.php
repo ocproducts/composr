@@ -48,7 +48,7 @@ class file_naming_test_set extends cms_test_case
             'sources_custom/programe/',
             'sources_custom/sabredav/',
             'sources_custom/spout/',
-            'sources_custom/Swift-4.1.1/',
+            'sources_custom/swift_mailer/',
             'sources_custom/user_sync__customise.php.example',
             'themes/default/images/jquery_ui/',
             'themes/default/images/realtime_rain/',

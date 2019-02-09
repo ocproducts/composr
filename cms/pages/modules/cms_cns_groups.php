@@ -211,12 +211,8 @@ class Module_cms_cns_groups extends Standard_crud_module
             }
         }
         foreach ($rows as $row) {
-            $is_super_admin = $row['g_is_super_admin'];
-            if ((!has_privilege(get_member(), 'control_usergroups')) || ($is_super_admin == 1)) {
-                $leader = $row['g_group_leader'];
-                if ($leader != get_member()) {
-                    continue;
-                }
+            if (!cns_may_control_group($row['id'], get_member(), $row)) {
+                continue;
             }
             $fields->attach(form_input_list_entry(strval($row['id']), false, get_translated_text($row['g_name'], $GLOBALS['FORUM_DB'])));
         }
@@ -359,12 +355,8 @@ class Module_cms_cns_groups extends Standard_crud_module
     {
         $group_id = intval($id);
         require_code('cns_groups');
-        $leader = cns_get_group_property($group_id, 'group_leader');
-        $is_super_admin = cns_get_group_property($group_id, 'is_super_admin');
-        if ((!has_privilege(get_member(), 'control_usergroups')) || ($is_super_admin == 1)) {
-            if ($leader != get_member()) {
-                access_denied('I_ERROR');
-            }
+        if (!cns_may_control_group($group_id, get_member())) {
+            access_denied('I_ERROR');
         }
 
         $old_name = cns_get_group_name($group_id);
@@ -406,12 +398,8 @@ class Module_cms_cns_groups extends Standard_crud_module
     {
         $group_id = intval($id);
         require_code('cns_groups');
-        $leader = cns_get_group_property($group_id, 'group_leader');
-        $is_super_admin = cns_get_group_property($group_id, 'is_super_admin');
-        if ((!has_privilege(get_member(), 'control_usergroups')) || ($is_super_admin == 1)) {
-            if ($leader != get_member()) {
-                access_denied('I_ERROR');
-            }
+        if (!cns_may_control_group($group_id, get_member())) {
+            access_denied('I_ERROR');
         }
         cns_delete_group($group_id);
     }

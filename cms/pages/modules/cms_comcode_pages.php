@@ -215,12 +215,10 @@ class Module_cms_comcode_pages
             }
 
             $_out = array();
-            if ($lang != get_site_default_lang()) {
-                $_out += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-                $_out += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+            foreach (array_unique(array(fallback_lang(), get_site_default_lang(), $lang)) as $_lang) {
+                $_out += find_all_pages($zone, 'comcode_custom/' . $_lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+                $_out += find_all_pages($zone, 'comcode/' . $_lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
             }
-            $_out += find_all_pages($zone, 'comcode_custom/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-            $_out += find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
 
             foreach ($_out as $page => $subdir) {
                 if (is_integer($page)) {
@@ -297,7 +295,7 @@ class Module_cms_comcode_pages
             } else {
                 $sample_page_name = 'site:example_new_page';
             }
-            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true, null, null, 'text', $sample_page_name, '([' . URL_CONTENT_REGEXP_JS . ']*:)?[' . URL_CONTENT_REGEXP_JS . ']+'));
+            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true, null, 80, 'text', $sample_page_name, '([' . URL_CONTENT_REGEXP_JS . ']*:)?[' . URL_CONTENT_REGEXP_JS . ']+'));
 
             $template_list = new Tempcode();
             $template_list->attach(form_input_list_entry('', true, do_lang('NA')));
@@ -741,6 +739,10 @@ class Module_cms_comcode_pages
             // Older versions of PHP on Windows cannot handle utf-8 filenames
             require_code('character_sets');
             $file = transliterate_string($file);
+        }
+
+        if (strlen($file) > 80) {
+            warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
         require_code('type_sanitisation');

@@ -257,7 +257,7 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
     }
 
     // Put into error log
-    if (get_param_integer('keep_fatalistic', 0) == 0) {
+    if ((get_param_integer('keep_fatalistic', 0) == 0) && (!throwing_errors())) {
         require_code('urls');
         $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy(true);
         /*$log.="\n";
@@ -1180,7 +1180,7 @@ function die_html_trace($message)
                 $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
-            $traces .= ucfirst($key) . ' -> ' . escape_html($_value) . '<br />' . "\n";
+            $traces .= ucfirst($key) . ' -> ' . $_value . '<br />' . "\n";
         }
         $trace .= '<p>' . $traces . '</p>' . "\n";
     }

@@ -443,6 +443,7 @@ function initialise_error_mechanism()
 				(msg.indexOf('Location.toString')!=-1) || // Buggy extensions may generate
 				(msg.indexOf('Error loading script')!=-1) || // User's connection error
 				(msg.indexOf('NS_ERROR_FAILURE')!=-1) || // Usually an internal error
+				(msg.indexOf('moz-extension')!=-1) || // An error inside an extension
 
 				// Google Chrome false positives
 				(msg.indexOf('can only be used in extension processes')!=-1) || // Can come up with MeasureIt

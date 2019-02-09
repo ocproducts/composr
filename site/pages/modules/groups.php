@@ -603,8 +603,6 @@ class Module_groups
             $primary_members = new Tempcode();
         }
 
-        $edit_url = new Tempcode();
-
         // Secondary members
         $s_start = get_param_integer('s_start', 0);
         $s_max = get_param_integer('s_max', intval(get_option('secondary_members_per_page')));
@@ -655,20 +653,15 @@ class Module_groups
         if (!$prospective_members->is_empty()) {
             $fields_title = results_field_title(array(do_lang_tempcode('PROSPECTIVE_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
             $prospective_members = results_table(do_lang_tempcode('PROSPECTIVE_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $d_max_rows, $fields_title, $prospective_members, $sortables, $sortable, $sort_order, 'd_sort', null, null, null, 6);
-        } elseif (has_actual_page_access(get_member(), 'cms_cns_groups', get_module_zone('cms_cns_groups'))) {
-            $is_super_admin = $group['g_is_super_admin'];
-            if ((!has_privilege(get_member(), 'control_usergroups')) || ($is_super_admin == 1)) {
-                $leader_tmp = $group['g_group_leader'];
-                if ($leader_tmp == get_member()) {
-                    $edit_url = build_url(array('page' => 'cms_cns_groups', 'type' => '_edit', 'id' => $id), get_module_zone('cms_cns_groups'));
-                }
-            } else {
-                $edit_url = build_url(array('page' => 'cms_cns_groups', 'type' => '_edit', 'id' => $id), get_module_zone('cms_cns_groups'));
-            }
         }
 
+        $edit_url = new Tempcode();
         if (has_actual_page_access(get_member(), 'admin_cns_groups', get_module_zone('admin_cns_groups'))) {
             $edit_url = build_url(array('page' => 'admin_cns_groups', 'type' => '_edit', 'id' => $id), get_module_zone('admin_cns_groups'));
+        } elseif (has_actual_page_access(get_member(), 'cms_cns_groups', get_module_zone('cms_cns_groups'))) {
+            if (cns_may_control_group($id, get_member(), $group)) {
+                $edit_url = build_url(array('page' => 'cms_cns_groups', 'type' => '_edit', 'id' => $id), get_module_zone('cms_cns_groups'));
+            }
         }
 
         $club_forum = null;

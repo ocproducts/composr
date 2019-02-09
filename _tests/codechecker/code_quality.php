@@ -1041,8 +1041,8 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     $continue_level = 1;
                 }
 
-                if ($continue_level > $depth) {
-                    if ($depth == 0) {
+                if ($continue_level > count($jump_structures)) {
+                    if (count($jump_structures) == 0) {
                         log_warning('Nothing to continue out of', $c_pos);
                     } else {
                         log_warning('Continue level greater than loop/switch depth', $c_pos);
@@ -1064,7 +1064,7 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     infer_expression_type_to_variable_type('integer', $c[1]);
                 }
 
-                if ($depth == 0) {
+                if (count($jump_structures) == 0) {
                     log_warning('Nothing to break out of', $c_pos);
                 }
 

@@ -776,8 +776,6 @@ class Module_admin_cns_members
     {
         check_privilege('mass_import');
 
-        set_mass_import_mode();
-
         $default_password = post_param_string('default_password');
 
         $use_temporary_passwords = (post_param_integer('temporary_password', 0) == 1);

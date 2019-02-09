@@ -160,6 +160,10 @@ class Hook_profiles_tabs_about
             $links = new Tempcode();
 
             foreach ($modules as $mi => $module) {
+                if ($module === null) {
+                    continue;
+                }
+
                 if (count($module) == 4) {
                     list($_section_code, $lang, $url, $icon) = $module;
                     $rel = null;

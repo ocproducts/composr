@@ -1075,7 +1075,11 @@ class Module_admin_themes
         if (!file_exists($path)) {
             $path = get_file_base() . '/themes/default/css/' . $file;
         }
-        $css = unixify_line_format(cms_file_get_contents_safe($path));
+        if (file_exists($path)) {
+            $css = unixify_line_format(cms_file_get_contents_safe($path));
+        } else {
+            $css = '';
+        }
 
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_files');
@@ -1192,7 +1196,9 @@ class Module_admin_themes
             if (!file_exists($existing_path)) {
                 $existing_path = get_file_base() . '/themes/default/css/' . $file;
             }
-            $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
+            if (file_exists($existing_path)) {
+                $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
+            }
         }
 
         require_code('files');

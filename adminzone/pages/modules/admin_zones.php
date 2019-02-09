@@ -601,7 +601,7 @@ class Module_admin_zones
 
         require_code('form_templates');
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
-        $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('DEFAULT_PAGE'), do_lang_tempcode('DESCRIPTION_DEFAULT_PAGE'), 'default_page', $default_page, true));
+        $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('DEFAULT_PAGE'), do_lang_tempcode('DESCRIPTION_DEFAULT_PAGE'), 'default_page', $default_page, true, null, 80));
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('HEADER_TEXT'), do_lang_tempcode('DESCRIPTION_HEADER_TEXT'), 'header_text', $header_text, false));
         $list = '';
 

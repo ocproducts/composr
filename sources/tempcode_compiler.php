@@ -464,7 +464,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         } else {
                             $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':null';
                             if ((!function_exists('get_value')) || (get_value('shortened_tempcode') !== '1')) {
-                                $temp .= ',"' . php_addslashes($parameter . '/' . $template_name) . '"';
+                                $temp .= ',"' . php_addslashes($template_name . ':' . $parameter) . '"';
                             }
                             $temp .= ')';
 

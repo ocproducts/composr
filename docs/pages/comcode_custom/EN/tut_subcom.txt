@@ -67,7 +67,7 @@ Admin Zone > Security > Temporary usergroup memberships
 [media width="150" description="The usergroup directory" float="right"]data_custom/images/docs/tut_subcom/usergroup_directory.png[/media]
 Usergroups can be browsed via the Usergroup Directory, which is part of the [tt]groups[/tt] module ([tt]site:groups[/tt] page-link, Social > Usergroups on the default menus). The usergroup directory lists all non-hidden usergroups in a clear and tidy way.
 
-You may opt to assign a leader to usergroups, or to leave them leaderless. A usergroup leader has the ability to control who is in their usergroup (secondary membership only), taking pressure away from the staff. Otherwise, only administrators may add users to usergroups (this is not done using privileges, as it would grant the ability for any member with such as privilege to escalate themselves to administrator status).
+You may opt to assign a leader to usergroups, or to leave them leaderless. A usergroup leader has the ability to control who is in their usergroup (secondary membership only &dagger;), and edit the basic usergroup settings -- taking pressure away from the staff. Otherwise, only members with the "Control usergroups that member is not leader of" privilege may add users to usergroups -- unless the usergroup involved is a super-administrative usergroup, in which case only a super-administrator may do this (to avoid the potential for privilege escalation).
 
 When a member views a usergroup they have the following possible interactions:
  - [i]If they are not already a member:[/i]
@@ -85,6 +85,8 @@ When a member views a usergroup they have the following possible interactions:
   - Decline prospective members
 
 When a usergroup application is made a notification is dispatched to the leader of the usergroup, or to the staff if there is no leader.
+
+&dagger; Only members with the "Assume the identity/access of any other member" privilege may control a member's primary usergroup selection, done by editing their account.
 
 [title="3"]Clubs[/title]
 
