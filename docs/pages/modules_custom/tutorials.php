@@ -591,7 +591,7 @@ class Module_tutorials
 
         require_code('tutorials');
 
-        $title = get_screen_title('Tutorials &ndash; Learning Composr', false);
+        $title = get_screen_title(protect_from_escaping('Tutorials &ndash; Learning Composr'), false);
 
         $tag = get_param_string('type', 'Installation', true); // $type, essentially
 

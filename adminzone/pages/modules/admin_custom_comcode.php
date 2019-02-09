@@ -422,7 +422,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
         }
 
         foreach (array_unique($parameters) as $param) {
-            if (!in_array($param, $parameters_in_replace)) {
+            if ((!in_array($param, $parameters_in_replace)) && ($param != 'content')) {
                 attach_message(do_lang_tempcode('PARAMETER_DEFINED_NOT_USED', escape_html($param)), 'warn');
             }
         }

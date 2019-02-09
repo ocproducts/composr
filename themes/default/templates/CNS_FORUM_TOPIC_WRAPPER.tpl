@@ -87,10 +87,11 @@
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
-						<select class="dropdown_actions" name="type" id="fma_type">
+						<select{+START,IF,{$JS_ON}} onchange="/*guarded*/if (add_form_marked_posts(this.form,'mark_')) form.submit(); else { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); this.selectedIndex=0; }"{+END} class="dropdown_actions" name="type" id="fma_type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
+						</select>
+						{+START,IF,{$NOT,{$JS_ON}}}<input onclick="if (add_form_marked_posts(this.form,'mark_') &amp;&amp; document.getElementById('fma_type').selectedIndex!=0) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />{+END}
 					</div>
 				</form>
 
@@ -107,7 +108,8 @@
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
+							</select>
+							{+START,IF,{$NOT,{$JS_ON}}}<input onclick="disable_button_just_clicked(this);" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />{+END}
 						</div>
 					</form>
 

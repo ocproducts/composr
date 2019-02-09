@@ -34,6 +34,8 @@ class Hook_task_import_newsletter_subscribers
      */
     public function run($_language, $newsletter_id, $_level, $path)
     {
+        set_mass_import_mode();
+
         require_lang('cns');
         require_lang('newsletter');
         require_code('newsletter');
@@ -56,8 +58,6 @@ class Hook_task_import_newsletter_subscribers
             $del = ';';
         }
         rewind($myfile);
-
-        set_mass_import_mode();
 
         $email_index = 0;
         $forename_index = null;

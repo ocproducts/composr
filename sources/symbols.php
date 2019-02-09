@@ -3861,6 +3861,8 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
  */
 function ecv_DIV($lang, $escaped, $param)
 {
+    $value = '';
+
     if (isset($param[1])) {
         if (floatval($param[1]) == 0.0) {
             $value = 'divide-by-zero';
