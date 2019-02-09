@@ -197,7 +197,10 @@ function otp($var, $origin = '')
  */
 function missing_template_parameter($origin)
 {
-    list($parameter, $template_name) = ($origin == '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode('/', $origin, 2);
+    if (strpos($origin, ':') !== false) {
+        return '';
+    }
+    list($template_name, $parameter) = ($origin == '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode(':', $origin, 2);
     if (strtolower($template_name) != $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }

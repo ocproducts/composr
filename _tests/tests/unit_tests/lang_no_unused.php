@@ -105,6 +105,7 @@ class lang_no_unused_test_set extends cms_test_case
             'ARITHMETICAL_SYMBOL__',
             '_PASSWORD_RESET_TEXT_',
         );
+        $_skip_prefixes = '#^(' . implode('|', $skip_prefixes) . ')#';
 
         $skip = array(
             'CONTINUE_RESTORATION',
@@ -194,6 +195,9 @@ class lang_no_unused_test_set extends cms_test_case
             'EDIT_WARNING',
             'takes_lots_of_space',
         );
+        $_skip = array_flip($skip);
+
+        $cli = (php_sapi_name() == 'cli');
 
         $dh = opendir(get_file_base() . '/lang/EN/');
         while (($file = readdir($dh)) !== false) {
@@ -207,16 +211,25 @@ class lang_no_unused_test_set extends cms_test_case
             $input = array();
             _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, 'strings', false, true, 'EN');
 
+            if ($cli) {
+                echo 'Processing: ' . $file . "\n";
+            }
+
             foreach ($input as $key => $val) {
-                if (preg_match('#^(' . implode('|', $skip_prefixes) . ')#', $key) != 0) {
+                if (preg_match($_skip_prefixes, $key) != 0) {
                     continue;
                 }
 
-                if (in_array($key, $skip)) {
+                if (isset($_skip[$key])) {
                     continue;
                 }
 
-                $contains = (preg_match('#(\{!' . preg_quote($key, '#') . '|:' . preg_quote($key, '#') . '|\'' . preg_quote($key, '#') . '\')#', $all_code) != 0);
+                if (strpos($all_code, '\'' . $key . '\'') !== false) { // Most efficient check
+                    $contains = true;
+                } else { // Full check
+                    $_key = preg_quote($key, '#');
+                    $contains = (preg_match('#(\{!' . $key . '|:' . $key . '|\'' . $key . '\')#', $all_code) != 0);
+                }
                 $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '', $val) . ')');
             }
         }
@@ -225,11 +238,20 @@ class lang_no_unused_test_set extends cms_test_case
 
     private function do_dir($dir, $dir_stub, $ext)
     {
+        $exceptions = array(
+            'tracker',
+            '_tests/codechecker/netbeans',
+        );
+
         $files = array();
 
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
+                    if (in_array((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, $exceptions)) {
+                        continue;
+                    }
+
                     if (is_file($dir . '/' . $file)) {
                         if (substr($file, -strlen($ext) - 1, strlen($ext) + 1) == '.' . $ext) {
                             $files[] = $dir . '/' . $file;

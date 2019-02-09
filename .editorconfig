@@ -49,7 +49,7 @@ tab_width = 3
 
 # Some files should not be reformatted (NB: Max .editorconfig line length is 200)...
 # git checkout -- _tests/simpletest data/editarea/edit_area_compressor.php data_custom/upload-crop/upload_crop_v1.2.php sources/diff.php sources/firephp.php sources/jsmin.php \
-#  sources/lang_stemmer_EN.php sources_custom/Swift-4.1.1 sources_custom/facebook sources_custom/geshi.php sources_custom/geshi sources_custom/getid3 \
+#  sources/lang_stemmer_EN.php sources_custom/swift_mailer sources_custom/facebook sources_custom/geshi.php sources_custom/geshi sources_custom/getid3 \
 #  sources_custom/openid.php sources_custom/photobucket sources_custom/php-crossword sources_custom/programe sources_custom/sabredav sources_custom/vimeo.php \
 #  sources_custom/Transliterator sources/mail_dkim.php \
 #  sources_custom/Cloudinary sources_custom/ILess sources_custom/openid.php sources_custom/spout sources_custom/twitter.php data/ckeditor data_custom/ckeditor data/editarea \

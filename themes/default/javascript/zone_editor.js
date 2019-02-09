@@ -179,7 +179,7 @@ function reload_preview(id)
 	var element=document.getElementById('view_'+id);
 
 	var edit_element=document.getElementById('edit_'+id+'_textarea');
-	if (!edit_element) return; // Nothing interatively edited
+	if (!edit_element) return; // Nothing interactively edited
 
 	set_inner_html(element,'<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="'+'{$IMG;,loading}'.replace(/^https?:/,window.location.protocol)+'" /> <span>{!LOADING;^}</span></div>');
 
