@@ -197,7 +197,7 @@ function otp($var, $origin = '')
  */
 function missing_template_parameter($origin)
 {
-    if (strpos($origin, ':') !== false) {
+    if (strpos($origin, ':') === false) {
         return '';
     }
     list($template_name, $parameter) = ($origin == '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode(':', $origin, 2);
