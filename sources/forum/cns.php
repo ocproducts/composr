@@ -223,7 +223,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  string $content_title The topic title; must be same as content title if this is for a comment topic
      * @param  string $topic_identifier_encapsulation_prefix This is put together with the topic identifier to make a more-human-readable topic title or topic description (hopefully the latter and a $content_title title, but only if the forum supports descriptions)
      * @param  ?URLPATH $content_url URL to the content (null: do not make spacer post)
-     * @param  ?TIME $time The post time (null: use current time)
+     * @param  ?TIME $time The topic time (null: use current time)
      * @param  ?IP $ip The post IP address (null: use current members IP address)
      * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver.
      * @param  ?BINARY $topic_validated Whether the topic is validated (null: unknown, find whether it needs to be marked unvalidated initially). This only works with the Conversr driver.
