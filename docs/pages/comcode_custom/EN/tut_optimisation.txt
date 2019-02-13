@@ -93,7 +93,6 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently).
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
- - MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
 
 [title="2"]Persistent cache[/title]
 
@@ -639,6 +638,8 @@ There are are various commands on Linux that are useful during diagnosis...
 | This command usually is not installed by default. It is very useful to find what processes are doing a lot of I/O.
 |}
 Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache log will.
+
+MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
 
 There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
 
