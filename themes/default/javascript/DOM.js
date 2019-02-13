@@ -1546,11 +1546,12 @@
                 empty = !$util.hasEnumerable(props),
                 computed = getStyles(el),
                 startKeyframe = {},
-                endKeyframe = {};
+                endKeyframe = {},
+                hidden = isHiddenWithinTree(el),
+                isTogglingWidth = (('width' in props) && (props.width === 'toggle'));
 
             function defaultPrefilter() {
                 var isBox = (('width' in props) || ('height' in props)),
-                    hidden = isHiddenWithinTree(el),
                     orig = {},
                     prop, toggle, hasProps, origOverflow, restoreDisplay, display;
 
@@ -1695,6 +1696,17 @@
 
                 startKeyframe[property] = computed[property];
                 endKeyframe[property] = toValue;
+            }
+
+            if (isTogglingWidth) {
+                // Hack to prevent odd wrapping of child elements during width animations (needs accompanying CSS)
+                el.classList.add('is-dom-animate-toggling-width');
+                el.style.setProperty('--dom-animate-toggle-width', hidden ? endKeyframe.width : startKeyframe.width);
+
+                onAlways.push(function () {
+                    el.classList.remove('is-dom-animate-toggling-width');
+                    el.style.removeProperty('--dom-animate-toggle-width');
+                });
             }
 
             var keyFrames = [startKeyframe, endKeyframe],
@@ -1987,6 +1999,26 @@
      */
     $dom.slideToggle = function slideToggle(el, duration, easing) {
         return $dom.animate(el, genFx('toggle'), duration, easing);
+    };
+
+    /**
+     * @param { Element } el
+     * @param { Number|String } [duration]
+     * @param { String } [easing]
+     * @returns { Promise }
+     */
+    $dom.slideSide = function slideSide(el, duration, easing) {
+        var type = 'toggle',
+            attrs = {
+                width: type,
+                marginLeft: type,
+                marginRight: type,
+                paddingLeft: type,
+                paddingRight: type,
+                opacity: type,
+            };
+
+        return $dom.animate(el, attrs, duration, easing);
     };
 
     /**
