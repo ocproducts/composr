@@ -91,7 +91,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
             if (is_null($ob)) {
                 continue;
             }
-            $info = $ob->info(false);
+            $info = $ob->info(($options & SITEMAP_GEN_CHECK_PERMS) != 0, (($options & SITEMAP_GEN_AS_GUEST) != 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : get_member());
             if (($info === null) || ($info === false)) {
                 continue;
             }
@@ -201,7 +201,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
         if (is_null($ob)) {
             return null;
         }
-        $info = $ob->info(false);
+        $info = $ob->info(($options & SITEMAP_GEN_CHECK_PERMS) != 0, (($options & SITEMAP_GEN_AS_GUEST) != 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : get_member());
         if (($info === null) || ($info === false)) {
             return null;
         }
