@@ -329,6 +329,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/gallery_images.php',
             '_tests/tests/unit_tests/template_xss.php',
             '_tests/tests/unit_tests/notifications_all_coded.php',
+            '_tests/tests/unit_tests/notifications.php',
             '_tests/tests/unit_tests/password_censor.php',
             '_tests/tests/unit_tests/specsettings_documented.php',
             '_tests/tests/unit_tests/overused_globals.php',
