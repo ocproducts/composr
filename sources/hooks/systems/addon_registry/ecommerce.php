@@ -127,6 +127,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/commandr_fs/usergroup_subscriptions.php',
             'sources/hooks/systems/config/callback_password.php',
             'sources/hooks/systems/config/currency.php',
+            'sources/hooks/systems/config/currency_api_key.php',
             'sources/hooks/systems/config/ecommerce_test_mode.php',
             'sources/hooks/systems/config/ipn.php',
             'sources/hooks/systems/config/ipn_digest.php',
