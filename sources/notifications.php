@@ -1270,60 +1270,108 @@ class Hook_Notification
         $bak = $NO_DB_SCOPE_CHECK;
         $NO_DB_SCOPE_CHECK = true;
 
+        // We need to know the default, as this applies when there is no notifications_enabled row present and dictates our query algorithm
         $initial_setting = $this->get_initial_setting($only_if_enabled_on__notification_code, $only_if_enabled_on__category);
-        $has_by_default = ($initial_setting != A_NA);
 
+        // SQL: Notification code and category filters
+        $clause_notification_code = '';
         if ($catch_all_too) {
-            $clause_1 = db_string_equal_to('l_notification_code', substr($only_if_enabled_on__notification_code, 0, 80));
+            $clause_notification_code = ' AND ' . db_string_equal_to('l_notification_code', substr($only_if_enabled_on__notification_code, 0, 80));
+        }
+        if ($only_if_enabled_on__category === null) {
+            $clause_code_category = ' AND ' . db_string_equal_to('l_code_category', '');
         } else {
-            $clause_1 = '1=0';
+            $clause_code_category = ' AND (' . db_string_equal_to('l_code_category', '') . ' OR ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category) . ')';
         }
-        $clause_2 = is_null($only_if_enabled_on__category) ? db_string_equal_to('l_code_category', '') : ('(' . db_string_equal_to('l_code_category', '') . ' OR ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category) . ')');
 
-        $clause_3 = '1=1';
-        if (!is_null($to_member_ids)) {
+        // SQL: Member ID filters
+        $clause_member_ids = '';
+        if ($to_member_ids !== null) {
             if (count($to_member_ids) == 0) {
-                return array(array(), false);
+                return array(array(), false); // Optimisation: nothing to do
             }
-            $clause_3 = '(';
+
+            $clause_member_ids = ' AND (';
             foreach ($to_member_ids as $member_id) {
-                if ($clause_3 != '(') {
-                    $clause_3 .= ' OR ';
+                if ($clause_member_ids != '(') {
+                    $clause_member_ids .= ' OR ';
                 }
-                $clause_3 .= 'l_member_id=' . strval($member_id);
+                $clause_member_ids .= 'l_member_id=' . strval($member_id);
             }
-            $clause_3 .= ')';
+            $clause_member_ids .= ')';
         }
+        $clause_member_ids_cns_side = str_replace('l_member_id', 'm.id', $clause_member_ids); // For when it's running on f_members instead of notifications_enabled
 
-        $clause_4 = db_string_equal_to('m_validated_email_confirm_code', '');
+        // SQL: CNS member validation filters
+        $clause_validation_cns = ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
         if (addon_installed('unvalidated')) {
-            $clause_4 .= ' AND m_validated=1';
+            $clause_validation_cns .= ' AND m_validated=1';
         }
 
-        $db = (substr($only_if_enabled_on__notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
+        // Test lock-down status
+        $lockdown_value = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
             'l_notification_code' => substr($only_if_enabled_on__notification_code, 0, 80),
         ));
-        if ($test === 0) {
+        if ($lockdown_value === 0) {
+            // Locked down off, so we can bomb out now
             return array(array(), false);
         }
-        if ((!is_null($test)) && (get_forum_type() == 'cns')) {
-            $query_stub = 'SELECT m.id AS l_member_id,' . strval($test) . ' AS l_setting FROM ' . $db->get_table_prefix() . 'f_members m WHERE ' . str_replace('l_member_id', 'id', $clause_3) . ' AND ' . $clause_4;
-            $query_stem = '';
-        } else {
-            if (($has_by_default) && (get_forum_type() == 'cns') && (db_has_subqueries($db->connection_read))) { // Can only enumerate and join on a local Conversr forum
-                $query_stub = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON ' . $clause_1 . ' AND ' . $clause_2 . ' AND ' . $clause_3 . ' AND ' . $clause_4 . ' AND m.id=l.l_member_id WHERE ' . str_replace('l_member_id', 'm.id', $clause_3) . ' AND ';
-                $query_stem = 'NOT EXISTS(SELECT * FROM ' . $db->get_table_prefix() . 'notifications_enabled l WHERE m.id=l.l_member_id AND ' . $clause_1 . ' AND ' . $clause_2 . ' AND ' . $clause_3 . ' AND l_setting=' . strval(A_NA) . ')';
+
+        // Which DB will we look at the notifications_enabled table on?
+        $db = (substr($only_if_enabled_on__notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+
+        // Work out what query to do
+        $is_cns = (get_forum_type() == 'cns');
+        $is_locked_on = ($lockdown_value !== null);
+        $has_by_default = ($initial_setting != A_NA); // Ignored if $is_locked_on
+        if ($is_cns) {
+            // This is the most obvious query for Conversr notification-queries
+            $standard_query = 'SELECT l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'notifications_enabled l JOIN ' . $db->get_table_prefix() . 'f_members m ON m.id=l.l_member_id WHERE 1=1';
+            $standard_query .= $clause_notification_code . $clause_code_category . $clause_member_ids . $clause_validation_cns;
+            $standard_query .= ' AND l_setting<>' . strval(A_NA);
+
+            // Now go through the actual cases
+            if ($is_locked_on) {
+                // :-) We are just querying out all members so we find the member IDs
+                $query = 'SELECT m.id AS l_member_id,' . strval($lockdown_value) . ' AS l_setting FROM ' . $db->get_table_prefix() . 'f_members m WHERE 1=1';
+                $query .= $clause_member_ids_cns_side . $clause_validation_cns . ' AND m.id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
             } else {
-                $query_stub = 'SELECT l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'notifications_enabled WHERE ';
-                $query_stem = $clause_1 . ' AND ' . $clause_2 . ' AND ' . $clause_3 . ' AND l_setting<>' . strval(A_NA);
+                if ($has_by_default) {
+                    // :-) We are just querying out all members who do NOT have a setting of OFF
+                    // We do a LEFT JOIN because having no setting is fine (it'll be put to the default setting of ON for the member)
+                    $query = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON m.id=l.l_member_id' . $clause_notification_code . $clause_code_category . ' WHERE 1=1';
+                    $query .= $clause_member_ids_cns_side . $clause_validation_cns . ' AND m.id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
+                    $query .= ' AND l_setting IS NULL OR l_setting<>' . strval(A_NA);
+                } else {
+                    // :-)
+                    $query = $standard_query;
+                }
+            }
+        } else {
+            // This is the most obvious query for non-Conversr notification-queries
+            $standard_query = 'SELECT l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'notifications_enabled l WHERE 1=1';
+            $standard_query .= $clause_notification_code . $clause_code_category . $clause_member_ids;
+            $standard_query .= ' AND l_setting<>' . strval(A_NA);
+
+            // Now go through the actual cases
+            if ($is_locked_on) {
+                // :-( For non-Conversr we have to fall-back to only doing explicit opt-in to notifications, as we are not going to be querying the member table directly
+               $query = $standard_query;
+            } else {
+                if ($has_by_default) {
+                    // :-( For non-Conversr we have to fall-back to only doing explicit opt-in to notifications, as we are not going to be querying the member table directly
+                    $query = $standard_query;
+                } else {
+                    // :-) The query we can do for non-Conversr is fortunately perfect in this case
+                    $query = $standard_query;
+                }
             }
         }
 
-        $results = $db->query($query_stub . $query_stem, $max, $start);
+        // Complete rows where settings are missing
+        $results = $db->query($query, $max, $start);
         foreach ($results as $i => $r) {
-            if (is_null($results[$i]['l_setting'])) {
+            if ($results[$i]['l_setting'] === null) {
                 $results[$i]['l_setting'] = $initial_setting;
             }
         }

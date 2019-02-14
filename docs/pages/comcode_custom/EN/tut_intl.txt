@@ -366,6 +366,11 @@ It is generally better to look at outstanding translation tasks via Transifex. W
 
 Composr has some built-in support for right-to-left languages. You need to change the [tt]dir[/tt], [tt]en_left[/tt] and [tt]en_right[/tt] language strings to activate it.
 
+[box="Tip"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+There are web browser extensions that let you flip text direction on your own web browser only, to help you better read English text/code when on a right-to-left site.
+[/box]
+
 However there are two issues where some extra consideration is needed...
 
 [title="4"]Comcode editing[/title]

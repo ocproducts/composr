@@ -197,7 +197,7 @@ function otp($var, $origin = '')
  */
 function missing_template_parameter($origin)
 {
-    if (strpos($origin, ':') !== false) {
+    if (strpos($origin, ':') === false) {
         return '';
     }
     list($template_name, $parameter) = ($origin == '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode(':', $origin, 2);
@@ -776,9 +776,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     $_data = false;
 
     // Load from run-time cache?
-    if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
+    if (isset($LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
         // We have run-time caching
-        $_data = $LOADED_TPL_CACHE[$codename][$theme];
+        $_data = $LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory];
     }
 
     // Find where template is on disk
@@ -862,9 +862,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ((($loaded_this_once) || (($suffix == '.tpl') && (substr($codename, -7) !== '_SCREEN'))) && (!isset($LOADED_TPL_CACHE[$codename][$theme]))) { // On 3rd load (and onwards) it will be fully cached (1st = from disk with smart-decaching, 2nd = from disk [now], 3rd = from run-time cache)
+    if ((($loaded_this_once) || (($suffix == '.tpl') && (substr($codename, -7) !== '_SCREEN'))) && (!isset($LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory]))) { // On 3rd load (and onwards) it will be fully cached (1st = from disk with smart-decaching, 2nd = from disk [now], 3rd = from run-time cache)
         // Set run-time cache
-        $LOADED_TPL_CACHE[$codename][$theme] = $_data;
+        $LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory] = $_data;
     }
 
     // Optimisation
