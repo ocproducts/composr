@@ -90,9 +90,16 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
  */
 function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier, $member_id, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url, $time, $ip, $validated, $topic_validated, $skip_post_checks, $poster_name_if_guest, $parent_id, $staff_only, $no_notify_for__notification_code, $no_notify_for__code_category, $time_post, $spacer_post_member_id)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
+    if ($time_post === null) {
+        $time_post = time();
+    }
+    if ($time_post < $time) {
+        $time_post = $time; // Don't allow post to be earlier than topic
+    }
+
     if (is_null($ip)) {
         $ip = get_ip_address();
     }
