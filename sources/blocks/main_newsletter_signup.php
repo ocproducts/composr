@@ -114,7 +114,7 @@ class Block_main_newsletter_signup
                 mail_wrap($subject, $body, array($address), empty($map['to']) ? null : $map['to'], '', '', 3, null, false, null, true);
             }
 
-            return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array('_GUID' => '9953c83685df4970de8f23fcd5dd15bb', 'NEWSLETTER_TITLE' => $newsletter_title, 'NID' => strval($newsletter_id), 'PASSWORD' => $password, 'PATH_EXISTS' => $path_exists));
+            return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array('_GUID' => '9953c83685df4970de8f23fcd5dd15bb', 'BLOCK_PARAMS' => block_params_arr_to_str($map), 'NEWSLETTER_TITLE' => $newsletter_title, 'NID' => strval($newsletter_id), 'PASSWORD' => $password, 'PATH_EXISTS' => $path_exists));
         } else {
             return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array('_GUID' => 'c0e6f9cdab3d624bf3d27b745e3de38f', 'BLOCK_PARAMS' => block_params_arr_to_str($map), 'NEWSLETTER_TITLE' => $newsletter_title, 'NID' => strval($newsletter_id), 'URL' => get_self_url()));
         }

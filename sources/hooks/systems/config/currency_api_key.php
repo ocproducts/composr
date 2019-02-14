@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_currency
+class Hook_config_currency_api_key
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,13 @@ class Hook_config_currency
     public function get_details()
     {
         return array(
-            'human_name' => 'CURRENCY',
-            'type' => 'special',
+            'human_name' => 'CURRENCY_API_KEY',
+            'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'CURRENCY',
-            'explanation' => 'CONFIG_OPTION_currency',
+            'explanation' => 'CONFIG_OPTION_currency_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 1,
 
             'addon' => 'ecommerce',
         );
@@ -51,26 +50,6 @@ class Hook_config_currency
      */
     public function get_default()
     {
-        return 'GBP';
-    }
-
-    /**
-     * Field inputter (because the_type=special).
-     *
-     * @param  ID_TEXT $name The config option name
-     * @param  array $myrow The config row
-     * @param  Tempcode $human_name The field title
-     * @param  Tempcode $explanation The field description
-     * @return Tempcode The inputter
-     */
-    public function field_inputter($name, $myrow, $human_name, $explanation)
-    {
-        $list = '';
-        require_code('currency');
-        $currencies = array_keys(get_currency_map());
-        foreach ($currencies as $currency) {
-            $list .= static_evaluate_tempcode(form_input_list_entry($currency, $currency == get_option($name)));
-        }
-        return form_input_list($human_name, $explanation, $name, make_string_tempcode($list));
+        return '';
     }
 }

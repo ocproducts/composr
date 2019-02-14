@@ -2541,6 +2541,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_csrf_token_expire_fresh
         CONFIG_OPTION_csrf_token_expire_new
         CONFIG_OPTION_css_captcha
+        CURRENCY_API_KEY
+        CONFIG_OPTION_currency_api_key
         CONFIG_OPTION_currency
         CONFIG_OPTION_decryption_key
         CONFIG_OPTION_deeper_admin_breadcrumbs

@@ -23,6 +23,8 @@ class currency_test_set extends cms_test_case
         parent::setUp();
 
         require_code('currency');
+
+        set_option('currency_api_key', '2785638fbe9e508caa02');
     }
 
     public function testTypesOk()
