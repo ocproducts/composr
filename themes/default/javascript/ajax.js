@@ -514,9 +514,11 @@ function do_ajax_field_test(url,post)
 	Request backend
 */
 
-function do_ajax_request(url,callback__method,post) // Note: 'post' is not an array, it's a string (a=b)
+function do_ajax_request(url,callback__method,post,timeout) // Note: 'post' is not an array, it's a string (a=b)
 {
 	var synchronous=!callback__method;
+
+	if (typeof timeout=='undefined') timeout=10000;
 
 	if ((url.indexOf('://')==-1) && (url.substr(0,1)=='/'))
 	{
@@ -544,6 +546,7 @@ function do_ajax_request(url,callback__method,post) // Note: 'post' is not an ar
 
 		window.AJAX_REQUESTS[index].open('POST',url,!synchronous);
 		window.AJAX_REQUESTS[index].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		if (!synchronous) window.AJAX_REQUESTS[index].timeout=timeout;
 		window.AJAX_REQUESTS[index].send(post);
 	} else
 	{
