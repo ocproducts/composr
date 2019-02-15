@@ -196,6 +196,8 @@ function post_comment_script()
     }
     list($page_name, $content_id, $allow_comments, $submitter, $content_url, $content_title, $forum, $time) = $_options;
 
+    $content_id = strval($content_id);
+
     // Check security
     $hash = either_param_string('hash');
     require_code('crypt');
@@ -205,8 +207,12 @@ function post_comment_script()
         exit();
     }
 
-    // Post comment
-    actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, true, false, null, null, $time);
+    $just_get_comments = get_param_integer('just_get_comments', 0);
+
+    if ($just_get_comments === 0) {
+        // Post comment
+        actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, true, null, false, true, false, null, null, $time);
+    }
 
     // Get new comments state
     $comment_details = get_comments($page_name, $allow_comments == 1, $content_id, false, $forum, null, null, false, null, $submitter, $allow_comments == 2);

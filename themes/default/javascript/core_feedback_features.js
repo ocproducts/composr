@@ -346,7 +346,7 @@
         $dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
             var defaultNotPrevented;
 
-            if (event.detail && (event.detail.triggeredByDoFormPreview || event.detail.triggeredByCommentsAjaxListener )) {
+            if (event.detail && (event.detail.triggeredByDoFormPreview || event.detail.triggeredByCommentsAjaxListener)) {
                 return;
             }
 
@@ -393,6 +393,10 @@
             }
             post += '&post=' + encodeURIComponent(postValue);
             $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,post_comment}' + $cms.keep(true), null, post).then(function (xhr) {
+                if (commentsWrapper !== document.getElementById(commentsWrapperId)) {
+                    return; // No-op if comments wrapper element changed during AJAX request, e.g., slideshow loaded comments for another slide.
+                }
+
                 if ((xhr.responseText !== '') && (xhr.status !== 500)) {
                     // Display
                     var oldAction = commentsForm.action;
