@@ -2982,7 +2982,7 @@
        * @return { Void }
        */
       click: function click(event) {
-        event.stopPropagation();
+        // event.stopPropagation(); // Commented out by Salman to allow for event bubbling
 
         if (prevented) {
           event.preventDefault();
