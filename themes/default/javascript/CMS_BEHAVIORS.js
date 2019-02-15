@@ -1302,8 +1302,8 @@
         };
 
         var Event = {
-            SLIDE          : 'slide' + EVENT_KEY,
-            SLID           : 'slid' + EVENT_KEY,
+            SLIDE          : 'cms:slider:slide',
+            SLID           : 'cms:slider:slid',
             KEYDOWN        : 'keydown' + EVENT_KEY,
             MOUSEENTER     : 'mouseenter' + EVENT_KEY,
             MOUSELEAVE     : 'mouseleave' + EVENT_KEY,
@@ -1348,10 +1348,11 @@
             this.touchTimeout = null;
 
             this._config = this._getConfig(config);
-            this._element = element;
-            this._indicatorsElement = this._element.querySelector(Selector.INDICATORS);
-            this._progressBarFillElement = this._element.querySelector('.cms-slider-progress-bar-fill');
-            this._scrollDownElement = this._element.querySelector('.cms-slider-scroll-button');
+
+            this.el = element;
+            this._indicatorsElement = this.el.querySelector(Selector.INDICATORS);
+            this._progressBarFillElement = this.el.querySelector('.cms-slider-progress-bar-fill');
+            this._scrollDownElement = this.el.querySelector('.cms-slider-scroll-button');
 
             this._addEventListeners();
 
@@ -1364,23 +1365,31 @@
 
         $util.properties(Slider.prototype, /**@lends Slider#*/{
             // Public
+            isSliding: function () {
+                return this._isSliding;
+            },
+
             next: function next() {
                 if (!this._isSliding) {
-                    this._slide(Direction.NEXT);
+                    return this._slide(Direction.NEXT);
+                } else {
+                    return Promise.resolve(false);
                 }
             },
 
             nextWhenVisible: function nextWhenVisible() {
                 // Don't call next when the page isn't visible
                 // or the slider or its parent isn't visible
-                if (!document.hidden && ($dom.isVisible(this._element) && $dom.css(this._element, 'visibility') !== 'hidden')) {
+                if (!document.hidden && ($dom.isVisible(this.el) && $dom.css(this.el, 'visibility') !== 'hidden')) {
                     this.next();
                 }
             },
 
             prev: function prev() {
                 if (!this._isSliding) {
-                    this._slide(Direction.PREV);
+                    return this._slide(Direction.PREV);
+                } else {
+                    return Promise.resolve(false);
                 }
             },
 
@@ -1389,8 +1398,8 @@
                     this._isPaused = true;
                 }
 
-                if (this._element.querySelector(Selector.NEXT_PREV)) {
-                    $dom.trigger(this._element, 'transitionend');
+                if (this.el.querySelector(Selector.NEXT_PREV)) {
+                    $dom.trigger(this.el, 'transitionend');
                     this.cycle(true);
                 }
 
@@ -1410,7 +1419,7 @@
                     this._intervalStartedAt = null;
                 }
 
-                if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-slider-item').length > 1) && (!this._config.disableIntervalOnMobile || !$cms.isCssMode('mobile'))) {
+                if (this._config.interval && !this._isPaused && (this.el.querySelectorAll('.cms-slider-item').length > 1) && (!this._config.disableIntervalOnMobile || !$cms.isCssMode('mobile'))) {
                     var self = this;
                     self._intervalStartedAt = Date.now();
                     this._interval = setInterval(function () {
@@ -1422,7 +1431,7 @@
             to: function to(index) {
                 var self = this;
 
-                this._activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
+                this._activeElement = this.el.querySelector(Selector.ACTIVE_ITEM);
 
                 var activeIndex = this._getItemIndex(this._activeElement);
 
@@ -1431,7 +1440,7 @@
                 }
 
                 if (this._isSliding) {
-                    $dom.one(this._element, Event.SLID, function () { self.to(index); });
+                    $dom.one(this.el, Event.SLID, function () { self.to(index); });
                     return;
                 }
 
@@ -1447,12 +1456,12 @@
             },
 
             dispose: function dispose() {
-                $dom.off(this._element, EVENT_KEY);
-                $dom.removeData(this._element, DATA_KEY);
+                $dom.off(this.el, EVENT_KEY);
+                $dom.removeData(this.el, DATA_KEY);
 
                 this._items = null;
                 this._config = null;
-                this._element = null;
+                this.el = null;
                 this._interval = null;
                 this._isPaused = null;
                 this._isSliding = null;
@@ -1472,24 +1481,24 @@
 
                 if (self._scrollDownElement) {
                     // Hide "Scroll Down" button when slider is larger than viewport or it's mobile mode
-                    $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
+                    $dom.toggle(self._scrollDownElement, (self.el.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
 
                     $dom.on(window, 'resize orientationchange', function () {
-                        $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
+                        $dom.toggle(self._scrollDownElement, (self.el.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
                     });
                 }
 
-                $dom.on(this._element, 'click' + EVENT_KEY, '.cms-slider-scroll-button', function () {
-                    $dom.smoothScroll(self._element.nextElementSibling);
+                $dom.on(this.el, 'click' + EVENT_KEY, '.cms-slider-scroll-button', function () {
+                    $dom.smoothScroll(self.el.nextElementSibling);
                 });
 
                 if (this._config.keyboard) {
-                    $dom.on(this._element, Event.KEYDOWN, function (event) { self._keydown(event); });
+                    $dom.on(this.el, Event.KEYDOWN, function (event) { self._keydown(event); });
                 }
 
                 if (this._config.pause === 'hover') {
-                    $dom.on(this._element, Event.MOUSEENTER, function (event) { self.pause(event); });
-                    $dom.on(this._element, Event.MOUSELEAVE, function (event) { self.cycle(event); });
+                    $dom.on(this.el, Event.MOUSEENTER, function (event) { self.pause(event); });
+                    $dom.on(this.el, Event.MOUSELEAVE, function (event) { self.cycle(event); });
 
                     if ('ontouchstart' in document.documentElement) {
                         // If it's a touch-enabled device, mouseenter/leave are fired as
@@ -1499,7 +1508,7 @@
                         // (as if it's the second time we tap on it, mouseenter compat event
                         // is NOT fired) and after a timeout (to allow for mouse compatibility
                         // events to fire) we explicitly restart cycling
-                        $dom.on(this._element, Event.TOUCHEND, function () {
+                        $dom.on(this.el, Event.TOUCHEND, function () {
                             self.pause();
                             if (self.touchTimeout) {
                                 clearTimeout(self.touchTimeout);
@@ -1553,7 +1562,7 @@
 
             _triggerSlideEvent: function _triggerSlideEvent(relatedTarget, eventDirectionName) {
                 var targetIndex = this._getItemIndex(relatedTarget);
-                var fromIndex = this._getItemIndex(this._element.querySelector(Selector.ACTIVE_ITEM));
+                var fromIndex = this._getItemIndex(this.el.querySelector(Selector.ACTIVE_ITEM));
                 var slideEvent = $dom.createEvent(Event.SLIDE, {
                     relatedTarget: relatedTarget,
                     direction: eventDirectionName,
@@ -1561,7 +1570,7 @@
                     to: targetIndex
                 });
 
-                return $dom.trigger(this._element, slideEvent);
+                return $dom.trigger(this.el, slideEvent);
             },
 
             _setActiveIndicatorElement: function _setActiveIndicatorElement(element) {
@@ -1592,101 +1601,109 @@
             _slide: function _slide(direction, element) {
                 var self = this;
 
-                var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
-                var activeElementIndex = this._getItemIndex(activeElement);
-                var nextElement = element || activeElement && this._getItemByDirection(direction, activeElement);
-                var nextElementIndex = this._getItemIndex(nextElement);
-                var isCycling = Boolean(this._interval);
+                return new Promise(function (resolve) {
+                    var activeElement = self.el.querySelector(Selector.ACTIVE_ITEM);
+                    var activeElementIndex = self._getItemIndex(activeElement);
+                    var nextElement = element || activeElement && self._getItemByDirection(direction, activeElement);
+                    var nextElementIndex = self._getItemIndex(nextElement);
+                    var isCycling = Boolean(self._interval);
 
-                var directionalClassName;
-                var orderClassName;
-                var eventDirectionName;
+                    var directionalClassName;
+                    var orderClassName;
+                    var eventDirectionName;
 
-                if (direction === Direction.NEXT) {
-                    directionalClassName = ClassName.LEFT;
-                    orderClassName = ClassName.NEXT;
-                    eventDirectionName = Direction.LEFT;
-                } else {
-                    directionalClassName = ClassName.RIGHT;
-                    orderClassName = ClassName.PREV;
-                    eventDirectionName = Direction.RIGHT;
-                }
-
-                if (nextElement && nextElement.classList.contains(ClassName.ACTIVE)) {
-                    this._isSliding = false;
-                    return;
-                }
-
-                var isDefaultPrevented = !this._triggerSlideEvent(nextElement, eventDirectionName);
-
-                if (isDefaultPrevented) {
-                    return;
-                }
-
-                if (!activeElement || !nextElement) {
-                    // Some weirdness is happening, so we bail
-                    return;
-                }
-
-                this._isSliding = true;
-
-                if (isCycling) {
-                    this.pause();
-                }
-
-                this._setActiveIndicatorElement(nextElement);
-
-                var slidEvent = $dom.createEvent(Event.SLID, {
-                    relatedTarget: nextElement,
-                    direction: eventDirectionName,
-                    from: activeElementIndex,
-                    to: nextElementIndex
-                });
-
-                if (this._element.classList.contains(ClassName.SLIDE)) {
-                    nextElement.classList.add(orderClassName);
-
-                    reflow(nextElement);
-                    activeElement.classList.add(directionalClassName);
-                    nextElement.classList.add(directionalClassName);
-
-                    if (this._config.animateHeight && (activeElement.offsetHeight !== nextElement.offsetHeight)) {
-                        this._element.animate([
-                            { height: activeElement.offsetHeight + 'px' },
-                            { height: nextElement.offsetHeight + 'px' }
-                        ], Number(this._config.animateHeight));
+                    if (direction === Direction.NEXT) {
+                        directionalClassName = ClassName.LEFT;
+                        orderClassName = ClassName.NEXT;
+                        eventDirectionName = Direction.LEFT;
+                    } else {
+                        directionalClassName = ClassName.RIGHT;
+                        orderClassName = ClassName.PREV;
+                        eventDirectionName = Direction.RIGHT;
                     }
 
-                    $dom.on(activeElement, 'transitionend', function listener(e) {
-                        if (e.target !== activeElement) {
-                            return; // Skip transitions on child elements
+                    if (nextElement && nextElement.classList.contains(ClassName.ACTIVE)) {
+                        self._isSliding = false;
+                        resolve(false);
+                        return;
+                    }
+
+                    var isDefaultPrevented = !self._triggerSlideEvent(nextElement, eventDirectionName);
+
+                    if (isDefaultPrevented) {
+                        resolve(false);
+                        return;
+                    }
+
+                    if (!activeElement || !nextElement) {
+                        // Some weirdness is happening, so we bail
+                        resolve(false);
+                        return;
+                    }
+
+                    self._isSliding = true;
+
+                    if (isCycling) {
+                        self.pause();
+                    }
+
+                    self._setActiveIndicatorElement(nextElement);
+
+                    var slidEvent = $dom.createEvent(Event.SLID, {
+                        relatedTarget: nextElement,
+                        direction: eventDirectionName,
+                        from: activeElementIndex,
+                        to: nextElementIndex
+                    });
+
+                    if (self.el.classList.contains(ClassName.SLIDE)) {
+                        nextElement.classList.add(orderClassName);
+
+                        reflow(nextElement);
+                        activeElement.classList.add(directionalClassName);
+                        nextElement.classList.add(directionalClassName);
+
+                        if (self._config.animateHeight && (activeElement.offsetHeight !== nextElement.offsetHeight)) {
+                            self.el.animate([
+                                { height: activeElement.offsetHeight + 'px' },
+                                { height: nextElement.offsetHeight + 'px' }
+                            ], Number(self._config.animateHeight));
                         }
 
-                        $dom.off(activeElement, 'transitionend', listener); // Listen once only
+                        $dom.on(activeElement, 'transitionend', function listener(e) {
+                            if (e.target !== activeElement) {
+                                return; // Skip transitions on child elements
+                            }
 
-                        nextElement.classList.remove(directionalClassName);
-                        nextElement.classList.remove(orderClassName);
-                        nextElement.classList.add(ClassName.ACTIVE);
+                            $dom.off(activeElement, 'transitionend', listener); // Listen once only
 
+                            nextElement.classList.remove(directionalClassName);
+                            nextElement.classList.remove(orderClassName);
+                            nextElement.classList.add(ClassName.ACTIVE);
+
+                            activeElement.classList.remove(ClassName.ACTIVE);
+                            activeElement.classList.remove(orderClassName);
+                            activeElement.classList.remove(directionalClassName);
+
+                            self._isSliding = false;
+
+                            setTimeout(function () { $dom.trigger(self.el, slidEvent); resolve(true); }, 0);
+                        });
+                    } else {
                         activeElement.classList.remove(ClassName.ACTIVE);
-                        activeElement.classList.remove(orderClassName);
-                        activeElement.classList.remove(directionalClassName);
+                        nextElement.classList.add(ClassName.ACTIVE);
 
                         self._isSliding = false;
 
-                        setTimeout(function () { $dom.trigger(self._element, slidEvent); }, 0);
-                    });
-                } else {
-                    activeElement.classList.remove(ClassName.ACTIVE);
-                    nextElement.classList.add(ClassName.ACTIVE);
+                        $dom.trigger(self.el, slidEvent);
 
-                    this._isSliding = false;
-                    $dom.trigger(this._element, slidEvent);
-                }
+                        resolve(true);
+                    }
 
-                if (isCycling) {
-                    this.cycle();
-                }
+                    if (isCycling) {
+                        self.cycle();
+                    }
+                });
             }
         });
 
