@@ -2602,6 +2602,27 @@ th.metadata-title {
 	transform: rotate(-135deg);
 }
 
+.has-loading-indicator::after {
+	content: " ";
+	display: inline-block;
+	width: 3em;
+	height: 3em;
+	border-radius: 50%;
+	border: 0.4em solid;
+	border-color: currentColor transparent currentColor transparent;
+	margin: 2em;
+	animation: cms-rotate-360 1.2s ease-in-out infinite;
+}
+
+@keyframes cms-rotate-360 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
 /*
 =========================
 =========Boxes===========
@@ -4212,6 +4233,11 @@ div.ajax-loading, p.ajax-loading {
 	}
 /*{+END}*/
 
+.compact-comments-space .comments-notification-buttons {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
 .content-screen-comments .comments-wrapper {
 	margin-top: 2em;
 }
@@ -5329,6 +5355,12 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 		margin-left: 0;
 	}
 /*{+END}*/
+
+.big-checkbox {
+	width: 25px;
+	height: 25px;
+	vertical-align: middle;
+}
 
 /*
 =========================
