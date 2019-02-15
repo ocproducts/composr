@@ -47,12 +47,22 @@
     }
 
     // Are we dealing with a touch device?
-    document.documentElement.classList.toggle('is-touch-enabled', 'ontouchstart' in document.documentElement);
+    var isTouchEnabled = 'ontouchstart' in document.documentElement;
+
+    document.documentElement.classList.toggle('is-touch-enabled', isTouchEnabled);
 
     // Do we have a mouse?
     var isMouseEnabled = window.matchMedia('(pointer:fine)').matches || (navigator.userAgent.toLowerCase().indexOf('msie') !== -1) || (navigator.userAgent.toLowerCase().indexOf('trident') !== -1);
 
     document.documentElement.classList.toggle('is-mouse-enabled', isMouseEnabled);
+
+    if (isTouchEnabled && isMouseEnabled) {
+        document.documentElement.classList.add('is-hybrid-device');
+    } else if (!isTouchEnabled) {
+        document.documentElement.classList.add('is-mouse-only');
+    } else if (!isMouseEnabled) {
+        document.documentElement.classList.add('is-touch-only');
+    }
 
     // Is the document scrolled down?
     document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
