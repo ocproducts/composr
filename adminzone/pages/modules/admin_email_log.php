@@ -304,9 +304,9 @@ class Module_admin_email_log
 
         $fields['MESSAGE'] = protect_from_escaping(comcode_to_tempcode($row['m_message']));
 
-        $fields['TEXT'] = do_template('WITH_WHITESPACE', array('_GUID' => 'b141337923279a8a12646d0e29230f60', 'CONTENT' => $body));
+        $fields['TEXT'] = with_whitespace($body);
 
-        $fields['_COMCODE'] = do_template('WITH_WHITESPACE', array('_GUID' => 'a141337923279a8a12646d0e29230f60', 'CONTENT' => $row['m_message']));
+        $fields['_COMCODE'] = with_whitespace($row['m_message'], true);
 
         return map_table_screen($this->title, $fields);
     }

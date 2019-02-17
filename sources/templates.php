@@ -327,14 +327,15 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
  * Display some raw text so that it is repeated as raw visually in HTML.
  *
  * @param  string $in Input
+ * @param  boolean $with_textarea Whether to show using a textarea (more reliable to use clipboard to get from)
  * @return Tempcode Output
  */
-function with_whitespace($in)
+function with_whitespace($in, $using_textarea = false)
 {
     if ($in == '') {
         return new Tempcode();
     }
-    return do_template('WITH_WHITESPACE', array('_GUID' => 'be3b74901d5522d4e67ff6313ad61643', 'CONTENT' => $in));
+    return do_template('WITH_WHITESPACE', array('_GUID' => 'be3b74901d5522d4e67ff6313ad61643', 'CONTENT' => $in, 'USING_TEXTAREA' => $using_textarea));
 }
 
 /**
