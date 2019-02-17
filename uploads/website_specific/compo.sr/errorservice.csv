@@ -117,7 +117,7 @@ Table 'xxx' is marked as crashed and should be repaired,There is a corrupt MySQL
 
 In in doubt or if the table will not repair, contact your webhost."
 A symbol was not properly closed,There is a mistake in a template or some Comcode.,It is likely you edited a template incorrectly or wrote some incorrect Comcode.,"A symbol is defined like [tt]{$EXAMPLE}[/tt]. Make sure that this is the case for anything that starts [tt]{$[/tt]. For example, make sure the final [tt]}[/tt] is not missing."
-You have gone to an URL which requires,An Composr screen was loaded up incorrectly.,"It is likely you tried to access a screen via pure URL that was supposed to be the targeted for posted form data. This can happen if you press enter in the address bar of a results screen, click back and do not choose to 'resend posted data', or bookmark a results screen.",Don't access the screen in this way.
+You have gone to a URL which requires,An Composr screen was loaded up incorrectly.,"It is likely you tried to access a screen via pure URL that was supposed to be the targeted for posted form data. This can happen if you press enter in the address bar of a results screen, click back and do not choose to 'resend posted data', or bookmark a results screen.",Don't access the screen in this way.
 "You did not provide an upload, or you tried to upload a file that is too large ",A required upload was not provided.,It is possible that you did attach a file but it was larger than the server can accept for it's 'max_post_size' setting and therefore resulted in all posted data for the request being lost.,"Check your system limits.
 
 You can find more about setting the PHP 'max_post_size' option in the [page=""""docs:faq""""]FAQ[/page]."
