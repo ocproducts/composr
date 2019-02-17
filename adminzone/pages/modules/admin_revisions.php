@@ -194,7 +194,7 @@ class Module_admin_revisions
 
         $row_renderer = array($this, '_render_revision');
         $_fields_titles = array(
-            do_lang_tempcode('VIEW'),
+            do_lang_tempcode('CONTENT'),
             do_lang_tempcode('MEMBER'),
             do_lang_tempcode('DATE'),
             do_lang_tempcode('CONTENT_OWNER'),
@@ -231,14 +231,14 @@ class Module_admin_revisions
 
         $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
 
-        $date = get_timezoned_date($revision['log_time']);
-
-        $action = do_lang_tempcode($revision['log_action']);
+        $date = make_string_tempcode(get_timezoned_date($revision['log_time']));
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
         if ($do_actionlog) {
             $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
-            $action = hyperlink($actionlog_url, $action, false, false, '#' . strval(is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id']));
+            $date = hyperlink($actionlog_url, $date, false, false, '#' . strval(is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id']));
         }
+
+        $action = do_lang_tempcode($revision['log_action']);
 
         $_revision = array(
             $view_link,
