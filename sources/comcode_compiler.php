@@ -149,7 +149,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
     if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
             if ($tag == 'staff_note' || $tag == 'code' || $tag == 'codebox') {
-                return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
+                return WYSIWYG_COMCODE__XML_BLOCK;
             } else {
                 return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
             }
