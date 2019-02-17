@@ -425,7 +425,7 @@ class Module_admin_actionlog
         $fields = array(
             'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], false, '', false),
             'DATE_TIME' => get_timezoned_date($row['date_and_time']),
-            'TYPE' => $type_str,
+            'ACTION' => $type_str,
             'PARAMETER_A' => is_null($row['param_a']) ? '' : $row['param_a'],
             'PARAMETER_B' => is_null($row['param_b']) ? '' : $row['param_b'],
         );
