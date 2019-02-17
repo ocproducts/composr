@@ -48,6 +48,7 @@ class notifications_test_set extends cms_test_case
         $ob = new Hook_notification_cns_birthday();
         $results = $ob->list_members_who_have_enabled('cns_birthday');
         $this->assertTrue(count($results[0]) == 0);
+        $results = $ob->list_members_who_have_enabled('cns_birthday', null, array(get_member())); // Just make sure the member-ID filter doesn't crash
 
         $ob = new Hook_notification_cns_friend_birthday();
         $results = $ob->list_members_who_have_enabled('cns_friend_birthday');

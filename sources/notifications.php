@@ -1292,8 +1292,8 @@ class Hook_Notification
             }
 
             $clause_member_ids = ' AND (';
-            foreach ($to_member_ids as $member_id) {
-                if ($clause_member_ids != '(') {
+            foreach ($to_member_ids as $i => $member_id) {
+                if ($i != 0) {
                     $clause_member_ids .= ' OR ';
                 }
                 $clause_member_ids .= 'l_member_id=' . strval($member_id);
