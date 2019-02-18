@@ -111,17 +111,44 @@ function require_code($codename, $light_exit = false, $has_custom = null)
             $a = str_replace(array('?' . '>', '<' . '?php'), array('', ''), file_get_contents($path_custom));
 
             if ((strpos($codename, '.php') === false) || (strpos($a, 'class Mx_') === false)/*Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
-                $functions_before = get_defined_functions();
-                $classes_before = get_declared_classes();
+                // We need to identify the new functions and classes. Ideally we'd use get_defined_functions and get_declared_classes, and do a diff before/after - but this does a massive amount of memory access
+                $function_matches = array();
+                $possible_new_functions = array();
+                $num_function_matches = preg_match_all('#\sfunction\s+(\w+)\(#', $a, $function_matches);
+                for ($i = 0; $i < $num_function_matches; $i++) {
+                    $possible_new_function = $function_matches[1][$i];
+                    if (!function_exists($possible_new_function)) {
+                        $possible_new_functions[] = $possible_new_function;
+                    }
+                }
+                $class_matches = array();
+                $possible_new_classes = array();
+                $num_class_matches = preg_match_all('#\sclass\s+(\w+)#', $a, $class_matches);
+                for ($i = 0; $i < $num_class_matches; $i++) {
+                    $possible_new_class = $class_matches[1][$i];
+                    if (!class_exists($possible_new_class)) {
+                        $possible_new_classes[] = $possible_new_class;
+                    }
+                }
+
                 if (HHVM) {
                     hhvm_include($path_custom); // Include our custom
                 } else {
                     include($path_custom);/*eval($a); would break opcode cache benefits*/ // Include our custom
                 }
-                $functions_after = get_defined_functions();
-                $classes_after = get_declared_classes();
-                $functions_diff = array_diff($functions_after['user'], $functions_before['user']); // Our custom defined these functions
-                $classes_diff = array_diff($classes_after, $classes_before);
+
+                $functions_diff = array();
+                foreach ($possible_new_functions as $possible_new_function) {
+                    if (function_exists($possible_new_function)) {
+                        $functions_diff[] = $possible_new_function;
+                    }
+                }
+                $classes_diff = array();
+                foreach ($possible_new_classes as $possible_new_class) {
+                    if (class_exists($possible_new_class)) {
+                        $classes_diff[] = $possible_new_class;
+                    }
+                }
 
                 $pure = true; // We will set this to false if it does not have all functions the main one has. If it does have all functions we know we should not run the original init, as it will almost certainly just have been the same code copy&pasted through.
                 $overlaps = false;

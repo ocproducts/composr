@@ -1341,7 +1341,7 @@ class Hook_Notification
                     // We do a LEFT JOIN because having no setting is fine (it'll be put to the default setting of ON for the member)
                     $query = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON m.id=l.l_member_id' . $clause_notification_code . $clause_code_category . ' WHERE 1=1';
                     $query .= $clause_member_ids_cns_side . $clause_validation_cns . ' AND m.id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
-                    $query .= ' AND l_setting IS NULL OR l_setting<>' . strval(A_NA);
+                    $query .= ' AND (l_setting IS NULL OR l_setting<>' . strval(A_NA) . ')';
                 } else {
                     // :-)
                     $query = $standard_query;

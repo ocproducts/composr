@@ -293,11 +293,10 @@ class Database_Static_mysqli extends Database_super_mysql
      */
     public function db_get_query_rows($results, $query, $start = null)
     {
-        $num_fields = mysqli_num_fields($results);
         $names = array();
         $types = array();
-        for ($x = 0; $x < $num_fields; $x++) {
-            $field = mysqli_fetch_field($results);
+        $fields = mysqli_fetch_fields($results);
+        foreach ($fields as $x => $field) {
             $names[$x] = $field->name;
             $types[$x] = $field->type;
         }
