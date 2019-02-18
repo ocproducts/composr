@@ -137,10 +137,14 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                     include($path_custom);/*eval($a); would break opcode cache benefits*/ // Include our custom
                 }
 
+                $has_upper_case_function_name = false;
                 $functions_diff = array();
                 foreach ($possible_new_functions as $possible_new_function) {
                     if (function_exists($possible_new_function)) {
                         $functions_diff[] = $possible_new_function;
+                        if ((!function_exists('ctype_lower')) || (!ctype_lower($possible_new_function))) {
+                            $has_upper_case_function_name = true;
+                        }
                     }
                 }
                 $classes_diff = array();
@@ -152,9 +156,11 @@ function require_code($codename, $light_exit = false, $has_custom = null)
 
                 $pure = true; // We will set this to false if it does not have all functions the main one has. If it does have all functions we know we should not run the original init, as it will almost certainly just have been the same code copy&pasted through.
                 $overlaps = false;
+                $strpos_func = $has_upper_case_function_name ? 'stripos' : 'strpos';
+                $str_replace_func = $has_upper_case_function_name ? 'str_ireplace' : 'str_replace';
                 foreach ($functions_diff as $function) { // Go through override's functions and make sure original doesn't have them: rename original's to non_overridden__ equivs.
-                    if (stripos($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
-                        $orig = str_ireplace('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
+                    if ($strpos_func($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
+                        $orig = $str_replace_func('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
                         $overlaps = true;
                     } else {
                         $pure = false;
