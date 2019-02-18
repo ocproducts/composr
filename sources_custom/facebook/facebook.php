@@ -1594,7 +1594,7 @@ class Facebook extends BaseFacebook
    * @see BaseFacebook::__construct
    */
   public function __construct($config) {
-    if ((function_exists('session_status') 
+    if ((function_exists('session_status')
       && session_status() !== PHP_SESSION_ACTIVE) || session_id() == '') {
       @session_start();
     }
@@ -1680,7 +1680,18 @@ class Facebook extends BaseFacebook
     }
 
     $session_var_name = $this->constructSessionVariableName($key);
+
+    // Performance optimisation
+    if (function_exists('session_status') && session_status() !== PHP_SESSION_ACTIVE) {
+      @session_start();
+    }
+
     $_SESSION[$session_var_name] = $value;
+
+    // Performance optimisation
+    if (function_exists('session_status')) {
+      @session_write_close();
+    }
   }
 
   /**
@@ -1711,8 +1722,19 @@ class Facebook extends BaseFacebook
     }
 
     $session_var_name = $this->constructSessionVariableName($key);
+
+    // Performance optimisation
+    if ((function_exists('session_status') && session_status() !== PHP_SESSION_ACTIVE)) {
+      @session_start();
+    }
+
     if (isset($_SESSION[$session_var_name])) {
       unset($_SESSION[$session_var_name]);
+    }
+
+    // Performance optimisation
+    if (function_exists('session_status')) {
+      @session_write_close();
     }
   }
 
