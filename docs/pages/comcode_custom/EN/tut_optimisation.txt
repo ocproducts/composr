@@ -586,7 +586,7 @@ if (function_exists('tideways_xhprof_enable')) {
             $save_id = strval(time()) . '-' . uniqid('', true);
 
             global $TIDEWAYS_INIT_TIME;
-            require_code('global4');
+            //require_code('global4');
             $context_data = array(
                 'wall_time' => microtime(true) - $TIDEWAYS_INIT_TIME,
                 //'normative_performance' => find_normative_performance(),
@@ -602,17 +602,17 @@ if (function_exists('tideways_xhprof_enable')) {
                 '$_POST' => $_POST,
                 '$_COOKIE' => $_COOKIE,
                 '$_FILES' => $_FILES,
-                '$_SESSION' => $_SESSION,
             );
-            file_put_contents(get_file_base() . '/safe_mode_temp/composr-' . $save_id . '.context', json_encode($context_data,  JSON_PRETTY_PRINT));
+            file_put_contents(dirname(__FILE__) . '/safe_mode_temp/composr-' . $save_id . '.context', json_encode($context_data,  JSON_PRETTY_PRINT));
 
             $data = tideways_xhprof_disable();
-            file_put_contents(get_file_base() . '/safe_mode_temp/composr-' . $save_id . '.xhprof', serialize($data));
+            file_put_contents(dirname(__FILE__) . '/safe_mode_temp/composr-' . $save_id . '.xhprof', serialize($data));
         });
     });
 };
 [/code]
-The collected data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
+The collected xhprof data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
+The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the enviroment status when the profiling happened.
 
 [title="3"]Composr's inbuilt profiler[/title]
 
