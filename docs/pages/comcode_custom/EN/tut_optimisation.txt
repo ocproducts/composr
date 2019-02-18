@@ -577,6 +577,10 @@ Facebook developed xhprof, a fast profiler that can be used on live servers. It 
 
 To use on a live server you can install the [url="tideways-xhprof"]https://github.com/tideways/php-xhprof-extension[/url] extension, then add this PHP code to your [tt]_config.php[/tt] file:
 [code="PHP"]
+if ((class_exists('\Tideways\Profiler')) && (isset($_SERVER['HTTP_HOST']))) {
+    \Tideways\Profiler::setServiceName($_SERVER['HTTP_HOST']);
+}
+
 if (function_exists('tideways_xhprof_enable')) {
     $TIDEWAYS_INIT_TIME = microtime(true);
 
@@ -614,16 +618,26 @@ if (function_exists('tideways_xhprof_enable')) {
 The collected xhprof data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
 The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the enviroment status when the profiling happened.
 
+[title="3"]Commercial dashboards[/title]
+
+Newrelic and Tideways both provide high-quality performance monitoring dashboards, for a fee. To a limited extent Google Analytics can also identify performance issues.
+
 [title="3"]Composr's inbuilt profiler[/title]
 
 Composr's built-in profiler is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
 
-[title="3"]Other tools[/title]
+[title="3"]MySQL[/title]
+
+MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
+
+[title="3"]Composr's page stats[/title]
 
 If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
 [code="SQL"]
 SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
 [/code]
+
+[title="3"]Filesystem[/title]
 
 If you create a [tt]data_custom/debug_fs.log[/tt] file then all disk activity will be written to it if you load the site with [tt]keep_debug_fs=1[/tt].
 
@@ -693,10 +707,12 @@ There are are various commands on Linux that are useful during diagnosis...
 | [tt]iotop -n1 -b[/tt]
 | Show active processes by I/O load
 | This command usually is not installed by default. It is very useful to find what processes are doing a lot of I/O.
+|-
+| [tt]vmstat 1[/tt]
+| Watch virtual memory
+| Watching the numbers changing will tell you if the server is 'swapping'.
 |}
 Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput).
-
-MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
 
 There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
 
