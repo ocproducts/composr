@@ -566,7 +566,59 @@ Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[
 [title="2"]Profiling[/title]
 
 A developer can run a profiler to work out bottlenecks in code, and decide optimisations.
-For hard-core programming, xdebug would be used. However, you can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+
+[title="3"]xdebug[/title]
+
+For hard-core programming, xdebug would be used. It collects the most detailed profiling information and there are many tools for analysing the data.
+
+[title="3"]tideways-xhprof[/title]
+
+Facebook developed xhprof, a fast profiler that can be used on live servers. It collects less detailed data than xdebug. xhprof was discontinued, but tideways-xhprof is a fork that is well maintained.
+
+To use on a live server you can install the [url="tideways-xhprof"]https://github.com/tideways/php-xhprof-extension[/url] extension, then add this PHP code to your [tt]_config.php[/tt] file:
+[code="PHP"]
+if (function_exists('tideways_xhprof_enable')) {
+    $TIDEWAYS_INIT_TIME = microtime(true);
+
+    tideways_xhprof_enable();
+    register_shutdown_function(function() {
+        register_shutdown_function(function() {
+            $save_id = strval(time()) . '-' . uniqid('', true);
+
+            global $TIDEWAYS_INIT_TIME;
+            require_code('global4');
+            $context_data = array(
+                'wall_time' => microtime(true) - $TIDEWAYS_INIT_TIME,
+                //'normative_performance' => find_normative_performance(),
+                'cat /proc/meminfo' => shell_exec('cat /proc/meminfo'),
+                'uptime' => shell_exec('uptime'),
+                'ps -Af' => shell_exec('ps -Af'),
+                'top -n1' => shell_exec('top -n1'),
+                'iostat' => shell_exec('iostat'),
+                'iotop -n1 -b' => shell_exec('iotop -n1 -b'),
+                '$_SERVER' => $_SERVER,
+                '$_ENV' => $_ENV,
+                '$_GET' => $_GET,
+                '$_POST' => $_POST,
+                '$_COOKIE' => $_COOKIE,
+                '$_FILES' => $_FILES,
+                '$_SESSION' => $_SESSION,
+            );
+            file_put_contents(get_file_base() . '/safe_mode_temp/composr-' . $save_id . '.context', json_encode($context_data,  JSON_PRETTY_PRINT));
+
+            $data = tideways_xhprof_disable();
+            file_put_contents(get_file_base() . '/safe_mode_temp/composr-' . $save_id . '.xhprof', serialize($data));
+        });
+    });
+};
+[/code]
+The collected data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
+
+[title="3"]Composr's inbuilt profiler[/title]
+
+Composr's built-in profiler is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+
+[title="3"]Other tools[/title]
 
 If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
 [code="SQL"]
@@ -618,6 +670,10 @@ There are are various commands on Linux that are useful during diagnosis...
 ! Purpose
 ! Hints
 |-
+| [tt]cat /proc/meminfo[/tt]
+| Show detailed memory information
+| 
+|-
 | [tt]uptime[/tt]
 | Show the CPU load at different points in time
 | If the load level is higher than the number of CPU cores in the server, you have a serious issue.
@@ -634,7 +690,7 @@ There are are various commands on Linux that are useful during diagnosis...
 | Show CPU and disk load
 | This is useful to find disk I/O load.
 |-
-| [tt]iotop[/tt]
+| [tt]iotop -n1 -b[/tt]
 | Show active processes by I/O load
 | This command usually is not installed by default. It is very useful to find what processes are doing a lot of I/O.
 |}
