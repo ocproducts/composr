@@ -58,6 +58,10 @@ class Hook_health_check_network extends Hook_Health_Check
             return;
         }
 
+        if (get_base_url() == 'https://compo.sr') {
+            return;
+        }
+
         require_code('json');
 
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
@@ -161,6 +165,10 @@ class Hook_health_check_network extends Hook_Health_Check
     public function testTransferSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
+            return;
+        }
+
+        if (get_base_url() == 'https://compo.sr') {
             return;
         }
 

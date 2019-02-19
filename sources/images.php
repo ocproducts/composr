@@ -55,11 +55,20 @@ function _symbol_image_dims($param)
             }
         }
 
-        $base_url = get_custom_base_url();
+        $only_if_local = (isset($param[2]) && $param[2] == '1');
+
+        $base_url = get_base_url();
+        $custom_base_url = get_custom_base_url();
 
         if ((strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url) && (is_image($path))) {
-            $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
+            $details = cms_getimagesize(get_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
+        } elseif ((strpos($path, '.php') === false) && (substr($path, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($path))) {
+            $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($custom_base_url) + 1)));
         } else {
+            if ($only_if_local) {
+                return $value;
+            }
+
             $from_file = http_download_file($path, 1024 * 1024 * 20/*reasonable limit*/, false);
             $details = cms_getimagesizefromstring($from_file, get_file_extension($path));
         }
