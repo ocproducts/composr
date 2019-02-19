@@ -1767,6 +1767,14 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
+        if (is_guest($member)) {
+            $test = persistent_cache_get('get_member_row_guest');
+            if ($test !== null) {
+                $this->MEMBER_ROWS_CACHED[$member] = $test;
+                return $test;
+            }
+        }
+
         $rows = $this->connection->query_select('f_members m LEFT JOIN ' . $this->connection->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             $this->MEMBER_ROWS_CACHED[$member] = null;
@@ -1778,7 +1786,13 @@ class Forum_driver_cns extends Forum_driver_base
             global $MEMBER_CACHE_FIELD_MAPPINGS;
             $MEMBER_CACHE_FIELD_MAPPINGS[$member] = $rows[0];
         }
+
         $this->MEMBER_ROWS_CACHED[$member] = $rows[0];
+
+        if (is_guest($member)) {
+            persistent_cache_set('get_member_row_guest', $this->MEMBER_ROWS_CACHED[$member]);
+        }
+
         return $this->MEMBER_ROWS_CACHED[$member];
     }
 
