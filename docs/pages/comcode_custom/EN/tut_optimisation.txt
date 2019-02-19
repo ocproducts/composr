@@ -586,10 +586,15 @@ if ((class_exists('\Tideways\Profiler')) && (isset($_SERVER['HTTP_HOST']))) {
 }
 
 if (function_exists('tideways_xhprof_enable')) {
+    global $TIDEWAYS_INIT_TIME;
     $TIDEWAYS_INIT_TIME = microtime(true);
 
     tideways_xhprof_enable();
     register_shutdown_function(function() {
+        if ((class_exists('\Tideways\Profiler')) && (function_exists('get_self_url_easy'))) {
+            \Tideways\Profiler::setTransactionName(get_self_url_easy(true));
+        }
+
         register_shutdown_function(function() {
             $save_id = strval(time()) . '-' . uniqid('', true);
 
