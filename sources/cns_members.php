@@ -431,6 +431,14 @@ function cns_get_custom_field_mappings($member_id)
 
     global $MEMBER_CACHE_FIELD_MAPPINGS;
     if (!isset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id])) {
+        if (is_guest($member_id)) {
+            $test = persistent_cache_get('cns_get_custom_field_mappings_guest');
+            if ($test !== null) {
+                $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $test;
+                return $test;
+            }
+        }
+
         $row = array('mf_member_id' => $member_id);
 
         $query = $GLOBALS['FORUM_DB']->query_select('f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), $row, '', 1);
@@ -471,7 +479,12 @@ function cns_get_custom_field_mappings($member_id)
             $query[0] += array($row);
         }
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];
+
+        if (is_guest($member_id)) {
+            persistent_cache_set('cns_get_custom_field_mappings_guest', $MEMBER_CACHE_FIELD_MAPPINGS[$member_id]);
+        }
     }
+
     return $MEMBER_CACHE_FIELD_MAPPINGS[$member_id];
 }
 

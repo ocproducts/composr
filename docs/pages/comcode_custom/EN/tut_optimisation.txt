@@ -37,6 +37,8 @@ Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a
 
 Only one opcode cache can be used, and they often need to be manually compiled against the PHP version on the server and then installed as an extension. Such system administration is beyond the scope of this tutorial.
 
+Do not set the persistent cache's memory higher than needed, especially on a fast CGI or module-based PHP installation -- for at least some persistent cache backends the memory is pre-allocated, for each PHP process that is running. For APC, this is set via the [tt]apc.shm_size[/tt] setting.
+
 [title="2"]Persistent database connections[/title]
 
 For MySQL you can configure Composr to use persistent database connections. This is not recommended on shared hosting because it may annoy the webhost, but if you have a dedicated server it will cut down load times as a new database connection does not need to be established.
@@ -111,6 +113,8 @@ The cache is implemented to work with any one of:
 Composr will not use a persistent cache by default but it may be enabled from the Installation Options editor.
 
 Composr does not cache processed content in memory that has no special featured status, as this would only trade reliance on CPU for reliance on memory in a non-productive fashion.
+
+Be aware that some persistent cache backends may be tied into a PHP process, rather than held system wide. This is the case for APC. Therefore if you are using a CGI architecture the full contents of the cache will be dumped each time a web request finishes (defeating the entire purpose); for fast CGI it's not as bad, as processes serve multiple requests, although it does mean there is a lot of duplication between each fast CGI process.
 
 [title="2"]Aggressive caching for bots[/title]
 

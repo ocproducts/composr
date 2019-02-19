@@ -426,7 +426,7 @@ function init__global2()
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Clear caching if needed
-        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false)) && (get_value('no_base_check') !== '1');
+        $changed_base_url = (get_value('last_base_url', null) !== get_base_url(false)) && (get_value('no_base_check') !== '1');
         if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
