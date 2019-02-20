@@ -55,6 +55,7 @@ class Block_top_personal_stats
 
         require_css('personal_stats');
         require_javascript('notification_poller');
+        require_javascript('sound');
 
         $member_id = get_member();
 
