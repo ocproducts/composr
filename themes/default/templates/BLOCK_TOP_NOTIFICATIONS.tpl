@@ -19,7 +19,7 @@
 					{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:members:view}}}
 						<li><a class="js-click-find-url-tab js-click-toggle-web-notifications" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab--edit--notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
 					{+END}
-					<li><a href="#!" class="js-click-notifications-mark-all-read">{!NOTIFICATIONS_MARK_READ}</a></li>
+					<li><a href="#!" class="js-click-notifications-mark-all-read">{!cns:MARK_READ}</a></li>
 				</ul>
 			</div></div>
 		</div>

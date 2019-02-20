@@ -9468,7 +9468,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATIONS
         NOTIFICATIONS_COPY_UNDER
         NOTIFICATIONS_INTRO
-        NOTIFICATIONS_MARK_READ
         NOTIFICATION_BODY_invited_content
         NOTIFICATION_EMAIL_MESSAGE_WRAP
         NOTIFICATION_EMAIL_MESSAGE_WRAP_DIRECT_REPLY
