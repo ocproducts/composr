@@ -98,6 +98,8 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - If you have large numbers of topics then consider deleting topics that have little value.
  - If you are on a VPS ask the webhost whether there is too much load on the master machine.
  - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources
+ - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them
+ - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel
 
 [title="2"]Persistent cache[/title]
 
@@ -721,7 +723,7 @@ There are are various commands on Linux that are useful during diagnosis...
 |-
 | [tt]vmstat 1[/tt]
 | Watch virtual memory
-| Watching the numbers changing will tell you if the server is 'swapping'.
+| Watching the numbers changing will tell you if the server is 'page swapping' due to low memory (which is a huge performance killer).
 |}
 Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput).
 
