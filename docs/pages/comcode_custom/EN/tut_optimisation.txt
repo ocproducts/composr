@@ -15,6 +15,7 @@ Performance tuning is multi-faceted, broadly fitting into:
  - Blocking abuse, such as bad bots, DOS attacks, misrouted traffic, and flooders
  - Improving page download speeds (e.g. compression and minification)
  - Improving front-end rendering time
+ - Optimising server configuration
 There are many angles to come at the problem, and to really do a good job you need to come at all of them, on every layer of the web architecture.
 
 Limiting factors could be:
@@ -96,6 +97,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
  - If you are on a VPS ask the webhost whether there is too much load on the master machine.
+ - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources
 
 [title="2"]Persistent cache[/title]
 
