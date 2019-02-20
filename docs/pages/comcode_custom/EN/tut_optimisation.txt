@@ -15,6 +15,7 @@ Performance tuning is multi-faceted, broadly fitting into:
  - Blocking abuse, such as bad bots, DOS attacks, misrouted traffic, and flooders
  - Improving page download speeds (e.g. compression and minification)
  - Improving front-end rendering time
+ - Optimising server configuration
 There are many angles to come at the problem, and to really do a good job you need to come at all of them, on every layer of the web architecture.
 
 Limiting factors could be:
@@ -95,7 +96,11 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently).
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
- - If you are on a VPS ask the webhost whether there is too much load on the master machine.
+ - If you are on a VPS ask the webhost whether there is too much load on the host machine. Also consider that they may have a 'burst' policy, so your VPS may be running slowly due to processing it has done recently, rather than in that exact moment.
+ - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources.
+ - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
+ - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
+ - Don't have an Apache or FastCGI (FPM) configuration that allows more Apache/PHP processes than you have memory for when a server is under high load -- it is much better to have saturated CPU than to have your server start page swapping.
 
 [title="2"]Persistent cache[/title]
 
@@ -719,7 +724,7 @@ There are are various commands on Linux that are useful during diagnosis...
 |-
 | [tt]vmstat 1[/tt]
 | Watch virtual memory
-| Watching the numbers changing will tell you if the server is 'swapping'.
+| Watching the numbers changing will tell you if the server is 'page swapping' due to low memory (which is a huge performance killer).
 |}
 Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput).
 
