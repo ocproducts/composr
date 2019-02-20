@@ -60,26 +60,6 @@ function script_load_stuff_staff()
 		}
 	}
 
-	// Local caching for improved perceived performance
-	var has_local_storage=false;
-	try
-	{
-		has_local_storage=(typeof window.localStorage!='undefined');
-	}
-	catch (e) { }
-	if ((has_local_storage) && ('{$VALUE_OPTION;,advanced_admin_cache}'=='1') && (!window.unloaded) && (!browser_matches('gecko')/*Far too slow*/) && (!browser_matches('ie')/*Big problems loading script with sanity in document.write*/))
-	{
-		var html=get_inner_html(document.documentElement,true);
-		if ((html.length<1024*256) && (!document.getElementById('login_username')) && (document.title!='Preloading')) // Do not save more than 256kb
-		{
-			// Saving
-			local_page_caching(html);
-		}
-
-		// Alter any <a> links so that local ones to cached URLs are handled nicely
-		promote_page_caching();
-	}
-
 	// Contextual CSS editor
 	contextual_css_edit();
 	window.setTimeout(contextual_css_edit,2000); // For frames
@@ -165,48 +145,6 @@ function apply_comcode_tooltip(hook,id,link)
 		}
 	});
 };
-
-function local_page_caching(html)
-{
-	var loc=(window.location+'').replace(/&js_cache=1&/,'&').replace(/&js_cache=1$/,'').replace(/\?js_cache=1&/,'?').replace(/\?js_cache=1$/,'');
-	var now=new Date().getTime();
-	var count=0;
-	try
-	{
-		if ((typeof localStorage[loc]!='undefined') && (localStorage[loc]))
-			count=JSON.parse(localStorage[loc])[1];
-		localStorage[loc]=JSON.stringify([html,count+1,now,window.page_data_hash]);
-	}
-	catch (e) // Do not want privacy settings or whatever causing visible JS errors
-	{
-		if ((e.name=='QUOTA_EXCEEDED_ERR') && (localStorage.length!=0))
-		{
-			// Need to free some space, delete the oldest
-			var best_date_so_far=null,best_id=null,keyat,parsed;
-			for (var i=0;i<localStorage.length;i++)
-			{
-				try
-				{
-					keyat=localStorage.key(i);
-					parsed=JSON.parse(localStorage[keyat]);
-					if ((best_date_so_far==null) || (parsed[2]<best_date_so_far))
-					{
-						best_date_so_far=parsed[2];
-						best_id=keyat;
-					}
-				} catch (e) {} // Maybe not JSON
-			}
-
-			if (best_id)
-			{
-				localStorage.removeItem(best_id);
-
-				// Try again
-				local_page_caching(html);
-			}
-		}
-	}
-}
 
 function contextual_css_edit()
 {
@@ -330,17 +268,6 @@ function find_active_selectors(match,win)
 	}
 
 	return selectors;
-}
-
-function promote_page_caching()
-{
-	for (var i=0;i<document.links.length;i++)
-	{
-		if ((typeof document.links[i]!='undefined') && (typeof localStorage[document.links[i].href]!='undefined') && (localStorage[document.links[i].href]))
-		{
-			document.links[i].href+=((document.links[i].href.indexOf('?')==-1)?'?':'&')+'js_cache=1';
-		}
-	}
 }
 
 function handle_image_mouse_over(event)

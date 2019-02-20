@@ -499,9 +499,7 @@
 		if ((window.opener) && (window.opener.document))
 		{
 			load_contextual_css_editor('{FILE;/}');
-			{+START,IF,{$NOT,{$VALUE_OPTION,no_frames}}}
-				document.getElementById('save_button').style.display='none';
-			{+END}
+			document.getElementById('save_button').style.display='none';
 			if (document.getElementById('switch_button')) document.getElementById('switch_button').style.display='none';
 		}
 	});
