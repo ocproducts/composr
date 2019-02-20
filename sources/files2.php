@@ -1432,10 +1432,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if (!$curl_result) {
                                                 // Error
                                                 $error = curl_error($ch);
+                                                $curl_errno = curl_errno($ch);
                                                 curl_close($ch);
 
                                                 $possible_internal_curl_errors = array(1, 2, 4, 5, 16, 34, 35, 41, 43, 45, 48, 52, 53, 54, 55, 56, 58, 59, 60, 64, 66, 77, 80, 81, 82, 83, 89, 90, 91, 92);
-                                                if (!in_array(curl_errno($ch), $possible_internal_curl_errors)) {
+                                                if (!in_array($curl_errno, $possible_internal_curl_errors)) {
                                                     if ($trigger_error) {
                                                         warn_exit($error);
                                                     } else {
