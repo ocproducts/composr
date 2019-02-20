@@ -78,7 +78,12 @@ function _download_associated_media(&$text, $old_url)
     $matches2 = array();
     if ((preg_match('#^https?://([^:/]+)#', $old_url, $matches2) != 0) && ($matches2[1] != $local_domain_1) && ($matches2[1] != $local_domain_2)) {
         $temp_filename = uniqid('', true);
-        $temp_path = get_custom_file_base() . '/uploads/external_media/' . $temp_filename;
+        $temp_dir = get_custom_file_base() . '/uploads/external_media';
+        if (!file_exists($temp_dir)) {
+            require_code('files2');
+            make_missing_directory($temp_dir);
+        }
+        $temp_path = $temp_dir . '/' . $temp_filename;
 
         $write_to_file = fopen($temp_path, 'wb');
         $test = http_download_file($old_url, null, false, false, 'Composr', null, null, null, null, null, $write_to_file);
