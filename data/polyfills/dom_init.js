@@ -52,7 +52,9 @@
     document.documentElement.classList.toggle('is-touch-enabled', isTouchEnabled);
 
     // Do we have a mouse?
-    var isMouseEnabled = window.matchMedia('(pointer:fine)').matches || (navigator.userAgent.toLowerCase().indexOf('msie') !== -1) || (navigator.userAgent.toLowerCase().indexOf('trident') !== -1);
+    // @see https://css-tricks.com/touch-devices-not-judged-size/
+    // @see https://medium.com/@ferie/detect-a-touch-device-with-only-css-9f8e30fa1134
+    var isMouseEnabled = window.matchMedia('(any-hover:hover) and (any-pointer:fine)').matches || (navigator.userAgent.toLowerCase().indexOf('msie') !== -1) || (navigator.userAgent.toLowerCase().indexOf('trident') !== -1);
 
     document.documentElement.classList.toggle('is-mouse-enabled', isMouseEnabled);
 
