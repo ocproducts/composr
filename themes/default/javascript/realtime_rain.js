@@ -70,6 +70,10 @@ function start_realtime_rain()
 
 function get_more_events(from,to)
 {
+	if (document.hidden) {
+		return; /*{$,Don't hurt server performance needlessly when running in a background tab - let an e-mail notification alert them instead}*/
+	}
+
 	from=Math.round(from);
 	to=Math.round(to);
 

@@ -51,6 +51,10 @@ function poll_for_notifications(forced_update,delay)
 		return;
 	}
 
+	if (document.hidden) {
+		return; /*{$,Don't hurt server performance needlessly when running in a background tab - let an e-mail notification alert them instead}*/
+	}
+
 	var url='{$FIND_SCRIPT;,notifications}?type=poller';
 	if (typeof window.max_notifications_to_show!='undefined') url+='&max='+window.max_notifications_to_show;
 	url+='&time_barrier='+window.encodeURIComponent(window.notifications_time_barrier);

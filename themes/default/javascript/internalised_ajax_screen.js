@@ -2,6 +2,10 @@
 
 function detect_change(change_detection_url,refresh_if_changed,callback)
 {
+	if (document.hidden) {
+		return; /*{$,Don't hurt server performance needlessly when running in a background tab - let an e-mail notification alert them instead}*/
+	}
+
 	do_ajax_request(change_detection_url,function(result) {
 		var response=result.responseText;
 		if (response=='1')
