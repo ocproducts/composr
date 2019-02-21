@@ -69,27 +69,7 @@
         }
     };
 
-    $cms.templates.galleryGridModeScreen = function (params, container) {
-        var slideshowBtn = container.querySelector('.js-set-href-to-slideshow-url'),
-            firstItemLink = container.querySelector('.gallery-grid-item-heading a');
-
-        if (slideshowBtn && firstItemLink) {
-            var firstItemUrl = $util.url(firstItemLink.href),
-                slideshowUrl = $util.pageUrl();
-
-            slideshowUrl.searchParams.set('type', firstItemUrl.searchParams.get('type'));
-            slideshowUrl.searchParams.set('wide_high', '1');
-            slideshowUrl.searchParams.set('id', firstItemUrl.searchParams.get('id'));
-            slideshowUrl.searchParams.set('slideshow', '1');
-
-            if (firstItemUrl.searchParams.has('sort')) {
-                slideshowUrl.searchParams.set('sort', firstItemUrl.searchParams.get('sort'));
-            }
-
-            slideshowBtn.href = slideshowUrl;
-            $dom.show(slideshowBtn);
-        }
-    };
+    $cms.templates.galleryGridModeScreen = function () {};
 
     $cms.templates.galleryMosaicModeScreen = function () {};
 

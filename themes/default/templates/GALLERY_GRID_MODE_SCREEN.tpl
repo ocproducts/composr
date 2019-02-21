@@ -21,13 +21,6 @@
 	{+END}{+END}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
-		<div class="gallery-actions">
-			<a data-link-start-slideshow="{}" class="btn btn-primary btn-slideshow js-set-href-to-slideshow-url" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW}"{+END} href="#!" style="display: none;">{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</a>
-
-			{$SET,show_sort_button,1}
-			{SORTING}
-		</div>
-	
 		{ENTRIES}
 	{+END}
 
