@@ -378,28 +378,20 @@ class Hook_addon_registry_core_html_abstractions
      */
     public function tpl_preview__with_whitespace()
     {
-        return array(
-            lorem_globalise(do_lorem_template('WITH_WHITESPACE', array(
-                'CONTENT' => lorem_phrase(),
-                'USING_TEXTAREA' => false,
-            )), null, '', true)
-        );
-    }
+        $out = new Tempcode();
 
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__with_whitespace_textarea()
-    {
+        $out->attach(do_lorem_template('WITH_WHITESPACE', array(
+            'CONTENT' => lorem_phrase(),
+            'USING_TEXTAREA' => false,
+        )));
+
+        $out->attach(do_lorem_template('WITH_WHITESPACE', array(
+            'CONTENT' => lorem_phrase(),
+            'USING_TEXTAREA' => true,
+        )));
+
         return array(
-            lorem_globalise(do_lorem_template('WITH_WHITESPACE', array(
-                'CONTENT' => lorem_phrase(),
-                'USING_TEXTAREA' => true,
-            )), null, '', true)
+            lorem_globalise($out, null, '', true)
         );
     }
 

@@ -3,12 +3,12 @@
 	{$INC,with_whitespace_id}
 
 	<div class="constrain_field">
-		<label class="accessibility_hidden" for="_with_whitespace_{$GET*,with_whitespace_id}">{!NA_EM}</label>
-		<textarea onclick="this.select();" id="_with_whitespace_{$GET*,with_whitespace_id}" name="_with_whitespace_{$GET*,with_whitespace_id}" readonly="readonly" cols="70" rows="1" class="wide_field">{CONTENT*}</textarea>
+		<label class="accessibility_hidden" for="with_whitespace_{$GET*,with_whitespace_id}">{!NA_EM}</label>
+		<textarea onclick="this.select();" id="with_whitespace_{$GET*,with_whitespace_id}" name="with_whitespace_{$GET*,with_whitespace_id}" readonly="readonly" cols="70" rows="1" class="wide_field">{CONTENT*}</textarea>
 	</div>
 
 	<script>// <![CDATA[
-		manage_scroll_height(document.getElementById('_with_whitespace_{$GET;/,with_whitespace_id}'));
+		manage_scroll_height(document.getElementById('with_whitespace_{$GET;/,with_whitespace_id}'));
 	//]]></script>
 {+END}
 {+START,IF,{$NOT,{USING_TEXTAREA}}}

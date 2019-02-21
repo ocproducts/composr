@@ -327,7 +327,7 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
  * Display some raw text so that it is repeated as raw visually in HTML.
  *
  * @param  string $in Input
- * @param  boolean $with_textarea Whether to show using a textarea (more reliable to use clipboard to get from)
+ * @param  boolean $using_textarea Whether to show using a textarea (more reliable to use clipboard to get from)
  * @return Tempcode Output
  */
 function with_whitespace($in, $using_textarea = false)

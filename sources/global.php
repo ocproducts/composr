@@ -142,7 +142,11 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                 foreach ($possible_new_functions as $possible_new_function) {
                     if (function_exists($possible_new_function)) {
                         $functions_diff[] = $possible_new_function;
-                        if ((!function_exists('ctype_lower')) || (!ctype_lower($possible_new_function))) {
+                        if (function_exists('ctype_lower')) {
+                            if (!ctype_lower($possible_new_function)) {
+                                $has_upper_case_function_name = true;
+                            }
+                        } else {
                             $has_upper_case_function_name = true;
                         }
                     }
