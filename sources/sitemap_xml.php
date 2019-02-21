@@ -39,14 +39,16 @@ function init__sitemap_xml()
 
 /**
  * Top level function to (re)generate a Sitemap (xml file, Google-style).
+ *
+ * @param  boolean $force Force reconstruction regardless of update-dates (should not be needed)
  */
-function sitemap_xml_build()
+function sitemap_xml_build($force = false)
 {
     $last_time = intval(get_value('last_sitemap_time_calc_inner', null, true));
     $time = time();
 
     // Build from sitemap_cache table
-    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), null, ' WHERE last_updated>=' . strval($last_time));
+    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), null, $force ? '' : ' WHERE last_updated>=' . strval($last_time));
     if (count($set_numbers) > 0) {
         foreach ($set_numbers as $set_number) {
             rebuild_sitemap_set($set_number['set_number'], $last_time);
