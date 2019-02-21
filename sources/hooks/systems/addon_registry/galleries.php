@@ -210,6 +210,7 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/ajax_tree/choose_gallery.php',
             'sources/hooks/systems/ajax_tree/choose_image.php',
             'site/download_gallery.php',
+            'site/show_gallery_video.php',
             'sources/hooks/systems/preview/image.php',
             'sources/blocks/main_gallery_embed.php',
             'sources/blocks/main_image_fader.php',

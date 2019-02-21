@@ -58,3 +58,56 @@ function download_gallery_script()
     $echo = globalise($ret, null, '', true);
     $echo->evaluate_echo(null);
 }
+
+function show_gallery_video_script()
+{
+    if (!addon_installed('galleries')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('galleries')));
+    }
+
+    attach_to_screen_header('<meta name="robots" content="noindex" />');
+
+    $cat = get_param_string('cat');
+    $id = get_param_integer('id');
+
+    if (!has_category_access(get_member(), 'galleries', $cat)) {
+        access_denied('CATEGORY_ACCESS');
+    }
+
+    if (addon_installed('content_privacy')) {
+        require_code('content_privacy');
+        check_privacy('video', strval($id));
+    }
+
+    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('*'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MISSING_RESOURCE', escape_html('video')));
+    }
+    $myrow = $rows[0];
+
+    // Validation
+    if (($myrow['validated'] == 0) && (addon_installed('unvalidated'))) {
+        if ((!has_privilege(get_member(), 'jump_to_unvalidated')) && ((is_guest()) || ($myrow['submitter'] != get_member()))) {
+            access_denied('PRIVILEGE', 'jump_to_unvalidated');
+        }
+    }
+
+    $url = $myrow['url'];
+    if (url_is_local($url)) {
+        $url = get_custom_base_url() . '/' . $url;
+    }
+    $thumb_url = $myrow['thumb_url'];
+    if (url_is_local($thumb_url)) {
+        $thumb_url = get_custom_base_url() . '/' . $thumb_url;
+    }
+
+    require_code('galleries');
+    $video = show_gallery_video_media($url, $thumb_url, $myrow['video_width'], $myrow['video_height'], $myrow['video_length'], $myrow['submitter']);
+
+    require_code('web_resources');
+    echo css_tempcode()->evaluate();
+
+    echo $video->evaluate();
+
+    echo javascript_tempcode()->evaluate();
+}
