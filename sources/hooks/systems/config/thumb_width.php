@@ -53,7 +53,7 @@ class Hook_config_thumb_width
      */
     public function get_default()
     {
-        return '168';
+        return '500';
     }
 
     /**
