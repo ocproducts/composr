@@ -247,6 +247,8 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/actionlog/galleries.php',
             'themes/default/javascript/glide.js',
             'themes/default/css/widget_glide.css',
+            'themes/default/templates/GALLERY_SLIDESHOW_SCREEN.tpl',
+            'themes/default/templates/GALLERY_SLIDESHOW_CAROUSEL_ENTRY.tpl',
             // Mosaic mode:
             'sources/blocks/main_gallery_mosaic.php',
             'themes/default/templates/GALLERY_MOSAIC_MODE_SCREEN.tpl',

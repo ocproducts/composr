@@ -15,7 +15,7 @@
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
 
         var icon = $dom.$(el.parentNode, '.toggleable-tray-button .icon') || $dom.$('img#e-' + el.id),
-            iconAnchor = $dom.parent(icon, 'a'),
+            iconAnchor = icon ? $dom.parent(icon, 'a') : null,
             expanding = $dom.notDisplayed(el);
 
         el.setAttribute('aria-expanded', expanding ? 'true' : 'false');

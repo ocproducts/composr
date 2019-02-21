@@ -255,9 +255,16 @@ PHP;
         }
         sort_maps_by($combined, ($_dir == 'DESC') ? '!2' : '2');
 
+        $first_type = null;
+        $first_id = null;
         // Display
         $entries = new Tempcode();
         foreach ($combined as $i => $c) {
+            if ($i === 0) {
+                $first_type = $c[1];
+                $first_id = $c[0]['id'];
+            }
+
             if ($i >= $start) {
                 $just_media_row = db_map_restrict($c[0], array('id', 'description'));
 
@@ -400,6 +407,11 @@ PHP;
             }
         }
 
+        $slideshow_url = null;
+        if (($first_type !== null) && ($first_id !== null)) {
+            $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'id' => $first_id, 'wide_high' => 1, 'slideshow' => 1, 'days' => $days, 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($map['select'] == '*') ? null : $map['select'], 'video_select' => ($map['video_select'] == '*') ? null : $map['video_select']) + propagate_filtercode(), '_SELF', array(), true);
+        }
+
         // Sorting
         $sorting = null;
         if ($show_sorting) {
@@ -440,6 +452,7 @@ PHP;
             'DAYS' => $_days,
             'SORT' => $sort,
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
+            'SLIDESHOW_URL' => $slideshow_url,
             'SORTING' => $sorting,
             'PAGINATION' => $pagination,
             'TITLE' => $title,

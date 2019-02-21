@@ -1,8 +1,8 @@
 {$REQUIRE_JAVASCRIPT,jwplayer}
 {$SET,player_id,player-{$RAND}}
 
-{$SET,player_width,{$MIN,950,{WIDTH%}}},
-{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT%}}},
+{$SET,player_width,{$MIN,950,{WIDTH%}}}
+{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT%}}}
 
 {$SET,duration,}
 {+START,IF_NON_EMPTY,{LENGTH}}
@@ -22,8 +22,8 @@
 		{+END}
 	{+END}
 
-	<meta itemprop="width" content="{$MIN*,950,{WIDTH}}" />
-	<meta itemprop="height" content="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" />
+	<meta itemprop="width" content="{$GET*,player_width}" />
+	<meta itemprop="height" content="{$GET*,player_height}" />
 	{+START,IF_NON_EMPTY,{LENGTH}}
 		<meta itemprop="duration" content="T{LENGTH*}S" />
 	{+END}
@@ -43,9 +43,10 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 
-<div data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,RESPONSIVE,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}">
+<div class="media-video-websafe is-jwplayer" data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,RESPONSIVE,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}" 
+	  data-cms-embedded-media="{ width: {$GET%,player_width}, height: {$GET%,player_height}, emits: ['play', 'pause', 'ended'], listens: ['do-play', 'do-pause']  }">
 	{+START,IF,{$GET,raw_video}}
-		<video {+START,IF_NON_EMPTY,{THUMB_URL}} poster="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls"{+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END}>
+		<video {+START,IF_NON_EMPTY,{THUMB_URL}} poster="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}"{+END} width="{$GET*,player_width}" height="{$GET*,player_height}" controls="controls"{+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END}>
 			<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 			{+START,IF_PASSED,CLOSED_CAPTIONS_URL}{+START,IF_NON_EMPTY,{CLOSED_CAPTIONS_URL}}
 				<track src="{$ENSURE_PROTOCOL_SUITABILITY*,{CLOSED_CAPTIONS_URL}}" kind="captions" label="{!CLOSED_CAPTIONS}" />

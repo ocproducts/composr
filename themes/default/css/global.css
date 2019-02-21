@@ -938,6 +938,14 @@ img.icon {
 	}
 /*{+END}*/
 
+html.is-touch-only .mouse-only {
+	display: none !important;
+}
+
+html.is-mouse-only .touch-only {
+	display: none !important;
+}
+
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
 ::selection {
 	background-color: {$GET,seed};
@@ -7194,7 +7202,7 @@ a[rel="lightbox"] {
 
 /* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
 /*{+START,CSS_MODE,mobile}*/
-	.responsive-media-wrapper {
+	html:not(.is-gallery-slideshow) .responsive-media-wrapper {
 		overflow: hidden;
 		width: 100%;
 		position: relative;
@@ -7202,7 +7210,7 @@ a[rel="lightbox"] {
 		padding-top: 25px;
 		height: 0;
 	}
-	.responsive-media-wrapper iframe {
+	html:not(.is-gallery-slideshow) .responsive-media-wrapper iframe {
 		position: absolute;
 		top: 0;
 		left: 0;

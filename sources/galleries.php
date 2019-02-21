@@ -289,26 +289,25 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     if ($pic == '') {
         $pic = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'thumb_url', array('cat' => $myrow['name'], 'validated' => 1), $thumb_order);
     }
-    if ($pic === '') {
+    if ($pic == '') {
         require_code('images');
         $temp = $GLOBALS['SITE_DB']->query_select('images', array('id', 'url'), array('cat' => $myrow['name'], 'validated' => 1), $thumb_order, 1);
-        $pic = ensure_thumbnail($temp[0]['url'], '', 'galleries', 'images', $temp[0]['id']);
+        if (isset($temp[0])) {
+            $pic = ensure_thumbnail($temp[0]['url'], '', 'galleries', 'images', $temp[0]['id']);
+        }
     }
-    if ($pic === null) {
+    if ($pic == '') {
         $pic = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'thumb_url', array('cat' => $myrow['name'], 'validated' => 1), $thumb_order);
     }
-    if ($pic === null) {
-        $pic = '';
+    if ($pic == '') {
+        $pic = find_theme_image('icons/no_image');
     }
     if (($pic != '') && (url_is_local($pic))) {
         $pic = get_custom_base_url() . '/' . $pic;
     }
-    if ($pic != '') {
-        require_code('images');
-        $thumb = do_image_thumb($pic, '');
-    } else {
-        $thumb = new Tempcode();
-    }
+
+    require_code('images');
+    $thumb = do_image_thumb($pic, '');
 
     // Breadcrumbs
     $breadcrumbs = null;

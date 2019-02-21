@@ -557,6 +557,11 @@ HTML;
         if ($type == 'browse') {
             return $this->do_gallery();
         }
+
+        if ((($type == 'image') || ($type === 'video')) && (get_param_integer('slideshow', null) === 1) && (get_param_integer('wide_high', null) === 1)) {
+            return $this->start_slideshow();
+        }
+
         if ($type == 'image') {
             return $this->show_image();
         }
@@ -1190,9 +1195,8 @@ HTML;
         $days = get_param_string('days', '');
         $image_select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
         $video_select = get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX);
-        $sort = get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_gallery_mosaic', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_grid_per_page'), 'show_sorting' => '1', 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module', 'render_if_empty' => '1'));
+        $entries = do_block('main_gallery_mosaic', array('param' => $cat_select, 'zone' => get_zone_name(), 'days' => $days, 'max' => get_option('gallery_entries_grid_per_page'), 'show_sorting' => '1', 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module', 'render_if_empty' => '1'));
 
         // Member gallery?
         $member_id = get_member_id_from_gallery_name($cat, null, true);
@@ -1225,6 +1229,196 @@ HTML;
             'ACCEPT_VIDEOS' => ($gallery_row['accept_videos'] == 1),
             'VIEWS' => strval($gallery_row['gallery_views']),
             'OWNER' => ($gallery_row['g_owner'] === null) ? null : strval($gallery_row['g_owner']),
+        ));
+    }
+
+    /**
+     * @return Tempcode The UI
+     */
+    public function start_slideshow()
+    {
+        $cat = $this->cat;
+        $true_category_name = $this->category_name;
+
+        list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
+
+        $image_select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
+        $video_select = get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX);
+
+        $probe_type = get_param_string('type');
+        $probe_id = get_param_integer('id');
+
+        $slideshow_id = substr(md5(serialize(array($cat, $sort, $image_select, $video_select, $probe_type, $probe_id))), 0, 6);
+
+        $extra_join_image = '';
+        $extra_join_video = '';
+        $extra_where_image = '';
+        $extra_where_video = '';
+
+        if (addon_installed('content_privacy')) {
+            require_code('content_privacy');
+            list($privacy_join_video, $privacy_where_video) = get_privacy_where_clause('video', 'r');
+            list($privacy_join_image, $privacy_where_image) = get_privacy_where_clause('image', 'r');
+            $extra_join_image .= $privacy_join_image;
+            $extra_join_video .= $privacy_join_video;
+            $extra_where_image .= $privacy_where_image;
+            $extra_where_video .= $privacy_where_video;
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
+        // Display entries
+        $where = db_string_equal_to('cat', $cat);
+        if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
+            $where .= ' AND validated = 1';
+        }
+        if (get_param_string('days', '') != '') {
+            $where .= ' AND add_date > ' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
+        }
+
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, null, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, null, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+
+        $query_rows = array_merge($query_rows_images, $query_rows_videos);
+
+        $total_items = count($query_rows);
+
+        list($sort_name, $sort_dir) = explode(' ', $sort, 2);
+
+        sort_maps_by($query_rows, ($sort_dir == 'DESC') ? '!' . $sort_name : $sort_name);
+
+
+        $current_index = 0;
+        $current_url = null;
+        $current_video = null;
+        $current_comment_details = new Tempcode();
+
+        $carousel_entries = new Tempcode();
+
+        $is_on_comments = (get_option('is_on_comments') == '1') && (get_forum_type() != 'none') && ((get_forum_type() != 'cns') || (addon_installed('cns_forum')));
+
+        // Show media
+        foreach ($query_rows as $i => $row) {
+            $type = array_key_exists('video_length', $row) ? 'video' : 'image';
+            $type_plural = $type . 's';
+
+            $just_row = db_map_restrict($row, array('description')) + array('id' => $row['r_id']);
+
+            $entry_title = get_translated_text($row['title']);
+            $entry_description = get_translated_tempcode($type_plural, $just_row, 'description');
+
+            $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'layout_mode' => get_param_string('layout_mode', null), 'probe_type' => $type, 'probe_id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
+            $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
+
+            $content_url = build_url(array('page' => '_SELF', 'type' => 'image', 'id' => $probe_id), '_SELF', array(), false, false, true);
+            $content_url = $content_url->evaluate();
+
+            $content_title = ($entry_title == '') ? do_lang('VIEW_IMAGE_IN', $true_category_name) : $entry_title;
+
+            $forum = find_overridden_comment_forum($type_plural, $cat);
+
+            $full_url = '';
+
+            if (array_key_exists('url', $row)) {
+                $full_url = $row['url'];
+                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['r_id']);
+
+                if (url_is_local($full_url)) {
+                    $full_url = get_custom_base_url() . '/' . $full_url;
+                }
+            } else {
+                $thumb_url = $row['thumb_url'];
+                if ($thumb_url == '') {
+                    $thumb_url = find_theme_image('na');
+                }
+                if (url_is_local($thumb_url)) {
+                    $thumb_url = get_custom_base_url() . '/' . $thumb_url;
+                }
+            }
+
+            if (($probe_type === $type) && ($probe_id === intval($row['r_id']))) {
+                $current_index = $i;
+                $current_url = $row['url'];
+                $current_type = $type;
+
+                if (url_is_local($current_url)) {
+                    $current_url = get_custom_base_url() . '/' . $current_url;
+                }
+
+                if ($type === 'video') {
+                    // Video HTML
+                    $current_video = show_gallery_video_media($current_url, $thumb_url, $row['video_width'], $row['video_height'], $row['video_length'], $row['submitter']);
+                }
+
+                list($current_rating_details, $current_comment_details, $current_trackback_details) = embed_feedback_systems(
+                    $type . 's',
+                    strval($row['r_id']),
+                    $row['allow_rating'],
+                    $row['allow_comments'],
+                    $row['allow_trackbacks'],
+                    $row['validated'],
+                    $row['submitter'],
+                    $content_url,
+                    $content_title,
+                    $forum,
+                    $row['add_date']
+                );
+            }
+
+            $_edit_url = new Tempcode();
+            if (has_delete_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('gallery', $row['cat']))) {
+                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['r_id'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_galleries'));
+            }
+
+            $thumb = do_image_thumb($thumb_url, $entry_title);
+
+            $comments_options = null;
+            $comments_options_hash = null;
+
+            if ($is_on_comments && ($row['allow_comments'] == 1)) {
+                $comments_options = json_encode(array($type_plural, $row['r_id'], $row['allow_comments'], $row['submitter'], $content_url, $content_title, $forum, $row['add_date']));
+
+                require_code('crypt');
+                $comments_options_hash = ratchet_hash($comments_options, get_site_salt()); // A little security, to ensure $comments_options is not tampered with
+            }
+
+            $carousel_entries->attach(do_template('GALLERY_SLIDESHOW_CAROUSEL_ENTRY', array(
+                '_GUID' => 'ff75c904zx7fe857484874483ed65f5a',
+                'INDEX' => strval($i),
+                'DESCRIPTION' => $entry_description,
+                '_TITLE' => $entry_title,
+                'TYPE' => $type,
+                'ID' => strval($row['r_id']),
+                'VIEWS' => strval($row[$type . '_views']),
+                'ADD_DATE_RAW' => strval($row['add_date']),
+                'EDIT_DATE_RAW' => ($row['edit_date'] === null) ? '' : strval($row['edit_date']),
+                'SUBMITTER' => strval($row['submitter']),
+                'IS_CURRENT' => (($type == $probe_type) && ($row['r_id'] == $probe_id)),
+                'THUMB' => $thumb,
+                'FULL_URL' => $full_url,
+                'VIEW_URL' => $probe_url,
+                'VIEW_URL_2' => $view_url_2,
+                '_EDIT_URL' => $_edit_url,
+                'CAT' => $cat,
+                'COMMENTS_OPTIONS' => $comments_options,
+                'COMMENTS_OPTIONS_HASH' => $comments_options_hash,
+            )));
+        }
+
+        return do_template('GALLERY_SLIDESHOW_SCREEN', array(
+            '_GUID' => 'idkcfef2d71a4d8086d5351ede7731fe',
+            'SLIDESHOW_ID' => $slideshow_id,
+            'TOTAL_ITEMS' => integer_format($total_items),
+            'CURRENT_INDEX' => strval($current_index),
+            'CURRENT_URL' => $current_url,
+            'CURRENT_VIDEO' => $current_video,
+            'CURRENT_TYPE' => $current_type,
+            'CURRENT_COMMENT_DETAILS' => $current_comment_details,
+            'CAROUSEL_ENTRIES' => $carousel_entries,
         ));
     }
 

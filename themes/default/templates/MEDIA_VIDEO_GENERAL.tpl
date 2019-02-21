@@ -1,4 +1,4 @@
-<div data-tpl="mediaVideoGeneral" data-tpl-params="{+START,PARAMS_JSON,player_id}{_*}{+END}">
+<div data-tpl="mediaVideoGeneral" data-tpl-params="{+START,PARAMS_JSON,player_id}{_*}{+END}" data-cms-embedded-media="{ width: '{WIDTH%}', height: '{HEIGHT%}', emits: ['ended'], listens: ['do-play'] }">
 	{+START,IF_PASSED_AND_TRUE,FRAMED}
 	<figure>
 	{+END}

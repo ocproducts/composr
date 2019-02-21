@@ -689,7 +689,7 @@
 
 
     var promiseYouTubeIframeAPIReady;
-    $cms.templates.mediaYouTube = function (params, element) {
+    $cms.templates.mediaYouTube = function (params, container) {
         // Tie into callback event to see when finished, for our slideshows
         // API: https://developers.google.com/youtube/iframe_api_reference
 
@@ -698,7 +698,12 @@
                 if ((window.YT != null) && (window.YT.Player != null)) {
                     resolve();
                 } else {
+                    var prevFn = window.onYouTubeIframeAPIReady;
                     window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady() {
+                        if (typeof prevFn === 'function') {
+                            prevFn();
+                        }
+
                         resolve();
                         delete window.onYouTubeIframeAPIReady;
                     };
@@ -708,26 +713,41 @@
         }
 
         promiseYouTubeIframeAPIReady.then(function () {
-            var slideshowMode = document.getElementById('next_slide');
+            /*global YT:false*/
+            var embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
 
-            if (!slideshowMode && (typeof window.YT === 'undefined')) {
-                return; /* Should not be needed but in case the YouTube API somehow failed to load fully */
-            }
-
-            var player = new window.YT.Player(element.id, {
+            var player = new YT.Player(params.playerId, {
                 width: params.width,
                 height: params.height,
                 videoId: params.remoteId,
                 events: {
                     onReady: function () {
-                        if (slideshowMode) {
-                            player.playVideo();
+                        if (embeddedMediaData != null) {
+                            $dom.on(container, 'cms:media:do-play', function () {
+                                player.playVideo();
+                            });
+
+                            $dom.on(container, 'cms:media:do-pause', function () {
+                                player.pauseVideo();
+                            });
+
+                            embeddedMediaData.ready = true;
+                            $dom.trigger(container, 'cms:media:ready');
                         }
                     },
                     onStateChange: function (newState) {
-                        if (slideshowMode) {
-                            if (Number(newState) === 0) {
-                                window.$galleries.playerStopped();
+                        newState = Number(newState.data);
+
+                        if (embeddedMediaData != null) {
+                            if (newState === 0/*YT.PlayerState.ENDED*/) {
+                                $dom.trigger(container, 'cms:media:ended');
+                            } else if (newState === 1/*YT.PlayerState.PLAYING*/) {
+                                $dom.trigger(container, 'cms:media:play', {
+                                    mediaDuration: player.getDuration(),
+                                    mediaCurrentTime: player.getCurrentTime(),
+                                });
+                            } else if (newState === 2/*YT.PlayerState.PAUSED*/) {
+                                $dom.trigger(container, 'cms:media:pause');
                             }
                         }
                     }
@@ -737,28 +757,26 @@
     };
 
     // LEGACY
-    $cms.templates.mediaVideoGeneral = function (params) {
+    $cms.templates.mediaVideoGeneral = function (params, container) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
         // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
         $dom.load.then(function () {
-            if (document.getElementById('next_slide')) {
-                window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
+            var player = document.getElementById(params.playerId);
+            var embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
 
-                setTimeout(function () {
-                    var player = document.getElementById(params.playerId);
-                    // WMP
-                    player.addEventListener('playstatechange', function (newState) {
-                        if (Number(newState) === 1) {
-                            window.$galleries.playerStopped();
-                        }
-                    });
+            if (embeddedMediaData != null) {
+                player.addEventListener('playstatechange', function (newState) {
+                    if (Number(newState) === 1) {
+                        $dom.trigger(container, 'cms:media:ended');
+                    }
+                });
 
-                    // Quicktime
-                    player.addEventListener('qt_ended', function () {
-                        window.$galleries.playerStopped();
-                    });
+                player.addEventListener('qt_ended', function () {
+                    $dom.trigger(container, 'cms:media:ended');
+                });
 
+                $dom.on(container, 'cms:media:do-play', function () {
                     try {
                         player.Play();
                     } catch (e) {}
@@ -766,28 +784,68 @@
                     try {
                         player.controls.play();
                     } catch (e) {}
-                }, 1000);
+                });
+
+                embeddedMediaData.ready = true;
+                $dom.trigger(container, 'cms:media:ready');
             }
         });
     };
 
-    $cms.templates.mediaVimeo = function (params) {
-        // Tie into callback event to see when finished, for our slideshows
-        if (document.getElementById('next_slide')) {
-            window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
-            setTimeout(function () {
-                window.addEventListener('message', window.$galleries.playerStopped, false);
-
-                var player = document.getElementById(params.playerId);
-                player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
-            }, 1000);
+    var promiseVimeoApiReady;
+    $cms.templates.mediaVimeo = function (params, container) {
+        if (promiseVimeoApiReady == null) {
+            promiseVimeoApiReady = $cms.requireJavascript('https://player.vimeo.com/api/player.js');
         }
+
+        var playerIframe = document.getElementById(params.playerId),
+            embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia'),
+            vimeoPlayer;
+
+        promiseVimeoApiReady.then(function () {
+            /*globals Vimeo:false */
+            vimeoPlayer = new Vimeo.Player(playerIframe);
+            return vimeoPlayer.ready();
+        }).then(function () {
+            if (embeddedMediaData == null) {
+                return;
+            }
+
+            vimeoPlayer.on('play', function (data) {
+                $dom.trigger(container, 'cms:media:play', {
+                    mediaDuration: data.duration,
+                    mediaCurrentTime: data.seconds,
+                });
+            });
+
+            vimeoPlayer.on('pause', function () {
+                $dom.trigger(container, 'cms:media:pause');
+            });
+
+            vimeoPlayer.on('ended', function () {
+                $dom.trigger(container, 'cms:media:ended');
+            });
+
+            $dom.on(container, 'cms:media:do-play', function () {
+                vimeoPlayer.play();
+            });
+
+            $dom.on(container, 'cms:media:do-pause', function () {
+                vimeoPlayer.pause();
+            });
+
+            embeddedMediaData.ready = true;
+            $dom.trigger(container, 'cms:media:ready');
+        });
     };
 
     // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
     // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-    $cms.templates.mediaAudioWebsafe = function (params) {
+    $cms.templates.mediaAudioWebsafe = function (params, container) {
         /* global jwplayer:false */
+        var jwplayerInstance,
+            embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
+
         var playerOptions = {
             width: params.width,
             height: params.height,
@@ -796,17 +854,36 @@
             type: params.type,
             flashplayer: params.flashplayer,
             events: {
-                onComplete: function () {
-                    if (document.getElementById('next_slide')) {
-                        window.$galleries.playerStopped();
+                onReady: function () {
+                    if (embeddedMediaData != null) {
+                        $dom.on(container, 'cms:media:do-play', function () {
+                            jwplayerInstance.play();
+                        });
+
+                        $dom.on(container, 'cms:media:do-pause', function () {
+                            jwplayerInstance.pause();
+                        });
+
+                        embeddedMediaData.ready = true;
+                        $dom.trigger(container, 'cms:media:ready');
                     }
                 },
-                onReady: function () {
-                    if (document.getElementById('next_slide')) {
-                        window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
-                        jwplayer(params.playerId).play(true);
+                onPlay: function () {
+                    $dom.trigger(container, 'cms:media:play', {
+                        mediaDuration: jwplayerInstance.getDuration(),
+                        mediaCurrentTime: jwplayerInstance.getPosition(),
+                    });
+
+                    if (!$cms.configOption('show_inline_stats')) {
+                        $cms.gaTrack(null, '{!AUDIO;^}', params.url);
                     }
-                }
+                },
+                onPause: function () {
+                    $dom.trigger(container, 'cms:media:pause');
+                },
+                onComplete: function () {
+                    $dom.trigger(container, 'cms:media:ended');
+                },
             }
         };
 
@@ -830,35 +907,51 @@
             ];
         }
 
-        if (!($cms.configOption('show_inline_stats'))) {
-            playerOptions.events.onPlay = function () {
-                $cms.gaTrack(null, '{!AUDIO;^}', params.url);
-            };
-        }
-
-        jwplayer(params.playerId).setup(playerOptions);
+        jwplayerInstance = jwplayer(params.playerId).setup(playerOptions);
     };
 
     // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
     // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-    $cms.templates.mediaVideoWebsafe = function (params) {
+    $cms.templates.mediaVideoWebsafe = function (params, container) {
+        var jwplayerInstance,
+            embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
+
         var playerOptions = {
             autostart: false,
             file: params.url,
             type: params.type,
             flashplayer: params.flashplayer,
             events: {
-                onComplete: function () {
-                    if (document.getElementById('next_slide')) {
-                        window.$galleries.playerStopped();
+                onReady: function () {
+                    if (embeddedMediaData != null) {
+                        $dom.on(container, 'cms:media:do-play', function () {
+                            jwplayerInstance.play();
+                        });
+
+                        $dom.on(container, 'cms:media:do-pause', function () {
+                            jwplayerInstance.pause();
+                        });
+
+                        embeddedMediaData.ready = true;
+                        $dom.trigger(container, 'cms:media:ready');
                     }
                 },
-                onReady: function () {
-                    if (document.getElementById('next_slide')) {
-                        window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
-                        jwplayer(params.playerId).play(true);
+                onPlay: function () {
+                    $dom.trigger(container, 'cms:media:play', {
+                        mediaDuration: jwplayerInstance.getDuration(),
+                        mediaCurrentTime: jwplayerInstance.getPosition(),
+                    });
+
+                    if (!$cms.configOption('show_inline_stats')) {
+                        $cms.gaTrack(null, '{!VIDEO;^}', params.url);
                     }
-                }
+                },
+                onPause: function () {
+                    $dom.trigger(container, 'cms:media:pause');
+                },
+                onComplete: function () {
+                    $dom.trigger(container, 'cms:media:ended');
+                },
             }
         };
 
@@ -889,13 +982,7 @@
             ];
         }
 
-        if (!$cms.configOption('show_inline_stats')) {
-            playerOptions.events.onPlay = function () {
-                $cms.gaTrack(null, '{!VIDEO;^}', params.url);
-            };
-        }
-
-        window.jwplayer(params.playerId).setup(playerOptions);
+        jwplayerInstance = jwplayer(params.playerId).setup(playerOptions);
     };
 
     $cms.functions.comcodeAddTryForSpecialComcodeTagSpecificContentsUi = function () {

@@ -1176,6 +1176,19 @@
         }
     };
 
+    // Documentation for [data-cms-embedded-media={ ...options... }]
+    // This behavior is used to mark embedded media of different types and platforms.
+    // It's currently used by the gallery slideshows to detect and trigger media playback.
+    // Example options:
+    //    ready: true|false, <-- Whether it's ready to receive events
+    //    video: true|false, <-- Whether it's a video.
+    //    aspectRatio: '4:3' <-- Aspect ratio specified as a ratio of 'width:height' or a decimal fraction (like '1.25').
+    //    listens: [] <-- Array of cms:media:* events this media responds to.
+    //    emits: [] <-- Array of cms:media:* events this media emits.
+    $cms.behaviors.cmsEmbeddedMedia = {
+        attach: function () {},
+    };
+
     // Implementation for [data-calc-height]
     var initialCalcHeight = true;
     var settingHeight = new WeakMap();

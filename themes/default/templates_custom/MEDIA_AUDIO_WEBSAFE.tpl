@@ -14,7 +14,9 @@
 		{+END}
 	{+END}
 
-	<audio style="display: none" controls="controls" preload="none" id="{$GET%,player_id}" data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}"{+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END}>
+	<audio style="display: none" controls="controls" preload="none" id="{$GET%,player_id}" 
+			 data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}"
+			 {+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END} data-cms-embedded-media="{ width: {WIDTH%}, height: {HEIGHT%}, emits: ['play', 'pause', 'ended'], listens: ['do-play', 'do-pause'] }">
 		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		{+START,IF_PASSED,CLOSED_CAPTIONS_URL}{+START,IF_NON_EMPTY,{CLOSED_CAPTIONS_URL}}
 			<track src="{$ENSURE_PROTOCOL_SUITABILITY*,{CLOSED_CAPTIONS_URL}}" kind="captions" label="{!CLOSED_CAPTIONS}" srclang="{$LCASE*,{$LANG}}" />

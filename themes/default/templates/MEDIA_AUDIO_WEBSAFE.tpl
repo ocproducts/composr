@@ -36,7 +36,8 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 
-<div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}">
+<div class="media-audio-websafe" data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}" 
+	  data-cms-embedded-media="{ width: {$GET%,player_width}, height: {$GET%,player_height}, emits: ['play', 'pause', 'ended'], listens: ['do-play', 'do-pause']  }">
 	{+START,IF_PASSED_AND_TRUE,FRAMED}
 		<figure>
 			{$GET,media}

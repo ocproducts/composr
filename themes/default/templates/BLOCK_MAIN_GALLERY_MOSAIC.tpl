@@ -9,14 +9,14 @@
 	{+START,IF_NON_EMPTY,{ENTRIES}}
 		<div class="gallery-actions">
 			{+START,IF_PASSED,SLIDESHOW_URL}
-			<a class="btn btn-primary btn-slideshow" rel="nofollow" href="{SLIDESHOW_URL*}">{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</a>
+			<a class="btn btn-primary btn-slideshow" rel="nofollow" href="{SLIDESHOW_URL*}" data-link-start-slideshow="{}">{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</a>
 			{+END}
 
 			{+START,IF_PASSED,SORTING}
 				{$SET,show_sort_button,1}
 				{SORTING}
 			{+END}
-			
+
 			<div class="toggle-details mobile-only">
 				<label for="toggle-details-{BLOCK_ID*}">{!SHOW_DETAILS}</label>
 				<input type="checkbox" id="toggle-details-{BLOCK_ID*}" class="js-checkbox-toggle-details" />

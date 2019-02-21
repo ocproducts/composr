@@ -994,7 +994,7 @@
             symbolId = 'icon_' + iconName.replace(/\//g, '__');
             use = iconEl.querySelector('use');
             use.setAttribute('xlink:href', use.getAttribute('xlink:href').replace(/#\w+$/, '#' + symbolId));
-        } else {
+        } else if (iconEl.localName === 'img') {
             if ($util.url(iconEl.src).pathname.includes('/themewizard.php')) {
                 // themewizard.php script, set ?show=<image name>
                 newSrc = $util.url(iconEl.src);
@@ -1003,6 +1003,9 @@
                 newSrc = $util.srl(imageSrc);
             }
             iconEl.src = newSrc;
+        } else {
+            $util.fatal('$cms.setIcon(): Argument one must be of type {' + 'SVGSVGElement|HTMLImageElement}, "' + $util.typeName(iconEl) + '" provided.');
+            return;
         }
 
         // Replace the existing icon-* class with the new one
@@ -1233,7 +1236,7 @@
             };
 
             if (typeof post === 'string') {
-                if (!post.includes('&csrf_token=')) { // For CSRF prevention
+                if (!post.startsWith('csrf_token=') && !post.includes('&csrf_token=')) { // For CSRF prevention
                     post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
                 }
 

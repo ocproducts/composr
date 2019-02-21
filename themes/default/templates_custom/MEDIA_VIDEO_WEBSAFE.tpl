@@ -17,13 +17,19 @@
 		{+END}
 	{+END}
 
-	<video style="display: none" width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}" data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,RESPONSIVE,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}"{+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END}>
+	{$SET,player_width,{$MIN,950,{WIDTH}}}
+	{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}}
+
+	<video style="display: none" width="{$GET%,player_width}" height="{$GET%,player_height}" poster="{THUMB_URL*}" 
+			 controls="controls" preload="none" id="{$GET%,player_id}" data-tpl="mediaVideoWebsafe" 
+			 data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats,RESPONSIVE,AUTOSTART,CLOSED_CAPTIONS_URL}{_*}{+END}"
+			 {+START,IF_PASSED_AND_TRUE,AUTOSTART} autoplay="true"{+END} data-cms-embedded-media="{ width: {$GET%,player_width}, height: {$GET%,player_height}, emits: ['play', 'pause', 'ended'], listens: ['do-play', 'do-pause', 'do-resize'] }">
 		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		{+START,IF_PASSED,CLOSED_CAPTIONS_URL}{+START,IF_NON_EMPTY,{CLOSED_CAPTIONS_URL}}
 			<track src="{$ENSURE_PROTOCOL_SUITABILITY*,{CLOSED_CAPTIONS_URL}}" kind="captions" label="{!CLOSED_CAPTIONS}" srclang="{$LCASE*,{$LANG}}" />
 		{+END}{+END}
 
-		<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}" width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" alt="No video playback capabilities" title="No video playback capabilities" />
+		<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}" width="{$GET%,player_width}" height="{$GET%,player_height}" alt="No video playback capabilities" title="No video playback capabilities" />
 	</video>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
