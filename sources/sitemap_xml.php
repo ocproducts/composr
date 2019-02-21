@@ -183,7 +183,9 @@ function rebuild_sitemap_index()
             $url .= '.gz';
         }
 
-        $xml_date = xmlentities(date('Y-m-d\TH:i:s', $sitemap_set['last_updated']) . substr_replace(date('O', $sitemap_set['last_updated']), ':', 3, 0));
+        //$last_updated = $sitemap_set['last_updated']; Actually no, because this cannot find deletes
+        $last_updated = filemtime($path);
+        $xml_date = xmlentities(date('Y-m-d\TH:i:s', $last_updated) . substr_replace(date('O', $last_updated), ':', 3, 0));
 
         $set_blob = '
     <sitemap>
