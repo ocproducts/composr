@@ -112,7 +112,7 @@ The fastest way to configure PHP is usually as FPM (FastCGI), on top of a thread
  - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
  - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
 
-Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer.
+Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer. You can [url="adjust the threshold when a Linux server will start using swapspace"]https://www.howtoforge.com/tutorial/linux-swappiness/[/url].
 
 [title="2"]Persistent cache[/title]
 
