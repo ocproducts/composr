@@ -3,9 +3,7 @@
 <div class="gallery-entry-screen" id="gallery-entry-screen" itemscope="itemscope" itemtype="http://schema.org/{+START,IF_PASSED,VIDEO}Video{+END}{+START,IF_NON_PASSED,VIDEO}Image{+END}Object">
 	{TITLE}
 
-	{+START,IF,{$NOT,{SLIDESHOW}}}
-		{WARNING_DETAILS}
-	{+END}
+	{WARNING_DETAILS}
 
 	{NAV}
 
@@ -80,52 +78,38 @@
 		{+END}
 	</div>
 
-	{+START,IF,{SLIDESHOW}}
-		{+START,IF_NON_EMPTY,{E_TITLE}}
-			<h4 itemprop="caption">
-				{E_TITLE*}
-			</h4>
-		{+END}
+	{+START,IF_NON_EMPTY,{DESCRIPTION}}
+		<div class="entry-description" itemprop="caption">
+			{$PARAGRAPH,{DESCRIPTION}}
+		</div>
+	{+END}
 
-		{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
-			{COMMENT_DETAILS}
+	<div class="clearfix lined-up-boxes">
+		{$GET,boxes}
+	</div>
+
+	{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,{MEDIA_TYPE},{ID}}}
+	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
+
+	{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
+
+	{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
+	{+START,INCLUDE,STAFF_ACTIONS}
+		1_URL={EDIT_URL*}
+		1_TITLE={!EDIT}
+		1_REL=edit
+		1_ICON=admin/edit_this
+		{+START,IF,{$ADDON_INSTALLED,tickets}}
+			2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type={MEDIA_TYPE}:content_id={ID}:redirect={$SELF_URL&}}
+			2_TITLE={!report_content:REPORT_THIS}
+			2_ICON=buttons/report
+			2_REL=report
 		{+END}
 	{+END}
 
-	{+START,IF,{$NOT,{SLIDESHOW}}}
-		{+START,IF_NON_EMPTY,{DESCRIPTION}}
-			<div class="entry-description" itemprop="caption">
-				{$PARAGRAPH,{DESCRIPTION}}
-			</div>
-		{+END}
-	
-		<div class="clearfix lined-up-boxes">
-			{$GET,boxes}
-		</div>
-
-		{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,{MEDIA_TYPE},{ID}}}
-		{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
-
-		{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
-
-		{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
-		{+START,INCLUDE,STAFF_ACTIONS}
-			1_URL={EDIT_URL*}
-			1_TITLE={!EDIT}
-			1_REL=edit
-			1_ICON=admin/edit_this
-			{+START,IF,{$ADDON_INSTALLED,tickets}}
-				2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type={MEDIA_TYPE}:content_id={ID}:redirect={$SELF_URL&}}
-				2_TITLE={!report_content:REPORT_THIS}
-				2_ICON=buttons/report
-				2_REL=report
-			{+END}
-		{+END}
-
-		<div class="content-screen-comments">
-			{COMMENT_DETAILS}
-		</div>
-	{+END}
+	<div class="content-screen-comments">
+		{COMMENT_DETAILS}
+	</div>
 
 	{+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 <!--DO_NOT_REMOVE_THIS_COMMENT--></div>

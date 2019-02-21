@@ -4,7 +4,7 @@
 		
 		<div class="slideshow-main">
 			<div class="slideshow-media-box cms-slider cms-slider-slide">
-				<div class="slideshow-media-box-item cms-slider-item is-{CURRENT_TYPE*} active" data-vw-index="{CURRENT_INDEX}">
+				<div class="slideshow-media-box-item cms-slider-item is-{CURRENT_TYPE*} active" data-vw-index="{CURRENT_INDEX*}">
 					<div class="slideshow-media-wrapper">
 					{+START,IF_NON_PASSED,CURRENT_VIDEO}
 						<img class="slideshow-img" src="{$ENSURE_PROTOCOL_SUITABILITY*,{CURRENT_URL}}" itemprop="contentURL" />

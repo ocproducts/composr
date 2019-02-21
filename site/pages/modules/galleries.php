@@ -1048,7 +1048,7 @@ HTML;
         }
 
         // Navigation
-        list(, , , $first_entry_id, , , $first_type) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', '', $probe_id, $root, $probe_type, get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
+        list(, , , $first_entry_id, , , $first_type) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', '', $probe_id, $root, $probe_type, get_param_integer('wide_high', 0), $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
 
         // Render
         return do_template('GALLERY_CAROUSEL_MODE_SCREEN', array(
@@ -1497,7 +1497,7 @@ HTML;
         $add_date = get_timezoned_date_time($myrow['add_date']);
         $edit_date = ($myrow['edit_date'] === null) ? '' : get_timezoned_date_time($myrow['edit_date']);
 
-        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
+        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
 
         $member_id = get_member_id_from_gallery_name($cat, null, true);
         if (get_forum_type() == 'cns') {
@@ -1617,7 +1617,7 @@ HTML;
         // Video HTML
         $video = show_gallery_video_media($url, $thumb_url, $myrow['video_width'], $myrow['video_height'], $myrow['video_length'], $myrow['submitter']);
 
-        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'video', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
+        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'video', get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
 
         $member_id = get_member_id_from_gallery_name($cat, null, true);
         if (get_forum_type() == 'cns') {
@@ -1673,7 +1673,6 @@ HTML;
      * @param  ID_TEXT $root The root gallery (the gallery we are considering as an ad hoc root, to allow gallery splitting-up)
      * @param  ?ID_TEXT $current_type The current type being browsed (null: assume first)
      * @set image video
-     * @param  BINARY $slideshow If in slideshow
      * @param  BINARY $wide_high If panels hidden
      * @param  integer $start Start position when returning to category
      * @param  integer $max Max to show when returning to category
@@ -1686,7 +1685,7 @@ HTML;
      * @param  string $video_select Selectcode for limiting videos displayed
      * @return array A tuple of the navigation bits
      */
-    public function build_set_navigation($where, $join, $category_name, $current_id, $root, $current_type, $slideshow, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
+    public function build_set_navigation($where, $join, $category_name, $current_id, $root, $current_type, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
     {
         $sv = (has_privilege(get_member(), 'see_unvalidated') && (addon_installed('unvalidated')));
         if (!$sv) {
@@ -1784,7 +1783,7 @@ HTML;
         }
 
         // UI for navigating all this
-        $nav_ui = ($first_id === null) ? new Tempcode() : $this->show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $position, $total, $current_type, $first_type, $back_type, $next_type, $slideshow, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select);
+        $nav_ui = ($first_id === null) ? new Tempcode() : $this->show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $position, $total, $current_type, $first_type, $back_type, $next_type, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select);
 
         return array($total/*aka $n*/, $position/*aka $x*/, $nav_ui, $first_id, $back_id, $next_id, $first_type, $back_type, $next_type);
     }
@@ -1810,7 +1809,6 @@ HTML;
      * @set image video
      * @param  ID_TEXT $next_type The type for the next link
      * @set image video
-     * @param  BINARY $slideshow If in slideshow
      * @param  BINARY $wide_high If panels hidden
      * @param  integer $start Start position when returning to category
      * @param  integer $max Max to show when returning to category
@@ -1823,11 +1821,11 @@ HTML;
      * @param  string $video_select Selectcode for limiting videos displayed
      * @return Tempcode The navigation bits
      */
-    public function show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $x, $n, $current_type, $first_type, $back_type, $next_type, $slideshow, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
+    public function show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $x, $n, $current_type, $first_type, $back_type, $next_type, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
     {
         if ($back_id !== null) {
             $slideshow_previous_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'wide_high' => 1, 'id' => $back_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true); // Continues, but as slideshow
-            $back_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'id' => $back_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
+            $back_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'id' => $back_id, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
 
             $prev_row = $GLOBALS['SITE_DB']->query_select(($back_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $back_id));
             $prev_row = $prev_row[0];
@@ -1854,7 +1852,7 @@ HTML;
         }
         if ($next_id !== null) {
             $slideshow_next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'wide_high' => 1, 'id' => $next_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true); // Continues, but as slideshow
-            $next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'id' => $next_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
+            $next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'id' => $next_id, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', array(), true);
 
             $next_row = $GLOBALS['SITE_DB']->query_select(($next_type === 'image') ? 'images' : 'videos', array('id', 'title', 'url', 'thumb_url'), array('id' => $next_id));
             $next_row = $next_row[0];
@@ -1904,7 +1902,6 @@ HTML;
             'NEXT_THUMB' => $next_thumb,
             'MORE_URL' => $more_url,
             'CATEGORY_NAME' => $category_name,
-            'SLIDESHOW' => ($slideshow == 1),
         ));
     }
 

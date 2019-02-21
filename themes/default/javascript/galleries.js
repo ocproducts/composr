@@ -3,14 +3,6 @@
 
     var indexOf = Function.bind.call(Function.call, Array.prototype.indexOf);
 
-    window.$galleries || (window.$galleries = {});
-
-    if (window.slideshowTimer === undefined) {
-        window.slideshowTimer = null;
-        window.slideshowSlides = {};
-        window.slideshowTime = null;
-    }
-
     // Implementation for [data-link-start-slideshow]
     // Add to a slideshow link to make it open in a full width iframe
     $cms.behaviors.linkStartSlideshow = {
@@ -253,62 +245,14 @@
      * @class $cms.views.GalleryNav
      * @extends $cms.View
      */
-    function GalleryNav(params) {
+    function GalleryNav() {
         GalleryNav.base(this, 'constructor', arguments);
-
-        window.slideshowCurrentPosition = params._x - 1;
-        window.slideshowTotalSlides = params._n;
-
-        if (params.slideshow) {
-            this.initializeSlideshow();
-        }
     }
 
     $util.inherits(GalleryNav, $cms.View, /**@lends $cms.views.GalleryNav#*/{
-        initializeSlideshow: function () {
-            resetSlideshowCountdown();
-            startSlideshowTimer();
-
-            window.addEventListener('keypress', toggleSlideshowTimer);
-
-            slideshowShowSlide(window.slideshowCurrentPosition); // To ensure next is preloaded
-        },
         events: function () {
-            return {
-                'change .js-change-reset-slideshow-countdown': 'resetCountdown',
-                'mousedown .js-mousedown-stop-slideshow-timer': 'stopTimer',
-                'click .js-click-slideshow-backward': 'slideshowBackward',
-                'click .js-click-slideshow-forward': 'slideshowForward',
-                'click .js-click-toggle-full-screen-or-slideshow-timer': 'toggleFullScreenOrSlideshowTimer'
-            };
+            return {};
         },
-        resetCountdown: function () {
-            resetSlideshowCountdown();
-        },
-        stopTimer: function () {
-            window.$galleries.stopSlideshowTimer('{!galleries:STOPPED^;}');
-        },
-        slideshowBackward: function () {
-            slideshowBackward();
-
-        },
-        slideshowForward: function () {
-            slideshowForward();
-        },
-        toggleFullScreenOrSlideshowTimer: function (event) {
-            if (event.altKey || event.metaKey) {
-                var el = document.getElementById('gallery-entry-screen');
-                if (el.webkitRequestFullScreen !== undefined) {
-                    el.webkitRequestFullScreen(window.Element.ALLOW_KEYBOARD_INPUT);
-                } else if (el.mozRequestFullScreenWithKeys !== undefined) {
-                    el.mozRequestFullScreenWithKeys();
-                } else if (el.requestFullScreenWithKeys !== undefined) {
-                    el.requestFullScreenWithKeys();
-                }
-            } else {
-                toggleSlideshowTimer();
-            }
-        }
     });
 
     $cms.views.GallerySlideshowScreen = GallerySlideshowScreen;
@@ -1142,171 +1086,4 @@
             });
         }
     };
-
-    function startSlideshowTimer() {
-        if (!window.slideshowTimer) {
-            window.slideshowTimer = setInterval(function () {
-                window.slideshowTime--;
-                showCurrentSlideshowTime();
-
-                if (window.slideshowTime === 0) {
-                    slideshowForward();
-                }
-            }, 1000);
-        }
-
-        if (window.slideshowCurrentPosition !== (window.slideshowTotalSlides - 1)) {
-            document.getElementById('gallery-entry-screen').style.cursor = 'progress';
-        }
-    }
-
-    function showCurrentSlideshowTime() {
-        var changer = document.getElementById('changer-wrap');
-        if (changer) {
-            $dom.html(changer, $util.format('{!galleries:CHANGING_IN;^}', [Math.max(0, window.slideshowTime)]));
-        }
-    }
-
-    function resetSlideshowCountdown() {
-        var slideshowFrom = document.getElementById('slideshow_from');
-        window.slideshowTime = slideshowFrom ? parseInt(slideshowFrom.value) : 5;
-
-        showCurrentSlideshowTime();
-
-        if (window.slideshowCurrentPosition === window.slideshowTotalSlides - 1) {
-            window.slideshowTime = 0;
-        }
-    }
-
-    function toggleSlideshowTimer() {
-        if (window.slideshowTimer) {
-            window.$galleries.stopSlideshowTimer();
-        } else {
-            showCurrentSlideshowTime();
-            startSlideshowTimer();
-        }
-    }
-
-    window.$galleries.stopSlideshowTimer = function stopSlideshowTimer(message) {
-        if (message === undefined) {
-            message = '{!galleries:STOPPED;^}';
-        }
-        var changer = document.getElementById('changer-wrap');
-        if (changer) {
-            $dom.html(changer, message);
-        }
-        if (window.slideshowTimer) {
-            clearInterval(window.slideshowTimer);
-        }
-        window.slideshowTimer = null;
-        document.getElementById('gallery-entry-screen').style.cursor = '';
-    };
-
-    function slideshowBackward() {
-        if (window.slideshowCurrentPosition === 0) {
-            return;
-        }
-
-        slideshowShowSlide(window.slideshowCurrentPosition - 1);
-    }
-
-    window.$galleries.playerStopped = function playerStopped() {
-        slideshowForward();
-    };
-
-    function slideshowForward() {
-        if (window.slideshowCurrentPosition === (window.slideshowTotalSlides - 1)) {
-            window.$galleries.stopSlideshowTimer('{!galleries:LAST_SLIDE;^}');
-            return;
-        }
-
-        slideshowShowSlide(window.slideshowCurrentPosition + 1);
-    }
-
-    function slideshowEnsureLoaded(slide) {
-        return new Promise(function (resolve) {
-            if (window.slideshowSlides[slide] !== undefined) {
-                resolve();
-                return; // Already have it
-            }
-
-            if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
-                window.slideshowSlides[slide] = $dom.html('#gallery-entry-screen');
-                resolve();
-                return;
-            }
-
-            if ((slide === window.slideshowCurrentPosition - 1) || (slide === window.slideshowCurrentPosition + 1)) {
-                var url;
-                if (slide === window.slideshowCurrentPosition + 1) {
-                    url = document.getElementById('next_slide').value;
-                }
-                if (slide === window.slideshowCurrentPosition - 1) {
-                    url = document.getElementById('previous_slide').value;
-                }
-
-                $cms.doAjaxRequest(url).then(function (xhr) {
-                    window.slideshowSlides[slide] = xhr.responseText.replace(/<!DOCTYPE [^>]*>/i, '').replace(/(.|\n)*<div class="gallery-entry-screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
-                    resolve();
-                });
-            } else {
-                $cms.ui.alert('Internal error: should not be preloading more than one step ahead');
-            }
-        });
-
-    }
-
-    function slideshowShowSlide(slide) {
-        return slideshowEnsureLoaded(slide).then(function () {
-            if (window.slideshowCurrentPosition === slide) {
-                return; // Already there
-            }
-
-            var slideshowFromOld = document.getElementById('slideshow_from');
-
-            var fadeElementOld = document.querySelector('.scale-down'),
-                parentHeightOld;
-            if (fadeElementOld != null) {
-                parentHeightOld = $dom.css(fadeElementOld.parentNode, 'height');
-                var leftPos = fadeElementOld.parentNode.offsetWidth / 2 - fadeElementOld.offsetWidth / 2;
-                fadeElementOld.style.left = leftPos + 'px';
-                fadeElementOld.style.position = 'absolute';
-            } // else probably a video
-
-            $dom.html('#gallery-entry-screen', window.slideshowSlides[slide]);
-
-            var fadeElement = document.querySelector('.scale-down');
-            if ((fadeElement != null) && (fadeElementOld != null)) {
-                fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
-                fadeElement.parentNode.style.position = 'relative';
-                fadeElement.parentNode.style.minHeight = parentHeightOld; // Prevent zero height jump while the new image initializes
-
-                $dom.fadeIn(fadeElement);
-                $dom.fadeOut(fadeElementOld).then(function () {
-                    fadeElement.parentNode.style.minHeight = '';
-                    $dom.remove(fadeElementOld);
-                });
-            } // else probably a video
-
-            if (slideshowFromOld) {
-                // Make sure stays the same
-                document.getElementById('slideshow_from').value = slideshowFromOld.value;
-            }
-
-            window.slideshowCurrentPosition = slide;
-
-            if (document.querySelector('.scale-down')) { // Is image
-                startSlideshowTimer();
-                resetSlideshowCountdown();
-            } else { // Is video
-                window.$galleries.stopSlideshowTimer('{!WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
-            }
-
-            if (window.slideshowCurrentPosition !== (window.slideshowTotalSlides - 1)) {
-                slideshowEnsureLoaded(slide + 1);
-            } else {
-                document.getElementById('gallery-entry-screen').style.cursor = '';
-            }
-        });
-    }
 }(window.$cms, window.$util, window.$dom));

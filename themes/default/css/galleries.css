@@ -856,17 +856,6 @@ html:not(.is-touch-enabled) .glide-other-gallery-images.has-multiple-views:not(:
 	overflow: hidden;
 }
 
-.slideshow-speed {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-}
-
-.slideshow-speed input {
-	margin-left: 5px;
-	width: 5em;
-}
-
 .media-box .box {
 	margin-top: 0;
 }
