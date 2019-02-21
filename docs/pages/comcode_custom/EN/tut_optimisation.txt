@@ -96,11 +96,23 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently).
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
- - If you are on a VPS ask the webhost whether there is too much load on the host machine. Also consider that they may have a 'burst' policy, so your VPS may be running slowly due to processing it has done recently, rather than in that exact moment.
  - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources.
- - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
- - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
+
+[title="2"]Server configuration tips[/title]
+
+The fastest way to configure PHP is usually as FPM (FastCGI), on top of a threaded web server (e.g. Apache's [tt]mpm_event[/tt]):
+ - While the traditional Apache [tt]mod_php[/tt] is fast and simple, it cannot run on top of [tt]mpm_event[/tt] because it is not thread-safe, so it doesn't scale up well -- you'll find you need more Apache processes just to deal with static requests, but each comes with the overhead of [tt]mod_php[/tt].
+ - suPHP and CGI are likely too slow for you.
+ - FPM will give you a suEXEC-like capability without actually needing to configure suEXEC.
+ - FPM has the capability of scaling up and down the number of PHP FastCGI processes dynamically, within the bounds you configure.
+ - Be aware that this requires a baseline of RAM for every website on the server that is running under a different username because the FastCGI processes are user-specific.
+ - The more RAM you have, the quicker parallel PHP requests can be handled as more FastCGI instances can be configured to remain resident in RAM.
  - Don't have an Apache or FastCGI (FPM) configuration that allows more Apache/PHP processes than you have memory for when a server is under high load -- it is much better to have saturated CPU than to have your server start page swapping.
+ - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
+ - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
+ - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
+
+Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer.
 
 [title="2"]Persistent cache[/title]
 
@@ -734,6 +746,11 @@ A good system administrator will:
 1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
 2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
 3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+
+Some further tips:
+ - If you are on a VPS ask the webhost whether there is too much load on the host machine. Also consider that they may have a 'burst' policy, so your VPS may be running slowly due to processing it has done recently, rather than in that exact moment.
+ - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
+ - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
 
 [title="2"]See also[/title]
 
