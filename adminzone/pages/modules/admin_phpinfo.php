@@ -204,14 +204,14 @@ class Module_admin_phpinfo
 
         if (php_function_allowed('shell_exec')) {
             $commands = array(
-                'uptime',
                 'cat /proc/cpuinfo',
-                'cat /proc/meminfo',
                 'cat /proc/diskstats',
-                'iotop',
-                'iostat',
-                'top -n1',
+                'cat /proc/meminfo',
+                'uptime',
                 'ps -Af',
+                'top -n1',
+                'iostat',
+                'iotop -n1 -b',
             );
 
             foreach ($commands as $command) {

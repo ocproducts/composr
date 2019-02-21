@@ -138,16 +138,8 @@ function static_evaluate_tempcode($ob)
  */
 function php_addslashes_twice($in)
 {
-    $in2 = php_addslashes($in);
-    return ($in === $in2) ? $in : php_addslashes($in2);
-
-    // This code does not work, provides awfully confusing Tempcode errors...
-
-    /*
     global $PHP_REP_FROM, $PHP_REP_TO_TWICE;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO_TWICE, $in);
-    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
-    */
 }
 
 /**

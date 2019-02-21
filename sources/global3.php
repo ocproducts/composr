@@ -41,7 +41,7 @@ function init__global3()
     global $PHP_REP_FROM, $PHP_REP_TO, $PHP_REP_TO_TWICE;
     $PHP_REP_FROM = array('\\', "\n", '$', '"', "\0");
     $PHP_REP_TO = array('\\\\', '\n', '\$', '\\"', '\0');
-    $PHP_REP_TO_TWICE = array('\\\\\\\\', '\\n', '\\\\$', '\\\\\"', '\\0');
+    $PHP_REP_TO_TWICE = array('\\\\\\\\', '\\\\n', '\\\\\\$', '\\\\\"', '\\\\0');
 
     global $BOT_MAP_CACHE, $BOT_TYPE_CACHE;
     $BOT_MAP_CACHE = null;
@@ -2336,7 +2336,6 @@ function php_addslashes($in)
 {
     global $PHP_REP_FROM, $PHP_REP_TO;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO, $in);
-    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
 }
 
 /**

@@ -7,7 +7,7 @@
 // Call the hidden 'hack_form' to go run the translation site upon our language string, and direct into our personal iframe
 function translate_wrap(name,old,lang_from,lang_to)
 {
-	var apiKey='{$VALUE_OPTION;,google_translate_api_key}';
+	var apiKey='{$CONFIG_OPTION;^,google_translate_api_key}';
 
 	if (lang_from==lang_to) lang_from='EN';
 
