@@ -31,14 +31,24 @@ class notifications_test_set extends cms_test_case
 
         $GLOBALS['SITE_DB']->query_delete('notifications_enabled');
         $GLOBALS['SITE_DB']->query_delete('notification_lockdown');
-
-        // Check default empty state...
+        $GLOBALS['SITE_DB']->query_delete('member_zone_access');
 
         $all_members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), null, 'WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND m_validated=1 AND ' . db_string_equal_to('m_validated_email_confirm_code', ''));
+
+        foreach ($all_members as $member) {
+            $GLOBALS['SITE_DB']->query_insert('member_zone_access', array(
+                'zone_name' => 'site',
+                'member_id' => $member['id'],
+                'active_until' => null,
+            ));
+        }
+
+        // Check default empty state...
 
         $ob = new Hook_notification_cns_birthday();
         $results = $ob->list_members_who_have_enabled('cns_birthday');
         $this->assertTrue(count($results[0]) == 0);
+        $results = $ob->list_members_who_have_enabled('cns_birthday', null, array(get_member())); // Just make sure the member-ID filter doesn't crash
 
         $ob = new Hook_notification_cns_friend_birthday();
         $results = $ob->list_members_who_have_enabled('cns_friend_birthday');

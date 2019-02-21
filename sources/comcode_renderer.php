@@ -2481,6 +2481,10 @@ function get_tutorial_link($name)
  */
 function set_tutorial_link($name, $value)
 {
+    if (strpos($value, ':search:') !== false) {
+        return; // Do not want tutorial links to search results page
+    }
+
     if (get_tutorial_link($name) !== $value) {
         $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
         $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition

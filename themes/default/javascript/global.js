@@ -672,8 +672,11 @@ function manage_scroll_height(ob)
 	var height=ob.scrollHeight;
 	if ((height>5) && (sts(ob.style.height)<height) && (find_height(ob)<height))
 	{
+		height+=sts(abstract_get_computed_style(ob,'padding-top'));
+		height+=sts(abstract_get_computed_style(ob,'padding-bottom'));
+		height+=sts(abstract_get_computed_style(ob,'border-top-width'));
+		height+=sts(abstract_get_computed_style(ob,'border-bottom-width'));
 		ob.style.height=height+'px';
-		ob.style.boxSizing='border-box';
 		ob.style.overflowY='hidden';
 		trigger_resize();
 	}

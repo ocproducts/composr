@@ -1,3 +1,3 @@
 [title]{$SITE_NAME*} Site-Map[/title]
 
-{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}
+{$BLOCK,block=menu,param={$_GET,under}\,valid_node_types=root|zone|page_grouping|page|entry_point|comcode_page|config_category|catalogue|catalogue_category|chat|download_category|news_category|gallery|forum,use_page_groupings=1,type=sitemap,quick_cache=1}

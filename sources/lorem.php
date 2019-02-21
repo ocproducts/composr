@@ -881,7 +881,7 @@ function render_screen_preview($template, $hook, $function)
     $previews = call_user_func(array($ob, $function));
 
     if ($text) {
-        $previews[0] = do_template('WITH_WHITESPACE', array('_GUID' => 'bcc1c95427d7f70524501955ba046d56', 'CONTENT' => $previews[0]));
+        $previews[0] = with_whitespace($previews[0]);
     }
     $tmp = substr($function, 13);
 

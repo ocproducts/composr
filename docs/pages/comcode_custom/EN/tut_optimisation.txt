@@ -15,6 +15,7 @@ Performance tuning is multi-faceted, broadly fitting into:
  - Blocking abuse, such as bad bots, DOS attacks, misrouted traffic, and flooders
  - Improving page download speeds (e.g. compression and minification)
  - Improving front-end rendering time
+ - Optimising server configuration
 There are many angles to come at the problem, and to really do a good job you need to come at all of them, on every layer of the web architecture.
 
 Limiting factors could be:
@@ -36,6 +37,8 @@ Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a
  - ionCube PHP Accelerator (free)
 
 Only one opcode cache can be used, and they often need to be manually compiled against the PHP version on the server and then installed as an extension. Such system administration is beyond the scope of this tutorial.
+
+Do not set the persistent cache's memory higher than needed, especially on a fast CGI or module-based PHP installation -- for at least some persistent cache backends the memory is pre-allocated, for each PHP process that is running. For APC, this is set via the [tt]apc.shm_size[/tt] setting.
 
 [title="2"]Persistent database connections[/title]
 
@@ -93,7 +96,23 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently).
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
- - If you are on a VPS ask the webhost whether there is too much load on the master machine.
+ - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources.
+
+[title="2"]Server configuration tips[/title]
+
+The fastest way to configure PHP is usually as FPM (FastCGI), on top of a threaded web server (e.g. Apache's [tt]mpm_event[/tt]):
+ - While the traditional Apache [tt]mod_php[/tt] is fast and simple, it cannot run on top of [tt]mpm_event[/tt] because it is not thread-safe, so it doesn't scale up well -- you'll find you need more Apache processes just to deal with static requests, but each comes with the overhead of [tt]mod_php[/tt].
+ - suPHP and CGI are likely too slow for you.
+ - FPM will give you a suEXEC-like capability without actually needing to configure suEXEC.
+ - FPM has the capability of scaling up and down the number of PHP FastCGI processes dynamically, within the bounds you configure.
+ - Be aware that this requires a baseline of RAM for every website on the server that is running under a different username because the FastCGI processes are user-specific.
+ - The more RAM you have, the quicker parallel PHP requests can be handled as more FastCGI instances can be configured to remain resident in RAM.
+ - Don't have an Apache or FastCGI (FPM) configuration that allows more Apache/PHP processes than you have memory for when a server is under high load -- it is much better to have saturated CPU than to have your server start page swapping.
+ - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
+ - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
+ - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
+
+Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer.
 
 [title="2"]Persistent cache[/title]
 
@@ -111,6 +130,8 @@ The cache is implemented to work with any one of:
 Composr will not use a persistent cache by default but it may be enabled from the Installation Options editor.
 
 Composr does not cache processed content in memory that has no special featured status, as this would only trade reliance on CPU for reliance on memory in a non-productive fashion.
+
+Be aware that some persistent cache backends may be tied into a PHP process, rather than held system wide. This is the case for APC. Therefore if you are using a CGI architecture the full contents of the cache will be dumped each time a web request finishes (defeating the entire purpose); for fast CGI it's not as bad, as processes serve multiple requests, although it does mean there is a lot of duplication between each fast CGI process.
 
 [title="2"]Aggressive caching for bots[/title]
 
@@ -566,12 +587,83 @@ Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[
 [title="2"]Profiling[/title]
 
 A developer can run a profiler to work out bottlenecks in code, and decide optimisations.
-For hard-core programming, xdebug would be used. However, you can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+
+[title="3"]xdebug[/title]
+
+For hard-core programming, xdebug would be used. It collects the most detailed profiling information and there are many tools for analysing the data.
+
+[title="3"]tideways-xhprof[/title]
+
+Facebook developed xhprof, a fast profiler that can be used on live servers. It collects less detailed data than xdebug. xhprof was discontinued, but tideways-xhprof is a fork that is well maintained.
+
+To use on a live server you can install the [url="tideways-xhprof"]https://github.com/tideways/php-xhprof-extension[/url] extension, then add this PHP code to your [tt]_config.php[/tt] file:
+[code="PHP"]
+if ((class_exists('\Tideways\Profiler')) && (isset($_SERVER['HTTP_HOST']))) {
+    \Tideways\Profiler::setServiceName($_SERVER['HTTP_HOST']);
+}
+
+if (function_exists('tideways_xhprof_enable')) {
+    global $TIDEWAYS_INIT_TIME;
+    $TIDEWAYS_INIT_TIME = microtime(true);
+
+    tideways_xhprof_enable();
+    register_shutdown_function(function() {
+        if ((class_exists('\Tideways\Profiler')) && (function_exists('get_self_url_easy'))) {
+            \Tideways\Profiler::setTransactionName(get_self_url_easy(true));
+        }
+
+        register_shutdown_function(function() {
+            $save_id = strval(time()) . '-' . uniqid('', true);
+
+            global $TIDEWAYS_INIT_TIME;
+            //require_code('global4');
+            $context_data = array(
+                'wall_time' => microtime(true) - $TIDEWAYS_INIT_TIME,
+                //'normative_performance' => find_normative_performance(),
+                'cat /proc/meminfo' => shell_exec('cat /proc/meminfo'),
+                'uptime' => shell_exec('uptime'),
+                'ps -Af' => shell_exec('ps -Af'),
+                'top -n1' => shell_exec('top -n1'),
+                'iostat' => shell_exec('iostat'),
+                'iotop -n1 -b' => shell_exec('iotop -n1 -b'),
+                '$_SERVER' => $_SERVER,
+                '$_ENV' => $_ENV,
+                '$_GET' => $_GET,
+                '$_POST' => $_POST,
+                '$_COOKIE' => $_COOKIE,
+                '$_FILES' => $_FILES,
+            );
+            file_put_contents(dirname(__FILE__) . '/safe_mode_temp/composr-' . $save_id . '.context', json_encode($context_data,  JSON_PRETTY_PRINT));
+
+            $data = tideways_xhprof_disable();
+            file_put_contents(dirname(__FILE__) . '/safe_mode_temp/composr-' . $save_id . '.xhprof', serialize($data));
+        });
+    });
+};
+[/code]
+The collected xhprof data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
+The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the enviroment status when the profiling happened.
+
+[title="3"]Commercial dashboards[/title]
+
+Newrelic and Tideways both provide high-quality performance monitoring dashboards, for a fee. To a limited extent Google Analytics can also identify performance issues.
+
+[title="3"]Composr's inbuilt profiler[/title]
+
+Composr's built-in profiler is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+
+[title="3"]MySQL[/title]
+
+MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
+
+[title="3"]Composr's page stats[/title]
 
 If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
 [code="SQL"]
 SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
 [/code]
+
+[title="3"]Filesystem[/title]
 
 If you create a [tt]data_custom/debug_fs.log[/tt] file then all disk activity will be written to it if you load the site with [tt]keep_debug_fs=1[/tt].
 
@@ -618,6 +710,10 @@ There are are various commands on Linux that are useful during diagnosis...
 ! Purpose
 ! Hints
 |-
+| [tt]cat /proc/meminfo[/tt]
+| Show detailed memory information
+| 
+|-
 | [tt]uptime[/tt]
 | Show the CPU load at different points in time
 | If the load level is higher than the number of CPU cores in the server, you have a serious issue.
@@ -634,13 +730,15 @@ There are are various commands on Linux that are useful during diagnosis...
 | Show CPU and disk load
 | This is useful to find disk I/O load.
 |-
-| [tt]iotop[/tt]
+| [tt]iotop -n1 -b[/tt]
 | Show active processes by I/O load
 | This command usually is not installed by default. It is very useful to find what processes are doing a lot of I/O.
+|-
+| [tt]vmstat 1[/tt]
+| Watch virtual memory
+| Watching the numbers changing will tell you if the server is 'page swapping' due to low memory (which is a huge performance killer).
 |}
 Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput).
-
-MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
 
 There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
 
@@ -648,6 +746,11 @@ A good system administrator will:
 1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
 2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
 3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+
+Some further tips:
+ - If you are on a VPS ask the webhost whether there is too much load on the host machine. Also consider that they may have a 'burst' policy, so your VPS may be running slowly due to processing it has done recently, rather than in that exact moment.
+ - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
+ - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
 
 [title="2"]See also[/title]
 

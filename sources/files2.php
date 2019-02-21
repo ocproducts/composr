@@ -1294,261 +1294,266 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 if (function_exists('curl_setopt')) {
                     if (function_exists('curl_exec')) {
                         if (function_exists('curl_error')) {
-                            if (function_exists('curl_close')) {
-                                if (function_exists('curl_getinfo')) {
-                                    if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
-                                        $curl_version = curl_version();
-                                        if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
-                                            $ch = curl_init($do_ip_forwarding ? $_url : $url);
+                            if (function_exists('curl_errno')) {
+                                if (function_exists('curl_close')) {
+                                    if (function_exists('curl_getinfo')) {
+                                        if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
+                                            $curl_version = curl_version();
+                                            if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
+                                                $ch = curl_init($do_ip_forwarding ? $_url : $url);
 
-                                            // Cookie prep
-                                            if ((!is_null($cookies)) && (count($cookies) != 0)) {
-                                                curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
-                                            }
+                                                // Cookie prep
+                                                if ((!is_null($cookies)) && (count($cookies) != 0)) {
+                                                    curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
+                                                }
 
-                                            // SSL prep
-                                            $disabled_ssl_verify = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1'));
+                                                // SSL prep
+                                                $disabled_ssl_verify = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1'));
 
-                                            if ($disabled_ssl_verify) {
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-                                            } else {
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-                                            }
-                                            if (ini_get('curl.cainfo') == '') {
-                                                $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
-                                                curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
-                                            }
-                                            if (defined('CURL_SSLVERSION_TLSv1')) {
-                                                curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
-                                            } else {
-                                                if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
-                                                    curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
-                                                    // Best to never mess with CURLOPT_SSL_CIPHER_LIST, because different servers have different ciphers, and things constantly evolve, hard-coding isn't going to work - this is a last-ditch option for old versions of PHP, we can be specifying TLSv1 as a cipher [=category] (which is undocumented)
+                                                if ($disabled_ssl_verify) {
+                                                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
                                                 } else {
-                                                    curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
+                                                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+                                                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
                                                 }
-                                            }
-                                            // ^ If you get errors about ciphers not matching up, it's possibly cURL being buggy and misreporting a firewall problem. The above config settings should be rock-solid on almost every single server.
-                                            if ($do_ip_forwarding) {
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-                                            }
-
-                                            // Misc settings
-                                            //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
-                                            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval(ceil($timeout)));
-                                            //curl_setopt($ch, CURLOPT_TIMEOUT, intval(ceil($timeout))); This does not do what we want (it would be an overall time limit for the response)
-                                            curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-                                            curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, intval(ceil($timeout)));
-
-                                            // Request type
-                                            if ($http_verb == 'HEAD') {
-                                                curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
-                                            } else {
-                                                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_verb);
-                                            }
-
-                                            // Headers
-                                            $curl_headers = array();
-                                            if (!is_null($accept)) {
-                                                $curl_headers[] = 'Accept: ' . $accept;
-                                            }
-                                            if (!is_null($accept_charset)) {
-                                                $curl_headers[] = 'Accept-Charset: ' . $accept_charset;
-                                            }
-                                            if (!is_null($accept_language)) {
-                                                $curl_headers[] = 'Accept-Language: ' . $accept_language;
-                                            }
-                                            if (!is_null($extra_headers)) {
-                                                foreach ($extra_headers as $key => $val) {
-                                                    $curl_headers[] = $key . ': ' . $val;
+                                                if (ini_get('curl.cainfo') == '') {
+                                                    $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
+                                                    curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
                                                 }
-                                            }
-                                            if (($raw_post) && ((is_null($files)) || ($put !== null))) {
-                                                if (!isset($extra_headers['Content-Type'])) {
-                                                    $curl_headers[] = 'Content-Type: ' . $raw_content_type;
-                                                }
-                                            }
-                                            if (!is_null($post_params)) {
-                                                if ($put !== null) {
-                                                    fclose($put);
-                                                    $put = fopen($put_path, 'rb');
-                                                    curl_setopt($ch, CURLOPT_PUT, true);
-                                                    curl_setopt($ch, CURLOPT_INFILE, $put);
-                                                    curl_setopt($ch, CURLOPT_INFILESIZE, filesize($put_path));
+                                                if (defined('CURL_SSLVERSION_TLSv1')) {
+                                                    curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
                                                 } else {
-                                                    curl_setopt($ch, CURLOPT_POST, true);
-                                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload_curl);
-                                                    if (!is_null($files)) {
-                                                        $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
+                                                    if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
+                                                        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                        // Best to never mess with CURLOPT_SSL_CIPHER_LIST, because different servers have different ciphers, and things constantly evolve, hard-coding isn't going to work - this is a last-ditch option for old versions of PHP, we can be specifying TLSv1 as a cipher [=category] (which is undocumented)
+                                                    } else {
+                                                        curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
                                                     }
                                                 }
-                                            }
-                                            if ($do_ip_forwarding) {
-                                                $curl_headers[] = 'Host: ' . $url_parts['host'];
-                                            }
-                                            if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
-                                                if (defined('CURLINFO_HEADER_OUT')) {
-                                                    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+                                                // ^ If you get errors about ciphers not matching up, it's possibly cURL being buggy and misreporting a firewall problem. The above config settings should be rock-solid on almost every single server.
+                                                if ($do_ip_forwarding) {
+                                                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
                                                 }
-                                                curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
-                                            }
 
-                                            // cURL options that will create headers also
-                                            if (!is_null($auth)) {
-                                                curl_setopt($ch, CURLOPT_USERPWD, implode(':', $auth));
-                                            }
-                                            if (!is_null($referer)) {
-                                                curl_setopt($ch, CURLOPT_REFERER, $referer);
-                                            }
-                                            curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-                                            if ($byte_limit !== null) {
-                                                curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
-                                            }
+                                                // Misc settings
+                                                //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
+                                                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval(ceil($timeout)));
+                                                //curl_setopt($ch, CURLOPT_TIMEOUT, intval(ceil($timeout))); This does not do what we want (it would be an overall time limit for the response)
+                                                curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+                                                curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, intval(ceil($timeout)));
 
-                                            // Proxy settings
-                                            $proxy = function_exists('get_option') ? get_option('proxy') : '';
-                                            if (($proxy != '') && ($url_parts['host'] != 'localhost') && ($url_parts['host'] != '127.0.0.1')) {
-                                                $port = get_option('proxy_port');
-                                                curl_setopt($ch, CURLOPT_PROXY, $proxy . ':' . $port);
-                                                $proxy_user = get_option('proxy_user');
-                                                if ($proxy_user != '') {
-                                                    $proxy_password = get_option('proxy_password');
-                                                    curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_password);
-                                                }
-                                            }
-
-                                            // Data collection
-                                            global $CURL_HEADERS, $CURL_BODY, $CURL_WRITE_TO_FILE;
-                                            $CURL_HEADERS = array();
-                                            $CURL_BODY = '';
-                                            $CURL_WRITE_TO_FILE = $write_to_file;
-                                            curl_setopt($ch, CURLOPT_HEADERFUNCTION, '_http_download_file_curl_headers');
-                                            curl_setopt($ch, CURLOPT_WRITEFUNCTION, '_http_download_file_curl_body');
-
-                                            // Response
-                                            $curl_result = curl_exec($ch);
-                                            if (!$curl_result) {
-                                                // Error
-                                                $error = curl_error($ch);
-                                                curl_close($ch);
-
-                                                /*  We don't show error as we allow rolling on to another HTTP implementation, in case cURL is defective on this server
-                                                if ($trigger_error) {
-                                                    warn_exit($error);
+                                                // Request type
+                                                if ($http_verb == 'HEAD') {
+                                                    curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
                                                 } else {
-                                                    $HTTP_MESSAGE_B = protect_from_escaping($error);
-                                                }
-                                                */
-                                            } else {
-                                                // Response metadata that cURL lets us gather easily
-                                                $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-                                                $HTTP_DOWNLOAD_SIZE = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-                                                $HTTP_DOWNLOAD_URL = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-                                                if ($HTTP_DOWNLOAD_URL == $_url) {
-                                                    $HTTP_DOWNLOAD_URL = $url;
-                                                }
-                                                $HTTP_MESSAGE = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
-                                                if ($HTTP_MESSAGE == '206') {
-                                                    $HTTP_MESSAGE = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
-                                                }
-                                                if (strpos($HTTP_DOWNLOAD_MIME_TYPE, ';') !== false) {
-                                                    $HTTP_CHARSET = substr($HTTP_DOWNLOAD_MIME_TYPE, 8 + strpos($HTTP_DOWNLOAD_MIME_TYPE, 'charset='));
-                                                    $HTTP_DOWNLOAD_MIME_TYPE = substr($HTTP_DOWNLOAD_MIME_TYPE, 0, strpos($HTTP_DOWNLOAD_MIME_TYPE, ';'));
+                                                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_verb);
                                                 }
 
-                                                curl_close($ch);
-
-                                                // Receive headers
-                                                foreach ($CURL_HEADERS as $header) {
-                                                    $matches = array();
-                                                    if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
-                                                        _read_in_headers($header);
+                                                // Headers
+                                                $curl_headers = array();
+                                                if (!is_null($accept)) {
+                                                    $curl_headers[] = 'Accept: ' . $accept;
+                                                }
+                                                if (!is_null($accept_charset)) {
+                                                    $curl_headers[] = 'Accept-Charset: ' . $accept_charset;
+                                                }
+                                                if (!is_null($accept_language)) {
+                                                    $curl_headers[] = 'Accept-Language: ' . $accept_language;
+                                                }
+                                                if (!is_null($extra_headers)) {
+                                                    foreach ($extra_headers as $key => $val) {
+                                                        $curl_headers[] = $key . ': ' . $val;
                                                     }
-                                                    if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
-                                                        _read_in_headers($header);
+                                                }
+                                                if (($raw_post) && ((is_null($files)) || ($put !== null))) {
+                                                    if (!isset($extra_headers['Content-Type'])) {
+                                                        $curl_headers[] = 'Content-Type: ' . $raw_content_type;
                                                     }
-                                                    if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
-                                                        if (is_null($HTTP_FILENAME)) {
-                                                            $HTTP_FILENAME = urldecode(basename($matches[1]));
+                                                }
+                                                if (!is_null($post_params)) {
+                                                    if ($put !== null) {
+                                                        fclose($put);
+                                                        $put = fopen($put_path, 'rb');
+                                                        curl_setopt($ch, CURLOPT_PUT, true);
+                                                        curl_setopt($ch, CURLOPT_INFILE, $put);
+                                                        curl_setopt($ch, CURLOPT_INFILESIZE, filesize($put_path));
+                                                    } else {
+                                                        curl_setopt($ch, CURLOPT_POST, true);
+                                                        curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload_curl);
+                                                        if (!is_null($files)) {
+                                                            $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
                                                         }
+                                                    }
+                                                }
+                                                if ($do_ip_forwarding) {
+                                                    $curl_headers[] = 'Host: ' . $url_parts['host'];
+                                                }
+                                                if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
+                                                    if (defined('CURLINFO_HEADER_OUT')) {
+                                                        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+                                                    }
+                                                    curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
+                                                }
 
-                                                        if (strpos($matches[1], '://') === false) {
-                                                            $matches[1] = qualify_url($matches[1], $url, true);
+                                                // cURL options that will create headers also
+                                                if (!is_null($auth)) {
+                                                    curl_setopt($ch, CURLOPT_USERPWD, implode(':', $auth));
+                                                }
+                                                if (!is_null($referer)) {
+                                                    curl_setopt($ch, CURLOPT_REFERER, $referer);
+                                                }
+                                                curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+                                                if ($byte_limit !== null) {
+                                                    curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
+                                                }
+
+                                                // Proxy settings
+                                                $proxy = function_exists('get_option') ? get_option('proxy') : '';
+                                                if (($proxy != '') && ($url_parts['host'] != 'localhost') && ($url_parts['host'] != '127.0.0.1')) {
+                                                    $port = get_option('proxy_port');
+                                                    curl_setopt($ch, CURLOPT_PROXY, $proxy . ':' . $port);
+                                                    $proxy_user = get_option('proxy_user');
+                                                    if ($proxy_user != '') {
+                                                        $proxy_password = get_option('proxy_password');
+                                                        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_password);
+                                                    }
+                                                }
+
+                                                // Data collection
+                                                global $CURL_HEADERS, $CURL_BODY, $CURL_WRITE_TO_FILE;
+                                                $CURL_HEADERS = array();
+                                                $CURL_BODY = '';
+                                                $CURL_WRITE_TO_FILE = $write_to_file;
+                                                curl_setopt($ch, CURLOPT_HEADERFUNCTION, '_http_download_file_curl_headers');
+                                                curl_setopt($ch, CURLOPT_WRITEFUNCTION, '_http_download_file_curl_body');
+
+                                                // Response
+                                                $curl_result = curl_exec($ch);
+                                                if (!$curl_result) {
+                                                    // Error
+                                                    $error = curl_error($ch);
+                                                    $curl_errno = curl_errno($ch);
+                                                    curl_close($ch);
+
+                                                    $possible_internal_curl_errors = array(1, 2, 4, 5, 16, 34, 35, 41, 43, 45, 48, 52, 53, 54, 55, 56, 58, 59, 60, 64, 66, 77, 80, 81, 82, 83, 89, 90, 91, 92);
+                                                    if (!in_array($curl_errno, $possible_internal_curl_errors)) {
+                                                        if ($trigger_error) {
+                                                            warn_exit($error);
+                                                        } else {
+                                                            $HTTP_MESSAGE_B = protect_from_escaping($error);
                                                         }
-                                                        $HTTP_DOWNLOAD_URL = $matches[1];
-                                                        if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
-                                                            $bak = $HTTP_FILENAME;
-                                                            $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
-                                                            $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                                        return null;
+                                                    } // Else roll on and try another downloader implementation
+                                                } else {
+                                                    // Response metadata that cURL lets us gather easily
+                                                    $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                                                    $HTTP_DOWNLOAD_SIZE = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+                                                    $HTTP_DOWNLOAD_URL = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+                                                    if ($HTTP_DOWNLOAD_URL == $_url) {
+                                                        $HTTP_DOWNLOAD_URL = $url;
+                                                    }
+                                                    $HTTP_MESSAGE = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+                                                    if ($HTTP_MESSAGE == '206') {
+                                                        $HTTP_MESSAGE = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
+                                                    }
+                                                    if (strpos($HTTP_DOWNLOAD_MIME_TYPE, ';') !== false) {
+                                                        $HTTP_CHARSET = substr($HTTP_DOWNLOAD_MIME_TYPE, 8 + strpos($HTTP_DOWNLOAD_MIME_TYPE, 'charset='));
+                                                        $HTTP_DOWNLOAD_MIME_TYPE = substr($HTTP_DOWNLOAD_MIME_TYPE, 0, strpos($HTTP_DOWNLOAD_MIME_TYPE, ';'));
+                                                    }
+
+                                                    curl_close($ch);
+
+                                                    // Receive headers
+                                                    foreach ($CURL_HEADERS as $header) {
+                                                        $matches = array();
+                                                        if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
+                                                            _read_in_headers($header);
+                                                        }
+                                                        if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
+                                                            _read_in_headers($header);
+                                                        }
+                                                        if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
                                                             if (is_null($HTTP_FILENAME)) {
-                                                                $HTTP_FILENAME = $bak;
+                                                                $HTTP_FILENAME = urldecode(basename($matches[1]));
                                                             }
-                                                            $DOWNLOAD_LEVEL--;
-                                                            if ($put !== null) {
-                                                                fclose($put);
-                                                                if (!$put_no_delete) {
-                                                                    @unlink($put_path);
+
+                                                            if (strpos($matches[1], '://') === false) {
+                                                                $matches[1] = qualify_url($matches[1], $url, true);
+                                                            }
+                                                            $HTTP_DOWNLOAD_URL = $matches[1];
+                                                            if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
+                                                                $bak = $HTTP_FILENAME;
+                                                                $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                                                $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                                                if (is_null($HTTP_FILENAME)) {
+                                                                    $HTTP_FILENAME = $bak;
                                                                 }
+                                                                $DOWNLOAD_LEVEL--;
+                                                                if ($put !== null) {
+                                                                    fclose($put);
+                                                                    if (!$put_no_delete) {
+                                                                        @unlink($put_path);
+                                                                    }
+                                                                }
+                                                                return _detect_character_encoding($text);
                                                             }
-                                                            return _detect_character_encoding($text);
                                                         }
                                                     }
-                                                }
 
-                                                // Cleanup
-                                                $DOWNLOAD_LEVEL--;
-                                                if ($put !== null) {
-                                                    fclose($put);
-                                                    if (!$put_no_delete) {
-                                                        @unlink($put_path);
-                                                    }
-                                                }
-
-                                                // Receive body
-                                                if ((!in_array($HTTP_MESSAGE, array('200', '201'))) && (!$ignore_http_status)) {
-                                                    $CURL_BODY = null;
-
-                                                    switch ($HTTP_MESSAGE ) {
-                                                        case '401':
-                                                        case '403':
-                                                            if ($trigger_error) {
-                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
-                                                            } else {
-                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
-                                                            }
-                                                            $HTTP_DOWNLOAD_MIME_TYPE = 'security';
-                                                            break;
-                                                        case '404':
-                                                            if ($trigger_error) {
-                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
-                                                            } else {
-                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
-                                                            }
-                                                            break;
-                                                        case '400':
-                                                        case '429':
-                                                        case '500':
-                                                            if ($trigger_error) {
-                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
-                                                            } else {
-                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
-                                                            }
-                                                            break;
-                                                        default:
-                                                            if ($trigger_error) {
-                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE)));
-                                                            } else {
-                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE));
-                                                            }
-                                                            break;
+                                                    // Cleanup
+                                                    $DOWNLOAD_LEVEL--;
+                                                    if ($put !== null) {
+                                                        fclose($put);
+                                                        if (!$put_no_delete) {
+                                                            @unlink($put_path);
+                                                        }
                                                     }
 
-                                                    return null;
+                                                    // Receive body
+                                                    if ((!in_array($HTTP_MESSAGE, array('200', '201'))) && (!$ignore_http_status)) {
+                                                        $CURL_BODY = null;
+
+                                                        switch ($HTTP_MESSAGE ) {
+                                                            case '401':
+                                                            case '403':
+                                                                if ($trigger_error) {
+                                                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
+                                                                } else {
+                                                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
+                                                                }
+                                                                $HTTP_DOWNLOAD_MIME_TYPE = 'security';
+                                                                break;
+                                                            case '404':
+                                                                if ($trigger_error) {
+                                                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
+                                                                } else {
+                                                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
+                                                                }
+                                                                break;
+                                                            case '400':
+                                                            case '429':
+                                                            case '500':
+                                                                if ($trigger_error) {
+                                                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
+                                                                } else {
+                                                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
+                                                                }
+                                                                break;
+                                                            default:
+                                                                if ($trigger_error) {
+                                                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE)));
+                                                                } else {
+                                                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE));
+                                                                }
+                                                                break;
+                                                        }
+
+                                                        return null;
+                                                    }
+                                                    return _detect_character_encoding($CURL_BODY);
                                                 }
-                                                return _detect_character_encoding($CURL_BODY);
                                             }
                                         }
                                     }

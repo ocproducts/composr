@@ -1106,7 +1106,7 @@ function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fiel
         if ((isset($CAT_FIELDS_CACHE[$catalogue_name])) && (!$natural_order)) {
             $fields = $CAT_FIELDS_CACHE[$catalogue_name];
         } else {
-            $order_by = (($natural_order && (strpos(get_db_type(), 'mysql')/*assumption about sequential order*/ !== false)) ? 'id' : 'cf_order');
+            $order_by = (($natural_order && (strpos(get_db_type(), 'mysql')/*assumption about sequential order*/ !== false)) ? 'id' : ('cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name')));
             $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY ' . $order_by);
         }
     }
