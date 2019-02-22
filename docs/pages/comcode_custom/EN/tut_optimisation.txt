@@ -742,13 +742,43 @@ Additionally, the Apache web server has [tt]mod_status[/tt] which can be configu
 
 There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
 
+Here's a list of metrics you may want to be considering...
+ - Memory:
+  - Free non-swap memory
+  - Assigned swap memory
+  - Swapping rate
+  - MySQL memory usage specifically
+  - Combined PHP memory usage specifically
+ - Processes:
+  - Process count
+  - Process count of PHP CLI processes specifically
+  - Process count of PHP web processes specifically
+ - Queues:
+  - Queued MySQL queries
+  - Queued web requests
+ - CPU:
+  - Uptime
+  - CPU utilisation
+ - Local I/O:
+  - Disk I/O load
+  - I/O wait time
+ - Network I/O:
+  - Network I/O load
+  - Inbound bandwidth utilisation
+  - Outbound bandwidth utilisation
+  - Packet loss percentage
+  - Inbound ping time
+  - Outbound ping time
+  - Inbound network pipe speed
+  - Outbound network pipe speed
+
 A good system administrator will:
 1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
 2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
 3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
 
 Some further tips:
- - If you are on a VPS ask the webhost whether there is too much load on the host machine. Also consider that they may have a 'burst' policy, so your VPS may be running slowly due to processing it has done recently, rather than in that exact moment.
+ - If you are on a VPS or shared hosting ask the webhost whether there is too much load on the host machine at some points during the day. Also consider that they may have a 'burst' policy, so your site may be running slowly due to processing it has done recently, rather than in that exact moment. For a VPS, consider whether you have dedicated cores, have virtual cores in a small shared pool (worst, depending on your 'neighbours'), or whether you have virtual cores in a large pool (very efficient and adaptive, so long as the host's cores aren't all full).
  - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
  - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
 
