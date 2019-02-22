@@ -34,7 +34,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
     {
         $this->process_checks_section('testManualWebStandards', 'Manual checks for web standards', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testGuestAccess', 'Guest access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testBrokenLinks', 'Broken links', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testBrokenLinks', 'Broken links (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testIncompleteContent', 'Incomplete content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
