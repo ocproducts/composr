@@ -54,8 +54,8 @@ function static_cache__get_self_url_easy()
 {
     // May not be called from Composr, so can't rely on Composr's normal fixup_bad_php_env_vars function having being called
     $self_url = '';
-    if (!empty($_SERVER['REQUEST_URI'])) {
-        $self_url .= $_SERVER['REQUEST_URI'];
+    if ((!empty($_SERVER['HTTP_HOST'])) && (!empty($_SERVER['REQUEST_URI']))) {
+        $self_url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     } elseif (!empty($_SERVER['PHP_SELF'])) {
         $self_url .= $_SERVER['PHP_SELF'];
         if (count($_GET) != 0) {
