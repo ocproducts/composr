@@ -906,6 +906,7 @@ HTML;
                 }
 
                 $thumb_url = $row['url'];
+
                 if (url_is_local($thumb_url)) {
                     $file_size = file_exists(get_custom_file_base() . '/' . rawurldecode($thumb_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($thumb_url))) : '';
                     $thumb_url = get_custom_base_url() . '/' . $thumb_url;
@@ -1289,7 +1290,6 @@ HTML;
 
         sort_maps_by($query_rows, ($sort_dir == 'DESC') ? '!' . $sort_name : $sort_name);
 
-
         $current_index = 0;
         $current_url = null;
         $current_video = null;
@@ -1298,6 +1298,11 @@ HTML;
         $carousel_entries = new Tempcode();
 
         $is_on_comments = (get_option('is_on_comments') == '1') && (get_forum_type() != 'none') && ((get_forum_type() != 'cns') || (addon_installed('cns_forum')));
+
+        $forum_by_type_and_cat = array(
+            'images' => array(),
+            'videos' => array(),
+        );
 
         // Show media
         foreach ($query_rows as $i => $row) {
@@ -1312,30 +1317,21 @@ HTML;
             $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'layout_mode' => get_param_string('layout_mode', null), 'probe_type' => $type, 'probe_id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
             $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
 
-            $content_url = build_url(array('page' => '_SELF', 'type' => 'image', 'id' => $probe_id), '_SELF', array(), false, false, true)->evaluate();
+            $full_url = $row['url'];
+            $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', $type_plural, $row['r_id']);
 
+            if (url_is_local($full_url)) {
+                $full_url = get_custom_base_url() . '/' . $full_url;
+            }
+
+            $content_url = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $probe_id), '_SELF', array(), false, false, true)->evaluate();
             $content_title = ($entry_title == '') ? do_lang('VIEW_IMAGE_IN', $true_category_name) : $entry_title;
 
-            $forum = find_overridden_comment_forum($type_plural, $cat);
-
-            $full_url = '';
-
-            if (array_key_exists('url', $row)) {
-                $full_url = $row['url'];
-                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['r_id']);
-
-                if (url_is_local($full_url)) {
-                    $full_url = get_custom_base_url() . '/' . $full_url;
-                }
-            } else {
-                $thumb_url = $row['thumb_url'];
-                if ($thumb_url == '') {
-                    $thumb_url = find_theme_image('na');
-                }
-                if (url_is_local($thumb_url)) {
-                    $thumb_url = get_custom_base_url() . '/' . $thumb_url;
-                }
+            if (!isset($forum_by_type_and_cat[$type_plural][$cat])) {
+                $forum_by_type_and_cat[$type_plural][$cat] = find_overridden_comment_forum($type_plural, $cat);
             }
+
+            $forum = $forum_by_type_and_cat[$type_plural][$cat];
 
             if (($probe_type === $type) && ($probe_id === intval($row['r_id']))) {
                 $current_index = $i;
@@ -1352,7 +1348,7 @@ HTML;
                 }
 
                 list($current_rating_details, $current_comment_details, $current_trackback_details) = embed_feedback_systems(
-                    $type . 's',
+                    $type_plural,
                     strval($row['r_id']),
                     $row['allow_rating'],
                     $row['allow_comments'],
@@ -1371,7 +1367,7 @@ HTML;
                 $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['r_id'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_galleries'));
             }
 
-            $thumb = do_image_thumb($thumb_url, $entry_title);
+            $thumb = do_image_thumb($thumb_url, $entry_title, false, false, 200, 100);
 
             $comments_options = null;
             $comments_options_hash = null;

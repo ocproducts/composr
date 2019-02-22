@@ -286,14 +286,12 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     if (get_option('reverse_thumb_order') == '1') {
         $thumb_order = 'ORDER BY add_date DESC,id DESC';
     }
-    if ($pic == '') {
-        $pic = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'thumb_url', array('cat' => $myrow['name'], 'validated' => 1), $thumb_order);
-    }
+
     if ($pic == '') {
         require_code('images');
-        $temp = $GLOBALS['SITE_DB']->query_select('images', array('id', 'url'), array('cat' => $myrow['name'], 'validated' => 1), $thumb_order, 1);
+        $temp = $GLOBALS['SITE_DB']->query_select('images', array('id', 'url', 'thumb_url'), array('cat' => $myrow['name'], 'validated' => 1), $thumb_order, 1);
         if (isset($temp[0])) {
-            $pic = ensure_thumbnail($temp[0]['url'], '', 'galleries', 'images', $temp[0]['id']);
+            $pic = ensure_thumbnail($temp[0]['url'], $temp[0]['thumb_url'], 'galleries', 'images', $temp[0]['id']);
         }
     }
     if ($pic == '') {
@@ -315,17 +313,18 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         $breadcrumbs = breadcrumb_segments_to_tempcode(gallery_breadcrumbs($myrow['name'], ($root === null) ? get_param_string('keep_gallery_root', 'root') : $root, !$attach_to_url_filter));
     }
 
+    // Build a slideshow URL if possible
     $slideshow_url = null;
 
-    if (($num_videos + $num_images) > 0) {
-        $sort = 'add_date DESC';
+    $sort = 'add_date DESC';
 
-        $first_image = $GLOBALS['SITE_DB']->query_select('images', array('id', 'add_date'), array('cat' => $myrow['name'], 'validated' => 1), 'ORDER BY ' . $sort, 1);
-        $first_image = isset($first_image[0]) ? $first_image[0] : null;
+    $first_image = $GLOBALS['SITE_DB']->query_select('images', array('id', 'add_date'), array('cat' => $myrow['name'], 'validated' => 1), 'ORDER BY ' . $sort, 1);
+    $first_image = isset($first_image[0]) ? $first_image[0] : null;
 
-        $first_video = $GLOBALS['SITE_DB']->query_select('videos', array('id', 'add_date'), array('cat' => $myrow['name'], 'validated' => 1), 'ORDER BY ' . $sort, 1);
-        $first_video = isset($first_video[0]) ? $first_video[0] : null;
+    $first_video = $GLOBALS['SITE_DB']->query_select('videos', array('id', 'add_date'), array('cat' => $myrow['name'], 'validated' => 1), 'ORDER BY ' . $sort, 1);
+    $first_video = isset($first_video[0]) ? $first_video[0] : null;
 
+    if (isset($first_image) || isset($first_video)) {
         if ($first_image === null) {
             $first_type = 'video';
             $first_id = $first_video['id'];
@@ -337,7 +336,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
             $first_id = ($first_image['add_date'] > $first_video['add_date']) ? $first_image['id'] : $first_video['id'];
         }
 
-        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'wide_high' => 1, 'id' => $first_id, 'sort' => ($sort === get_option('galleries_default_sort_order')) ? null : $sort, 'slideshow' => 1), '_SELF', array(), true);
+        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'id' => $first_id, 'wide_high' => 1, 'sort' => ($sort === get_option('galleries_default_sort_order')) ? null : $sort, 'slideshow' => 1), '_SELF', array(), true);
     }
 
     // Render

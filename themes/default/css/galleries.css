@@ -970,6 +970,12 @@ html:not(.is-touch-enabled) .glide-other-gallery-images.has-multiple-views:not(:
 	overflow: hidden;
 }
 
+/*{+START,CSS_MODE,desktop}*/
+.gallery-box-thumb {
+	width: 40%;
+}
+/*{+END}*/
+
 .gallery-box-thumb .img-thumb {
 	width: 100%;
 	opacity: 1;

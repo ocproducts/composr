@@ -261,6 +261,8 @@
 
         this.setupMediaWrappersSizing();
 
+        $dom.on(window, 'keydown', $util.throttle(this.onKeyDown.bind(this), 200));
+
         if (window.parent !== window) {
             window.parent.postMessage('cms-gallery-slideshow-ready');
         }
@@ -277,7 +279,6 @@
                 'click .slideshow-carousel-entry': 'carouselEntryClick',
                 'click .btn-slider-control-prev': 'sliderPrevClick',
                 'click .btn-slider-control-next': 'sliderNextClick',
-                'keydown': 'onKeyDown',
 
                 'change .input-slide-duration': 'updateSlideDuration',
                 'change .select-slide-transition-effect': 'updateSlideTransitionEffect',
@@ -605,7 +606,7 @@
             return Promise.resolve();
         },
 
-        onKeyDown: $util.throttle(function (e) {
+        onKeyDown: function (e) {
             if ((e.target.localName === 'input') || (e.target.localName === 'textarea')) {
                 return;
             }
@@ -625,7 +626,7 @@
                     return self.switchToSlide('+=1');
                 });
             }
-        }, 200),
+        },
 
         sliderPrevClick: function () {
             var self = this;
@@ -771,7 +772,7 @@
 
                     newSliderItem.classList.remove('has-loading-indicator');
 
-                    mediaWrapper.style.backgroundImage = 'url("' + encodeURI(smallImg.src) + '")';
+                    mediaWrapper.style.backgroundImage = 'url("' + smallImg.src.replaceAll('"', '%22') + '")';
 
                     $dom.replaceWith(smallImg, self._cachedVideoHtml[entryId]);
 
