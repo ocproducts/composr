@@ -410,7 +410,7 @@ class Module_admin_addons
 
                 if ($do_caching) {
                     require_code('caches2');
-                    put_into_cache('_addon_installed_tpl', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', array($colour, $addon_tpl));
+                    put_into_cache('_addon_installed_tpl', 60 * 24, $cache_identifier, null, null, '', null, '', array($colour, $addon_tpl));
                 }
             }
 
@@ -465,7 +465,7 @@ class Module_admin_addons
 
                     if ($do_caching) {
                         require_code('caches2');
-                        put_into_cache('_addon_available_tpl', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', array($colour, $addon_tpl));
+                        put_into_cache('_addon_available_tpl', 60 * 24, $cache_identifier, null, null, '', null, '', array($colour, $addon_tpl));
                     }
                 }
 

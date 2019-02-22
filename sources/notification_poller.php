@@ -248,7 +248,7 @@ function get_web_notifications($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        put_into_cache('_get_notifications', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), $ret);
+        put_into_cache('_get_notifications', 60 * 24, serialize(array($max)), null, get_member(), '', null, '', $ret);
     }
 
     return $ret;
@@ -407,7 +407,7 @@ function get_pts($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        put_into_cache('_get_pts', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), $ret);
+        put_into_cache('_get_pts', 60 * 24, serialize(array($max)), null, get_member(), '', null, '', $ret);
     }
 
     return $ret;
