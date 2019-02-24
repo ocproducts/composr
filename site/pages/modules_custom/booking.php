@@ -60,11 +60,12 @@ class Module_booking
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if (is_null($upgrade_from)) {
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to bookable_description in v11
             $GLOBALS['SITE_DB']->create_table('bookable', array(
                 'id' => '*AUTO',
                 //'num_available' => 'INTEGER',      Implied by number of bookable_codes attached to bookable_id
                 'title' => 'SHORT_TRANS__COMCODE',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'price' => 'REAL',
                 'categorisation' => 'SHORT_TRANS__COMCODE', // (will work as a heading, for the booking form)
                 'cycle_type' => 'ID_TEXT', // (same as event recurrences in the calendar addon; can be none [which would remove date chooser]) - a room cycles daily for example

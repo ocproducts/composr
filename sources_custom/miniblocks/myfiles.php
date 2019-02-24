@@ -27,12 +27,15 @@ $files = file_exists($basedir) ? get_directory_contents($basedir) : array();
 if (count($files) == 0) {
     echo '<p class="nothing_here">No files have been uploaded for you yet.</p>';
 } else {
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to file_description in v11
+
     natsort($files);
     echo '<div class="wide_table_wrap"><table class="wide_table columned_table results_table autosized_table">';
     echo '<thead><tr><th>Filename</th><th>Description</th><th>File size</th></tr></thead>';
     echo '<tbody>';
     foreach ($files as $file) {
-        $dbrows = $GLOBALS['SITE_DB']->query_select('filedump', array('description', 'the_member'), array('name' => $file, 'path' => '/' . $GLOBALS['FORUM_DRIVER']->get_username($member_id) . '/'));
+        $dbrows = $GLOBALS['SITE_DB']->query_select('filedump', array($description_key, 'the_member'), array('name' => $file, $path_key => '/' . $GLOBALS['FORUM_DRIVER']->get_username($member_id) . '/'));
         if (!array_key_exists(0, $dbrows)) {
             $description = do_lang_tempcode('NONE_EM');
         } else {

@@ -571,11 +571,13 @@ function erase_comcode_page_cache()
  */
 function erase_theme_images_cache()
 {
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images/%\'');
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE ' . $path_key . ' LIKE \'themes/%/images/%\'');
 
     Self_learning_cache::erase_smart_cache();
 
-    $paths = $GLOBALS['SITE_DB']->query_select('theme_images', array('path', 'id'));
+    $paths = $GLOBALS['SITE_DB']->query_select('theme_images', array($path_key, 'id'));
     foreach ($paths as $path) {
         if ($path['path'] == '') {
             $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);

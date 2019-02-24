@@ -28,8 +28,9 @@ require_css('carousels');
 
 $subdownloads = new Tempcode();
 require_code('selectcode');
+$description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to category_description in v11
 $filter_where = selectcode_to_sqlfragment($id . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
-$all_rows = $GLOBALS['SITE_DB']->query('SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d WHERE ' . $filter_where, 20, null, false, true, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+$all_rows = $GLOBALS['SITE_DB']->query('SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d WHERE ' . $filter_where, 20, null, false, true, array('name' => 'SHORT_TRANS', $description_key => 'LONG_TRANS__COMCODE'));
 shuffle($all_rows);
 foreach ($all_rows as $d_row) {
     $d_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $d_row['id']), get_module_zone('downloads'));

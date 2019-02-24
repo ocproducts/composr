@@ -85,10 +85,12 @@ class Module_galleries
         require_lang('galleries');
         require_code('galleries2');
 
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to gallery_description/image_description/video_description in v11
+
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('galleries', array(
                 'name' => '*ID_TEXT',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'fullname' => 'SHORT_TRANS__COMCODE',
                 'add_date' => 'TIME',
                 'rep_image' => 'URLPATH',
@@ -114,14 +116,14 @@ class Module_galleries
             $GLOBALS['SITE_DB']->create_index('galleries', 'gadd_date', array('add_date'));
             $GLOBALS['SITE_DB']->create_index('galleries', 'parent_id', array('parent_id'));
             $GLOBALS['SITE_DB']->create_index('galleries', 'ftjoin_gfullname', array('fullname'));
-            $GLOBALS['SITE_DB']->create_index('galleries', 'ftjoin_gdescrip', array('description'));
+            $GLOBALS['SITE_DB']->create_index('galleries', 'ftjoin_gdescrip', array($description_key));
 
             $GLOBALS['SITE_DB']->create_table('images', array(
                 'id' => '*AUTO',
                 'cat' => 'ID_TEXT',
                 'url' => 'URLPATH',
                 'thumb_url' => 'URLPATH',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'allow_rating' => 'BINARY',
                 'allow_comments' => 'SHORT_INTEGER',
                 'allow_trackbacks' => 'BINARY',
@@ -145,7 +147,7 @@ class Module_galleries
                 'cat' => 'ID_TEXT',
                 'url' => 'URLPATH',
                 'thumb_url' => 'URLPATH',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'allow_rating' => 'BINARY',
                 'allow_comments' => 'SHORT_INTEGER',
                 'allow_trackbacks' => 'BINARY',
@@ -205,8 +207,8 @@ class Module_galleries
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
-            $GLOBALS['SITE_DB']->alter_table_field('images', 'comments', 'LONG_TRANS', 'description');
-            $GLOBALS['SITE_DB']->alter_table_field('videos', 'comments', 'LONG_TRANS', 'description');
+            $GLOBALS['SITE_DB']->alter_table_field('images', 'comments', 'LONG_TRANS', $description_key);
+            $GLOBALS['SITE_DB']->alter_table_field('videos', 'comments', 'LONG_TRANS', $description_key);
             $GLOBALS['SITE_DB']->delete_table_field('galleries', 'teaser');
         }
 
@@ -221,9 +223,9 @@ class Module_galleries
         if ((is_null($upgrade_from)) || ($upgrade_from < 10)) {
             $GLOBALS['SITE_DB']->create_index('video_transcoding', 't_local_id', array('t_local_id'));
 
-            $GLOBALS['SITE_DB']->create_index('galleries', '#gallery_search__combined', array('fullname', 'description'));
-            $GLOBALS['SITE_DB']->create_index('images', '#image_search__combined', array('description', 'title'));
-            $GLOBALS['SITE_DB']->create_index('videos', '#video_search__combined', array('description', 'title'));
+            $GLOBALS['SITE_DB']->create_index('galleries', '#gallery_search__combined', array('fullname', $description_key));
+            $GLOBALS['SITE_DB']->create_index('images', '#image_search__combined', array($description_key, 'title'));
+            $GLOBALS['SITE_DB']->create_index('videos', '#video_search__combined', array($description_key, 'title'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_gallery', false);
             add_privilege('SEARCH', 'autocomplete_title_gallery', false);
@@ -232,8 +234,8 @@ class Module_galleries
             add_privilege('SEARCH', 'autocomplete_keyword_videos', false);
             add_privilege('SEARCH', 'autocomplete_title_videos', false);
 
-            $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_idescription', array('description'));
-            $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_vdescription', array('description'));
+            $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_idescription', array($description_key));
+            $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_vdescription', array($description_key));
         }
     }
 
@@ -873,8 +875,9 @@ class Module_galleries
             $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
         }
         $max_entries = intval(get_option('gallery_entries_flow_per_page'));
-        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to video_description/image_description in v11
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', $description_key => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', $description_key => 'LONG_TRANS__COMCODE'));
 
         // See if there is a numbering system to sort by
         $all_are = null;

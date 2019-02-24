@@ -891,9 +891,11 @@ class Module_admin_setupwizard
         if ((post_param_integer('skip_8', 0) == 0) && (function_exists('imagepng')) && (addon_installed('themewizard'))) {
             require_code('themewizard');
 
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
             // Make theme
             global $THEME_IMAGES_CACHE;
-            $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
+            $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', $path_key), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
             if (!file_exists(get_custom_file_base() . '/themes/' . $theme)) {
                 make_theme($theme, 'default', 'equations', post_param_string('seed_hex'), true, post_param_integer('dark', 0) == 1);
             }

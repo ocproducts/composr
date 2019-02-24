@@ -171,7 +171,9 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
             }
 
             if (is_null($avatar_url)) {
-                $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', 'path' => '')); // In case failure cached, gets very confusing
+                $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+                $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', $path_key => '')); // In case failure cached, gets very confusing
                 $avatar_url = find_theme_image('cns_default_avatars/default', true, true);
                 if (is_null($avatar_url)) {
                     $avatar_url = '';

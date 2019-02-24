@@ -1612,6 +1612,8 @@ class DatabaseConnector
                     $lang = function_exists('user_lang') ? user_lang() : get_site_default_lang(); // We can we assume this, as we will cache against it -- if subsequently code wants something else it'd be a cache miss which is fine
 
                     foreach ($lang_fields as $field => $field_type) {
+                        $field = trim($field, '`'); // TODO: Remove in v11
+
                         $field_stripped = preg_replace('#.*\.#', '', $field);
 
                         $join = ' LEFT JOIN ' . $this->table_prefix . 'translate t_' . $field_stripped . ' ON t_' . $field_stripped . '.id=' . $field_prefix . $field;
@@ -1663,6 +1665,8 @@ class DatabaseConnector
                 }
             } else {
                 foreach ($lang_fields as $field => $field_type) {
+                    $field = trim($field, '`'); // TODO: Remove in v11
+
                     if (strpos($field_type, '__COMCODE') !== false) {
                         $_query = strtoupper($query);
                         $from_pos = strpos($_query, ' FROM ');

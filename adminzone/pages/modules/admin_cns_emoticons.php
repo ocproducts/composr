@@ -339,7 +339,8 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         handle_images_cleanup_pipeline($full_path);
 
         $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $image_code));
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $image_code, 'theme' => 'default', 'path' => $url_path, 'lang' => get_site_default_lang()));
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $image_code, 'theme' => 'default', $path_key => $url_path, 'lang' => get_site_default_lang()));
         $GLOBALS['FORUM_DB']->query_delete('f_emoticons', array('e_code' => ':' . $emoticon_code . ':'), '', 1);
         $GLOBALS['FORUM_DB']->query_insert('f_emoticons', array(
             'e_code' => ':' . $emoticon_code . ':',

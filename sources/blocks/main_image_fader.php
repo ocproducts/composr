@@ -111,8 +111,9 @@ class Block_main_image_fader
             $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
-        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to video_description/image_description in v11
+        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', $description_field => 'LONG_TRANS'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', $description_field => 'LONG_TRANS'));
         $all_rows = array();
         if ($order != '') {
             foreach (explode(',', $order) as $o) {

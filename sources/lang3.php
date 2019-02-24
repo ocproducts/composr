@@ -223,13 +223,15 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
  */
 function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2, $connection = null)
 {
+    $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
+
     $insert_map = insert_lang($field_name, do_lang($code), $level, null, $comcode);
     if (multi_lang_content()) {
         $langs = find_all_langs();
         foreach ($langs as $lang => $lang_type) {
             if ($lang != user_lang()) {
                 if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
-                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, $connection, true, $insert_map[$field_name], $lang);
+                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, $connection, true, $insert_map[$_field_name], $lang);
                 }
             }
         }
@@ -315,7 +317,8 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
 
     if (!multi_lang_content()) {
         $ret = array();
-        $ret[$field_name] = $text;
+        $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
+        $ret[$_field_name] = $text;
         if ($comcode) {
             $ret[$field_name . '__text_parsed'] = $text_parsed;
             $ret[$field_name . '__source_user'] = $source_user;
@@ -352,8 +355,9 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
         }
     }
 
+    $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
     return array(
-        $field_name => $id
+        $_field_name => $id
     );
 }
 
@@ -456,8 +460,9 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
 
     $connection->text_lookup_original_cache[$id] = $text;
 
+    $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
     return array(
-        $field_name => $id
+        $_field_name => $id
     );
 }
 

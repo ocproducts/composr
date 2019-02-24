@@ -546,11 +546,13 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         if ((substr($val, 0, 7) == 'themes/') && (substr($val, 0, 15) != 'themes/default/') && (substr($val, 0, 12) != 'themes/admin/') && (substr($val, -10) == '/theme.ini')) {
             $theme = substr($val, 7, strpos($val, '/theme.ini') - 7);
 
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));
             $data = '<' . '?php' . "\n";
             foreach ($images as $image) {
                 if (($image['path'] != '') && ($image['path'] != find_theme_image($image['id'], true, true, 'default'))) {
-                    $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\', array(\'id\' => \'' . db_escape_string($image['id']) . '\', \'theme\' => \'' . db_escape_string($image['theme']) . '\', \'path\' => \'' . db_escape_string($image['path']) . '\', \'lang\' => \'' . db_escape_string($image['lang']) . '\'), false, true);' . "\n";
+                    $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\', array(\'id\' => \'' . db_escape_string($image['id']) . '\', \'theme\' => \'' . db_escape_string($image['theme']) . '\', \'' . $path_key . '\' => \'' . db_escape_string($image['path']) . '\', \'lang\' => \'' . db_escape_string($image['lang']) . '\'), false, true);' . "\n";
                 }
             }
             tar_add_file($tar, 'addon_install_code.php', $data, 0444, time());

@@ -42,8 +42,10 @@ function find_addon_category_download_category($category_name, $parent_id = null
             }
 
             if (is_null($description)) {
+                $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to category_description in v11
+
                 // Copy version category description from parent ("Addons")
-                $description = get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', 'description', array('id' => $parent_id)));
+                $description = get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', $description_key, array('id' => $parent_id)));
                 $description = str_replace('[title="2"]Choose Composr version below[/title]', '[title="2"]Choose addon category below[/title]', $description);
             }
         }

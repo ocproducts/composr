@@ -60,11 +60,13 @@ class Module_authors
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if (is_null($upgrade_from)) {
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to author_description in v11
+
             $GLOBALS['SITE_DB']->create_table('authors', array(
                 'author' => '*ID_TEXT',
                 'url' => 'URLPATH',
                 'member_id' => '?MEMBER',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'skills' => 'LONG_TRANS__COMCODE',
             ));
 

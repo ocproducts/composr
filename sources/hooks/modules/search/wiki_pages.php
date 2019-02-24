@@ -128,7 +128,8 @@ class Hook_search_wiki_pages extends FieldsSearchHook
         $this->_handle_date_check($cutoff, 'add_date', $where_clause);
 
         $table = 'wiki_pages r';
-        $trans_fields = array('r.title' => 'SHORT_TRANS', 'r.description' => 'LONG_TRANS__COMCODE');
+        $_description_key = (strpos(get_db_type(), 'mysql') !== false) ? 'r.`description`' : 'r.description'; // TODO: Change properly to page_description in v11
+        $trans_fields = array('r.title' => 'SHORT_TRANS', $_description_key => 'LONG_TRANS__COMCODE');
         $nontrans_fields = array();
         $this->_get_search_parameterisation_advanced_for_content_type('_wiki_page', $table, $where_clause, $trans_fields, $nontrans_fields);
 

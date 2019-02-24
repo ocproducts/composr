@@ -145,7 +145,9 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
             fatal_exit($name . ' is a keyword');
         }
         if (preg_match('#^[\w]+$#', $name) == 0) {
-            fatal_exit('Inappropriate identifier: ' . $name);
+            if ($name != '`groups`' && $name != '`path`' && $name != '`description`') { // TODO: Remove in v11
+                fatal_exit('Inappropriate identifier: ' . $name);
+            }
         }
         if (strlen($name) > DB_MAX_FIELD_IDENTIFIER_SIZE) {
             fatal_exit('Inappropriate identifier, too long: ' . $name);
@@ -224,6 +226,8 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
     $ins_m_type = array();
     $fields_copy = $fields;
     foreach ($fields_copy as $name => $type) {
+        $name = trim($name, '`'); // TODO: Remove in v11
+
         if (($table_name != 'db_meta') && ($table_name != 'db_meta_indices')) {
             $ins_m_table[] = $table_name;
             $ins_m_name[] = $name;
@@ -467,7 +471,11 @@ function _helper_drop_table_if_exists($this_ref, $table)
             $_attrs = array();
             foreach ($attrs as $attr) {
                 if (in_array(preg_replace('#[^\w]#', '', $attr['m_type']), array('SHORT_TRANS', 'LONG_TRANS', 'SHORT_TRANS__COMCODE', 'LONG_TRANS__COMCODE'))) {
-                    $_attrs[] = $attr['m_name'];
+                    if ($attr['m_name'] == 'description') { // TODO: Change in v11
+                        $_attrs[] = '`description`';
+                    } else {
+                        $_attrs[] = $attr['m_name'];
+                    }
                 }
             }
             mass_delete_lang($table, $_attrs, $this_ref);

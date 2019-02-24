@@ -547,7 +547,8 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
     require_code('urls2');
     suggest_new_idmoniker_for('galleries', 'image', strval($id), '', ($title == '') ? $description : $title);
 
-    $_description = $GLOBALS['SITE_DB']->query_select_value('images', 'description', array('id' => $id));
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to image_description in v11
+    $_description = $GLOBALS['SITE_DB']->query_select_value('images', $description_key, array('id' => $id));
     $_title = $GLOBALS['SITE_DB']->query_select_value('images', 'title', array('id' => $id));
     $old_cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', array('id' => $id));
 
@@ -1049,7 +1050,8 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     suggest_new_idmoniker_for('galleries', 'video', strval($id), '', ($title == '') ? $description : $title);
 
     $_title = $GLOBALS['SITE_DB']->query_select_value('videos', 'title', array('id' => $id));
-    $_description = $GLOBALS['SITE_DB']->query_select_value('videos', 'description', array('id' => $id));
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to video_description in v11
+    $_description = $GLOBALS['SITE_DB']->query_select_value('videos', $description_key, array('id' => $id));
     $orig_url = $GLOBALS['SITE_DB']->query_select_value('videos', 'url', array('id' => $id));
     $old_cat = $GLOBALS['SITE_DB']->query_select_value('videos', 'cat', array('id' => $id));
 
@@ -1166,7 +1168,8 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
  */
 function delete_video($id, $delete_full = true)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to video_description in v11
+    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', $description_field, 'cat'), array('id' => $id), '', 1);
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
     $cat = $rows[0]['cat'];
@@ -1487,7 +1490,8 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         seo_meta_set_for_explicit('gallery', $name, $meta_keywords, $meta_description);
     }
 
-    $myrows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'description'), array('name' => $old_name), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to gallery_description in v11
+    $myrows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', $description_key), array('name' => $old_name), '', 1);
     if (!array_key_exists(0, $myrows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }

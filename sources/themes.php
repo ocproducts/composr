@@ -106,6 +106,8 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     // Can we get it from the database / internal caching?...
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     if (!$pure_only) {
         if ($truism) {
             // Are we looking for something the the internal cache does not know about yet? If so then we better load further
@@ -146,9 +148,9 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
                             // Dynamic fixup possible?
                             if ($theme != 'default') {
-                                $url_path = $db->query_select_value_if_there('theme_images', 'path', array('id' => $id, 'theme' => 'default', 'lang' => $lang));
+                                $url_path = $db->query_select_value_if_there('theme_images', $path_key, array('id' => $id, 'theme' => 'default', 'lang' => $lang));
                                 if ($url_path !== null) {
-                                    $db->query_update('theme_images', array('path' => $url_path), array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
+                                    $db->query_update('theme_images', array($path_key => $url_path), array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
                                 } else {
                                     $db->query_delete('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
                                 }
@@ -163,7 +165,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             }
         } else {
             // Can't rely on caching because the cache only runs if $truism
-            $url_path = $db->query_select_value_if_there('theme_images', 'path', array('id' => $id, 'theme' => $theme, 'lang' => $lang));
+            $url_path = $db->query_select_value_if_there('theme_images', $path_key, array('id' => $id, 'theme' => $theme, 'lang' => $lang));
         }
     }
 
@@ -216,7 +218,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             if (!is_forum_db($db)) { // If guard is here because a MSN site can't code assumptions about the file system of the central site into that site's database, we rely on that site to maintain its own theme_images table for performance
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
-                $db->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang, 'path' => $url_path), false, true); // Allow for race conditions
+                $db->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang, $path_key => $url_path), false, true); // Allow for race conditions
                 $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
             }
         }
@@ -302,7 +304,9 @@ function load_theme_image_cache($db, $db_place, $true_theme, $true_lang)
             break;
 
         case THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE:
-            $theme_images = $db->query_select('theme_images', array('id', 'path'), array('theme' => $true_theme, 'lang' => $true_lang));
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+            $theme_images = $db->query_select('theme_images', array('id', $path_key), array('theme' => $true_theme, 'lang' => $true_lang));
             $THEME_IMAGES_CACHE[$db_place] = collapse_2d_complexity('id', 'path', $theme_images);
 
             $THEME_IMAGES_LOAD_INTENSITY[$db_place] = THEME_IMAGES_LOAD_INTENSITY__ALL;

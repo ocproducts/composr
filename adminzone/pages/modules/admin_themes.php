@@ -69,10 +69,12 @@ class Module_admin_themes
         $themes = find_all_themes(); // Find all images for all themes
 
         if (is_null($upgrade_from)) {
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
             $GLOBALS['SITE_DB']->create_table('theme_images', array(
                 'id' => '*SHORT_TEXT',
                 'theme' => '*MINIID_TEXT',
-                'path' => 'URLPATH',
+                $path_key => 'URLPATH',
                 'lang' => '*LANGUAGE_NAME'
             ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
@@ -242,7 +244,8 @@ class Module_admin_themes
                     warn_exit(do_lang_tempcode('NOT_THEME_IMAGE'));
                 }
                 $path = substr($url, $pos);
-                $id = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('path' => $path, 'theme' => $theme));
+                $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+                $id = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array($path_key => $path, 'theme' => $theme));
                 if (is_null($id)) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
@@ -2075,9 +2078,10 @@ class Module_admin_themes
         if ($lang != '') {
             $where_map['lang'] = $lang;
         }
-        $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+        $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', $path_key, $where_map);
         if (is_null($path)) {
-            $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', array('theme' => $theme, 'lang' => get_site_default_lang(), 'id' => $id));
+            $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', $path_key, array('theme' => $theme, 'lang' => get_site_default_lang(), 'id' => $id));
         }
         if (is_null($path)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));

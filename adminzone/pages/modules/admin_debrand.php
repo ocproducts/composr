@@ -231,6 +231,8 @@ class Module_admin_debrand
             }
         }
 
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
         // Clean up the theme images
         //  background-image
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme('');
@@ -241,17 +243,17 @@ class Module_admin_debrand
 
             $test = find_theme_image('logo/adminzone-logo', true);
             if ($test != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
+                $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
             }
 
             $test = find_theme_image('logo/cms-logo', true);
             if ($test != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
+                $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
             }
 
             $test = find_theme_image('logo/collaboration-logo', true);
             if ($test != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
+                $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
             }
         }
 
@@ -259,16 +261,16 @@ class Module_admin_debrand
         require_code('uploads');
         $path = get_url('', 'favicon', 'themes/default/images_custom');
         if ($path[0] != '') {
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'favicon'));
+            $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $path[0]), array('id' => 'favicon'));
         }
         $path = get_url('', 'webclipicon', 'themes/default/images_custom');
         if ($path[0] != '') {
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'webclipicon'));
+            $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $path[0]), array('id' => 'webclipicon'));
         }
         if (addon_installed('cns_avatars')) {
             $path = get_url('', 'system_avatar', 'themes/default/images_custom');
             if ($path[0] != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'cns_default_avatars/system'));
+                $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $path[0]), array('id' => 'cns_default_avatars/system'));
             }
         }
 

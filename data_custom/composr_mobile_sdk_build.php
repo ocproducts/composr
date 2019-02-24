@@ -109,7 +109,9 @@ class Composr_mobile_sdk_tools
             exit('Theme ' . $theme . ' does not exist' . "\n");
         }
 
-        $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme, 'lang' => $lang));
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+        $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', $path_key), array('theme' => $theme, 'lang' => $lang));
         foreach ($theme_images as $theme_image) {
             $ext = get_file_extension($theme_image['path']);
             $file = basename($theme_image['id']) . '.' . $ext;

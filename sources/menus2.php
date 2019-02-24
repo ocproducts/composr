@@ -420,6 +420,8 @@ function copy_from_sitemap_to_new_menu($target_menu, $source)
  */
 function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = null)
 {
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     if (isset($node['children'])) {
         foreach ($node['children'] as $child) {
             $theme_image_code = mixed();
@@ -427,7 +429,7 @@ function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = 
                 $_theme_image_code = $child['extra_meta']['image'];
                 if (substr($_theme_image_code, 0, strlen(get_custom_base_url() . '/')) == get_custom_base_url() . '/') {
                     $_theme_image_code = substr($_theme_image_code, strlen(get_custom_base_url() . '/'));
-                    $theme_image_code = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('path' => $_theme_image_code));
+                    $theme_image_code = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array($path_key => $_theme_image_code));
                 }
             }
 

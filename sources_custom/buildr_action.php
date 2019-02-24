@@ -100,6 +100,8 @@ function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $heal
  */
 function add_item($name, $bribable, $healthy, $picture_url, $owner, $max_per_player, $replicateable, $description)
 {
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to item_description in v11
+
     $GLOBALS['SITE_DB']->query_insert('w_itemdef', array(
         'name' => $name,
         'bribable' => $bribable,
@@ -108,7 +110,7 @@ function add_item($name, $bribable, $healthy, $picture_url, $owner, $max_per_pla
         'owner' => $owner,
         'replicateable' => $replicateable,
         'max_per_player' => $max_per_player,
-        'description' => $description,
+        $description_key => $description,
     ));
 }
 
@@ -1030,7 +1032,8 @@ function edit_item($name, $original_name, $bribable, $healthy, $picture_url, $ne
     }
 
     // General editing of template
-    $GLOBALS['SITE_DB']->query_update('w_itemdef', array('owner' => $new_owner, 'description' => $description, 'max_per_player' => $max_per_player, 'replicateable' => $replicateable, 'bribable' => $bribable, 'healthy' => $healthy), array('name' => $name), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to item_description in v11
+    $GLOBALS['SITE_DB']->query_update('w_itemdef', array('owner' => $new_owner, $description_key => $description, 'max_per_player' => $max_per_player, 'replicateable' => $replicateable, 'bribable' => $bribable, 'healthy' => $healthy), array('name' => $name), '', 1);
 }
 
 /**

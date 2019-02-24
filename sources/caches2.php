@@ -175,6 +175,7 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
             'cached_for' => $codename,
             'identifier' => md5($cache_identifier)
         ), '', 1);
+        $groups_key = (strpos(get_db_type(), 'mysql') !== false) ? '`groups`' : 'groups'; // TODO: Change properly to the_groups in v11
         $GLOBALS['SITE_DB']->query_insert('cache', array(
             'cached_for' => $codename,
             'dependencies' => $dependencies,
@@ -183,7 +184,7 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
             'the_theme' => $theme,
             'staff_status' => $staff_status,
             'the_member' => $member,
-            'groups' => $groups,
+            $groups_key => $groups,
             'is_bot' => $is_bot,
             'timezone' => $timezone,
             'the_value' => $tempcode ? $cache->to_assembly($lang) : serialize($cache),

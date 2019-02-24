@@ -395,7 +395,8 @@ class Module_cms_downloads extends Standard_crud_module
         $fields->attach(form_input_text_comcode(do_lang_tempcode('ADDITIONAL_INFO'), do_lang_tempcode('DESCRIPTION_ADDITIONAL_INFO'), 'additional_details', $additional_details, false));
         if (!is_null($id)) {
             if (addon_installed('galleries')) {
-                $images = $GLOBALS['SITE_DB']->query_select('images', array('thumb_url', 'description'), array('cat' => 'download_' . strval($id)), 'ORDER BY id', 200);
+                $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to gallery_description in v11
+                $images = $GLOBALS['SITE_DB']->query_select('images', array('thumb_url', $description_key), array('cat' => 'download_' . strval($id)), 'ORDER BY id', 200);
                 if (count($images) == 0) {
                     $fields->attach($image_upload_field);
                 } else {

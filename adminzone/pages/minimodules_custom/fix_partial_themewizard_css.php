@@ -133,7 +133,8 @@ if (function_exists('imagecolorallocatealpha')) {
         }
     }
 
-    $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme)));
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+    $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', $path_key), array('theme' => $theme)));
 
     foreach ($full_img_set as $image_code) {
         if (!in_array($image_code, $THEME_WIZARD_IMAGES_NO_WILD)) {

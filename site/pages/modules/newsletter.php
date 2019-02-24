@@ -95,10 +95,11 @@ class Module_newsletter
 
             add_privilege('NEWSLETTER', 'change_newsletter_subscriptions', false);
 
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to newsletter_description in v11
             $GLOBALS['SITE_DB']->create_table('newsletters', array(
                 'id' => '*AUTO',
                 'title' => 'SHORT_TRANS',
-                'description' => 'LONG_TRANS',
+                $description_key => 'LONG_TRANS',
             ));
 
             $map = array();

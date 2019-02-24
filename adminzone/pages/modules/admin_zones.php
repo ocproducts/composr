@@ -946,6 +946,8 @@ class Module_admin_zones
 
             // Handle logos
             if (addon_installed('zone_logos')) {
+                $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
                 require_code('themes2');
                 require_code('uploads');
                 $themes = find_all_themes();
@@ -964,7 +966,7 @@ class Module_admin_zones
                         $iurl = find_theme_image($theme_img_code, false, true, $theme);
                     }
                     $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'logo/' . $new_zone . '-logo', 'theme' => $theme, 'lang' => get_site_default_lang()), '', 1);
-                    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => 'logo/' . $new_zone . '-logo', 'theme' => $theme, 'path' => $iurl, 'lang' => get_site_default_lang()));
+                    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => 'logo/' . $new_zone . '-logo', 'theme' => $theme, $path_key => $iurl, 'lang' => get_site_default_lang()));
                     Self_learning_cache::erase_smart_cache();
                 }
             }

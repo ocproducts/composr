@@ -140,7 +140,9 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
 {
     log_it('DEFINE_AUTHOR', $author, is_null($member_id) ? '' : strval($member_id));
 
-    $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to author_description in v11
+
+    $rows = $GLOBALS['SITE_DB']->query_select('authors', array($description_key, 'skills'), array('author' => $author), '', 1);
     if (array_key_exists(0, $rows)) {
         $_description = $rows[0]['description'];
         $_skills = $rows[0]['skills'];
@@ -192,7 +194,9 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
  */
 function delete_author($author)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to author_description in v11
+
+    $rows = $GLOBALS['SITE_DB']->query_select('authors', array($description_key, 'skills'), array('author' => $author), '', 1);
     if (array_key_exists(0, $rows)) {
         require_code('attachments2');
         require_code('attachments3');

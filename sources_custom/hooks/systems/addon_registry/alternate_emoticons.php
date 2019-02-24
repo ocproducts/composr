@@ -176,8 +176,10 @@ class Hook_addon_registry_alternate_emoticons
     public function install($upgrade_from = null)
     {
         if (is_null($upgrade_from)) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images/cns_emoticons/%\'');
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images//cns_emoticons/%\'');
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE ' . $path_key . ' LIKE \'themes/%/images/cns_emoticons/%\'');
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE ' . $path_key . ' LIKE \'themes/%/images//cns_emoticons/%\'');
 
             if (class_exists('Self_learning_cache')) {
                 Self_learning_cache::erase_smart_cache();

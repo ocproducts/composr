@@ -88,8 +88,9 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
             $connection->query_update('translate', $remap, array('id' => $lang_id));
         }
     } else {
+        $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
         $ret = array();
-        $ret[$field_name] = $_info['comcode'];
+        $ret[$_field_name] = $_info['comcode'];
         $ret[$field_name . '__text_parsed'] = $text_parsed;
         $ret[$field_name . '__source_user'] = $source_user;
         return $ret;

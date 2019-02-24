@@ -510,7 +510,8 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'nu
         final_attachments_from_preview($id, $connection);
 
         $ret = array();
-        $ret[$field_name] = $_info['comcode'];
+        $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
+        $ret[$_field_name] = $_info['comcode'];
         $ret[$field_name . '__text_parsed'] = $text_parsed;
         $ret[$field_name . '__source_user'] = $source_user;
         return $ret;
@@ -554,8 +555,9 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'nu
 
     final_attachments_from_preview($id, $connection);
 
+    $_field_name = (($field_name == 'description') && (strpos(get_db_type(), 'mysql') !== false)) ? ('`' . $field_name . '`') : $field_name; // TODO: Can remove in v11
     return array(
-        $field_name => $lang_id,
+        $_field_name => $lang_id,
     );
 }
 

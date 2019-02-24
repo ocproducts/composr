@@ -165,7 +165,8 @@ class Hook_search_downloads extends FieldsSearchHook
         }
 
         $table = 'download_downloads r';
-        $trans_fields = array('r.name' => 'SHORT_TRANS', 'r.description' => 'LONG_TRANS__COMCODE', 'r.additional_details' => 'LONG_TRANS__COMCODE');
+        $_description_key = (strpos(get_db_type(), 'mysql') !== false) ? 'r.`description`' : 'r.description'; // TODO: Change properly to download_description in v11
+        $trans_fields = array('r.name' => 'SHORT_TRANS', $_description_key => 'LONG_TRANS__COMCODE', 'r.additional_details' => 'LONG_TRANS__COMCODE');
         $nontrans_fields = array('r.original_filename', 'r.download_data_mash');
         $this->_get_search_parameterisation_advanced_for_content_type('_download', $table, $where_clause, $trans_fields, $nontrans_fields);
 

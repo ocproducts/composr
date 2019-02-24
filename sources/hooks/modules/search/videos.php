@@ -168,7 +168,8 @@ class Hook_search_videos extends FieldsSearchHook
         }
 
         $table = 'videos r';
-        $trans_fields = array('' => '', 'r.description' => 'LONG_TRANS__COMCODE', 'r.title' => 'SHORT_TRANS');
+        $_description_key = (strpos(get_db_type(), 'mysql') !== false) ? 'r.`description`' : 'r.description'; // TODO: Change properly to video_description in v11
+        $trans_fields = array('' => '', $_description_key => 'LONG_TRANS__COMCODE', 'r.title' => 'SHORT_TRANS');
         $nontrans_fields = array();
         $this->_get_search_parameterisation_advanced_for_content_type('_video', $table, $where_clause, $trans_fields, $nontrans_fields);
 

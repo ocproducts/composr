@@ -451,8 +451,10 @@ function add_newsletter($title, $description)
  */
 function edit_newsletter($id, $title, $description)
 {
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to newsletter_description in v11
+
     $_title = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'title', array('id' => $id));
-    $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'description', array('id' => $id));
+    $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', $description_key, array('id' => $id));
     $map = array();
     $map += lang_remap('title', $_title, $title);
     $map += lang_remap('description', $_description, $description);
@@ -475,8 +477,10 @@ function edit_newsletter($id, $title, $description)
  */
 function delete_newsletter($id)
 {
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to newsletter_description in v11
+
     $_title = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'title', array('id' => $id));
-    $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'description', array('id' => $id));
+    $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', $description_key, array('id' => $id));
 
     $GLOBALS['SITE_DB']->query_delete('newsletters', array('id' => $id), '', 1);
     $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('newsletter_id' => $id));

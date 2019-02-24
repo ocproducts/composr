@@ -86,11 +86,12 @@ class Module_wiki
                 'title' => 'SHORT_TEXT'
             ));
 
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to page_description in v11
             $GLOBALS['SITE_DB']->create_table('wiki_pages', array(
                 'id' => '*AUTO',
                 'title' => 'SHORT_TRANS',
                 'notes' => 'LONG_TEXT',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'add_date' => 'TIME',
                 'edit_date' => '?TIME',
                 'wiki_views' => 'INTEGER',
@@ -136,7 +137,8 @@ class Module_wiki
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'ftjoin_spm', array('the_message'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spt', array('title'));
-            $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array('description'));
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to page_description in v11
+            $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array($description_key));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
@@ -191,7 +193,8 @@ class Module_wiki
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
-            $GLOBALS['SITE_DB']->create_index('wiki_pages', '#wiki_search__combined', array('title', 'description'));
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to page_description in v11
+            $GLOBALS['SITE_DB']->create_index('wiki_pages', '#wiki_search__combined', array('title', $description_key));
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'wiki_views', array('wiki_views'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'wiki_views', array('wiki_views'));
@@ -484,7 +487,7 @@ class Module_wiki
         $num_children = 0;
         $children = array();
         if (get_option('wiki_enable_children') == '1') {
-            $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'hide_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
+            $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'hide_posts', $description_key), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
 

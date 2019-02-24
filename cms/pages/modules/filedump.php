@@ -67,11 +67,14 @@ class Module_filedump
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if (is_null($upgrade_from)) {
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to file_description in v11
+
             $GLOBALS['SITE_DB']->create_table('filedump', array(
                 'id' => '*AUTO',
                 'name' => 'ID_TEXT',
-                'path' => 'URLPATH',
-                'description' => 'SHORT_TRANS',
+                $path_key => 'URLPATH',
+                $description_key => 'SHORT_TRANS',
                 'the_member' => 'MEMBER'
             ));
 
@@ -293,6 +296,8 @@ class Module_filedump
             }
         }
 
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+
         // Find all files in the filedump directory
         $db_rows = array();
         $something_editable = false;
@@ -313,7 +318,7 @@ class Module_filedump
                 }
 
                 if (!isset($db_rows[$_place])) {
-                    $db_rows[$_place] = list_to_map('name', $GLOBALS['SITE_DB']->query_select('filedump', array('*'), array('path' => cms_mb_substr($_place, 0, 80))));
+                    $db_rows[$_place] = list_to_map('name', $GLOBALS['SITE_DB']->query_select('filedump', array('*'), array($path_key => cms_mb_substr($_place, 0, 80))));
                 }
 
                 $is_directory = !is_file($_full);
@@ -694,7 +699,9 @@ class Module_filedump
             }
         }
 
-        $db_rows = list_to_map('name', $GLOBALS['SITE_DB']->query_select('filedump', array('*'), array('path' => cms_mb_substr($place, 0, 80))));
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+
+        $db_rows = list_to_map('name', $GLOBALS['SITE_DB']->query_select('filedump', array('*'), array($path_key => cms_mb_substr($place, 0, 80))));
 
         $handle = opendir(get_custom_file_base() . '/uploads/filedump' . $place);
         while (false !== ($filename = readdir($handle))) {
@@ -843,7 +850,10 @@ class Module_filedump
             $rendered = comcode_to_tempcode($generated);
         }
 
-        $_description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to file_description in v11
+
+        $_description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', $description_key, array('name' => cms_mb_substr($file, 0, 80), $path_key => cms_mb_substr($place, 0, 80)));
         if (is_null($_description)) {
             $description = post_param_string('description', '');
         } else {
@@ -994,6 +1004,9 @@ class Module_filedump
      */
     public function do_mass()
     {
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to file_description in v11
+
         $action = post_param_string('action');
         switch ($action) {
             case 'zip':
@@ -1053,6 +1066,8 @@ class Module_filedump
                 }
             }
 
+            $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+
             foreach (array_keys($_POST) as $key) {
                 $matches = array();
                 if (preg_match('#^filename_file_(\d+)$#', $key, $matches) != 0) {
@@ -1061,7 +1076,7 @@ class Module_filedump
                     $old_filename = post_param_string('filename_file_' . $matches[1]);
                     $new_filename = post_param_string('filename_value_' . $matches[1]);
                     if (($new_filename != '') && ($old_filename != $new_filename)) {
-                        $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($old_filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+                        $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($old_filename, 0, 80), $path_key => cms_mb_substr($place, 0, 80)));
                         if (((!is_null($owner)) && ($owner == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'))) {
                             $old_filepath = get_custom_file_base() . '/uploads/filedump' . $place . $old_filename;
                             $new_filepath = get_custom_file_base() . '/uploads/filedump' . $place . $new_filename;
@@ -1071,7 +1086,7 @@ class Module_filedump
                             }
                             rename($old_filepath, $new_filepath);
                             sync_file_move($old_filepath, $new_filepath);
-                            $GLOBALS['SITE_DB']->query_update('filedump', array('name' => cms_mb_substr($new_filename, 0, 80)), array('name' => cms_mb_substr($old_filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                            $GLOBALS['SITE_DB']->query_update('filedump', array('name' => cms_mb_substr($new_filename, 0, 80)), array('name' => cms_mb_substr($old_filename, 0, 80), $path_key => cms_mb_substr($place, 0, 80)), '', 1);
 
                             foreach ($files as $i => $_file) {
                                 if ($_file[1] . $_file[0] == $place . $old_filename) {
@@ -1150,14 +1165,14 @@ class Module_filedump
 
                     case 'edit':
                         $description = $descriptions[$place . $file];
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', $description_key, $where);
                         if (!is_null($test)) {
                             $map = lang_remap('description', $test, $description);
                             $GLOBALS['SITE_DB']->query_update('filedump', $map, $where);
                         } else {
                             $map = array(
                                 'name' => cms_mb_substr($file, 0, 80),
-                                'path' => cms_mb_substr($place, 0, 80),
+                                $path_key => cms_mb_substr($place, 0, 80),
                                 'the_member' => get_member(),
                             );
                             $map += insert_lang('description', $description, 3);
@@ -1166,7 +1181,7 @@ class Module_filedump
                         break;
 
                     case 'delete':
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', $description_key, $where);
                         if (!is_null($test)) {
                             delete_lang($test);
                         }
@@ -1193,7 +1208,7 @@ class Module_filedump
                         @rename($path, $path_target) or intelligent_write_error($path);
                         sync_file_move($path, $path_target);
 
-                        $test = $GLOBALS['SITE_DB']->query_update('filedump', array('path' => cms_mb_substr($target, 0, 80)), $where, '', 1);
+                        $test = $GLOBALS['SITE_DB']->query_update('filedump', array($path_key => cms_mb_substr($target, 0, 80)), $where, '', 1);
 
                         update_filedump_links($place . $file, $target . $file);
 
@@ -1226,6 +1241,9 @@ class Module_filedump
      */
     public function do_add_folder()
     {
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to file_description in v11
+
         if (!has_privilege(get_member(), 'upload_filedump')) {
             access_denied('I_ERROR');
         }
@@ -1243,15 +1261,15 @@ class Module_filedump
         $redirect_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'place' => $place), '_SELF');
 
         // Add description
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', $description_key, array('name' => cms_mb_substr($name, 0, 80), $path_key => cms_mb_substr($place, 0, 80)));
         if (!is_null($test)) {
             delete_lang($test);
-            $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+            $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($name, 0, 80), $path_key => cms_mb_substr($place, 0, 80)), '', 1);
         }
         $description = post_param_string('description', '');
         $map = array(
             'name' => cms_mb_substr($name, 0, 80),
-            'path' => cms_mb_substr($place, 0, 80),
+            $path_key => cms_mb_substr($place, 0, 80),
             'the_member' => get_member(),
         );
         $map += insert_lang('description', $description, 3);
@@ -1269,6 +1287,9 @@ class Module_filedump
      */
     public function do_upload()
     {
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to the_path in v11
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to file_description in v11
+
         if (!has_privilege(get_member(), 'upload_filedump')) {
             access_denied('I_ERROR');
         }
@@ -1334,15 +1355,15 @@ class Module_filedump
             $new_files[] = $filename;
 
             // Add description
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', $description_key, array('name' => cms_mb_substr($filename, 0, 80), $path_key => cms_mb_substr($place, 0, 80)));
             if (!is_null($test)) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), $path_key => cms_mb_substr($place, 0, 80)), '', 1);
             }
             $description = post_param_string('description', '');
             $map = array(
                 'name' => cms_mb_substr($filename, 0, 80),
-                'path' => cms_mb_substr($place, 0, 80),
+                $path_key => cms_mb_substr($place, 0, 80),
                 'the_member' => get_member(),
             );
             $map += insert_lang('description', $description, 3);

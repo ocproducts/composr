@@ -81,6 +81,8 @@ class Module_downloads
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to category_description/download_description in v11
+
         if (is_null($upgrade_from)) {
             require_lang('downloads');
 
@@ -90,7 +92,7 @@ class Module_downloads
                 'parent_id' => '?AUTO_LINK',
                 'add_date' => 'TIME',
                 'notes' => 'LONG_TEXT',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'rep_image' => 'URLPATH'
             ));
 
@@ -114,7 +116,7 @@ class Module_downloads
                 'category_id' => 'AUTO_LINK',
                 'name' => 'SHORT_TRANS',
                 'url' => 'URLPATH',
-                'description' => 'LONG_TRANS__COMCODE',
+                $description_key => 'LONG_TRANS__COMCODE',
                 'author' => 'ID_TEXT',
                 'additional_details' => 'LONG_TRANS__COMCODE',
                 'num_downloads' => 'INTEGER',
@@ -148,9 +150,9 @@ class Module_downloads
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'dvalidated', array('validated'));
 
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_dname', array('name'));
-            $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_ddescrip', array('description'));
+            $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_ddescrip', array($description_key));
             $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dccat', array('category'));
-            $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dcdescrip', array('description'));
+            $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dcdescrip', array($description_key));
 
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#download_data_mash', array('download_data_mash'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#original_filename', array('original_filename'));
@@ -183,7 +185,7 @@ class Module_downloads
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'description'));
+            $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', $description_key));
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#dl_search__combined', array('original_filename', 'download_data_mash'));
 
             add_privilege('_SECTION_DOWNLOADS', 'download', true);

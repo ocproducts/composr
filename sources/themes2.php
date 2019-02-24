@@ -150,8 +150,10 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     }
     $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     foreach ($langs as $lang) {
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true);
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, $path_key => $path, 'lang' => $lang), false, true);
     }
 
     if (!$quick) {
@@ -232,6 +234,8 @@ function actual_add_theme($name)
     }
     afm_copy('themes/default/theme.ini', 'themes/' . $name . '/theme.ini', true);
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     // Copy image references from default
     $start = 0;
     do {
@@ -239,7 +243,7 @@ function actual_add_theme($name)
         foreach ($theme_images as $theme_image) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('theme' => $name, 'id' => $theme_image['id'], 'lang' => $theme_image['lang']));
             if (is_null($test)) {
-                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, 'path' => $theme_image['path'], 'lang' => $theme_image['lang']));
+                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, $path_key => $theme_image['path'], 'lang' => $theme_image['lang']));
             }
         }
         $start += 100;
@@ -269,7 +273,8 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
     }
 
-    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang));
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, $path_key => $path, 'lang' => $lang));
 
     log_it('ADD_THEME_IMAGE', $id, $theme);
 
@@ -309,6 +314,8 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
         }
     }
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     require_code('uploads');
     is_plupload(true);
     if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
@@ -319,7 +326,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
             $theme_img_code = $type . '/' . uniqid('', true);
         }
 
-        $db->query_insert('theme_images', array('id' => $theme_img_code, 'theme' => 'default', 'path' => $urls[0], 'lang' => get_site_default_lang()));
+        $db->query_insert('theme_images', array('id' => $theme_img_code, 'theme' => 'default', $path_key => $urls[0], 'lang' => get_site_default_lang()));
 
         Self_learning_cache::erase_smart_cache();
     } else {
@@ -585,12 +592,14 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
         }
     }
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     if (!$dirs_only) {
-        $query = 'SELECT DISTINCT id,path,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
+        $query = 'SELECT DISTINCT id,' . $path_key . ',theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
         if (!$db_only) {
-            $query .= 'path NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('path', 'themes/default/images/blank.gif') . ' AND ';
+            $query .= $path_key . ' NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to($path_key, 'themes/default/images/blank.gif') . ' AND ';
         }
-        $query .= '(' . db_string_equal_to('theme', $theme) . ' OR ' . db_string_equal_to('theme', 'default') . ') AND id LIKE \'' . db_encode_like($type . '%') . '\' ORDER BY path';
+        $query .= '(' . db_string_equal_to('theme', $theme) . ' OR ' . db_string_equal_to('theme', 'default') . ') AND id LIKE \'' . db_encode_like($type . '%') . '\' ORDER BY ' . $path_key;
         $rows = $db->query($query);
         foreach ($rows as $row) {
             if ($row['path'] == '') {
@@ -808,9 +817,11 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
  */
 function create_selection_list_theme_images($it = null, $filter = null, $do_id = false, $include_all = false, $under = '')
 {
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     $out = new Tempcode();
     if (!$include_all) {
-        $rows = $GLOBALS['SITE_DB']->query('SELECT id,path FROM ' . get_table_prefix() . 'theme_images WHERE ' . db_string_equal_to('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . ' ' . $filter . ' ORDER BY path');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT id,' . $path_key . ' FROM ' . get_table_prefix() . 'theme_images WHERE ' . db_string_equal_to('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . ' ' . $filter . ' ORDER BY ' . $path_key);
         foreach ($rows as $myrow) {
             $id = $myrow['id'];
 
@@ -982,7 +993,9 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
         return;
     }
 
-    if ((strpos($path, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array('path' => $path)) == 1)) {
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+    if ((strpos($path, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array($path_key => $path)) == 1)) {
         if (is_null($db)) {
             $db = $GLOBALS['SITE_DB'];
         }

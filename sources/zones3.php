@@ -130,6 +130,8 @@ function actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row = 
         $GLOBALS['SITE_DB']->query_update('redirects', array('r_to_zone' => $new_zone), array('r_to_zone' => $zone));
     }
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     // Copy logo theme images if needed
     require_code('themes2');
     $themes = find_all_themes();
@@ -138,7 +140,7 @@ function actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row = 
         $zone_logo_img_new = find_theme_image('logo/' . $new_zone . '-logo', true, true, $theme);
         if (($zone_logo_img != '') && ($zone_logo_img_new == '')) {
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'logo/' . $new_zone . '-logo', 'theme' => $theme, 'lang' => get_site_default_lang()), '', 1);
-            $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => 'logo/' . $new_zone . '-logo', 'theme' => $theme, 'path' => $zone_logo_img, 'lang' => get_site_default_lang()));
+            $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => 'logo/' . $new_zone . '-logo', 'theme' => $theme, $path_key => $zone_logo_img, 'lang' => get_site_default_lang()));
         }
     }
 

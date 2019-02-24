@@ -152,6 +152,17 @@ function get_db_keywords()
         'PARSE_GCOL_EXPR', 'PRECEDES', 'REPLICATE_DO_DB', 'REPLICATE_DO_TABLE', 'REPLICATE_IGNORE_DB', 'REPLICATE_IGNORE_TABLE',
         'REPLICATE_REWRITE_DB', 'REPLICATE_WILD_DO_TABLE', 'REPLICATE_WILD_IGNORE_TABLE', 'ROTATE', 'STORED', 'VALIDATION',
         'VIRTUAL', 'WITHOUT', 'XID',
+
+        // Added in MySQL 8.0
+        'ACTIVE', 'ADMIN', 'BUCKETS', 'CLONE', 'COMPONENT', 'CUME_DIST', 'DEFINITION', 'DENSE_RANK', 'DESCRIPTION',
+        'EMPTY', 'ENFORCED', 'EXCEPT', 'EXCLUDE', 'FIRST_VALUE', 'FOLLOWING', 'GEOMCOLLECTION', 'GET_MASTER_PUBLIC_KEY',
+        'GROUPING', 'GROUPS', 'HISTOGRAM', 'HISTORY', 'INACTIVE', 'INVISIBLE', 'JSON_TABLE', 'LAG', 'LAST_VALUE',
+        'LATERAL', 'LEAD', 'LOCKED', 'MASTER_PUBLIC_KEY_PATH', 'NESTED', 'NOWAIT', 'NTH_VALUE', 'NTILE', 'NULLS',
+        'OF', 'OJ', 'OLD', 'OPTIONAL', 'ORDINALITY', 'ORGANIZATION', 'OTHERS', 'OVER', 'PATH', 'PERCENT_RANK',
+        'PERSIST', 'PERSIST_ONLY', 'PRECEDING', 'PROCESS', 'RANK', 'RECURSIVE', 'REFERENCE', 'RESOURCE', 'RESPECT',
+        'RESTART', 'RETAIN', 'REUSE', 'ROLE', 'ROW_NUMBER', 'SECONDARY', 'SECONDARY_ENGINE', 'SECONDARY_LOAD',
+        'SECONDARY_UNLOAD', 'SKIP', 'SRID', 'SYSTEM', 'THREAD_PRIORITY', 'TIES', 'UNBOUNDED', 'VCPU', 'VISIBLE',
+        'WINDOW',
     );
     return $words;
 }
@@ -409,6 +420,7 @@ function mass_delete_lang($table, $attrs, $connection)
         if (!is_null($rows)) {
             foreach ($rows as $row) {
                 foreach ($attrs as $attr) {
+                    $attr = trim($attr, '`'); // TODO: remove trim in v11
                     if (!is_null($row[$attr])) {
                         delete_lang($row[$attr], $connection);
                     }

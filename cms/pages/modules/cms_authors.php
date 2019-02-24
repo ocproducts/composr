@@ -197,7 +197,8 @@ class Module_cms_authors
             access_denied('PRIVILEGE', 'edit_midrange_content');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'url', 'skills', 'member_id'), array('author' => $author), '', 1);
+        $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to author_description in v11
+        $rows = $GLOBALS['SITE_DB']->query_select('authors', array($description_key, 'url', 'skills', 'member_id'), array('author' => $author), '', 1);
         if (array_key_exists(0, $rows)) {
             $myrow = $rows[0];
             $description = get_translated_text($myrow['description']);

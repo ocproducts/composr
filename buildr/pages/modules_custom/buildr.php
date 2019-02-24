@@ -107,6 +107,7 @@ class Module_buildr
                 'item_owner' => '*MEMBER',
             ));
 
+            $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to item_description in v11
             $GLOBALS['SITE_DB']->create_table('w_itemdef', array(
                 'name' => '*ID_TEXT',
                 'bribable' => 'BINARY',
@@ -115,7 +116,7 @@ class Module_buildr
                 'owner' => 'MEMBER',
                 'replicateable' => 'BINARY',
                 'max_per_player' => 'INTEGER',
-                'description' => 'SHORT_TEXT',
+                $description_key => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('w_items', array(

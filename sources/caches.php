@@ -687,10 +687,11 @@ function _get_cache_entries($dets, $special_cache_flags = null)
         } else {
             $sql .= ' AND the_member=' . strval($member);
         }
+        $groups_key = (strpos(get_db_type(), 'mysql') !== false) ? '`groups`' : 'groups'; // TODO: Change properly to the_groups in v11
         if ($groups === null) {
-            $sql .= ' AND ' . db_string_equal_to('groups', '');
+            $sql .= ' AND ' . db_string_equal_to($groups_key, '');
         } else {
-            $sql .= ' AND ' . db_string_equal_to('groups', $groups);
+            $sql .= ' AND ' . db_string_equal_to($groups_key, $groups);
         }
         if ($is_bot === null) {
             $sql .= ' AND is_bot IS NULL';

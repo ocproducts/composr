@@ -457,6 +457,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 
     load_themewizard_params_from_theme($source_theme, $algorithm == 'hsv');
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     if (file_exists(get_custom_file_base() . '/themes/' . $theme_name)) {
         require_code('abstract_file_manager');
         force_have_afm_details();
@@ -490,7 +492,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
             }
 
             if ($extending_existing) {
-                $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme_name)));
+                $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', $path_key), array('theme' => $theme_name)));
             } else {
                 $temp_all_ids = array();
             }

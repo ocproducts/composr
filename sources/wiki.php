@@ -1026,8 +1026,10 @@ function dispatch_wiki_page_notification($page_id, $type)
 {
     require_lang('wiki');
 
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to page_description in v11
+
     $page_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $page_id)));
-    $_the_message = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'description', array('id' => $page_id)));
+    $_the_message = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', $description_key, array('id' => $page_id)));
 
     $_view_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => $page_id), get_page_zone('wiki'), null, false, false, true);
     $view_url = $_view_url->evaluate();

@@ -396,7 +396,8 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     require_code('urls2');
     suggest_new_idmoniker_for('downloads', 'browse', strval($category_id), '', $category);
 
-    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'description'), array('id' => $category_id), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to category_description in v11
+    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', $description_key), array('id' => $category_id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
     }
@@ -447,7 +448,8 @@ function delete_download_category($category_id)
         warn_exit(do_lang_tempcode('NO_DELETE_ROOT', 'download_category'));
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'description', 'parent_id'), array('id' => $category_id), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to category_description in v11
+    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', $description_key, 'parent_id'), array('id' => $category_id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
     }
@@ -1105,7 +1107,8 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         $file_size = 2147483647;
     }
 
-    $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to download_description in v11
+    $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', $description_key, 'additional_details', 'category_id'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $myrows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
     }
@@ -1230,7 +1233,8 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
  */
 function delete_download($id, $leave = false)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details'), array('id' => $id), '', 1);
+    $description_key = (strpos(get_db_type(), 'mysql') !== false) ? '`description`' : 'description'; // TODO: Change properly to download_description in v11
+    $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', $description_key, 'additional_details'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $myrows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
     }

@@ -63,13 +63,15 @@ function actual_delete_theme_image($id, $theme = null, $lang = null)
     if (!is_null($theme)) {
         $old_url = find_theme_image($id, true, true, $theme, $lang);
 
+        $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
         $where_map = array('theme' => $theme, 'id' => $id);
         if (($lang != '') && (!is_null($lang))) {
             $where_map['lang'] = $lang;
         }
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', $path_key, $where_map);
         if (!is_null($test)) {
-            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'path' => $test));
+            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, $path_key => $test));
         }
     } else {
         $old_url = find_theme_image($id, true, true);
@@ -104,9 +106,11 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
 
     $images = array_merge(find_images_do_dir($theme, 'images/', $langs), find_images_do_dir($theme, 'images_custom/', $langs));
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     foreach (array_keys($langs) as $lang) {
         $where = array('lang' => $lang, 'theme' => $target_theme);
-        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), $where);
+        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', $path_key), $where);
 
         // Cleanup broken references
         foreach ($existing as $e) {
@@ -129,7 +133,7 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
                 $correct_path = find_theme_image($id, false, true, $theme, $lang);
-                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'path' => $correct_path), false, true); // race conditions
+                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, $path_key => $correct_path), false, true); // race conditions
                 $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
 
                 $made_change = false;
@@ -154,7 +158,9 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
  */
 function cleanup_theme_images($old_url)
 {
-    $files_referenced = collapse_1d_complexity('path', $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT path')));
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
+    $files_referenced = collapse_1d_complexity('path', $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT ' . $path_key)));
 
     $themes = find_all_themes();
     foreach (array_keys($themes) as $theme) {
@@ -196,11 +202,13 @@ function actual_rename_theme($theme, $to)
     force_have_afm_details();
     afm_move('themes/' . $theme, 'themes/' . $to);
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     $GLOBALS['SITE_DB']->query_update('theme_images', array('theme' => $to), array('theme' => $theme));
-    $theme_images = $GLOBALS['SITE_DB']->query('SELECT path FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'theme_images WHERE path LIKE \'themes/' . db_encode_like($theme) . '/%\'');
+    $theme_images = $GLOBALS['SITE_DB']->query('SELECT ' . $path_key . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'theme_images WHERE ' . $path_key . ' LIKE \'themes/' . db_encode_like($theme) . '/%\'');
     foreach ($theme_images as $image) {
         $new_path = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $image['path']);
-        $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $new_path), array('path' => $image['path']), '', 1);
+        $GLOBALS['SITE_DB']->query_update('theme_images', array($path_key => $new_path), array($path_key => $image['path']), '', 1);
     }
     if (get_forum_type() == 'cns') {
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_theme' => $to), array('m_theme' => $theme));
@@ -249,10 +257,12 @@ function actual_copy_theme($theme, $to)
         afm_make_directory(dirname('themes/' . $to . '/' . $n), true, true);
     }
 
+    $path_key = (strpos(get_db_type(), 'mysql') !== false) ? '`path`' : 'path'; // TODO: Change properly to image_path in v11
+
     $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));
     foreach ($images as $i) {
         $i['theme'] = $to;
-        $i['path'] = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $i['path']);
+        $i[$path_key] = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $i['path']);
         $GLOBALS['SITE_DB']->query_insert('theme_images', $i, false, true);
     }
 
