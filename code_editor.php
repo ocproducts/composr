@@ -190,10 +190,10 @@ END;
     <hr />
     <p>If you need to edit original Composr files (rather than overriding or making custom ones), then you probably need to enter FTP details below. This will allow this editor to save via FTP, and if no username is given, it will try and save directly.</p>
     <table>
-        <tr><th>FTP Host</th><td><input size="50" type="text" name="ftp_domain" value="{$_ftp_domain}" /></td></tr>
-        <tr><th>FTP Path</th><td><input size="50" type="text" name="ftp_folder" value="{$_ftp_folder}" /></td></tr>
-        <tr><th>FTP Username</th><td><input size="50" type="text" name="ftp_username" value="{$_ftp_username}" /></td></tr>
-        <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" /></td></tr>
+        <tr><th>FTP Host</th><td><input size="50" type="text" name="ftp_domain" class="form-control" value="{$_ftp_domain}" /></td></tr>
+        <tr><th>FTP Path</th><td><input size="50" type="text" name="ftp_folder" class="form-control" value="{$_ftp_folder}" /></td></tr>
+        <tr><th>FTP Username</th><td><input size="50" type="text" name="ftp_username" class="form-control" value="{$_ftp_username}" /></td></tr>
+        <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" class="form-control" /></td></tr>
     </table>
     <p>
         <button class="btn btn-primary btn-scr menu--site-meta--user-actions--login" type="submit">Log in</button>
@@ -274,10 +274,10 @@ END;
     echo <<<END
     <h1 class="screen-title">Composr Code Editor</h1>
     <p>
-        New File: <input type="text" name="path_new" />
+        New File: <input type="text" name="path_new" class="form-control" />
     </p>
     <p>
-        OR, existing file: <select name="path">{$paths}</select>
+        OR, existing file: <select name="path" class="form-control">{$paths}</select>
     </p>
     <p class="proceed-button">
         <button class="btn btn-primary btn-scr buttons--save" type="submit">Edit file</button>
@@ -402,7 +402,7 @@ END;
             }
         }
         echo <<<END
-<textarea id="file" name="file" rows="35" cols="50" style="width: 100%;">
+<textarea id="file" name="file" class="form-control" rows="35" cols="50" style="width: 100%;">
 END;
         echo code_editor_escape_html($contents) . '</textarea>';
         echo <<<END
@@ -411,7 +411,7 @@ END;
     file.scrollTop=Math.round((file.scrollHeight/{$lines})*{$line});
 </script>
 <p>
-    Jump to (line number or search phrase): <input name="jmp" type="text" value="" /> <button onclick="var val=form.elements['jmp'].value; if (!(window.parseInt(val)>0)) val=file.value.substr(0,file.value.indexOf(val)).split('\\n').length-1; file.scrollTop=Math.round((file.scrollHeight/{$lines})*window.parseInt(val)); return false;" type="submit">Jump</button>
+    Jump to (line number or search phrase): <input name="jmp" type="text" class="form-control" value="" /> <button onclick="var val=form.elements['jmp'].value; if (!(window.parseInt(val)>0)) val=file.value.substr(0,file.value.indexOf(val)).split('\\n').length-1; file.scrollTop=Math.round((file.scrollHeight/{$lines})*window.parseInt(val)); return false;" type="submit">Jump</button>
 </p>
 END;
         if (strpos($path, '_custom/') !== false) {
