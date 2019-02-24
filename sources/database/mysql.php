@@ -227,6 +227,8 @@ class Database_Static_mysql extends Database_super_mysql
             $this->last_select_db = $db_name;
         }
 
+        $query = $this->fix_mysql8_query($query);
+
         $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @mysql_query($query, $db);

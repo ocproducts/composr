@@ -416,4 +416,120 @@ class Database_super_mysql
 
         return 'CAST(' . $field . ' AS ' . $_type . ')';
     }
+
+    /**
+     * Fix a query so it runs on MySQL 8, by adding extra token escaping as required.
+     *
+     * @param string $query Query
+     * @return string Fixed query
+     */
+    protected function fix_mysql8_query($query)
+    {
+        if (preg_match('#(descriptions|groups|path)#i', $query) == 0) {
+            return $query;
+        }
+
+        $new_query = '';
+
+        $tokens_to_escape = array_flip(array('description', 'groups', 'path'));
+
+        $tokens = $this->tokenise_query($query);
+        foreach ($tokens as $i => $token) {
+            if (isset($tokens_to_escape[strtolower($token)])) {
+                $new_query .= '`' . $token . '`';
+            } else {
+                $new_query .= $token;
+            }
+        }
+
+        return $new_query;
+    }
+
+    /**
+     * Tokenise a MySQL query (assumes a basic syntax Composr is using).
+     *
+     * @param string $query Query
+     * @return array The tokens
+     */
+    protected function tokenise_query($query)
+    {
+        static $symbolic_tokens = null;
+        if ($symbolic_tokens === null) {
+            $symbolic_tokens = array_flip(array("\t", ' ', "\n", '+', '-', '*', '/', '<>', '>', '<', '>=', '<=', '=', '(', ')', ','));
+        }
+
+        $i = 0;
+        $query .= ' '; // Cheat so that we do not have to handle the end state differently
+        $len = strlen($query);
+        $tokens = array();
+        $current_token = '';
+        $doing_symbol_delimiter = true;
+        while ($i < $len) {
+            $next = $query[$i];
+
+            if ($next == "'") {
+                if ($current_token != '') {
+                    $tokens[] = $current_token;
+                }
+                $current_token = '';
+
+                $i++;
+                while ($i < $len) {
+                    $next = $query[$i];
+
+                    if ($next == '\\') {
+                        $current_token .= $next;
+                    } else {
+                        if ($next == "'") {
+                            $tokens[] = "'" . $current_token . "'";
+                            break;
+                        } else {
+                            $current_token .= $next;
+                        }
+                    }
+
+                    $i++;
+                }
+                $current_token = '';
+            } elseif (($next == '/') && ($i + 1 < $len) && ($query[$i + 1] == '*')) {
+                if ($current_token != '') {
+                    $tokens[] = $current_token;
+                }
+                $current_token = '';
+
+                $i+=2;
+                while ($i < $len) {
+                    $next = $query[$i];
+
+                    if (($next == '*') && ($i + 1 < $len) && ($query[$i + 1] == '/')) {
+                        $tokens[] = '/*' . $current_token . '*/';
+                        break;
+                    } else {
+                        $current_token .= $next;
+                    }
+
+                    $i++;
+                }
+                $current_token = '';
+            } else {
+                $symbol_delimiter_coming = ((isset($symbolic_tokens[$next])) && ((isset($symbolic_tokens[$next])) || (($i + 1 < $len) && (isset($symbolic_tokens[$next . $query[$i + 1]]))))); //  (NB: symbol delimiters are a maximum of two in length)
+                if ($symbol_delimiter_coming || $doing_symbol_delimiter) {
+                    if ($current_token != '') {
+                        $tokens[] = $current_token;
+                    }
+                    $current_token = $next;
+                    $doing_symbol_delimiter = (isset($symbolic_tokens[$next]));
+                } else {
+                    $current_token .= $next;
+                    if ($doing_symbol_delimiter) {
+                        $doing_symbol_delimiter = isset($symbolic_tokens[$next]);
+                    }
+                }
+            }
+
+            $i++;
+        }
+
+        return $tokens;
+    }
 }
