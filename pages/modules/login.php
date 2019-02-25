@@ -114,7 +114,7 @@ class Module_login
     {
         $type = get_param_string('type', 'browse');
 
-        $this->fields_to_not_relay = array('login_username', 'password', 'remember', 'login_invisible', 'redirect', 'session_id');
+        $this->fields_to_not_relay = array('username', 'password', 'remember', 'login_invisible', 'redirect', 'session_id');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('_LOGIN');
@@ -127,7 +127,7 @@ class Module_login
         if ($type == 'login') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('_LOGIN'))));
 
-            $username = trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES));
+            $username = trim(post_param_string('username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES));
 
             $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant(trim(post_param_string('password', false, INPUT_FILTER_NONE)), $username), trim(post_param_string('password', false, INPUT_FILTER_NONE)));
             if ($feedback['id'] !== null) {

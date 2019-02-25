@@ -271,7 +271,7 @@ function is_control_field($field_name, $include_email_metafields = false, $inclu
     }
     if ($include_login_fields) {
         $boring_fields = array_merge($boring_fields, array(
-            "login_username",
+            "username",
             "password",
             "remember_me",
             "login_invisible",

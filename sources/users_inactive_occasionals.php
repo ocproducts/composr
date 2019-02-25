@@ -237,7 +237,7 @@ function force_httpauth()
         exit();
     }
     if (isset($_SERVER['PHP_AUTH_PW'])) { // Ah, route as a normal login if we can then
-        $_POST['login_username'] = $_SERVER['PHP_AUTH_USER'];
+        $_POST['username'] = $_SERVER['PHP_AUTH_USER'];
         $_POST['password'] = $_SERVER['PHP_AUTH_PW'];
     }
 }

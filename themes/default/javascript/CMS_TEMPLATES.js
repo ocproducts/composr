@@ -248,7 +248,7 @@
         $dom.on(container, 'click', '.js-click-confirm-remember-me', onclickConfirmRememberMe);
 
         $dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+            if ($cms.form.checkFieldForBlankness(form.elements['username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -258,7 +258,7 @@
 
     $cms.templates.blockTopLogin = function (blockTopLogin, container) {
         $dom.on(container, 'submit', '.js-form-top-login', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+            if ($cms.form.checkFieldForBlankness(form.elements['username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -300,7 +300,7 @@
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
         $dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+            if ($cms.form.checkFieldForBlankness(form.elements['username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();

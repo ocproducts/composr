@@ -350,7 +350,7 @@ These are all very technical tasks, so we do not expect that many users will hav
 
 Composr handles log in anywhere as a part of the framework (i.e. any request Composr is handling).
 It triggers if these post parameters are present:
- - [tt]login_username[/tt] (required)
+ - [tt]username[/tt] (required)
  - [tt]password[/tt] (required)
  - [tt]remember[/tt] (optional, set to '1' if cookies should be saved)
  - [tt]login_invisible[/tt] (optional, set to '1' if the login should be invisible)

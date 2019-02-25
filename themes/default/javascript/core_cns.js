@@ -50,7 +50,7 @@
 
     $cms.templates.cnsGuestBar = function cnsGuestBar(params, container) {
         $dom.on(container, 'submit', '.js-submit-check-field-login-username', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+            if ($cms.form.checkFieldForBlankness(form.elements['username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();

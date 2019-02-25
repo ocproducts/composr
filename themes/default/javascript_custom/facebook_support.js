@@ -11,7 +11,7 @@
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
         $dom.on(container, 'submit', '.js-submit-check-username-for-blankness', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+            if ($cms.form.checkFieldForBlankness(form.elements['username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -21,7 +21,7 @@
 
     $cms.templates.cnsGuestBar = function cnsGuestBar(params, container) {
         $dom.on(container, 'submit', '.js-submit-check-username-for-blankness', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+            if ($cms.form.checkFieldForBlankness(form.elements['username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -49,7 +49,7 @@
         }
     };
 
-    $cms.functions.hookSyndicationFacebook_syndicationJavascript = function () {
+    $cms.functions.hookSyndicationFacebook_syndicationJavascript = function () { // eslint-disable-line camelcase
         var fbButton = document.getElementById('syndicate_start__facebook');
         if (fbButton) {
             var fbInput;

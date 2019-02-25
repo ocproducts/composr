@@ -185,7 +185,7 @@ END;
     $_ftp_username = code_editor_escape_html($ftp_username);
     echo <<<END
     <p>
-        <label for="given_password">Master Password: <input type="password" name="given_password" id="given_password" class="form-control" /></label>
+        <label for="given_password">Master Password: <input type="password" name="given_password" autocomplete="current-password" id="given_password" class="form-control" /></label>
     </p>
     <hr />
     <p>If you need to edit original Composr files (rather than overriding or making custom ones), then you probably need to enter FTP details below. This will allow this editor to save via FTP, and if no username is given, it will try and save directly.</p>
@@ -193,7 +193,7 @@ END;
         <tr><th>FTP Host</th><td><input size="50" type="text" name="ftp_domain" class="form-control" value="{$_ftp_domain}" /></td></tr>
         <tr><th>FTP Path</th><td><input size="50" type="text" name="ftp_folder" class="form-control" value="{$_ftp_folder}" /></td></tr>
         <tr><th>FTP Username</th><td><input size="50" type="text" name="ftp_username" class="form-control" value="{$_ftp_username}" /></td></tr>
-        <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" class="form-control" /></td></tr>
+        <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" autocomplete="new-password" class="form-control" /></td></tr>
     </table>
     <p>
         <button class="btn btn-primary btn-scr menu--site-meta--user-actions--login" type="submit">Log in</button>

@@ -9,9 +9,9 @@
 			<div>
 				<div>
 					<div class="accessibility-hidden"><label for="ps-login-username">{$LOGIN_LABEL}</label></div>
-					<input maxlength="80" class="form-control form-control-wide login-block-username" type="text" placeholder="{!USERNAME}" id="ps-login-username" name="login_username" />
+					<input maxlength="80" class="form-control form-control-wide login-block-username" type="text" placeholder="{!USERNAME}" id="ps-login-username" name="username" autocomplete="username" />
 					<div class="accessibility-hidden"><label for="ps-password">{!PASSWORD}</label></div>
-					<input maxlength="255" class="form-control form-control-wide" type="password" placeholder="{!PASSWORD}" name="password" id="ps-password" />
+					<input maxlength="255" class="form-control form-control-wide" type="password" placeholder="{!PASSWORD}" name="password" autocomplete="current-password" id="ps-password" />
 				</div>
 
 				{+START,IF,{$CONFIG_OPTION,password_cookies}}

@@ -1034,7 +1034,7 @@
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
         if ($cms.configOption('cookie_notice') && ($cms.runningScript() === 'index')) {
-            window.cookieconsent_options = {
+            window.cookieconsent_options = { // eslint-disable-line camelcase
                 message: $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
                 dismiss: '{!INPUTSYSTEM_OK;}',
                 learnMore: '{!READ_MORE;}',

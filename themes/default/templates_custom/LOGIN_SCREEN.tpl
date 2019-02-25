@@ -36,13 +36,13 @@
 							<tr>
 								<th class="de-th"><label for="login_username">{$LOGIN_LABEL}:</label></th>
 								<td>
-									<input maxlength="80" type="text" value="{USERNAME*}" id="login_username" class="form-control" name="login_username" size="25" />
+									<input maxlength="80" type="text" value="{USERNAME*}" id="login_username" class="form-control" name="username" autocomplete="username" size="25" />
 								</td>
 							</tr>
 							<tr>
 								<th class="de-th"><label for="password">{!PASSWORD}:</label></th>
 								<td>
-									<input maxlength="255" type="password" id="password" class="form-control" name="password" size="25" />
+									<input maxlength="255" type="password" id="password" class="form-control" name="password" autocomplete="current-password" size="25" />
 								</td>
 							</tr>
 						</tbody>

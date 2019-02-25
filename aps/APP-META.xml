@@ -196,14 +196,14 @@
       <entry-points>
         <entry class="frontpage" dst="/index.php?page=login&amp;type=login" method="POST">
           <label>Homepage</label>
-          <variable class="login" name="login_username" value-of-setting="admin_name"/>
+          <variable class="login" name="username" value-of-setting="admin_name"/>
           <variable class="password" name="password" value-of-setting="admin_password"/>
           <variable name="redirect">index.php?page=start</variable>
           <variable name="APS">ON</variable>
         </entry>
         <entry class="control-panel" dst="/index.php?page=login&amp;type=login" method="POST">
           <label>Admin Zone</label>
-          <variable class="login" name="login_username" value-of-setting="admin_name"/>
+          <variable class="login" name="username" value-of-setting="admin_name"/>
           <variable class="password" name="password" value-of-setting="admin_password"/>
           <variable name="redirect">adminzone/index.php</variable>
           <variable name="APS">ON</variable>

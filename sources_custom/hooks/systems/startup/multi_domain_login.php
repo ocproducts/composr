@@ -25,7 +25,7 @@ class Hook_startup_multi_domain_login
         }
 
         if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP) && (running_script('index'))) {
-            //if (isset($_POST['login_username'])) return;  Actually, we'll use caching to avoid this
+            //if (isset($_POST['username'])) return;  Actually, we'll use caching to avoid this
 
             $value = '';
             //$url = $this->session_syndicate_code(get_local_hostname(), preg_replace('#^.*://[^/]*(/|$)#', '', get_base_url()));

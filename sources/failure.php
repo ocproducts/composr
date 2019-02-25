@@ -190,7 +190,7 @@ function improperly_filled_in($name, $posted, $array)
         improperly_filled_in_post($name);
     }
 
-    if ($name == 'login_username') {
+    if ($name == 'username') {
         warn_exit(do_lang_tempcode('NO_PARAMETER_SENT_SPECIAL', escape_html($name)));
     }
 

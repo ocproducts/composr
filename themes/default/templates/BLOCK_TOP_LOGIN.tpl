@@ -6,9 +6,9 @@
 			{+START,IF,{$DESKTOP}}{+START,IF,{$NOT,{$CONFIG_OPTION,single_public_zone}}}{$,Hide login form when having single public zone to make space for navigation menu}
 				<div class="top-login-controls desktop-only">
 					<div class="accessibility-hidden"><label for="s-login-username">{$LOGIN_LABEL}</label></div>
-					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" class="form-control" />
+					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="username" autocomplete="username" class="form-control" />
 					<div class="accessibility-hidden"><label for="s-password">{!PASSWORD}</label></div>
-					<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" id="s-password" class="form-control" />
+					<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" autocomplete="current-password" id="s-password" class="form-control" />
 
 					{+START,IF,{$CONFIG_OPTION,password_cookies}}
 						<label class="accessibility-hidden" for="s-remember">{!REMEMBER_ME}</label>

@@ -182,7 +182,7 @@ function handle_active_login($username)
         enforce_temporary_passwords($member_id);
     } else {
         $GLOBALS['SITE_DB']->query_insert('failedlogins', array(
-            'failed_account' => cms_mb_substr(trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES)), 0, 80),
+            'failed_account' => cms_mb_substr(trim(post_param_string('username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES)), 0, 80),
             'date_and_time' => time(),
             'ip' => get_ip_address(),
         ));

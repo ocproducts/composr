@@ -306,7 +306,7 @@ echo <<<END
 
         <div>
             <label for="password">Master password for compo.sr</label>
-            <input autocomplete="autocomplete" required="required" name="password" id="password" type="password" value="" />
+            <input required="required" name="password" autocomplete="current-password" id="password" type="password" value="" />
         </div>
 
         <div>

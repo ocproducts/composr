@@ -60,12 +60,12 @@ if ($type == '') {
         <p>This script cannot extract database access details from your config file because the config file itself (which is an executable file for Composr) may have been configured to give out fake details to this script. Therefore you will need to enter them here, and the config file will only be used for accessing the Composr password (which will be extracted using a non-executive method).</p>
 
         <div>
-            <p>Composr master password: <input type="password" name="password" /></p>
+            <p>Composr master password: <input type="password" name="password" autocomplete="current-password" /></p>
             <p>Database host: <input type="text" name="db_host" value="localhost" /></p>
             <p>Database name: <input type="text" name="db_name" value="cms" /></p>
             <p>Database table prefix: <input type="text" name="db_prefix" value="cms_" /></p>
             <p>Database username: <input type="text" name="db_user" value="root" /></p>
-            <p>Database password: <input type="password" name="db_password" /></p>
+            <p>Database password: <input type="password" name="db_password" autocomplete="new-password" /></p>
 END;
 
     if (isset($_SERVER['APPLICATION_ID'])) { // Google App Engine
