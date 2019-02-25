@@ -592,7 +592,7 @@
             if (theElement.type === 'radio') {
                 required = (theForm.elements['require__' + theElement.name] != null) && (theForm.elements['require__' + theElement.name].value === '1');
             } else {
-                required = theElement.className.includes('-required') || theElement.className.includes('_required');
+                required = theElement.className.includes('-required');
             }
 
             myValue = $cms.form.cleverFindValue(theForm, theElement);

@@ -1909,7 +1909,7 @@
                 nextField = document.createElement('input');
                 nextField.size = thisField.size;
             }
-            nextField.className = thisField.className.replace(/_required/g, '');
+            nextField.className = thisField.className.replace(/-required/g, '');
             if (thisField.form.elements['label_for__' + nameStub + '0']) {
                 var nextLabel = document.createElement('input');
                 nextLabel.type = 'hidden';

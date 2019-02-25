@@ -44,7 +44,7 @@
 						{+END}
 
 						{+START,IF_NON_PASSED_OR_FALSE,SKIP_REQUIRED}
-							{+START,IF,{$IN_STR,{TAB_FIELDS},_required}}
+							{+START,IF,{$IN_STR,{TAB_FIELDS},-required}}
 								{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 							{+END}
 						{+END}

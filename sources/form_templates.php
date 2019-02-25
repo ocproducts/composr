@@ -608,7 +608,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $maxlength = get_field_restrict_property('maxlength', $name);
     if (($maxlength === null) && ($_maxlength !== null)) {
         $maxlength = strval($_maxlength);
@@ -959,7 +959,7 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
     $input = new Tempcode();
     $i = 0;
     foreach ($default_array as $default) {
-        $_required = ($i < $num_required) ? '_required' : '';
+        $_required = ($i < $num_required) ? '-required' : '';
         $input->attach(do_template('FORM_SCREEN_INPUT_LINE_MULTI', array(
             '_GUID' => 'e2da34b7564cebfd83da2859e4abd020',
             'CLASS' => $class,
@@ -984,7 +984,7 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
             'TABINDEX' => strval($tabindex),
             'NAME_STUB' => $name,
             'I' => strval($i),
-            'REQUIRED' => ($i >= $num_required) ? '' : '_required',
+            'REQUIRED' => ($i >= $num_required) ? '' : '-required',
             'DEFAULT' => '',
             'PATTERN' => $pattern,
         )));
@@ -1321,7 +1321,7 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_PASSWORD', array('_GUID' => '12af7290441ebf5459feefaf9daa28c6', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'VALUE' => $default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -2391,7 +2391,7 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
 
     $default_timestamp = tz_time(time(), get_users_timezone());
 
-    $_required = ($required) ? '_required' : '';
+    $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_DATE_COMPONENTS', array(
         '_GUID' => '8a75077992ed552dc9323183bb3c4e13',
         'REQUIRED' => $_required,
