@@ -416,7 +416,7 @@ function notify_sitemap_node_delete($page_link)
 /**
  * Manually delete a node from the sitemap. Sometimes useful if Google Search Console is complaining, because something changed that Composr did not detect.
  *
- * @param SHORT_TEXT $page_link The page-link
+ * @param SHORT_TEXT $url The URL
  */
 function delete_sitemap_node_manually_by_url($url)
 {

@@ -497,7 +497,7 @@ class Database_super_mysql
                 }
                 $current_token = '';
 
-                $i+=2;
+                $i += 2;
                 while ($i < $len) {
                     $next = $query[$i];
 

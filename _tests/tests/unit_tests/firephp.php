@@ -30,12 +30,16 @@ class firephp_test_set extends cms_test_case
             )
         );
         stream_context_set_default($default_opts);
-        $headers = get_headers($url->evaluate());
+        $headers = @get_headers($url->evaluate());
+
+        $this->assertTrue($headers !== false, 'HTTP request failed');
 
         $found = false;
-        foreach ($headers as $header) {
-            $found = $found || (strpos($header, 'Permission check FAILED: has_zone_access: adminzone') !== false);
+        if ($headers !== false) {
+            foreach ($headers as $header) {
+                $found = $found || (strpos($header, 'Permission check FAILED: has_zone_access: adminzone') !== false);
+            }
         }
-        $this->assertTrue($found);
+        $this->assertTrue($found, 'Did not find logged permission check failing');
     }
 }
