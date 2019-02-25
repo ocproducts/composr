@@ -108,7 +108,7 @@ class Block_main_contact_us
                     return do_template('RED_ALERT', array('_GUID' => '5pu5qw042z8exijsgty78o4tvq9mpnb6', 'TEXT' => do_lang_tempcode('INVALID_EMAIL_ADDRESS')));
                 }
             }
-            $from_name = trim(post_param_string('poster_name_if_guest', post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))));
+            $from_name = trim(post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)));
 
             // Check spam
             require_code('antispam');

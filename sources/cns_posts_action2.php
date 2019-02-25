@@ -31,9 +31,9 @@ function cns_get_safe_specified_poster_name($is_required_good_value = null)
     }
 
     if (($is_required_good_value) && (is_guest())) {
-        $poster_name_if_guest = post_param_string('poster_name_if_guest');
+        $poster_name_if_guest = post_param_string('name');
     } else {
-        $poster_name_if_guest = post_param_string('poster_name_if_guest', null/*Will default to current user's username (which could be Guest) near end of function*/);
+        $poster_name_if_guest = post_param_string('name', null/*Will default to current user's username (which could be Guest) near end of function*/);
     }
     if ($poster_name_if_guest == '') {
         $poster_name_if_guest = null;
@@ -43,7 +43,7 @@ function cns_get_safe_specified_poster_name($is_required_good_value = null)
 
         if ($is_required_good_value) {
             if ($poster_name_if_guest == do_lang('GUEST')) {
-                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__poster_name_if_guest', 'poster_name_if_guest'))));
+                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__name', 'name'))));
             }
         }
 

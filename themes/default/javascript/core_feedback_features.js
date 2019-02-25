@@ -158,7 +158,7 @@
                 return;
             }
 
-            if (params.getName && !$cms.form.checkFieldForBlankness(form.elements['poster_name_if_guest'])) {
+            if (params.getName && !$cms.form.checkFieldForBlankness(form.elements['name'])) {
                 e.preventDefault();
                 return;
             }

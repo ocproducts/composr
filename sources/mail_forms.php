@@ -159,7 +159,7 @@ function _form_to_email($extra_boring_fields = array(), $subject = null, $subjec
     // Find from details if simple...
 
     $from_email = trim(post_param_string('email', ''));
-    $from_name = trim(post_param_string('name', post_param_string('poster_name_if_guest', '')));
+    $from_name = trim(post_param_string('name', ''));
 
     // Find body...
 

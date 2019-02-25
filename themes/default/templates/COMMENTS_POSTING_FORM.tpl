@@ -20,7 +20,7 @@
 		<input type="hidden" name="stub" value="" />
 
 		{+START,IF,{$NOT,{$GET,GET_NAME}}}
-			<input type="hidden" name="poster_name_if_guest" value="" />
+			<input type="hidden" name="name" value="" />
 		{+END}
 		{+START,IF,{$NOT,{GET_EMAIL}}}
 			<input type="hidden" name="email" value="" />
@@ -63,12 +63,12 @@
 							{+START,IF,{$GET,GET_NAME}}
 							<tr>
 								<th class="de-th vertical-alignment">
-									<label for="poster_name_if_guest">{!YOUR_NAME}:</label>
+									<label for="poster-name-if-guest">{!YOUR_NAME}:</label>
 									{$,Never optional; may not be requested if logged in as we already know}
 								</th>
 
 								<td>
-									<input id="poster_name_if_guest" class="form-control" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="24" />
+									<input id="poster-name-if-guest" class="form-control" name="name" autocomplete="name" type="text" tabindex="1" maxlength="255" size="24" />
 									{+START,IF_PASSED,JOIN_BITS}{+START,IF_NON_EMPTY,{JOIN_BITS}}
 									<span class="horiz-field-sep">{JOIN_BITS}</span>
 									{+END}{+END}

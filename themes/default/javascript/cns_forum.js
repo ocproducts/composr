@@ -78,7 +78,7 @@
     };
 
     $cms.functions.moduleTopicsPostJavascriptForceGuestNames = function moduleTopicsPostJavascriptForceGuestNames() {
-        var posterNameIfGuest = document.getElementById('poster_name_if_guest');
+        var posterNameIfGuest = document.querySelector('input[name="name"]');
         if (posterNameIfGuest) {
             var crf = function () {
                 if (posterNameIfGuest.value === '{!GUEST;}') {
@@ -86,6 +86,7 @@
                 }
             };
             crf();
+            posterNameIfGuest.addEventListener('change', crf);
             posterNameIfGuest.addEventListener('blur', crf);
         }
     };

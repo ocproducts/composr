@@ -1700,7 +1700,7 @@ class Module_topics
         }
 
         if (is_guest()) {
-            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), new Tempcode(), 'poster_name_if_guest', (get_option('force_guest_names') == '1') ? '' : do_lang('GUEST'), true));
+            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), new Tempcode(), 'name', (get_option('force_guest_names') == '1') ? '' : do_lang('GUEST'), true));
         }
 
         // Various kinds of tick (check) options
@@ -2044,7 +2044,7 @@ class Module_topics
         }
 
         if (is_guest()) {
-            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), '', 'poster_name_if_guest', (get_option('force_guest_names') == '1') ? '' : do_lang('GUEST'), true));
+            $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), '', 'name', (get_option('force_guest_names') == '1') ? '' : do_lang('GUEST'), true));
         }
 
         require_code('fields');
