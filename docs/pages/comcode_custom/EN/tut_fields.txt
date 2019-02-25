@@ -651,7 +651,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 
 {| 15em wide
 ! Type label
-| An URL
+| A URL
 |-
 ! Storage format (for programmer reference)
 | Up to 255 characters of text (URL, or blank); common URL errors will be fixed

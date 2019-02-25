@@ -189,6 +189,8 @@ Additionally you may want to check out Chris Graham's [url="Houndr project"]http
 The latter check is an alternative to the former check, and takes into account that some Linux distributions backport fixes to their older bundled PHP versions. It will not check the version of PHP so long that it is installed as [tt]/usr/bin/php[/tt].
 The latter check is only available on systems that support the [tt]which[/tt] command (essentially, on Linux).
 
+Make sure you keep your server patched though! If you aren't on managed hosting and are not able to regularly schedule yourself to do manual updates, turn on automatic updates. There are real vulnerabilities coming out for software you'll be using all the time, so if you don't patch you'll be vulnerable.
+
 [title="2"]PHP-Info[/title]
 
 {!menus:DOC_PHPINFO}
