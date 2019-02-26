@@ -141,3 +141,4 @@ raw	plain	pure
 sandbox	staging
 popular	top
 recent	latest
+autofill	autocomplete	autosuggest
