@@ -187,6 +187,8 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             }
         }
 
+        $query = $this->fix_mysql8_query($query);
+
         $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @dbx_query($db, $query, DBX_RESULT_INFO);

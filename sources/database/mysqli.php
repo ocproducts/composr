@@ -228,6 +228,14 @@ class Database_Static_mysqli extends Database_super_mysql
             $this->last_select_db = array($db, $db_name);
         }
 
+        static $version = null;
+        if ($version === null) {
+            $version = mysqli_get_server_version($db);
+        }
+        if ($version >= 80000) {
+            $query = $this->fix_mysql8_query($query);
+        }
+
         $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @mysqli_query($db, $query);

@@ -635,10 +635,12 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
 
     global $SMART_CACHE;
     $test = (get_page_name() == 'admin_addons'/*special case*/) ? array() : $SMART_CACHE->get('blocks_needed');
-    if (($test === null) || (count($test) < 20)) {
-        $SMART_CACHE->append('blocks_needed', serialize($det));
-    } else {
-        $SMART_CACHE->set('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
+    if ($test !== false) {
+        if (($test === null) || (count($test) < 20)) {
+            $SMART_CACHE->append('blocks_needed', serialize($det));
+        } else {
+            $SMART_CACHE->set('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
+        }
     }
 
     $rets = _get_cache_entries(array($det), $special_cache_flags);
