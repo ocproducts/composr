@@ -268,7 +268,17 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
     $allow_emails = post_param_integer('allow_emails', 0); // For default privacy, default off
     $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0); // For default privacy, default off
     require_code('cns_groups');
-    $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, 0, true);
+    $custom_fields = cns_get_all_custom_fields_match(
+        cns_get_all_default_groups(true), // groups
+        null, // public view
+        null, // owner view
+        null, // owner set
+        null, // required
+        null, // show in posts
+        null, // show in post previews
+        null, // special start
+        true // show on join form
+    );
     $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     foreach ($actual_custom_fields as $key => $val) {
         if ($val == STRING_MAGIC_NULL) {
@@ -730,14 +740,14 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
     }
 
     $_custom_fields = cns_get_all_custom_fields_match(
-        $groups,
+        $groups, // groups
         ($mini_mode || (is_null($member_id)) || ($member_id == get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // public view
-        ($mini_mode || (is_null($member_id)) || ($member_id != get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // owner view
+        null, // owner view
         ($mini_mode || (is_null($member_id)) || ($member_id != get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // owner set
         null, // required
         null, // show in posts
         null, // show in post previews
-        0, // special start
+        null, // special start
         $mini_mode ? true : null // show on join form
     );
     $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;

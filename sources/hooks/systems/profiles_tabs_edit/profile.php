@@ -37,18 +37,12 @@ class Hook_profiles_tabs_edit_profile
         }
 
         if (($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'assume_any_member')) || (has_privilege($member_id_viewing, 'member_maintenance'))) {
-            $mini_mode = false;
             $groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id_of);
             $_custom_fields = cns_get_all_custom_fields_match(
-                $groups,
-                ($mini_mode || (is_null($member_id_of)) || ($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'view_any_profile_field'))) ? null : 1, // public view
-                ($mini_mode || (is_null($member_id_of)) || ($member_id_of != $member_id_viewing) || (has_privilege($member_id_viewing, 'view_any_profile_field'))) ? null : 1, // owner view
-                ($mini_mode || (is_null($member_id_of)) || ($member_id_of != $member_id_viewing) || (has_privilege($member_id_viewing, 'view_any_profile_field'))) ? null : 1, // owner set
-                null,
-                null,
-                null,
-                0,
-                $mini_mode ? true : null // show on join form
+                $groups, // groups
+                ((is_null($member_id_of)) || ($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'view_any_profile_field'))) ? null : 1, // public view
+                null, // owner view
+                ((is_null($member_id_of)) || ($member_id_of != $member_id_viewing) || (has_privilege($member_id_viewing, 'view_any_profile_field'))) ? null : 1 // owner set
             );
             if (count($_custom_fields) == 0) {
                 return false;

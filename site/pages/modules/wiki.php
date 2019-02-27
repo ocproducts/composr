@@ -132,7 +132,7 @@ class Module_wiki
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'cdate_and_time', array('date_and_time'));
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'svalidated', array('validated'));
 
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_wiki', 20, 1, 0, 0, 0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_wiki', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'ftjoin_spm', array('the_message'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spt', array('title'));

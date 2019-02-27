@@ -302,7 +302,17 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $primary_group = get_first_default_group();
     }
 
-    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, 0, true);
+    $custom_fields = cns_get_all_custom_fields_match(
+        cns_get_all_default_groups(true),
+        null, // public view
+        null, // owner view
+        null, // owner set
+        null, // required
+        null, // show in posts
+        null, // show in post previews
+        null, // special start
+        true // show on join form
+    );
     if (is_null($actual_custom_fields)) {
         $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     }

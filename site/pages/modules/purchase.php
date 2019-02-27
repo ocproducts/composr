@@ -85,11 +85,11 @@ class Module_purchase
             require_code('currency');
             $cpf = array('currency' => array(3, 'list', '|' . implode('|', array_keys(get_currency_map()))));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', $l[1], 0, $l[2]);
             }
             $cpf = array('payment_cardholder_name' => array(100, 'short_text', ''), 'payment_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'), 'payment_card_number' => array(20, 'integer', ''), 'payment_card_start_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_expiry_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_issue_number' => array(2, 'short_text', ''), 'payment_card_cv2' => array(4, 'short_text', ''));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', $l[1], 1, $l[2]);
             }
 
             $GLOBALS['SITE_DB']->create_table('transactions', array(

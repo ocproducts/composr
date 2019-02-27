@@ -207,13 +207,13 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
 
         // Any custom fields to show?
         $post['custom_fields'] = cns_get_all_custom_fields_match_member(
-            $_postdetails['p_poster'],
-            ((get_member() != $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null,
-            ((get_member() == $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null,
-            null,
-            null,
-            null,
-            1
+            $_postdetails['p_poster'], // member
+            ((get_member() != $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
+            ((get_member() == $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // owner view
+            null, // owner set
+            null, // encrypted
+            null, // required
+            1 // show in posts
         );
 
         // Usergroup

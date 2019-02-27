@@ -36,8 +36,8 @@ function install_gps_fields()
 {
     require_lang('cns');
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 20, 0, 0, 1, 0, '', 'float');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 20, 0, 0, 1, 0, '', 'float');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'float');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'float');
 }
 
 /**
@@ -58,8 +58,8 @@ function install_name_fields()
 {
     require_lang('cns');
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('firstname', 35, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('lastname', 35, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('firstname', 35, /*locked=*/0, /*viewable=*/1, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('lastname', 35, /*locked=*/0, /*viewable=*/1, /*settable=*/1, /*required=*/0, '', 'short_text');
 }
 
 /**
@@ -84,11 +84,11 @@ function install_address_fields()
 {
     require_lang('cns');
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('street_address', 100, 0, 0, 1, 0, '', 'long_text'); // street address
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('street_address', 100, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'long_text'); // street address
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
 
     require_code('locations');
     $countries = '';
@@ -97,7 +97,7 @@ function install_address_fields()
         $countries .= '|';
         $countries .= $code . '=' . $name;
     }
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, 0, 0, 1, 0, '', 'list', 0, $countries);
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'list', 0, $countries);
 }
 
 /**
@@ -116,5 +116,5 @@ function uninstall_mobile_phone_field()
 function install_mobile_phone_field()
 {
     require_lang('cns_special_cpf');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, 0, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text');
 }

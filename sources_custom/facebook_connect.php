@@ -234,7 +234,17 @@ function handle_facebook_connection_login($current_logged_in_member)
         require_code('cns_groups');
         require_code('cns_members2');
         require_code('cns_members_action');
-        $_custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, 1);
+        $_custom_fields = cns_get_all_custom_fields_match(
+            cns_get_all_default_groups(true), // groups
+            null, // public view
+            null, // owner view
+            null, // owner set
+            null, // required
+            null, // show in posts
+            null, // show in post previews
+            null, // special start
+            true // show on join form
+        );
         if ((!$completion_form_submitted) && (count($_custom_fields) != 0) && (get_option('finish_profile') == '1')) { // UI
             $GLOBALS['FACEBOOK_FINISHING_PROFILE'] = true;
             $middle = cns_member_external_linker_ask($username, 'facebook', $email_address, $dob_day, $dob_month, $dob_year);
