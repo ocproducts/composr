@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
 <div class="clearfix" data-tpl="cnsVirtualForumFiltering">
-	<form title="{!FILTER}" target="_self" class="right" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" method="get" autocomplete="off">
+	<form title="{!FILTER}" target="_self" class="right" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" method="get">
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL},seconds_back}
 
 		<p>

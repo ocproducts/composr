@@ -5,7 +5,7 @@
 
 	{TABLE}
 
-	<form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{HIDDEN}

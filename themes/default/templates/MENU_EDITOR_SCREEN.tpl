@@ -10,12 +10,12 @@
 
 	<div class="menu-editor-page docked js-el-menu-editor-wrap" id="menu-editor-wrap">
 		<div class="menu-editor-page-inner">
-			<form title="" action="{URL*}" method="post" autocomplete="off">
+			<form title="" action="{URL*}" method="post">
 				<!-- In separate form due to mod_security -->
 				<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
 			</form>
 
-			<form title="{!PRIMARY_PAGE_FORM}" id="edit-form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
+			<form title="{!PRIMARY_PAGE_FORM}" id="edit-form" action="{URL*}" method="post" class="js-submit-modsecurity-workaround" data-submit-pd="1">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="clearfix menu-edit-main">
@@ -107,7 +107,7 @@
 					<div class="toggleable-tray js-tray-content" id="delete-menu" style="display: none" aria-expanded="false">
 						<p>{!ABOUT_DELETE_MENU}</p>
 
-						<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">
+						<form title="{!DELETE}" action="{DELETE_URL*}" method="post">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<p class="proceed-button">

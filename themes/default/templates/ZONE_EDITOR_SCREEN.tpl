@@ -32,7 +32,7 @@
 
 	<hr class="spaced-rule" />
 
-	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save zone-editor-form">
+	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" class="js-form-ze-save zone-editor-form">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div id="edit-field-store" style="display: none">

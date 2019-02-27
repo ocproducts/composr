@@ -20,7 +20,7 @@
 {+END}
 
 <div class="clearfix">
-	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{HIDDEN}

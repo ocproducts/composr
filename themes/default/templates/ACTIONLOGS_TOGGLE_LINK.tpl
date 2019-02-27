@@ -1,1 +1,1 @@
-<form class="associated-link{+START,IF_NON_PASSED,LONELY} horiz-field-sep{+END} inline" title="{!TOGGLE}" action="{URL*}" method="post" autocomplete="off"><button class="button-hyperlink" type="submit">{+START,IF_PASSED,LABEL}{LABEL*}{+END}{+START,IF_NON_PASSED,LABEL}{!TOGGLE}{+END}</button></form>
+<form class="associated-link{+START,IF_NON_PASSED,LONELY} horiz-field-sep{+END} inline" title="{!TOGGLE}" action="{URL*}" method="post"><button class="button-hyperlink" type="submit">{+START,IF_PASSED,LABEL}{LABEL*}{+END}{+START,IF_NON_PASSED,LABEL}{!TOGGLE}{+END}</button></form>

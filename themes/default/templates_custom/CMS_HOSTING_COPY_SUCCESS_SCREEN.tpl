@@ -4,7 +4,7 @@
 	{!HOSTING_COPY_SUCCESS}
 </p>
 
-<form action="{INSTALL_URL*}" method="post" autocomplete="off">
+<form action="{INSTALL_URL*}" method="post">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{HIDDEN}

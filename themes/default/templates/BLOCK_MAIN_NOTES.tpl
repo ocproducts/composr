@@ -18,7 +18,7 @@
 			</h3>
 
 			<div class="toggleable-tray js-tray-content">
-				<form title="{$STRIP_TAGS,{TITLE}}" method="post" action="{URL*}" autocomplete="off" class="js-form-block-main-notes">
+				<form title="{$STRIP_TAGS,{TITLE}}" method="post" action="{URL*}" class="js-form-block-main-notes">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="accessibility-hidden"><label for="n-block-{TITLE|}">{!NOTES}</label></div>

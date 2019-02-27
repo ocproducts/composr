@@ -3,7 +3,7 @@
 {$REQUIRE_JAVASCRIPT,commandr}
 
 <div data-tpl="commandrEdit" data-tpl-params="{+START,PARAMS_JSON,FILE}{_*}{+END}">
-	<form title="{!EDIT}" action="{SUBMIT_URL*}" class="js-submit-commandr-form-submission" data-submit-pd="1" method="post" autocomplete="off">
+	<form title="{!EDIT}" action="{SUBMIT_URL*}" class="js-submit-commandr-form-submission" data-submit-pd="1" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

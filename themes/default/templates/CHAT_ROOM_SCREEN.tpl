@@ -15,7 +15,7 @@
 		<div class="chat-posting-area">
 			<div class="clearfix">
 				<div class="left">
-					<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
+					<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<div style="display: inline;">
@@ -38,7 +38,7 @@
 				</div>
 
 				<div class="left">
-					<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
+					<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<button type="button" class="btn btn-primary btn-sm buttons--send js-click-post-chat-message">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{SUBMIT_VALUE*}</button>
@@ -88,7 +88,7 @@
 		{!USERS_IN_CHATROOM} <span id="chat-members-update">{CHATTERS}</span>
 	</p></div>
 
-	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
+	<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below-main-chat-window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="box box---chat-screen-options box-prominent"><div class="box-inner">

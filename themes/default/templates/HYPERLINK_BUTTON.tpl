@@ -1,4 +1,4 @@
-<form title="{$STRIP_TAGS,{CAPTION}}" action="{URL*}" method="post" class="inline"{+START,IF_PASSED_AND_TRUE,NEW_WINDOW} target="_blank"{+END} autocomplete="off">
+<form title="{$STRIP_TAGS,{CAPTION}}" action="{URL*}" method="post" class="inline"{+START,IF_PASSED_AND_TRUE,NEW_WINDOW} target="_blank"{+END}>
 	{+START,IF_NON_EMPTY,{POST_DATA}}
 		{$INSERT_SPAMMER_BLACKHOLE}
 		{POST_DATA}

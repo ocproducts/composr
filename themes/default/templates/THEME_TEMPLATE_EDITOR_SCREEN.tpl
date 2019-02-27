@@ -18,7 +18,7 @@
 		{WARNING_DETAILS}
 	{+END}
 
-	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#!" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#!">
 		{$,Instruct Composr to pull in template data dynamically from the POST environment, i.e. do a live preview}
 		<input type="hidden" name="template_preview_op" value="1" />
 

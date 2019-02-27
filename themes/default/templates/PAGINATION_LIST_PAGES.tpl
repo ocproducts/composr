@@ -1,4 +1,4 @@
-<form title="{!COUNT_PAGES}" class="inline" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+<form title="{!COUNT_PAGES}" class="inline" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
 	{$SET,RAND_PAGINATION_LIST_PAGES,{$RAND}}
 
 	<div class="pagination-pages">

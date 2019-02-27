@@ -1,4 +1,4 @@
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
 	{HIDDEN}
 
 	<div class="installer-main-min">

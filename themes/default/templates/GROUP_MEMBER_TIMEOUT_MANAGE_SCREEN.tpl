@@ -12,7 +12,7 @@
 		{!DOC_MANAGE_GROUP_MEMBER_TIMEOUTS}
 	</p>
 
-	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="wide-table-wrap"><table class="columned-table results-table wide-table autosized-table">
@@ -34,7 +34,7 @@
 					<tr>
 						<td>
 							<label class="accessibility-hidden" for="gmt_username_{_loop_key*}">{!USERNAME}</label>
-							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="form-control input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
+							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} size="20" maxlength="255" class="form-control input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_{_loop_key*}" name="gmt_username_{_loop_key*}" value="{USERNAME*}" />
 						</td>
 
 						<td>
@@ -56,7 +56,7 @@
 				<tr>
 					<td>
 						<label class="accessibility-hidden" for="gmt_username_new">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="form-control input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} size="20" maxlength="255" class="form-control input-username-required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
 					</td>
 
 					<td>

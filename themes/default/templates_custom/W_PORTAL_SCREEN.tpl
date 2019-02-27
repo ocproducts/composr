@@ -9,7 +9,7 @@
 	{$PARAGRAPH,{TEXT}}
 {+END}
 
-<form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
+<form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<input type="hidden" name="type" value="{PAGE_TYPE*}" />

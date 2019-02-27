@@ -8,7 +8,7 @@
 <section class="box box---block-main-newsletter-signup" data-tpl="blockMainNewsletterSignup" data-tpl-params="{+START,PARAMS_JSON,NID}{_*}{+END}"><div class="box-inner">
 	<h3>{!NEWSLETTER}{$?,{$NEQ,{NEWSLETTER_TITLE},{!GENERAL}},: {NEWSLETTER_TITLE*}}</h3>
 
-	<form class="js-form-submit-newsletter-check-email-field" title="{!NEWSLETTER}" action="{URL*}" method="post" autocomplete="off">
+	<form class="js-form-submit-newsletter-check-email-field" title="{!NEWSLETTER}" action="{URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p class="accessibility-hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>

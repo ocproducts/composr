@@ -3,7 +3,7 @@
 <div data-tpl="permissionKeysPermissionsScreen">
 	{TITLE}
 
-	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

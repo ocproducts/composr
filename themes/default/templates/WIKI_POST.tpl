@@ -54,7 +54,7 @@
 	
 						{+START,IF,{STAFF_ACCESS}}
 							<div id="cell-mark-{ID*}" class="cns-off mass-select-marker wiki-mass-select-marker">
-								<form class="webstandards-checker-off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
+								<form class="webstandards-checker-off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form-mark-{ID*}">
 									<div>
 										{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}" class="accessibility-hidden">{!MARKER} #{ID*}:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
 										<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
@@ -68,7 +68,7 @@
 				{+START,SET,commented_out}
 					{+START,IF,{$EQ,{$CONFIG_OPTION,is_on_rating},1}}
 						<div class="wiki-post-below">
-							<form title="{!RATING}" class="inline" action="{RATE_URL*}" method="post" autocomplete="off">
+							<form title="{!RATING}" class="inline" action="{RATE_URL*}" method="post">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								{RATING}

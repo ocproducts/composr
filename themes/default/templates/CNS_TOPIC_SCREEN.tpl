@@ -81,7 +81,7 @@
 		{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}}
 			<div class="box cns-topic-control-functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block-desktop{+END}"><div class="box-inner">
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
-					<form class="form-moderator-actions"  title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" autocomplete="off">
+					<form class="form-moderator-actions"  title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get">
 						{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 						<label for="tma-type">{!TOPIC_ACTIONS}:</label>
 						<div class="input-group">
@@ -98,7 +98,7 @@
 
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
-						<form class="form-marked-post-actions desktop-only js-form-marked-post-actions" title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" autocomplete="off">
+						<form class="form-marked-post-actions desktop-only js-form-marked-post-actions" title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 							<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
 							<div class="input-group">
@@ -117,7 +117,7 @@
 				{+END}
 
 				{+START,IF,{THREADED}}
-					<form class="form-comments-sort" action="{$SELF_URL*}" method="post" autocomplete="off">
+					<form class="form-comments-sort" action="{$SELF_URL*}" method="post">
 						{$INSERT_SPAMMER_BLACKHOLE}
 					
 						<label for="comments_sort">{!SORT}:</label>

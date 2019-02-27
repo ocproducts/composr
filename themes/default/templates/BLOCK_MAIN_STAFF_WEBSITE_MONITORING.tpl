@@ -41,7 +41,7 @@
 					</tbody>
 				</table></div>
 
-				<form title="{!SITE_WATCHLIST}: {!EDIT}" style="display: none" aria-hidden="true" action="{URL*}" method="post" id="website-monitoring-list-{$GET%,RAND_WEBSITE_MONITORING}-form" autocomplete="off" class="js-form-site-watchlist">
+				<form title="{!SITE_WATCHLIST}: {!EDIT}" style="display: none" aria-hidden="true" action="{URL*}" method="post" id="website-monitoring-list-{$GET%,RAND_WEBSITE_MONITORING}-form" class="js-form-site-watchlist">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>

@@ -67,7 +67,7 @@
 					{+START,IF,{$DESKTOP}}
 						{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}{+START,IF,{$MATCH_KEY_MATCH,_SEARCH:topicview}}
 							<div id="cell-mark-{ID*}" class="cns-off post-action-link inline-block mobile-inline">
-								<form class="webstandards-checker-off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form-mark-{ID*}" autocomplete="off">
+								<form class="webstandards-checker-off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form-mark-{ID*}">
 									{$INSERT_SPAMMER_BLACKHOLE}
 
 									<div>

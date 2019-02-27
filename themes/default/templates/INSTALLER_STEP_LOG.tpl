@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
 		<div>
 			{HIDDEN}
 

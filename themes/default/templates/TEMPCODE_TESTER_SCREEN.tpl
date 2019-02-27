@@ -5,7 +5,7 @@
 
 	<p>{!TEMPCODE_TESTER_HELP}</p>
 
-	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#!" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#!">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<h2><label for="tempcode">Tempcode</label></h2>

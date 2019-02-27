@@ -3,7 +3,7 @@
 <div data-tpl="notificationsManageScreen">
 	{TITLE}
 
-	<form title="{!NOTIFICATIONS}" method="post" action="{ACTION_URL*}" autocomplete="off">
+	<form title="{!NOTIFICATIONS}" method="post" action="{ACTION_URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

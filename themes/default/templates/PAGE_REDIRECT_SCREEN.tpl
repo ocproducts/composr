@@ -5,7 +5,7 @@
 	{WARNING_DETAILS}
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h2>{!EXISTING_REDIRECTS}</h2>

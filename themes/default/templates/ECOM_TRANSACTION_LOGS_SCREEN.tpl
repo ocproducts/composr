@@ -2,7 +2,7 @@
 
 {RESULTS_TABLE}
 
-<form title="{!PRIMARY_PAGE_FORM}" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}">
 	{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},product,id}
 
 	<div>

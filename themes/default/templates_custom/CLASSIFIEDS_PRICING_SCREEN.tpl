@@ -4,7 +4,7 @@
 	{!CLASSIFIEDS_SET_PRICES}
 </p>
 
-<form id="main-form" action="{POST_URL*}" method="post" autocomplete="off">
+<form id="main-form" action="{POST_URL*}" method="post">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

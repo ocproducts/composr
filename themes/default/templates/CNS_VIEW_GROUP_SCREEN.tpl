@@ -33,12 +33,12 @@
 			<div class="box box---cns-view-group-screen"><div class="box-inner">
 				<h2>{!ADD_MEMBER_TO_GROUP}</h2>
 
-				<form title="{!ADD_MEMBER_TO_GROUP}" class="js-form-submit-add-member-to-group" action="{ADD_URL*}" method="post" autocomplete="off">
+				<form title="{!ADD_MEMBER_TO_GROUP}" class="js-form-submit-add-member-to-group" action="{ADD_URL*}" method="post">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
 						<label for="vga-username">{!USERNAME}: </label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="form-control js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga-username" name="username" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} maxlength="80" class="form-control js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga-username" name="username" />
 						<button class="btn btn-primary btn-scri admin--add" type="submit">{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD}</button>
 					</div>
 				</form>

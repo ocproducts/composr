@@ -31,7 +31,7 @@
 		{+END}
 	{+END}
 
-	<form title="{!SAVE}" id="quiz-form" class="quiz-form js-quiz-form js-submit-check-form" method="post" action="{URL*}" autocomplete="off">
+	<form title="{!SAVE}" id="quiz-form" class="quiz-form js-quiz-form js-submit-check-form" method="post" action="{URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

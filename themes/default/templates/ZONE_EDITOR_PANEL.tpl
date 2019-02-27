@@ -59,7 +59,7 @@
 
 	{+START,IF_PASSED,COMCODE}
 		<div id="edit-{ID*}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="edit-tab-{ID*}" role="tabpanel">
-			<form title="{ID*}: {!COMCODE}" action="index.php" method="post" autocomplete="off" class="js-form-zone-editor-comcode">
+			<form title="{ID*}: {!COMCODE}" action="index.php" method="post" class="js-form-zone-editor-comcode">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<p>
@@ -119,7 +119,7 @@
 		{$,Choosing where to redirect to, same page name but in a different zone}
 		{+START,IF_PASSED,ZONES}
 			{+START,IF,{$ADDON_INSTALLED,redirects_editor}}
-				<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post" autocomplete="off">
+				<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<p class="lonely-label">
@@ -141,7 +141,7 @@
 
 	{+START,IF_PASSED,SETTINGS}
 		<div id="settings-{ID*}" style="display: none" aria-labeledby="settings-tab-{ID*}" role="tabpanel">
-			<form title="{ID*}: {!SETTINGS}" id="middle-fields" action="index.php" autocomplete="off">
+			<form title="{ID*}: {!SETTINGS}" id="middle-fields" action="index.php">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="wide-table-wrap"><table class="map-table form-table wide-table">

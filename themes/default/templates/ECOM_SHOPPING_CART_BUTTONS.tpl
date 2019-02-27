@@ -4,7 +4,7 @@
 	<div class="add-to-cart">
 		{+START,IF_NON_EMPTY,{ACTION_URL}}
 			<div class="purchase-buy">
-				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}" autocomplete="off">
+				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<button class="btn btn-primary btn-scri buttons--cart-add"{+START,IF,{OUT_OF_STOCK}} data-click-alert="{!OUT_OF_STOCK*}" data-click-pd="1"{+END} type="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_add{+END} {!ADD_TO_CART}</button>
@@ -18,7 +18,7 @@
 		{+START,SET,commented_out}
 			{+START,IF_NON_EMPTY,{PURCHASE_ACTION_URL}}
 				<div class="purchase-buy">
-					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}" autocomplete="off">
+					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<button class="btn btn-primary btn-scri buttons--cart-checkout" type="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_checkout{+END} {!BUY_NOW}</button>

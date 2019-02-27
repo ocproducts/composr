@@ -1,6 +1,6 @@
 {$,You may need to remove this or change it to an <a> as shown, if your banner gets placed inside a form, because nested forms are not allowed}
 {+START,IF,{$IS_ADMIN}}{+START,IF,{$NOT,{$MATCH_KEY_MATCH,cms:cms_banners,_WILD:purchase}}}{+START,IF,{$THEME_OPTION,enable_edit_banner_buttons}}
-	<form title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" class="associated-minor-button-action associated-minor-button-overlaid" method="post" action="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}" autocomplete="off"><button title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" type="submit">{!EDIT}</button></form>
+	<form title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" class="associated-minor-button-action associated-minor-button-overlaid" method="post" action="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}"><button title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" type="submit">{!EDIT}</button></form>
 	{$,<a title="{!BANNER}: {!EDIT} ({$STRIP_TAGS,{CAPTION*}})" class="associated-minor-button-action associated-minor-button-overlaid button" href="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}">{!EDIT}</a>}
 {+END}{+END}{+END}
 

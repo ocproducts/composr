@@ -1,7 +1,7 @@
 <div data-view="ThemeTemplateEditorTab" data-view-params="{+START,PARAMS_JSON,FILE,FILE_ID,HIGHLIGHTER_TYPE,INCLUDE_CSS_EDITING,THEME,LIVE_PREVIEW_URL,SCREEN_PREVIEW_URL}{_*}{+END}">
 
 {+START,IF_PASSED_AND_TRUE,OWN_FORM}
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#">
 {+END}
 
 {$,Toolbarish}

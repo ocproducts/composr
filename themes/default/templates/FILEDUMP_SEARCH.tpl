@@ -1,12 +1,12 @@
 <div class="clearfix">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
-		<form class="filedump-filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab--{TAB%}" method="get" autocomplete="off">
+		<form class="filedump-filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab--{TAB%}" method="get">
 			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse,file}
 
 			<p class="left">
 				<label class="accessibility-hidden" for="search-filedump-{I*}">{!SEARCH}</label>
-				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search-filedump-{I*}" class="form-control" name="search" placeholder="{!SEARCH*}" />
+				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} maxlength="255" size="22" type="search" id="search-filedump-{I*}" class="form-control" name="search" placeholder="{!SEARCH*}" />
 
 				<label class="recurse horiz-field-sep" for="recurse-filedump-{I*}">
 					{!INCLUDE_SUBFOLDERS}

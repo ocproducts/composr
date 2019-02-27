@@ -15,7 +15,7 @@
 		</div>
 	</div></div>
 
-	<form title="{!PRIMARY_PAGE_FORM}" class="cns-join-1" method="post" action="{URL*}" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" class="cns-join-1" method="post" action="{URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p class="agree-field">

@@ -15,7 +15,7 @@
 
 	<h2 class="force-margin">{!SEARCH}</h2>
 
-	<form title="{!SEARCH}" target="_self" method="get" action="{SEARCH_URL*}" class="js-submit-scroll-to-top" autocomplete="off">
+	<form title="{!SEARCH}" target="_self" method="get" action="{SEARCH_URL*}" class="js-submit-scroll-to-top">
 		<div>
 			{HIDDEN}
 

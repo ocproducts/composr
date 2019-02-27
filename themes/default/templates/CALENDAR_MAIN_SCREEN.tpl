@@ -79,7 +79,7 @@
 			<div class="clearfix">
 				{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
 				<div class="right event-interest-box"><section class="box"><div class="box-inner">
-					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}" autocomplete="off">
+					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<p><strong>{!DESCRIPTION_INTERESTS}</strong></p>
@@ -96,7 +96,7 @@
 				{+END}
 				{+START,IF_NON_EMPTY,{EVENT_TYPES_2}}
 				<div class="left event-interest-box"><section class="box"><div class="box-inner">
-					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get" autocomplete="off">
+					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						{$HIDDENS_FOR_GET_FORM,{FILTER_URL}}

@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post">
 	<input type="hidden" name="clientAccnum" value="{ACCOUNT_NUM*}" /> {$,An integer value representing the 6-digit client account number.}
 	<input type="hidden" name="clientSubacc" value="{SUBACCOUNT_NUM*}" /> {$,An integer value representing the 4-digit client subaccount number.}
 	<input type="hidden" name="formName" value="{FORM_NAME*}" /> {$,The name of the form.}

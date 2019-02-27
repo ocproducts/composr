@@ -5,7 +5,7 @@
 		<h2 class="status-icon">{TITLE*}</h2>
 	{+END}
 
-	<form id="fp-status-form" class="js-form-status-updates" action="#!" method="post" autocomplete="off">
+	<form id="fp-status-form" class="js-form-status-updates" action="#!" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<input type="hidden" name="zone" value="{$?,{$ZONE},{$ZONE*},frontpage}" />

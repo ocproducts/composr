@@ -31,7 +31,7 @@
 					TAB=thumbnails
 				{+END}
 
-				<form class="js-submit-check-filedump-selections" title="{!ACTION}" action="{POST_URL*}" autocomplete="off">
+				<form class="js-submit-check-filedump-selections" title="{!ACTION}" action="{POST_URL*}">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					{+START,IF_NON_EMPTY,{THUMBNAILS}}
@@ -84,7 +84,7 @@
 					TAB=listing
 				{+END}
 
-				<form class="js-submit-check-filedump-selections" title="{!ACTION}" action="{POST_URL*}" method="post" autocomplete="off">
+				<form class="js-submit-check-filedump-selections" title="{!ACTION}" action="{POST_URL*}" method="post">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					{+START,IF_NON_EMPTY,{LISTING}}

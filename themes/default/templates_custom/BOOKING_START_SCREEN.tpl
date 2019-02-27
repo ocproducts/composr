@@ -18,7 +18,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{CATEGORIES}}
-	<form action="{POST_URL*}" method="post" autocomplete="off">
+	<form action="{POST_URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post">
 	<input type="hidden" name="cmd" value="_xclick" />
 	<input type="hidden" name="charset" value="{!charset}" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />

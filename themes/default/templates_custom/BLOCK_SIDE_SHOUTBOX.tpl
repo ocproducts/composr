@@ -9,12 +9,12 @@
 
 			{MESSAGES}
 
-			<form target="_self" action="{$EXTEND_URL*,{URL},posted=1}" method="post" title="{!SHOUTBOX}" autocomplete="off">
+			<form target="_self" action="{$EXTEND_URL*,{URL},posted=1}" method="post" title="{!SHOUTBOX}">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div>
 					<p class="accessibility-hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
-					<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control form-control-wide" /></p>
+					<p><input type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control form-control-wide" /></p>
 				</div>
 
 				<div class="btn-row btn-row-stretched">

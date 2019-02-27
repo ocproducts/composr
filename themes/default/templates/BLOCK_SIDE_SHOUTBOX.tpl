@@ -5,12 +5,12 @@
 
 		{MESSAGES}
 
-		<form title="{!SHOUTBOX}" data-ajaxify-target="1" action="{URL*}" method="post" autocomplete="off">
+		<form title="{!SHOUTBOX}" data-ajaxify-target="1" action="{URL*}" method="post">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
 				<p class="accessibility-hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
-				<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control form-control-wide" /></p>
+				<p><input type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control form-control-wide" /></p>
 			</div>
 
 			<p class="proceed-button">

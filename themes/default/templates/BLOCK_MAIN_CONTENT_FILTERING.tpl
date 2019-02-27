@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,checking}
 
 {+START,IF_NON_EMPTY,{FIELDS}}
-	<form title="{!PRIMARY_PAGE_FORM}" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}">
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,0,0,active_filter=<null>}}
 
 		<div>

@@ -23,7 +23,7 @@
 <h2>{!EXPORT_FILES}</h2>
 
 {+START,IF_NON_EMPTY,{FILES}}
-	<form title="{!EXPORT_ADDON}" action="{URL*}" method="post" autocomplete="off">
+	<form title="{!EXPORT_ADDON}" action="{URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

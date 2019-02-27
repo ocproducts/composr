@@ -7,7 +7,7 @@
 		<ul class="actions-list">
 			<li>
 				{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}
-				<form title="{!LOAD} {TITLE*}" action="#" method="post" class="inline" id="saved-use--{TITLE|}" autocomplete="off">
+				<form title="{!LOAD} {TITLE*}" action="#" method="post" class="inline" id="saved-use--{TITLE|}">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">

@@ -18,13 +18,13 @@
 	{+END}
 
 	{+START,IF_NON_PASSED,IFRAME_URL}
-	<form title="{!PRIMARY_PAGE_FORM}" id="main-form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} data-submit-modsecurity-workaround="1"{+END}>
+	<form title="{!PRIMARY_PAGE_FORM}" id="main-form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} {+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} data-submit-modsecurity-workaround="1"{+END}>
 		{+START,IF_NON_PASSED_OR_FALSE,GET}{$INSERT_SPAMMER_BLACKHOLE}{+END}
 
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
 	{+END}
 	{+START,IF_PASSED,IFRAME_URL}
-	<form title="{!PRIMARY_PAGE_FORM}" id="main-form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{IFRAME_URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{IFRAME_URL}}"{+END} target="iframe-under" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" id="main-form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{IFRAME_URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{IFRAME_URL}}"{+END} target="iframe-under">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{IFRAME_URL}}{+END}
@@ -65,7 +65,7 @@
 		<a id="edit-space"></a>
 
 		<div class="arrow-ruler">
-			<form action="#!" method="post" autocomplete="off">
+			<form action="#!" method="post">
 				<div class="associated-link">
 					<input type="checkbox" name="will_open_new" id="will_open_new" class="js-checkbox-will-open-new" />
 					<label for="will_open_new">{!CHOOSE_OPEN_NEW_WINDOW}</label>

@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 
 <a id="poll-jump" rel="dovote"></a>
-<form class="cns-topic-poll-form" title="{!VOTE}" action="{VOTE_URL*}" method="post" data-tpl="cnsTopicPoll" data-tpl-params="{+START,PARAMS_JSON,MINIMUM_SELECTIONS,MAXIMUM_SELECTIONS}{_*}{+END}" autocomplete="off">
+<form class="cns-topic-poll-form" title="{!VOTE}" action="{VOTE_URL*}" method="post" data-tpl="cnsTopicPoll" data-tpl-params="{+START,PARAMS_JSON,MINIMUM_SELECTIONS,MAXIMUM_SELECTIONS}{_*}{+END}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h3>{+START,FRACTIONAL_EDITABLE,{QUESTION},question,_SEARCH:topics:_edit_poll:{ID}}{QUESTION*}{+END}</h3>

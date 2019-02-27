@@ -56,7 +56,7 @@
 				{+END}
 			{+END}
 
-			<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main-search-form js-form-primary-form" autocomplete="off">
+			<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main-search-form js-form-primary-form">
 				{$HIDDENS_FOR_GET_FORM,{URL}}
 				<input type="hidden" name="all_defaults" value="0" />
 
@@ -75,7 +75,7 @@
 							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility-hidden"><label for="search-content">{!SEARCH_FOR}</label></div>
 								<div>
-									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search-content form-control form-control-wide js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search-content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
+									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} class="search-content form-control form-control-wide js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search-content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 								</div>
 
 								{+START,IF,{HAS_TEMPLATE_SEARCH}}
@@ -111,7 +111,7 @@
 								<div class="accessibility-hidden"><label for="search-author">{USER_LABEL*}</label></div>
 								<div>
 									<span class="invisible-ref-point"></span>
-									<input autocomplete="off" maxlength="80" class="form-control form-control-wide js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search-author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+									<input maxlength="80" class="form-control form-control-wide js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search-author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
 							</td>
 						</tr>

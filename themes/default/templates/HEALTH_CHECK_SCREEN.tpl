@@ -1,6 +1,6 @@
 {TITLE}
 
-<form action="{$SELF_URL*}" method="post" title="{!PRIMARY_PAGE_FORM}" autocomplete="off">
+<form action="{$SELF_URL*}" method="post" title="{!PRIMARY_PAGE_FORM}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

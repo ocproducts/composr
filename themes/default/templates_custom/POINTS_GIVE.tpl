@@ -22,7 +22,7 @@
 			{+END}
 		</p>
 
-		<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab--points" autocomplete="off">
+		<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab--points">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p>
@@ -62,7 +62,7 @@
 			{+END}
 		</p>
 
-		<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab--points" autocomplete="off">
+		<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab--points">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>

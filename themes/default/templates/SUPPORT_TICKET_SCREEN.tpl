@@ -29,7 +29,7 @@
 						<span>{_loop_var*}</span>
 
 						{+START,IF,{$HAS_PRIVILEGE,support_operator}}
-							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical-alignment" autocomplete="off">
+							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical-alignment">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								<button class="btn btn-danger btn-sm" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!REMOVE}</button>
@@ -46,11 +46,11 @@
 			{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 				{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 				<li>
-					<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical-alignment" autocomplete="off">
+					<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical-alignment">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="assign-username" class="accessibility-hidden">{!USERNAME}</label>
-						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="form-control form-control-sm input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
+						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} maxlength="255" class="form-control form-control-sm input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
 						<button class="btn btn-primary btn-sm buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!ASSIGN_TO}</button>
 					</form>
 				</li>
@@ -154,7 +154,7 @@
 	{$SET,COMMENT_POSTING_ROWS,20}
 
 	{+START,IF_NON_EMPTY,{COMMENT_FORM}}
-		<form title="{!PRIMARY_PAGE_FORM}" id="comments-form" class="js-submit-check-post-and-ticket-type-id-fields" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
+		<form title="{!PRIMARY_PAGE_FORM}" id="comments-form" class="js-submit-check-post-and-ticket-type-id-fields" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{COMMENT_FORM}

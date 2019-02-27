@@ -19,7 +19,7 @@
 			<div class="box box---cns-whisper-choice-screen"><div class="box-inner">
 				<h2>{!PRIVATE_TOPIC}</h2>
 
-				<form title="{!PRIVATE_TOPIC}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+				<form title="{!PRIVATE_TOPIC}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
 					{$HIDDENS_FOR_GET_FORM,{URL}}
 
 					<div>
@@ -40,7 +40,7 @@
 		<div class="box box---cns-whisper-choice-screen"><div class="box-inner">
 			<h2>{!PERSONAL_POST}</h2>
 
-			<form title="{!PERSONAL_POST}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+			<form title="{!PERSONAL_POST}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
 				{$HIDDENS_FOR_GET_FORM,{URL}}
 
 				<div>

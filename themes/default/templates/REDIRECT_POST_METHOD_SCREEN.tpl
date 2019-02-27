@@ -4,7 +4,7 @@
 
 <div class="site-special-message">
 	<div class="site-special-message-inner">
-		<form title="{!PROCEED}" action="{URL*}" id="redir-form" method="post" autocomplete="off">
+		<form title="{!PROCEED}" action="{URL*}" id="redir-form" method="post">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="box box---login-redirect-screen"><div class="box-inner">

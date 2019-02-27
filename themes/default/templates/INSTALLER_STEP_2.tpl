@@ -1,11 +1,11 @@
-<form title="{!TERMS}" class="installer-cms-licence" action="install.php" method="post" autocomplete="off">
+<form title="{!TERMS}" class="installer-cms-licence" action="install.php" method="post">
 	<div class="installer-terms-title"><label for="licence">{!TERMS}</label></div>
 	<div>
 		<textarea readonly="readonly" class="mono-textbox form-control form-control-wide" id="licence" name="licence" cols="90" rows="17">{LICENCE*}</textarea>
 	</div>
 </form>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
 	{HIDDEN}
 
 	<div class="clearfix">

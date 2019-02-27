@@ -9,7 +9,7 @@
 	{$PARAGRAPH,{TEXT}}
 {+END}
 
-<form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF:uploading=1}" autocomplete="off">
+<form method="post" enctype="multipart/form-data" action="{$PAGE_LINK*,_SELF:_SELF:uploading=1}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="wide-table-wrap"><table class="map-table autosized-table results-table wide-table responsive-blocked-table"><tbody>

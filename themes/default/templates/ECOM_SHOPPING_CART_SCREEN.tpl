@@ -3,7 +3,7 @@
 <div data-tpl="ecomShoppingCartScreen" data-tpl-params="{+START,PARAMS_JSON,TYPE_CODES,EMPTY_CART_URL}{_*}{+END}">
 	{TITLE}
 
-	<form title="{!PRIMARY_PAGE_FORM}" action="{UPDATE_CART_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{UPDATE_CART_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{RESULTS_TABLE}
@@ -46,7 +46,7 @@
 		</div>
 	{+END}
 
-	<form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{NEXT_URL*}" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{NEXT_URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF_PASSED,FIELDS}

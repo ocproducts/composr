@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,search}
 
-<form class="top-button-wrapper" role="search" title="{TITLE*}" data-tpl="blockTopSearch" data-tpl-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+<form class="top-button-wrapper" role="search" title="{TITLE*}" data-tpl="blockTopSearch" data-tpl-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
 	{$HIDDENS_FOR_GET_FORM,{URL}}
 
 	{+START,LOOP,LIMIT_TO}
@@ -30,7 +30,7 @@
 			<div class="box-inner">
 				<label class="accessibility-hidden" for="top-search-content-{BLOCK_ID%}">{!SEARCH}</label>
 				<div class="input-group">
-					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="{$?,{!takes_lots_of_space},10,20}" maxlength="255" class="form-control form-control-sm js-input-keyup-update-ajax-search-list" type="search" id="top-search-content-{BLOCK_ID%}" name="content" />
+					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} size="{$?,{!takes_lots_of_space},10,20}" maxlength="255" class="form-control form-control-sm js-input-keyup-update-ajax-search-list" type="search" id="top-search-content-{BLOCK_ID%}" name="content" />
 					<div class="input-group-append">
 						<button class="btn btn-primary btn-sm buttons--search" type="submit">{+START,INCLUDE,ICON}NAME=buttons/search{+END} {!SEARCH}</button>
 					</div>

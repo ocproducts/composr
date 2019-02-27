@@ -14,7 +14,7 @@
 
 			<div class="filedump-generated-comcode">
 				<label for="generated_comcode" class="lonely-label">{!_COMCODE}:</label>
-				<form action="#" method="post" autocomplete="off">
+				<form action="#" method="post">
 					<div>
 						<textarea id="generated_comcode" name="generated_comcode" class="form-control" cols="50" rows="10">{GENERATED*}</textarea>
 					</div>

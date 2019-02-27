@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,chat}
 {$SET,emoticons_popup_url,{$FIND_SCRIPT,emoticons}?field_name=post_{CHATROOM_ID}{$KEEP,0,1}}
 <div id="room-{CHATROOM_ID*}" class="chat-lobby-convos-area" data-tpl="chatLobbyImArea" data-tpl-params="{+START,PARAMS_JSON,CHATROOM_ID,emoticons_popup_url}{_*}{+END}">
-	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post" autocomplete="off">
+	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,SET,posting_box}

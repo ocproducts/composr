@@ -2,7 +2,7 @@
 
 <div data-tpl="activity" data-tpl-params="{+START,PARAMS_JSON,LIID}{_*}{+END}">
 	{+START,IF,{ALLOW_REMOVE}}
-		<form id="feed-remove-{LIID*}" class="activities-remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">
+		<form id="feed-remove-{LIID*}" class="activities-remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<button class="btn btn-link remove-button" type="submit" title="{!REMOVE}">

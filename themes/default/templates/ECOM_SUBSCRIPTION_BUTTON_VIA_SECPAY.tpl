@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce-button" action="{FORM_URL*}" method="post">
 	<input type="hidden" name="trans_id" value="subscr_{TRANS_EXPECTING_ID*}" /> {$,The "subscr_" is used by us to indicate it will be a subscription}
 	<input type="hidden" name="merchant" value="{USERNAME*}" />
 	<input type="hidden" name="digest" value="{DIGEST*}" />

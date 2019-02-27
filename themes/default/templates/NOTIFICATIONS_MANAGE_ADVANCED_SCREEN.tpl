@@ -4,7 +4,7 @@
 	{!DECIDE_PER_CATEGORY_NOTIFICATIONS,{_TITLE*}}
 </p>
 
-<form title="{!NOTIFICATIONS}" method="post" action="{ACTION_URL*}" autocomplete="off">
+<form title="{!NOTIFICATIONS}" method="post" action="{ACTION_URL*}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

@@ -86,7 +86,7 @@
 	{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 		{+START,IF,{$DESKTOP}}
 			<div class="box cns-topic-actions block-desktop"><div class="box-inner">
-				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" autocomplete="off">
+				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get">
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 					<label for="fma-type">{!TOPIC_ACTIONS}: </label>
 					<div class="input-group">
@@ -101,7 +101,7 @@
 				</form>
 
 				{+START,IF,{MAY_CHANGE_MAX}}
-					<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
+					<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},forum_max}
 						
 						<label for="forum_max">{!PER_PAGE}:</label>
@@ -120,7 +120,7 @@
 						</div>
 					</form>
 
-					<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
+					<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},max}
 
 						<label for="order">{!SORT}:</label>

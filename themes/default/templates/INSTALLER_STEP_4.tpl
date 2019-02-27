@@ -1,4 +1,4 @@
-<form data-tpl="installerStep4" id="form-installer-step-4" title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
+<form data-tpl="installerStep4" id="form-installer-step-4" title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
 	{HIDDEN}
 
 	<div>

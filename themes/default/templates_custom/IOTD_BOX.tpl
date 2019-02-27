@@ -36,12 +36,12 @@
 			<div style="margin-right: {$CONFIG_OPTION,thumb_width}px" class="buttons-group">
 				<div class="buttons-group-inner">
 					{+START,IF,{$NOT,{IS_CURRENT}}}
-						<form title="{!CHOOSE} {!IOTD} #{ID*}" class="inline" action="{CHOOSE_URL*}" method="post" autocomplete="off">
+						<form title="{!CHOOSE} {!IOTD} #{ID*}" class="inline" action="{CHOOSE_URL*}" method="post">
 							<input type="hidden" name="id" value="{ID*}" />
 							<button class="btn btn-primary btn-scri buttons--choose" type="submit" title="{!CHOOSE} {!IOTD} #{ID*}">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} {!CHOOSE}</button></form>
 					{+END}
 					<a class="btn btn-danger btn-scri" rel="edit" href="{EDIT_URL*}">{+START,INCLUDE,ICON}NAME=admin/edit{+END} <span>{!EDIT}: {!IOTD} #{ID*}</span></a>
-					<form class="inline js-submit-confirm-iotd-deletion" title="{!DELETE} {!IOTD} #{ID*}" action="{DELETE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" />
+					<form class="inline js-submit-confirm-iotd-deletion" title="{!DELETE} {!IOTD} #{ID*}" action="{DELETE_URL*}" method="post">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" />
 						<button class="btn btn-danger btn-scri" type="submit" value="{!DELETE}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE} {!IOTD} #{ID*}</button>
 					</form>
 				</div>

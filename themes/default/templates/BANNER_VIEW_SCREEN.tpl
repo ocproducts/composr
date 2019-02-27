@@ -19,7 +19,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{RESET_URL}}
-	<form title="{!RESET_BANNER_STATS}" action="{RESET_URL*}" method="post" autocomplete="off">
+	<form title="{!RESET_BANNER_STATS}" action="{RESET_URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<input type="hidden" name="confirm" value="1" />

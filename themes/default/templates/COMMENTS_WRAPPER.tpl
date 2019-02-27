@@ -43,7 +43,7 @@
 				</div>
 
 				<div class="comments-sorting-box">
-					<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
+					<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="comments_sort">{!SORT_BY}</label>

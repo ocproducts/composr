@@ -4,7 +4,7 @@
 	{!CHOOSE_FORUM_EDIT}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{REORDER_URL*}" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{REORDER_URL*}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{ROOT_FORUM}

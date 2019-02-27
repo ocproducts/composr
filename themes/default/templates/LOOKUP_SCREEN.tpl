@@ -91,7 +91,7 @@
 <h2>{!BANNED_ADDRESSES}</h2>
 
 {+START,IF_NON_EMPTY,{IP_LIST}}
-	<form title="{!PRIMARY_PAGE_FORM}" action="{$SELF_URL*}" method="post" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{$SELF_URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p class="lonely-label">

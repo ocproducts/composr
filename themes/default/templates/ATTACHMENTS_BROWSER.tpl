@@ -1,5 +1,5 @@
 <div class="global-middle" data-view="AttachmentsBrowser" data-view-params="{+START,PARAMS_JSON,FIELD_NAME,ID,DESCRIPTION}{_*}{+END}">
-	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<label for="member_id">{!ATTACHMENTS_OF}:
@@ -20,7 +20,7 @@
 				<a class="btn btn-primary btn-scri buttons--choose js-click-do-attachment-and-close" href="#!">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} <span>{!CHOOSE}</span></a>
 
 				{+START,IF,{MAY_DELETE}}
-				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}" autocomplete="off">
+				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input type="hidden" name="delete_{ID*}" value="1" />
