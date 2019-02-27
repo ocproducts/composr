@@ -595,9 +595,10 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
  * @param  ?integer $_maxlength The maximum length of the field (null: default 80)
  * @param  array $extra_chars List of extra characters to allow
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = array(), $placeholder = null)
+function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = array(), $placeholder = null, $autocomplete = null)
 {
     if ($default === null) {
         $default = '';
@@ -605,6 +606,8 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
 
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -622,6 +625,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
         'NAME' => $name,
         'DEFAULT' => $default,
         'EXTRA_CHARS' => $extra_chars,
+        'AUTOCOMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -640,10 +644,11 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @param  ?string $pattern Custom regex pattern (null: none)
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
- * @param  integer $size How much space the list takes up (inline lists only)
+ * @param  ?integer $size How much space the list takes up (inline lists only) (null: default 27)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null, $size = 27)
+function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null, $size = null, $autocomplete = null)
 {
     if ($default === null) {
         $default = '';
@@ -652,6 +657,8 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
 
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
@@ -659,6 +666,11 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     if (($maxlength === null) && ($_maxlength !== null)) {
         $maxlength = strval($_maxlength);
     }
+
+    if ($size === null) {
+        $size = 27;
+    }
+
     $input = do_template('FORM_SCREEN_INPUT_LINE', array(
         '_GUID' => '02789c9af25cbc971e86bfcc0ad322d5',
         'PLACEHOLDER' => $placeholder,
@@ -670,6 +682,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
         'TYPE' => $type,
         'PATTERN' => $pattern,
         'SIZE' => strval($size),
+        'AUTOCOMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (($pattern_error === null) && ($pattern !== null)) ? strip_html($description->evaluate()) : $pattern_error);
 }
@@ -683,9 +696,10 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_url($pretty_name, $description, $name, $default, $required, $tabindex = null)
+function form_input_url($pretty_name, $description, $name, $default, $required, $tabindex = null, $autocomplete = null)
 {
     if ($default === null) {
         $default = '';
@@ -698,10 +712,19 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
     $coder_ob = new HarmlessURLCoder();
     $_default = $coder_ob->decode($default);
 
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_URL', array('_GUID' => '12789c9af25cbc971e86bfcc0ad322d5', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $_default));
+    $input = do_template('FORM_SCREEN_INPUT_URL', array(
+        '_GUID' => '12789c9af25cbc971e86bfcc0ad322d5',
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => $_default,
+        'AUTOCOMPLETE' => $autocomplete,
+    ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -715,9 +738,10 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
  * @param  boolean $required Whether this is a required input field
  * @param  boolean $needs_match Whether it is required than a valid username is given
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_username($pretty_name, $description, $name, $default, $required, $needs_match = true, $tabindex = null)
+function form_input_username($pretty_name, $description, $name, $default, $required, $needs_match = true, $tabindex = null, $autocomplete = null)
 {
     if ($default === null) {
         $default = '';
@@ -727,6 +751,8 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
     $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax_people_lists');
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -738,8 +764,9 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
         'REQUIRED' => $_required,
         'NAME' => $name,
         'DEFAULT' => $default,
+        'AUTOCOMPLETE' => $autocomplete,
     ));
-    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, $autocomplete);
 }
 
 /**
@@ -751,12 +778,13 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_author($pretty_name, $description, $name, $default, $required, $tabindex = null)
+function form_input_author($pretty_name, $description, $name, $default, $required, $tabindex = null, $autocomplete = null)
 {
     if (!addon_installed('authors')) {
-        return form_input_username($pretty_name, $description, $name, $default, $required, true, $tabindex);
+        return form_input_username($pretty_name, $description, $name, $default, $required, true, $tabindex, $autocomplete);
     }
 
     if ($default === null) {
@@ -767,6 +795,8 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax_people_lists');
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -785,7 +815,14 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     $_description->attach($extra);
 
     $_required = ($required) ? '-required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_AUTHOR', array('_GUID' => '2662a51e494120078b4022915593e28a', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_AUTHOR', array(
+        '_GUID' => '2662a51e494120078b4022915593e28a',
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => $default,
+        'AUTOCOMPLETE' => $autocomplete,
+    ));
     return _form_input($name, $pretty_name, $_description, $input, $required, false, $tabindex);
 }
 
@@ -798,9 +835,10 @@ function form_input_author($pretty_name, $description, $name, $default, $require
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_email($pretty_name, $description, $name, $default, $required, $tabindex = null)
+function form_input_email($pretty_name, $description, $name, $default, $required, $tabindex = null, $autocomplete = null)
 {
     if ($default === null) {
         $default = '';
@@ -809,11 +847,20 @@ function form_input_email($pretty_name, $description, $name, $default, $required
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
 
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_EMAIL', array('_GUID' => '2ff1d9e21894710b8f09598fd92049c7', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
-    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
+    $input = do_template('FORM_SCREEN_INPUT_EMAIL', array(
+        '_GUID' => '2ff1d9e21894710b8f09598fd92049c7',
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => $default,
+        'AUTOCOMPLETE' => $autocomplete,
+    ));
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, $autocomplete);
 }
 
 /**
@@ -897,9 +944,10 @@ function form_input_page_link($pretty_name, $description, $name, $default, $requ
  * @param  ?string $default The default value for this input field (null: blank)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_line_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null)
+function form_input_line_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $autocomplete = null)
 {
     require_lang('comcode');
 
@@ -909,6 +957,8 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
 
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -921,6 +971,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
         'NAME' => $name,
         'DEFAULT' => $default,
         'SIZE' => '40',
+        'AUTOCOMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, true, $tabindex);
 }
@@ -1100,9 +1151,10 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
  * @param  boolean $scrolls Whether the field scrolls
  * @param  ?integer $maxlength The maximum length of the field (null: unlimited)
  * @param  ?integer $rows Number of rows for text input (null: default)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_text($pretty_name, $description, $name, $default, $required, $tabindex = null, $scrolls = false, $maxlength = null, $rows = null)
+function form_input_text($pretty_name, $description, $name, $default, $required, $tabindex = null, $scrolls = false, $maxlength = null, $rows = null, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -1110,6 +1162,8 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
     $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $_required = ($required) ? '-required' : '';
 
@@ -1123,6 +1177,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
         'NAME' => $name,
         'DEFAULT' => $default,
         'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength),
+        'AUTOCOMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, true);
 }
@@ -1141,9 +1196,10 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
  * @param  ?Tempcode $default_parsed The parsed Comcode. (null: calculate)
  * @param  boolean $scrolls Whether the field scrolls
  * @param  ?integer $rows Number of rows for text input (null: default)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_text_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $force_non_wysiwyg = false, $description_side = '', $default_parsed = null, $scrolls = false, $rows = null)
+function form_input_text_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $force_non_wysiwyg = false, $description_side = '', $default_parsed = null, $scrolls = false, $rows = null, $autocomplete = null)
 {
     if ((browser_matches('wysiwyg', $default)) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
         return form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex, 10, $description_side, $default_parsed, $scrolls);
@@ -1152,6 +1208,8 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
     require_lang('comcode');
 
     handle_default_comcode_text($default);
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -1189,6 +1247,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
         'NAME' => $name,
         'DEFAULT' => $default,
         'DEFAULT_PARSED' => $default_parsed,
+        'AUTOCOMPLETE' => $autocomplete,
     ));
 
     return _form_input($name, $pretty_name, $description, $input, $required, true, $tabindex, $w, false, $description_side);
@@ -1276,9 +1335,10 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
  * @param  integer $rows The number of rows to use
  * @param  mixed $description_side A secondary side description for this input field
  * @param  boolean $scrolls Whether the field scrolls
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_huge($pretty_name, $description, $name, $default, $required, $tabindex = null, $rows = 20, $description_side = '', $scrolls = false)
+function form_input_huge($pretty_name, $description, $name, $default, $required, $tabindex = null, $rows = 20, $description_side = '', $scrolls = false, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -1289,6 +1349,8 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
 
     $_required = ($required) ? '-required' : '';
     $default_parsed = new Tempcode();
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     return do_template('FORM_SCREEN_INPUT_HUGE', array(
         '_GUID' => '9d51961cd53c3fcadb8f83b905b2bbea',
@@ -1303,6 +1365,7 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
         'NAME' => $name,
         'DEFAULT' => $default,
         'ROWS' => strval($rows),
+        'AUTOCOMPLETE' => $autocomplete,
     ));
 }
 
@@ -1315,14 +1378,28 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  string $default The default value for this input field
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_password($pretty_name, $description, $name, $required, $tabindex = null, $default = '')
+function form_input_password($pretty_name, $description, $name, $required, $tabindex = null, $default = '', $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
+
+    if ($autocomplete === 'autocomplete-disabled') {
+        $autocomplete = 'new-password'; // More reliable for disabling autofill on password fields
+    }
+
     $_required = ($required) ? '-required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_PASSWORD', array('_GUID' => '12af7290441ebf5459feefaf9daa28c6', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'VALUE' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_PASSWORD', array(
+        '_GUID' => '12af7290441ebf5459feefaf9daa28c6',
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'VALUE' => $default,
+        'AUTOCOMPLETE' => $autocomplete,
+    ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -1806,13 +1883,16 @@ function form_input_multi_list($pretty_name, $description, $name, $content, $tab
  * @param  ID_TEXT $name The name which this input field is for
  * @param  string $default Current selection
  * @param  Tempcode $options The list entries for our list; you compose these via attaching together form_input_list_entry calls
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is required
  * @return Tempcode The input field
  */
-function form_input_combo($pretty_name, $description, $name, $default, $options, $tabindex = null, $required = true)
+function form_input_combo($pretty_name, $description, $name, $default, $options, $autocomplete = null, $tabindex = null, $required = true)
 {
     $tabindex = get_form_field_tabindex($tabindex);
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     $_required = ($required) ? '-required' : '';
     $input = do_template('FORM_SCREEN_INPUT_COMBO', array(
@@ -1822,6 +1902,7 @@ function form_input_combo($pretty_name, $description, $name, $default, $options,
         'NAME' => $name,
         'CONTENT' => $options,
         'DEFAULT' => $default,
+        'AUTOCMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -2229,11 +2310,12 @@ function form_input_date__cron($pretty_name, $description, $name, $required, $nu
  * @param  boolean $do_date Whether to input date for this field (if false, will just do time)
  * @param  ?ID_TEXT $timezone Timezone to input in (null: current user's timezone)
  * @param  boolean $handle_timezone Convert $default_time to $timezone
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_date($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true)
+function form_input_date($pretty_name, $description, $name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true, $autocomplete = null)
 {
-    $input = _form_input_date($name, $required, $null_default, $do_time, $default_time, $total_years_to_show, $year_start, $tabindex, $do_date, $timezone, $handle_timezone);
+    $input = _form_input_date($name, $required, $null_default, $do_time, $default_time, $total_years_to_show, $year_start, $tabindex, $do_date, $timezone, $handle_timezone, $autocomplete);
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -2251,11 +2333,12 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
  * @param  boolean $do_date Whether to input date for this field (if false, will just do time)
  * @param  ?ID_TEXT $timezone Timezone to input in (null: current user's timezone)
  * @param  boolean $handle_timezone Convert $default_time to $timezone
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  *
  * @ignore
  */
-function _form_input_date($name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true)
+function _form_input_date($name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -2341,6 +2424,8 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         $type = 'time';
     }
 
+    $autocomplete = $do_date ? _get_autocomplete_attribute_value($name, $autocomplete) : null;
+
     return do_template($do_date ? 'FORM_SCREEN_INPUT_DATE' : 'FORM_SCREEN_INPUT_TIME', array(
         '_GUID' => '5ace58dd0f540f70fb3bd440fb02a430',
         'REQUIRED' => $required,
@@ -2360,6 +2445,8 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
         'MAX_DATE_DAY' => ($year_end === null) ? '' : '31',
         'MAX_DATE_MONTH' => ($year_end === null) ? '' : '12',
         'MAX_DATE_YEAR' => ($year_end === null) ? '' : strval($year_end),
+
+        'AUTOCOMPLETE' => $autocomplete,
     ));
 }
 
@@ -2420,9 +2507,10 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ?integer $maxlength Maximum input length (null: no maximum length, regular HTML5 number input)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null, $maxlength = null)
+function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null, $maxlength = null, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -2432,6 +2520,9 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
     $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '-required' : '';
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
+
     $input = do_template('FORM_SCREEN_INPUT_INTEGER', array(
         '_GUID' => 'da09e21f329f300f71dd4dd518cb6242',
         'TABINDEX' => strval($tabindex),
@@ -2439,6 +2530,7 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
         'NAME' => $name,
         'DEFAULT' => ($default === null) ? '' : strval($default),
         'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength),
+        'AUTOCOMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -2640,10 +2732,25 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
 
     check_suhosin_request_quantity(2, ($name == '') ? 20 : strlen($name));
 
-    if (($GLOBALS['DEV_MODE']) && (user_lang() == fallback_lang())) {
-        $_description = trim(strip_tags(is_object($description) ? $description->evaluate() : $description));
-        if (($_description != '') && (substr($_description, -1) != '.') && (substr(is_object($description) ? $description->evaluate() : $description, -6) != '</kbd>') && (substr($_description, -1) != '!') && (substr($_description, -1) != '?') && (substr($_description, -1) != ']') && (substr($_description, -1) != ')') && (!$GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'])) {
-            fatal_exit('Form field $description parameters should end in full stops [' . $_description . '].');
+    if (($GLOBALS['DEV_MODE'])) {
+        $discouraged_field_names = array(
+            // Keys are the discouraged field names, values are the encouraged field names.
+            'email_address' => 'email',
+            'date_of_birth' => 'birthday',
+            'dob' => 'birthday',
+            'street_address' => 'address1',
+            'post_code' => 'postalcode',
+        );
+
+        if (isset($discouraged_field_names[$name])) {
+            fatal_exit(sprintf('Form field with $name "%s" is not allowed as it does not work reliably with autofill, use "%s" instead.', $name, $discouraged_field_names[$name]));
+        }
+
+        if (user_lang() == fallback_lang()) {
+            $_description = trim(strip_tags(is_object($description) ? $description->evaluate() : $description));
+            if (($_description != '') && (substr($_description, -1) != '.') && (substr(is_object($description) ? $description->evaluate() : $description, -6) != '</kbd>') && (substr($_description, -1) != '!') && (substr($_description, -1) != '?') && (substr($_description, -1) != ']') && (substr($_description, -1) != ')') && (!$GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'])) {
+                fatal_exit('Form field $description parameters should end in full stops [' . $_description . '].');
+            }
         }
     }
 
@@ -2684,6 +2791,54 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
         'PATTERN_ERROR' => $pattern_error,
     ));
     return $tpl;
+}
+
+/**
+ * Gets the autocomplete attribute value for a field.
+ *
+ * @param ID_TEXT $name
+ * @param ~?mixed $provided_autocomplete
+ * @return ?string
+ */
+function _get_autocomplete_attribute_value($name, $provided_autocomplete)
+{
+    $autocomplete_field_names = array(
+        // Keys ([name] attribute values) as agreed upon by "#0003470: Change our approach to autofill" https://compo.sr/tracker/view.php?id=3470
+        // Values ([autocomplete] attribute values) from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
+        'username'   => 'username',
+        'password'   => 'current-password',
+        'email'      => 'email',
+        'firstname'  => 'given-name',
+        'lastname'   => 'family-name',
+        'name'       => 'name',
+        'birthday'   => 'bday',
+        'address1'   => 'address-line1',
+        'city'       => 'address-level2',
+        'state'      => 'address-level1',
+        'postalcode' => 'postal-code',
+        'country'    => 'country',
+        'phone'      => 'tel',
+    );
+
+    $autocomplete = $provided_autocomplete;
+
+    if (isset($autocomplete_field_names[$name])) {
+        if ($GLOBALS['DEV_MODE'] && isset($provided_autocomplete)) {
+            if (!$provided_autocomplete) {
+                fatal_exit(sprintf('Field with $name "%s" is reserved for autocomplete enabled fields and should not have it disabled.', $name));
+            }
+
+            if ($autocomplete_field_names[$name] !== $provided_autocomplete) {
+                fatal_exit(sprintf('Field with $name "%s" must have autocomplete field name "%s" but "%s" was provided.', $name, $autocomplete_field_names[$name], $provided_autocomplete));
+            }
+        }
+
+        $autocomplete = $autocomplete_field_names[$name];
+    } elseif (($provided_autocomplete === false) || (($provided_autocomplete === null) && (starts_with($name, 'edit_')))) {
+        $autocomplete = 'autocomplete-disabled';
+    }
+
+    return $autocomplete;
 }
 
 /**
