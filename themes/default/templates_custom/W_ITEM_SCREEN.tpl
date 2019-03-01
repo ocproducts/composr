@@ -15,7 +15,7 @@
 	<div class="wide-table-wrap"><table class="map-table autosized-table results-table wide-table responsive-blocked-table"><tbody>
 		<tr>
 			<th>{!NAME}</th>
-			<td><label class="accessibility-hidden" for="name">{!NAME}</label><input type="text" size="20" name="name" id="name" class="form-control" value="{+START,IF_PASSED,ITEM}{ITEM*}{+END}" /></td>
+			<td><label class="accessibility-hidden" for="item-name">{!NAME}</label><input type="text" size="20" name="item_name" id="item-name" class="form-control" value="{+START,IF_PASSED,ITEM}{ITEM*}{+END}" /></td>
 			<td>{!W_EG_ITEM_NAME}</td>
 		</tr>
 		<tr>
@@ -27,12 +27,7 @@
 			<th>{!W_BRIBABLE}</th>
 			<td>
 				<label class="accessibility-hidden" for="bribable">{!W_BRIBABLE}</label>
-				{+START,IF,{BRIBABLE}}
-					<input type="checkbox" name="bribable" id="bribable" value="1" checked="checked" />
-				{+END}
-				{+START,IF,{$NOT,{BRIBABLE}}}
-					<input type="checkbox" name="bribable" id="bribable" value="1" />
-				{+END}
+				<input type="checkbox" name="bribable" id="bribable" value="1" {+START,IF,{BRIBABLE}} checked="checked"{+END} />
 			</td>
 			<td>{!W_EG_BRIBABLE}</td>
 		</tr>
@@ -40,12 +35,7 @@
 			<th>{!W_HEALTHY}</th>
 			<td>
 				<label class="accessibility-hidden" for="healthy">{!W_HEALTHY}</label>
-				{+START,IF,{HEALTHY}}
-					<input type="checkbox" name="healthy" id="healthy" value="1" checked="checked" />
-				{+END}
-				{+START,IF,{$NOT,{HEALTHY}}}
-					<input type="checkbox" name="healthy" id="healthy" value="1" />
-				{+END}
+				<input type="checkbox" name="healthy" id="healthy" value="1" {+START,IF,{HEALTHY}} checked="checked"{+END} />
 			</td>
 			<td>{!W_EG_HEALTHY}</td>
 		</tr>
@@ -75,12 +65,7 @@
 			<th>{!W_REPLICATEABLE}</th>
 			<td>
 				<label class="accessibility-hidden" for="replicateable">{!W_REPLICATEABLE}</label>
-				{+START,IF,{REPLICATEABLE}}
-					<input type="checkbox" name="replicateable" id="replicateable" value="1" checked="checked" />
-				{+END}
-				{+START,IF,{$NOT,{REPLICATEABLE}}}
-					<input type="checkbox" name="replicateable" id="replicateable" value="1" />
-				{+END}
+				<input type="checkbox" name="replicateable" id="replicateable" value="1" {+START,IF,{REPLICATEABLE}} checked="checked"{+END} />
 			</td>
 			<td>{!W_EG_REPLICATEABLE}</td>
 		</tr>

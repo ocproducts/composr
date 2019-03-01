@@ -13,7 +13,7 @@
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<input type="hidden" name="name" value="{NAME*}" />
+		<input type="hidden" name="addon_name" value="{NAME*}" />
 
 		<p>
 			<button class="btn btn-primary btn-scr buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>

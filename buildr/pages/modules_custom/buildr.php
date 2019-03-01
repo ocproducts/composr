@@ -661,7 +661,7 @@ class Module_buildr
         if ($type == 'additem') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('item_name', '');
             if ($name == '') {
                 $tpl = do_template('W_ITEM_SCREEN', array(
                     '_GUID' => '0246f7037a360996bdfb4f1dcf96bcfc',
@@ -687,7 +687,7 @@ class Module_buildr
         if ($type == 'additemcopy') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('item_name', '');
             if ($name == '') {
                 $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_itemdef WHERE replicateable=1 OR owner=' . strval(get_member()) . ' ORDER BY name');
                 $items = '';
@@ -719,7 +719,7 @@ class Module_buildr
         if ($type == 'addroom') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('room_name', '');
 
             if ($name == '') {
                 list($realm, $x, $y) = get_loc_details($member_id);
@@ -751,7 +751,7 @@ class Module_buildr
         if ($type == 'addrealm') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('realm_name', '');
 
             if ($name == '') {
                 $fortnights = (time() - $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp(get_member())) / (60 * 60 * 24 * 7 * 2);
@@ -794,7 +794,7 @@ class Module_buildr
         if ($type == 'addportal') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('portal_name', '');
 
             if ($name == '') {
                 $tpl = do_template('W_PORTAL_SCREEN', array(
@@ -876,7 +876,7 @@ class Module_buildr
         if ($type == 'edititem') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('item_name', '');
 
             if ($name == '') {
                 $rows = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => either_param_string('item')), '', 1);
@@ -938,7 +938,7 @@ class Module_buildr
         if ($type == 'editroom') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('room_name', '');
 
             if ($name == '') {
                 list($location_realm, $x, $y) = get_loc_details($member_id);
@@ -980,7 +980,7 @@ class Module_buildr
         if ($type == 'editrealm') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('realm_name', '');
 
             if ($name == '') {
                 list($realm, ,) = get_loc_details($member_id);
@@ -1019,7 +1019,7 @@ class Module_buildr
         if ($type == 'editportal') {
             require_code('buildr_action');
 
-            $name = post_param_string('name', '');
+            $name = post_param_string('portal_name', '');
 
             if ($name == '') {
                 list($realm, $x, $y) = get_loc_details($member_id);

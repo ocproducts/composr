@@ -17,8 +17,8 @@
 			<tr>
 				<th>{!NAME}</th>
 				<td>
-					<label class="accessibility-hidden" for="name">{!NAME}</label>
-					<select name="name" id="name" class="form-control">
+					<label class="accessibility-hidden" for="item-name">{!NAME}</label>
+					<select name="item_name" id="item-name" class="form-control">
 						{ITEMS}
 					</select>
 				</td>

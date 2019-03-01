@@ -3,7 +3,7 @@
 <div data-tpl="wMainScreen">
 	{TITLE}
 
-	<section class="box box---realm-main"><div class="box-inner">
+	<section class="box box---realm-main clearfix"><div class="box-inner">
 		<h2>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h2>
 
 		<div class="buildr-navigation">

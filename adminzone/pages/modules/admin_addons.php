@@ -935,7 +935,7 @@ class Module_admin_addons
         require_code('abstract_file_manager');
         force_have_afm_details();
 
-        $name = post_param_string('name');
+        $name = post_param_string('addon_name');
 
         $addon_info = read_addon_info($name);
 

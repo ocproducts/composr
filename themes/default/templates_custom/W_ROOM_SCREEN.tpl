@@ -15,7 +15,7 @@
 	<div class="wide-table-wrap"><table class="map-table autosized-table results-table wide-table responsive-blocked-table"><tbody>
 		<tr>
 			<th>{!NAME}</th>
-			<td><label class="accessibility-hidden" for="name">{!NAME}</label><input type="text" size="20" name="name" id="name" class="form-control" value="{NAME*}" /></td>
+			<td><label class="accessibility-hidden" for="room-name">{!NAME}</label><input type="text" size="20" name="room_name" id="room-name" class="form-control" value="{NAME*}" /></td>
 			<td>{!W_EG_ROOM_NAME}</td>
 		</tr>
 		<tr>
