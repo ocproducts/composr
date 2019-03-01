@@ -7,10 +7,10 @@
         });
 
         $dom.on(container, 'click', '.js-click-set-type-edititem', function (e, el) {
-            el.form.elements['type'] = 'edititem';
+            el.form.elements['type'].value = 'edititem';
         });
         $dom.on(container, 'click', '.js-click-set-type-confirm', function (e, el) {
-            el.form.elements['type'] = 'confirm';
+            el.form.elements['type'].value = 'confirm';
         });
     };
 }(window.$cms));
