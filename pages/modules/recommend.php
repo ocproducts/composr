@@ -231,11 +231,11 @@ class Module_recommend
         $hidden = new Tempcode();
 
         $name = post_param_string('name', is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
-        $recommender_email_address = post_param_string('recommender_email_address', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()));
+        $recommender_email_address = post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()));
 
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('YOUR_NAME'), '', 'name', $name, true));
-        $fields->attach(form_input_email(do_lang_tempcode('YOUR_EMAIL_ADDRESS'), '', 'recommender_email_address', $recommender_email_address, true));
+        $fields->attach(form_input_email(do_lang_tempcode('YOUR_EMAIL_ADDRESS'), '', 'email', $recommender_email_address, true));
         $already = array();
         foreach ($_POST as $key => $email_address) {
             if (substr($key, 0, 14) != 'email_address_') {
@@ -612,7 +612,7 @@ class Module_recommend
     {
         $name = post_param_string('name');
         $message = post_param_string('message');
-        $recommender_email_address = post_param_string('recommender_email_address');
+        $recommender_email_address = post_param_string('email');
 
         $invite = false;
 
