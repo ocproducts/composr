@@ -337,7 +337,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         require_code('cns_forums2');
 
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'multi_moderation_name', $name, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('FORUM_POST'), do_lang_tempcode('DESCRIPTION_MULTI_MODERATION_POST'), 'post_text', $post_text, false));
         $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION'), do_lang_tempcode('DESCRIPTION_DESTINATION_FORUM'), 'move_to', null, 'choose_forum', array(), false, ($move_to === null) ? null : strval($move_to)));
         $pin_state_list = new Tempcode();
@@ -471,7 +471,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         $pin_state = post_param_integer('pin_state', null);
         $open_state = post_param_integer('open_state', null);
 
-        return strval(cns_make_multi_moderation(post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix')));
+        return strval(cns_make_multi_moderation(post_param_string('multi_moderation_name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix')));
     }
 
     /**
@@ -484,7 +484,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         $pin_state = post_param_integer('pin_state', null);
         $open_state = post_param_integer('open_state', null);
 
-        cns_edit_multi_moderation(intval($id), post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix'));
+        cns_edit_multi_moderation(intval($id), post_param_string('multi_moderation_name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix'));
     }
 
     /**

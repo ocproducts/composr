@@ -3840,7 +3840,6 @@ function is_control_field($field_name, $include_email_metafields = false, $inclu
             'subject',
             'title',
             'name',
-            'poster_name_if_guest',
             'email',
             'to_members_email',
             'to_written_name',

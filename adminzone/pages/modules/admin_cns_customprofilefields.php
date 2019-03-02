@@ -225,9 +225,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $allow_full_edit = (get_param_integer('keep_all_cpfs', 0) == 1);
 
         if (substr($name, 0, 4) != 'cms_' || $allow_full_edit) {
-            $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
+            $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'cpf_name', $name, true));
         } else {
-            $hidden->attach(form_input_hidden('name', $name));
+            $hidden->attach(form_input_hidden('cpf_name', $name));
             attach_message(do_lang_tempcode('INBUILT_CPF_LANG_STRING', escape_html($name)));
         }
 
@@ -535,7 +535,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     {
         $only_group = array_key_exists('only_group', $_POST) ? (is_array($_POST['only_group']) ? implode(',', $_POST['only_group']) : post_param_string('only_group')) : '';
         $id = cns_make_custom_field(
-            post_param_string('name'),
+            post_param_string('cpf_name'),
             0, // Locked=0
             post_param_string('description'),
             post_param_string('default'),
@@ -569,7 +569,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $only_group = array_key_exists('only_group', $_POST) ? (is_array($_POST['only_group']) ? implode(',', $_POST['only_group']) : post_param_string('only_group')) : '';
         cns_edit_custom_field(
             intval($id),
-            post_param_string('name'),
+            post_param_string('cpf_name'),
             post_param_string('description'),
             post_param_string('default'),
             post_param_integer('public_view', 0),

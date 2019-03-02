@@ -383,7 +383,7 @@ class Module_cms_downloads extends Standard_crud_module
         $hidden = new Tempcode();
         require_code('images');
         handle_max_file_size($hidden);
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'download_name', $name, true));
         if ((get_value('no_confirm_url_spec_cats') !== '1') || ($category_id === null)) {
             $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE', 'download_category'), 'category_id', null, 'choose_download_category', array(), true, strval(($category_id === null) ? db_get_first_id() : $category_id)));
         } else {
@@ -569,7 +569,7 @@ class Module_cms_downloads extends Standard_crud_module
     public function add_actualisation()
     {
         $category_id = post_param_integer('category_id');
-        $name = post_param_string('name');
+        $name = post_param_string('download_name');
         $description = post_param_string('description');
         $author = post_param_string('author', get_site_name());
         $url_redirect = post_param_string('url_redirect', false, INPUT_FILTER_URL_GENERAL);
@@ -660,7 +660,7 @@ class Module_cms_downloads extends Standard_crud_module
         $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
         $category_id = post_param_integer('category_id', fractional_edit() ? INTEGER_MAGIC_NULL : false);
-        $name = post_param_string('name');
+        $name = post_param_string('download_name');
         $out_mode_id = post_param_integer('out_mode_id', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         $licence = post_param_integer('licence', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 

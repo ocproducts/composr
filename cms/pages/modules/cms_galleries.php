@@ -2008,12 +2008,12 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'fullname', $fullname, true));
         if ($name != 'root') {
             if (get_option('manual_gallery_codename') == '1') {
-                $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_CODENAME'), 'name', $name, true));
+                $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_CODENAME'), 'gallery_name', $name, true));
             } else {
-                $hidden->attach(form_input_hidden('name', $name));
+                $hidden->attach(form_input_hidden('gallery_name', $name));
             }
         } else {
-            $hidden->attach(form_input_hidden('name', 'root'));
+            $hidden->attach(form_input_hidden('gallery_name', 'root'));
         }
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         if ($parent_id == '') {
@@ -2146,7 +2146,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $name = post_param_string('name', '');
+        $name = post_param_string('gallery_name', '');
         $fullname = post_param_string('fullname');
         if ($name == '') {
             $name = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $fullname);
@@ -2196,7 +2196,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        $name = post_param_string('name', fractional_edit() ? $id : '');
+        $name = post_param_string('gallery_name', fractional_edit() ? $id : '');
         $fullname = post_param_string('fullname');
         if ($name == '') {
             $name = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $fullname);

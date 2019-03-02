@@ -212,7 +212,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
     public function get_form_fields($name = '', $subject = '', $text = '', $send_time = 0, $newsletter = null, $usergroup = null, $usergroup_type = '')
     {
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME_REFERENCE'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME_REFERENCE'), 'welcome_email_name', $name, true));
         $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_SUBJECT'), 'subject', $subject, true));
         $fields->attach(form_input_huge_comcode(do_lang_tempcode('TEXT'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_TEXT'), 'text', $text, true));
         $fields->attach(form_input_integer(do_lang_tempcode('SEND_TIME'), do_lang_tempcode('DESCRIPTION_SEND_TIME'), 'send_time', $send_time, true));
@@ -333,7 +333,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $name = post_param_string('name');
+        $name = post_param_string('welcome_email_name');
         $subject = post_param_string('subject');
         $text = post_param_string('text');
         $send_time = post_param_integer('send_time');
@@ -351,7 +351,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        $name = post_param_string('name');
+        $name = post_param_string('welcome_email_name');
         $subject = post_param_string('subject');
         $text = post_param_string('text');
         $send_time = post_param_integer('send_time');

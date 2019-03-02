@@ -1637,7 +1637,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             $title = do_lang('CUSTOM_FIELDS_FOR', do_lang($info['content_type_label']));
 
             $hidden->attach(form_input_hidden('title', $title));
-            $hidden->attach(form_input_hidden('name', $name));
+            $hidden->attach(form_input_hidden('catalogue_name', $name));
             $hidden->attach(form_input_hidden('description', ''));
             $hidden->attach(form_input_hidden('notes', ''));
             $hidden->attach(form_input_hidden('auto_fill', ''));
@@ -1651,7 +1651,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         } else {
             $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
             $complex_rename = ($name == 'products');
-            $catalogue_name_field = form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode($complex_rename ? 'DESCRIPTION_CODENAME_SHOULDNT' : 'DESCRIPTION_CODENAME'), 'name', $name, true);
+            $catalogue_name_field = form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode($complex_rename ? 'DESCRIPTION_CODENAME_SHOULDNT' : 'DESCRIPTION_CODENAME'), 'catalogue_name', $name, true);
             if (!$complex_rename) {
                 $fields->attach($catalogue_name_field);
             }
@@ -1827,7 +1827,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     public function add_actualisation()
     {
         require_code('catalogues2');
-        $name = post_param_string('name');
+        $name = post_param_string('catalogue_name');
         $title = post_param_string('title');
         $description = post_param_string('description');
         $display_type = post_param_integer('display_type');
@@ -1973,7 +1973,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     {
         require_code('catalogues2');
 
-        $name = post_param_string('name', $old_name);
+        $name = post_param_string('catalogue_name', $old_name);
         $title = post_param_string('title', STRING_MAGIC_NULL);
         $description = post_param_string('description', STRING_MAGIC_NULL);
         $display_type = post_param_integer('display_type', fractional_edit() ? INTEGER_MAGIC_NULL : 0);

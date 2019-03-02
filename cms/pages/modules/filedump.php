@@ -627,7 +627,7 @@ class Module_filedump
             $submit_name = do_lang_tempcode('FILEDUMP_CREATE_FOLDER');
 
             $fields = new Tempcode();
-            $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_FOLDER_NAME'), 'name', '', true));
+            $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_FOLDER_NAME'), 'folder_name', '', true));
             $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), new Tempcode(), 'description', '', false));
 
             $hidden = form_input_hidden('place', $place);
@@ -1238,7 +1238,7 @@ class Module_filedump
             access_denied('I_ERROR');
         }
 
-        $name = filter_naughty(post_param_string('name'));
+        $name = filter_naughty(post_param_string('folder_name'));
         $place = filter_naughty(post_param_string('place'));
 
         if (file_exists(get_custom_file_base() . '/uploads/filedump' . $place . $name)) {

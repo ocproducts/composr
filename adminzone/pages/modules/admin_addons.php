@@ -1143,7 +1143,7 @@ class Module_admin_addons
         }
 
         $fields = ''; /*XHTMLXHTML*/
-        $field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true);
+        $field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'addon_name', $name, true);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', do_lang_tempcode('ADDON')), 'author', $author, true);
         $fields .= $field->evaluate();
@@ -1156,8 +1156,7 @@ class Module_admin_addons
                 'Themes',
             );
             $category = 'Themes';
-        }
-        elseif ($is_lang) {
+        } elseif ($is_lang) {
             $categories = array(
                 'Translations',
             );
@@ -1302,7 +1301,7 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', post_param_string('name'))) . date('-dmY-Hi', time()) . '.tar';
+        $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', post_param_string('addon_name'))) . date('-dmY-Hi', time()) . '.tar';
 
         $files = array();
         foreach ($_POST as $key => $val) {
@@ -1318,7 +1317,7 @@ class Module_admin_addons
         create_addon(
             $file,
             $files,
-            post_param_string('name'),
+            post_param_string('addon_name'),
             post_param_string('incompatibilities'),
             post_param_string('dependencies'),
             post_param_string('author'),

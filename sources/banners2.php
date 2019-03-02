@@ -180,7 +180,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
 
     require_code('form_templates');
 
-    $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_NAME'), 'name', $name, true));
+    $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_NAME'), 'banner_codename', $name, true));
 
     $fields->attach(form_input_line(do_lang_tempcode('DESTINATION_URL'), do_lang_tempcode('DESCRIPTION_BANNER_URL'), 'site_url', $site_url, false)); // Blank implies iframe or direct code
 
@@ -513,7 +513,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
 {
     $_caption = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'caption', array('name' => $old_name));
     if ($_caption === null) {
-        $_caption(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
+        $_caption = do_lang_tempcode('MISSING_RESOURCE', 'banner');
     }
 
     if ($old_name != $name) {

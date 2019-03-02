@@ -286,7 +286,7 @@ class Hook_ecommerce_banners
 
                 require_code('uploads');
 
-                $name = post_param_string('name', $from_admin ? '' : false);
+                $name = post_param_string('banner_codename', $from_admin ? '' : false);
                 if ($name == '') {
                     return array('', null); // Default is blank
                 }

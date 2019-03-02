@@ -285,7 +285,7 @@ class Module_admin_giftr extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_line(do_lang_tempcode('GIFT'), do_lang_tempcode('DESCRIPTION_GIFT'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('GIFT'), do_lang_tempcode('DESCRIPTION_GIFT'), 'gift_name', $name, true));
 
         $fields->attach(form_input_line(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_GIFT_CATEGORY'), 'category', $category, true));
 
@@ -348,7 +348,7 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $name = post_param_string('name');
+        $name = post_param_string('gift_name');
         $category = post_param_string('category');
         $price = post_param_integer('price');
         $enabled = post_param_integer('enabled', 0);
@@ -373,7 +373,7 @@ class Module_admin_giftr extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $name = post_param_string('name');
+        $name = post_param_string('gift_name');
         $category = post_param_string('category');
         $price = post_param_integer('price');
         $enabled = post_param_integer('enabled', 0);

@@ -258,7 +258,7 @@ class Module_admin_disastr extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_line(do_lang_tempcode('DISEASE'), do_lang_tempcode('DESCRIPTION_DISEASE'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('DISEASE'), do_lang_tempcode('DESCRIPTION_DISEASE'), 'disease_name', $name, true));
 
         require_code('themes2');
         $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', null, true, $image));
@@ -328,7 +328,7 @@ class Module_admin_disastr extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $name = post_param_string('name', '');
+        $name = post_param_string('disease_name', '');
         $cure = post_param_string('cure', '');
         $cure_price = post_param_integer('cure_price', 0);
         $immunisation = post_param_string('immunisation', '');
@@ -359,7 +359,7 @@ class Module_admin_disastr extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $name = post_param_string('name', '');
+        $name = post_param_string('disease_name', '');
         $cure = post_param_string('cure', '');
         $cure_price = post_param_integer('cure_price', 0);
         $immunisation = post_param_string('immunisation', '');

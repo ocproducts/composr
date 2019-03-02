@@ -233,7 +233,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'forum_name', $name, true));
         $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         $list = cns_create_selection_list_forum_groupings(null, $forum_grouping_id);
         $fields->attach(form_input_list(do_lang_tempcode('FORUM_GROUPING'), do_lang_tempcode('DESCRIPTION_FORUM_GROUPING'), 'forum_grouping_id', $list));
@@ -668,7 +668,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         require_code('cns_forums_action2');
 
         $parent_forum = post_param_integer('parent_forum');
-        $name = post_param_string('name');
+        $name = post_param_string('forum_name');
 
         list($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_notice) = $this->input_and_check_mail_parameters();
 
@@ -766,7 +766,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         cns_edit_forum(
             intval($id),
-            post_param_string('name'),
+            post_param_string('forum_name'),
             post_param_string('description', STRING_MAGIC_NULL),
             post_param_integer('forum_grouping_id', fractional_edit() ? INTEGER_MAGIC_NULL : false),
             post_param_integer('parent_forum', fractional_edit() ? INTEGER_MAGIC_NULL : null/*root forum*/),

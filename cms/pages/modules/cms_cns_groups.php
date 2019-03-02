@@ -144,7 +144,7 @@ class Module_cms_cns_groups extends Standard_crud_module
         }
 
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_USERGROUP_TITLE'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_USERGROUP_TITLE'), 'usergroup_name', $name, true));
         $fields->attach(form_input_username(do_lang_tempcode('GROUP_LEADER'), do_lang_tempcode('DESCRIPTION_GROUP_LEADER'), 'group_leader', $group_leader, false));
         $fields->attach(form_input_tick(do_lang_tempcode('OPEN_MEMBERSHIP'), do_lang_tempcode('OPEN_MEMBERSHIP_DESCRIPTION'), 'open_membership', $open_membership == 1));
 
@@ -282,7 +282,7 @@ class Module_cms_cns_groups extends Standard_crud_module
             $group_leader = null;
         }
 
-        $name = post_param_string('name');
+        $name = post_param_string('usergroup_name');
         $id = cns_make_group($name, 0, 0, 0, '', '', null, null, $group_leader, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, post_param_integer('open_membership', 0), 1);
 
         // Create forum
@@ -386,7 +386,7 @@ class Module_cms_cns_groups extends Standard_crud_module
             $group_leader = null;
         }
 
-        $name = post_param_string('name');
+        $name = post_param_string('usergroup_name');
 
         cns_edit_group($group_id, $name, null, null, null, null, null, null, null, $group_leader, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, post_param_integer('open_membership', 0), 1);
 

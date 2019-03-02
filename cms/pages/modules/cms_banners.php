@@ -382,7 +382,7 @@ class Module_cms_banners extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $name = post_param_string('name');
+        $name = post_param_string('banner_codename');
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
         $campaign_remaining = post_param_integer('campaign_remaining', 0);
@@ -460,7 +460,7 @@ class Module_cms_banners extends Standard_crud_module
 
         list($url, $title_text) = check_banner($title_text, $direct_code, $b_type);
 
-        $new_id = post_param_string('name');
+        $new_id = post_param_string('banner_codename');
 
         $metadata = actual_metadata_get_fields('banner', $id, array(), $new_id);
 
@@ -470,7 +470,7 @@ class Module_cms_banners extends Standard_crud_module
             unset($_GET['redirect']);
         }
 
-        $this->new_id = post_param_string('name');
+        $this->new_id = post_param_string('banner_codename');
 
         if (get_option('use_banner_permissions') == '1') {
             $this->set_permissions($id);

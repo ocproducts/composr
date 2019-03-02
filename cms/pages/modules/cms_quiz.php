@@ -288,7 +288,7 @@ class Module_cms_quiz extends Standard_crud_module
         }
 
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'quiz_name', $name, true));
         $list = new Tempcode();
         $list->attach(form_input_list_entry('SURVEY', $type == 'SURVEY', do_lang_tempcode('SURVEY')));
         $list->attach(form_input_list_entry('TEST', $type == 'TEST', do_lang_tempcode('TEST')));
@@ -429,7 +429,7 @@ class Module_cms_quiz extends Standard_crud_module
 
         $_tied_newsletter = post_param_string('tied_newsletter', '');
         $tied_newsletter = ($_tied_newsletter == '') ? null : intval($_tied_newsletter);
-        $name = post_param_string('name');
+        $name = post_param_string('quiz_name');
 
         $metadata = actual_metadata_get_fields('quiz', null);
 
@@ -493,7 +493,7 @@ class Module_cms_quiz extends Standard_crud_module
             $tied_newsletter = INTEGER_MAGIC_NULL;
         }
 
-        $name = post_param_string('name', STRING_MAGIC_NULL);
+        $name = post_param_string('quiz_name', STRING_MAGIC_NULL);
         $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
         if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added

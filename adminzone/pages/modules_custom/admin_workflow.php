@@ -299,7 +299,7 @@ class Module_admin_workflow extends Standard_crud_module
             $defined_names = do_lang_tempcode('NO_DEFINED_WORKFLOWS');
         }
 
-        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('WORKFLOW_NAME_DESCRIPTION', $defined_names), 'name', $workflow_name, true));
+        $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('WORKFLOW_NAME_DESCRIPTION', $defined_names), 'workflow_name', $workflow_name, true));
 
         $all_points = ($id === null) ? array() : get_all_approval_points($id); // We need to display which points are available
         if ($all_points == array()) {
@@ -396,7 +396,7 @@ class Module_admin_workflow extends Standard_crud_module
         $hidden = new Tempcode();
 
         // Pass through the previous screen's data
-        foreach (array('points', 'is_default', 'name') as $n) {
+        foreach (array('points', 'is_default', 'workflow_name') as $n) {
             $hidden->attach(form_input_hidden($n, post_param_string($n, '')));
         }
         $hidden->attach(form_input_hidden('redefined', '1'));
@@ -510,7 +510,7 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function read_in_data($insert_if_needed = false)
     {
-        $name = post_param_string('name');
+        $name = post_param_string('workflow_name');
         $is_default = (post_param_integer('is_default', 0) == 1);
 
         $workflow_id = either_param_integer('id', null);
