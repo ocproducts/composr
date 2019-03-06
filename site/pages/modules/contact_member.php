@@ -355,6 +355,6 @@ class Module_contact_member
         log_it('EMAIL', strval($member_id), $to_name);
 
         $url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS_MAIL_SENT'));
     }
 }
