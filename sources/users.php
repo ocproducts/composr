@@ -93,6 +93,7 @@ function init__users()
     }
 
     // Canonicalise various disparities in how HTTP auth environment variables are set
+    // TODO: Move this to main canonicalisation area in v11
     if ((!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) && (empty($_SERVER['HTTP_AUTHORIZATION']))) {
         $_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
     }
