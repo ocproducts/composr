@@ -39,6 +39,7 @@ It is recommended that you leave all non-staff members such that their primary u
 You can attach your choice of rank image to any usergroup. A default set of images is supplied for the default rank ladder.
 
 The Setup Wizard has an option to remove the default rank ladder and have a simple 'Members' usergroup instead.
+All this does is rename Newbie, change the promotion target setting on Newbie to N/A, and delete Regular/Local/Old timer/Local hero.
 
 [title="3"]New member status[/title]
 
