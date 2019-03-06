@@ -474,13 +474,18 @@ class Database_super_mysql
                 $current_token = '';
 
                 $i++;
+                $backslash_mode = false;
                 while ($i < $len) {
                     $next = $query[$i];
 
-                    if ($next == '\\') {
+                    if ($backslash_mode) {
                         $current_token .= $next;
+                        $backslash_mode = false;
                     } else {
-                        if ($next == "'") {
+                        if ($next == '\\') {
+                            $current_token .= $next;
+                            $backslash_mode = true;
+                        } elseif ($next == "'") {
                             $tokens[] = "'" . $current_token . "'";
                             break;
                         } else {
