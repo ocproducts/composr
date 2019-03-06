@@ -227,7 +227,15 @@ class Database_Static_mysql extends Database_super_mysql
             $this->last_select_db = $db_name;
         }
 
-        $query = $this->fix_mysql8_query($query);
+        static $version = null;
+        if ($version === null) {
+            $version = @mysql_get_server_info($db);
+        }
+        if ($version !== false) {
+            if (version_compare($version, '8', '>=')) {
+                $query = $this->fix_mysql8_query($query);
+            }
+        }
 
         $this->apply_sql_limit_clause($query, $max, $start);
 

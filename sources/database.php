@@ -435,7 +435,7 @@ function db_end_transaction($db)
  */
 function db_escape_string($string)
 {
-    if (isset($GLOBALS['SITE_DB']->connection_read[4])) { // Okay, we can't be lazy anymore
+    if ((is_array($GLOBALS['SITE_DB']->connection_read)) && (count($GLOBALS['SITE_DB']->connection_read) > 4)) { // Okay, we can't be lazy anymore
         $GLOBALS['SITE_DB']->connection_read = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $GLOBALS['SITE_DB']->connection_read);
         _general_db_init();
     }
@@ -525,6 +525,7 @@ function db_function($function, $args = null)
             switch (get_db_type()) {
                 case 'mysql':
                 case 'mysqli':
+                case 'mysql_pdo':
                 case 'mysql_dbx':
                     $function = 'CHAR_LENGTH';
                     break;
@@ -648,6 +649,7 @@ function db_function($function, $args = null)
                     return '(SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                 case 'mysql':
                 case 'mysqli':
+                case 'mysql_pdo':
                 case 'mysql_dbx':
                 case 'sqlite':
                 default:
@@ -1698,7 +1700,7 @@ class DatabaseConnector
         } else {
             $connection = &$this->connection_write;
         }
-        if (isset($connection[4])) { // Okay, we can't be lazy anymore
+        if ((is_array($connection)) && (count($connection) > 4)) { // Okay, we can't be lazy anymore
             $connection = call_user_func_array(array($this->static_ob, 'db_get_connection'), $connection);
             _general_db_init();
         }

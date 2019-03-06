@@ -65,7 +65,7 @@ The remainder of this section details Composr's requirements. If you have troubl
  - A PHP environment with the following (a competent webhost geared towards running PHP web applications should be able to provide this):
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your particular needs)
-  - MySQL extension ([tt]mysql[/tt] or [tt]mysqli[/tt])
+  - MySQL extension ([tt]mysql[/tt] or [tt]mysqli[/tt] or [tt]pdo_mysql[/tt]) [MySQL Native Driver being enabled or not is not a factor]
   - a maximum execution time of at least 30 seconds
   - [tt]max_input_vars[/tt] of at least 2000 (most hosts let you raise the setting)
   - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been

@@ -642,6 +642,9 @@ function step_3()
         if (($database == 'mysqli') && (!function_exists('mysqli_connect'))) {
             continue;
         }
+        if (($database == 'mysql_pdo') && ((!class_exists('PDO')) || (!defined('PDO::MYSQL_ATTR_USE_BUFFERED_QUERY')))) {
+            continue;
+        }
         if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
             continue;
         }
@@ -651,7 +654,10 @@ function step_3()
         if (($database == 'mysql') && (!function_exists('mysqli_connect'))) {
             $selected = true;
         }
-        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
+        if (($database == 'mysql_pdo') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
+            $selected = true;
+        }
+        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect')) && ((!class_exists('PDO')) || (!defined('PDO::MYSQL_ATTR_USE_BUFFERED_QUERY')))) {
             $selected = true;
         }
         if (($database == 'access') && (!function_exists('odbc_connect'))) {
