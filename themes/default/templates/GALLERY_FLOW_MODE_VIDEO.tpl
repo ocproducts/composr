@@ -60,7 +60,12 @@
 				</table>
 
 				<ul class="horizontal_links associated_links_block_group">
-					<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
+						<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					{+END}
+					{+START,IF_NON_PASSED_OR_FALSE,COMMENT_COUNT}
+						<li><img src="{$IMG*,icons/24x24/menu/_generic_admin/view_this}" srcset="{$IMG*,icons/48x48/menu/_generic_admin/view_this} 2x" alt="" /> <a href="{VIEW_URL*}">{!VIEW}</a></li>
+					{+END}
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

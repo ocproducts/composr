@@ -789,6 +789,7 @@ class Module_galleries
                     'VIDEO_PLAYER' => $video_player,
                     'VIEW_URL' => $view_url,
                     'VIDEO_DETAILS' => show_video_details($row),
+                    'COMMENT_COUNT' => $row['allow_comments'] >= 1,
                 ));
 
                 $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $row['video_views'] + 1), array('id' => $row['id']), '', 1, null, false, true);
@@ -855,6 +856,7 @@ class Module_galleries
                     'SUBMITTER' => strval($row['submitter']),
                     'THUMB' => $thumb_url,
                     'VIEW_URL' => $view_url,
+                    'COMMENT_COUNT' => $row['allow_comments'] >= 1,
                 ));
 
                 $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $row['image_views'] + 1), array('id' => $row['id']), '', 1, null, false, true);

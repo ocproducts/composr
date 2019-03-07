@@ -68,7 +68,12 @@
 					{+START,IF,{$ADDON_INSTALLED,recommend}}
 						<li><img src="{$IMG*,icons/16x16/filetypes/email_link}" srcset="{$IMG*,icons/16x16/filetypes/email_link} 2x" alt="" /> <a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a></li>
 					{+END}
-					<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
+						<li><img src="{$IMG*,icons/24x24/feedback/comment}" srcset="{$IMG*,icons/48x48/feedback/comment} 2x" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					{+END}
+					{+START,IF_NON_PASSED_OR_FALSE,COMMENT_COUNT}
+						<li><img src="{$IMG*,icons/24x24/menu/_generic_admin/view_this}" srcset="{$IMG*,icons/48x48/menu/_generic_admin/view_this} 2x" alt="" /> <a href="{VIEW_URL*}">{!VIEW}</a></li>
+					{+END}
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
