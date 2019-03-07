@@ -268,7 +268,7 @@ class Block_main_gallery_embed
                             'EDIT_DATE_RAW' => is_null($row_image['edit_date']) ? '' : strval($row_image['edit_date']),
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
-                            'COMMENT_COUNT' => $row_image['allow_comments'] >= 1,
+                            'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row_image['allow_comments'] >= 1)),
                         );
                         $entry = do_template('GALLERY_IMAGE', $entry_map);
                         $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => ($guid != '') ? $guid : '13134830e1ebea158ab44885eeec0953', 'ENTRY' => $entry) + $entry_map));
@@ -326,7 +326,7 @@ class Block_main_gallery_embed
                             'EDIT_DATE_RAW' => is_null($row_video['edit_date']) ? '' : strval($row_video['edit_date']),
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
-                            'COMMENT_COUNT' => $row_video['allow_comments'] >= 1,
+                            'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row_video['allow_comments'] >= 1)),
                         );
                         $entry = do_template('GALLERY_VIDEO', $entry_map);
                         $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => ($guid != '') ? $guid : 'a0ff010ae7fd1f7b3341993072ed23cf', 'ENTRY' => $entry) + $entry_map));
