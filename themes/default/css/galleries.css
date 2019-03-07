@@ -74,7 +74,7 @@
 	overflow: hidden;
 
 	/* Fiddle it so our grid cells will be flush with the left */
-	margin-left: -0.5em;
+	margin-left: -0.4em;
 	width: 100%;
 }
 
