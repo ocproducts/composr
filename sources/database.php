@@ -86,7 +86,7 @@ function db_map_restrict($row, $fields, $remap = null)
 
     $out = array();
     foreach ($fields as $field) {
-        $out[$field] = $row[(array_key_exists($field, $remap) && array_key_exists($row, $remap[$field])) ? $remap[$field] : $field];
+        $out[$field] = $row[(array_key_exists($field, $remap) && array_key_exists($remap[$field], $row)) ? $remap[$field] : $field];
         if (isset($row[$field . '__text_parsed'])) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }
