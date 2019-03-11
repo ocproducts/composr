@@ -74,13 +74,19 @@ function init__database()
  *
  * @param  array $row DB table row.
  * @param  array $fields List of fields to copy through.
+ * @param  ?array $remap Remapping of fields, if we need to do some kind of substitution as well (usually this will be because the row came from a join and we had to rename fields) (null: none).
  * @return array Map of fields.
  */
-function db_map_restrict($row, $fields)
+function db_map_restrict($row, $fields, $remap = null)
 {
+    // TODO: Change null to array() in v11; remove these 3 lines
+    if ($remap === null) {
+        $remap = array();
+    }
+
     $out = array();
     foreach ($fields as $field) {
-        $out[$field] = $row[$field];
+        $out[$field] = $row[(array_key_exists($field, $remap) && array_key_exists($row, $remap[$field])) ? $remap[$field] : $field];
         if (isset($row[$field . '__text_parsed'])) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }

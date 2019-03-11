@@ -464,7 +464,7 @@ class Module_warnings extends Standard_crud_module
                     $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't_cache_first_post_id', 't_cache_last_post_id', 't_cache_num_posts', 't_cache_first_title', 'p_cache_forum_id'), $where, $sup);
                     $spam_urls = array();
                     foreach ($posts_by_member as $post) {
-                        $just_post_row = db_map_restrict($post, array('id', 'p_post'));
+                        $just_post_row = db_map_restrict($post, array('id', 'p_post'), array('id' => 'p_id'));
                         $post_text = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
                         $matches = array();
                         $num_matches = preg_match_all('#<a\s[^<>]*href=["\']([^"\']*)["\']#', $post_text->evaluate(), $matches);

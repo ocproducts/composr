@@ -903,7 +903,7 @@ class Module_galleries
                 continue;
             }
 
-            $just_row = db_map_restrict($row, array('description')) + array('id' => $row['r_id']);
+            $just_row = db_map_restrict($row, array('id', 'description'), array('id' => 'r_id'));
 
             $entry_title = get_translated_text($row['title']);
             $entry_description = get_translated_tempcode($type . 's', $just_row, 'description');
