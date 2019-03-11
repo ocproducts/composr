@@ -235,7 +235,7 @@ class Block_main_news
         $news_text = new Tempcode();
         foreach ($rows as $i => $myrow) {
             if (has_category_access(get_member(), 'news', strval($myrow['news_category']))) {
-                $just_news_row = db_map_restrict($myrow, array('id', 'title', 'news', 'news_article'));
+                $just_news_row = db_map_restrict($myrow, array('id', 'title', 'news', 'news_article'), array('id' => 'p_id'));
 
                 // Basic details
                 $id = $myrow['p_id'];
@@ -349,7 +349,7 @@ class Block_main_news
         $news_text2 = new Tempcode();
         foreach ($rows2 as $j => $myrow) {
             if (has_category_access(get_member(), 'news', strval($myrow['news_category']))) {
-                $just_news_row = db_map_restrict($myrow, array('id', 'title', 'news', 'news_article'));
+                $just_news_row = db_map_restrict($myrow, array('id', 'title', 'news', 'news_article'), array('id' => 'p_id'));
 
                 // Basic details
                 $date = get_timezoned_date_tempcode($myrow['date_and_time']);
