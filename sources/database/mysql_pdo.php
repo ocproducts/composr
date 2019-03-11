@@ -42,7 +42,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
      * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
-     * @return ?array A database connection (null: error)
+     * @return ?object A database connection (null: error)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
@@ -117,7 +117,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
     /**
      * Find whether full-text-search is present
      *
-     * @param  array $db A DB connection
+     * @param  object $db A DB connection
      * @return boolean Whether it is
      */
     public function db_has_full_text($db)
@@ -128,7 +128,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
     /**
      * Find whether subquery support is present
      *
-     * @param  array $db A DB connection
+     * @param  object $db A DB connection
      * @return boolean Whether it is
      */
     public function db_has_subqueries($db)
@@ -139,7 +139,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
     /**
      * Find whether collate support is present
      *
-     * @param  array $db A DB connection
+     * @param  object $db A DB connection
      * @return boolean Whether it is
      */
     public function db_has_collate_settings($db)
@@ -186,7 +186,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $db A DB connection
+     * @param  object $db A DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
@@ -281,7 +281,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
     /**
      * Get the rows returned from a SELECT query.
      *
-     * @param  resource $results The query result pointer
+     * @param  object $results The query result pointer
      * @param  string $query The complete SQL query (useful for debugging)
      * @param  ?integer $start Whether to start reading from (null: irrelevant)
      * @return array A list of row maps
