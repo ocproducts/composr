@@ -179,7 +179,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
         if ($this->last_select_db === null) {
             return addslashes($string);
         }
-        return trim($this->last_select_db->quote($string), "'");
+        return preg_replace("#^'(.*)'$#", '$1', $this->last_select_db->quote($string));
     }
 
     /**
