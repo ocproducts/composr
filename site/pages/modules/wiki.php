@@ -958,14 +958,14 @@ class Module_wiki
         }
 
         if ($mode == 'edit') {
-            $_id = get_param_wiki_chain('id', strval($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'page_id', array('id' => $post_id))));
-            $id = $_id[0];
-
             $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $post_id), '', 1);
             if (!array_key_exists(0, $rows)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_post'));
             }
             $myrow = $rows[0];
+
+            $_id = get_param_wiki_chain('id', strval($myrow['page_id']));
+            $id = $_id[0];
 
             if (!has_category_access(get_member(), 'wiki_page', strval($myrow['page_id']))) {
                 access_denied('CATEGORY_ACCESS');
