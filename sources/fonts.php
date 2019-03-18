@@ -27,6 +27,8 @@
  */
 function has_ttf()
 {
+    // TODO: In v11 make health check for TTF use this (grep for imagettftext)
+
     static $result = null;
     if ($result !== null) {
         return $result;
@@ -155,10 +157,10 @@ function find_all_fonts($test_character_support = false)
                             $char = cms_mb_substr($_test_text, $i, 1);
                             if (trim($char) != '') {
                                 $bounds = @imagettfbbox(26.0, 0.0, $path . '/' . $f, foxy_utf8_to_nce($char));
-                                $_chars[serialize($bounds)] = $bounds;
+                                $_chars[$char] = serialize($bounds);
                             }
                         }
-                        if ((count($_chars) == 1) && (cms_mb_strlen($_test_text) != 0)) {
+                        if ((count(array_unique($_chars)) == 1) && (count($_chars) > 1)) {
                             continue; // It's all box outlines due to unsupported characters
                         }
                     }
