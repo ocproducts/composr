@@ -186,7 +186,6 @@ class _lang_spelling_test_set extends cms_test_case
             'bitbucket',
             'bitkinex',
             'bitnami',
-            'bitstream',
             'blackbox',
             'blackhole',
             'blackholes',

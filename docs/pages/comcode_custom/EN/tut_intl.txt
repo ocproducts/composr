@@ -492,16 +492,16 @@ When ocPortal 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-
 
 [title="4"]GD fonts[/title]
 
-We bundle some Open Source [tt].ttf[/tt] fonts (Bitstream fonts) that unfortunately don't have characters for all languages. For example you may notice issues in Cyrillic ("Russian").
+We bundle some Open Source [tt].ttf[/tt] fonts (GNU FreeFont fonts) that unfortunately don't have characters for all languages.
 
 This affects:
 1) Vertical text shown on permission editing interfaces. [i]This issue is less relevant as it once was, as modern web browsers can render vertical text directly.[/i]
 2) The Logo Wizard.
 3) The [tt]main_custom_gfx[/tt] block.
 
-The solution to '1' is to upload [tt]Courier New Bold Italic.ttf[/tt] from your own computer to [tt]data_custom/fonts/Courier New Bold Italic.ttf[/tt]. We would distribute this file with Composr, except we don't have a licence to; however if you have a copy of Windows or Mac OS you should have your own licensed copy of this file.
+The solution to '1' is to upload [tt]Courier New Bold.ttf[/tt] from your own computer to [tt]data_custom/fonts/Courier New Bold.ttf[/tt]. We would distribute this file with Composr, except we don't have a licence to; however if you have a copy of Windows or Mac OS you should have your own licensed copy of this file.
 
-The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]data_custom/fonts/Vera.ttf[/tt]. This works for the Verdana font only, which is the default used during the Setup Wizard; if you are using the Logo Wizard manually then you may just want to upload all your fonts to [tt]data_custom/fonts[/tt] and pick one of those you uploaded.
+The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]data_custom/fonts/Verdana.ttf[/tt]. Verdana is a default font used during the Setup Wizard; if you are using the Logo Wizard manually then you may just want to upload all your fonts to [tt]data_custom/fonts[/tt] and pick one of those you uploaded.
 
 [title="3"]CSS[/title]
 
