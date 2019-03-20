@@ -152,7 +152,6 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
     if ((!has_category_access($member_id, 'forums', strval($forum_id))) && (!is_null($forum_id))) {
         warn_exit(do_lang_tempcode('VOTE_CHEAT'));
     }
-    $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_poll_votes', 'pv_member_id', array('pv_poll_id' => $poll_id, 'pv_member_id' => $member_id));
     if (is_guest($member_id)) {
         $voted_already_map = array('pv_poll_id' => $poll_id, 'pv_ip' => get_ip_address());
     } else {
@@ -160,9 +159,6 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
     }
     $voted_already = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_poll_votes', 'pv_member_id', $voted_already_map);
     if (!is_null($voted_already)) {
-        warn_exit(do_lang_tempcode('NOVOTE'));
-    }
-    if (!is_null($test)) {
         warn_exit(do_lang_tempcode('NOVOTE'));
     }
 

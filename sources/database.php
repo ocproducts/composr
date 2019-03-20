@@ -74,13 +74,19 @@ function init__database()
  *
  * @param  array $row DB table row.
  * @param  array $fields List of fields to copy through.
+ * @param  ?array $remap Remapping of fields, if we need to do some kind of substitution as well (usually this will be because the row came from a join and we had to rename fields) (null: none).
  * @return array Map of fields.
  */
-function db_map_restrict($row, $fields)
+function db_map_restrict($row, $fields, $remap = null)
 {
+    // TODO: Change null to array() in v11; remove these 3 lines
+    if ($remap === null) {
+        $remap = array();
+    }
+
     $out = array();
     foreach ($fields as $field) {
-        $out[$field] = $row[$field];
+        $out[$field] = $row[(array_key_exists($field, $remap) && array_key_exists($remap[$field], $row)) ? $remap[$field] : $field];
         if (isset($row[$field . '__text_parsed'])) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }
@@ -435,7 +441,7 @@ function db_end_transaction($db)
  */
 function db_escape_string($string)
 {
-    if (isset($GLOBALS['SITE_DB']->connection_read[4])) { // Okay, we can't be lazy anymore
+    if ((is_array($GLOBALS['SITE_DB']->connection_read)) && (count($GLOBALS['SITE_DB']->connection_read) > 4)) { // Okay, we can't be lazy anymore
         $GLOBALS['SITE_DB']->connection_read = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $GLOBALS['SITE_DB']->connection_read);
         _general_db_init();
     }
@@ -525,6 +531,7 @@ function db_function($function, $args = null)
             switch (get_db_type()) {
                 case 'mysql':
                 case 'mysqli':
+                case 'mysql_pdo':
                 case 'mysql_dbx':
                     $function = 'CHAR_LENGTH';
                     break;
@@ -648,6 +655,7 @@ function db_function($function, $args = null)
                     return '(SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                 case 'mysql':
                 case 'mysqli':
+                case 'mysql_pdo':
                 case 'mysql_dbx':
                 case 'sqlite':
                 default:
@@ -1698,7 +1706,7 @@ class DatabaseConnector
         } else {
             $connection = &$this->connection_write;
         }
-        if (isset($connection[4])) { // Okay, we can't be lazy anymore
+        if ((is_array($connection)) && (count($connection) > 4)) { // Okay, we can't be lazy anymore
             $connection = call_user_func_array(array($this->static_ob, 'db_get_connection'), $connection);
             _general_db_init();
         }

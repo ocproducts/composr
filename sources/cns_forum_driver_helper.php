@@ -384,7 +384,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         $out[$i]['firstmemberid'] = $fp_rows[0]['p_poster'];
         $out[$i]['firsttitle'] = $fp_rows[0]['p_title'];
         if ($show_first_posts) {
-            $post_row = db_map_restrict($fp_rows[0], array('p_post')) + array('id' => $fp_rows[0]['p_id']);
+            $post_row = db_map_restrict($fp_rows[0], array('id', 'p_post'), array('id' => 'p_id'));
             $out[$i]['firstpost_language_string'] = $fp_rows[0]['p_post'];
             $out[$i]['firstpost'] = get_translated_tempcode('f_posts', $post_row, 'p_post', $this_ref->connection);
         }

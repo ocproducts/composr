@@ -147,3 +147,5 @@ pages/html_custom/*/*.htm
 /tracker/uploads/
 /stats
 /uploads/website_specific/compo.sr/upgrades/full
+/data_custom/fonts/*.ttf
+

@@ -37,17 +37,10 @@ function gd_text_script()
 
     $font_size = array_key_exists('size', $_GET) ? intval($_GET['size']) : 8;
 
-    $default_font = 'Courier New Bold Italic'; // Support ideal font if it is there (we cannot distribute)
-    if (!is_file(get_file_base() . '/data_custom/fonts/' . filter_naughty($default_font) . '.ttf')) {
-        $default_font = 'FreeMonoBoldOblique'; // Fallback to distributed
-    }
-    $_font = get_param_string('font', $default_font);
-    $font = get_file_base() . '/data_custom/fonts/' . filter_naughty($_font) . '.ttf';
-    if (!is_file($font)) {
-        $font = get_file_base() . '/data/fonts/' . filter_naughty($_font) . '.ttf';
-    }
+    require_code('fonts');
+    $font_path = get_param_string('font', find_default_font(true));
 
-    if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false) || (strlen($text) == 0)) {
+    if (!has_ttf()) {
         switch ($font_size) {
             case 1:
             case 2:
@@ -85,24 +78,24 @@ function gd_text_script()
         $scale = 4;
 
         if ($direction == 'horizontal') {
-            list(, , $width, , , , , $height) = imagettfbbox(floatval($font_size * $scale), 0.0, $font, $text);
+            list(, , $width, , , , , $height) = imagettfbbox(floatval($font_size * $scale), 0.0, $font_path, $text);
             $baseline_offset = 2 * $scale * intval(ceil(floatval($font_size) / 8.0));
             $height = abs($height);
             $width += $font_size * $scale * 2; // This is just due to inaccuracy in imagettfbbox, possibly due to italics not being computed correctly
             $height += $baseline_offset;
 
-            list(, , $real_width, , , , , $real_height) = imagettfbbox(floatval($font_size), 0.0, $font, $text);
+            list(, , $real_width, , , , , $real_height) = imagettfbbox(floatval($font_size), 0.0, $font_path, $text);
             $real_height = abs($real_height);
             $real_width += $font_size * 2;
             $real_height += $baseline_offset / $scale;
         } else {
-            list(, , $height, , , , , $width) = imagettfbbox(floatval($font_size * $scale), 0.0, $font, $text);
+            list(, , $height, , , , , $width) = imagettfbbox(floatval($font_size * $scale), 0.0, $font_path, $text);
             $baseline_offset = 2 * $scale * intval(ceil(floatval($font_size) / 8.0));
             $width = abs($width);
             $width += $baseline_offset;
             $height += $font_size * $scale * 2; // This is just due to inaccuracy in imagettfbbox, possibly due to italics not being computed correctly
 
-            list(, , $real_height, , , , , $real_width) = imagettfbbox(floatval($font_size), 0.0, $font, $text);
+            list(, , $real_height, , , , , $real_width) = imagettfbbox(floatval($font_size), 0.0, $font_path, $text);
             $real_width = abs($real_width);
             $real_width += $baseline_offset / $scale;
             $real_height += $font_size * 2;
@@ -136,7 +129,7 @@ function gd_text_script()
         }
     }
     $color = imagecolorallocate($img, hexdec(substr($fg_color, 0, 2)), hexdec(substr($fg_color, 2, 2)), hexdec(substr($fg_color, 4, 2)));
-    if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false) || (strlen($text) == 0)) {
+    if (!has_ttf()) {
         $trans = imagecolorallocate($img, hexdec(substr($trans_color, 0, 2)), hexdec(substr($trans_color, 2, 2)), hexdec(substr($trans_color, 4, 2)));
         imagefill($img, 0, 0, $trans);
         imagecolortransparent($img, $trans);
@@ -159,21 +152,21 @@ function gd_text_script()
             $nxpos = 0;
             for ($i = 0; $i < strlen($text); $i++) {
                 if (!is_null($previous)) { // check for existing previous character
-                    list(, , $rx1, , $rx2) = imagettfbbox(floatval($font_size * $scale), 0.0, $font, $previous);
+                    list(, , $rx1, , $rx2) = imagettfbbox(floatval($font_size * $scale), 0.0, $font_path, $previous);
                     $nxpos += max($rx1, $rx2) + 3;
                 }
                 if ($direction == 'horizontal') {
-                    imagettftext($img, floatval($font_size * $scale), 0.0, $nxpos, $height - $baseline_offset, $color, $font, $text[$i]);
+                    imagettftext($img, floatval($font_size * $scale), 0.0, $nxpos, $height - $baseline_offset, $color, $font_path, $text[$i]);
                 } else {
-                    imagettftext($img, floatval($font_size * $scale), 270.0, $baseline_offset, $nxpos, $color, $font, $text[$i]);
+                    imagettftext($img, floatval($font_size * $scale), 270.0, $baseline_offset, $nxpos, $color, $font_path, $text[$i]);
                 }
                 $previous = $text[$i];
             }
         } else {
             if ($direction == 'horizontal') {
-                imagettftext($img, floatval($font_size * $scale), 0.0, 0, $height - 4, $color, $font, $text);
+                imagettftext($img, floatval($font_size * $scale), 0.0, 0, $height - 4, $color, $font_path, $text);
             } else {
-                imagettftext($img, floatval($font_size * $scale), 270.0, 4, 0, $color, $font, $text);
+                imagettftext($img, floatval($font_size * $scale), 270.0, 4, 0, $color, $font_path, $text);
             }
         }
         $dest_img = imagecreatetruecolor($real_width + intval(ceil(floatval($baseline_offset) / floatval($scale))), $real_height);
@@ -383,7 +376,7 @@ function iframe_script()
     if ($zones[0]['zone_require_session'] == 1) {
         set_no_clickjacking_csp();
     }
-    if (($zones[0]['zone_name'] != '') && (get_value('windows_auth_is_enabled') !== '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1)) {
+    if (($zones[0]['zone_name'] != '') && (get_value('windows_auth_is_enabled') !== '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1) && (!is_guest())) {
         access_denied('ZONE_ACCESS_SESSION');
     }
     if (!has_actual_page_access(get_member(), $page, $zone)) {

@@ -426,7 +426,7 @@ function pt_to_xml($row)
     $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 
-    $just_post_row = db_map_restrict($row, array('id', 'p_post'));
+    $just_post_row = db_map_restrict($row, array('id', 'p_post'), array('id' => 'p_id'));
     $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
 
     $rendered = do_template('NOTIFICATION_PT_DESKTOP', array(

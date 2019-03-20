@@ -318,7 +318,11 @@ class CMSUserRead
         $custom_fields_list = array();
 
         if (has_privilege(get_member(), 'view_profiles')) {
-            $_custom_fields = cns_get_all_custom_fields_match_member($user_id, ((get_member() != $user_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, ((get_member() == $user_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null);
+            $_custom_fields = cns_get_all_custom_fields_match_member(
+                $user_id, // member
+                ((get_member() != $user_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
+                ((get_member() == $user_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null // owner view
+            );
             $value = mixed();
             foreach ($_custom_fields as $name => $_value) {
                 $value = $_value['RAW'];

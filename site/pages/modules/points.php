@@ -99,10 +99,10 @@ class Module_points
             add_privilege('POINTS', 'give_negative_points', false);
             add_privilege('POINTS', 'view_charge_log', false);
 
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_used', 20, 1, 0, 0, 0, '', 'integer');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('gift_points_used', 20, 1, 0, 0, 0, '', 'integer');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_given', 20, 1, 0, 0, 0, '', 'integer');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_rating', 20, 1, 0, 0, 0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_used', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('gift_points_used', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_given', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_rating', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
@@ -112,7 +112,7 @@ class Module_points
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             rename_config_option('leaderboard_start_date', 'leader_board_start_date');
 
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_visiting', 20, 1, 0, 0, 0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_visiting', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
         }
     }
 

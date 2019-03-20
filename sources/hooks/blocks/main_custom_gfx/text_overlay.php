@@ -32,9 +32,8 @@ class Hook_main_custom_gfx_text_overlay
      */
     public function run($map, &$block)
     {
-        if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false)) {
-            return do_lang_tempcode('REQUIRES_TTF');
-        }
+        require_code('fonts');
+        check_ttf();
 
         if (!array_key_exists('img', $map)) {
             $map['img'] = 'button1';

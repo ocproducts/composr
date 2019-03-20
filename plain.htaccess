@@ -11,6 +11,9 @@ Options +SymLinksIfOwnerMatch -MultiViews
 
 RewriteEngine on
 
+# Needed to pass HTTP-auth header on PHP CGI (it's not automatic, unlike PHP Module)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
 # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
@@ -25,9 +28,9 @@ RewriteCond $1 -d
 RewriteRule ^(.*) - [L]
 
 # WebDAV implementation (requires the non-bundled WebDAV addon)
-RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteRule ^webdav(/.*|$) data_custom/webdav.php
 RewriteCond %{HTTP_HOST} ^webdav\..*
-RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteRule ^(.*)$ data_custom/webdav.php
 
 #FAILOVER STARTS
 ### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###

@@ -148,8 +148,8 @@ function make_installers($skip_file_grab = false)
             \$OFFSET_ARRAY = array({$offset_list});
             \$SIZE_ARRAY = array({$size_list});
             \$FILE_ARRAY = array({$file_list});
-            \$DATADOTCMS_FILE = fopen('data.cms','rb');
-            if (\$DATADOTCMS_FILE === false) warn_exit('data.cms missing / inaccessible');
+            \$DATADOTCMS_FILE = @fopen('data.cms','rb');
+            if (\$DATADOTCMS_FILE === false) exit('data.cms missing / inaccessible -- make sure you upload it');
             if (filesize('data.cms') != {$archive_size}) warn_exit('data.cms not fully uploaded, or wrong version for this installer');
             if (md5(file_array_get('{$md5_test_path}')) != '{$md5}') warn_exit('data.cms corrupt. Must not be uploaded in text mode');
 
