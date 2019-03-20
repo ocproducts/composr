@@ -2644,16 +2644,18 @@ function is_mobile($user_agent = null, $truth = false)
     if (((!isset($SITE_INFO['assume_full_mobile_support'])) || ($SITE_INFO['assume_full_mobile_support'] != '1')) && (isset($GLOBALS['FORUM_DRIVER'])) && (!$truth) && (running_script('index')) && (($theme = $GLOBALS['FORUM_DRIVER']->get_theme()) != 'default')) {
         $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (is_file($ini_path)) {
+            $page = get_param_string('page', ''); // We intentionally do not use get_page_name, as that requires URL Monikers to work, which are not available early in boot (as needed by static cache)
+
             require_code('files');
             $details = better_parse_ini_file($ini_path);
             if (!empty($details['mobile_pages'])) {
                 if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
-                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
+                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . $page) == 0) {
                         $IS_MOBILE_CACHE = false;
                         return false;
                     }
                 } else {
-                    if (preg_match('#(^|,)\s*' . preg_quote(get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) {
+                    if (preg_match('#(^|,)\s*' . preg_quote($page, '#') . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . $page, '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) {
                         $IS_MOBILE_CACHE = false;
                         return false;
                     }
@@ -2677,7 +2679,7 @@ function is_mobile($user_agent = null, $truth = false)
         }
     }
 
-    // The set of browsers
+    // The set of browsers (also change in static_cache.php)
     $browsers = array(
         // Implication by technology claims
         'WML',
