@@ -242,6 +242,25 @@ function ping_sitemap_xml($url, $trigger_error = false)
 }
 
 /**
+ * Make sure we do not have Sitemap files on disk that are no longer needed.
+ */
+function clean_unused_sitemap_files()
+{
+    $pages = array_flip(collapse_1d_complexity('set_number', $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'))));
+
+    $dh = @opendir(get_custom_file_base() . '/data_custom/sitemaps');
+    if ($dh !== false) {
+        while (($f = readdir($dh)) !== false) {
+            $matches = array();
+            if ((preg_match('#^set_(\d+)\.xml(\.gz)?$#', $f, $matches) != 0) && (!array_key_exists(intval($matches[1]), $pages))) {
+                @unlink(get_custom_file_base() . '/data_custom/sitemaps/' . $f);
+            }
+        }
+        closedir($dh);
+    }
+}
+
+/**
  * Our sitemap cache table may need bootstrapping for some reason.
  * Normally we build it iteratively.
  */
@@ -258,6 +277,8 @@ function build_sitemap_cache_table()
     disable_php_memory_limit();
 
     $GLOBALS['SITE_DB']->query_delete('sitemap_cache');
+
+    clean_unused_sitemap_files();
 
     $GLOBALS['MEMORY_OVER_SPEED'] = true;
 
