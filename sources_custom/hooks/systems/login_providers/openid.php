@@ -22,9 +22,10 @@ class Hook_login_provider_openid
      * Standard login provider hook.
      *
      * @param  ?MEMBER $member Member ID already detected as logged in (null: none). May be a guest ID.
+     * @param  boolean $quick_only Whether to just do a quick check, don't establish new sessions
      * @return ?MEMBER Member ID now detected as logged in (null: none). May be a guest ID.
      */
-    public function try_login($member)
+    public function try_login($member, $quick_only = false)
     {
         // Some kind of OpenID provider
         try {
@@ -68,7 +69,9 @@ class Hook_login_provider_openid
                     if (!is_null($member)) {
                         require_code('users_inactive_occasionals');
 
-                        create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
+                        if (!$quick_only) {
+                            create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
+                        }
 
                         return $member;
                     }
@@ -77,7 +80,7 @@ class Hook_login_provider_openid
                     require_code('cns_groups');
                     require_lang('cns');
 
-                    if ((running_script('index')) || (running_script('execute_temp'))) {
+                    if (((running_script('index')) || (running_script('execute_temp'))) && (!$quick_only)) {
                         require_code('cns_members_action');
                         require_code('cns_members_action2');
 
@@ -149,7 +152,7 @@ class Hook_login_provider_openid
                         cns_member_choose_avatar($avatar, $member);
                     }
 
-                    if (!is_null($member)) {
+                    if ((!is_null($member)) && (!$quick_only)) {
                         require_code('users_inactive_occasionals');
                         create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
                     }

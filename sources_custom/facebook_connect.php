@@ -34,7 +34,7 @@ function init__facebook_connect()
 }
 
 // This is only called if we know we have a user logged into Facebook, who has authorised to our app
-function handle_facebook_connection_login($current_logged_in_member)
+function handle_facebook_connection_login($current_logged_in_member, $quick_only = false)
 {
     if (!class_exists('Tempcode')) {
         return null;
@@ -193,7 +193,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // Not logged in before using Facebook, so we need to create an account, or bind to the active Composr login if there is one
-    $in_a_sane_place = (get_page_name() != 'login') && ((running_script('index')) || (running_script('execute_temp'))); // If we're in some weird script, or the login module UI, it's not a sane place, don't be doing account creation yet
+    $in_a_sane_place = (get_page_name() != 'login') && ((running_script('index')) || (running_script('execute_temp'))) && (!$quick_only); // If we're in some weird script, or the login module UI, it's not a sane place, don't be doing account creation yet
     if ((is_null($member_id)) && ($in_a_sane_place)) {
         // Bind to existing Composr login?
         if (!is_null($current_logged_in_member)) {
@@ -329,7 +329,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // Finalise the session
-    if (!is_null($member_id)) {
+    if ((!is_null($member_id)) && (!$quick_only)) {
         require_code('users_inactive_occasionals');
         create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }

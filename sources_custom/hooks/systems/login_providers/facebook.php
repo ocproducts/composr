@@ -22,9 +22,10 @@ class Hook_login_provider_facebook
      * Standard login provider hook.
      *
      * @param  ?MEMBER $member Member ID already detected as logged in (null: none). May be a guest ID.
+     * @param  boolean $quick_only Whether to just do a quick check, don't establish new sessions
      * @return ?MEMBER Member ID now detected as logged in (null: none). May be a guest ID.
      */
-    public function try_login($member) // NB: if $member is set (but not Guest), then it will bind to that account
+    public function try_login($member, $quick_only = false) // NB: if $member is set (but not Guest), then it will bind to that account
     {
         /*if (($member !== null) && (!is_guest($member))) {     Speeds up slighlty, but we don't want to test with this because we need to ensure startup always works right, and it also stops some stuff working
             return $member;
