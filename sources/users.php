@@ -290,7 +290,7 @@ function get_member($quick_only = false)
         require_code('hooks/systems/login_providers/' . $hook, false, $hook_dir == 'sources_custom');
         $ob = object_factory('Hook_login_provider_' . $hook);
         if (!is_null($ob)) {
-            $member = $ob->try_login($member);
+            $member = $ob->try_login($member, $quick_only);
         }
     }
 
