@@ -68,5 +68,10 @@ if (!headers_sent()) {
  */
 function execute_temp()
 {
+    // Default security measure, can edit/remove as required
+    if ((!is_cli()) && (get_ip_address() != '12.34.56.78')) {
+        return;
+    }
+
     // Temporary code goes here
 }
