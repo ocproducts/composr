@@ -13,8 +13,10 @@
 	{+END}
 
 	<a id="poll_jump" rel="dovote"></a>
+	{+START,IF_NON_EMPTY,{RESULT_URL}}
 	<form title="{!VOTE}" target="_self" action="{VOTE_URL*}" method="post" class="poll_form" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
+	{+END}
 
 		<div>
 			{CONTENT}
@@ -25,7 +27,9 @@
 				<input disabled="disabled" id="poll{PID*}" onclick="disable_button_just_clicked(this);" class="button_screen_item buttons__vote" type="submit" value="{!VOTE}" />
 			</p>
 		{+END}
+	{+START,IF_NON_EMPTY,{RESULT_URL}}
 	</form>
+	{+END}
 
 	<ul class="horizontal_links associated_links_block_group">
 		{+START,IF_NON_EMPTY,{FULL_URL}}<li><a target="_top" href="{FULL_URL*}" title="{!VIEW}: {!POLL} #{PID*}">{!VIEW}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview}}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment_count">{$COMMENT_COUNT,polls,{PID}}</span>{+END}{+END}{+END}</li>
