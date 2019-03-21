@@ -150,6 +150,8 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
     }
 
+    decache('_field_type_selection');
+
     require_code('sitemap_xml');
     notify_sitemap_node_add('_SEARCH:catalogues:index:' . $name, $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $name));
 
@@ -352,6 +354,8 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     if (substr($name, 0, 1) == '_') {
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
     }
+
+    decache('_field_type_selection');
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit('_SEARCH:catalogues:index:' . $name, has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $name));
