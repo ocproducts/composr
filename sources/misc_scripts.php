@@ -38,7 +38,8 @@ function gd_text_script()
     $font_size = array_key_exists('size', $_GET) ? intval($_GET['size']) : 8;
 
     require_code('fonts');
-    $font_path = get_param_string('font', find_default_font(true));
+    $font = get_param_string('font', find_default_font(true));
+    $font_path = find_font_path($font);
 
     if (!has_ttf()) {
         switch ($font_size) {
