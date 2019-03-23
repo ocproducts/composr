@@ -1274,12 +1274,13 @@ class Hook_Notification
         $initial_setting = $this->get_initial_setting($only_if_enabled_on__notification_code, $only_if_enabled_on__category);
 
         // SQL: Notification code and category filters
+        $clause_scope = ' AND ' . db_string_equal_to('l_notification_code', substr($only_if_enabled_on__notification_code, 0, 80));
         if ($only_if_enabled_on__category === null) {
-            $clause_code_category = ' AND ' . db_string_equal_to('l_code_category', '');
+            $clause_scope .= ' AND ' . db_string_equal_to('l_code_category', '');
         } elseif ($catch_all_too) {
-            $clause_code_category = ' AND (' . db_string_equal_to('l_code_category', '') . ' OR ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category) . ')';
+            $clause_scope .= ' AND (' . db_string_equal_to('l_code_category', '') . ' OR ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category) . ')';
         } else {
-            $clause_code_category = ' AND ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category);
+            $clause_scope .= ' AND ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category);
         }
 
         // SQL: Member ID filters
@@ -1325,7 +1326,7 @@ class Hook_Notification
         if ($is_cns) {
             // This is the most obvious query for Conversr notification-queries
             $standard_query = 'SELECT l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'notifications_enabled l JOIN ' . $db->get_table_prefix() . 'f_members m ON m.id=l.l_member_id WHERE 1=1';
-            $standard_query .= $clause_code_category . $clause_member_ids . $clause_validation_cns;
+            $standard_query .= $clause_scope . $clause_member_ids . $clause_validation_cns;
             $standard_query .= ' AND l_setting<>' . strval(A_NA);
 
             // Now go through the actual cases
@@ -1337,7 +1338,7 @@ class Hook_Notification
                 if ($has_by_default) {
                     // :-) We are just querying out all members who do NOT have a setting of OFF
                     // We do a LEFT JOIN because having no setting is fine (it'll be put to the default setting of ON for the member)
-                    $query = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON m.id=l.l_member_id' . $clause_code_category . ' WHERE 1=1';
+                    $query = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON m.id=l.l_member_id' . $clause_scope . ' WHERE 1=1';
                     $query .= $clause_member_ids_cns_side . $clause_validation_cns . ' AND m.id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
                     $query .= ' AND (l_setting IS NULL OR l_setting<>' . strval(A_NA) . ')';
                 } else {
@@ -1348,7 +1349,7 @@ class Hook_Notification
         } else {
             // This is the most obvious query for non-Conversr notification-queries
             $standard_query = 'SELECT l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'notifications_enabled l WHERE 1=1';
-            $standard_query .= $clause_code_category . $clause_member_ids;
+            $standard_query .= $clause_scope . $clause_member_ids;
             $standard_query .= ' AND l_setting<>' . strval(A_NA);
 
             // Now go through the actual cases
