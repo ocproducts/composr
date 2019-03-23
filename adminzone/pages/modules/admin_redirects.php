@@ -193,6 +193,9 @@ class Module_admin_redirects
             )));
         }
         $default = explode(':', get_param_string('page_link', '*:'), 2);
+        if (count($default) == 1) {
+            $default = array('', $default[0]);
+        }
         if ($num_zones > 50) {
             $to_zones = new Tempcode();
             $from_zones = new Tempcode();
