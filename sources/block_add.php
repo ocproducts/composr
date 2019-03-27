@@ -301,7 +301,7 @@ function block_helper_script()
                 if (preg_match('#' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\']#Ui', $description, $matches) != 0) {
                     $default = $matches[1];
                     $has_default = true;
-                    $description = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $description);
+                    $description = cms_preg_replace_safe('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $description);
                 } else {
                     $has_default = false;
                 }
@@ -389,7 +389,7 @@ function block_helper_script()
                     }
                     $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif (preg_match('#\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', $description, $matches) != 0) { // hook list
-                    $description = preg_replace('#\s*\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', '', $description);
+                    $description = cms_preg_replace_safe('#\s*\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', '', $description);
 
                     $list = new Tempcode();
                     $hooks = find_all_hooks($matches[1], $matches[2]);

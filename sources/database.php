@@ -1420,7 +1420,7 @@ class DatabaseConnector
                         }
                     }
                     if ($end !== '') {
-                        $end = preg_replace('#(^|,|\s)([a-z]+)($|,|\s)#', '${1}main.${2}${3}', $end);
+                        $end = cms_preg_replace_safe('#(^|,|\s)([a-z]+)($|,|\s)#', '${1}main.${2}${3}', $end);
                     }
 
                     $field_prefix = 'main.';
@@ -1505,7 +1505,7 @@ class DatabaseConnector
     {
         global $DEV_MODE;
         if (!$skip_safety_check && stripos($query, 'union') !== false && strpos(get_db_type(), 'mysql') !== false) {
-            $_query = preg_replace('#\s#', ' ', strtolower($query));
+            $_query = cms_preg_replace_safe('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query,'insert into ')+substr_count($_query,'replace into ')+substr_count($_query,'update ')+substr_count($_query,'select ')+substr_count($_query,'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {
                 log_hack_attack_and_exit('SQL_INJECTION_HACK', $query);

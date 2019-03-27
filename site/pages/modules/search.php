@@ -581,7 +581,7 @@ class Module_search
 
         // Search keyword highlighting in any loaded Comcode
         global $SEARCH__CONTENT_BITS;
-        $_content_bits = explode(' ', str_replace('"', '', preg_replace('#(^|\s)\+#', '', preg_replace('#(^|\s)\-#', '', $content))));
+        $_content_bits = explode(' ', str_replace('"', '', cms_preg_replace_safe('#(^|\s)\+#', '', cms_preg_replace_safe('#(^|\s)\-#', '', $content))));
         $SEARCH__CONTENT_BITS = array();
         require_code('textfiles');
         $too_common_words = explode("\n", read_text_file('too_common_words', '', true));

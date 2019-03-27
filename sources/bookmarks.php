@@ -76,16 +76,8 @@ function add_bookmark_form($post_url)
     $page_link = convert_to_internal_encoding(url_to_page_link($url, false, false), 'utf-8');
     $default_title = get_param_string('title', '', true);
     $default_title = convert_to_internal_encoding($default_title, 'utf-8');
-    $default_title = preg_replace('#\s.\s' . preg_quote(get_site_name(), '#') . '$#s', '', $default_title);
-    $default_title = preg_replace('#^' . preg_quote(get_site_name(), '#') . '\s.\s#s', '', $default_title);
-    $default_title_2 = @preg_replace('#\s.\s' . preg_quote(get_site_name(), '#') . '$#su', '', $default_title);
-    $default_title_2 = @preg_replace('#^' . preg_quote(get_site_name(), '#') . '\s.\s#su', '', $default_title_2);
-    if ($default_title_2 !== false) {
-        $default_title = $default_title_2;
-    }
-    if (!is_string($default_title)) {
-        $default_title = '';
-    }
+    $default_title = cms_preg_replace_safe('#\s.\s' . preg_quote(get_site_name(), '#') . '$#s', '', $default_title);
+    $default_title = cms_preg_replace_safe('#^' . preg_quote(get_site_name(), '#') . '\s.\s#s', '', $default_title);
 
     require_code('form_templates');
     $rows = $GLOBALS['SITE_DB']->query_select('bookmarks', array('DISTINCT b_folder'), array('b_owner' => get_member()), 'ORDER BY b_folder');

@@ -1674,7 +1674,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     // Check for whitespace
     if (!is_null($username)) {
         $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-        if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
+        if (($prohibit_username_whitespace === '1') && (cms_preg_match_safe('#\s#', $username) != 0) && ($username_changed)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
@@ -1683,7 +1683,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     }
     if (!is_null($password)) {
         $prohibit_password_whitespace = get_option('prohibit_password_whitespace');
-        if (($prohibit_password_whitespace === '1') && (preg_match('#\s#', $password) != 0) && ($username_changed)) {
+        if (($prohibit_password_whitespace === '1') && (cms_preg_match_safe('#\s#', $password) != 0) && ($username_changed)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }

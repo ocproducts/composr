@@ -298,10 +298,10 @@ class Module_recommend
                         $downloaded_at_link = http_download_file($from, 3000, false);
                         if (is_string($downloaded_at_link)) {
                             $matches = array();
-                            if (preg_match('#\s*<title[^>]*\s*>\s*(.*)\s*\s*<\s*/title\s*>#mi', $downloaded_at_link, $matches) != 0) {
+                            if (cms_preg_match_safe('#\s*<title[^>]*\s*>\s*(.*)\s*\s*<\s*/title\s*>#mi', $downloaded_at_link, $matches) != 0) {
                                 $resource_title = trim(str_replace('&ndash;', '-', str_replace('&mdash;', '-', @html_entity_decode($matches[1], ENT_QUOTES, get_charset()))));
                                 $resource_title = preg_replace('#^' . preg_quote(get_site_name(), '#') . ' - #', '', $resource_title);
-                                $resource_title = preg_replace('#\s+[^\d\s][^\d\s]?[^\d\s]?\s+' . preg_quote(get_site_name(), '#') . '$#i', '', $resource_title);
+                                $resource_title = cms_preg_replace_safe('#\s+[^\d\s][^\d\s]?[^\d\s]?\s+' . preg_quote(get_site_name(), '#') . '$#i', '', $resource_title);
                             }
                         }
                     }
