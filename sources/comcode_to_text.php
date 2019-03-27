@@ -205,7 +205,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 
     if (stripos($text, '[title') !== false) {
         if (!in_array('title', $tags_to_preserve)) {
-            $text = preg_replace_callback('#(\s*)\[title([^\]]*)\](.*)\[/title\]#Usi', '_title_callback', $text);
+            $text = preg_replace_callback('#(\s*)\[title([^\]]*)\](.*)\[/title\]#Usi', '_title_callback', $text); // TODO: Change to cms_preg_replace_callback_safe when merged with master next
         }
     }
 

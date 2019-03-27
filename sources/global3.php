@@ -3472,8 +3472,8 @@ function strip_html($in)
     $text = $in;
 
     // Normalise line breaks
-    $text = preg_replace('#\s+#', ' ', $text);
-    $text = preg_replace('#(<br(\s[^<>]*)?' . '>)#i', '$1' . "\n", $text);
+    $text = preg_replace('#\s+#', ' ', $text); // TODO: Change to cms_preg_replace_safe when merged with master next
+    $text = preg_replace('#(<br(\s[^<>]*)?' . '>)#i', '$1' . "\n", $text); // TODO: Change to cms_preg_replace_safe when merged with master next
 
     // Special stuff to strip
     $search = array(
@@ -3493,11 +3493,11 @@ function strip_html($in)
     $_block_tags = '(' . implode('|', array_keys($TAGS_BLOCK)) . ')';
 
     // Remove leading/trailing space from block tags
-    $text = preg_replace('#\s*(<' . $_block_tags . '(\s[^<>]*)?' . '>)#i', '$1', $text);
-    $text = preg_replace('#(</' . $_block_tags . '>)\s*#i', '$1', $text);
+    $text = preg_replace('#\s*(<' . $_block_tags . '(\s[^<>]*)?' . '>)#i', '$1', $text); // TODO: Change to cms_preg_replace_safe when merged with master next
+    $text = preg_replace('#(</' . $_block_tags . '>)\s*#i', '$1', $text); // TODO: Change to cms_preg_replace_safe when merged with master next
 
     // Add space between block tags
-    $text = preg_replace('#(</' . $_block_tags . '>)(<' . $_block_tags . '(\s[^<>]*)?)#i', '$1 $3', $text);
+    $text = preg_replace('#(</' . $_block_tags . '>)(<' . $_block_tags . '(\s[^<>]*)?)#i', '$1 $3', $text); // TODO: Change to cms_preg_replace_safe when merged with master next
 
     // Strip remaining HTML tags
     $text = strip_tags($text);
