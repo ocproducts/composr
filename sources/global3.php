@@ -3873,10 +3873,10 @@ function cms_preg_match_all_safe($pattern, $subject, &$matches, $flags = 0)
  * @param  mixed $pattern The pattern (string or array).
  * @param  mixed $replacement The replacement string (string or array).
  * @param  string $subject The subject string.
- * @param  ?integer $limit The limit of replacements (null: no limit).
+ * @param  integer $limit The limit of replacements (-1: no limit).
  * @return ~string The string with replacements made (false: error).
  */
-function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = null)
+function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = -1)
 {
     if (get_charset() == 'utf-8') {
         $result = @preg_replace($pattern . 'u', $replacement, $subject, $limit);
@@ -3894,10 +3894,10 @@ function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = null)
  * @param  string $pattern The pattern.
  * @param  mixed $callback The callback.
  * @param  string $subject The subject string.
- * @param  ?integer $limit The limit of replacements (null: no limit).
+ * @param  integer $limit The limit of replacements (-1: no limit).
  * @return ~string The string with replacements made (false: error).
  */
-function cms_preg_replace_callback_safe($pattern, $callback, $subject, $limit = null)
+function cms_preg_replace_callback_safe($pattern, $callback, $subject, $limit = -1)
 {
     if (get_charset() == 'utf-8') {
         $result = @preg_replace_callback($pattern . 'u', $callback, $subject, $limit);

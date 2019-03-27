@@ -2688,10 +2688,10 @@ function preg_match_all($pattern, $subject, &$matches, $flags = 0)
  * @param  mixed $pattern The pattern (string or array).
  * @param  mixed $replacement The replacement string (string or array).
  * @param  string $subject The subject string.
- * @param  ?integer $limit The limit of replacements (null: no limit).
+ * @param  integer $limit The limit of replacements (-1: no limit).
  * @return ~string The string with replacements made (false: error).
  */
-function preg_replace($pattern, $replacement, $subject, $limit = null)
+function preg_replace($pattern, $replacement, $subject, $limit = -1)
 {
     return '';
 }
@@ -2702,10 +2702,10 @@ function preg_replace($pattern, $replacement, $subject, $limit = null)
  * @param  string $pattern The pattern.
  * @param  mixed $callback The callback.
  * @param  string $subject The subject string.
- * @param  ?integer $limit The limit of replacements (null: no limit).
+ * @param  integer $limit The limit of replacements (-1: no limit).
  * @return ~string The string with replacements made (false: error).
  */
-function preg_replace_callback($pattern, $callback, $subject, $limit = null)
+function preg_replace_callback($pattern, $callback, $subject, $limit = -1)
 {
     return '';
 }
