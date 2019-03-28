@@ -3805,7 +3805,7 @@ function cms_unpack_to_uinteger($str, $bytes = null, $little_endian = false)
 
 /**
  * Perform a regular expression match.
- * Automatically applies utf-8 if possible and appropriate.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
  * @param  string $pattern The pattern.
  * @param  string $subject The subject string.
@@ -3827,7 +3827,7 @@ function cms_preg_match_safe($pattern, $subject, &$matches = null, $flags = 0, $
 
 /**
  * Array entries that match the pattern.
- * Automatically applies utf-8 if possible and appropriate.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
  * @param  string $pattern The pattern.
  * @param  array $subject The subject strings.
@@ -3847,7 +3847,7 @@ function cms_preg_grep_safe($pattern, $subject, $flags = 0)
 
 /**
  * Perform a global regular expression match.
- * Automatically applies utf-8 if possible and appropriate.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
  * @param  string $pattern The pattern.
  * @param  string $subject The subject string.
@@ -3868,7 +3868,7 @@ function cms_preg_match_all_safe($pattern, $subject, &$matches, $flags = 0)
 
 /**
  * Perform a regular expression search and replace.
- * Automatically applies utf-8 if possible and appropriate.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
  * @param  mixed $pattern The pattern (string or array).
  * @param  mixed $replacement The replacement string (string or array).
@@ -3889,7 +3889,7 @@ function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = -1)
 
 /**
  * Perform a regular expression search and replace using a callback.
- * Automatically applies utf-8 if possible and appropriate.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
  * @param  string $pattern The pattern.
  * @param  mixed $callback The callback.
@@ -3910,7 +3910,7 @@ function cms_preg_replace_callback_safe($pattern, $callback, $subject, $limit = 
 
 /**
  * Split string by a regular expression.
- * Automatically applies utf-8 if possible and appropriate.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
  * @param  string $pattern The pattern.
  * @param  string $subject The subject.
