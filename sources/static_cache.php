@@ -67,6 +67,7 @@ function static_cache__get_self_url_easy()
 
 /**
  * Find if we can use the static cache.
+ * For the save side, some additional checks are done in save_static_caching.
  *
  * @return boolean Whether we can
  */
@@ -114,7 +115,7 @@ function can_static_cache()
 function static_cache_current_url()
 {
     $url = static_cache__get_self_url_easy();
-    $url = preg_replace('#(keep_session|keep_devtest|keep_failover)=\d+#', '', $url);
+    $url = preg_replace('#(keep_session|for_session|keep_devtest|keep_failover)=\d+#', '', $url);
     $url = str_replace('keep_su=Guest', '', $url);
     $url = preg_replace('#\?&+#', '?', $url);
     $url = preg_replace('#&+#', '&', $url);

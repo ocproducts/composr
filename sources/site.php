@@ -1040,6 +1040,17 @@ function save_static_caching($out, $mime_type = 'text/html')
 {
     global $SITE_INFO;
     if ((cms_srv('REQUEST_METHOD') != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        if ((get_zone_name() == '') && (get_zone_default_page('') == get_page_name()) && (count(array_diff(array_keys($_GET), array('page', 'keep_session', 'keep_devtest', 'keep_failover'))) > 0)) {
+            /*TODO: Reenable in v11
+            if ($debugging) {
+                if (php_function_allowed('error_log')) {
+                    @error_log('SC save: No, home page has spurious parameters, likely a bot probing');
+                }
+            }*/
+
+            return;
+        }
+
         $bot_type = get_bot_type();
         $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
         $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
@@ -1141,6 +1152,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
     cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
         cms_file_put_contents_safe($fast_cache_path . '.gz', gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
+        unlink($fast_cache_path);
     }
 }
 
