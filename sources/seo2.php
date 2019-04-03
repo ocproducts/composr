@@ -299,7 +299,6 @@ function _seo_meta_find_data($keyword_sources, $description = '')
                     }
                     if ($is_exiting_word) {
                         $this_word = substr($source, $word_start, $i - $word_start);
-                        if ($i == $len && strpos($source,'[Example')!==false) @exit($this_word); // TODO
 
                         // Strip off any special characters we may have allowed to be inside words from the end of the word
                         while ((strlen($this_word) != 0) && (substr($this_word, -1) == '\'' || substr($this_word, -1) == '-' || substr($this_word, -1) == '.')) {

@@ -33,7 +33,10 @@ class Hook_main_custom_gfx_rollover_button
     public function run($map, &$block)
     {
         require_code('fonts');
-        check_ttf();
+        $test = check_ttf();
+        if ($test !== null) {
+            return $test;
+        }
 
         if (!array_key_exists('img1', $map)) {
             $map['img1'] = 'button1';

@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    core_graphic_text
  */
 
 // Server-side font rendering code
@@ -55,12 +55,15 @@ function has_ttf()
 
 /**
  * Enforce TTF support.
+ *
+ * @return ?Tempcode Error message (null: none)
  */
 function check_ttf()
 {
     if (!has_ttf()) {
         return do_lang_tempcode('REQUIRES_TTF');
     }
+    return null;
 }
 
 /**
@@ -74,8 +77,8 @@ function find_default_font($mono = false)
     // We have some knowledge of fonts we like, even though we don't bundle them all (for file-size and licensing reasons)
     if ($mono) {
         $precedence = array(
-            'Courier New Bold', // Microsoft (preferred, defacto standard)
-            'Courier New', // Microsoft (preferred, defacto standard)
+            'Courier New Bold', // Microsoft (preferred, de facto standard)
+            'Courier New', // Microsoft (preferred, de facto standard)
             'FreeMonoBold', // GNU FreeFont (bundled)
             'FreeMono', // GNU FreeFont (bundled)
             'LiberationMono-Bold', // Liberation fonts
@@ -89,9 +92,9 @@ function find_default_font($mono = false)
         );
     } else {
         $precedence = array(
-            'Segoe UI', // Microsoft (preferred, defacto standard)
-            'Tahoma', // Microsoft (preferred, defacto standard)
-            'Verdana', // Microsoft (preferred, defacto standard)
+            'Segoe UI', // Microsoft (preferred, de facto standard)
+            'Tahoma', // Microsoft (preferred, de facto standard)
+            'Verdana', // Microsoft (preferred, de facto standard)
             'FreeSans', // GNU FreeFont (bundled)
             'FreeSerif', // GNU FreeFont (bundled)
             'Calibri', // Microsoft
