@@ -1152,7 +1152,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
     cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
         cms_file_put_contents_safe($fast_cache_path . '.gz', gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
-        unlink($fast_cache_path);
+        //unlink($fast_cache_path); Actually, we should not assume all user agents support gzip
     }
 }
 

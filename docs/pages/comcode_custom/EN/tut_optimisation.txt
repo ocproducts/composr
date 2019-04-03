@@ -647,7 +647,7 @@ if (function_exists('tideways_xhprof_enable')) {
 };
 [/code]
 The collected xhprof data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
-The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the enviroment status when the profiling happened.
+The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the environment status when the profiling happened.
 
 [title="3"]Commercial dashboards[/title]
 
@@ -943,7 +943,7 @@ Here are a few useful Linux benchmarking tools:
  - [tt]sysbench[/tt] -- examine your CPU performance
  - [tt]dd[/tt] -- while not actually a benchmarking tool, it can help you find your disk read and write performance (you can find examples online)
  - [tt]bonnie++[/tt] -- examine detailed disk I/O characteristics
- - [tt]siege[/tt] -- guage your web throughput
+ - [tt]siege[/tt] -- gauge your web throughput
 
 [title="2"]See also[/title]
 

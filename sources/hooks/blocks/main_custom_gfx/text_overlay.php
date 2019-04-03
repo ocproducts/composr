@@ -33,7 +33,10 @@ class Hook_main_custom_gfx_text_overlay
     public function run($map, &$block)
     {
         require_code('fonts');
-        check_ttf();
+        $test = check_ttf();
+        if ($test !== null) {
+            return $test;
+        }
 
         if (!array_key_exists('img', $map)) {
             $map['img'] = 'button1';
