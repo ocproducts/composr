@@ -200,7 +200,7 @@ class Hook_search_downloads extends FieldsSearchHook
         if ((array_key_exists(0, $highlight_bits)) && ($row['download_data_mash'] != '')) {
             $pos = strpos($row['download_data_mash'], $highlight_bits[0]) - 1000;
             $mash_portion = substr($row['download_data_mash'], $pos, 10000);
-            $_text_summary = trim(preg_replace('#\s+#', ' ', $mash_portion));
+            $_text_summary = trim(cms_preg_replace_safe('#\s+#', ' ', $mash_portion));
             $text_summary = generate_text_summary($_text_summary, $highlight_bits);
         } else {
             $_text_summary = get_translated_text($row['description']);

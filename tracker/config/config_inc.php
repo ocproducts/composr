@@ -33,6 +33,9 @@ $g_db_username = $SITE_INFO['db_site_user'];
 $g_db_password = $SITE_INFO['db_site_password'];
 $g_database_name = $SITE_INFO['db_site'];
 $g_db_type = $SITE_INFO['db_type'];
+if ($g_db_type == 'mysql_pdo') {
+	$g_db_type = 'mysqli';
+}
 $cms_sc_db_prefix = $SITE_INFO['table_prefix'];
 $cms_sc_session_cookie_name = $SITE_INFO['session_cookie'];
 $cms_sc_multi_lang_content = (!isset($SITE_INFO['multi_lang_content'])) || ($SITE_INFO['multi_lang_content'] == '1');

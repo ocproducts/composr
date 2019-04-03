@@ -150,7 +150,7 @@ function find_all_fonts($test_character_support = false)
             while (($f = readdir($dh))) {
                 if (substr($f, -4) == '.ttf') {
                     if (($test_character_support) && (has_ttf())) {
-                        $_test_text = preg_replace('#\s#', '', $test_text);
+                        $_test_text = cms_preg_replace_safe('#\s#', '', $test_text);
                         $_chars = array();
                         $len = cms_mb_strlen($_test_text);
                         for ($i = 0; $i < $len; $i++) {

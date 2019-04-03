@@ -233,26 +233,31 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
         return $matches[2]; // Optimisation
     }
 
+    $has_comcode_tags = (strpos($text, '[') !== false);
+    if ($has_comcode_tags) {
+        init_valid_comcode_tags();
+
+        require_code('comcode_compiler');
+
+        global $VALID_COMCODE_TAGS, $TEXTUAL_TAGS;
+
+        if ($for_extract) {
+            $comcode_strip_contents_piped = implode('|', array_diff(array_keys($VALID_COMCODE_TAGS), array_keys($TEXTUAL_TAGS), $tags_to_preserve));
+            $text = preg_replace('#\[(' . $comcode_strip_contents_piped . ')\].*\[/\\1\]#Uis', '', $text);
+        }
+    }
+
     require_code('mail');
     if (function_exists('comcode_to_clean_text')) {// For benefit of installer, which disables mail.php
         $text = comcode_to_clean_text($text, $for_extract, $tags_to_preserve);
     }
 
-    if (strpos($text, '[') !== false) {
-        init_valid_comcode_tags();
+    $has_comcode_tags = (strpos($text, '[') !== false);
+    if ($has_comcode_tags) {
+        $text = preg_replace('#\[/?i\]#i', '', $text); // italics tag a special case, as false-positives are more likely with this
 
-        global $VALID_COMCODE_TAGS;
-        foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-            if (in_array($tag, $tags_to_preserve)) {
-                continue;
-            }
-
-            if ($tag == 'i') {
-                $text = preg_replace('#\[/?' . $tag . '\]#i', '', $text);
-            } else {
-                $text = preg_replace('#\[/?' . $tag . '([ =][^\]]*)?\]#i', '', $text);
-            }
-        }
+        $comcode_tags_piped = implode('|', array_diff(array_keys($VALID_COMCODE_TAGS), array('i'), $tags_to_preserve));
+        $text = preg_replace('#\[/?(' . $comcode_tags_piped . ')([ =][^\]]*)?\]#i', '', $text);
     }
 
     if (strpos($text, '&') !== false) {

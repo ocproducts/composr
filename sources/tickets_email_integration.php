@@ -257,8 +257,8 @@ function email_comcode_from_html($body)
     $body = semihtml_to_comcode($body, true);
 
     // Trim too much white-space
-    $body = preg_replace('#\[quote\](\s|<br />)+#s', '[quote]', $body);
-    $body = preg_replace('#(\s|<br />)+\[/quote\]#s', '[/quote]', $body);
+    $body = cms_preg_replace_safe('#\[quote\](\s|<br />)+#s', '[quote]', $body);
+    $body = cms_preg_replace_safe('#(\s|<br />)+\[/quote\]#s', '[/quote]', $body);
     $body = str_replace("\n\n\n", "\n\n", $body);
 
     // Tidy up the body

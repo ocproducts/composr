@@ -41,7 +41,7 @@ class Hook_login_provider_facebook
             if (!is_null($FACEBOOK_CONNECT)) {
                 try {
                     if ($FACEBOOK_CONNECT->getUser() != 0) {
-                        $member = handle_facebook_connection_login($member);
+                        $member = handle_facebook_connection_login($member, $quick_only);
 
                         if (!is_guest($member)) {
                             if (is_file(get_file_base() . '/sources_custom/hooks/systems/syndication/facebook.php')) {

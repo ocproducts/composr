@@ -753,9 +753,6 @@ function _handle_array_var_append($key, $val, &$vars)
     $val2 = mixed();
 
     foreach ($val as $key2 => $val2) {
-        if (get_magic_quotes_gpc()) {
-            $val2 = stripslashes($val2);
-        }
         if (!is_string($key2)) {
             $key2 = strval($key2);
         }
@@ -763,6 +760,10 @@ function _handle_array_var_append($key, $val, &$vars)
         if (is_array($val2)) {
             _handle_array_var_append($key . '[' . $key2 . ']', $val2, $vars);
         } else {
+            if (get_magic_quotes_gpc()) {
+                $val2 = stripslashes($val2);
+            }
+
             $vars[$key . '[' . $key2 . ']'] = $val2;
         }
     }
