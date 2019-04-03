@@ -113,8 +113,8 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             catch (PDOException $e) {
                 try { // Won't work on MySQL 8 for example
                     $db->query('SET sql_mode=\'STRICT_ALL_TABLES\'');
-                    catch (PDOException $e) {
-                    }
+                }
+                catch (PDOException $e) {
                 }
             }
         }
