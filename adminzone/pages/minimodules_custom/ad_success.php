@@ -31,14 +31,13 @@ $title->evaluate_echo();
 $success = array();
 $joining = array();
 $failure = array();
-$members_done = array();
-$advertiser_sessions = $GLOBALS['SITE_DB']->query('SELECT member_id,s_get,ip,date_and_time FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * get_param_integer('days', 1)) . ' AND s_get LIKE \'' . db_encode_like('%<param>from=%') . '\'');
+$query = 'SELECT member_id,s_get,ip,date_and_time FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * get_param_integer('days', 1)) . ' AND s_get LIKE \'' . db_encode_like('%<param>from=%') . '\'';
+if (can_arbitrary_groupby()) {
+    $query .= ' GROUP BY member_id';
+}
+$advertiser_sessions = $GLOBALS['SITE_DB']->query($query);
+$advertiser_sessions = remove_duplicate_rows($advertiser_sessions, 'member_id');
 foreach ($advertiser_sessions as $session) {
-    if (array_key_exists($session['member_id'], $members_done)) {
-        continue;
-    }
-    $members_done[$session['member_id']] = 1;
-
     $matches = array();
     if (!preg_match('#<param>from=([' . URL_CONTENT_REGEXP . ']+)</param>#', $session['s_get'], $matches)) {
         continue;
