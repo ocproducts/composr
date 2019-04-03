@@ -100,16 +100,25 @@ class Database_Static_mysql_pdo extends Database_super_mysql
         }
         catch (PDOException $e) {
         }
-        try {
-            if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
+        if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
+            try {
                 $db->query('SET sql_mode=\'STRICT_ALL_TABLES\'');
-            } else {
+            }
+            catch (PDOException $e) {
+            }
+        } else {
+            try {
                 $db->query('SET sql_mode=\'MYSQL40\''); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
             }
-            // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
+            catch (PDOException $e) {
+                try { // Won't work on MySQL 8 for example
+                    $db->query('SET sql_mode=\'STRICT_ALL_TABLES\'');
+                    catch (PDOException $e) {
+                    }
+                }
+            }
         }
-        catch (PDOException $e) {
-        }
+        // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
 
         return $db;
     }
