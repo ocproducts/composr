@@ -117,7 +117,7 @@ require_api( 'lang_api.php' );
 				</th>
 				<td width="85%">
 					<!-- Composr - simple anti-spam measure -->
-					<textarea name="spammer_bugnote_text" id="bugnote_text" class="<?php echo $t_bugnote_class ?>" rows="7"></textarea>
+					<textarea<?php if (current_user_is_anonymous()) { ?> placeholder="Warning: You are not logged in, so your comment will be posted as an anonymous visitor"<?php } ?> name="spammer_bugnote_text" id="bugnote_text" class="<?php echo $t_bugnote_class ?>" rows="7"></textarea>
 				</td>
 			</tr>
 
