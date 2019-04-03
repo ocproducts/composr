@@ -361,6 +361,10 @@ class Block_main_multi_content
             }
         }
 
+        if ((can_arbitrary_groupby()) && (is_string($info['id_field']))) {
+            $query .= ' GROUP BY r.' . $info['id_field'];
+        }
+
         if ((($sort == 'average_rating') || ($sort == 'compound_rating')) && (array_key_exists('feedback_type_code', $info)) && ($info['feedback_type_code'] === null)) {
             $sort = 'title';
         }
@@ -613,9 +617,9 @@ class Block_main_multi_content
 
         $rendered_content = array();
         $content_data = array();
-        $pos = 0;
+        $rows_skipped = 0;
         foreach ($rows as $row) {
-            if (count($done_already) == $max) {
+            if (count($done_already) == $start + $max) {
                 break;
             }
 
@@ -624,13 +628,13 @@ class Block_main_multi_content
 
             // De-dupe
             if (array_key_exists($content_id, $done_already)) {
+                $rows_skipped++;
                 continue;
             }
             $done_already[$content_id] = 1;
 
-            $pos++;
-
-            if ($pos < $start) {
+            if (count($done_already) < $start) {
+                $rows_skipped++;
                 continue;
             }
 
@@ -699,7 +703,7 @@ class Block_main_multi_content
         $pagination = mixed();
         if ($do_pagination) {
             require_code('templates_pagination');
-            $pagination = pagination(do_lang_tempcode($info['content_type_label']), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows);
+            $pagination = pagination(do_lang_tempcode($info['content_type_label']), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows - $rows_skipped);
         }
 
         return do_template('BLOCK_MAIN_MULTI_CONTENT', array(
