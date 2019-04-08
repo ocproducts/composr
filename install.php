@@ -485,12 +485,17 @@ function step_1()
     unset($langs['EN']);
     $langs = array_merge(array('EN' => 'lang'), $langs);
     $tlanguages = new Tempcode();
+    $tcount = 0;
     foreach (array_keys($langs) as $lang) {
         if (array_key_exists($lang, $lookup)) {
             $stub = ($lang == 'EN') ? '' : (' (unofficial, ' . strval(intval(round(100.0 * $lang_count[$lang] / $lang_count['EN']))) . '% changed)');
             $entry = do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $lang == user_lang(), 'DISABLED' => false, 'NAME' => $lang, 'CLASS' => '', 'TEXT' => $lookup[$lang] . $stub));
             $tlanguages->attach($entry);
+            $tcount++;
         }
+    }
+    if ($tcount == 1) {
+        $tlanguages = new Tempcode(); // No selection
     }
 
     // UI...

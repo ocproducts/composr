@@ -10,24 +10,29 @@
 			{WARNINGS}
 		{+END}
 
-		<div class="wide_table_wrap"><table class="map_table form_table wide_table">
-			<colgroup>
-				<col class="installer_left_column" />
-				<col class="installer_right_column" />
-			</colgroup>
+		{+START,IF_NON_EMPTY,{LANGUAGES}}
+			<div class="wide_table_wrap"><table class="map_table form_table wide_table">
+				<colgroup>
+					<col class="installer_left_column" />
+					<col class="installer_right_column" />
+				</colgroup>
 
-			<tbody>
-				<tr>
-					<th class="form_table_field_name">{!PLEASE_CHOOSE_LANG} (&dagger;)</th>
-					<td class="form_table_field_input">
-						<div class="accessibility_hidden"><label for="default_lang">{!PLEASE_CHOOSE_LANG}</label></div>
-						<select id="default_lang" name="default_lang">
-							{LANGUAGES}
-						</select>
-					</td>
-				</tr>
-			</tbody>
-		</table></div>
+				<tbody>
+					<tr>
+						<th class="form_table_field_name">{!PLEASE_CHOOSE_LANG} (&dagger;)</th>
+						<td class="form_table_field_input">
+							<div class="accessibility_hidden"><label for="default_lang">{!PLEASE_CHOOSE_LANG}</label></div>
+							<select id="default_lang" name="default_lang">
+								{LANGUAGES}
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table></div>
+		{+END}
+		{+START,IF_EMPTY,{LANGUAGES}}
+			<input type="hidden" name="default_lang" value="{$LANG*}" />
+		{+END}
 	</div>
 
 	<p class="proceed_button">
