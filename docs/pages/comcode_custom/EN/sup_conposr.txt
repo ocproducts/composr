@@ -24,6 +24,7 @@ While taking a lot of code from Composr, Conposr flips a number of Composr desig
  - Composr is designed for regular people, Conposr is designed for developers
  - Composr provides a lot of CMS and social media functionality, Conposr is very lean (it doesn't even require a database connection if you don't want one)
  - Composr is optimised to the bone with tight coupling, Conposr web apps are clean and elegant
+ - Composr is designed to run on a wide variety of badly configured servers, Conposr is designed for standard and sane environments
 
 To get Conposr running just download it, put the [tt]conposr[/tt] directory in your project, and load it with something like:
 [code="PHP"]
