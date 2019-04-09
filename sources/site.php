@@ -716,7 +716,7 @@ function set_short_title($title)
  *
  * @param  boolean $redirect_if_non_canonical Do a redirect if we're not on the canonical URL
  * @param  boolean $env_change Change environmental $_GET parameters (otherwise returns by reference)
- * @param  ?ID_TEXT $page The page name to do it for (null: read from the environment)
+ * @param  ?ID_TEXT $page The page name to do it for, as it would appear in the URL (null: read from the environment)
  * @param  ?ID_TEXT $zone The zone name to do it for (null: read from the environment)
  * @param  ?ID_TEXT $type The screen type to do it for (null: read from the environment / really not passed)
  * @param  ?ID_TEXT $url_id The ID to do it for (null: read from the environment / really not passed)
@@ -730,6 +730,7 @@ function process_url_monikers($redirect_if_non_canonical = true, $env_change = t
     }
     $run_once = true;
 
+    $_page = $page;
     if ($page === null) {
         $page = get_page_name();
     }
@@ -754,7 +755,7 @@ function process_url_monikers($redirect_if_non_canonical = true, $env_change = t
         if (($page_place === false) || ((substr($page_place[0], 0, 7) == 'COMCODE') && ($type !== null/*looking deeper than a normal Comcode page*/))) {
             // Reassemble source URL moniker from incorrectly-derived URL components
             $url_moniker = '';
-            $url_moniker .= get_param_string('page', '', INPUT_FILTER_GET_COMPLEX); /* Has to be unadulterated, $page has /s/-/_ */
+            $url_moniker .= ($_page === null) ? get_param_string('page', '', INPUT_FILTER_GET_COMPLEX) : $_page; /* Has to be unadulterated, $page has /s/-/_ */
             if ($type !== null) {
                 $url_moniker .= '/' . $type;
             }
