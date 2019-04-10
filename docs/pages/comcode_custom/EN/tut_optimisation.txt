@@ -113,9 +113,10 @@ The fastest way to configure PHP is usually as FPM (FastCGI), on top of a thread
  - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
  - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
  - Configure your SSL options appropriately; basically there is a tradeoff between perfect privacy ("Perfect Forward Secrecy") and speed.
- - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit)
- - Consider whether you want journaling or not -- it has a significant I/O overhead
- - If you use Dropbox for server backup, and have other users actively saving files into the account, only keep it started for a short time after your backup script finishes -- as it will do a lot of I/O updating its SQLite databases whenever any file in Dropbox is changed
+ - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit).
+ - You may want to use only systemd's journald, rather than rsyslogd; on some Linux system rsyslogd is configured to mirror entries written to journald, which can be very intensive due to the frequent reading in and out. journald is higher performance as it is an efficient binary format with a cursor feature.
+ - Consider whether you want journaling or not -- it has a significant I/O overhead.
+ - If you use Dropbox for server backup, and have other users actively saving files into the account, only keep it started for a short time after your backup script finishes -- as it will do a lot of I/O updating its SQLite databases whenever any file in Dropbox is changed.
 
 Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer. You can [url="adjust the threshold when a Linux server will start using swapspace"]https://www.howtoforge.com/tutorial/linux-swappiness/[/url].
 
@@ -776,7 +777,7 @@ There are are various commands on Linux that are useful during diagnosis...
 |-
 | [tt]top -n1[/tt]
 | Show active processes, sorted by CPU usage; also, total CPU usage, memory usage, and I/O wait time
-| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted.
+| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted. You may also want to try [tt]atop[/tt] which is similar but better.
 |-
 | [tt]iostat -xt 1[/tt]
 | Show CPU and disk load
@@ -792,7 +793,7 @@ There are are various commands on Linux that are useful during diagnosis...
 |-
 | [tt]fatrace[/tt]
 | Watch disk reads
-| This will give you much more insight than just looking at live load numbers. If you have a problem with I/O queue buildup (different whatever your I/O throughput is, due to latency) then this will help you find what the I/O is being spent on. Note that writes to a swap partition will not show up here.
+| This will give you much more insight than just looking at live load numbers. If you have a problem with I/O queue buildup (different whatever your I/O throughput is, due to latency) then this will help you find what the I/O is being spent on. Note that writes to a swap partition will not show up here. On my testing I also found some other minor file accesses not showing up, and I don't know why.
 |}
 
 Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput) and to make sure you're not overlooking request volume from individual hosts (which may use [tt]KeepAlive[/tt] and therefore keep on the same Apache slots).
@@ -804,8 +805,8 @@ There is an 'art' to finding the cause of a performance slow-down. Often just on
 [title="3"]Tips[/title]
 
 Some further tips:
- - If you are on a VPS or shared hosting ask the webhost whether there is too much load on the host machine at some points during the day. Also consider that they may have a 'burst' policy, so your site may be running slowly due to processing it has done recently, rather than in that exact moment. For a VPS, consider whether you have dedicated cores, have virtual cores in a small shared pool (worst, depending on your 'neighbours'), or whether you have virtual cores in a large pool (very efficient and adaptive, so long as the host's cores aren't all full).
- - If you are on a VPS then don't assume that I/O will be as a regular machine's HDD or SSD -- there's a good chance the host is using some kind of storage array with its own latency, in addition to VM overhead. I/O is always queued on any architecture so you'll get queue buildup, on both the VPS and the host, exacerbated by the latency.
+ - If you are on a VPS or shared hosting ask the webhost whether there is too much load on the host machine at some points during the day. For a VPS, consider whether you have dedicated cores, have virtual cores in a small shared pool (worst, depending on your 'neighbours'), or whether you have virtual cores in a large pool (very efficient and adaptive, so long as the host's cores aren't all full). Note that a VPS cannot truly know what load the host machine is under, so will not be optimal in how it manages system load -- for example, low-priority tasks such as flushing disk write caches may happen when the VM 'thinks' the disk is under low load, when the real disk may actually be under high load.
+ - If you are on a VPS then don't assume that I/O will be as a regular machine's HDD or SSD -- there's a good chance the host is using some kind of storage array with its own latency, in addition to VM overhead. I/O is always queued on any architecture so you'll get queue buildup, on both the VPS and the host, exacerbated by the latency. From my testing it seems Linux will flush disk writes early (to log files, for example) if it thinks the disk is free, which can actually lock things up badly on a VPS.
  - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
  - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
  - If you are seeing swap space used even when you have plenty of free RAM and a low [tt]swappiness[/tt] setting, you can do [tt]swapoff -a; swapon -a[/tt] to force it to clear.

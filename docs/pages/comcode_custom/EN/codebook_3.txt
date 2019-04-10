@@ -178,6 +178,8 @@ So... hopefully you can now see past the anal arguments some people make that ev
 
 Rant over ;).
 
+This is a good time to mention we have two frameworks derived from Composr called [page="_SEARCH:sup_conposr"]Conposr and Conposr++[/page]. These are built for standalone web apps and have a different set of design principles behind them.
+
 [title="2"]Troubleshooting[/title]
 
 There are a number of issues developers face when programming for Composr. Our high standards and development mode means issues are raised to the surface that less skilled programmers may not easily notice when working with other systems.

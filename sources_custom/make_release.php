@@ -82,7 +82,9 @@ function make_installers($skip_file_grab = false)
 
         make_files_manifest();
         make_database_manifest();
-        make_install_sql();
+        if (get_param_integer('rebuild_sql', 0) == 1) {
+            make_install_sql();
+        }
     }
 
     //header('Content-type: text/plain; charset=' . get_charset());var_dump(array_keys($MAKE_INSTALLERS__FILE_ARRAY));exit(); Useful for testing quickly what files will be built
@@ -100,7 +102,7 @@ function make_installers($skip_file_grab = false)
     $make_manual = (get_param_integer('skip_manual', 0) == 0);
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
-    $make_aps = (get_param_integer('skip_aps', 0) == 0);
+    $make_aps = false; // We don't use it right now and need to speed this all up (get_param_integer('skip_aps', 0) == 0);
     $make_omni_upgrader = (post_param_integer('make_omni_upgrader', 0) == 1);
 
     if (php_function_allowed('set_time_limit')) {
@@ -891,7 +893,7 @@ function make_install_sql()
     global $SITE_INFO;
 
     // Where to build database to
-    $database = 'test';
+    $database = 'make_release';
     $username = 'root';
     $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
     $table_prefix = 'cms_';
