@@ -301,7 +301,7 @@ function block_helper_script()
                 if (preg_match('#' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\']#Ui', $description, $matches) != 0) {
                     $default = $matches[1];
                     $has_default = true;
-                    $description = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $description);
+                    $description = cms_preg_replace_safe('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $description);
                 } else {
                     $has_default = false;
                 }
@@ -363,26 +363,11 @@ function block_helper_script()
                     $list = create_selection_list_forum_tree(null, null, array_map('intval', explode(',', $default)));
                     $fields->attach(form_input_multi_list($parameter_title, escape_html($description), $parameter, $list));
                 } elseif ($parameter == 'font') { // font choice
-                    $fonts = array();
-                    $dh = opendir(get_file_base() . '/data/fonts');
-                    while (($f = readdir($dh))) {
-                        if (substr($f, -4) == '.ttf') {
-                            $fonts[] = substr($f, 0, strlen($f) - 4);
-                        }
-                    }
-                    closedir($dh);
-                    $dh = opendir(get_custom_file_base() . '/data_custom/fonts');
-                    while (($f = readdir($dh))) {
-                        if (substr($f, -4) == '.ttf') {
-                            $fonts[] = substr($f, 0, strlen($f) - 4);
-                        }
-                    }
-                    closedir($dh);
-                    $fonts = array_unique($fonts);
-                    sort($fonts);
                     $list = new Tempcode();
-                    foreach ($fonts as $font) {
-                        $list->attach(form_input_list_entry($font, $font == $default));
+                    require_code('fonts');
+                    $fonts = find_all_fonts();
+                    foreach ($fonts as $font => $font_label) {
+                        $list->attach(form_input_list_entry($font, $font == $default, $font_label));
                     }
                     $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif (preg_match('#' . do_lang('BLOCK_IND_EITHER') . ' (.+)#i', $description, $matches) != 0) { // list
@@ -404,7 +389,7 @@ function block_helper_script()
                     }
                     $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif (preg_match('#\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', $description, $matches) != 0) { // hook list
-                    $description = preg_replace('#\s*\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', '', $description);
+                    $description = cms_preg_replace_safe('#\s*\(' . do_lang('BLOCK_IND_HOOKTYPE') . ': \'([^\'/]*)/([^\'/]*)\'\)#i', '', $description);
 
                     $list = new Tempcode();
                     $hooks = find_all_hooks($matches[1], $matches[2]);

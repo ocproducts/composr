@@ -714,7 +714,7 @@ class Module_admin_lang
                 if (preg_match('#<div id=result_box dir="ltr">(.*)</div>#Us', $result, $matches) != 0) {
                     $result2 = $matches[1];
                     $result2 = @html_entity_decode($result2, ENT_QUOTES, get_charset());
-                    $result2 = preg_replace('#\s?<br>\s?#', "\n", $result2);
+                    $result2 = cms_preg_replace_safe('#\s?<br>\s?#', "\n", $result2);
                     $result2 = str_replace('> ', '>', str_replace(' <', ' <', str_replace('</ ', '</', str_replace(array('(((', ')))'), array('{', '}'), $result2))));
                     $translated_stuff = explode(trim($delimit), $result2 . "\n");
                 }

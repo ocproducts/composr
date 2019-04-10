@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    cns_forum
+ * @package    core_cns
  */
 
 /**
  * Hook class.
  */
-class Hook_sw_cns_forum
+class Hook_sw_core_cns
 {
     /**
      * Run function for features in the setup wizard.

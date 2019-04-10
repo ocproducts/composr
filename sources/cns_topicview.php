@@ -207,13 +207,13 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
 
         // Any custom fields to show?
         $post['custom_fields'] = cns_get_all_custom_fields_match_member(
-            $_postdetails['p_poster'],
-            ((get_member() != $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null,
-            ((get_member() == $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null,
-            null,
-            null,
-            null,
-            1
+            $_postdetails['p_poster'], // member
+            ((get_member() != $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
+            ((get_member() == $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // owner view
+            null, // owner set
+            null, // encrypted
+            null, // required
+            1 // show in posts
         );
 
         // Usergroup
@@ -474,7 +474,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 } else { // Drat, we need to load it
                     $_p = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $_postdetails['p_parent_id']), '', 1);
                     if (array_key_exists(0, $_p)) {
-                        $p = $_p[0];
+                        $p = db_map_restrict($_p[0], array('id', 'p_post'));
                         $p['message'] = get_translated_tempcode('f_posts', $p, 'p_post', $GLOBALS['FORUM_DB']);
                     }
                 }

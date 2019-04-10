@@ -188,7 +188,11 @@ class Hook_profiles_tabs_about
         }
 
         // Custom fields
-        $_custom_fields = cns_get_all_custom_fields_match_member($member_id_of, (($member_id_viewing != $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, (($member_id_viewing == $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null);
+        $_custom_fields = cns_get_all_custom_fields_match_member(
+            $member_id_of, // member
+            (($member_id_viewing != $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, // public view
+            (($member_id_viewing == $member_id_of) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null // owner view
+        );
         $custom_fields = array();
         $custom_fields_sections = array();
         require_code('encryption');

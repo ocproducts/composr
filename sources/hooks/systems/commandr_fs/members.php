@@ -139,7 +139,7 @@ class Hook_commandr_fs_members
                 }
 
                 $cpf_name = get_translated_text($_cpf_name);
-                if (preg_match('#^[\w\s]*$#', $cpf_name) == 0) {
+                if (cms_preg_match_safe('#^[\w\s]*$#', $cpf_name) == 0) {
                     $cpf_name = $_i;
                 }
 

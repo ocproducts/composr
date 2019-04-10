@@ -150,6 +150,7 @@ class Hook_addon_registry_core_cns
             'themes/default/images/2x/cns_general/isoff.png',
             'themes/default/images/2x/cns_general/ison.png',
             'sources/cns_forum_driver_helper_auth.php',
+            'sources/hooks/modules/admin_setupwizard/core_cns.php',
             'sources/hooks/systems/content_meta_aware/topic.php',
             'sources/hooks/systems/content_meta_aware/post.php',
             'sources/hooks/modules/admin_import/emoticons.php',

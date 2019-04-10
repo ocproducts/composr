@@ -147,16 +147,16 @@ function comcode_convert_script()
         require_code('xhtml');
         $new = xhtmlise_html($out, true);
 
-        $stripped_new = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $new));
-        $stripped_old = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $out));
+        $stripped_new = preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', '', $new));
+        $stripped_old = preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', '', $out));
         if (($box_title != '') && ($stripped_new != $stripped_old)) {
             /*
             $myfile = fopen(get_file_base() . '/a', 'wb');
-            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
+            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', chr(10), $new)));
             fclose($myfile);
 
             $myfile = fopen(get_file_base() . '/b', 'wb');
-            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
+            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', chr(10), $out)));
             fclose($myfile);
             */
 

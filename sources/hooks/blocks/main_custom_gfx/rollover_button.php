@@ -32,8 +32,10 @@ class Hook_main_custom_gfx_rollover_button
      */
     public function run($map, &$block)
     {
-        if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false)) {
-            return do_lang_tempcode('REQUIRES_TTF');
+        require_code('fonts');
+        $test = check_ttf();
+        if ($test !== null) {
+            return $test;
         }
 
         if (!array_key_exists('img1', $map)) {

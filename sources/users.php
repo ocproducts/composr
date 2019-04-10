@@ -93,14 +93,21 @@ function init__users()
     }
 
     // Canonicalise various disparities in how HTTP auth environment variables are set
-    if (!empty($_SERVER['REDIRECT_REMOTE_USER'])) {
+    // TODO: Move this to main canonicalisation area in v11
+    if ((!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) && (empty($_SERVER['HTTP_AUTHORIZATION']))) {
+        $_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    }
+    if ((empty($_SERVER['PHP_AUTH_USER'])) && (!empty($_SERVER['HTTP_AUTHORIZATION']))) {
+        list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':' , base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+    }
+    if ((empty($_SERVER['PHP_AUTH_USER'])) && (!empty($_SERVER['REDIRECT_REMOTE_USER']))) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REDIRECT_REMOTE_USER']);
+    }
+    if ((empty($_SERVER['PHP_AUTH_USER'])) && (!empty($_SERVER['REMOTE_USER']))) {
+        $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REMOTE_USER']);
     }
     if (!empty($_SERVER['PHP_AUTH_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']);
-    }
-    if (!empty($_SERVER['REMOTE_USER'])) {
-        $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REMOTE_USER']);
     }
 
     $DOING_USERS_INIT = null;
@@ -283,7 +290,7 @@ function get_member($quick_only = false)
         require_code('hooks/systems/login_providers/' . $hook, false, $hook_dir == 'sources_custom');
         $ob = object_factory('Hook_login_provider_' . $hook);
         if (!is_null($ob)) {
-            $member = $ob->try_login($member);
+            $member = $ob->try_login($member, $quick_only);
         }
     }
 

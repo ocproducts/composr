@@ -450,7 +450,17 @@ class Forum_driver_cns extends Forum_driver_base
 
         require_code('cns_members');
 
-        $info = cns_get_all_custom_fields_match_member($member, null, null, null, null, null, null, null, 1);
+        $info = cns_get_all_custom_fields_match_member(
+            $member, // member
+            null, // public view
+            null, // owner view
+            null, // owner set
+            null, // encrypted
+            null, // required
+            null, // show in posts
+            null, // show in post previews
+            1 // special
+        );
         $out = array();
         foreach ($info as $field => $value) {
             $out[substr($field, 4)] = $value['RAW'];

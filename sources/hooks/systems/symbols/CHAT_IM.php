@@ -119,7 +119,7 @@ class Hook_symbol_CHAT_IM
 
                 if ($may_cache) {
                     require_code('caches2');
-                    put_into_cache('_chat_im', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', $_value);
+                    put_into_cache('_chat_im', 60 * 24, $cache_identifier, null, null, '', null, '', $_value);
                 }
             }
 

@@ -507,6 +507,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 // Logs
                                 'log' => '.*',
 
+                                // Custom fonts
+                                'ttf' => 'data_custom/fonts',
+
                                 // Temporary files
                                 'tmp' => '.*',
                                 'inc' => 'safe_mode_temp',

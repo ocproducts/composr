@@ -73,8 +73,8 @@ class Module_staff
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('sites', 255, 1, 0, 0, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('role', 100, 0, 0, 1, 0, '', 'short_text');
+        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('sites', 255, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'short_text');
+        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('role', 100, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
     }
 
     public $title;

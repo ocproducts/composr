@@ -423,7 +423,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                     $url_pattern = preg_replace('#(.*)=.*$#', '${1}', $oembed_manual_pattern); // Before last =
                     $endpoint = preg_replace('#^.*=#', '', $oembed_manual_pattern); // After last =
                 }
-                if (@preg_match('#^' . str_replace('#', '\#', $url_pattern) . '$#', $url) != 0) {
+                if (preg_match('#^' . str_replace('#', '\#', $url_pattern) . '$#', $url) != 0) {
                     return $endpoint;
                 }
             }

@@ -428,7 +428,7 @@ function already_rated($rating_for_types, $content_id)
         return $cache[$cache_key];
     }
 
-    $more = (!is_guest()) ? ' OR rating_member=' . strval(get_member()) : '';
+    // Main query
     $for_types = '';
     foreach ($rating_for_types as $rating_for_type) {
         if ($for_types != '') {
@@ -437,19 +437,27 @@ function already_rated($rating_for_types, $content_id)
         $for_types .= db_string_equal_to('rating_for_type', $rating_for_type);
     }
     $query = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE (' . $for_types . ') AND ' . db_string_equal_to('rating_for_id', $content_id);
+
+    // IP/member vote-once restrictions
     $query .= ' AND (';
     static $ip_restrict = null;
     if ($ip_restrict === null) {
-        if ((!$GLOBALS['IS_ACTUALLY_ADMIN']) && (get_option('vote_member_ip_restrict') == '1')) {
+        if ((!$GLOBALS['IS_ACTUALLY_ADMIN']) && ((get_option('vote_member_ip_restrict') == '1') || (is_guest()))) {
             $ip_restrict = db_string_equal_to('rating_ip', get_ip_address());
         } else {
             $ip_restrict = '1=0';
         }
     }
-    $query .= $ip_restrict . $more . ')';
-    $has_rated = $GLOBALS['SITE_DB']->query_value_if_there($query, false, true);
+    $query .= $ip_restrict;
+    if (!is_guest()) {
+        $query .= ' OR ';
+        $query .= 'rating_member=' . strval(get_member());
+    }
+    $query .= ')';
 
-    $ret = ($has_rated >= count($rating_for_types));
+    $times_rated = $GLOBALS['SITE_DB']->query_value_if_there($query, false, true);
+
+    $ret = ($times_rated >= count($rating_for_types));
     $cache[$cache_key] = $ret;
     return $ret;
 }

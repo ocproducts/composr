@@ -2644,16 +2644,18 @@ function is_mobile($user_agent = null, $truth = false)
     if (((!isset($SITE_INFO['assume_full_mobile_support'])) || ($SITE_INFO['assume_full_mobile_support'] != '1')) && (isset($GLOBALS['FORUM_DRIVER'])) && (!$truth) && (running_script('index')) && (($theme = $GLOBALS['FORUM_DRIVER']->get_theme()) != 'default')) {
         $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (is_file($ini_path)) {
+            $page = get_param_string('page', ''); // We intentionally do not use get_page_name, as that requires URL Monikers to work, which are not available early in boot (as needed by static cache)
+
             require_code('files');
             $details = better_parse_ini_file($ini_path);
             if (!empty($details['mobile_pages'])) {
                 if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
-                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
+                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . $page) == 0) {
                         $IS_MOBILE_CACHE = false;
                         return false;
                     }
                 } else {
-                    if (preg_match('#(^|,)\s*' . preg_quote(get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) {
+                    if (preg_match('#(^|,)\s*' . preg_quote($page, '#') . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . $page, '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) {
                         $IS_MOBILE_CACHE = false;
                         return false;
                     }
@@ -2677,7 +2679,7 @@ function is_mobile($user_agent = null, $truth = false)
         }
     }
 
-    // The set of browsers
+    // The set of browsers (also change in static_cache.php)
     $browsers = array(
         // Implication by technology claims
         'WML',
@@ -3136,7 +3138,7 @@ function titleify($boring)
     );
     foreach ($acronyms as $acronym) {
         if (stripos($ret, $acronym) !== false) {
-            $ret = preg_replace('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
+            $ret = cms_preg_replace_safe('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
         }
     }
 
@@ -3799,4 +3801,130 @@ function cms_unpack_to_uinteger($str, $bytes = null, $little_endian = false)
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     return $result[1];
+}
+
+/**
+ * Perform a regular expression match.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
+ *
+ * @param  string $pattern The pattern.
+ * @param  string $subject The subject string.
+ * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out) (null: do not store matches). Note that this is actually passed by reference, but is also optional. (null: don't gather)
+ * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
+ * @param  integer $offset Offset to start from. Usually use with 'A' modifier to anchor it (using '^' in the pattern will not work)
+ * @return ~integer The number of matches (false: error).
+ */
+function cms_preg_match_safe($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
+{
+    if (get_charset() == 'utf-8') {
+        $result = @preg_match($pattern . 'u', $subject, $matches, $flags, $offset);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+    return preg_match($pattern, $subject, $matches, $flags, $offset);
+}
+
+/**
+ * Array entries that match the pattern.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
+ *
+ * @param  string $pattern The pattern.
+ * @param  array $subject The subject strings.
+ * @param  integer $flags Either 0, or PREG_GREP_INVERT.
+ * @return array Matches.
+ */
+function cms_preg_grep_safe($pattern, $subject, $flags = 0)
+{
+    if (get_charset() == 'utf-8') {
+        $result = @preg_grep($pattern . 'u', $subject, $flags);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+    return preg_grep($pattern, $subject, $flags);
+}
+
+/**
+ * Perform a global regular expression match.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
+ *
+ * @param  string $pattern The pattern.
+ * @param  string $subject The subject string.
+ * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out). Note that this is actually passed by reference, but is also optional. (null: don't gather)
+ * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
+ * @return ~integer The number of matches (false: error).
+ */
+function cms_preg_match_all_safe($pattern, $subject, &$matches, $flags = 0)
+{
+    if (get_charset() == 'utf-8') {
+        $result = @preg_match_all($pattern . 'u', $subject, $matches, $flags);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+    return preg_match_all($pattern, $subject, $matches, $flags);
+}
+
+/**
+ * Perform a regular expression search and replace.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
+ *
+ * @param  mixed $pattern The pattern (string or array).
+ * @param  mixed $replacement The replacement string (string or array).
+ * @param  string $subject The subject string.
+ * @param  integer $limit The limit of replacements (-1: no limit).
+ * @return ~string The string with replacements made (false: error).
+ */
+function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = -1)
+{
+    if (get_charset() == 'utf-8') {
+        $result = @preg_replace($pattern . 'u', $replacement, $subject, $limit);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+    return preg_replace($pattern, $replacement, $subject, $limit);
+}
+
+/**
+ * Perform a regular expression search and replace using a callback.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
+ *
+ * @param  string $pattern The pattern.
+ * @param  mixed $callback The callback.
+ * @param  string $subject The subject string.
+ * @param  integer $limit The limit of replacements (-1: no limit).
+ * @return ~string The string with replacements made (false: error).
+ */
+function cms_preg_replace_callback_safe($pattern, $callback, $subject, $limit = -1)
+{
+    if (get_charset() == 'utf-8') {
+        $result = @preg_replace_callback($pattern . 'u', $callback, $subject, $limit);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+    return preg_replace_callback($pattern, $callback, $subject, $limit);
+}
+
+/**
+ * Split string by a regular expression.
+ * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
+ *
+ * @param  string $pattern The pattern.
+ * @param  string $subject The subject.
+ * @param  ?integer $max_splits The maximum number of splits to make (null: no limit).
+ * @param  ?integer $mode The special mode (null: none).
+ * @return array The array due to splitting.
+ */
+function cms_preg_split_safe($pattern, $subject, $max_splits = null, $mode = null)
+{
+    if (get_charset() == 'utf-8') {
+        $result = @preg_split($pattern . 'u', $subject, $max_splits, $mode);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+    return preg_split($pattern, $subject, $max_splits, $mode);
 }

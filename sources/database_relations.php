@@ -702,7 +702,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
             if ($_fields !== null) {
                 $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
 
-                $queries = $db_static->db_create_index(get_table_prefix() . $table_name, $index_name, $_fields, $conn->connection_write, $table_name, $unique_key_fields);
+                $queries = $db_static->db_create_index($conn->get_table_prefix() . $table_name, $index_name, $_fields, $conn->connection_write, $table_name, $unique_key_fields);
                 foreach ($queries as $sql) {
                     fwrite($out_file, $sql . ";\n\n");
                 }

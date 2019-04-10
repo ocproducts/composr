@@ -623,7 +623,7 @@ function find_cache_on($codename)
  * @param  ID_TEXT $codename The codename to check for caching
  * @param  LONG_TEXT $cache_identifier The further restraints (a serialized map)
  * @param  integer $special_cache_flags Special cache flags
- * @param  integer $ttl The TTL for the cache entry. Defaults to a very big ttl
+ * @param  integer $ttl The TTL for the cache entry in minutes. Defaults to a very big ttl
  * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  * @param  boolean $caching_via_cron Whether to defer caching to CRON. Note that this option only works if the block's defined cache signature depends only on $map (timezone and bot-type are automatically considered)
  * @param  ?array $map Parameters to call up block with if we have to defer caching (null: none)
@@ -635,10 +635,12 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
 
     global $SMART_CACHE;
     $test = (get_page_name() == 'admin_addons'/*special case*/) ? array() : $SMART_CACHE->get('blocks_needed');
-    if (($test === null) || (count($test) < 20)) {
-        $SMART_CACHE->append('blocks_needed', serialize($det));
-    } else {
-        $SMART_CACHE->get('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
+    if ($test !== false) {
+        if (($test === null) || (count($test) < 20)) {
+            $SMART_CACHE->append('blocks_needed', serialize($det));
+        } else {
+            $SMART_CACHE->set('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
+        }
     }
 
     $rets = _get_cache_entries(array($det), $special_cache_flags);

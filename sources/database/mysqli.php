@@ -117,7 +117,10 @@ class Database_Static_mysqli extends Database_super_mysql
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
         } else {
-            @mysqli_query($db, 'SET sql_mode=\'MYSQL40\''); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
+            $test = @mysqli_query($db, 'SET sql_mode=\'MYSQL40\''); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
+            if ($test === false) { // Won't work on MySQL 8 for example
+                @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
+            }
         }
         // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
 
@@ -226,6 +229,14 @@ class Database_Static_mysqli extends Database_super_mysql
         if ($this->last_select_db[1] !== $db_name) {
             mysqli_select_db($db, $db_name);
             $this->last_select_db = array($db, $db_name);
+        }
+
+        static $version = null;
+        if ($version === null) {
+            $version = mysqli_get_server_version($db);
+        }
+        if ($version >= 80000) {
+            $query = $this->fix_mysql8_query($query);
         }
 
         $this->apply_sql_limit_clause($query, $max, $start);

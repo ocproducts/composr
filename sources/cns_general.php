@@ -118,7 +118,11 @@ function cns_read_in_member_profile($member_id, $lite = true)
         $out['groups'] = cns_get_members_groups($member_id);
 
         // Custom fields
-        $out['custom_fields'] = cns_get_all_custom_fields_match_member($member_id, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null);
+        $out['custom_fields'] = cns_get_all_custom_fields_match_member(
+            $member_id, // member
+            ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
+            ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null // owner view
+        );
 
         // Birthdate
         $dob = '';

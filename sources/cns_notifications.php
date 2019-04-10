@@ -204,7 +204,7 @@ function generate_notifications($member_id)
         $notifications = new Tempcode();
         $num_unread_pps = 0;
         foreach ($unread_pps as $unread_pp) {
-            $just_post_row = db_map_restrict($unread_pp, array('id', 'p_post'));
+            $just_post_row = db_map_restrict($unread_pp, array('id', 'p_post'), array('id' => 'p_id'));
 
             $by_id = (is_null($unread_pp['t_cache_first_member_id']) || !is_null($unread_pp['t_forum_id'])) ? $unread_pp['p_poster'] : $unread_pp['t_cache_first_member_id'];
             $by = is_guest($by_id) ? do_lang('SYSTEM') : $GLOBALS['CNS_DRIVER']->get_username($by_id);
@@ -262,7 +262,7 @@ function generate_notifications($member_id)
 
         if ($do_caching) {
             require_code('caches2');
-            put_into_cache('_new_pp', 60 * 60 * 24, $cache_identifier, null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), array($notifications->to_assembly(), $num_unread_pps));
+            put_into_cache('_new_pp', 60 * 24, $cache_identifier, null, get_member(), '', null, '', array($notifications->to_assembly(), $num_unread_pps));
         }
 
         $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;

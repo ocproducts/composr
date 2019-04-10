@@ -25,9 +25,9 @@ This allows static cache to run even when Composr is itself not booting at all.
 
 if (!isset($GLOBALS['FILE_BASE'])) {
     // Fixup SCRIPT_FILENAME potentially being missing
-$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
-// Find Composr base directory, and chdir into it
+    // Find Composr base directory, and chdir into it
     global $FILE_BASE;
     $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
     $FILE_BASE = dirname(dirname($FILE_BASE));
@@ -54,8 +54,8 @@ function static_cache__get_self_url_easy()
 {
     // May not be called from Composr, so can't rely on Composr's normal fixup_bad_php_env_vars function having being called
     $self_url = '';
-    if (!empty($_SERVER['REQUEST_URI'])) {
-        $self_url .= $_SERVER['REQUEST_URI'];
+    if ((!empty($_SERVER['HTTP_HOST'])) && (!empty($_SERVER['REQUEST_URI']))) {
+        $self_url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     } elseif (!empty($_SERVER['PHP_SELF'])) {
         $self_url .= $_SERVER['PHP_SELF'];
         if (count($_GET) != 0) {
@@ -67,6 +67,7 @@ function static_cache__get_self_url_easy()
 
 /**
  * Find if we can use the static cache.
+ * For the save side, some additional checks are done in save_static_caching.
  *
  * @return boolean Whether we can
  */
@@ -114,7 +115,7 @@ function can_static_cache()
 function static_cache_current_url()
 {
     $url = static_cache__get_self_url_easy();
-    $url = preg_replace('#(keep_session|keep_devtest|keep_failover)=\d+#', '', $url);
+    $url = preg_replace('#(keep_session|for_session|keep_devtest|keep_failover)=\d+#', '', $url);
     $url = str_replace('keep_su=Guest', '', $url);
     $url = preg_replace('#\?&+#', '?', $url);
     $url = preg_replace('#&+#', '&', $url);

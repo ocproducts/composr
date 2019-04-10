@@ -134,7 +134,13 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
 
     // Filter out what might be misspelled but we know actually is a proper word
     if ($skip_known_words_in_db) {
-        $non_words = array();
+        $non_words = array(
+            // Some common Composr terms that should not be corrected
+            'comcode',
+            'tempcode',
+            'selectcode',
+            'filtercode',
+        );
 
         $or_list = '';
         foreach ($words as $word) {

@@ -129,7 +129,7 @@ function cns_is_httpauth_member($member_id)
  * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care).
  * @return array A list of rows of such fields.
  */
-function cns_get_all_custom_fields_match($groups = null, $public_view = null, $owner_view = null, $owner_set = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = 0, $show_on_join_form = null)
+function cns_get_all_custom_fields_match($groups = null, $public_view = null, $owner_view = null, $owner_set = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = null, $show_on_join_form = null)
 {
     global $CUSTOM_FIELD_CACHE;
     $x = serialize(array($public_view, $owner_view, $owner_set, $required, $show_in_posts, $show_in_post_previews, $special_start, $show_on_join_form));
@@ -230,7 +230,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
  * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care).
  * @return array A mapping of field title to a map of details: 'RAW' as the raw field value, 'RENDERED' as the rendered field value, 'FIELD_ID' to the field ID, 'EDITABILITY' defining if fractional editing can work on this
  */
-function cns_get_all_custom_fields_match_member($member_id, $public_view = null, $owner_view = null, $owner_set = null, $encrypted = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = 0, $show_on_join_form = null)
+function cns_get_all_custom_fields_match_member($member_id, $public_view = null, $owner_view = null, $owner_set = null, $encrypted = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = null, $show_on_join_form = null)
 {
     $fields_to_show = cns_get_all_custom_fields_match($GLOBALS['FORUM_DRIVER']->get_members_groups($member_id), $public_view, $owner_view, $owner_set, $required, $show_in_posts, $show_in_post_previews, $special_start, $show_on_join_form);
     $custom_fields = array();
@@ -382,7 +382,7 @@ function find_cpf_field_id($title)
     if (array_key_exists($title, $cache)) {
         return $cache[$title];
     }
-    $fields_to_show = cns_get_all_custom_fields_match(null);
+    $fields_to_show = cns_get_all_custom_fields_match();
     foreach ($fields_to_show as $field_to_show) {
         if ($field_to_show['trans_name'] == $title) {
             $cache[$title] = $field_to_show['id'];
@@ -405,7 +405,16 @@ function find_cms_cpf_field_id($title)
     if (array_key_exists($title, $cache)) {
         return $cache[$title];
     }
-    $fields_to_show = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 1);
+    $fields_to_show = cns_get_all_custom_fields_match(
+        null, // groups
+        null, // public view
+        null, // owner view
+        null, // owner set
+        null, // required
+        null, // show in posts
+        null, // show in post previews
+        1 // special start
+    );
     foreach ($fields_to_show as $field_to_show) {
         if ($field_to_show['trans_name'] == $title) {
             $cache[$title] = $field_to_show['id'];
