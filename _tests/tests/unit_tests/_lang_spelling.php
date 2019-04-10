@@ -31,6 +31,14 @@ class _lang_spelling_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'phpbeans',
+            'javabeans',
+            'systemd',
+            'rsyslogd',
+            'orm',
+            'journald',
+            'laravel',
+            'conposr',
             'autofill',
             'autosuggest',
             'benchmarking',

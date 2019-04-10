@@ -108,12 +108,12 @@ Composr is tightly optimised at its core to allow such a big complex system to p
 
 [title="3"]Why a new PHP framework?[/title]
 
-Frankly we're not targeting the libraries at a general audience. They are for Composr developers who want to use the same skillset for standalone web apps -- not the typical PHP programmer who would probably be already very happy on something like Symphony or Laravel. We don't have any pretensions of creating a new top-tier framework for the world to use, just something that is very useful and effective for our community.
+Frankly we're not targeting the libraries at a general audience. They are for Composr developers who want to use the same skill-set for standalone web apps -- not the typical PHP programmer who would probably be already very happy on something like Symphony or Laravel. We don't have any pretensions of creating a new top-tier framework for the world to use, just something that is very useful and effective for our community.
 
 There is a lot of cost involved in using multiple different programming languages and/or frameworks:
  - Training, both initial and ongoing as things change
  - Context-switching tax (it's mentally exhausting flipping back and forth between different systems all the time, even for the best programmers out there)
- - Toolchain maintenance (for example keeping different programming languages and IDEs updated)
+ - Tool chain maintenance (for example keeping different programming languages and IDEs updated)
 Conposr eliminates these costs for its target audience.
 
 [title="3"]So Symphony and Laravel are better then?[/title]
