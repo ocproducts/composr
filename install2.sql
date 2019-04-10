@@ -1504,7 +1504,7 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_field
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_35', 'SHORT_TEXT');
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_36', 'SHORT_TEXT');
 
-ALTER TABLE cms10_db_meta ADD INDEX findtransfields (m_type);
+ALTER TABLE cms_db_meta ADD INDEX findtransfields (m_type);
 
 DROP TABLE IF EXISTS cms_db_meta_indices;
 
@@ -1533,6 +1533,9 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('autosave', 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('award_archive', 'awardquicksearch', 'content_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('award_types', '#a_description', 'a_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('award_types', '#a_title', 'a_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'c_banner_id', 'c_banner_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'clicker_ip', 'c_ip_address');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_types', 'hottext', 't_comcode_inline');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', '#caption', 'caption');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', 'badd_date', 'add_date');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', 'banner_child_find', 'b_type');
@@ -1541,9 +1544,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', '
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', 'expiry_date', 'expiry_date');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', 'the_type', 'the_type');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banners', 'topsites', 'hits_from,hits_to');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'clicker_ip', 'c_ip_address');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_clicks', 'c_banner_id', 'c_banner_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('banner_types', 'hottext', 't_comcode_inline');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_ford', 'date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_fore', 'cached_for');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cache', 'cached_forf', 'cached_for,identifier,the_theme,lang,staff_status,the_member,is_bot');
@@ -1554,22 +1554,21 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comc
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comcode_pages', 'ccp_join', 'the_page,the_zone');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comcode_pages', 'ftjoin_ccpt', 'cc_page_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('cached_comcode_pages', 'ftjoin_ccsi', 'string_index');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', '#event_search__combined', 'e_title,e_content');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', '#e_content', 'e_content');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', '#e_title', 'e_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', '#event_search__combined', 'e_title,e_content');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'ces', 'e_submitter');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'eventat', 'e_start_year,e_start_month,e_start_day,e_start_hour,e_start_minute');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'e_add_date', 'e_add_date');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'e_type', 'e_type');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'e_views', 'e_views');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'eventat', 'e_start_year,e_start_month,e_start_day,e_start_hour,e_start_minute');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'ftjoin_econtent', 'e_content');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'ftjoin_etitle', 'e_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_events', 'validated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_jobs', 'applicablejobs', 'j_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('calendar_types', '#t_title', 't_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('captchas', 'si_time', 'si_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogues', '#c_description', 'c_description');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogues', '#c_title', 'c_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_cat_treecache', 'cc_ancestor_id', 'cc_ancestor_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_categories', '#cat_cat_search__combined', 'cc_title,cc_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_categories', '#cc_description', 'cc_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_categories', '#cc_title', 'cc_title');
@@ -1579,7 +1578,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_c
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_categories', 'cc_parent_id', 'cc_parent_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_categories', 'ftjoin_ccdescrip', 'cc_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_categories', 'ftjoin_cctitle', 'cc_title');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_cat_treecache', 'cc_ancestor_id', 'cc_ancestor_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_efv_float', 'cefv_f_combo', 'ce_id,cf_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_efv_float', 'fce_id', 'ce_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_efv_float', 'fcf_id', 'cf_id');
@@ -1607,15 +1605,17 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_e
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_efv_short_trans', 'stce_id', 'ce_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_efv_short_trans', 'stcf_id', 'cf_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_efv_short_trans', 'stcv_value', 'cv_value');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ces', 'ce_submitter');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ce_add_date', 'ce_add_date');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ce_cc_id', 'cc_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ce_c_name', 'c_name');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ce_cc_id', 'cc_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ce_validated', 'ce_validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ce_views', 'ce_views');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entries', 'ces', 'ce_submitter');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_entry_linkage', 'custom_fields', 'content_type,content_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_fields', '#cf_description', 'cf_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogue_fields', '#cf_name', 'cf_name');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogues', '#c_description', 'c_description');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('catalogues', '#c_title', 'c_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chargelog', '#reason', 'reason');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_active', 'active_ordering', 'date_and_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('chat_active', 'member_select', 'member_id');
@@ -1666,8 +1666,8 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_do
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'category_list', 'category_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'ddl', 'download_licence');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'dds', 'submitter');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'downloadauthor', 'author');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'download_views', 'download_views');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'downloadauthor', 'author');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'dvalidated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'ftjoin_dadditional', 'additional_details');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_downloads', 'ftjoin_ddescrip', 'description');
@@ -1678,8 +1678,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('download_lo
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('edit_pings', 'edit_pings_on', 'the_page,the_type,the_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('email_bounces', 'b_email_address', 'b_email_address');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('email_bounces', 'b_time', 'b_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('failedlogins', 'failedlogins_by_ip', 'ip');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('filedump', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_custom_fields', '#cf_description', 'cf_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_custom_fields', '#cf_name', 'cf_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_emoticons', 'relevantemoticons', 'e_relevance_level');
@@ -1687,12 +1685,18 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_emoticons
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', '#f_description', 'f_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', '#f_intro_question', 'f_intro_question');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', 'cache_num_posts', 'f_cache_num_posts');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', 'findnamedforum', 'f_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', 'f_position', 'f_position');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', 'findnamedforum', 'f_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_forums', 'subforum_parenting', 'f_parent_forum');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', '#groups_search__combined', 'g_name,g_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_join_log', 'join_time', 'join_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_join_log', 'member_id', 'member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_join_log', 'usergroup_id', 'usergroup_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_members', 'gm_group_id', 'gm_group_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_members', 'gm_member_id', 'gm_member_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_members', 'gm_validated', 'gm_validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', '#g_name', 'g_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', '#g_title', 'g_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', '#groups_search__combined', 'g_name,g_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 'ftjoin_gname', 'g_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 'ftjoin_gtitle', 'g_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 'gorder', 'g_order,id');
@@ -1702,26 +1706,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 'is_private_club', 'g_is_private_club');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 'is_super_admin', 'g_is_super_admin');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_groups', 'is_super_moderator', 'g_is_super_moderator');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_join_log', 'join_time', 'join_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_join_log', 'member_id', 'member_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_join_log', 'usergroup_id', 'usergroup_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_members', 'gm_group_id', 'gm_group_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_members', 'gm_member_id', 'gm_member_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_group_members', 'gm_validated', 'gm_validated');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', '#m_pt_rules_text', 'm_pt_rules_text');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', '#m_signature', 'm_signature');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', '#search_user', 'm_username');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'avatar_url', 'm_avatar_url');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'birthdays', 'm_dob_day,m_dob_month');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'external_auth_lookup', 'm_pass_hash_salted');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'ftjoin_msig', 'm_signature');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'last_visit_time', 'm_dob_month,m_dob_day,m_last_visit_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'menail', 'm_email_address');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'm_join_time', 'm_join_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'primary_group', 'm_primary_group');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'sort_post_count', 'm_cache_num_posts');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'user_list', 'm_username');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'whos_validated', 'm_validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_1', 'field_1');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_2', 'field_2');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_4', 'field_4');
@@ -1774,23 +1758,37 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf6', 'field_6');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf7', 'field_7');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf8', 'field_8');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', '#m_pt_rules_text', 'm_pt_rules_text');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', '#m_signature', 'm_signature');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', '#search_user', 'm_username');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'avatar_url', 'm_avatar_url');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'birthdays', 'm_dob_day,m_dob_month');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'external_auth_lookup', 'm_pass_hash_salted');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'ftjoin_msig', 'm_signature');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'last_visit_time', 'm_dob_month,m_dob_day,m_last_visit_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'm_join_time', 'm_join_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'menail', 'm_email_address');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'primary_group', 'm_primary_group');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'sort_post_count', 'm_cache_num_posts');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'user_list', 'm_username');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_members', 'whos_validated', 'm_validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_multi_moderations', '#mm_name', 'mm_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_password_history', 'p_member_id', 'p_member_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', '#posts_search__combined', 'p_post,p_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', '#p_post', 'p_post');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', '#p_title', 'p_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', '#posts_search__combined', 'p_post,p_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'deletebyip', 'p_ip_address');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'find_pp', 'p_intended_solely_for');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'in_topic', 'p_topic_id,p_time,id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'in_topic_change_order', 'p_topic_id,p_last_edit_time,p_time,id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'postsinforum', 'p_cache_forum_id');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'p_last_edit_time', 'p_last_edit_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'p_validated', 'p_validated');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'post_order_time', 'p_time,id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'posts_by', 'p_poster,p_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'posts_by_in_forum', 'p_poster,p_cache_forum_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'posts_by_in_topic', 'p_poster,p_topic_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'posts_since', 'p_time,p_cache_forum_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'post_order_time', 'p_time,id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'p_last_edit_time', 'p_last_edit_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'p_validated', 'p_validated');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'postsinforum', 'p_cache_forum_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_posts', 'search_join', 'p_post');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_read_logs', 'erase_old_read_logs', 'l_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', '#t_cache_first_post', 't_cache_first_post');
@@ -1799,11 +1797,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'forumlayer', 't_cache_first_title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'in_forum', 't_forum_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'ownedtopics', 't_cache_first_member_id');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order', 't_cascading,t_pinned,t_cache_last_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_2', 't_forum_id,t_cascading,t_pinned,t_sunk,t_cache_last_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_3', 't_forum_id,t_cascading,t_pinned,t_cache_last_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_time', 't_cache_last_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_time_2', 't_cache_first_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 't_cache_first_post_id', 't_cache_first_post_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 't_cache_last_member_id', 't_cache_last_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 't_cache_last_post_id', 't_cache_last_post_id');
@@ -1814,17 +1807,24 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 't_pt_from', 't_pt_from');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 't_pt_to', 't_pt_to');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 't_validated', 't_validated');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order', 't_cascading,t_pinned,t_cache_last_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_2', 't_forum_id,t_cascading,t_pinned,t_sunk,t_cache_last_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_3', 't_forum_id,t_cascading,t_pinned,t_cache_last_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_time', 't_cache_last_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'topic_order_time_2', 't_cache_first_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'unread_forums', 't_forum_id,t_cache_last_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_sub_mails', '#m_body', 'm_body');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_sub_mails', '#m_subject', 'm_subject');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_description', 's_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_mail_end', 's_mail_end');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_mail_start', 's_mail_start');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_mail_uhoh', 's_mail_uhoh');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_title', 's_title');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_sub_mails', '#m_body', 'm_body');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_sub_mails', '#m_subject', 'm_subject');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_warnings', 'warningsmemberid', 'w_member_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_welcome_emails', '#w_subject', 'w_subject');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_welcome_emails', '#w_text', 'w_text');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('failedlogins', 'failedlogins_by_ip', 'ip');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('filedump', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('galleries', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('galleries', '#fullname', 'fullname');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('galleries', '#gallery_search__combined', 'fullname,description');
@@ -1850,9 +1850,9 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', '#
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'category_list', 'cat');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'ftjoin_dtitle', 'title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'ftjoin_idescription', 'description');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'i_validated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'iadd_date', 'add_date');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'image_views', 'image_views');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'i_validated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('images', 'xis', 'submitter');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('link_tracker', 'c_url', 'c_url');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('logged_mail_messages', 'combo', 'm_date_and_time,m_queued');
@@ -1884,20 +1884,20 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'ftj
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'ftjoin_nnewsa', 'news_article');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'headlines', 'date_and_time,id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'nes', 'submitter');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'newsauthor', 'author');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'news_views', 'news_views');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'newsauthor', 'author');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news', 'nvalidated', 'validated');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletters', '#description', 'description');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletters', '#title', 'title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_categories', '#nc_title', 'nc_title');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_categories', 'ncs', 'nc_owner');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_category_entries', 'news_entry_category', 'news_entry_category');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_drip_send', 'd_inject_time', 'd_inject_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_drip_send', 'd_to_email', 'd_to_email');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribe', 'peopletosendto', 'the_level');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribers', 'code_confirm', 'code_confirm');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribers', 'email', 'email');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletter_subscribers', 'welcomemails', 'join_time');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_categories', '#nc_title', 'nc_title');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_categories', 'ncs', 'nc_owner');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('news_category_entries', 'news_entry_category', 'news_entry_category');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletters', '#description', 'description');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('newsletters', '#title', 'title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'l_code_category', 'l_code_category');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'l_member_id', 'l_member_id,l_notification_code');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('notifications_enabled', 'l_notification_code', 'l_notification_code');
@@ -1924,9 +1924,9 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', 'get
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', 'padd_time', 'add_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', 'poll_views', 'poll_views');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll', 'ps', 'submitter');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes', 'v_vote_for', 'v_vote_for');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes', 'v_voter_id', 'v_voter_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes', 'v_voter_ip', 'v_voter_ip');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('poll_votes', 'v_vote_for', 'v_vote_for');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('post_tokens', 'generation_time', 'generation_time');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_customs', '#c_description', 'c_description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_customs', '#c_mail_body', 'c_mail_body');
@@ -1936,17 +1936,17 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_perm
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_mail_body', 'p_mail_body');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_mail_subject', 'p_mail_subject');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('pstore_permissions', '#p_title', 'p_title');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#quiz_search__combined', 'q_start_text,q_name');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_question_answers', '#q_answer_text', 'q_answer_text');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_question_answers', '#q_explanation', 'q_explanation');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_questions', '#q_question_extra_text', 'q_question_extra_text');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_questions', '#q_question_text', 'q_question_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_end_text', 'q_end_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_end_text_fail', 'q_end_text_fail');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_name', 'q_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#q_start_text', 'q_start_text');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', '#quiz_search__combined', 'q_start_text,q_name');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', 'ftjoin_qstarttext', 'q_start_text');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quizzes', 'q_validated', 'q_validated');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_questions', '#q_question_extra_text', 'q_question_extra_text');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_questions', '#q_question_text', 'q_question_text');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_question_answers', '#q_answer_text', 'q_answer_text');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('quiz_question_answers', '#q_explanation', 'q_explanation');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('rating', 'alt_key', 'rating_for_type,rating_for_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('rating', 'rating_for_id', 'rating_for_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('review_supplement', 'rating_for_id', 'r_rating_for_id');
@@ -2001,24 +2001,24 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('translate',
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('translate', 'decache', 'text_parsed(2)');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('translate', 'equiv_lang', 'text_original(4)');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('translate', 'importance_level', 'importance_level');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('urls_checked', 'url', 'url(200)');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('url_id_monikers', 'uim_moniker', 'm_moniker');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('url_id_monikers', 'uim_monrev', 'm_moniker_reversed');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('url_id_monikers', 'uim_page_link', 'm_resource_page,m_resource_type,m_resource_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('url_title_cache', 't_url', 't_url');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('urls_checked', 'url', 'url(200)');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('usersonline_track', 'peak_track', 'peak');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('values', 'date_and_time', 'date_and_time');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('video_transcoding', 't_local_id', 't_local_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', '#title', 'title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', '#video_search__combined', 'description,title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'category_list', 'cat');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'ftjoin_dtitle', 'title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'ftjoin_vdescription', 'description');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'v_validated', 'validated');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'vadd_date', 'add_date');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'video_views', 'video_views');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'vs', 'submitter');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'v_validated', 'validated');
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('video_transcoding', 't_local_id', 't_local_id');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', '#description', 'description');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', '#title', 'title');
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', '#wiki_search__combined', 'title,description');
@@ -2053,7 +2053,6 @@ CREATE TABLE cms_digestives_tin (
     d_subject longtext NOT NULL,
     d_message longtext NOT NULL,
     d_from_member_id integer NULL,
-    d_to_member_id integer NOT NULL,
     d_priority tinyint NOT NULL,
     d_no_cc tinyint(1) NOT NULL,
     d_date_and_time integer unsigned NOT NULL,
@@ -2061,68 +2060,62 @@ CREATE TABLE cms_digestives_tin (
     d_code_category varchar(255) NOT NULL,
     d_frequency integer NOT NULL,
     d_read tinyint(1) NOT NULL,
+    d_to_member_id integer NOT NULL,
     d_message__text_parsed longtext NOT NULL,
     d_message__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_digestives_tin ADD FULLTEXT d_message (d_message);
+ALTER TABLE cms_digestives_tin ADD FULLTEXT d_message (d_message);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_date_and_time (d_date_and_time);
+ALTER TABLE cms_digestives_tin ADD INDEX d_date_and_time (d_date_and_time);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_frequency (d_frequency);
+ALTER TABLE cms_digestives_tin ADD INDEX d_frequency (d_frequency);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_read (d_read);
+ALTER TABLE cms_digestives_tin ADD INDEX d_read (d_read);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX d_to_member_id (d_to_member_id);
+ALTER TABLE cms_digestives_tin ADD INDEX d_to_member_id (d_to_member_id);
 
-ALTER TABLE cms10_digestives_tin ADD INDEX unread (d_to_member_id,d_read);
+ALTER TABLE cms_digestives_tin ADD INDEX unread (d_to_member_id,d_read);
 
 DROP TABLE IF EXISTS cms_download_categories;
 
 CREATE TABLE cms_download_categories (
-    id integer unsigned auto_increment NOT NULL,
-    category longtext NOT NULL,
-    parent_id integer NULL,
     add_date integer unsigned NOT NULL,
     notes longtext NOT NULL,
     description longtext NOT NULL,
+    parent_id integer NULL,
+    category longtext NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     rep_image varchar(255) BINARY NOT NULL,
     description__text_parsed longtext NOT NULL,
     description__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1550714700, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e074b558fb4.21844620_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e074b558fb4.21844620_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e074b558fb4.21844620_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1554920604, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae349b0fc107.69225297_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae349b0fc107.69225297_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae349b0fc107.69225297_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_download_categories ADD FULLTEXT category (category);
+ALTER TABLE cms_download_categories ADD FULLTEXT category (category);
 
-ALTER TABLE cms10_download_categories ADD FULLTEXT description (description);
+ALTER TABLE cms_download_categories ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_download_categories ADD FULLTEXT dl_cat_search__combined (category,description);
+ALTER TABLE cms_download_categories ADD FULLTEXT dl_cat_search__combined (category,description);
 
-ALTER TABLE cms10_download_categories ADD INDEX child_find (parent_id);
+ALTER TABLE cms_download_categories ADD INDEX child_find (parent_id);
 
-ALTER TABLE cms10_download_categories ADD INDEX ftjoin_dccat (category(250));
+ALTER TABLE cms_download_categories ADD INDEX ftjoin_dccat (category(250));
 
-ALTER TABLE cms10_download_categories ADD INDEX ftjoin_dcdescrip (description(250));
+ALTER TABLE cms_download_categories ADD INDEX ftjoin_dcdescrip (description(250));
 
 DROP TABLE IF EXISTS cms_download_downloads;
 
 CREATE TABLE cms_download_downloads (
+    edit_date integer unsigned NULL,
+    validated tinyint(1) NOT NULL,
     id integer unsigned auto_increment NOT NULL,
     category_id integer NOT NULL,
     name longtext NOT NULL,
-    url varchar(255) BINARY NOT NULL,
-    description longtext NOT NULL,
-    author varchar(80) NOT NULL,
-    additional_details longtext NOT NULL,
-    num_downloads integer NOT NULL,
-    out_mode_id integer NULL,
-    add_date integer unsigned NOT NULL,
-    edit_date integer unsigned NULL,
-    validated tinyint(1) NOT NULL,
     default_pic integer NOT NULL,
     file_size integer NULL,
     allow_rating tinyint(1) NOT NULL,
@@ -2138,6 +2131,13 @@ CREATE TABLE cms_download_downloads (
     download_licence integer NULL,
     download_data_mash longtext NOT NULL,
     url_redirect varchar(255) BINARY NOT NULL,
+    url varchar(255) BINARY NOT NULL,
+    description longtext NOT NULL,
+    author varchar(80) NOT NULL,
+    additional_details longtext NOT NULL,
+    add_date integer unsigned NOT NULL,
+    out_mode_id integer NULL,
+    num_downloads integer NOT NULL,
     description__text_parsed longtext NOT NULL,
     description__source_user integer DEFAULT 1 NOT NULL,
     additional_details__text_parsed longtext NOT NULL,
@@ -2145,46 +2145,46 @@ CREATE TABLE cms_download_downloads (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT additional_details (additional_details);
+ALTER TABLE cms_download_downloads ADD FULLTEXT additional_details (additional_details);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT description (description);
+ALTER TABLE cms_download_downloads ADD FULLTEXT description (description);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT dl_search__combined (original_filename,download_data_mash);
+ALTER TABLE cms_download_downloads ADD FULLTEXT dl_search__combined (original_filename,download_data_mash);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT download_data_mash (download_data_mash);
+ALTER TABLE cms_download_downloads ADD FULLTEXT download_data_mash (download_data_mash);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT name (name);
+ALTER TABLE cms_download_downloads ADD FULLTEXT name (name);
 
-ALTER TABLE cms10_download_downloads ADD FULLTEXT original_filename (original_filename);
+ALTER TABLE cms_download_downloads ADD FULLTEXT original_filename (original_filename);
 
-ALTER TABLE cms10_download_downloads ADD INDEX category_list (category_id);
+ALTER TABLE cms_download_downloads ADD INDEX category_list (category_id);
 
-ALTER TABLE cms10_download_downloads ADD INDEX ddl (download_licence);
+ALTER TABLE cms_download_downloads ADD INDEX ddl (download_licence);
 
-ALTER TABLE cms10_download_downloads ADD INDEX dds (submitter);
+ALTER TABLE cms_download_downloads ADD INDEX dds (submitter);
 
-ALTER TABLE cms10_download_downloads ADD INDEX downloadauthor (author);
+ALTER TABLE cms_download_downloads ADD INDEX download_views (download_views);
 
-ALTER TABLE cms10_download_downloads ADD INDEX download_views (download_views);
+ALTER TABLE cms_download_downloads ADD INDEX downloadauthor (author);
 
-ALTER TABLE cms10_download_downloads ADD INDEX dvalidated (validated);
+ALTER TABLE cms_download_downloads ADD INDEX dvalidated (validated);
 
-ALTER TABLE cms10_download_downloads ADD INDEX ftjoin_dadditional (additional_details(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dadditional (additional_details(250));
 
-ALTER TABLE cms10_download_downloads ADD INDEX ftjoin_ddescrip (description(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_ddescrip (description(250));
 
-ALTER TABLE cms10_download_downloads ADD INDEX ftjoin_dname (name(250));
+ALTER TABLE cms_download_downloads ADD INDEX ftjoin_dname (name(250));
 
-ALTER TABLE cms10_download_downloads ADD INDEX recent_downloads (add_date);
+ALTER TABLE cms_download_downloads ADD INDEX recent_downloads (add_date);
 
-ALTER TABLE cms10_download_downloads ADD INDEX top_downloads (num_downloads);
+ALTER TABLE cms_download_downloads ADD INDEX top_downloads (num_downloads);
 
 DROP TABLE IF EXISTS cms_download_licences;
 
 CREATE TABLE cms_download_licences (
-    id integer unsigned auto_increment NOT NULL,
-    l_title varchar(255) NOT NULL,
     l_text longtext NOT NULL,
+    l_title varchar(255) NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -2193,62 +2193,62 @@ DROP TABLE IF EXISTS cms_download_logging;
 CREATE TABLE cms_download_logging (
     id integer NOT NULL,
     member_id integer NOT NULL,
-    ip varchar(40) NOT NULL,
     date_and_time integer unsigned NOT NULL,
+    ip varchar(40) NOT NULL,
     PRIMARY KEY (id, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_download_logging ADD INDEX calculate_bandwidth (date_and_time);
+ALTER TABLE cms_download_logging ADD INDEX calculate_bandwidth (date_and_time);
 
 DROP TABLE IF EXISTS cms_edit_pings;
 
 CREATE TABLE cms_edit_pings (
+    the_time integer unsigned NOT NULL,
     id integer unsigned auto_increment NOT NULL,
     the_page varchar(80) NOT NULL,
     the_type varchar(80) NOT NULL,
     the_id varchar(80) NOT NULL,
-    the_time integer unsigned NOT NULL,
     the_member integer NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_edit_pings ADD INDEX edit_pings_on (the_page,the_type,the_id);
+ALTER TABLE cms_edit_pings ADD INDEX edit_pings_on (the_page,the_type,the_id);
 
 DROP TABLE IF EXISTS cms_email_bounces;
 
 CREATE TABLE cms_email_bounces (
-    id integer unsigned auto_increment NOT NULL,
-    b_email_address varchar(255) NOT NULL,
-    b_time integer unsigned NOT NULL,
-    b_subject varchar(255) NOT NULL,
     b_body longtext NOT NULL,
+    b_subject varchar(255) NOT NULL,
+    b_time integer unsigned NOT NULL,
+    b_email_address varchar(255) NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_email_bounces ADD INDEX b_email_address (b_email_address(250));
+ALTER TABLE cms_email_bounces ADD INDEX b_email_address (b_email_address(250));
 
-ALTER TABLE cms10_email_bounces ADD INDEX b_time (b_time);
+ALTER TABLE cms_email_bounces ADD INDEX b_time (b_time);
 
 DROP TABLE IF EXISTS cms_f_custom_fields;
 
 CREATE TABLE cms_f_custom_fields (
+    cf_description longtext NOT NULL,
+    cf_default longtext NOT NULL,
+    cf_required tinyint(1) NOT NULL,
+    cf_type varchar(80) NOT NULL,
+    cf_public_view tinyint(1) NOT NULL,
+    cf_show_in_posts tinyint(1) NOT NULL,
     id integer unsigned auto_increment NOT NULL,
     cf_locked tinyint(1) NOT NULL,
     cf_name longtext NOT NULL,
-    cf_description longtext NOT NULL,
-    cf_default longtext NOT NULL,
-    cf_public_view tinyint(1) NOT NULL,
-    cf_owner_view tinyint(1) NOT NULL,
-    cf_owner_set tinyint(1) NOT NULL,
-    cf_type varchar(80) NOT NULL,
-    cf_required tinyint(1) NOT NULL,
-    cf_show_in_posts tinyint(1) NOT NULL,
     cf_show_in_post_previews tinyint(1) NOT NULL,
     cf_order integer NOT NULL,
     cf_only_group longtext NOT NULL,
     cf_encrypted tinyint(1) NOT NULL,
-    cf_show_on_join_form tinyint(1) NOT NULL,
+    cf_owner_view tinyint(1) NOT NULL,
+    cf_owner_set tinyint(1) NOT NULL,
     cf_options varchar(255) NOT NULL,
+    cf_show_on_join_form tinyint(1) NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -2285,22 +2285,22 @@ INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_defa
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (31, 0, 'cms_state', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 30, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (32, 0, 'cms_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 31, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (33, 0, 'cms_country', '', '|AF=Afghanistan|AL=Albania|DZ=Algeria|AS=American Samoa|AD=Andorra|AO=Angola|AI=Anguilla|AQ=Antarctica|AG=Antigua and Barbuda|AR=Argentina|AM=Armenia|AW=Aruba|AU=Australia|AT=Austria|AZ=Azerbaijan|BS=Bahamas|BH=Bahrain|BD=Bangladesh|BB=Barbados|BY=Belarus|BE=Belgium|BZ=Belize|BJ=Benin|BM=Bermuda|BT=Bhutan|BO=Bolivia|BA=Bosnia and Herzegovina|BW=Botswana|BV=Bouvet Island|BR=Brazil|IO=British Indian Ocean Territory|VG=British Virgin Islands|BN=Brunei|BG=Bulgaria|BF=Burkina Faso|BI=Burundi|KH=Cambodia|CM=Cameroon|CA=Canada|CV=Cape Verde|KY=Cayman Islands|CF=Central African Republic|TD=Chad|CL=Chile|CN=China|CX=Christmas Island|CC=Cocos [Keeling] Islands|CO=Colombia|KM=Comoros|CG=Congo|CD=Congo (Dem. Rep.)|CK=Cook Islands|CR=Costa Rica|HR=Croatia|CU=Cuba|CY=Cyprus|CZ=Czech Republic|DK=Denmark|DJ=Djibouti|DM=Dominica|DO=Dominican Republic|DD=East Germany|TL=East Timor|EC=Ecuador|EG=Egypt|SV=El Salvador|GQ=Equatorial Guinea|ER=Eritrea|EE=Estonia|ET=Ethiopia|FK=Falkland Islands|FO=Faroe Islands|FJ=Fiji Islands|FI=Finland|FR=France|GF=French Guiana|PF=French Polynesia|TF=French Southern Territories|GA=Gabon|GM=Gambia|GE=Georgia|DE=Germany|GH=Ghana|GI=Gibraltar|GR=Greece|GL=Greenland|GD=Grenada|GP=Guadeloupe|GU=Guam|GT=Guatemala|GG=Guernsey and Alderney|GN=Guinea|GW=Guinea-Bissau|GY=Guyana|HT=Haiti|HM=Heard Island and McDonald Islands|HN=Honduras|HK=Hong Kong SAR China|HU=Hungary|IS=Iceland|IN=India|ID=Indonesia|IR=Iran|IQ=Iraq|IE=Ireland|IM=Isle of Man|IL=Israel|IT=Italy|CI=Ivory Coast|JM=Jamaica|JP=Japan|JE=Jersey|JO=Jordan|KZ=Kazakhstan|KE=Kenya|KI=Kiribati|KP=Korea (North)|KR=Korea (South)|XK=Kosovo|KW=Kuwait|KG=Kyrgyzstan|LA=Laos|LV=Latvia|LB=Lebanon|LS=Lesotho|LR=Liberia|LY=Libya|LI=Liechtenstein|LT=Lithuania|LU=Luxembourg|MO=Macau SAR China|MK=Macedonia|MG=Madagascar|MW=Malawi|MY=Malaysia|MV=Maldives|ML=Mali|MT=Malta|MH=Marshall Islands|MQ=Martinique|MR=Mauritania|MU=Mauritius|YT=Mayotte|FX=Metropolitan France|MX=Mexico|FM=Micronesia|MD=Moldova|MC=Monaco|MN=Mongolia|ME=Montenegro|MS=Montserrat|MA=Morocco|MZ=Mozambique|MM=Myanmar|NA=Namibia|NR=Nauru|NP=Nepal|NL=Netherlands|AN=Netherlands Antilles|NT=Neutral Zone|NC=New Caledonia|NZ=New Zealand|NI=Nicaragua|NE=Niger|NG=Nigeria|NU=Niue|NF=Norfolk Island|MP=Northern Mariana Islands|NO=Norway|OM=Oman|PK=Pakistan|PW=Palau|PS=Palestine|PA=Panama|PG=Papua New Guinea|PY=Paraguay|YD=People\'s Democratic Republic of Yemen|PE=Peru|PH=Philippines|PN=Pitcairn Islands|PL=Poland|PT=Portugal|PR=Puerto Rico|QA=Qatar|RO=Romania|RU=Russia|RW=Rwanda|RE=Réunion|BL=Saint Barthélemy|SH=Saint Helena|KN=Saint Kitts and Nevis|LC=Saint Lucia|MF=Saint Martin|PM=Saint Pierre and Miquelon|VC=Saint Vincent and The Grenadines|WS=Samoa|SM=San Marino|SA=Saudi Arabia|SN=Senegal|RS=Serbia|CS=Serbia and Montenegro|SC=Seychelles|SL=Sierra Leone|SG=Singapore|SK=Slovakia|SI=Slovenia|SB=Solomon Islands|SO=Somalia|ZA=South Africa|GS=South Georgia and the South Sandwich Islands|ES=Spain|LK=Sri Lanka|SD=Sudan|SR=Suriname|SJ=Svalbard and Jan Mayen|SZ=Swaziland|SE=Sweden|CH=Switzerland|SY=Syria|ST=São Tomé and Príncipe|TW=Taiwan|TJ=Tajikistan|TZ=Tanzania|TH=Thailand|TG=Togo|TK=Tokelau|TO=Tonga|TT=Trinidad and Tobago|TN=Tunisia|TR=Turkey|TM=Turkmenistan|TC=Turks and Caicos Islands|TV=Tuvalu|UG=Uganda|UA=Ukraine|SU=Union of Soviet Socialist Republics|AE=United Arab Emirates|GB=United Kingdom|UM=United States Minor Outlying Islands|US=United States of America|UY=Uruguay|UZ=Uzbekistan|VU=Vanuatu|VA=Vatican City|VE=Venezuela|VN=Vietnam|VI=Virgin Islands of the United States|WF=Wallis and Futuna|EH=Western Sahara|YE=Yemen|ZM=Zambia|ZW=Zimbabwe|AX=Åland Islands', 0, 0, 1, 'list', 0, 0, 0, 32, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (34, 0, 'cms_firstname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 33, '', 0, 0, '');
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (35, 0, 'cms_lastname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 34, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (34, 0, 'cms_firstname', '', '', 1, 1, 1, 'short_text', 0, 0, 0, 33, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (35, 0, 'cms_lastname', '', '', 1, 1, 1, 'short_text', 0, 0, 0, 34, '', 0, 0, '');
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (36, 0, 'cms_mobile_phone_number', 'This should be the mobile phone number in international format, devoid of any national or international outgoing access codes. For instance, a typical UK (44) number might be nationally known as \'01234 123456\', but internationally and without outgoing access codes would be \'441234123456\'.', '', 0, 0, 1, 'short_text', 0, 0, 0, 35, '', 0, 0, '');
 
-ALTER TABLE cms10_f_custom_fields ADD FULLTEXT cf_description (cf_description);
+ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_description (cf_description);
 
-ALTER TABLE cms10_f_custom_fields ADD FULLTEXT cf_name (cf_name);
+ALTER TABLE cms_f_custom_fields ADD FULLTEXT cf_name (cf_name);
 
 DROP TABLE IF EXISTS cms_f_emoticons;
 
 CREATE TABLE cms_f_emoticons (
-    e_code varchar(80) NOT NULL,
-    e_theme_img_code varchar(255) NOT NULL,
     e_relevance_level integer NOT NULL,
-    e_use_topics tinyint(1) NOT NULL,
+    e_theme_img_code varchar(255) NOT NULL,
+    e_code varchar(80) NOT NULL,
     e_is_special tinyint(1) NOT NULL,
+    e_use_topics tinyint(1) NOT NULL,
     PRIMARY KEY (e_code)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -2360,17 +2360,17 @@ INSERT INTO cms_f_emoticons (e_code, e_theme_img_code, e_relevance_level, e_use_
 INSERT INTO cms_f_emoticons (e_code, e_theme_img_code, e_relevance_level, e_use_topics, e_is_special) VALUES (':reallybadday:', 'cns_emoticons/reallybadday', 1, 0, 0);
 INSERT INTO cms_f_emoticons (e_code, e_theme_img_code, e_relevance_level, e_use_topics, e_is_special) VALUES (':christmas:', 'cns_emoticons/christmas', 1, 0, 0);
 
-ALTER TABLE cms10_f_emoticons ADD INDEX relevantemoticons (e_relevance_level);
+ALTER TABLE cms_f_emoticons ADD INDEX relevantemoticons (e_relevance_level);
 
-ALTER TABLE cms10_f_emoticons ADD INDEX topicemos (e_use_topics);
+ALTER TABLE cms_f_emoticons ADD INDEX topicemos (e_use_topics);
 
 DROP TABLE IF EXISTS cms_f_forum_groupings;
 
 CREATE TABLE cms_f_forum_groupings (
+    c_expanded_by_default tinyint(1) NOT NULL,
     id integer unsigned auto_increment NOT NULL,
     c_title varchar(255) NOT NULL,
     c_description longtext NOT NULL,
-    c_expanded_by_default tinyint(1) NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -2397,27 +2397,27 @@ DROP TABLE IF EXISTS cms_f_forums;
 
 CREATE TABLE cms_f_forums (
     id integer unsigned auto_increment NOT NULL,
+    f_order_sub_alpha tinyint(1) NOT NULL,
     f_name varchar(255) NOT NULL,
     f_description longtext NOT NULL,
-    f_forum_grouping_id integer NULL,
-    f_parent_forum integer NULL,
-    f_position integer NOT NULL,
-    f_order_sub_alpha tinyint(1) NOT NULL,
-    f_post_count_increment tinyint(1) NOT NULL,
-    f_intro_question longtext NOT NULL,
-    f_intro_answer varchar(255) NOT NULL,
-    f_cache_num_topics integer NOT NULL,
-    f_cache_num_posts integer NOT NULL,
-    f_cache_last_topic_id integer NULL,
-    f_cache_last_title varchar(255) NOT NULL,
     f_cache_last_time integer unsigned NULL,
     f_cache_last_username varchar(255) NOT NULL,
     f_cache_last_member_id integer NULL,
     f_cache_last_forum_id integer NULL,
     f_redirection varchar(255) NOT NULL,
-    f_order varchar(80) NOT NULL,
-    f_is_threaded tinyint(1) NOT NULL,
+    f_cache_last_title varchar(255) NOT NULL,
     f_allows_anonymous_posts tinyint(1) NOT NULL,
+    f_is_threaded tinyint(1) NOT NULL,
+    f_order varchar(80) NOT NULL,
+    f_forum_grouping_id integer NULL,
+    f_parent_forum integer NULL,
+    f_position integer NOT NULL,
+    f_cache_last_topic_id integer NULL,
+    f_post_count_increment tinyint(1) NOT NULL,
+    f_intro_question longtext NOT NULL,
+    f_intro_answer varchar(255) NOT NULL,
+    f_cache_num_topics integer NOT NULL,
+    f_cache_num_posts integer NOT NULL,
     f_description__text_parsed longtext NOT NULL,
     f_description__source_user integer DEFAULT 1 NOT NULL,
     f_intro_question__text_parsed longtext NOT NULL,
@@ -2425,66 +2425,66 @@ CREATE TABLE cms_f_forums (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Reported posts forum', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Reported posts forum', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0740df71b5.30746288_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0740df71b5.30746288_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3482b8b8a1.99187150_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3482b8b8a1.99187150_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (7, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1550714689, 'System', 1, 7, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (7, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1554920586, 'System', 1, 7, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (8, 'Website \"Contact Us\" messages', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0743a9e771.53575025_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0743a9e771.53575025_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0743a9e771.53575025_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5c6e0743a9e771.53575025_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5c6e0743a9e771.53575025_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5c6e0743a9e771.53575025_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (8, 'Website \"Contact Us\" messages', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3491a692f3.29383068_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3491a692f3.29383068_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3491a692f3.29383068_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5cae3491a692f3.29383068_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5cae3491a692f3.29383068_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5cae3491a692f3.29383068_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_f_forums ADD FULLTEXT f_description (f_description);
+ALTER TABLE cms_f_forums ADD FULLTEXT f_description (f_description);
 
-ALTER TABLE cms10_f_forums ADD FULLTEXT f_intro_question (f_intro_question);
+ALTER TABLE cms_f_forums ADD FULLTEXT f_intro_question (f_intro_question);
 
-ALTER TABLE cms10_f_forums ADD INDEX cache_num_posts (f_cache_num_posts);
+ALTER TABLE cms_f_forums ADD INDEX cache_num_posts (f_cache_num_posts);
 
-ALTER TABLE cms10_f_forums ADD INDEX findnamedforum (f_name(250));
+ALTER TABLE cms_f_forums ADD INDEX f_position (f_position);
 
-ALTER TABLE cms10_f_forums ADD INDEX f_position (f_position);
+ALTER TABLE cms_f_forums ADD INDEX findnamedforum (f_name(250));
 
-ALTER TABLE cms10_f_forums ADD INDEX subforum_parenting (f_parent_forum);
+ALTER TABLE cms_f_forums ADD INDEX subforum_parenting (f_parent_forum);
 
 DROP TABLE IF EXISTS cms_f_group_join_log;
 
 CREATE TABLE cms_f_group_join_log (
     id integer unsigned auto_increment NOT NULL,
-    member_id integer NOT NULL,
-    usergroup_id integer NULL,
     join_time integer unsigned NOT NULL,
+    usergroup_id integer NULL,
+    member_id integer NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_group_join_log ADD INDEX join_time (join_time);
+ALTER TABLE cms_f_group_join_log ADD INDEX join_time (join_time);
 
-ALTER TABLE cms10_f_group_join_log ADD INDEX member_id (member_id);
+ALTER TABLE cms_f_group_join_log ADD INDEX member_id (member_id);
 
-ALTER TABLE cms10_f_group_join_log ADD INDEX usergroup_id (usergroup_id);
+ALTER TABLE cms_f_group_join_log ADD INDEX usergroup_id (usergroup_id);
 
 DROP TABLE IF EXISTS cms_f_group_member_timeouts;
 
 CREATE TABLE cms_f_group_member_timeouts (
-    member_id integer NOT NULL,
-    group_id integer NOT NULL,
     timeout integer unsigned NOT NULL,
-    PRIMARY KEY (member_id, group_id)
+    group_id integer NOT NULL,
+    member_id integer NOT NULL,
+    PRIMARY KEY (group_id, member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
 DROP TABLE IF EXISTS cms_f_group_members;
@@ -2496,26 +2496,20 @@ CREATE TABLE cms_f_group_members (
     PRIMARY KEY (gm_group_id, gm_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_group_members ADD INDEX gm_group_id (gm_group_id);
+ALTER TABLE cms_f_group_members ADD INDEX gm_group_id (gm_group_id);
 
-ALTER TABLE cms10_f_group_members ADD INDEX gm_member_id (gm_member_id);
+ALTER TABLE cms_f_group_members ADD INDEX gm_member_id (gm_member_id);
 
-ALTER TABLE cms10_f_group_members ADD INDEX gm_validated (gm_validated);
+ALTER TABLE cms_f_group_members ADD INDEX gm_validated (gm_validated);
 
 DROP TABLE IF EXISTS cms_f_groups;
 
 CREATE TABLE cms_f_groups (
-    id integer unsigned auto_increment NOT NULL,
-    g_name longtext NOT NULL,
-    g_is_default tinyint(1) NOT NULL,
-    g_is_presented_at_install tinyint(1) NOT NULL,
-    g_is_super_admin tinyint(1) NOT NULL,
-    g_is_super_moderator tinyint(1) NOT NULL,
-    g_group_leader integer NULL,
-    g_title longtext NOT NULL,
-    g_promotion_target integer NULL,
-    g_promotion_threshold integer NULL,
     g_flood_control_submit_secs integer NOT NULL,
+    g_promotion_threshold integer NULL,
+    g_promotion_target integer NULL,
+    g_title longtext NOT NULL,
+    g_group_leader integer NULL,
     g_flood_control_access_secs integer NOT NULL,
     g_gift_points_base integer NOT NULL,
     g_gift_points_per_day integer NOT NULL,
@@ -2524,14 +2518,20 @@ CREATE TABLE cms_f_groups (
     g_max_avatar_width integer NOT NULL,
     g_max_avatar_height integer NOT NULL,
     g_max_post_length_comcode integer NOT NULL,
-    g_max_sig_length_comcode integer NOT NULL,
-    g_enquire_on_new_ips tinyint(1) NOT NULL,
-    g_rank_image varchar(80) NOT NULL,
     g_hidden tinyint(1) NOT NULL,
+    g_rank_image varchar(80) NOT NULL,
+    g_enquire_on_new_ips tinyint(1) NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
+    g_name longtext NOT NULL,
+    g_is_default tinyint(1) NOT NULL,
+    g_is_presented_at_install tinyint(1) NOT NULL,
+    g_is_super_admin tinyint(1) NOT NULL,
+    g_is_super_moderator tinyint(1) NOT NULL,
+    g_max_sig_length_comcode integer NOT NULL,
     g_order integer NOT NULL,
-    g_rank_image_pri_only tinyint(1) NOT NULL,
-    g_open_membership tinyint(1) NOT NULL,
     g_is_private_club tinyint(1) NOT NULL,
+    g_open_membership tinyint(1) NOT NULL,
+    g_rank_image_pri_only tinyint(1) NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -2546,239 +2546,241 @@ INSERT INTO cms_f_groups (id, g_name, g_is_default, g_is_presented_at_install, g
 INSERT INTO cms_f_groups (id, g_name, g_is_default, g_is_presented_at_install, g_is_super_admin, g_is_super_moderator, g_group_leader, g_title, g_promotion_target, g_promotion_threshold, g_flood_control_submit_secs, g_flood_control_access_secs, g_gift_points_base, g_gift_points_per_day, g_max_daily_upload_mb, g_max_attachments_per_post, g_max_avatar_width, g_max_avatar_height, g_max_post_length_comcode, g_max_sig_length_comcode, g_enquire_on_new_ips, g_rank_image, g_hidden, g_order, g_rank_image_pri_only, g_open_membership, g_is_private_club) VALUES (9, 'Newbie', 0, 0, 0, 0, NULL, 'Standard member', 8, 100, 0, 0, 25, 1, 70, 50, 100, 100, 30000, 700, 0, 'cns_rank_images/0', 0, 8, 1, 0, 0);
 INSERT INTO cms_f_groups (id, g_name, g_is_default, g_is_presented_at_install, g_is_super_admin, g_is_super_moderator, g_group_leader, g_title, g_promotion_target, g_promotion_threshold, g_flood_control_submit_secs, g_flood_control_access_secs, g_gift_points_base, g_gift_points_per_day, g_max_daily_upload_mb, g_max_attachments_per_post, g_max_avatar_width, g_max_avatar_height, g_max_post_length_comcode, g_max_sig_length_comcode, g_enquire_on_new_ips, g_rank_image, g_hidden, g_order, g_rank_image_pri_only, g_open_membership, g_is_private_club) VALUES (10, 'Probation', 0, 0, 0, 0, NULL, 'Placed on temporary probation', NULL, NULL, 0, 0, 25, 1, 70, 50, 100, 100, 30000, 700, 0, '', 0, 9, 1, 0, 0);
 
-ALTER TABLE cms10_f_groups ADD FULLTEXT groups_search__combined (g_name,g_title);
+ALTER TABLE cms_f_groups ADD FULLTEXT g_name (g_name);
 
-ALTER TABLE cms10_f_groups ADD FULLTEXT g_name (g_name);
+ALTER TABLE cms_f_groups ADD FULLTEXT g_title (g_title);
 
-ALTER TABLE cms10_f_groups ADD FULLTEXT g_title (g_title);
+ALTER TABLE cms_f_groups ADD FULLTEXT groups_search__combined (g_name,g_title);
 
-ALTER TABLE cms10_f_groups ADD INDEX ftjoin_gname (g_name(250));
+ALTER TABLE cms_f_groups ADD INDEX ftjoin_gname (g_name(250));
 
-ALTER TABLE cms10_f_groups ADD INDEX ftjoin_gtitle (g_title(250));
+ALTER TABLE cms_f_groups ADD INDEX ftjoin_gtitle (g_title(250));
 
-ALTER TABLE cms10_f_groups ADD INDEX gorder (g_order,id);
+ALTER TABLE cms_f_groups ADD INDEX gorder (g_order,id);
 
-ALTER TABLE cms10_f_groups ADD INDEX hidden (g_hidden);
+ALTER TABLE cms_f_groups ADD INDEX hidden (g_hidden);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_default (g_is_default);
+ALTER TABLE cms_f_groups ADD INDEX is_default (g_is_default);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_presented_at_install (g_is_presented_at_install);
+ALTER TABLE cms_f_groups ADD INDEX is_presented_at_install (g_is_presented_at_install);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_private_club (g_is_private_club);
+ALTER TABLE cms_f_groups ADD INDEX is_private_club (g_is_private_club);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_super_admin (g_is_super_admin);
+ALTER TABLE cms_f_groups ADD INDEX is_super_admin (g_is_super_admin);
 
-ALTER TABLE cms10_f_groups ADD INDEX is_super_moderator (g_is_super_moderator);
+ALTER TABLE cms_f_groups ADD INDEX is_super_moderator (g_is_super_moderator);
 
 DROP TABLE IF EXISTS cms_f_invites;
 
 CREATE TABLE cms_f_invites (
-    id integer unsigned auto_increment NOT NULL,
-    i_inviter integer NOT NULL,
-    i_email_address varchar(255) NOT NULL,
     i_time integer unsigned NOT NULL,
     i_taken tinyint(1) NOT NULL,
+    i_email_address varchar(255) NOT NULL,
+    i_inviter integer NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
 DROP TABLE IF EXISTS cms_f_member_cpf_perms;
 
 CREATE TABLE cms_f_member_cpf_perms (
+    group_view varchar(255) NOT NULL,
+    friend_view tinyint(1) NOT NULL,
+    member_view tinyint(1) NOT NULL,
     member_id integer NOT NULL,
     field_id integer NOT NULL,
     guest_view tinyint(1) NOT NULL,
-    member_view tinyint(1) NOT NULL,
-    friend_view tinyint(1) NOT NULL,
-    group_view varchar(255) NOT NULL,
     PRIMARY KEY (member_id, field_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
 DROP TABLE IF EXISTS cms_f_member_custom_fields;
 
 CREATE TABLE cms_f_member_custom_fields (
-    mf_member_id integer NOT NULL,
-    field_1 longtext NOT NULL,
-    field_2 longtext NOT NULL,
-    field_3 varchar(255) NOT NULL,
-    field_4 longtext NOT NULL,
-    field_5 varchar(255) NOT NULL,
-    field_6 varchar(255) NOT NULL,
-    field_7 varchar(255) NOT NULL,
-    field_8 varchar(255) NOT NULL,
-    field_9 integer NULL,
-    field_10 integer NULL,
-    field_11 integer NULL,
-    field_12 integer NULL,
-    field_13 integer NULL,
-    field_14 integer NULL,
-    field_15 integer NULL,
-    field_16 integer NULL,
-    field_17 longtext NOT NULL,
-    field_18 longtext NOT NULL,
-    field_19 longtext NOT NULL,
-    field_20 integer NULL,
-    field_21 longtext NOT NULL,
-    field_22 longtext NOT NULL,
-    field_23 longtext NOT NULL,
-    field_24 longtext NOT NULL,
-    field_25 varchar(255) NOT NULL,
-    field_26 varchar(255) NOT NULL,
     field_27 integer NULL,
+    field_23 longtext NOT NULL,
+    field_10 integer NULL,
+    field_36 varchar(255) NOT NULL,
+    field_7 varchar(255) NOT NULL,
+    field_6 varchar(255) NOT NULL,
+    field_5 varchar(255) NOT NULL,
+    field_4 longtext NOT NULL,
+    field_3 varchar(255) NOT NULL,
+    field_2 longtext NOT NULL,
+    field_1 longtext NOT NULL,
+    field_9 integer NULL,
+    mf_member_id integer NOT NULL,
     field_28 longtext NOT NULL,
     field_29 varchar(255) NOT NULL,
     field_30 varchar(255) NOT NULL,
     field_31 varchar(255) NOT NULL,
+    field_26 varchar(255) NOT NULL,
+    field_25 varchar(255) NOT NULL,
+    field_24 longtext NOT NULL,
+    field_8 varchar(255) NOT NULL,
+    field_22 longtext NOT NULL,
+    field_21 longtext NOT NULL,
+    field_20 integer NULL,
+    field_19 longtext NOT NULL,
+    field_18 longtext NOT NULL,
+    field_17 longtext NOT NULL,
+    field_16 integer NULL,
+    field_15 integer NULL,
+    field_14 integer NULL,
+    field_13 integer NULL,
     field_32 varchar(255) NOT NULL,
     field_33 longtext NOT NULL,
     field_34 varchar(255) NOT NULL,
+    field_12 integer NULL,
+    field_11 integer NULL,
     field_35 varchar(255) NOT NULL,
-    field_36 varchar(255) NOT NULL,
-    field_1__text_parsed longtext NOT NULL,
-    field_1__source_user integer DEFAULT 1 NOT NULL,
-    field_2__text_parsed longtext NOT NULL,
-    field_2__source_user integer DEFAULT 1 NOT NULL,
     field_4__text_parsed longtext NOT NULL,
     field_4__source_user integer DEFAULT 1 NOT NULL,
+    field_2__text_parsed longtext NOT NULL,
+    field_2__source_user integer DEFAULT 1 NOT NULL,
+    field_1__text_parsed longtext NOT NULL,
+    field_1__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (mf_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT field_1 (field_1);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_1 (field_1);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_30 (field_30);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_31 (field_31);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_6 (field_6);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_7 (field_7);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_7 (field_7);
 
-ALTER TABLE cms10_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8);
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_8 (field_8);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf1 (field_1(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf1 (field_1(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf10 (field_10);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf10 (field_10);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf11 (field_11(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf11 (field_11(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf12 (field_12(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf12 (field_12(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf13 (field_13(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf13 (field_13(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf14 (field_14(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf14 (field_14(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf15 (field_15(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf15 (field_15(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf16 (field_16);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf16 (field_16);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf20 (field_20);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf26 (field_26);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf26 (field_26);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf27 (field_27(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf27 (field_27(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf34 (field_34);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf34 (field_34);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf35 (field_35);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf35 (field_35);
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf5 (field_5(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf5 (field_5(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf6 (field_6(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf6 (field_6(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf7 (field_7(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf7 (field_7(250));
 
-ALTER TABLE cms10_f_member_custom_fields ADD INDEX mcf8 (field_8(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf8 (field_8(250));
 
 DROP TABLE IF EXISTS cms_f_member_known_login_ips;
 
 CREATE TABLE cms_f_member_known_login_ips (
-    i_member_id integer NOT NULL,
-    i_ip varchar(40) NOT NULL,
     i_val_code varchar(255) NOT NULL,
-    PRIMARY KEY (i_member_id, i_ip)
+    i_ip varchar(40) NOT NULL,
+    i_member_id integer NOT NULL,
+    PRIMARY KEY (i_ip, i_member_id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
 DROP TABLE IF EXISTS cms_f_members;
 
 CREATE TABLE cms_f_members (
+    m_dob_month tinyint NULL,
+    m_language varchar(80) NOT NULL,
+    m_avatar_url varchar(255) BINARY NOT NULL,
+    m_validated tinyint(1) NOT NULL,
     id integer unsigned auto_increment NOT NULL,
     m_username varchar(80) NOT NULL,
     m_pass_hash_salted varchar(255) NOT NULL,
     m_pass_salt varchar(255) NOT NULL,
-    m_theme varchar(80) NOT NULL,
-    m_avatar_url varchar(255) BINARY NOT NULL,
-    m_validated tinyint(1) NOT NULL,
     m_validated_email_confirm_code varchar(255) NOT NULL,
+    m_theme varchar(80) NOT NULL,
     m_cache_num_posts integer NOT NULL,
     m_cache_warnings integer NOT NULL,
     m_join_time integer unsigned NOT NULL,
@@ -2788,31 +2790,29 @@ CREATE TABLE cms_f_members (
     m_last_submit_time integer unsigned NOT NULL,
     m_signature longtext NOT NULL,
     m_is_perm_banned tinyint(1) NOT NULL,
-    m_preview_posts tinyint(1) NOT NULL,
-    m_dob_day tinyint NULL,
-    m_dob_month tinyint NULL,
-    m_dob_year integer NULL,
-    m_reveal_age tinyint(1) NOT NULL,
-    m_email_address varchar(255) NOT NULL,
-    m_title varchar(255) NOT NULL,
-    m_photo_url varchar(255) BINARY NOT NULL,
-    m_photo_thumb_url varchar(255) BINARY NOT NULL,
-    m_views_signatures tinyint(1) NOT NULL,
-    m_auto_monitor_contrib_content tinyint(1) NOT NULL,
-    m_language varchar(80) NOT NULL,
-    m_ip_address varchar(40) NOT NULL,
-    m_allow_emails tinyint(1) NOT NULL,
-    m_allow_emails_from_staff tinyint(1) NOT NULL,
-    m_highlighted_name tinyint(1) NOT NULL,
-    m_pt_allow varchar(255) NOT NULL,
-    m_pt_rules_text longtext NOT NULL,
-    m_max_email_attach_size_mb integer NOT NULL,
-    m_password_change_code varchar(255) NOT NULL,
-    m_password_compat_scheme varchar(80) NOT NULL,
-    m_on_probation_until integer unsigned NULL,
-    m_profile_views integer unsigned NOT NULL,
-    m_total_sessions integer unsigned NOT NULL,
     m_auto_mark_read tinyint(1) NOT NULL,
+    m_total_sessions integer unsigned NOT NULL,
+    m_profile_views integer unsigned NOT NULL,
+    m_on_probation_until integer unsigned NULL,
+    m_password_compat_scheme varchar(80) NOT NULL,
+    m_password_change_code varchar(255) NOT NULL,
+    m_max_email_attach_size_mb integer NOT NULL,
+    m_pt_rules_text longtext NOT NULL,
+    m_pt_allow varchar(255) NOT NULL,
+    m_highlighted_name tinyint(1) NOT NULL,
+    m_allow_emails_from_staff tinyint(1) NOT NULL,
+    m_allow_emails tinyint(1) NOT NULL,
+    m_ip_address varchar(40) NOT NULL,
+    m_preview_posts tinyint(1) NOT NULL,
+    m_auto_monitor_contrib_content tinyint(1) NOT NULL,
+    m_views_signatures tinyint(1) NOT NULL,
+    m_photo_thumb_url varchar(255) BINARY NOT NULL,
+    m_photo_url varchar(255) BINARY NOT NULL,
+    m_title varchar(255) NOT NULL,
+    m_email_address varchar(255) NOT NULL,
+    m_reveal_age tinyint(1) NOT NULL,
+    m_dob_year integer NULL,
+    m_dob_day tinyint NULL,
     m_signature__text_parsed longtext NOT NULL,
     m_signature__source_user integer DEFAULT 1 NOT NULL,
     m_pt_rules_text__text_parsed longtext NOT NULL,
@@ -2820,66 +2820,66 @@ CREATE TABLE cms_f_members (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1550714689, 'UTC', 1, 1550714689, 1550714689, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1554920586, 'UTC', 1, 1554920586, 1554920586, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1550714689, 'UTC', 2, 1550714689, 1550714689, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1554920586, 'UTC', 2, 1554920586, 1554920586, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1550714689, 'UTC', 9, 1550714689, 1550714689, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
-', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5c6e0740df71b5.30746288_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5c6e0740df71b5.30746288_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5c6e0740df71b5.30746288_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1554920586, 'UTC', 9, 1554920586, 1554920586, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '0000:0000:0000:0000:0000:0000:0000:0001', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5cae3482b8b8a1.99187150_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5cae3482b8b8a1.99187150_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5cae3482b8b8a1.99187150_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
-ALTER TABLE cms10_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text);
+ALTER TABLE cms_f_members ADD FULLTEXT m_pt_rules_text (m_pt_rules_text);
 
-ALTER TABLE cms10_f_members ADD FULLTEXT m_signature (m_signature);
+ALTER TABLE cms_f_members ADD FULLTEXT m_signature (m_signature);
 
-ALTER TABLE cms10_f_members ADD FULLTEXT search_user (m_username);
+ALTER TABLE cms_f_members ADD FULLTEXT search_user (m_username);
 
-ALTER TABLE cms10_f_members ADD INDEX avatar_url (m_avatar_url(250));
+ALTER TABLE cms_f_members ADD INDEX avatar_url (m_avatar_url(250));
 
-ALTER TABLE cms10_f_members ADD INDEX birthdays (m_dob_day,m_dob_month);
+ALTER TABLE cms_f_members ADD INDEX birthdays (m_dob_day,m_dob_month);
 
-ALTER TABLE cms10_f_members ADD INDEX external_auth_lookup (m_pass_hash_salted(250));
+ALTER TABLE cms_f_members ADD INDEX external_auth_lookup (m_pass_hash_salted(250));
 
-ALTER TABLE cms10_f_members ADD INDEX ftjoin_msig (m_signature(250));
+ALTER TABLE cms_f_members ADD INDEX ftjoin_msig (m_signature(250));
 
-ALTER TABLE cms10_f_members ADD INDEX last_visit_time (m_dob_month,m_dob_day,m_last_visit_time);
+ALTER TABLE cms_f_members ADD INDEX last_visit_time (m_dob_month,m_dob_day,m_last_visit_time);
 
-ALTER TABLE cms10_f_members ADD INDEX menail (m_email_address(250));
+ALTER TABLE cms_f_members ADD INDEX m_join_time (m_join_time);
 
-ALTER TABLE cms10_f_members ADD INDEX m_join_time (m_join_time);
+ALTER TABLE cms_f_members ADD INDEX menail (m_email_address(250));
 
-ALTER TABLE cms10_f_members ADD INDEX primary_group (m_primary_group);
+ALTER TABLE cms_f_members ADD INDEX primary_group (m_primary_group);
 
-ALTER TABLE cms10_f_members ADD INDEX sort_post_count (m_cache_num_posts);
+ALTER TABLE cms_f_members ADD INDEX sort_post_count (m_cache_num_posts);
 
-ALTER TABLE cms10_f_members ADD INDEX user_list (m_username);
+ALTER TABLE cms_f_members ADD INDEX user_list (m_username);
 
-ALTER TABLE cms10_f_members ADD INDEX whos_validated (m_validated);
+ALTER TABLE cms_f_members ADD INDEX whos_validated (m_validated);
 
 DROP TABLE IF EXISTS cms_f_moderator_logs;
 
 CREATE TABLE cms_f_moderator_logs (
-    id integer unsigned auto_increment NOT NULL,
-    l_the_type varchar(80) NOT NULL,
-    l_param_a varchar(255) NOT NULL,
+    l_by integer NOT NULL,
     l_param_b varchar(255) NOT NULL,
     l_date_and_time integer unsigned NOT NULL,
     l_reason longtext NOT NULL,
-    l_by integer NOT NULL,
+    l_param_a varchar(255) NOT NULL,
+    l_the_type varchar(80) NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
 DROP TABLE IF EXISTS cms_f_multi_moderations;
 
 CREATE TABLE cms_f_multi_moderations (
-    id integer unsigned auto_increment NOT NULL,
-    mm_name longtext NOT NULL,
-    mm_post_text longtext NOT NULL,
-    mm_move_to integer NULL,
-    mm_pin_state tinyint(1) NULL,
     mm_sink_state tinyint(1) NULL,
+    mm_pin_state tinyint(1) NULL,
+    mm_move_to integer NULL,
+    mm_post_text longtext NOT NULL,
+    mm_name longtext NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     mm_open_state tinyint(1) NULL,
     mm_forum_multi_code varchar(255) NOT NULL,
     mm_title_suffix varchar(255) NOT NULL,
@@ -2888,20 +2888,20 @@ CREATE TABLE cms_f_multi_moderations (
 
 INSERT INTO cms_f_multi_moderations (id, mm_name, mm_post_text, mm_move_to, mm_pin_state, mm_sink_state, mm_open_state, mm_forum_multi_code, mm_title_suffix) VALUES (1, 'Trash', '', 4, 0, 0, 0, '*', '');
 
-ALTER TABLE cms10_f_multi_moderations ADD FULLTEXT mm_name (mm_name);
+ALTER TABLE cms_f_multi_moderations ADD FULLTEXT mm_name (mm_name);
 
 DROP TABLE IF EXISTS cms_f_password_history;
 
 CREATE TABLE cms_f_password_history (
-    id integer unsigned auto_increment NOT NULL,
-    p_member_id integer NOT NULL,
-    p_hash_salted varchar(255) NOT NULL,
-    p_salt varchar(255) NOT NULL,
     p_time integer unsigned NOT NULL,
+    p_salt varchar(255) NOT NULL,
+    p_hash_salted varchar(255) NOT NULL,
+    p_member_id integer NOT NULL,
+    id integer unsigned auto_increment NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-ALTER TABLE cms10_f_password_history ADD INDEX p_member_id (p_member_id);
+ALTER TABLE cms_f_password_history ADD INDEX p_member_id (p_member_id);
 
 DROP TABLE IF EXISTS cms_f_poll_answers;
 
