@@ -49,7 +49,7 @@ function sitemap_xml_build($callback = null, $force = false)
     $time = time();
 
     // Build from sitemap_cache table
-    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), null, $force ? '' : ' WHERE last_updated>=' . strval($last_time));
+    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), array(), $force ? '' : ' WHERE last_updated>=' . strval($last_time));
     if (count($set_numbers) > 0) {
         foreach ($set_numbers as $set_number) {
             rebuild_sitemap_set($set_number['set_number'], $last_time, $callback);
@@ -544,7 +544,7 @@ function notify_sitemap_node_delete($page_link)
 /**
  * Manually delete a node from the sitemap. Sometimes useful if Google Search Console is complaining, because something changed that Composr did not detect.
  *
- * @param SHORT_TEXT $url The URL
+ * @param  SHORT_TEXT $url The URL
  */
 function delete_sitemap_node_manually_by_url($url)
 {

@@ -195,7 +195,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     }
 
     if (function_exists('decache')) {
-        decache('_field_type_selection');
+        delete_cache_entry('_field_type_selection');
     }
 
     require_code('sitemap_xml');
@@ -401,7 +401,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
     }
 
-    decache('_field_type_selection');
+    delete_cache_entry('_field_type_selection');
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit('_SEARCH:catalogues:index:' . $name);

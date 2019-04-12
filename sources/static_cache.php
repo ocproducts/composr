@@ -352,7 +352,7 @@ function static_cache($mode)
                         'session_id' => '',
                         'member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                         'date_and_time' => time(),
-                        'referer' => cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255),
+                        'referer' => cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255),
                         's_get' => '',
                         'post' => '',
                         'milliseconds' => 0,

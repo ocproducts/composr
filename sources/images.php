@@ -40,7 +40,7 @@ function init__images()
 /**
  * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
- * @param  URLPATH $path The URL to the image file
+ * @param  URLPATH $url The URL to the image file
  * @param  boolean $only_if_local Whether only to accept local URLs (usually for performance reasons)
  * @return ~array The width and height (false: error)
  */
@@ -53,17 +53,17 @@ function cms_getimagesize_url($url, $only_if_local = false)
     $base_url = get_base_url();
     $custom_base_url = get_custom_base_url();
 
-    if ((strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url)) {
-        $details = cms_getimagesize(get_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
-    } elseif ((strpos($path, '.php') === false) && (substr($path, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($path))) {
-        $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($custom_base_url) + 1)));
+    if ((strpos($url, '.php') === false) && (substr($url, 0, strlen($base_url)) == $base_url)) {
+        $details = cms_getimagesize(get_file_base() . '/' . urldecode(substr($url, strlen($base_url) + 1)));
+    } elseif ((strpos($url, '.php') === false) && (substr($url, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($url, IMAGE_CRITERIA_GD_READ))) {
+        $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($url, strlen($custom_base_url) + 1)));
     } else {
         if ($only_if_local) {
             return false;
         }
 
-        $from_file = http_get_contents($path, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
-        $details = cms_getimagesizefromstring($from_file, get_file_extension($path));
+        $from_file = http_get_contents($url, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
+        $details = cms_getimagesizefromstring($from_file, get_file_extension($url));
     }
 
     return $details;

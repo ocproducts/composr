@@ -264,9 +264,9 @@ class Module_search
             $info = $ob->info();
             if (($info === null) || ($info === false)) {
                 if ($info === null) {
-                    set_http_status_code('404');
+                    set_http_status_code(404);
                 } else {
-                    set_http_status_code('401');
+                    set_http_status_code(401);
                 }
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
             }

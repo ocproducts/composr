@@ -513,8 +513,8 @@ class Hook_task_import_members
 
         $outputted_messages->attach(do_lang_tempcode('NUM_MEMBERS_IMPORTED', escape_html(integer_format($num_added)), escape_html(integer_format($num_edited))));
 
-        decache('side_stats');
-        decache('main_members');
+        delete_cache_entry('side_stats');
+        delete_cache_entry('main_members');
         delete_value('cns_newest_member_id');
         delete_value('cns_newest_member_username');
 

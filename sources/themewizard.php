@@ -284,7 +284,7 @@ function generate_logo($name, $font_choice = null, $logo_theme_image = 'logo/def
         $font_width = imagefontwidth($font) * strlen($name);
         $font_height = imagefontheight($font);
     } else {
-        list(, , $font_width, , , , , $font_height) = imagettfbbox(26.0, 0.0, $font_path, foxy_utf8_to_nce($name));
+        list(, , $font_width, , , , , $font_height) = imagettfbbox(26.0, 0.0, $font_path, convert_to_html_encoding($name));
         $font_height = max($font_height, -$font_height);
     }
 

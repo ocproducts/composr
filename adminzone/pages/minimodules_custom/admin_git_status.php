@@ -1,4 +1,4 @@
- <?php /*
+<?php /*
 
  Composr
  Copyright (c) ocProducts, 2004-2018

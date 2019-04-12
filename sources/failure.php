@@ -1019,18 +1019,18 @@ function get_webservice_result($error_message)
 
     require_code('version2');
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand);
-    list($result) = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 60 * 24 * 31/*once a month*/);
+    list($http_result) = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 60 * 24 * 31/*once a month*/);
     if ($http_result->download_mime_type != 'text/plain') {
         return null;
     }
 
-    if ($result == '') {
+    if ($http_result->data == '') {
         return null;
     }
     if (function_exists('ocp_mark_as_escaped')) {
-        ocp_mark_as_escaped($result);
+        ocp_mark_as_escaped($http_result->data);
     }
-    return $result;
+    return $http_result->data;
 }
 
 /**

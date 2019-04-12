@@ -243,7 +243,7 @@ function find_security_alerts($where = array())
  *
  * @param  boolean $include_referer Whether to include the referer
  * @param  ?MEMBER $member_id Member to lookup (null: current user)
- * @param  ?MEMBER $ip IP address (null: current / member's)
+ * @param  ?IP $ip IP address (null: current / member's)
  * @return PATH The path of the file
  */
 function save_user_metadata($include_referer = false, $member_id = null, $ip = null)
@@ -265,7 +265,7 @@ function save_user_metadata($include_referer = false, $member_id = null, $ip = n
  *
  * @param  boolean $include_referer Whether to include the referer
  * @param  ?MEMBER $member_id Member to lookup (null: current user)
- * @param  ?MEMBER $ip IP address (null: current / member's)
+ * @param  ?IP $ip IP address (null: current / member's)
  * @param  boolean $advanced Whether to include advanced data
  * @return array Data
  */

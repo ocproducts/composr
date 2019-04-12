@@ -751,7 +751,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                         $preprocessable_bits = array();
                                     }
 
-                                    continue 2;
+                                    break 2;
                             }
                         }
 

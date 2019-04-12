@@ -134,8 +134,8 @@ function find_default_font($mono = false)
 /**
  * Find all available fonts.
  *
- * @param boolean $test_character_support Test the font supports the characters in the site title (a rough way to check it is a reasonable font to use on this site).
- * @return array A map between font name and label to use for the font.
+ * @param  boolean $test_character_support Test the font supports the characters in the site title (a rough way to check it is a reasonable font to use on this site)
+ * @return array A map between font name and label to use for the font
  */
 function find_all_fonts($test_character_support = false)
 {
@@ -157,7 +157,7 @@ function find_all_fonts($test_character_support = false)
                         for ($i = 0; $i < $len; $i++) {
                             $char = cms_mb_substr($_test_text, $i, 1);
                             if (trim($char) != '') {
-                                $bounds = @imagettfbbox(26.0, 0.0, $path . '/' . $f, foxy_utf8_to_nce($char));
+                                $bounds = @imagettfbbox(26.0, 0.0, $path . '/' . $f, convert_to_html_encoding($char));
                                 $_chars[$char] = serialize($bounds);
                             }
                         }

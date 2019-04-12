@@ -1249,7 +1249,7 @@ class Module_cms_calendar extends Standard_crud_module
 
         ical_import($ical_url);
 
-        decache('side_calendar');
+        delete_cache_entry('side_calendar');
 
         return inform_screen($this->title, do_lang_tempcode('IMPORT_ICAL_DONE'));
     }

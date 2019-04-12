@@ -1397,11 +1397,12 @@ class HttpDownloaderSockets extends HttpDownloader
             $_frh = array($mysock);
             $_fwh = null;
             $time_init = time();
+            $line = '';
             while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
-                if ((function_exists('stream_select')) && (count($_frh) > 0) && (!stream_select($_frh, $_fwh, $_fwh, intval($timeout), fmod($timeout, 1.0) / 1000000.0))) {
-                    if (($input === '') && ($time_init + $timeout < time())) {
+                if ((function_exists('stream_select')) && (count($_frh) > 0) && (!stream_select($_frh, $_fwh, $_fwh, intval($this->timeout), fmod($this->timeout, 1.0) / 1000000.0))) {
+                    if (($input === '') && ($time_init + $this->timeout < time())) {
                         if ((!$chunked) || ($buffer_unprocessed == '')) {
-                        $line = false; // Manual timeout
+                            $line = false; // Manual timeout
                             if ($this->trigger_error) {
                                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_CONNECTION_STALLED', escape_html($url)));
                             } else {

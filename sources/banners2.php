@@ -331,7 +331,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
             if (function_exists('imagetypes')) {
                 require_code('images');
                 if (is_image($test_url, IMAGE_CRITERIA_GD_READ)) {
-                    $test = cms_getimagesize_url($test_url, get_file_extension($test_url));
+                    $test = cms_getimagesize_url($test_url);
 
                     if ($test === false) {
                         if (url_is_local($url)) {

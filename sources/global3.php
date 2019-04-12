@@ -2031,11 +2031,8 @@ function merge_sort(&$array, $cmp_function = 'strcmp')
 {
     // Arrays of size<2 require no action.
     if (count($array) < 2) {
-        if (count($rows) < 2) {
-            if (($GLOBALS['DEV_MODE']) && (count($rows) == 1)) {
-                call_user_func($cmp_function, current($array), current($array)); // Just to make sure there's no crash bug in the sort function
-            }
-            return;
+        if (($GLOBALS['DEV_MODE']) && (count($array) == 1)) {
+            call_user_func($cmp_function, current($array), current($array)); // Just to make sure there's no crash bug in the sort function
         }
 
         return;
@@ -4258,12 +4255,12 @@ function cms_unpack_to_uinteger($str, $bytes = null, $little_endian = false)
  * Perform a regular expression match.
  * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
- * @param  string $pattern The pattern.
- * @param  string $subject The subject string.
+ * @param  string $pattern The pattern
+ * @param  string $subject The subject string
  * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out) (null: do not store matches). Note that this is actually passed by reference, but is also optional. (null: don't gather)
- * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
+ * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE
  * @param  integer $offset Offset to start from. Usually use with 'A' modifier to anchor it (using '^' in the pattern will not work)
- * @return ~integer The number of matches (false: error).
+ * @return ~integer The number of matches (false: error)
  */
 function cms_preg_match_safe($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
 {
@@ -4280,10 +4277,10 @@ function cms_preg_match_safe($pattern, $subject, &$matches = null, $flags = 0, $
  * Array entries that match the pattern.
  * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
- * @param  string $pattern The pattern.
- * @param  array $subject The subject strings.
- * @param  integer $flags Either 0, or PREG_GREP_INVERT.
- * @return array Matches.
+ * @param  string $pattern The pattern
+ * @param  array $subject The subject strings
+ * @param  integer $flags Either 0, or PREG_GREP_INVERT
+ * @return array Matches
  */
 function cms_preg_grep_safe($pattern, $subject, $flags = 0)
 {
@@ -4300,11 +4297,11 @@ function cms_preg_grep_safe($pattern, $subject, $flags = 0)
  * Perform a global regular expression match.
  * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
- * @param  string $pattern The pattern.
- * @param  string $subject The subject string.
+ * @param  string $pattern The pattern
+ * @param  string $subject The subject string
  * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out). Note that this is actually passed by reference, but is also optional. (null: don't gather)
- * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
- * @return ~integer The number of matches (false: error).
+ * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE
+ * @return ~integer The number of matches (false: error)
  */
 function cms_preg_match_all_safe($pattern, $subject, &$matches, $flags = 0)
 {
@@ -4321,11 +4318,11 @@ function cms_preg_match_all_safe($pattern, $subject, &$matches, $flags = 0)
  * Perform a regular expression search and replace.
  * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
- * @param  mixed $pattern The pattern (string or array).
- * @param  mixed $replacement The replacement string (string or array).
- * @param  string $subject The subject string.
- * @param  integer $limit The limit of replacements (-1: no limit).
- * @return ~string The string with replacements made (false: error).
+ * @param  mixed $pattern The pattern (string or array)
+ * @param  mixed $replacement The replacement string (string or array)
+ * @param  string $subject The subject string
+ * @param  integer $limit The limit of replacements (-1: no limit)
+ * @return ~string The string with replacements made (false: error)
  */
 function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = -1)
 {
@@ -4342,11 +4339,11 @@ function cms_preg_replace_safe($pattern, $replacement, $subject, $limit = -1)
  * Perform a regular expression search and replace using a callback.
  * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
- * @param  string $pattern The pattern.
- * @param  mixed $callback The callback.
- * @param  string $subject The subject string.
- * @param  integer $limit The limit of replacements (-1: no limit).
- * @return ~string The string with replacements made (false: error).
+ * @param  string $pattern The pattern
+ * @param  mixed $callback The callback
+ * @param  string $subject The subject string
+ * @param  integer $limit The limit of replacements (-1: no limit)
+ * @return ~string The string with replacements made (false: error)
  */
 function cms_preg_replace_callback_safe($pattern, $callback, $subject, $limit = -1)
 {
@@ -4363,11 +4360,11 @@ function cms_preg_replace_callback_safe($pattern, $callback, $subject, $limit = 
  * Split string by a regular expression.
  * Automatically applies utf-8 if possible and appropriate. \s is not actually Unicode-safe, for example (as it matches non-breaking-spaces).
  *
- * @param  string $pattern The pattern.
- * @param  string $subject The subject.
- * @param  ?integer $max_splits The maximum number of splits to make (null: no limit).
- * @param  ?integer $mode The special mode (null: none).
- * @return array The array due to splitting.
+ * @param  string $pattern The pattern
+ * @param  string $subject The subject
+ * @param  ?integer $max_splits The maximum number of splits to make (null: no limit)
+ * @param  ?integer $mode The special mode (null: none)
+ * @return array The array due to splitting
  */
 function cms_preg_split_safe($pattern, $subject, $max_splits = null, $mode = null)
 {

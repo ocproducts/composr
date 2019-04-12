@@ -82,9 +82,9 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
 
-        $this->last_select_db = $db;
+        $this->last_select_db = $db_link;
 
-        $this->cache_db[$x] = $db;
+        $this->cache_db[$x] = $db_link;
 
         $init_queries = $this->get_init_queries();
         foreach ($init_queries as $init_query) {
@@ -137,7 +137,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             $results = $db->query($query);
         }
         catch (PDOException $e) {
-            $this->handle_failed_query($query, $m->getMessage(), $connection);
+            $this->handle_failed_query($query, $e->getMessage(), $connection);
             return null;
         }
 
