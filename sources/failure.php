@@ -262,7 +262,7 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
 
     require_code('urls');
     $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy(true);
-    $may_log_error = ((!running_script('cron_bridge')) || (@filemtime(get_custom_file_base() . '/data_custom/errorlog.php') < time() - 60 * 5));
+    $may_log_error = ((!running_script('cron_bridge')) || (@filemtime(get_custom_file_base() . '/data_custom/errorlog.php') < time() - 60 * 5)) && (!throwing_errors());
 
     if ($may_log_error) {
         // Put into error log
@@ -960,6 +960,9 @@ function get_webservice_result($error_message)
     if (get_domain() == 'compo.sr') {
         return null;
     }
+    if (get_domain() == 'ocproducts.com') {
+        return null;
+    }
     if (get_domain() == 'localhost') {
         return null; // In case of no Internet connection
     }
@@ -969,6 +972,7 @@ function get_webservice_result($error_message)
     }
 
     require_code('files');
+    require_code('files2');
     global $DONE_ONE_WEB_SERVICE;
     if ((isset($GLOBALS['DOWNLOAD_LEVEL']) && ($GLOBALS['DOWNLOAD_LEVEL'] > 0)) || ($DONE_ONE_WEB_SERVICE)) {
         return null;
@@ -1014,8 +1018,8 @@ function get_webservice_result($error_message)
     }
 
     require_code('version2');
-    $http_result = cms_http_request('https://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand), array('trigger_error' => false));
-    $result = $http_result->data;
+    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand);
+    list($result) = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 60 * 24 * 31/*once a month*/);
     if ($http_result->download_mime_type != 'text/plain') {
         return null;
     }
@@ -1207,7 +1211,7 @@ function die_html_trace($message)
                 $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
-            $traces .= ucfirst($key) . ' -> ' . escape_html($_value) . '<br />' . "\n";
+            $traces .= ucfirst($key) . ' -> ' . $_value . '<br />' . "\n";
         }
         $trace .= '<p>' . $traces . '</p>' . "\n";
     }

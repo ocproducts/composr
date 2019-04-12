@@ -14,8 +14,10 @@
 	{+END}
 
 	<a id="poll-jump" rel="dovote"></a>
+	{+START,IF_NON_EMPTY,{RESULT_URL}}
 	<form title="{!VOTE}" {+START,IF_NON_EMPTY,{RESULT_URL}}data-ajaxify-target="1"{+END} action="{VOTE_URL*}" method="post" class="poll-form" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
+	{+END}
 
 		<div>
 			{CONTENT}
@@ -26,7 +28,9 @@
 				<button disabled="disabled" id="poll{PID*}" data-disable-on-click="1" class="button-screen-item menu--social--polls" type="submit">{!VOTE}</button>
 			</p>
 		{+END}
+	{+START,IF_NON_EMPTY,{RESULT_URL}}
 	</form>
+	{+END}
 
 	<ul class="horizontal-links associated-links-block-group">
 		{+START,IF_NON_EMPTY,{FULL_URL}}<li><a target="_top" href="{FULL_URL*}" title="{!VIEW}: {!POLL} #{PID*}">{!VIEW}</a>{+START,IF,{$NOT,{$MATCH_KEY_MATCH,forum:topicview}}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} <span class="comment-count">{$COMMENT_COUNT,polls,{PID}}</span>{+END}{+END}{+END}</li>

@@ -237,7 +237,7 @@ function force_httpauth()
         exit();
     }
     if (isset($_SERVER['PHP_AUTH_PW'])) { // Ah, route as a normal login if we can then
-        $_POST['login_username'] = $_SERVER['PHP_AUTH_USER'];
+        $_POST['login_username'] = preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']);
         $_POST['password'] = $_SERVER['PHP_AUTH_PW'];
     }
 }
@@ -326,9 +326,10 @@ function try_su_login($member_id)
 /**
  * Try and login via HTTP authentication. This function is only called if HTTP authentication is currently active. With HTTP authentication we trust the PHP_AUTH_USER setting.
  *
+ * @param  boolean $quick_only Whether to just do a quick check, don't establish new sessions
  * @return ?MEMBER Logged in member (null: no log in happened)
  */
-function try_httpauth_login()
+function try_httpauth_login($quick_only = false)
 {
     global $LDAP_CONNECTION;
 
@@ -336,8 +337,8 @@ function try_httpauth_login()
     require_code('cns_groups');
     require_lang('cns');
 
-    $member_id = cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']);
-    if (($member_id === null) && ((running_script('index')) || (running_script('execute_temp')))) {
+    $member_id = cns_authusername_is_bound_via_httpauth(preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']));
+    if (($member_id === null) && ((running_script('index')) || (running_script('execute_temp'))) && (!$quick_only)) {
         require_code('cns_members_action');
         require_code('cns_members_action2');
         if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
@@ -347,16 +348,16 @@ function try_httpauth_login()
             }
 
             cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
-            $middle = cns_member_external_linker_ask(((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap', $_SERVER['PHP_AUTH_USER']);
+            $middle = cns_member_external_linker_ask(((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap', preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']));
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member_id = cns_member_external_linker(((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap', $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER']);
+            $member_id = cns_member_external_linker(((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap', preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']), preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']));
         }
     }
 
-    if ($member_id !== null) {
+    if (($member_id !== null) && (!$quick_only)) {
         create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }
 

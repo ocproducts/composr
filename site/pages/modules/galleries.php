@@ -798,6 +798,7 @@ class Module_galleries
                     'VIDEO_PLAYER' => $video_player,
                     'VIEW_URL' => $view_url,
                     'VIDEO_DETAILS' => show_video_details($row),
+                    'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row['allow_comments'] >= 1)),
                 ));
 
                 $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $row['video_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
@@ -864,6 +865,7 @@ class Module_galleries
                     'SUBMITTER' => strval($row['submitter']),
                     'THUMB' => $thumb_url,
                     'VIEW_URL' => $view_url,
+                    'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row['allow_comments'] >= 1)),
                 ));
 
                 $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $row['image_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
@@ -910,7 +912,7 @@ class Module_galleries
                 continue;
             }
 
-            $just_row = db_map_restrict($row, array('description')) + array('id' => $row['r_id']);
+            $just_row = db_map_restrict($row, array('id', 'description'), array('id' => 'r_id'));
 
             $entry_title = get_translated_text($row['title']);
             $entry_description = get_translated_tempcode($type . 's', $just_row, 'description');

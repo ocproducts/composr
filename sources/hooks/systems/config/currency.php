@@ -34,7 +34,7 @@ class Hook_config_currency
             'human_name' => 'CURRENCY',
             'type' => 'special',
             'category' => 'ECOMMERCE',
-            'group' => 'GENERAL',
+            'group' => 'CURRENCY',
             'explanation' => 'CONFIG_OPTION_currency',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

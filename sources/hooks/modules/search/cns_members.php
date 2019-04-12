@@ -27,16 +27,21 @@ class Hook_search_cns_members extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
+     * @param  ?MEMBER $member_id The member ID to check with (null: current member)
      * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
-    public function info($check_permissions = true)
+    public function info($check_permissions = true, $member_id = null)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
 
         if ($check_permissions) {
-            if (!has_actual_page_access(get_member(), 'members')) {
+            if (!has_actual_page_access($member_id, 'members')) {
                 return false;
             }
         }
@@ -57,9 +62,13 @@ class Hook_search_cns_members extends FieldsSearchHook
         $info['days_label'] = do_lang_tempcode('JOINED_DATE_RANGE');
 
         $extra_sort_fields = array();
-        if (has_privilege(get_member(), 'view_profiles')) {
+        if (has_privilege($member_id, 'view_profiles')) {
             require_code('cns_members');
-            $rows = cns_get_all_custom_fields_match(null, has_privilege(get_member(), 'view_any_profile_field') ? null : 1, has_privilege(get_member(), 'view_any_profile_field') ? null : 1);
+            $rows = cns_get_all_custom_fields_match(
+                null, // groups
+                has_privilege($member_id, 'view_any_profile_field') ? null : 1, // public view
+                has_privilege($member_id, 'view_any_profile_field') ? null : 1 // owner view
+            );
             foreach ($rows as $row) {
                 $extra_sort_fields['field_' . strval($row['id'])] = $row['trans_name'];
             }
@@ -82,7 +91,11 @@ class Hook_search_cns_members extends FieldsSearchHook
 
         $fields = array();
         if (has_privilege(get_member(), 'view_profiles')) {
-            $rows = cns_get_all_custom_fields_match(null, has_privilege(get_member(), 'view_any_profile_field') ? null : 1, has_privilege(get_member(), 'view_any_profile_field') ? null : 1);
+            $rows = cns_get_all_custom_fields_match(
+                null, // groups
+                has_privilege(get_member(), 'view_any_profile_field') ? null : 1, // public view
+                has_privilege(get_member(), 'view_any_profile_field') ? null : 1 // owner view
+            );
             require_code('fields');
             foreach ($rows as $row) {
                 $ob = get_fields_hook($row['cf_type']);
@@ -200,7 +213,11 @@ class Hook_search_cns_members extends FieldsSearchHook
         $this->_handle_date_check($cutoff, 'm_join_time', $where_clause);
         $raw_fields = array('m_username');
         $trans_fields = array();
-        $rows = cns_get_all_custom_fields_match(null, has_privilege(get_member(), 'view_any_profile_field') ? null : 1, has_privilege(get_member(), 'view_any_profile_field') ? null : 1);
+        $rows = cns_get_all_custom_fields_match(
+            null, // groups
+            has_privilege(get_member(), 'view_any_profile_field') ? null : 1, // public view
+            has_privilege(get_member(), 'view_any_profile_field') ? null : 1 // owner view
+        );
         $table = '';
         require_code('fields');
         $non_trans_fields = 0;

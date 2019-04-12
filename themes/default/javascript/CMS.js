@@ -1216,8 +1216,9 @@
      * @param {string|null} [post] - Note that 'post' is not an array, it's a string (a=b)
      * @returns { Promise }
      */
-    $cms.doAjaxRequest = function doAjaxRequest(url, callback, post) {
+    $cms.doAjaxRequest = function doAjaxRequest(url, callback, post, timeout) {
         url = strVal(url);
+        timeout = intVal(timeout, 10000);
 
         return new Promise(function (resolvePromise) {
             var xhr = new XMLHttpRequest();
@@ -1240,6 +1241,9 @@
 
                 xhr.open('POST', url, true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                if (!synchronous) {
+                    xhr.timeout = timeout;
+                }
                 xhr.send(post);
             } else {
                 xhr.open('GET', url, true);

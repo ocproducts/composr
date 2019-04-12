@@ -326,9 +326,9 @@ function cns_read_in_member_profile($member_id, $need = null, $include_encrypted
     // Custom fields
     if (($need === null) || (in_array('custom_fields', $need))) {
         $member_info['custom_fields'] = cns_get_all_custom_fields_match_member(
-            $member_id,
-            (($member_id_viewing != $member_id) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null,
-            (($member_id_viewing != $member_id) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null,
+            $member_id, // member
+            (($member_id_viewing != $member_id) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, // public view
+            (($member_id_viewing != $member_id) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, // owner view
             null, // owner set
             $include_encrypted_cpfs ? null : 0, // encrypted
             null, // required

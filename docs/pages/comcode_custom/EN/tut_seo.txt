@@ -52,6 +52,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Use dedicated "landing pages" that you can link to from other websites. A landing page is just a normal page that you intend to point people to. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
  - Set aside time for regular testing; test the right pages show up when doing searches, and the wrong ones don't
  - Make sure your site has a presence on social media (e.g. Facebook and Twitter)
+ - If targeting an international audience, consider having high-quality translations done of your content so that non-English search engines have some food to pick up on (Composr has excellent multi-language support)
 
 There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
 

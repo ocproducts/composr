@@ -536,7 +536,7 @@ function comcode_helper_script_step2()
                             $default = $matches[1];
                         }
                     }
-                    $descriptiont = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $descriptiont);
+                    $descriptiont = cms_preg_replace_safe('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $descriptiont);
 
                     if (($tag == 'media') && (get_param_integer('image', 0) == 1)) {
                         if ($param == 'wysiwyg_editable') {

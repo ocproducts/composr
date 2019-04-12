@@ -289,6 +289,7 @@ END;
             } else {
                 $url = (($back_path == '') ? '' : ($back_path . '/')) . 'index.php?page=_critical_error&error_code=' . urlencode($code);
             }
+            @header('Location: ' . $url);
             echo '<meta http-equiv="refresh" content="0;url=' . htmlentities($url) . '" />';
         } else {
             ob_end_flush();

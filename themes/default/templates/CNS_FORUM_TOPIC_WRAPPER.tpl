@@ -93,10 +93,10 @@
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
-						<select class="dropdown-actions" name="type" id="fma-type">
+						<select name="type" id="fma-type" class="dropdown-actions js-moderator-action-submit-form">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><button class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+						</select>
 					</div>
 				</form>
 
@@ -106,14 +106,14 @@
 
 						<div class="inline">
 							<label for="forum_max">{!PER_PAGE}:</label>
-							<select name="forum_max" id="forum_max" class="js-select-change-submit-form">
+							<select name="forum_max" id="forum_max" class="js-max-change-submit-form">
 								<option value="10"{$?,{$EQ,{MAX},10}, selected="selected",}>10</option>
 								<option value="20"{$?,{$EQ,{MAX},20}, selected="selected",}>20</option>
 								<option value="30"{$?,{$EQ,{MAX},30}, selected="selected",}>30</option>
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><button class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+							</select>
 						</div>
 					</form>
 
@@ -122,7 +122,7 @@
 
 						<div class="inline">
 							<label for="order">{!SORT}:</label>
-							<select class="js-select-change-submit-form" name="order" id="order">
+							<select name="order" id="order" class="js-order-change-submit-form">
 								<option value="last_post"{$?,{$EQ,{ORDER},last_post}, selected="selected",}>{!FORUM_ORDER_BY_LAST_POST}</option>
 								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>
 								<option value="title"{$?,{$EQ,{ORDER},title}, selected="selected",}>{!FORUM_ORDER_BY_TITLE}</option>

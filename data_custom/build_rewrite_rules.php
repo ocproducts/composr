@@ -23,7 +23,7 @@ Also see chmod_consistency.php for the equivalent for chmodding rules, and make_
 
 header('X-Robots-Tag: noindex');
 
-$cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+$cli = is_cli();
 if (!$cli) {
     header('Content-type: text/plain; charset=utf-8');
     exit('Must run this script on command line, for security reasons');
@@ -156,9 +156,6 @@ write_to('install.php', 'ApacheRecommended', '/*REWRITE RULES START*/$clauses[]=
 // Write rules to web.config (new IIS)
 write_to('web.config', 'IIS', '<rules>', '</rules>', 4, $rewrite_rules);
 
-// Write rules to cms.hdf (Hip Hop PHP)
-write_to('cms.hdf', 'HPHP', 'RewriteRules {', "\t\t}", 3, $rewrite_rules);
-
 function write_to($file_path, $type, $match_start, $match_end, $indent_level, $rewrite_rules)
 {
     if (!file_exists($file_path)) {
@@ -228,9 +225,9 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
 
             $rules_txt .= '
             # WebDAV implementation (requires the non-bundled WebDAV addon)
-            RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+            RewriteRule ^webdav(/.*|$) data_custom/webdav.php
             RewriteCond %{HTTP_HOST} ^webdav\..*
-            RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+            RewriteRule ^(.*)$ data_custom/webdav.php
 
             #FAILOVER STARTS
             ### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###
@@ -339,39 +336,6 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
             $rules_txt = preg_replace('#^\t*#m', str_repeat("\t", $indent_level), $rules_txt);
             $new .= $rules_txt;
             $new .= $match_end;
-            break;
-
-        case 'HPHP':
-            $new = $match_start;
-            $rules_txt = '';
-            $i = 0;
-            foreach ($rewrite_rules as $x => $rewrite_rule_block) {
-                if ($x != 0) {
-                    $rules_txt .= "\n";
-                }
-                list($comment, $rewrite_rule_set) = $rewrite_rule_block;
-                $rules_txt .= "\n" . '# ' . $comment . "\n";
-                foreach ($rewrite_rule_set as $y => $rewrite_rule) {
-                    list($rule, $to, $flags, $enabled) = $rewrite_rule;
-
-                    if ($y != 0) {
-                        $rules_txt .= "\n\n";
-                    }
-
-                    $rules_txt .= ($enabled ? '' : '#') . 'rule' . strval($i + 1) . ' {
-                        ' . ($enabled ? '' : '#') . 'pattern = ' . $rule . '
-                        ' . ($enabled ? '' : '#') . 'to = ' . $to . '
-                        ' . ($enabled ? '' : '#') . 'qsa = ' . (in_array('QSA', $flags) ? 'true' : 'false') . '
-                    ' . ($enabled ? '' : '#') . '}';
-
-                    $i++;
-                }
-            }
-            $_indent_level = str_repeat("\t", $indent_level);
-            $rules_txt = preg_replace('#^[\t ]*#m', $_indent_level, $rules_txt);
-            $rules_txt = preg_replace('#((pattern|to|qsa) = )#', "\t$1", $rules_txt);
-            $new .= $rules_txt;
-            $new .= "\n" . $match_end;
             break;
     }
 

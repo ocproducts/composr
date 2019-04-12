@@ -473,6 +473,10 @@
         if (changeDetectionUrl && (refreshTime > 0)) {
             window.ajaxScreenDetectInterval = setInterval(function () {
                 detectChange(changeDetectionUrl, refreshIfChanged, function () {
+                    if (document.hidden) {
+                        return; /*{$,Don't hurt server performance needlessly when running in a background tab - let an e-mail notification alert them instead}*/
+                    }
+
                     if (!document.getElementById('post') || (document.getElementById('post').value === '')) {
                         $cms.callBlock(url, '', element, false, true, null, true).then(function () {
                             detectedChange();
@@ -598,7 +602,7 @@
             $cms.doAjaxRequest(pingUrl);
 
             setInterval(function () {
-                $cms.doAjaxRequest(pingUrl);
+                $cms.doAjaxRequest(pingUrl, function() {}, null, 2000);
             }, 12000);
         }
     };

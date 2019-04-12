@@ -99,6 +99,13 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
     if ($time === null) {
         $time = time();
     }
+    if ($time_post === null) {
+        $time_post = time();
+    }
+    if ($time_post < $time) {
+        $time_post = $time; // Don't allow post to be earlier than topic
+    }
+
     if ($ip === null) {
         $ip = get_ip_address();
     }
@@ -374,7 +381,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         $out[$i]['firstmemberid'] = $fp_rows[0]['p_poster'];
         $out[$i]['firsttitle'] = $fp_rows[0]['p_title'];
         if ($show_first_posts) {
-            $post_row = db_map_restrict($fp_rows[0], array('p_post')) + array('id' => $fp_rows[0]['p_id']);
+            $post_row = db_map_restrict($fp_rows[0], array('id', 'p_post'), array('id' => 'p_id'));
             $out[$i]['firstpost_language_string'] = $fp_rows[0]['p_post'];
             $out[$i]['firstpost'] = get_translated_tempcode('f_posts', $post_row, 'p_post', $this_ref->db);
         }
@@ -585,7 +592,7 @@ function _helper_get_emoticon_chooser($this_ref, $field_name)
 
         $em = apply_quick_caching($em);
 
-        set_cache_entry('_emoticon_chooser', 60 * 60 * 24, $cache_identifier, $em);
+        set_cache_entry('_emoticon_chooser', 60 * 24, $cache_identifier, $em);
     }
 
     return $em;

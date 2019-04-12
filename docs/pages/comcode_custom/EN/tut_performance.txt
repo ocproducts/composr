@@ -15,6 +15,7 @@ Performance tuning is multi-faceted, broadly fitting into:
  - Blocking abuse, such as bad bots, DOS attacks, misrouted traffic, and flooders
  - Improving page download speeds (e.g. compression and minification)
  - Improving front-end rendering time
+ - Optimising server configuration
 There are many angles to come at the problem, and to really do a good job you need to come at all of them, on every layer of the web architecture.
 
 Limiting factors could be:
@@ -34,6 +35,8 @@ Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a
  - xcache (free)
 
 Only one opcode cache can be used, and they often need to be manually compiled against the PHP version on the server and then installed as an extension. Such system administration is beyond the scope of this tutorial.
+
+Do not set the persistent cache's memory higher than needed, especially on a fast CGI or module-based PHP installation -- for at least some persistent cache backends the memory is pre-allocated, for each PHP process that is running. For APC, this is set via the [tt]apc.shm_size[/tt] setting.
 
 [title="2"]Persistent database connections[/title]
 
@@ -80,7 +83,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Comcode tabs can take a page-link rather than normal Comcode contents, for the tab to open up via AJAX (don't use this on the default tab though, as that won't work).
  - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER.tpl[/tt] template for an example of AJAX tooltip code.
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
- - [b]Block unwanted bots[/b] you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there.
+ - [b]Block unwanted bots[/b] you see in your logs using [tt]robots.txt[/tt], block URLs that you don't care to be indexed, and set a [tt]Crawl-delay[/tt] value in there.
  - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search[/page] tutorial).
  - Enable the "Gzipped output" configuration option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
  - Sometimes you may be flooded with random traffic. For example, the chinese "great firewall" has been observed to randomly reroute traffic to avoid it reaching certain sites. If this happens, you may want to use a [tt].htaccess[/tt] file (Apache only) to spot undesired request patterns and terminate those requests.
@@ -90,8 +93,30 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently).
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
- - MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
  - If you use [tt]www[/tt] in your base URL, set an explicit cookie domain in [tt]_config.php[/tt] to include that. This will cause Google Analytics cookies to be set on the [tt]www[/tt] subdomain, reducing the cookie volume on other domains.
+ - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources.
+ - If you have custom [tt].php[/tt] scripts that are called a lot, consider whether they could just be static files -- or if the output can be statically cached and a transparent webserver-level redirect can be used to bypass PHP. PHP has infinitely more overhead than a static file, and is often a bottleneck due to limited quantities of FastCGI workers.
+
+[title="2"]Server configuration tips[/title]
+
+The fastest way to configure PHP is usually as FPM (FastCGI), on top of a threaded web server (e.g. Apache's [tt]mpm_event[/tt]):
+ - While the traditional Apache [tt]mod_php[/tt] is fast and simple, it cannot run on top of [tt]mpm_event[/tt] because it is not thread-safe, so it doesn't scale up well -- you'll find you need more Apache processes just to deal with static requests, but each comes with the overhead of [tt]mod_php[/tt].
+ - suPHP and CGI are likely too slow for you.
+ - FPM will give you a suEXEC-like capability without actually needing to configure suEXEC.
+ - FPM has the capability of scaling up and down the number of PHP FastCGI processes dynamically, within the bounds you configure.
+ - Be aware that this requires a baseline of RAM for every website on the server that is running under a different username because the FastCGI processes are user-specific.
+ - The more RAM you have, the quicker parallel PHP requests can be handled as more FastCGI instances can be configured to remain resident in RAM.
+ - Don't have an Apache or FastCGI (FPM) configuration that allows more Apache/PHP processes than you have memory for when a server is under high load -- it is much better to have saturated CPU than to have your server start page swapping.
+ - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
+ - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
+ - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
+ - Configure your SSL options appropriately; basically there is a tradeoff between perfect privacy ("Perfect Forward Secrecy") and speed.
+ - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit).
+ - You may want to use only systemd's journald, rather than rsyslogd; on some Linux system rsyslogd is configured to mirror entries written to journald, which can be very intensive due to the frequent reading in and out. journald is higher performance as it is an efficient binary format with a cursor feature.
+ - Consider whether you want journaling or not -- it has a significant I/O overhead.
+ - If you use Dropbox for server backup, and have other users actively saving files into the account, only keep it started for a short time after your backup script finishes -- as it will do a lot of I/O updating its SQLite databases whenever any file in Dropbox is changed.
+
+Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer. You can [url="adjust the threshold when a Linux server will start using swapspace"]https://www.howtoforge.com/tutorial/linux-swappiness/[/url].
 
 [title="2"]Merging JavaScript or CSS files[/title]
 
@@ -171,6 +196,8 @@ The cache is implemented to work with any one of:
 Composr will not use a persistent cache by default but it may be enabled from the Installation Options editor.
 
 Composr does not cache processed content in memory that has no special featured status, as this would only trade reliance on CPU for reliance on memory in a non-productive fashion.
+
+Be aware that some persistent cache backends may be tied into a PHP process, rather than held system wide. This is the case for APC. Therefore if you are using a CGI architecture the full contents of the cache will be dumped each time a web request finishes (defeating the entire purpose); for fast CGI it's not as bad, as processes serve multiple requests, although it does mean there is a lot of duplication between each fast CGI process.
 
 [title="2"]Aggressive caching for bots[/title]
 
@@ -600,18 +627,89 @@ Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[
 [title="2"]Profiling[/title]
 
 A developer can run a profiler to work out bottlenecks in code, and decide optimisations.
-For hard-core programming, xdebug would be used. Here are a few things to look at:
+
+[title="3"]xdebug[/title]
+
+For hard-core programming, xdebug would be used. It collects the most detailed profiling information and there are many tools for analysing the data.
+
+Here are a few things to look at:
  - Functions called a lot (function calls are costly, perhaps the function isn't really needed that much)
  - Functions that take a long time to run individually (perhaps they can be optimised)
  - Functions that take a long time to run in aggregate (perhaps they can be optimised)
  - Disk operations called a log (e.g. [tt]is_file[/tt]) (perhaps they can be avoided)
 
-You can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+[title="3"]tideways-xhprof[/title]
+
+Facebook developed xhprof, a fast profiler that can be used on live servers. It collects less detailed data than xdebug. xhprof was discontinued, but tideways-xhprof is a fork that is well maintained.
+
+To use on a live server you can install the [url="tideways-xhprof"]https://github.com/tideways/php-xhprof-extension[/url] extension, then add this PHP code to your [tt]_config.php[/tt] file:
+[code="PHP"]
+if ((class_exists('\Tideways\Profiler')) && (isset($_SERVER['HTTP_HOST']))) {
+    \Tideways\Profiler::setServiceName($_SERVER['HTTP_HOST']);
+}
+
+if (function_exists('tideways_xhprof_enable')) {
+    global $TIDEWAYS_INIT_TIME;
+    $TIDEWAYS_INIT_TIME = microtime(true);
+
+    tideways_xhprof_enable();
+    register_shutdown_function(function() {
+        if ((class_exists('\Tideways\Profiler')) && (function_exists('get_self_url_easy'))) {
+            \Tideways\Profiler::setTransactionName(get_self_url_easy(true));
+        }
+
+        register_shutdown_function(function() {
+            $save_id = strval(time()) . '-' . uniqid('', true);
+
+            global $TIDEWAYS_INIT_TIME;
+            //require_code('global4');
+            $context_data = array(
+                'wall_time' => microtime(true) - $TIDEWAYS_INIT_TIME,
+                //'normative_performance' => find_normative_performance(),
+                'cat /proc/meminfo' => shell_exec('cat /proc/meminfo'),
+                'uptime' => shell_exec('uptime'),
+                'ps -Af' => shell_exec('ps -Af'),
+                'top -n1' => shell_exec('top -n1'),
+                'iostat' => shell_exec('iostat'),
+                'iotop -n1 -b' => shell_exec('iotop -n1 -b'),
+                '$_SERVER' => $_SERVER,
+                '$_ENV' => $_ENV,
+                '$_GET' => $_GET,
+                '$_POST' => $_POST,
+                '$_COOKIE' => $_COOKIE,
+                '$_FILES' => $_FILES,
+            );
+            file_put_contents(dirname(__FILE__) . '/safe_mode_temp/composr-' . $save_id . '.context', json_encode($context_data,  JSON_PRETTY_PRINT));
+
+            $data = tideways_xhprof_disable();
+            file_put_contents(dirname(__FILE__) . '/safe_mode_temp/composr-' . $save_id . '.xhprof', serialize($data));
+        });
+    });
+};
+[/code]
+The collected xhprof data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
+The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the environment status when the profiling happened.
+
+[title="3"]Commercial dashboards[/title]
+
+Newrelic and Tideways both provide high-quality performance monitoring dashboards, for a fee. To a limited extent Google Analytics can also identify performance issues.
+
+[title="3"]Composr's inbuilt profiler[/title]
+
+Composr's built-in profiler is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+
+[title="3"]MySQL[/title]
+
+MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
+
+[title="3"]Composr's page stats[/title]
 
 If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
 [code="SQL"]
 SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
 [/code]
+
+[title="3"]Filesystem[/title]
 
 If you create a [tt]data_custom/debug_fs.log[/tt] file then all disk activity will be written to it if you load the site with [tt]keep_debug_fs=1[/tt].
 
@@ -650,11 +748,62 @@ In these kinds of situations you need to identify what server resource is deplet
 3) CPU
 4) Network I/O (available bandwidth)
 
+A good system administrator will:
+1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
+2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
+3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+
+[title="3"]Potential bottlenecks[/title]
+
+Here's a list of metrics you may want to be considering...
+ - Memory:
+  - Free non-swap memory
+  - Assigned swap memory
+  - Swapping rate
+  - MySQL memory usage specifically
+  - Combined PHP memory usage specifically
+ - Processes:
+  - Process count
+  - Process count of PHP CLI processes specifically
+  - Process count of PHP web processes specifically
+ - Queues:
+  - Queued MySQL queries
+  - Queued web requests
+ - CPU (&dagger;):
+  - Uptime
+  - CPU utilisation
+ - Local I/O:
+  - Disk I/O load
+  - I/O wait time
+  - I/O queue length
+  - Performance:
+   - I/O read latency
+   - I/O write latency
+   - I/O read throughput
+   - I/O write throughput
+ - Network I/O:
+  - Network I/O load
+  - Inbound bandwidth utilisation
+  - Outbound bandwidth utilisation
+  - Packet loss percentage
+  - Inbound ping time
+  - Outbound ping time
+  - Inbound network pipe speed
+  - Outbound network pipe speed
+
+&dagger; I/O load will also raise these metrics, which can be confusing.
+
+[title="3"]Diagnostic tools[/title]
+
 There are are various commands on Linux that are useful during diagnosis...
 {|
 ! Command
 ! Purpose
 ! Hints
+|-
+| [tt]cat /proc/meminfo[/tt]
+| Show detailed memory information
+| 
 |-
 | [tt]uptime[/tt]
 | Show the CPU load at different points in time
@@ -666,24 +815,174 @@ There are are various commands on Linux that are useful during diagnosis...
 |-
 | [tt]top -n1[/tt]
 | Show active processes, sorted by CPU usage; also, total CPU usage, memory usage, and I/O wait time
-| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted.
+| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted. You may also want to try [tt]atop[/tt] which is similar but better.
 |-
-| [tt]iostat[/tt]
+| [tt]iostat -xt 1[/tt]
 | Show CPU and disk load
 | This is useful to find disk I/O load.
 |-
-| [tt]iotop[/tt]
+| [tt]iotop -n1 -b[/tt]
 | Show active processes by I/O load
 | This command usually is not installed by default. It is very useful to find what processes are doing a lot of I/O.
+|-
+| [tt]vmstat 1[/tt]
+| Watch virtual memory
+| Watching the numbers changing will tell you if the server is 'page swapping' due to low memory (which is a huge performance killer).
+|-
+| [tt]fatrace[/tt]
+| Watch disk reads
+| This will give you much more insight than just looking at live load numbers. If you have a problem with I/O queue buildup (different whatever your I/O throughput is, due to latency) then this will help you find what the I/O is being spent on. Note that writes to a swap partition will not show up here. On my testing I also found some other minor file accesses not showing up, and I don't know why.
 |}
-Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache log will.
+
+Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput) and to make sure you're not overlooking request volume from individual hosts (which may use [tt]KeepAlive[/tt] and therefore keep on the same Apache slots).
+
+Some of the sample commands above are configured to keep showing results in a loop. Note that you will miss things doing this. For example, from experience if swapping is happening you may not actually see it in the [tt]vmstat[/tt] output.
 
 There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
 
-A good system administrator will:
-1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
-2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
-3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+[title="3"]Tips[/title]
+
+Some further tips:
+ - If you are on a VPS or shared hosting ask the webhost whether there is too much load on the host machine at some points during the day. For a VPS, consider whether you have dedicated cores, have virtual cores in a small shared pool (worst, depending on your 'neighbours'), or whether you have virtual cores in a large pool (very efficient and adaptive, so long as the host's cores aren't all full). Note that a VPS cannot truly know what load the host machine is under, so will not be optimal in how it manages system load -- for example, low-priority tasks such as flushing disk write caches may happen when the VM 'thinks' the disk is under low load, when the real disk may actually be under high load.
+ - If you are on a VPS then don't assume that I/O will be as a regular machine's HDD or SSD -- there's a good chance the host is using some kind of storage array with its own latency, in addition to VM overhead. I/O is always queued on any architecture so you'll get queue buildup, on both the VPS and the host, exacerbated by the latency. From my testing it seems Linux will flush disk writes early (to log files, for example) if it thinks the disk is free, which can actually lock things up badly on a VPS.
+ - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
+ - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
+ - If you are seeing swap space used even when you have plenty of free RAM and a low [tt]swappiness[/tt] setting, you can do [tt]swapoff -a; swapon -a[/tt] to force it to clear.
+ - Check your [tt]robots.txt[/tt] file actually can be called by URL (it's easy to accidentally set the wrong file permissions on it and not notice, for example).
+
+[title="3"]Improving Apache access logs[/title]
+
+Staring at an Apache access log can be frustrating, especially if you have a lot of static file requests, or your server's traffic is split across different logs. You also can't graph a raw log.
+
+It may therefore be useful to use a custom script to visualise a log. Here is one I wrote for the compo.sr web server (which runs ISPConfig):
+[codebox="PHP"]
+<?php
+
+// Config
+$cutoff = time() - 60 * 60 * 5;
+$php_only = true;
+$filter_403 = true;
+$common_fast_urls = array(
+    'https://compo.sr/backend.php?type=rss&mode=news',
+);
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+$results = array();
+$files = glob('/var/www/*/log/access.log');
+foreach ($files as $file_path) {
+    if (!file_exists($file_path)) {
+        continue;
+    }
+
+    echo 'Processing ' . $file_path . "\n";
+    flush();
+
+    $domain = basename(dirname(dirname($file_path)));
+
+    if ($cutoff === null) {
+        $lines = file($file_path);
+    } else {
+        $lines = explode("\n", shell_exec('tail -n 1000 ' . $file_path));
+    }
+
+    echo ' found ' . strval(count($lines)) . ' lines' . "\n";
+    flush();
+
+    foreach ($lines as $line) {
+        $parsed = parse_log_line($domain, $line);
+        if (
+            ($parsed !== null) &&
+            ((!$filter_403) || ($parsed['response_code'] != 403)) &&
+            (($cutoff === null) || ($parsed['timestamp'] > $cutoff)) &&
+            ((!$php_only) || (preg_match('#\.(php|htm)#', $parsed['url']) != 0) &&
+            (!in_array($parsed['url'], $common_fast_urls))
+        ) {
+            $results[] = $parsed;
+        }
+    }
+}
+
+usort($results, function ($a, $b) {
+    return ($a['timestamp'] > $b['timestamp']) ? 1 : (($a['timestamp'] == $b['timestamp']) ? 0 : -1);
+});
+
+foreach ($results as $i => $result) {
+    if ($i == 0) {
+        foreach (array_keys($result) as $j => $key) {
+            if ($j != 0) {
+                echo "\t";
+            }
+            echo '"' . str_replace('"', '""', $key) . '"';
+        }
+        echo "\n";
+    }
+
+    foreach (array_values($result) as $j => $val) {
+        if ($j != 0) {
+            echo "\t";
+        }
+        if (empty($val)) {
+            echo '"-"'; // Otherwise Excel will mess up column alignment
+        } else {
+            echo '"' . str_replace('"', '""', $val) . '"';
+        }
+    }
+    echo "\n";
+}
+
+function parse_log_line($hostname, $line)
+{
+    /*
+    Log file format for our configured/chosen LogFormat in Apache...
+
+    Remote hostname. Will log the IP address if HostnameLookups is set to Off, which is the default. If it logs the hostname for only a few hosts, you probably have access control directives mentioning them by name. See the Require host documentation.
+    Remote logname (from identd, if supplied). This will return a dash unless mod_ident is present and IdentityCheck is set On.
+    Remote user if the request was authenticated. May be bogus if return status (%s) is 401 (unauthorized).
+    Time the request was received, in the format [18/Sep/2011:19:18:28 -0400]. The last number indicates the timezone offset from GMT
+    First line of request.
+    Status. For requests that have been internally redirected, this is the status of the original request. Use %>s for the final status.
+    Bytes sent, including headers. May be zero in rare cases such as when a request is aborted before a response is sent. You need to enable mod_logio to use this.
+    Referer
+    User-agent
+    The time taken to serve the request, in microseconds. [was added on to the default manually, not normally present]
+    */
+
+    $matches = array();
+    if (preg_match('#^(\d+\.\d+\.\d+\.\d+) [^ ]+ [^ ]+ \[([^\[\]]*)\] "(\w+) ([^" ]*) HTTP/([\d\.]+)" (\d+) (\d+) "([^"]*)" "([^"]*)" (\d+)$#', $line, $matches) != 0) {
+        return array(
+            'ip_address' => $matches[1],
+            'date_time' => $matches[2],
+            'timestamp' => strtotime($matches[2]),
+            'http_method' => $matches[3],
+            'url' => 'https://' . $hostname . $matches[4], // We don't actually know in Apache if it is https or http, let's assume https
+            'http_version' => floatval($matches[5]),
+            'response_code' => intval($matches[6]),
+            'bytes' => intval($matches[7]),
+            'referer' => (trim($matches[8], " \t-") == '') ? null : $matches[8],
+            'user_agent' => (trim($matches[9], " \t-") == '') ? null : $matches[9],
+            'time_microseconds' => intval($matches[10]),
+        );
+    }
+
+    return null;
+}
+[/codebox]
+
+The script outputs a tab-separated format that can be directly copy & pasted into Excel. Excel can then be used to sort and graph the results very easily.
+
+This script will need customising for your particular architecture.
+
+[title="3"]Benchmarking[/title]
+
+Slow-downs may be a result of something inherent in your architecture that you didn't expect, and not directly related to your load.
+
+Here are a few useful Linux benchmarking tools:
+ - [tt]sysbench[/tt] -- examine your CPU performance
+ - [tt]dd[/tt] -- while not actually a benchmarking tool, it can help you find your disk read and write performance (you can find examples online)
+ - [tt]bonnie++[/tt] -- examine detailed disk I/O characteristics
+ - [tt]siege[/tt] -- gauge your web throughput
 
 [title="2"]See also[/title]
 

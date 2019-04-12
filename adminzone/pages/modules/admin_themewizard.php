@@ -440,43 +440,13 @@ class Module_admin_themewizard
         $fields->attach(form_input_line(do_lang_tempcode('config:SITE_NAME'), do_lang_tempcode('DESCRIPTION_LOGO_NAME'), 'name', get_option('site_name'), /*intentionally false so that custom font work can be done in a paint tool*/false));
         $fields->attach(form_input_theme_image(do_lang_tempcode('LOGO_THEME_IMAGE'), '', 'logo_theme_image', $default_logos, null));
         $fields->attach(form_input_theme_image(do_lang_tempcode('BACKGROUND_THEME_IMAGE'), '', 'background_theme_image', $default_backgrounds));
+        require_code('fonts');
+        $fonts = find_all_fonts();
+        $default_font = find_default_font();
         $font_choices = new Tempcode();
-        $dh = opendir(get_file_base() . '/data_custom/fonts');
-        $fonts = array();
-        if ($dh !== false) {
-            while (($f = readdir($dh)) !== false) {
-                if (substr($f, -4) == '.ttf') {
-                    $fonts[] = $f;
-                }
-            }
-            closedir($dh);
-        }
-        $dh = opendir(get_file_base() . '/data/fonts');
-        if ($dh !== false) {
-            while (($f = readdir($dh)) !== false) {
-                if (substr($f, -4) == '.ttf') {
-                    $fonts[] = $f;
-                }
-            }
-            closedir($dh);
-        }
-        $fonts = array_unique($fonts);
-        sort($fonts);
         require_css('fonts');
-        foreach ($fonts as $font) {
-            if (stripos($font, 'veranda') !== false) {
-                continue; // Not licensed for this, only used as a web standards patch for vertical text
-            }
-
-            $_font = basename($font, '.ttf');
-            $_font_label = $_font;
-            for ($i = 0; $i < 2; $i++) {
-                $_font_label = preg_replace('#(It|Oblique)($| )#' . ((strtolower($_font_label) == $_font_label) ? 'i' : ''), ' Italic ', $_font_label);
-                $_font_label = preg_replace('#(Bd|Bold)($| )#' . ((strtolower($_font_label) == $_font_label) ? 'i' : ''), ' Bold ', $_font_label);
-            }
-            $_font_label = trim(str_replace('  ', ' ', $_font_label));
-            $_font_label = preg_replace('#BI$#' . ((strtolower($_font_label) == $_font_label) ? 'i' : ''), ' Bold Italic', $_font_label);
-            $font_choices->attach(form_input_radio_entry('font', $_font, $_font == 'Vera', '<span style="font-family: ' . escape_html($_font) . '">' . escape_html($_font_label) . '</span>'));
+        foreach ($fonts as $font => $font_label) {
+            $font_choices->attach(form_input_radio_entry('font', $font, $font == $default_font, '<span style="font-family: ' . escape_html($font) . '">' . escape_html($font_label) . '</span>'));
         }
         $fields->attach(form_input_radio(do_lang_tempcode('comcode:FONT'), '', 'font', $font_choices, true));
 

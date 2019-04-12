@@ -486,7 +486,7 @@ function transifex_pull_script()
     }
 
     if ($output) {
-        header('Content-type: application/octet-stream');
+        header('Content-Type: application/octet-stream' . '; authoritative=true;');
         require_code('version2');
         if ($lang === null) {
             $filename = 'languages-' . get_version_branch(floatval(cms_version_number())) . '.tar';

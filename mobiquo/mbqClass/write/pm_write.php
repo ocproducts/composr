@@ -138,7 +138,7 @@ class CMSPmWrite
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
                 }
                 if (!has_post_access($post_id, null, $post_details[0])) {
-                    continue;
+                    break;
                 }
 
                 $post = get_translated_text($post_details[0]['p_post'], $GLOBALS['FORUM_DB']);

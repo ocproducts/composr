@@ -276,7 +276,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         $_height = get_option('attachment_default_height');
         if ((function_exists('getimagesize')) && (array_key_exists('thumb_url', $attributes)) && (((is_object($attributes['thumb_url'])) && (!$attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] != '')))) {
             require_code('images');
-            $test = cms_getimagesize(is_object($attributes['thumb_url']) ? $attributes['thumb_url']->evaluate() : $attributes['thumb_url']);
+            $test = cms_getimagesize_url(is_object($attributes['thumb_url']) ? $attributes['thumb_url']->evaluate() : $attributes['thumb_url']);
             if ($test === false) {
                 $_width = get_option('attachment_default_width');
                 $_height = get_option('attachment_default_height');

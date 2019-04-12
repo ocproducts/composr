@@ -171,7 +171,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
 
         // In the DB?
         $got_title = false;
-        $db_row = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a LEFT JOIN ' . get_table_prefix() . 'comcode_pages b ON a.the_zone=b.the_zone AND a.the_page=b.the_page', array('*'), array('a.the_zone' => $zone, 'a.the_page' => $page), '', 1);
+        $db_row = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a LEFT JOIN ' . get_table_prefix() . 'comcode_pages b ON a.the_zone=b.the_zone AND a.the_page=b.the_page', array('cc_page_title', 'p_add_date', 'p_edit_date', 'p_submitter'), array('a.the_zone' => $zone, 'a.the_page' => $page), '', 1);
         if (isset($db_row[0])) {
             if (isset($db_row[0]['cc_page_title'])) {
                 $_title = get_translated_text($db_row[0]['cc_page_title']);
@@ -230,6 +230,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                 }
 
                 $skip_children = false;
+                $count = null;
                 if ($child_cutoff !== null) {
                     $count = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)', $where);
                     if ($count > $child_cutoff) {
@@ -237,7 +238,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                     }
                 }
 
-                if (!$skip_children) {
+                if ((!$skip_children) && ($count !== 0)) {
                     static $child_rows = array();
                     $start = 0;
                     do {

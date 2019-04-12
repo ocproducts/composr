@@ -360,6 +360,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             //  Pedantry aside - we just want to test as effectively and efficiently and broadly as we can ;-).
             //   Whatever we can quickly achieve as a testing win for our total platform stability/coherence, we go with.
             //   Contributions for deeper, detailed, testing, are very welcome.
+            '_tests/sleep.php',
             '_tests/tests/unit_tests/.htaccess',
             '_tests/tests/unit_tests/url_monikers.php',
             '_tests/tests/unit_tests/calendar_events.php',
@@ -368,6 +369,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/template_xss.php',
             '_tests/tests/unit_tests/module_names_defined.php',
             '_tests/tests/unit_tests/notifications_all_coded.php',
+            '_tests/tests/unit_tests/notifications.php',
             '_tests/tests/unit_tests/password_censor.php',
             '_tests/tests/unit_tests/addon_dependency_naming.php',
             '_tests/tests/unit_tests/specsettings_documented.php',
@@ -387,6 +389,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/clean_reinstall.php',
             '_tests/tests/unit_tests/authors.php',
             '_tests/tests/unit_tests/dns.php',
+            '_tests/tests/unit_tests/http_timeouts.php',
             '_tests/tests/unit_tests/awards.php',
             '_tests/tests/unit_tests/comcode_code.php',
             '_tests/tests/unit_tests/xml_sitemaps.php',

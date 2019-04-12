@@ -12,6 +12,11 @@ Some are set to be enabled by default, and some are only available based on priv
 
 Some notification types allow fine-grained control, allowing you to choose to receive them only for certain notification categories. For example, with forum topic notifications you can choose to receive them only for certain forums. This is similar to what some forum software calls 'tracking'.
 
+[box="Double notifications" width="25em" float="right"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/remember.png[/media]
+If you enable notifications on a particular type, but also categories of that type, you will get doubled up notifications. As Composr allows fine-grained control of different kinds of notification we don't want to add overwhelming complexity by trying to do 'smart de-duplication'. Therefore if you get duplicated notifications check your settings.
+[/box]
+
 [title="2"]Forms of receipt[/title]
 
 You can receive notifications through a number of means:
@@ -87,7 +92,7 @@ Note that the settings apply to all members (while respecting the notification p
 
 [title="2"]Security[/title]
 
-Notifications broadly fall into 3 categories:
+Notifications broadly fall into 3 classifications:
 1) Notifications sent directly to a specific member, relating to them
 2) Privilege-affected notifications, e.g. monitoring a download category, and hence needing access to that category to receive the notification
 3) Staff notifications

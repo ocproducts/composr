@@ -60,13 +60,24 @@
 				</table>
 
 				<ul class="horizontal-links associated-links-block-group">
-					<li>
-						{+START,INCLUDE,ICON}
-							NAME=feedback/comment
-							ICON_SIZE=24
-						{+END}
-						<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
-					</li>
+					{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
+						<li>
+							{+START,INCLUDE,ICON}
+								NAME=feedback/comment
+								ICON_SIZE=24
+							{+END}
+							<a href="{VIEW_URL*}">{$COMMENT_COUNT,videos,{ID}}</a>
+						</li>
+					{+END}
+					{+START,IF_NON_PASSED_OR_FALSE,COMMENT_COUNT}
+						<li>
+							{+START,INCLUDE,ICON}
+								NAME=admin/view_this
+								ICON_SIZE=24
+							{+END}
+							<a href="{VIEW_URL*}">{!VIEW}</a>
+						</li>
+					{+END}
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

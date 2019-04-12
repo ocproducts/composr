@@ -101,8 +101,8 @@ You may need to setup the [url="EPEL repository"]https://www.tecmint.com/how-to-
 [code="Bash"]
 yum install httpd mod_ssl mod_fcgid php php-common php-cli php-pecl-apc php-pdo curl enchant \
 freetype gd php-gd php-imap php-mysqlnd php-mbstring php-pspell php-xml openssl mysql-server \
-mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget iotop \
-hunspell-en screen
+mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget iostat iotop \
+hunspell-en screen unzip
 [/code]
 
 You may have selinux installed, you can see if you do with [tt]sestatus[/tt]:

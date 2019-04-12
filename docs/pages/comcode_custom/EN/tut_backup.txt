@@ -7,9 +7,8 @@ This tutorial will describe and explain Composr's in-built backup addon, includi
 [title="2"]Necessity[/title]
 
 {!backups:DOC_BACKUPS}
-
 [box="Important -- backup security" width="25em" float="right"]
-Do not leave backups such that others might get a-hold of them, as this would be a big security risk due to sensitive data stored upon them. Keep backup CDs in a locked drawer, for example.
+Do not leave backups such that others might get a-hold of them, as this would be a big security risk due to sensitive data stored upon them. Keep backup media (e.g. DVDs) in a locked drawer, for example.
 [/box]
 Unfortunately disasters occur all the time, and to think it 'will not happen to me' is a very foolhardy position, because often it can happen for reasons totally unexpected and unavoidable. I don't have statistics on data loss, but just in the last few weeks before writing this tutorial:
  - I personally nearly lost the contents of a 120GB hard disk (due to a bug in the Windows boot sector recreation process)
@@ -23,61 +22,75 @@ A good backup strategy will automatically and regularly backup all, or all chang
 [title="2"]The Composr backup addon[/title]
 
 [surround]
-The backup addon provided by Composr is a system where the website makes a backup of itself when instructed to do so. You may set up the addon to perform backups on a schedule, or activate yourself manually.
+[media width="150" description="Locating the backup facility from the dashboard" float="left"]data_custom/images/docs/tut_backup/backup_1.png[/media]
+The backup addon provided by Composr is a system where the website makes a backup of itself when instructed to do so. You may set up the addon to perform backups on a schedule, or activate them yourself manually.
 
-Access the backup addon from: Admin Zone > Tools > Backups
+Depending on the options that are specified by the user (which will be discussed later), the site will put a copy of every single file and folder stored within the Composr installation directory into a [tt].tar[/tt] file, as well as a copy of the database.
 
 [i]Note that we only recommend using the Composr backup addon if you really have to, because it is limited to what PHP is allowed to do on the server. See the "Alternative backup strategies" section below.[/i]
 
-Depending on the options that are specified by the user (which will be discussed later), the site will put a copy of every single file and folder stored within the Composr installation directory into a [tt].tar[/tt] file. It will also keep the entire file structure intact as well.
+The addon must be installed before you can access it. It is a bundled addon, but not kept on by default in the Setup Wizard. If you do not have it installed, you need to install it from Admin Zone > Structure > Addons.
+
+Access the backup addon from: Admin Zone > Tools > Backups. You can also access the backup addon from the Admin Zone Dashboard's to-do list. The to-do list will also show you how long it has been since a backup was last made.
 
 [box="The maximum file size setting" width="25em" float="right"]
 The maximum file size that will be backed up refers to the size of any individual file added to the backup, not the size of the total backup.
 [/box]
-The options for a backup are the following:
- - Full Backup -- this is where the site will store a copy of every file and folder in the Composr install directory into a [tt].tar[/tt] file as described above.
- - Incremental Backup -- this backup will store a copy of any new files and/or any files that have changed since the last backup into a [tt].tar[/tt] file. These are smaller backups and are suggested if a Full backup has been performed once before.
+On the Make Backup screen you will get options on how to make your backup. The options are as follows:
+ - Full backup -- this is where the site will store a copy of every file and folder in the Composr install directory into a [tt].tar[/tt] file as described above.
+ - Incremental backup -- this backup will store a copy of any new files and/or any files that have changed since the last backup into a [tt].tar[/tt] file. These are smaller backups and are suggested if a Full backup has been performed once before.
+ - Database backup only -- this backup will only save the database, and not any files or folders.
 
-Each backup option will contain a script that can restore your SQL database in the event that you loose your SQL database. Note however that it will not backup your forum tables, irrespective of whether they are in the same database as Composr.
-
-To access this backup addon, enter the Admin Zone. As shown in the screen-shot, there are two links to create a backup. The addon must be installed first (it is a bundled addon, but not kept on by default in the Setup Wizard).
-
-[media width="150" description="Locating the backup facility" float="left"]data_custom/images/docs/tut_backup/backup_1.png[/media]
-From here, you can access the backup feature by either selecting the 'Make Backup' link on the left hand menu under 'Features' or by selecting the 'Make Backup' link on the to-do list.
-
-The available selection on the to-do list will also show you how long ago it has been since a backup was made last.
-
-Among other things, selecting the 'Make Backup' option will load up Make Backup screen (see cropped screen-shot), here you will get the options of making a Full Backup or an Incremental Backup (as described previously) and an option for the maximum size of file that will be backed up in megabytes.
-
-Clicking 'Make Backup' button once you have selected the backup method that you wish to use will generate the backup.
-
-On clicking this, Composr will generate a message similar to as shown in the screen-shot.
+Click 'Make Backup' button once you have selected the backup method that you wish to use will generate the backup. Composr will show a message explaining the backup is in the process of being generated.
 [/surround]
+
+[title="3"]Backup generation[/title]
 
 [surround]
-[media width="150" description="The backup progress screen, summarising the process until completion" float="left"]data_custom/images/docs/tut_backup/backup_3.png[/media]
 [media width="150" description="The backup screen" float="right"]data_custom/images/docs/tut_backup/backup_2.png[/media]
-Depending on the final target size of backup file and the power of your server (more processing power = quicker backup generation, less procession power = slower backup generation), this can take anything from a few seconds to many hours. So, please be patient with the backup generation process. An e-mail will be sent once the backup has finished, and logs will be generated to allow you to track progress.
+[media width="150" description="The backup progress screen, summarising the process until completion" float="left"]data_custom/images/docs/tut_backup/backup_3.png[/media]
+Depending on the final target size of backup file and the power of your server, this can take anything from a few seconds to many hours. So, please be patient with the backup generation process.
 
-If your server supports 'gzip' then you will get a [tt].tar.gz[/tt] version of your backup that is a compressed version of your [tt].tar[/tt] backup. It will be created afterwards.
+Logs will be generated to allow you to track progress. At Admin Zone > Tools > Backups you will see a table of files, which includes these logs, and all completed backups that have been generated.
+
+An e-mail will be sent once the backup has finished.
+
+If your server supports 'gzip' then you will get a [tt].tar.gz[/tt] version of your backup that is a compressed version of your [tt].tar[/tt] backup. It will be created after the [tt].tar[/tt] is generated.
+
+You must download the backups to your computer if you want to keep a remote backup, otherwise they will just sit in your website's [tt]exports/backups[/tt] folder.
 [/surround]
 
-[title="2"]Restoration, Did it work?[/title]
+[title="3"]What is inside the backups[/title]
 
-You may extract the [tt].tar.gz[/tt] file using any good extraction program, including the free 7-zip program. Alternatively, webhosting control panels should be able to extract it. The backup contains a set of backed up files and a [tt]restore.php[/tt] file which can re-create your database tables. It is very much like the Composr installer in that it represents the files and a PHP script to create the database.
+A Composr backup consists of a [tt].tar[/tt] file (or [tt].tar.gz[/tt] file), which is an archive that contains:
+ - The actual website files (including both Composr code and custom files such as uploads). This is not actually included if you chose 'Database backup only'.
+ - A [tt]readme.txt[/tt] file that explains how to restore the backup.
+ - A [tt]restore.php[/tt], which is a self-executing PHP script to restore the previous database. It is very much like the Composr installer in that it represents the files and a PHP script to create the database.
+ - A [tt]restore_data.php[/tt] file that contains the actual database structure and contents. This can not be directly executed, but is saved as a PHP file to stop hackers being able to download the contents of your database by accessing the URL.
+
+[box="Database backup"]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
+Each backup option will include a script that can restore your SQL database in the event that you lose your SQL database. However note that:
+1) If you are not using Composr's inbuilt forum system (Conversr) then it will not backup your forum tables, irrespective of whether they are in the same database as Composr.
+2) The script is in a custom Composr format, not a traditional SQL dump format -- it can only be restored by the self-executing PHP script.
+[/box]
+
+[title="3"]Restoration, did it work?[/title]
+
+You may extract the [tt].tar.gz[/tt] file using any good extraction program, including the free 7-zip program. Alternatively, webhosting control panels should be able to extract it.
 
 You can use the backup archive as a means of restoring single files, or you can use it much like the installation package you originally installed with, except that the backup's installer will restore the site to the operational state from when the backup was taken.
 
-It is important to test the Composr backups actually work from time to time by testing a full restoration. Do this on a different server (or at least a different directory and a different database), so as not to overwrite your site from the backup. You will need to edit the _config.php file if database details are different.
+It is important to test the Composr backups actually work from time to time by testing a full restoration. Do this on a different server (or at least a different directory and a different database), so as not to overwrite your site from the backup. You will need to edit the [tt]_config.php[/tt] file if database details are different.
 Loading up the backup's [tt]restore.php[/tt] from a web browser should trigger restoration.
 
 The reason we ask that users test the backup is that unfortunately, it is unreliable beyond our control on some servers. PHP was designed to run quick scripts, not to do large background tasks such as backup generation. If you know it works on your server for your first full backup, and afterwards only do incremental backups, you do not need to test each of those.
 
-[title="3"]Incremental backup restoration[/title]
+[title="4"]Incremental backup restoration[/title]
 
-To restore from incremental backups, you need to extract the full backup, and then sequentially extract the incremental backups over it. The [tt]restore.php[/tt] from each incremental backup contains a full Composr-table database backup, but the archive does not contain a full set of files (only those that have changed since the previous backup).
+To restore from incremental backups, you need to extract the initial full backup, and then sequentially extract the incremental backups over it (&dagger;). The [tt]restore_data.php[/tt] from each incremental backup contains a full Composr-table database backup, but the archive does not contain a full set of files (only those that have changed since the previous backup). If you've extracted in the proper order, the final [tt]restore_data.php[/tt] file you have should be the one of your latest backup, so when you call up the [tt]restore.php[/tt] script by URL, you'll get the latest copy of the database that was backed up.
 
-An incremental backup archive contains a special file called [tt]DIRECTORY[/tt] which contains a list of all files present when the backup was taken. It should not be uploaded for security reasons.
+&dagger; An incremental backup archive contains a special file called [tt]DIRECTORY[/tt] which contains a list of all files present when the backup was taken. It should not be kept around for security reasons (so if you've extracted it, delete it).
 
 [title="2"]Alternative backup strategies[/title]
 
@@ -96,7 +109,7 @@ If you only wish to backup a database, then for those who have access to phpMyAd
 
 [title="2"]File permissions[/title]
 
-It is important to understand that file permissions are not backed up in archives alongside the files. Therefore upon restoration of your site, such permissions would need re-setting. Please see the [page="_SEARCH:tut_moving"]Moving sites[/page] tutorial for more information on this.
+It is important to understand that file permissions may not be restored when extracting archives or uploading the contents. Therefore upon restoration of your site, such permissions may need resetting. Please see the [page="_SEARCH:tut_moving"]Moving sites tutorial[/page] for more information on this.
 
 [concepts
  1_key="Incremental backup"   1_value="A backup where only new or changed files (since the last backup) are backed up"

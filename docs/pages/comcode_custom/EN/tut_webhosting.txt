@@ -105,7 +105,7 @@ We require:
 [title="3"]Web Server[/title]
 
 We require:
- - A web server running Apache (the common Linux web server), {$IS_MAINTAINED,platform_litespeed,LiteSpeed} [an Apache drop-in replacement], or {$IS_MAINTAINED,platform_iis,IIS7+} [the Microsoft web server]. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working);
+ - A web server running Apache (the common Linux web server), {$IS_MAINTAINED,platform_litespeed,LiteSpeed} [an Apache drop-in replacement], or {$IS_MAINTAINED,platform_iis,IIS7+} [the Microsoft web server]. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (additional guidance is provided in this tutorial);
  - If you want URL Schemes or URL Redirects on Apache, [tt]mod_rewrite[/tt] must be enabled.
  - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache).
  - That the web server is not overloaded with too many users, or has very poor performance.
@@ -131,7 +131,9 @@ We require:
  - A maximum of PHP 7.2 (this is what we have tested up to, although newer versions usually do work or are quickly fixed to work).
  - The following PHP extensions:
   - GD2 ([tt]gd[/tt]), including PNG and JPEG support (GD is used by PHP for image generation, e.g. to generate thumbnails).
-  - MySQL extension ([tt]mysqli[/tt]) (other databases are semi-supported, in which case you need the appropriate extension referenced in the tutorial written specifically for that database).
+  - MySQL extension ([tt]mysqli[/tt] or [tt]pdo_mysql[/tt])
+   - MySQL Native Driver being enabled or not is not a factor
+   - (other databases are semi-supported, in which case you need the appropriate extension referenced in the tutorial written specifically for that database).
   - XML extension ([tt]xml[/tt]).
   - The iconv ([tt]iconv[/tt]) or Multibyte String ([tt]mbstring[/tt]) PHP extension (for reliable Unicode support).
   - cURL extension ([tt]curl[/tt]) (for reliable file downloading).
@@ -192,6 +194,82 @@ Composr recommends:
  - A PHP environment with [tt]open_basedir[/tt] enabled.
  - At least 100MB of disk space.
  - Generally, if you are using shared webhosting then we advise picking a host that does nightly backups that you have access to restore -- we've seen a lot of webhosts not take any responsibility for backup, and it does need doing at the server level to work effectively.
+
+[title="2"]Web server compatibility[/title]
+
+Composr is only tested on, and optimised for, Apache and IIS.
+However in principle it should work on any web server software.
+
+There are a few notes to give, although the only one of likely major significance is the URL Schemes one..
+
+{|
+! Note
+! Apache-approach
+! IIS-approach
+! Comments
+|-
+| URL Schemes
+| [tt]recommended.htaccess[/tt] file
+| [tt]web.config[/tt] file
+| If URL Schemes are desired then Rewrite rules will need manually writing for other servers, which will require expertise
+|-
+| Gzip/caching optimisation rules
+| [tt]themes/*/templates_cached/.htaccess[/tt], [tt]uploads/.htaccess[/tt], [tt]recommended.htaccess[/tt]
+| [i]None[/i]
+| For other servers just manually configure your preferred rules as desired
+|-
+| PHP base-line configuration
+| [tt]recommended.htaccess[/tt] file (for PHP-module installations only)
+| [i]None[/i]
+| Default configuration is usually okay, but sample [tt].ini[/tt]-based configuration is provided in the [page="_SEARCH:faq"]FAQ[/page]
+|-
+| 404 error configuration
+| [tt]recommended.htaccess[/tt] file
+| [tt]web.config[/tt] file
+| For other servers just manually configure if routing to Composr's 404 page is desired
+|-
+| Efficient IP bans
+| Written into [tt].htaccess[/tt] file
+| [i]None[/i]
+| For non-Apache servers bans are enforced only within Composr's bootstrapping process (a little slower); bans may be manually added to web server configuration as desired
+|-
+| Disabling PHP in certain directories
+| [tt].htaccess[/tt] files strewn around
+| [i]No default support[/i]
+| This is an extra layer of security but is not required because Composr prohibits the upload of [tt].php[/tt] files by users and white-lists accepted file-types
+|-
+| Disabling URL access in certain directories
+| [tt].htaccess[/tt] files strewn around
+| [tt]web.config[/tt] file
+| This is an extra layer of security but is not required because executable PHP files that are not meant to be executed don't have any code that would activate by URL, and private files are protected by filename randomisation
+|-
+| Disabling unauthorised log file downloading
+| [tt]data_custom/.htaccess[/tt] file
+| [tt]web.config[/tt] file
+| The Composr error log is the only log that exists, and download is protected as it is a [tt].php[/tt] file; if additional logs are created manually then the web server should be hand configured to prohibit direct access
+|-
+| [tt]failover_apache_rewritemap_file[/tt] option
+| Supported
+| [i]None[/i]
+| Fail-over mode can work for Apache users without PHP even working, if this particular configuration is carefully implemented; this is not a feature supported on any other web server
+|-
+| [tt]MATURITY_FILTER_REQUESTED[/tt] symbol
+| Supported (for PHP-module installations only)
+| [i]No default support[/i]
+| As documented in the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial, there is a workaround for configuring other servers
+|-
+| Documentation
+| Provided
+| Provided
+| While documentation is written with respect to Apache and IIS, concepts can be adapted by experienced users
+|-
+| Workarounds to quirks
+| Implemented
+| Implemented
+| Quirks present in Apache and IIS are worked around where required (such as ModSecurity, or maximum cookie size); it is not expected significant quirks will exist in other servers that can't be resolved by configuring of said servers
+|}
+
+In terms of operating system support, Composr is only tested on, and optimised for, Windows, Mac, and Linux. It may work on other operating systems supporting by PHP, such as BSD variants -- so long as they are Unix-like.
 
 [title="2"]Forum drivers (advanced)[/title]
 

@@ -194,6 +194,10 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
     }
 
+    if (function_exists('decache')) {
+        decache('_field_type_selection');
+    }
+
     require_code('sitemap_xml');
     notify_sitemap_node_add('_SEARCH:catalogues:index:' . $name);
 
@@ -396,6 +400,8 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     if (substr($name, 0, 1) == '_') {
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
     }
+
+    decache('_field_type_selection');
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit('_SEARCH:catalogues:index:' . $name);
@@ -919,7 +925,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     delete_lang($myrow['cc_title']);
     delete_lang($myrow['cc_description']);
 
-    $old_parent_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_parent_id', array('id' => $id));
+    $old_parent_id = $myrow['cc_parent_id'];
 
     $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('id' => $id), '', 1);
 

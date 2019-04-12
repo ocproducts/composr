@@ -74,13 +74,24 @@
 							<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a>
 						</li>
 					{+END}
-					<li>
-						{+START,INCLUDE,ICON}
-							NAME=feedback/comment
-							SIZE=24
-						{+END}
-						<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
-					</li>
+					{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
+						<li>
+							{+START,INCLUDE,ICON}
+								NAME=feedback/comment
+								ICON_SIZE=24
+							{+END}
+							<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+						</li>
+					{+END}
+					{+START,IF_NON_PASSED_OR_FALSE,COMMENT_COUNT}
+						<li>
+							{+START,INCLUDE,ICON}
+								NAME=admin/view_this
+								ICON_SIZE=24
+							{+END}
+							<a href="{VIEW_URL*}">{!VIEW}</a>
+						</li>
+					{+END}
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

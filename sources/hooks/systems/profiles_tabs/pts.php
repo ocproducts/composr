@@ -72,7 +72,7 @@ class Hook_profiles_tabs_pts
 
         $root = db_get_first_id();
 
-        list($content) = cns_render_forumview($id, null, $current_filter_cat, $max, $start, $true_start, $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $member_id_of, new Tempcode());
+        list($content) = cns_render_forumview($id, null, $current_filter_cat, $max, $start, $true_start, get_param_string('order', 'last_post'), $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $member_id_of, new Tempcode());
 
         $content = do_template('CNS_MEMBER_PROFILE_PTS', array('_GUID' => '5d0cae3320634a1e4eb345154c853c35', 'CONTENT' => $content));
 

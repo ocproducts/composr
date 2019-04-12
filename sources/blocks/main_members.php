@@ -127,7 +127,15 @@ class Block_main_members
                 $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('USERGROUP'));
             }
             $filters_row_b = '';
-            $cpfs = cns_get_all_custom_fields_match(cns_get_all_default_groups(), 1, 1, null, null, 1, null);
+            $cpfs = cns_get_all_custom_fields_match(
+                cns_get_all_default_groups(), // groups
+                1, // public view
+                1, // owner view
+                null, // owner set
+                null, // required
+                1, // show in posts
+                null // show in post previews
+            );
             $_filters_row_a = 2;
             $_filters_row_b = 0;
             foreach ($cpfs as $cpf) {

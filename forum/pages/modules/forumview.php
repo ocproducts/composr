@@ -209,7 +209,7 @@ class Module_forumview
         require_code('templates_pagination');
         list($max, $start, $sort, $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', $compound_name, 'sort', $sort_default, 'get_forum_sort_order');
 
-        $test = cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $true_start, $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $of_member_id, $this->breadcrumbs);
+        $test = cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $true_start, get_param_string('order', 'last_post'), $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $of_member_id, $this->breadcrumbs);
         if (is_array($test)) {
             list($content, $forum_name) = $test;
         } else {

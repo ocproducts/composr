@@ -96,13 +96,11 @@ class Block_main_custom_gfx
             if (substr($_color, 0, 1) == '#') {
                 $_color = substr($_color, 1);
             }
-            $font = array_key_exists('font', $map) ? $map['font'] : 'Vera';
+            require_code('fonts');
+            $font = array_key_exists('font', $map) ? $map['font'] : find_default_font();
             $center = ((array_key_exists('center', $map) ? $map['center'] : '1') == '1');
 
-            $file_base = get_custom_file_base() . '/data_custom/fonts/';
-            if (!file_exists($file_base . '/' . $font . '.ttf')) {
-                $file_base = get_file_base() . '/data/fonts/';
-            }
+            $font_path = find_font_path($font);
 
             $path = ((strpos($img_path, '/default/images/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $img_path;
             $img = cms_imagecreatefrom($path);
@@ -124,7 +122,7 @@ class Block_main_custom_gfx
                     $line = ' '; // Otherwise our algorithm breaks
                 }
 
-                list(, , , , $width, , ,) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $line);
+                list(, , , , $width, , ,) = imagettfbbox(floatval($map['font_size']), 0.0, $font_path, $line);
                 $pos_x = intval(array_key_exists('x', $map) ? $map['x'] : '0');
                 $width = max($width, -$width);
                 if ($center) {
@@ -140,17 +138,17 @@ class Block_main_custom_gfx
                     $nxpos = 0;
                     for ($i = 0; $i < strlen($line); $i++) { // render character by character, for reliability
                         if ($previous !== null) { // check for existing previous character
-                            list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $previous);
+                            list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $font_path, $previous);
                             $nxpos += max($rx1, $rx2) + 1;
                         }
-                        imagettftext($img, floatval($map['font_size']), 0.0, $pos_x + $nxpos, $pos_y, $colour, $file_base . $font . '.ttf', $line[$i]);
+                        imagettftext($img, floatval($map['font_size']), 0.0, $pos_x + $nxpos, $pos_y, $colour, $font_path, $line[$i]);
                         $previous = $line[$i];
                     }
                 } else {
-                    imagettftext($img, floatval($map['font_size']), 0.0, $pos_x, $pos_y, $colour, $file_base . $font . '.ttf', $line);
+                    imagettftext($img, floatval($map['font_size']), 0.0, $pos_x, $pos_y, $colour, $font_path, $line);
                 }
 
-                list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $line);
+                list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $font_path, $line);
                 $pos_y += ($ry1 - $ry2) + 5;
             }
 

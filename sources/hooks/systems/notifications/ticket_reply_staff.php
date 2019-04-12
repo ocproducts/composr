@@ -53,7 +53,7 @@ class Hook_notification_ticket_reply_staff extends Hook_Notification
      */
     public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
-        $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max, false);
+        $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
         $members = $this->_all_members_who_have_enabled_with_privilege($members, 'support_operator', $notification_code, $category, $to_member_ids, $start, $max);
 
         return $members;

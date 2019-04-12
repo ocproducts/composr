@@ -73,17 +73,17 @@ require_code('images');
 $max_width = 800;
 $large_image_location = $_GET['file'];
 $thumb_image_location = $_GET['thumb'];
-if (substr($large_image_location, 0, strlen('uploads/attachments/')) != 'uploads/attachments/') {
-    exit('Security error');
+if (preg_match('#^uploads/(attachments|attachments_thumbs|filedump)/#', $large_image_location) == 0) {
+    exit('Security error on' . $large_image_location);
 }
 if (strpos($large_image_location, '..') !== false) {
-    exit('Security error');
+    exit('Security error on' . $large_image_location);
 }
-if (substr($thumb_image_location, 0, strlen('uploads/attachments_thumbs/')) != 'uploads/attachments_thumbs/') {
-    exit('Security error');
+if (preg_match('#^uploads/(attachments|attachments_thumbs|filedump)/#', $thumb_image_location) == 0) {
+    exit('Security error on' . $thumb_image_location);
 }
 if (strpos($thumb_image_location, '..') !== false) {
-    exit('Security error');
+    exit('Security error on' . $thumb_image_location);
 }
 $thumb_width = intval(isset($_POST['thumb_width']) ? $_POST['thumb_width'] : $_GET['thumb_width']);                        // Width of thumbnail image
 $thumb_height = intval(isset($_POST['thumb_height']) ? $_POST['thumb_height'] : $_GET['thumb_height']);                        // Height of thumbnail image

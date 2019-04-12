@@ -41,14 +41,15 @@ function init__sitemap_xml()
  * Top level function to (re)generate a Sitemap (xml file, search-engine-style).
  *
  * @param  ?mixed $callback Callback to run on each iteration (null: none)
+ * @param  boolean $force Force reconstruction regardless of update-dates (should not be needed)
  */
-function sitemap_xml_build($callback = null)
+function sitemap_xml_build($callback = null, $force = false)
 {
     $last_time = intval(get_value('last_sitemap_time_calc_inner', null, true));
     $time = time();
 
     // Build from sitemap_cache table
-    $set_numbers = $GLOBALS['SITE_DB']->query('SELECT DISTINCT set_number FROM ' . get_table_prefix() . 'sitemap_cache WHERE last_updated>=' . strval($last_time));
+    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), null, $force ? '' : ' WHERE last_updated>=' . strval($last_time));
     if (count($set_numbers) > 0) {
         foreach ($set_numbers as $set_number) {
             rebuild_sitemap_set($set_number['set_number'], $last_time, $callback);
@@ -83,7 +84,7 @@ function rebuild_sitemap_set($set_number, $last_time, $callback = null)
     $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
     $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($set_number) . '.xml';
     $blob = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">';
     fwrite($sitemaps_out_file, $blob);
 
     // Nodes accessible by guests, and not deleted (ignore update time as we are rebuilding whole set)
@@ -182,7 +183,9 @@ function rebuild_sitemap_index()
             $url .= '.gz';
         }
 
-        $xml_date = xmlentities(date('Y-m-d\TH:i:s', $sitemap_set['last_updated']) . substr_replace(date('O', $sitemap_set['last_updated']), ':', 3, 0));
+        //$last_updated = $sitemap_set['last_updated']; Actually no, because this cannot find deletes
+        $last_updated = filemtime($path);
+        $xml_date = xmlentities(date('Y-m-d\TH:i:s', $last_updated) . substr_replace(date('O', $last_updated), ':', 3, 0));
 
         $set_blob = '
     <sitemap>
@@ -237,6 +240,25 @@ function ping_sitemap_xml($url, $trigger_error = false)
 }
 
 /**
+ * Make sure we do not have Sitemap files on disk that are no longer needed.
+ */
+function clean_unused_sitemap_files()
+{
+    $pages = array_flip(collapse_1d_complexity('set_number', $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'))));
+
+    $dh = @opendir(get_custom_file_base() . '/data_custom/sitemaps');
+    if ($dh !== false) {
+        while (($f = readdir($dh)) !== false) {
+            $matches = array();
+            if ((preg_match('#^set_(\d+)\.xml(\.gz)?$#', $f, $matches) != 0) && (!array_key_exists(intval($matches[1]), $pages))) {
+                @unlink(get_custom_file_base() . '/data_custom/sitemaps/' . $f);
+            }
+        }
+        closedir($dh);
+    }
+}
+
+/**
  * Our sitemap cache table may need bootstrapping for some reason.
  * Normally we build it iteratively.
  */
@@ -253,6 +275,8 @@ function build_sitemap_cache_table()
     disable_php_memory_limit();
 
     $GLOBALS['SITE_DB']->query_delete('sitemap_cache');
+
+    clean_unused_sitemap_files();
 
     $GLOBALS['MEMORY_OVER_SPEED'] = true;
 
@@ -515,4 +539,16 @@ function notify_sitemap_node_delete($page_link)
         'last_updated' => time(),
         'is_deleted' => 1,
     ), array('page_link' => $page_link), '', 1);
+}
+
+/**
+ * Manually delete a node from the sitemap. Sometimes useful if Google Search Console is complaining, because something changed that Composr did not detect.
+ *
+ * @param SHORT_TEXT $url The URL
+ */
+function delete_sitemap_node_manually_by_url($url)
+{
+    $page_link = url_to_page_link($url);
+    notify_sitemap_node_delete($page_link);
+    sitemap_xml_build();
 }

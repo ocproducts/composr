@@ -86,10 +86,10 @@
 
 						<div class="inline">
 							<label for="tma-type">{!TOPIC_ACTIONS}:</label>
-							<select class="dropdown-actions" id="tma-type" name="type">
+							<select id="tma-type" name="type" class="dropdown-actions js-topic-moderator-action-submit-form">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
-							</select><button class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+							</select>
 						</div>
 					</form>
 				{+END}
@@ -101,12 +101,12 @@
 
 							<div class="inline">
 								<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
-								<select id="mpa-type" name="type">
+								<select id="mpa-type" name="type" class="js-moderator-action-submit-form">
 									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><button class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+								</select>
 							</div>
 						</form>
 					{+END}
@@ -118,14 +118,13 @@
 
 						<div class="inline">
 							<label for="comments_sort">{!SORT}:</label>
-							<select id="comments_sort" name="comments_sort">
+							<select id="comments_sort" name="comments_sort" class="js-order-change-submit-form">
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 							</select>
-							<button type="submit" class="button-micro buttons--sort">{+START,INCLUDE,ICON}NAME=buttons/sort{+END} {!SORT}</button>
 						</div>
 					</form>
 				{+END}

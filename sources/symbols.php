@@ -1440,8 +1440,8 @@ function _symbol_image_dims($param)
     }
 
     if (isset($param[0])) {
-        $path = $param[0];
-        if ($path == '') {
+        $url = $param[0];
+        if ($url == '') {
             return $value;
         }
 
@@ -1449,26 +1449,21 @@ function _symbol_image_dims($param)
 
         if ($cacheable) {
             $cache = persistent_cache_get('IMAGE_DIMS');
-            if (isset($cache[$path])) {
-                return $cache[$path];
+            if (isset($cache[$url])) {
+                return $cache[$url];
             }
         }
 
-        $base_url = get_custom_base_url();
+        $only_if_local = (isset($param[2]) && $param[2] == '1');
 
-        if ((strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url)) {
-            $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
-        } else {
-            $from_file = http_get_contents($path, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
-            $details = cms_getimagesizefromstring($from_file, get_file_extension($path));
-        }
+        $details = cms_getimagesize_url($url);
 
         if ($details !== false) {
             $value = array(strval($details[0]), strval($details[1]));
         }
 
         if ($cacheable) {
-            $cache[$path] = $value;
+            $cache[$url] = $value;
             persistent_cache_set('IMAGE_DIMS', $cache);
         }
     }
@@ -2045,7 +2040,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
             $value = @html_entity_decode($value, ENT_QUOTES);
         }
         if ((!isset($param[2])) || ($param[2] == '0')) {
-            $value = trim($value);
+            $value = trim(cms_preg_replace_safe('#(\s|&nbsp;)+#', ' ', $value));
         }
     }
 
@@ -2483,7 +2478,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
         $comcodeless = strip_comcode($SHORT_TITLE); // This is not HTML
 
         // Strip 'Welcome to' off if it's there
-        $value = preg_replace('#' . preg_quote(do_lang('WELCOME_TO_STRIPPABLE') . ' ' . get_site_name(), '#') . '([^-]+\s*-\s*)?#', '', $comcodeless);
+        $value = cms_preg_replace_safe('#' . preg_quote(do_lang('WELCOME_TO_STRIPPABLE') . ' ' . get_site_name(), '#') . '([^-]+\s*-\s*)?#', '', $comcodeless);
 
         // Strip site name off it it's there (it'll be put on in the templates, so we don't want it twice)
         $stub = get_site_name() . ' - ';
@@ -4705,6 +4700,8 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
  */
 function ecv_DIV($lang, $escaped, $param)
 {
+    $value = '';
+
     if (isset($param[1])) {
         if (floatval($param[1]) == 0.0) {
             $value = 'divide-by-zero';

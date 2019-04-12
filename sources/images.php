@@ -40,6 +40,38 @@ function init__images()
 /**
  * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
+ * @param  URLPATH $path The URL to the image file
+ * @param  boolean $only_if_local Whether only to accept local URLs (usually for performance reasons)
+ * @return ~array The width and height (false: error)
+ */
+function cms_getimagesize_url($url, $only_if_local = false)
+{
+    if (url_is_local($url)) {
+        $url = get_custom_base_url() . '/' . $url;
+    }
+
+    $base_url = get_base_url();
+    $custom_base_url = get_custom_base_url();
+
+    if ((strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url)) {
+        $details = cms_getimagesize(get_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
+    } elseif ((strpos($path, '.php') === false) && (substr($path, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($path))) {
+        $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($custom_base_url) + 1)));
+    } else {
+        if ($only_if_local) {
+            return false;
+        }
+
+        $from_file = http_get_contents($path, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
+        $details = cms_getimagesizefromstring($from_file, get_file_extension($path));
+    }
+
+    return $details;
+}
+
+/**
+ * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ *
  * @param  string $path The path to the image file
  * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
  * @return ~array The width and height (false: error)
@@ -158,7 +190,8 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
 
     $url = preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $url);
 
-    $box_size = (($width === null) && ($height === null));
+    $default_size = ($width === null) && ($height === null);
+    $box_size = $default_size;
 
     if ($width === null) {
         $width = intval(get_option('thumb_width'));
@@ -172,7 +205,10 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
     }
 
     if (!$is_thumbnail_already) {
-        $new_name = strval($width) . '_' . strval($height) . '_';
+        $new_name = '';
+        if (!$default_size) {
+            $new_name .= strval($width) . '_' . strval($height) . '_';
+        }
         if ($only_make_smaller) {
             $new_name .= 'only_smaller_';
         }

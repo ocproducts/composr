@@ -437,6 +437,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPAMMER_DETECTION_HEURISTICS
         SPAM_HEURISTIC_CONFIDENCE_ALIEN_CODE
         ACCEPTED_MEDIA_TYPES
+        INVALID_BASE_URL
         WORDFILTER
         AUDIT
         DESCRIPTION_REORGANISE_UPLOADS
@@ -2938,6 +2939,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_csrf_token_expire_fresh
         CONFIG_OPTION_csrf_token_expire_new
         CONFIG_OPTION_css_captcha
+        CURRENCY_API_KEY
+        CONFIG_OPTION_currency_api_key
         CONFIG_OPTION_currency
         CONFIG_OPTION_decryption_key
         CONFIG_OPTION_deeper_admin_breadcrumbs
@@ -5276,6 +5279,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HTTPAUTH_IS_ENABLED
         HTTP_DOWNLOAD_BAD_URL
         HTTP_DOWNLOAD_CUT_SHORT
+        HTTP_DOWNLOAD_CONNECTION_STALLED
         HTTP_DOWNLOAD_NO_SERVER
         HTTP_DOWNLOAD_STATUS_NOT_FOUND
         HTTP_DOWNLOAD_STATUS_SERVER_ERROR

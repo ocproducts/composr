@@ -56,7 +56,7 @@ class Database_Static_mysql extends Database_super_mysql
         }
 
         // Potential caching
-        $x = serialize(array($db_name, $db_host));
+        $x = serialize(array($db_user, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db[1] !== $db_name) {
                 mysql_select_db($db_name, $this->cache_db[$x]);
@@ -131,6 +131,16 @@ class Database_Static_mysql extends Database_super_mysql
         if ($this->last_select_db[1] !== $db_name) {
             mysql_select_db($db_name, $db_link);
             $this->last_select_db = $db_name;
+        }
+
+        static $version = null;
+        if ($version === null) {
+            $version = @mysql_get_server_info($db);
+        }
+        if ($version !== false) {
+            if (version_compare($version, '8', '>=')) {
+                $query = $this->fix_mysql8_query($query);
+            }
         }
 
         $this->apply_sql_limit_clause($query, $max, $start);

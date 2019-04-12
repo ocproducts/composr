@@ -525,7 +525,7 @@ class Module_tickets
             $ticket_type_id = null;
             $rendered_ticket_posts = new Tempcode();
             $has_staff_only = false;
-            $ticket_type_details = get_ticket_type(null);
+            $ticket_type_details = get_ticket_type($default_ticket_type);
             $serialized_options = null;
             $hash = null;
             $staff_details = new Tempcode();

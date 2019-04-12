@@ -189,7 +189,9 @@ function post_fields_relay()
 {
     $hidden = '';
     foreach (array_keys($_POST) as $key) {
-        $hidden .= '<input type="hidden" name="' . escape_html($key) . '" value="' . escape_html(post_param_string($key)) . '" />';
+        if (preg_match('#^(news_id$|from_version$|given_password$|ftp_)#', $key) != 0) {
+            $hidden .= '<input type="hidden" name="' . escape_html($key) . '" value="' . escape_html(post_param_string($key)) . '" />';
+        }
     }
     return $hidden;
 }

@@ -50,6 +50,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
         $this->process_checks_section('testModSecurity', 'ModSecurity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testDiskSpaceInstallation', 'Disk Space (Installation)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testUnicode', 'Database Unicode settings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testPCRE', 'PCRE settings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -298,6 +299,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
                 if ($_version !== false) {
                     $version = $_version;
                 }
+            } elseif (get_db_type() == 'mysql_pdo') {
+                $version = $GLOBALS['SITE_DB']->query_value_if_there('SELECT version()');
             } else {
                 $this->stateCheckSkipped('Not running MySQL');
             }
@@ -432,5 +435,25 @@ class Hook_health_check_install_env extends Hook_Health_Check
 
         $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(hex2bin('f09f988e')) . '\'')));
         $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (emojis, utf8mb4)');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testPCRE($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        $this->assert_true(preg_replace('#\n#', '', "\n") == '', 'PHP is using a non-default copy of the PCRE library that is not configured with the usual line endings, which will cause some major problems'); // Checks correct line endings
+        $this->assert_true(@preg_replace('#\n#u', '', "\n") !== false, 'PCRE does not have inbuilt Unicode support, which means Unicode may not work correctly'); // Checks correct line endings
     }
 }

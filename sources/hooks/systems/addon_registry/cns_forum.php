@@ -169,7 +169,6 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/addon_registry/cns_forum.php',
             'sources/hooks/systems/page_groupings/cns_forum.php',
             'sources/hooks/modules/admin_themewizard/cns_forum.php',
-            'sources/hooks/modules/admin_setupwizard/cns_forum.php',
             'sources/hooks/modules/admin_import_types/cns_forum.php',
             'sources/hooks/systems/profiles_tabs/posts.php',
             'sources/hooks/systems/profiles_tabs/pts.php',

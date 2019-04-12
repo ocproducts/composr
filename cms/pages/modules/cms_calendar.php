@@ -268,7 +268,8 @@ class Module_cms_calendar extends Standard_crud_module
             if (array_key_exists($row['e_type'], $types)) {
                 $type = $types[$row['e_type']];
             } else {
-                $type = get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_types', 't_title', array('id' => $row['e_type'])));
+                $_type = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 't_title', array('id' => $row['e_type']));
+                $type = ($_type === null) ? do_lang('UNKNOWN') : get_translated_text($_type);
                 $types[$row['e_type']] = $type;
             }
 
@@ -1247,6 +1248,8 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         ical_import($ical_url);
+
+        decache('side_calendar');
 
         return inform_screen($this->title, do_lang_tempcode('IMPORT_ICAL_DONE'));
     }

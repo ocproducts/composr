@@ -879,7 +879,7 @@ function generate_shortened_post($post_row, $topic_description = false)
 
     $short_content = xhtml_substr($short_content, 0, 200, false, true);
     $short_content = semihtml_to_comcode('[html]' . $short_content . '[/html]', true);
-    $short_content = trim(preg_replace('#\s+#u', ' ', $short_content));
+    $short_content = trim(cms_preg_replace_safe('#\s+#', ' ', $short_content));
     $short_content = trim(strip_comcode($short_content));
 
     return $short_content;

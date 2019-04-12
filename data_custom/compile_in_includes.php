@@ -37,7 +37,7 @@ if (!addon_installed('performance_compile')) {
 
 header('X-Robots-Tag: noindex');
 
-$cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+$cli = is_cli();
 if (!$cli) {
     header('Content-type: text/plain; charset=utf-8');
     exit('Must run this script on command line, for security reasons');

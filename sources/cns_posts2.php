@@ -161,7 +161,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     $post_url = build_url($map, get_module_zone('topicview'));
     $post_url->attach('#post_' . strval($row['id']));
     if ($text_summary === null) {
-        $just_post_row = db_map_restrict($row, array('id', 'p_post'));
+        $just_post_row = db_map_restrict($row, array('id', 'p_post'), array('id' => 'p_id'));
         $post = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
     } else {
         $post = $text_summary;

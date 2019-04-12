@@ -196,7 +196,7 @@ function check_has_page_access()
     if ($ZONE['zone_require_session'] == 1) {
         set_no_clickjacking_csp();
     }
-    if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login')) {
+    if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login') && (!is_guest())) {
         access_denied((($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) ? 'ZONE_ACCESS_SESSION' : 'ZONE_ACCESS', $ZONE['zone_name'], true);
     } else {
         if (($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) {
@@ -1016,7 +1016,7 @@ function do_site()
 
     // Load up our frames into strings. Note that the header and the footer are fixed already.
     $middle = request_page(get_page_name(), true, null, null, false, true, $out);
-    if (($middle === null) || ($middle->is_empty_shell())) {
+    if ($middle->is_empty_shell()) {
         set_http_status_code(404);
 
         $title = get_screen_title('ERROR_OCCURRED');
@@ -1172,6 +1172,15 @@ function save_static_caching($out, $mime_type = 'text/html')
 
         return;
     }
+    if ((get_zone_name() == '') && (get_zone_default_page('') == get_page_name()) && (count(array_diff(array_keys($_GET), array('page', 'keep_session', 'keep_devtest', 'keep_failover'))) > 0)) {
+        if ($debugging) {
+            if (php_function_allowed('error_log')) {
+                @error_log('SC save: No, home page has spurious parameters, likely a bot probing');
+            }
+        }
+
+        return;
+    }
 
     $bot_type = get_bot_type();
     $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
@@ -1316,6 +1325,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
     cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
         cms_file_put_contents_safe($fast_cache_path . '.gz', gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
+        //unlink($fast_cache_path); Actually, we should not assume all user agents support gzip
     }
 }
 
@@ -1329,7 +1339,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * @param  boolean $being_included Whether the page is being included from another
  * @param  boolean $redirect_check Whether to check for redirects (normally you would)
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
- * @return ?Tempcode The page (null: no page)
+ * @return Tempcode The page
  */
 function request_page($codename, $required, $zone = null, $page_type = null, $being_included = false, $redirect_check = true, &$out = null)
 {
@@ -1350,7 +1360,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     if ($REQUEST_PAGE_NEST_LEVEL > 20) {
         $REQUEST_PAGE_NEST_LEVEL = 0;
         attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html($codename), escape_html(do_lang('PAGE'))), 'warn', false, true);
-        return null;
+        return new Tempcode();
     }
 
     // Run hooks, if any exist
@@ -2106,7 +2116,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $include_link = f
     // Find title
     global $PT_PAIR_CACHE_CP;
     if (!array_key_exists($the_page, $PT_PAIR_CACHE_CP)) {
-        $page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages b ON (a.the_page=b.the_page AND a.the_zone=b.the_zone)', array('cc_page_title', 'p_parent_page', 'string_index'), array('a.the_page' => $the_page, 'a.the_zone' => $the_zone), '', 1, 0, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
+        $page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages b ON (a.the_page=b.the_page AND a.the_zone=b.the_zone)', array('cc_page_title', 'p_parent_page'), array('a.the_page' => $the_page, 'a.the_zone' => $the_zone), '', 1, 0, false, array('cc_page_title' => '?SHORT_TRANS'));
         if (!array_key_exists(0, $page_rows)) {
             global $DISPLAYED_TITLE;
 
@@ -2116,7 +2126,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $include_link = f
             $temp_title = $DISPLAYED_TITLE;
             restore_output_state();
 
-            $page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages b ON (a.the_page=b.the_page AND a.the_zone=b.the_zone)', array('cc_page_title', 'p_parent_page', 'string_index'), array('a.the_page' => $the_page, 'a.the_zone' => $the_zone), '', 1, 0, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
+            $page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages a JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'comcode_pages b ON (a.the_page=b.the_page AND a.the_zone=b.the_zone)', array('cc_page_title', 'p_parent_page'), array('a.the_page' => $the_page, 'a.the_zone' => $the_zone), '', 1, 0, false, array('cc_page_title' => '?SHORT_TRANS'));
             if (!array_key_exists(0, $page_rows)) { // Oh well, fallback (maybe page doesn't exist yet, ?)...
                 $PT_PAIR_CACHE_CP[$the_page] = array();
                 $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $temp_title->evaluate();

@@ -34,17 +34,7 @@ function get_nested_csv_structure()
         require_code('cns_members');
         require_code('cns_groups');
 
-        $_custom_fields = cns_get_all_custom_fields_match(
-            cns_get_all_default_groups(true),
-            null, // public view
-            null, // owner view
-            null, // owner set
-            null,
-            null,
-            null,
-            null,
-            null // show on join form
-        );
+        $_custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true));
     } else {
         $_custom_fields = array();
     }

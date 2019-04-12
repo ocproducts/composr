@@ -734,8 +734,6 @@ class Module_cms_blogs extends Standard_crud_module
     {
         check_privilege('mass_import', null, null, 'cms_news');
 
-        set_mass_import_mode();
-
         // Wordpress posts, XML file importing method
         if ((get_param_string('method') == 'xml')) {
             $is_validated = post_param_integer('auto_validate', 0);

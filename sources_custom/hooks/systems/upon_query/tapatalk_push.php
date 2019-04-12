@@ -36,6 +36,10 @@ class Hook_upon_query_tapatalk_push
             return;
         }
 
+        if (get_mass_import_mode()) {
+            return;
+        }
+
         if ((strpos($query, 'INTO ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts ') !== false) && ($get_insert_id)) {
             require_once(get_file_base() . '/mobiquo/lib/TapatalkPush.php');
             $push = new TapatalkPush();

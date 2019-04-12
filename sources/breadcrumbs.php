@@ -175,7 +175,9 @@ class Breadcrumb_substitution_loader
 
         // Run the parser
         if (@xml_parse($xml_parser, $data, true) == 0) {
-            attach_message('breadcrumbs.xml: ' . xml_error_string(xml_get_error_code($xml_parser)), 'warn', false, true);
+            $err_code = xml_get_error_code($xml_parser);
+            $err_msg = xml_error_string($err_code) . ' [#' . strval($err_code) . ' @ ' . strval(xml_get_current_line_number($xml_parser)) . ']';
+            attach_message('breadcrumbs.xml: ' . $err_msg, 'warn', false, true);
             return;
         }
         @xml_parser_free($xml_parser);

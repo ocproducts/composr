@@ -52,8 +52,18 @@ switch (get_param_string('type')) {
         break;
 
     case 'http_status_check':
-        $http_result = cms_http_request(get_param_string('url', false, INPUT_FILTER_URL_GENERAL), array('bytes_limit' => 0));
-        $result = $http_result->message;
+        $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            $http_result = cms_http_request($url, array('bytes_limit' => 0, 'trigger_error' => false));
+            $result = @strval($http_result->message);
+
+            if ($result === '200') {
+                break;
+            }
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
+            }
+        }
         break;
 
     default:

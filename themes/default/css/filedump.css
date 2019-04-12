@@ -40,6 +40,10 @@
 	margin: -0.5em 0 0 -0.5em;
 }
 
+.filedump-filter #type_filter_filedump_1, .filedump-filter #type_filter_filedump_2 {
+	max-width: 5em;
+}
+
 .filedump-thumbnails .box {
 	margin: 0.5em 0 0 0.5em;
 }

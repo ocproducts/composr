@@ -163,7 +163,9 @@ class CMS_simple_xml_reader
         $xml_data = unixify_line_format($xml_data); // Fixes Windows characters
 
         if (xml_parse($xml_parser, $xml_data, true) == 0) {
-            warn_exit(xml_error_string(xml_get_error_code($xml_parser)), false, true);
+            $err_code = xml_get_error_code($xml_parser);
+            $err_msg = xml_error_string($err_code) . ' [#' . strval($err_code) . ' @ ' . strval(xml_get_current_line_number($xml_parser)) . ']';
+            warn_exit($err_msg, false, true);
         }
 
         @xml_parser_free($xml_parser);

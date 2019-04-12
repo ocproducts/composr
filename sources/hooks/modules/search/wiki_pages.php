@@ -27,16 +27,21 @@ class Hook_search_wiki_pages extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
+     * @param  ?MEMBER $member_id The member ID to check with (null: current member)
      * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
-    public function info($check_permissions = true)
+    public function info($check_permissions = true, $member_id = null)
     {
         if (!addon_installed('wiki')) {
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         if ($check_permissions) {
-            if (!has_actual_page_access(get_member(), 'wiki')) {
+            if (!has_actual_page_access($member_id, 'wiki')) {
                 return false;
             }
         }

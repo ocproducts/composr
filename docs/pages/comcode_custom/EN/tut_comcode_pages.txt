@@ -200,6 +200,8 @@ The templates are designed to help you in the following ways:
  - So you get some reasonable default layouts and graphics (any website benefits greatly from professional design, but the samples are enough to get most sites started)
  - Specific and detailed advice you can work to, particularly on how to structure persuasive or engaging articles (we think we've saved you a lot of self-education here, bringing together techniques from journalism, PR, sales, and brand marketing, into a single set of convenient techniques)
 
+The templates are stored in the [tt]data/modules/cms_comcode_pages/<lang>[/tt] directory, and new ones or overrides may be placed in the [tt]data_custom/modules/cms_comcode_pages/<lang>[/tt] directory. The template file format is raw Comcode, exactly how Comcode pages are also stored on disk. All templates should have a Comcode [tt]title[/tt] tag, which forms the title of the page template.
+
 [title="2"]Hiding pages from the Sitemap[/title]
 
 There may be cases where you don't want a Comcode page to appear in your Sitemap. The easiest way to solve this is to preface the name of the Comcode page with an underscore (_). For example, pages named [tt]_test[/tt] and [tt]_example[/tt] will not show on the Sitemap due to starting with the underscore symbol.

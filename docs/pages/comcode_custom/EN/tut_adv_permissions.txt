@@ -14,7 +14,8 @@ Some software tries to make options for everything, but the result tends to be t
 {!permissions:DOC_PAGE_MATCH_KEY_ACCESS}
 
 Configure Match-key permissions from:
-Admin Zone > Security > Match-keys
+Admin Zone > Security > Match-key page restrictions
+This assumes the [tt]match_key_permissions[/tt] addon is installed.
 [/surround]
 
 [title="3"]An example: controlling member-directory access[/title]

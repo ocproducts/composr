@@ -127,19 +127,56 @@ function require_code($codename, $light_exit = false, $has_custom = null)
             $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
 
             if (strpos($custom, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
-                $functions_before = get_defined_functions();
-                $classes_before = get_declared_classes();
+                // We need to identify the new functions and classes. Ideally we'd use get_defined_functions and get_declared_classes, and do a diff before/after - but this does a massive amount of memory access 
+                $function_matches = array();
+                $possible_new_functions = array();
+                $num_function_matches = preg_match_all('#\sfunction\s+(\w+)\(#', $custom, $function_matches);
+                for ($i = 0; $i < $num_function_matches; $i++) {
+                    $possible_new_function = $function_matches[1][$i];
+                    if (!function_exists($possible_new_function)) {
+                        $possible_new_functions[] = $possible_new_function;
+                    }
+                }
+                $class_matches = array();
+                $possible_new_classes = array();
+                $num_class_matches = preg_match_all('#\sclass\s+(\w+)#', $custom, $class_matches);
+                for ($i = 0; $i < $num_class_matches; $i++) {
+                    $possible_new_class = $class_matches[1][$i];
+                    if (!class_exists($possible_new_class)) {
+                        $possible_new_classes[] = $possible_new_class;
+                    }
+                }
+
                 call_included_code($path_custom, $codename, $light_exit); // Include our custom
-                $functions_after = get_defined_functions();
-                $classes_after = get_declared_classes();
-                $functions_diff = array_diff($functions_after['user'], $functions_before['user']); // Our custom defined these functions
-                $classes_diff = array_diff($classes_after, $classes_before);
+
+                $has_upper_case_function_name = false;
+                $functions_diff = array();
+                foreach ($possible_new_functions as $possible_new_function) {
+                    if (function_exists($possible_new_function)) {
+                        $functions_diff[] = $possible_new_function;
+                        if (function_exists('ctype_lower')) {
+                            if (!ctype_lower($possible_new_function)) {
+                                $has_upper_case_function_name = true;
+                            }
+                        } else {
+                            $has_upper_case_function_name = true;
+                        }
+                    }
+                }
+                $classes_diff = array();
+                foreach ($possible_new_classes as $possible_new_class) {
+                    if (class_exists($possible_new_class)) {
+                        $classes_diff[] = $possible_new_class;
+                    }
+                }
 
                 $pure = true; // We will set this to false if it does not have all functions the main one has. If it does have all functions we know we should not run the original init, as it will almost certainly just have been the same code copy&pasted through.
                 $overlaps = false;
+                $strpos_func = $has_upper_case_function_name ? 'stripos' : 'strpos';
+                $str_replace_func = $has_upper_case_function_name ? 'str_ireplace' : 'str_replace';
                 foreach ($functions_diff as $function) { // Go through override's functions and make sure original doesn't have them: rename original's to non_overridden__ equivs.
-                    if (stripos($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
-                        $orig = str_ireplace('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
+                    if ($strpos_func($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
+                        $orig = $str_replace_func('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
                         $overlaps = true;
                     } else {
                         $pure = false;
@@ -692,6 +729,7 @@ cms_ini_set('default_socket_timeout', '60');
 cms_ini_set('html_errors', '1');
 cms_ini_set('docref_root', 'http://php.net/manual/en/');
 cms_ini_set('docref_ext', '.php');
+safe_ini_set('pcre.jit', '0'); // Compatibility issue in PHP 7.3, "JIT compilation failed: no more memory"
 
 // Get ready for some global variables
 global $REQUIRED_CODE, $REQUIRING_CODE, $CURRENT_SHARE_USER, $PURE_POST, $IN_MINIKERNEL_VERSION;

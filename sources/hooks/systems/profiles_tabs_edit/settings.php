@@ -126,7 +126,7 @@ class Hook_profiles_tabs_edit_settings
             $custom_fields = cns_get_all_custom_fields_match(
                 $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id_of), // groups
                 (($member_id_of != $member_id_viewing) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, // public view
-                (($member_id_of == $member_id_viewing) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null, // owner view
+                null, // owner view
                 (($member_id_of == $member_id_viewing) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null // owner set
             );
             $actual_custom_fields = ((post_param_integer('submitting_profile_tab', 0) == 1) || (fractional_edit())) ? cns_read_in_custom_fields($custom_fields, $member_id_of) : array();

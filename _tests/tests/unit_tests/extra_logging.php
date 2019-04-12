@@ -26,6 +26,7 @@ class extra_logging_test_set extends cms_test_case
         $c = cms_file_get_contents_safe($config_path);
         $c = str_replace("\n\$SITE_INFO['fast_spider_cache'] = '1';", '', $c);
         $c = str_replace("\n\$SITE_INFO['any_guest_cached_too'] = '1';", '', $c);
+        require_code('files');
         cms_file_put_contents_safe($config_path, $c);
 
         $this->establish_admin_session();

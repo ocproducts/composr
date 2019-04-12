@@ -54,7 +54,7 @@ class media_test_set extends cms_test_case
 
     public function testFacebookThumbnail()
     {
-        $test_url = 'https://www.facebook.com/facebook/videos/10157176238836729/';
+        $test_url = 'https://www.facebook.com/CollegeHumor/videos/10154300448557807/';
         require_code('hooks/systems/media_rendering/video_facebook');
         $ob = new Hook_media_rendering_video_facebook();
         $thumb_url = $ob->get_video_thumbnail($test_url);

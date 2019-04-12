@@ -362,7 +362,7 @@ function _get_mp4_details_do_atom_list($file, $atom_size = null)
  * @param  URLPATH $thumb_url The URL to the thumbnail of the actual image
  * @param  BINARY $validated Whether the image has been validated for display on the site
  * @param  BINARY $allow_rating Whether the image may be rated
- * @param  BINARY $allow_comments Whether the image may be commented upon
+ * @param  SHORT_INTEGER $allow_comments Whether the image may be commented upon
  * @param  BINARY $allow_trackbacks Whether the image may be trackbacked
  * @param  LONG_TEXT $notes Hidden notes associated with the image
  * @param  ?MEMBER $submitter The submitter (null: current member)
@@ -475,7 +475,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  URLPATH $thumb_url The URL to the thumbnail of the actual image
  * @param  BINARY $validated Whether the image has been validated for display on the site
  * @param  BINARY $allow_rating Whether the image may be rated
- * @param  BINARY $allow_comments Whether the image may be commented upon
+ * @param  SHORT_INTEGER $allow_comments Whether the image may be commented upon
  * @param  BINARY $allow_trackbacks Whether the image may be trackbacked
  * @param  LONG_TEXT $notes Hidden notes associated with the image
  * @param  SHORT_TEXT $meta_keywords Meta keywords
@@ -835,7 +835,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
  * @param  URLPATH $thumb_url The URL to the thumbnail of the actual video
  * @param  BINARY $validated Whether the video has been validated for display on the site
  * @param  BINARY $allow_rating Whether the video may be rated
- * @param  BINARY $allow_comments Whether the video may be commented upon
+ * @param  SHORT_INTEGER $allow_comments Whether the video may be commented upon
  * @param  BINARY $allow_trackbacks Whether the video may be trackbacked
  * @param  LONG_TEXT $notes Hidden notes associated with the video
  * @param  integer $video_length The length of the video
@@ -960,7 +960,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  URLPATH $thumb_url The URL to the thumbnail of the actual video
  * @param  BINARY $validated Whether the video has been validated for display on the site
  * @param  BINARY $allow_rating Whether the video may be rated
- * @param  BINARY $allow_comments Whether the video may be commented upon
+ * @param  SHORT_INTEGER $allow_comments Whether the video may be commented upon
  * @param  BINARY $allow_trackbacks Whether the video may be trackbacked
  * @param  LONG_TEXT $notes Hidden notes associated with the video
  * @param  integer $video_length The length of the video
@@ -1247,7 +1247,7 @@ function _watermark_corner($source, $watermark_url, $x, $y)
  * @param  URLPATH $watermark_bottom_left Watermark (blank: none)
  * @param  URLPATH $watermark_bottom_right Watermark (blank: none)
  * @param  BINARY $allow_rating Whether rating are allowed
- * @param  BINARY $allow_comments Whether comments are allowed
+ * @param  SHORT_INTEGER $allow_comments Whether comments are allowed
  * @param  boolean $skip_exists_check Whether to skip the check for whether the gallery exists (useful for importers)
  * @param  ?TIME $add_date The add time (null: now)
  * @param  ?MEMBER $g_owner The gallery owner (null: nobody)
@@ -1359,7 +1359,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit)
  * @param  BINARY $allow_rating Whether rating are allowed
- * @param  BINARY $allow_comments Whether comments are allowed
+ * @param  SHORT_INTEGER $allow_comments Whether comments are allowed
  * @param  ?MEMBER $g_owner The gallery owner (null: nobody)
  * @param  ?TIME $add_time The add time (null: now)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'

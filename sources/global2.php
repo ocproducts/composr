@@ -180,7 +180,7 @@ function init__global2()
         require_code('chat_poller');
         chat_poller();
     }
-    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier')) && (get_param_string('type', '') == 'poller')) {
+    if ((running_script('notifications')) && (get_param_integer('time_barrier', null) !== null) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier')) && (get_param_string('type', '') == 'poller')) {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
@@ -465,7 +465,7 @@ function init__global2()
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Clear caching if needed
-        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false)) && (get_value('disable_base_check') !== '1');
+        $changed_base_url = (get_value('last_base_url', null) !== get_base_url(false)) && (get_value('disable_base_check') !== '1');
         if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
@@ -610,6 +610,12 @@ function fixup_bad_php_env_vars()
         'SERVER_ADDR',
         'SERVER_NAME',
         'SERVER_SOFTWARE',
+        'HTTP_AUTHORIZATION',
+        'REDIRECT_HTTP_AUTHORIZATION',
+        'REMOTE_USER',
+        'REDIRECT_REMOTE_USER',
+        'PHP_AUTH_USER',
+        'PHP_AUTH_PW',
     );
     foreach ($understood as $key) {
         if (empty($_SERVER[$key])) {
@@ -695,6 +701,22 @@ function fixup_bad_php_env_vars()
 
     if (empty($_SERVER['QUERY_STRING'])) {
         $_SERVER['QUERY_STRING'] = str_replace('/', '%2F', http_build_query($_GET));
+    }
+
+    if (empty($_SERVER['PHP_AUTH_USER'])) {
+        if (empty($_SERVER['HTTP_AUTHORIZATION'])) {
+            if (!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+                $_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+            }
+        }
+
+        if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
+            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':' , base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+        } elseif (!empty($_SERVER['REDIRECT_REMOTE_USER'])) {
+            $_SERVER['PHP_AUTH_USER'] = $_SERVER['REDIRECT_REMOTE_USER'];
+        } elseif (!empty($_SERVER['REMOTE_USER'])) {
+            $_SERVER['PHP_AUTH_USER'] = $_SERVER['REMOTE_USER'];
+        }
     }
 }
 

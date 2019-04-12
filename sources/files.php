@@ -475,6 +475,9 @@ function should_ignore_file($path, $bitmask = 0)
         // Log files
         'log' => '.*',
 
+        // Custom fonts
+        'ttf' => 'data_custom/fonts',
+
         // Temporary files
         'tmp' => '.*',
         'dat' => 'caches/http',

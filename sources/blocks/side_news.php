@@ -294,7 +294,9 @@ class Block_side_news
                     $map2['cat'] = $first_cat;
                 }
             }
-            $submit_url = build_url($map2, get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
+            if ($historic == '') {
+                $submit_url = build_url($map2, get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
+            }
         }
 
         return do_template('BLOCK_SIDE_NEWS', array(

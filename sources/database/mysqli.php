@@ -56,7 +56,7 @@ class Database_Static_mysqli extends Database_super_mysql
         }
 
         // Potential caching
-        $x = serialize(array($db_name, $db_host));
+        $x = serialize(array($db_user, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db[1] !== $db_name) {
                 mysqli_select_db($this->cache_db[$x], $db_name);
@@ -138,6 +138,14 @@ class Database_Static_mysqli extends Database_super_mysql
             $this->last_select_db = array($db_link, $db_name);
         }
 
+        static $version = null;
+        if ($version === null) {
+            $version = mysqli_get_server_version($db);
+        }
+        if ($version >= 80000) {
+            $query = $this->fix_mysql8_query($query);
+        }
+
         $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @mysqli_query($db_link, $query);
@@ -191,7 +199,8 @@ class Database_Static_mysqli extends Database_super_mysql
         $num_fields = mysqli_num_fields($results);
         $names = array();
         $types = array();
-        for ($x = 0; $x < $num_fields; $x++) {
+        $fields = mysqli_fetch_fields($results);
+        foreach ($fields as $x => $field) {
             $field = mysqli_fetch_field($results);
             $names[$x] = $field->name;
             $types[$x] = $field->type;
@@ -211,23 +220,23 @@ class Database_Static_mysqli extends Database_super_mysql
                     }
                 }
 
-                if (($type === 'int') || ($type === 1) || ($type === 2) || ($type === 3) || ($type === 8) || ($type === 9)) {
+                if (($type === 1) || ($type === 2) || ($type === 3) || ($type === 8) || ($type === 9)) { // Integer field of some kind
                     if ((($v === null)) || ($v === '')) {
                         $newrow[$name] = null;
                     } else {
                         $newrow[$name] = intval($v);
                     }
-                } elseif (($type === 'decimal') || ($type === 'real') || ($type === 4) || ($type === 5) || ($type === 246)) {
+                } elseif (($type === 'real') || ($type === 4) || ($type === 5) || ($type === 246)) { // Decimal field of some kind
                     if ((($v === null)) || ($v === '')) {
                         $newrow[$name] = null;
                     } else {
                         $newrow[$name] = floatval($v);
                     }
-                } elseif (($type === 16) || ($type === 'bit')) {
+                } elseif ($type === 16) { // Bit field
                     if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {
                         $newrow[$name] = ord($v); // 0/1 char for BIT field
                     } else {
-                        $newrow[$name] = intval($v);
+                        $newrow[$name] = intval($v); // Int-as-string format
                     }
                 } else {
                     $newrow[$name] = $v;

@@ -274,12 +274,6 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
         $question = do_lang_tempcode('WHAT_NEXT');
     }
 
-    if ($simplified && count($entry_passed_2) != 0) {
-        $_url_redirect = build_url(array('page' => ''), 'site');
-        require_code('templates_redirect_screen');
-        return redirect_screen($title, $_url_redirect, $text);
-    }
-
     if ($text->evaluate() == do_lang('SUCCESS')) {
         attach_message($text, 'inform');
         $text = null;

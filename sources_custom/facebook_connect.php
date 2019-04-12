@@ -34,7 +34,7 @@ function init__facebook_connect()
 }
 
 // This is only called if we know we have a user logged into Facebook, who has authorised to our app
-function handle_facebook_connection_login($current_logged_in_member)
+function handle_facebook_connection_login($current_logged_in_member, $quick_only = false)
 {
     if (!class_exists('Tempcode')) {
         return null;
@@ -193,7 +193,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // Not logged in before using Facebook, so we need to create an account, or bind to the active Composr login if there is one
-    $in_a_sane_place = (get_page_name() != 'login') && ((running_script('index')) || (running_script('execute_temp'))); // If we're in some weird script, or the login module UI, it's not a sane place, don't be doing account creation yet
+    $in_a_sane_place = (get_page_name() != 'login') && ((running_script('index')) || (running_script('execute_temp'))) && (!$quick_only); // If we're in some weird script, or the login module UI, it's not a sane place, don't be doing account creation yet
     if (($member_id === null) && ($in_a_sane_place)) {
         // Bind to existing Composr login?
         if ($current_logged_in_member !== null) {
@@ -241,7 +241,17 @@ function handle_facebook_connection_login($current_logged_in_member)
         require_code('cns_groups');
         require_code('cns_members2');
         require_code('cns_members_action');
-        $_custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, 1);
+        $_custom_fields = cns_get_all_custom_fields_match(
+            cns_get_all_default_groups(true), // groups
+            null, // public view
+            null, // owner view
+            null, // owner set
+            null, // required
+            null, // show in posts
+            null, // show in post previews
+            null, // special start
+            true // show on join form
+        );
         if ((!$completion_form_submitted) && (count($_custom_fields) != 0) && (get_option('finish_profile') == '1')) { // UI
             $GLOBALS['FACEBOOK_FINISHING_PROFILE'] = true;
             $middle = cns_member_external_linker_ask('facebook', $username, $email_address, $dob_day, $dob_month, $dob_year);
@@ -325,7 +335,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // Finalise the session
-    if ($member_id !== null) {
+    if (($member_id !== null) && (!$quick_only)) {
         require_code('users_inactive_occasionals');
         create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }

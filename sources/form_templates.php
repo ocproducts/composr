@@ -2123,12 +2123,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 continue;
             }
 
-            $file_path = convert_url_to_path($url);
-            if ($file_path !== null) {
-                $test = cms_getimagesize($file_path);
-            } else {
-                $test = false;
-            }
+            $test = cms_getimagesize_url($url, true);
             if ($test !== false) {
                 list($width, $height) = $test;
             } else {

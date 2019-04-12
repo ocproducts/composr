@@ -37,6 +37,8 @@ class Hook_task_import_filesystem_downloads
             return null;
         }
 
+        set_mass_import_mode();
+
         require_code('downloads2');
         require_lang('downloads');
 

@@ -486,7 +486,7 @@ function init__webstandards()
 
     global $REQUIRE_ANCESTOR;
     $REQUIRE_ANCESTOR = array(
-        'textarea' => 'form',
+        //'textarea' => 'form',
         //'input' => 'form',
         //'button' => 'form',
         'option' => 'form',

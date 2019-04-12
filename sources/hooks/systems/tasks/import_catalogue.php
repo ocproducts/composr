@@ -49,6 +49,8 @@ class Hook_task_import_catalogue
             return null;
         }
 
+        set_mass_import_mode();
+
         require_code('catalogues2');
         require_lang('catalogues');
 

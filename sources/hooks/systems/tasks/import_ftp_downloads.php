@@ -39,7 +39,10 @@ class Hook_task_import_ftp_downloads
             return null;
         }
 
+        set_mass_import_mode();
+
         require_code('downloads2');
+
         require_lang('downloads');
 
         // Firstly, parse the server URL, to make sure it is fine

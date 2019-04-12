@@ -128,9 +128,9 @@ RewriteRule ^(.*) - [L]
 RewriteRule ^crossdomain\.xml data/crossdomain.php
 
 # WebDAV implementation (requires the non-bundled WebDAV addon)
-RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteRule ^webdav(/.*|$) data_custom/webdav.php
 RewriteCond %{HTTP_HOST} ^webdav\..*
-RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteRule ^(.*)$ data_custom/webdav.php
 
 #FAILOVER STARTS
 ### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###

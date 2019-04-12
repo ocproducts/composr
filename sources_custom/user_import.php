@@ -77,7 +77,7 @@ function do_user_import()
     }
 
     $cpf_ids = array();
-    $fields_to_show = cns_get_all_custom_fields_match(null);
+    $fields_to_show = cns_get_all_custom_fields_match();
     foreach ($fields_to_show as $field_to_show) {
         $cpf_ids[$field_to_show['trans_name']] = $field_to_show['id'];
     }

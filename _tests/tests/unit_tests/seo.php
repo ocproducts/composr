@@ -44,5 +44,9 @@ class seo_test_set extends cms_test_case
         $emoji = hex2bin('f09f9881');
         list($keywords) = _seo_meta_find_data(array('This is epic' . $emoji), '');
         $this->assertTrue($keywords == 'epic', 'Got: ' . $keywords);
+
+        // Test filtering
+        list($keywords) = _seo_meta_find_data(array('Hello [attachment]new_1[/attachment] [media]uploads/downloads/example.png[/media] [b]World[/b] [Example]'), '');
+        $this->assertTrue($keywords == 'Hello,World,Example', 'Got: ' . $keywords);
     }
 }

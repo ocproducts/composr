@@ -69,6 +69,9 @@ class lang_spelling_test_set extends cms_test_case
                 ))) {
                     continue;
                 }
+                if ($file == 'sitemap.txt') {
+                    continue;
+                }
 
                 $c = file_get_contents($path);
 

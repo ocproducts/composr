@@ -20,10 +20,6 @@ if (!addon_installed__messaged('composr_homesite', $error_msg)) {
     return $error_msg;
 }
 
-require_code('encryption');
-$encryption = is_encryption_enabled();
-$encrypted = $encryption ? ' The details you enter here will be encrypted automatically.' : '';
-
 /*
 Notes:
  - Lists are ordered in cost order where applicable
@@ -816,7 +812,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             ),
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you already have hosting and think we might need these details. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
+                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you already have hosting and think we might need these details. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].',
                 'type' => 'long_text',
                 'default' => '(I do not yet have hosting, provide advice or hosting for me.)',
                 'comcode_prepend' => $encryption ? '[encrypt]' : '',
@@ -923,7 +919,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
         'questions' => array(
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
+                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].',
                 'type' => 'long_text',
                 'default' => '',
                 'comcode_prepend' => $encryption ? '[encrypt]' : '',
@@ -941,7 +937,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             ),
             'password' => array(
                 'label' => 'Password to use',
-                'description' => 'What would you like your admin password to be set to?' . $encrypted,
+                'description' => 'What would you like your admin password to be set to?',
                 'type' => 'short_text',
                 'default' => '',
                 'comcode_prepend' => $encryption ? '[encrypt]' : '',
@@ -1111,7 +1107,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             ),
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you think we might. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
+                'description' => 'We may need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have if you think we might. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].',
                 'type' => 'long_text',
                 'default' => '',
                 'comcode_prepend' => $encryption ? '[encrypt]' : '',
@@ -1183,7 +1179,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             ),
             'access_details' => array(
                 'label' => 'Access details',
-                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].' . $encrypted,
+                'description' => 'We need access details to your hosting, such as FTP access, or control panel access (login URL, username, password). Provide what you have. If you saved your details into your [page="site:members:view" external="1"]compo.sr member profile[/page], you can just say that. Server access is subject to our [page="_SEARCH:server_access" external="1"]server access policy[/page].',
                 'type' => 'long_text',
                 'default' => '',
                 'comcode_prepend' => $encryption ? '[encrypt]' : '',

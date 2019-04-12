@@ -164,7 +164,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
             require_code('files');
 
             // Find dimensions of the source
-            $sizes = cms_getimagesize($orig_url);
+            $sizes = cms_getimagesize_url($orig_url);
             if ($sizes === false) {
                 cms_profile_end_for('convert_image_plus', $orig_url);
 

@@ -720,7 +720,7 @@ class Module_cms_banners_cat extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_line(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE_2'), 'new_id', ($id === null) ? '' : $id, false));
+        $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE_2'), 'new_id', ($id === null) ? '' : $id, false));
         if ($id != '') {
             $hidden->attach(form_input_hidden('is_textual', strval($is_textual)));
         } else {

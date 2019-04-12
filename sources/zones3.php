@@ -420,6 +420,8 @@ function actual_delete_zone_lite($zone)
     persistent_cache_delete(array('ZONE', $zone));
     persistent_cache_delete('ALL_ZONES');
 
+    decache('menu');
+
     global $ALL_ZONES_CACHE, $ALL_ZONES_TITLED_CACHE;
     $ALL_ZONES_CACHE = null;
     $ALL_ZONES_TITLED_CACHE = null;

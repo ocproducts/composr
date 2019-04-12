@@ -350,7 +350,7 @@ function can_try_url_schemes($avoid_remap = false)
         return false;
     }
     $url_scheme = get_option('url_scheme');
-    return (($url_scheme !== 'RAW') && (get_param_integer('keep_url_scheme', null) !== 0) && ((empty($GLOBALS['SITE_INFO']['block_url_schemes'])) || ($GLOBALS['SITE_INFO']['block_url_schemes'] !== '1')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
+    return (($url_scheme !== 'RAW') && (get_param_integer('keep_url_scheme', null) !== 0) && ((empty($GLOBALS['SITE_INFO']['block_url_schemes'])) || ($GLOBALS['SITE_INFO']['block_url_schemes'] !== '1')) && (!$avoid_remap)); // If we don't have the option on or are not using Apache, return
 }
 
 /**

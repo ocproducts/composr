@@ -79,7 +79,7 @@ class Hook_health_check_network extends Hook_Health_Check
             }
         }
         $result = @json_decode($data, true);
-        $this->assertTrue($result === '200', 'Could not access website externally');
+        $this->assert_true($result === '200', 'Could not access website externally, got error code ' . $result);
     }
 
     /**
@@ -181,6 +181,10 @@ class Hook_health_check_network extends Hook_Health_Check
     public function testTransferSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
     {
         if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
+            return;
+        }
+
+        if (get_base_url() == 'https://compo.sr') {
             return;
         }
 

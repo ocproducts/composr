@@ -462,13 +462,13 @@ function filter_form_field_default($name, $val, $live = false)
                             break;
 
                         case 'shun':
-                            if ($live && simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']), true)) {
+                            if ($live && simulated_wildcard_match(cms_mb_strtolower($val), cms_mb_strtolower($attributes['embed']), true)) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_SHUNNED', escape_html($name)));
                             }
                             break;
 
                         case 'pattern':
-                            if ($live && preg_match('#' . str_replace('#', '\#', $attributes['embed']) . '#', $val) == 0) {
+                            if ($live && cms_preg_match_safe('#' . str_replace('#', '\#', $attributes['embed']) . '#', $val) == 0) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_PATTERN_FAIL', escape_html($name), escape_html($attributes['embed'])));
                             }
                             break;
@@ -490,7 +490,7 @@ function filter_form_field_default($name, $val, $live = false)
                             break;
 
                         case 'disallowedsubstring':
-                            if ($live && simulated_wildcard_match(strtolower($val), strtolower($attributes['embed']))) {
+                            if ($live && simulated_wildcard_match(cms_mb_strtolower($val), cms_mb_strtolower($attributes['embed']))) {
                                 warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_FIELD_SHUNNED_SUBSTRING', escape_html($name), escape_html($attributes['embed'])));
                             }
                             break;
@@ -529,14 +529,14 @@ function filter_form_field_default($name, $val, $live = false)
 
                         case 'sentencecase':
                             if (strlen($val) != 0) {
-                                $val = strtolower($val);
-                                $val[0] = strtoupper($val); // assumes no leading whitespace
-                                $val = preg_replace_callback('#[\.\!\?]\s+[a-z]#m', 'make_sentence_case_callback', $val);
+                                $val = cms_mb_strtolower($val);
+                                $val[0] = cms_mb_strtoupper($val); // assumes no leading whitespace
+                                $val = cms_preg_replace_callback_safe('#[\.\!\?]\s+\w#m', 'make_sentence_case_callback', $val);
                             }
                             break;
 
                         case 'titlecase':
-                            $val = ucwords(strtolower($val));
+                            $val = cms_mb_ucwords(cms_mb_strtolower($val));
                             break;
 
                         case 'prepend':
@@ -567,7 +567,7 @@ function filter_form_field_default($name, $val, $live = false)
  */
 function make_sentence_case_callback($matches)
 {
-    return strtoupper($matches[0]);
+    return cms_mb_strtoupper($matches[0]);
 }
 
 /**
@@ -659,7 +659,9 @@ class Field_restriction_loader
             return;
         }
         if (@xml_parse($xml_parser, $data, true) == 0) {
-            attach_message('fields.xml: ' . xml_error_string(xml_get_error_code($xml_parser)), 'warn', false, true);
+            $err_code = xml_get_error_code($xml_parser);
+            $err_msg = xml_error_string($err_code) . ' [#' . strval($err_code) . ' @ ' . strval(xml_get_current_line_number($xml_parser)) . ']';
+            attach_message('fields.xml: ' . $err_msg, 'warn', false, true);
             return;
         }
         @xml_parser_free($xml_parser);

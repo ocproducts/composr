@@ -179,6 +179,18 @@ class Module_admin_phpinfo
             }
         }
 
+        if (function_exists('mysql_get_server_info') && get_db_type() == 'mysql') {
+            $mysql_version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
+            if ($mysql_version !== false) {
+                $out .= '<p><strong>MySQL version</strong>: ' . $mysql_version . '</p>';
+            }
+        }
+
+        if (get_db_type() == 'mysql_pdo') {
+            $mysql_version = $GLOBALS['SITE_DB']->query_value_if_there('SELECT version()');
+            $out .= '<p><strong>MySQL version</strong>: ' . $mysql_version . '</p>';
+        }
+
         if (function_exists('pg_version') && get_db_type() == 'postgresql') {
             $postgresql_version = @pg_version($GLOBALS['SITE_DB']->connection_read);
             if ($postgresql_version !== false) {
@@ -196,16 +208,26 @@ class Module_admin_phpinfo
         }
 
         if (php_function_allowed('shell_exec')) {
-            $commands = array(
-                'uptime',
-                'cat /proc/cpuinfo',
-                'cat /proc/meminfo',
-                'cat /proc/diskstats',
-                'iotop',
-                'iostat',
-                'top -n1',
-                'ps -Af',
-            );
+            if (strpos(PHP_OS, 'Darwin') !== false) {
+                $commands = array(
+                    'uptime',
+                    'ps -Af',
+                    'top -l1',
+                    'iostat',
+                    'iotop 3 1',
+                );
+            } else {
+                $commands = array(
+                    'cat /proc/cpuinfo',
+                    'cat /proc/diskstats',
+                    'cat /proc/meminfo',
+                    'uptime',
+                    'ps -Af',
+                    'top -n1',
+                    'iostat',
+                    'iotop -n1 -b',
+                );
+            }
 
             foreach ($commands as $command) {
                 $output = @shell_exec($command);

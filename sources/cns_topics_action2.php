@@ -392,6 +392,12 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         if ($or_list_2 == '') {
             return;
         }
+
+        // Update sitemap
+        require_code('sitemap_xml');
+        foreach ($all_topics as $topic_info) {
+            notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_info['id']), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($to)));
+        }
     } elseif (count($topics) == 1) { // Just one
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to', 't_cache_first_title', 't_cache_num_posts', 't_validated'), array('id' => $topics[0]));
         if (!array_key_exists(0, $topic_info)) {
@@ -412,6 +418,10 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
 
         // Update forum IDs' for posts
         $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_cache_forum_id' => $to), array('p_topic_id' => $topics[0]));
+
+        // Update sitemap
+        require_code('sitemap_xml');
+        notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_info[0]['id']), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($to)));
     } else { // Unknown number
         if (count($topics) == 0) {
             return; // Nuts, lol

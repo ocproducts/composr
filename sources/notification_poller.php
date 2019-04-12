@@ -246,7 +246,7 @@ function get_web_notifications($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        set_cache_entry('_get_notifications', 60 * 60 * 24, serialize(array($max)), $ret);
+        set_cache_entry('_get_notifications', 60 * 24, serialize(array($max)), $ret);
     }
 
     return $ret;
@@ -403,7 +403,7 @@ function get_pts($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        set_cache_entry('_get_pts', 60 * 60 * 24, serialize(array($max)), $ret);
+        set_cache_entry('_get_pts', 60 * 24, serialize(array($max)), $ret);
     }
 
     return $ret;
@@ -422,7 +422,7 @@ function pt_to_xml($row)
     $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 
-    $just_post_row = db_map_restrict($row, array('id', 'p_post'));
+    $just_post_row = db_map_restrict($row, array('id', 'p_post'), array('id' => 'p_id'));
     $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
 
     $rendered = do_template('NOTIFICATION_PT_DESKTOP', array(

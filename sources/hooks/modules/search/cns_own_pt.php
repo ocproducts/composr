@@ -27,9 +27,10 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
+     * @param  ?MEMBER $member_id The member ID to check with (null: current member)
      * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
-    public function info($check_permissions = true)
+    public function info($check_permissions = true, $member_id = null)
     {
         if (!addon_installed('cns_forum')) {
             return null;
@@ -39,17 +40,21 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         if ($check_permissions) {
-            if (!has_actual_page_access(get_member(), 'topicview')) {
+            if (!has_actual_page_access($member_id, 'topicview')) {
                 return false;
             }
 
-            if (get_member() == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
+            if ($member_id == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
                 return null;
             }
         }
 
-        if ($GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_pt_from=' . strval(get_member()) . ' OR ' . 't_pt_to=' . strval(get_member())) == 0) {
+        if ($GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_pt_from=' . strval($member_id) . ' OR ' . 't_pt_to=' . strval($member_id)) == 0) {
             return null;
         }
 

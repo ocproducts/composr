@@ -1,0 +1,130 @@
+[title sub="Written by Chris Graham"]Composr Supplementary: Conposr and Conposr++[/title]
+
+Composr CMS is a huge system, designed for sites with fairly sophisticated content management and social media needs.
+
+However, Composr CMS is also a framework for general programming.
+
+What if you are a developer who wants to use Composr CMS's framework, but without all the CMS and social media overhead? Perhaps you already are using Composr a lot and don't want to have to deal with a totally different set of APIs for accomplishing what you already can do with Composr.
+
+Enter, Conposr.
+
+Conposr is a standalone PHP web app framework derived from key parts of the Composr code. It provides the following Composr APIs:
+ - templating (Tempcode), including a simplified forms system
+ - date/time management
+ - database interfacing
+ - configuration (but without needing to run out of the database)
+ - error handling
+ - input sanitisation
+ - URL management
+ - users (but built around PHP sessions and your own authorisation backend)
+ - HTTP calls
+ - various other common Composr helper functions
+
+While taking a lot of code from Composr, Conposr flips a number of Composr design decisions around:
+ - Composr is designed for regular people, Conposr is designed for developers
+ - Composr provides a lot of CMS and social media functionality, Conposr is very lean (it doesn't even require a database connection if you don't want one)
+ - Composr is optimised to the bone with tight coupling, Conposr web apps are clean and elegant
+ - Composr is designed to run on a wide variety of badly configured servers, Conposr is designed for standard and sane environments
+
+To get Conposr running just download it, put the [tt]conposr[/tt] directory in your project, and load it with something like:
+[code="PHP"]
+global $SITE_INFO; // You can override any options defined with defaults in Conposr's config.php by setting them in this array
+$SITE_INFO['db_site'] = 'test';
+require_once('conposr/global.php');
+[/code]
+Then you have access to the API. Functions generally work the same as they do in Composr, e.g. [tt]do_template[/tt] (although templates just reside directly in a [tt]templates[/tt] directory, there are no themes).
+
+[title="2"]Conposr++[/title]
+
+Conposr++ builds some extra functionality around Conposr that is not available in Composr.
+
+In particular, it introduces:
+1) A PHPBeans API, which is equivalent to JavaBeans. You can define controller classes and all the properties of those classes are automatically made available to the main template associated with the class. Additionally, HTTP GET/POST data is automatically copied into the classes when they first instantiate.
+2) A database entity API, which is an ORM (Object-Relational Mapper). You can implement class-equivalents to database tables, and automatically load/persist them. Type-checking is implemented automatically.
+3) A simple logging API.
+
+In other words, Conposr++ harmoniously integrates data flow between PHP classes, database tables, templates, and HTTP input.
+
+This is functionality useful to many kinds of web app, but not really applicable to the kind of large and highly optimised system that Composr is - hence why it is in an independent library.
+
+To get Conposr++ running just download it, put the [tt]conposr_plus_plus[/tt] directory in your project, and load it (after Conposr) with something like:
+[code="PHP"]
+require_once('conposr/global.php');
+require_once('conposr_plus_plus/global.php');
+[/code]
+
+Here is an example of a Bean class you might name [tt]index.php[/tt]:
+[code="PHP"]
+<?php
+
+require_once('conposr/global.php');
+require_once('conposr_plus_plus/global.php');
+
+class ExamplePage extends PHPBeanPage
+{
+    protected $example = 'test';
+
+    public function run()
+    {
+        $title = 'Example page';
+        $tpl = 'example_page';
+        return $this->render($title, $tpl);
+    }
+}
+
+$page = new ExamplePage();
+try {
+    $page->run();
+}
+[/code]
+Create a template to go with it, [tt]templates/example_page.tpl[/tt]:
+[code="HTML"]
+This is a {EXAMPLE*}.
+[/code]
+
+[title="2"]Where can I get it all?[/title]
+
+Both the [url="Conposr"]https://github.com/ocproducts/conposr[/url] and [url="Conposr++"]https://github.com/ocproducts/conposr_plus_plus[/url] libraries are available on [url="GitHub"]https://github.com/ocproducts/[/url].
+
+These libraries are not going to be managed as official projects, at least not by ocProducts. There won't be official releases or versions, and there won't be development documentation. Developers interested in using them can grab them directly off of GitHub and use them as they please. As with Composr, they are under the Open Source CPAL license.
+
+[title="2"]FAQ[/title]
+
+[title="3"]What does the name Conposr mean?[/title]
+
+Conposr - the code you write looks like Composr code but it is not - a con.
+
+[title="3"]What does the name Conposr++ mean?[/title]
+
+It's a play on C++, which adds extra functionality around the C language.
+
+[title="3"]Why these silly names?[/title]
+
+We never took ourselves too seriously, and silly names are fun. Actually there's a precedent... the name ocProducts is derived from the evil OCP of the Robocop movies. We wanted to name our company after an evil company, so people would keep us in check -- a parody of Google's "do no evil" (but trust us with all your data) motto.
+
+[title="3"]Why not actually build Composr itself on top of Conposr, for maximum code re-use?[/title]
+
+Composr is tightly optimised at its core to allow such a big complex system to perform well. It would add very significant overhead to replace the tight integration with hooks. For example, the Tempcode implementation in Composr is tightly bound to Composr themes, which Conposr does not need.
+
+[title="3"]Why a new PHP framework?[/title]
+
+Frankly we're not targeting the libraries at a general audience. They are for Composr developers who want to use the same skill-set for standalone web apps -- not the typical PHP programmer who would probably be already very happy on something like Symphony or Laravel. We don't have any pretensions of creating a new top-tier framework for the world to use, just something that is very useful and effective for our community.
+
+There is a lot of cost involved in using multiple different programming languages and/or frameworks:
+ - Training, both initial and ongoing as things change
+ - Context-switching tax (it's mentally exhausting flipping back and forth between different systems all the time, even for the best programmers out there)
+ - Tool chain maintenance (for example keeping different programming languages and IDEs updated)
+Conposr eliminates these costs for its target audience.
+
+[title="3"]So Symphony and Laravel are better then?[/title]
+
+Well, actually Conposr [b]is[/b] pretty cool. When programmers set out to create the perfect framework they do tend to over-engineer things, and come up with something pretty over-complex and bloated. Conposr is under 5000 lines of code and very simple to code for. The code you write doesn't end up being overly-verbose.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_webapp"]Web-applications, Composr, and PHP[/page]
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
+ - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [url="PHP website"]http://www.php.net[/url]
+
+{$SET,tutorial_tags,Development,PHP,expert}{$SET,tutorial_add_date,Apr 2019}{$SET,tutorial_summary,Introducing the Conposr and Conposr++ frameworks.}[block]main_tutorial_rating[/block]

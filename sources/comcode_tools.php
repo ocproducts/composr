@@ -135,13 +135,13 @@ function comcode_convert_script()
         require_code('xhtml');
         $new = xhtmlise_html($out, true);
 
-        $stripped_new = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $new));
-        $stripped_old = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $out));
+        $stripped_new = preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', '', $new));
+        $stripped_old = preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', '', $out));
         if (($box_title != '') && ($stripped_new != $stripped_old)) {
             /*
             require_code('files');
-            cms_file_put_contents_safe(get_file_base() . '/a', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
-            cms_file_put_contents_safe(get_file_base() . '/b', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
+            cms_file_put_contents_safe(get_file_base() . '/a', preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', chr(10), $new)));
+            cms_file_put_contents_safe(get_file_base() . '/b', preg_replace('#<!--.*-->#Us', '', cms_preg_replace_safe('#\s+#', chr(10), $out)));
             */
 
             $out = $new . do_lang('BROKEN_XHTML_FIXED');

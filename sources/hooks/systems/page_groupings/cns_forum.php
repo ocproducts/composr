@@ -37,7 +37,6 @@ class Hook_page_groupings_cns_forum
         }
 
         return array(
-            (get_forum_type() != 'cns' || !addon_installed('cns_clubs')) ? null : array('cms', 'menu/cms/clubs', array('cms_cns_groups', array('type' => 'browse'), get_module_zone('cms_cns_groups')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('cns:CLUBS'), make_string_tempcode(escape_html(integer_format(intval($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_private_club' => 1))))))), 'cns:DOC_CLUBS'),
             (get_forum_type() != 'cns') ? null : array('structure', 'menu/social/forum/forums', array('admin_cns_forums', array('type' => 'browse'), get_module_zone('admin_cns_forums')), do_lang_tempcode('SECTION_FORUMS'), 'cns:DOC_FORUMS'),
             array('social', 'menu/social/forum/forums', array('forumview', array(), get_module_zone('forumview')), do_lang_tempcode('SECTION_FORUMS')),
         );

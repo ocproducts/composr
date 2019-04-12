@@ -272,7 +272,7 @@ function fractional_edit_script()
     $page = get_page_name();
 
     global $SESSION_CONFIRMED_CACHE;
-    if ((!$SESSION_CONFIRMED_CACHE) && ($GLOBALS['SITE_DB']->query_select_value('zones', 'zone_require_session', array('zone_name' => $zone)) == 1)) {
+    if ((!$SESSION_CONFIRMED_CACHE) && ($GLOBALS['SITE_DB']->query_select_value('zones', 'zone_require_session', array('zone_name' => $zone)) == 1) && (!is_guest())) {
         return;
     }
 

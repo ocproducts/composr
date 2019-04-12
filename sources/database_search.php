@@ -1413,7 +1413,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $t_count += $t_main_search_rows_count;
 
             cms_profile_start_for('SEARCH:t_main_search_rows');
-            $t_main_search_rows = $db->query($query, $max + $start, 0, false, true, $fields);
+            $t_main_search_rows = $db->query($query, $max + $start, 0, false, true/*, $fields Actually will hurt performance - we usually won't show text_parsed fields as we re-parse Comcode with syntax highlighting*/);
             cms_profile_end_for('SEARCH:t_main_search_rows', $query);
             if ($t_main_search_rows === null) {
                 $t_main_search_rows = array(); // In case of a failed search query

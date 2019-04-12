@@ -28,6 +28,8 @@ class lang_no_unused_test_set extends cms_test_case
             set_time_limit(300);
         }
 
+        @set_time_limit(0);
+
         $all_code = '';
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
@@ -113,6 +115,7 @@ class lang_no_unused_test_set extends cms_test_case
             'HEALTH_CHECK_SUBJECT_',
             'RECAPTCHA_ERROR_',
         );
+        $_skip_prefixes = '#^(' . implode('|', $skip_prefixes) . ')#';
 
         $skip_prefixes_regexp = '#^(' . implode('|', $skip_prefixes) . ')#';
 
@@ -210,11 +213,18 @@ class lang_no_unused_test_set extends cms_test_case
             'TAX_SALES',
             'TAX_VAT',
         ));
+        $_skip = array_flip($skip);
+
+        $cli = is_cli();
 
         $files = get_directory_contents(get_file_base() . '/lang/EN', get_file_base() . '/lang/EN', null, false, true, array('ini'));
         foreach ($files as $path) {
             $input = array();
             _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
+
+            if ($cli) {
+                echo 'Processing: ' . $file . "\n";
+            }
 
             foreach ($input as $key => $val) {
                 if (preg_match($skip_prefixes_regexp, $key) != 0) {
@@ -225,7 +235,12 @@ class lang_no_unused_test_set extends cms_test_case
                     continue;
                 }
 
-                $contains = (preg_match('#(\{!' . preg_quote($key, '#') . '|:' . preg_quote($key, '#') . '|\'' . preg_quote($key, '#') . '\')#', $all_code) != 0);
+                if (strpos($all_code, '\'' . $key . '\'') !== false) { // Most efficient check
+                    $contains = true;
+                } else { // Full check
+                    $_key = preg_quote($key, '#');
+                    $contains = (preg_match('#(\{!' . $key . '|:' . $key . '|\'' . $key . '\')#', $all_code) != 0);
+                }
                 $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '%%', $val) . ')');
             }
         }

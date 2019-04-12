@@ -426,7 +426,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 } else { // Drat, we need to load it
                     $_p = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $_postdetails['p_parent_id']), '', 1);
                     if (array_key_exists(0, $_p)) {
-                        $p = $_p[0];
+                        $p = db_map_restrict($_p[0], array('id', 'p_post'));
                         $p['message'] = get_translated_tempcode('f_posts', $p, 'p_post', $GLOBALS['FORUM_DB']);
                     }
                 }

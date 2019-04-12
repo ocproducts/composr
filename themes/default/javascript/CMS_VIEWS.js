@@ -1576,6 +1576,7 @@
                     (msg.includes('Location.toString')) || // Buggy extensions may generate
                     (msg.includes('Error loading script')) || // User's connection error
                     (msg.includes('NS_ERROR_FAILURE')) || // Usually an internal error
+                    (msg.includes('moz-extension')) || // An error inside an extension
 
                     // Google Chrome false positives
                     (msg.includes('can only be used in extension processes')) || // Can come up with MeasureIt
@@ -2248,4 +2249,30 @@
             }
         }
     }
+
+    $cms.views.TextAreaCopyCode = TextAreaCopyCode;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
+    function TextAreaCopyCode(params) {
+        TextAreaCopyCode.base(this, 'constructor', arguments);
+
+        this.withWhitespaceId = strVal(params.withWhitespaceId);
+
+        $cms.manageScrollHeight(document.getElementById('with_whitespace_' + this.withWhitespaceId));
+    }
+
+    $util.inherits(TextAreaCopyCode, $cms.View, /**@lends TextAreaCopyCode#*/{
+        events: function () {
+            return {
+                'click .js-btn-select': 'select'
+            };
+        },
+
+        select: function() {
+            document.getElementById('with_whitespace_' + this.withWhitespaceId).select();
+        }
+    });
 }(window.$cms, window.$util, window.$dom));

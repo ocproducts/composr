@@ -137,7 +137,13 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true, $pr
         return array();
     }
     if ($skip_known_words_in_db) {
-        $okay_words = array();
+        $okay_words = array(
+            // Some common Composr terms that should not be corrected
+            'comcode',
+            'tempcode',
+            'selectcode',
+            'filtercode',
+        );
 
         $or_list = '';
         foreach ($words as $word) {

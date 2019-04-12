@@ -2864,7 +2864,9 @@
      * @param urlStem
      * @param wrapper
      */
-    function internaliseInfiniteScrolling(urlStem, wrapper) {
+    function internaliseInfiniteScrolling(urlStem, wrapper, recursive) {
+        recursive = boolVal(recursive);
+
         if (infiniteScrollBlocked || infiniteScrollPending) {
             // Already waiting for a result
             return;
@@ -2949,9 +2951,11 @@
             pageHeight = $dom.getWindowScrollHeight();
 
         // Scroll down -- load
-        if (((window.scrollY + windowHeight) > (wrapperBottom - (windowHeight * 2))) && ((window.scrollY + windowHeight) < (pageHeight - 30))) {
-            // ^ If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-            internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+        if (!recursive) {
+            if (((window.scrollY + windowHeight) > (wrapperBottom - (windowHeight * 2))) && ((window.scrollY + windowHeight) < (pageHeight - 30))) {
+                // ^ If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+                internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+            }
         }
     }
 
@@ -2976,7 +2980,7 @@
             infiniteScrollPending = true;
             $cms.callBlock(urlStem + (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1', '', wrapperInner, true).then(function () {
                 infiniteScrollPending = false;
-                internaliseInfiniteScrolling(urlStem, wrapper);
+                internaliseInfiniteScrolling(urlStem, wrapper, true);
             });
         }
     }

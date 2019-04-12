@@ -107,6 +107,18 @@ function abs($number)
 }
 
 /**
+ * Returns the floating point remainder (modulo) of the division of the arguments.
+ *
+ * @param  float $x The dividend
+ * @param  float $y The divisor
+ * @return mixed The remainder
+ */
+function fmod($x, $y)
+{
+    return 0.0;
+}
+
+/**
  * Counts all the values of an array.
  *
  * @param  array $input Input array
@@ -1476,7 +1488,7 @@ function imagettftext($handle, $size, $angle, $x, $y, $colour, $fontfile, $text)
 /**
  * Return the image types supported by this execution environment.
  *
- * @return integer Bit field of constants: IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP
+ * @return integer Bit field of constants: IMG_GIF | IMG_JPG | IMG_PNG
  */
 function imagetypes()
 {
@@ -2361,10 +2373,10 @@ function preg_grep($pattern, $subject, $flags = 0)
  * @param  mixed $pattern The pattern (string or array)
  * @param  mixed $replacement The replacement string (string or array)
  * @param  string $subject The subject string
- * @param  ?integer $limit The limit of replacements (null: no limit)
+ * @param  ?integer $limit The limit of replacements (-1: no limit)
  * @return ~string The string with replacements made (false: error)
  */
-function preg_replace($pattern, $replacement, $subject, $limit = null)
+function preg_replace($pattern, $replacement, $subject, $limit = -1)
 {
     return '';
 }
@@ -2375,10 +2387,10 @@ function preg_replace($pattern, $replacement, $subject, $limit = null)
  * @param  string $pattern The pattern
  * @param  mixed $callback The callback
  * @param  string $subject The subject string
- * @param  ?integer $limit The limit of replacements (null: no limit)
+ * @param  ?integer $limit The limit of replacements (-1: no limit)
  * @return ~string The string with replacements made (false: error)
  */
-function preg_replace_callback($pattern, $callback, $subject, $limit = null)
+function preg_replace_callback($pattern, $callback, $subject, $limit = -1)
 {
     return '';
 }
@@ -5335,7 +5347,6 @@ acosh
 atanh
 expm1
 log1p
-fmod
 getopt
 settype
 dir

@@ -73,9 +73,9 @@ class images_test_set extends cms_test_case
     public function testImageSizing()
     {
         $this->assertTrue(is_array(cms_getimagesize(get_file_base() . '/themes/default/images/button1.png')));
-        $this->assertTrue(is_array(cms_getimagesize(get_base_url() . '/themes/default/images/button1.png')));
+        $this->assertTrue(is_array(cms_getimagesize_url(get_base_url() . '/themes/default/images/button1.png')));
         $this->assertTrue(!isset($GLOBALS['REQUIRED_CODE']['http'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
-        $this->assertTrue(is_array(cms_getimagesize('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
+        $this->assertTrue(is_array(cms_getimagesize_url('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
         $this->assertTrue(cms_getimagesize(get_file_base() . '/themes/default/images/not_here.png') === false);
     }
 
@@ -86,7 +86,7 @@ class images_test_set extends cms_test_case
         // Should not get larger
         $temp = $temp_bak;
         $test = convert_image('themes/default/images/button1.png', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, 'png', /*$using_path*/false, /*$only_make_smaller*/true);
-        $this->assertTrue(cms_getimagesize($temp) == array(100, 22));
+        $this->assertTrue(cms_getimagesize_url($temp) == array(100, 22));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -94,7 +94,7 @@ class images_test_set extends cms_test_case
         // Should get to exact size
         $temp = $temp_bak;
         $test = convert_image('themes/default/images/button1.png', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, 'png', /*$using_path*/false, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(100, 22)); // not 100x150 because we don't add padding in convert_image
+        $this->assertTrue(cms_getimagesize_url($temp) == array(100, 22)); // not 100x150 because we don't add padding in convert_image
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -102,7 +102,7 @@ class images_test_set extends cms_test_case
         // Should get to exact size
         $temp = $temp_bak;
         $test = convert_image('themes/default/images/button1.png', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, 'png', /*$using_path*/false, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(120, 26));
+        $this->assertTrue(cms_getimagesize_url($temp) == array(120, 26));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -118,7 +118,7 @@ class images_test_set extends cms_test_case
         // With an absolute URL
         $temp = $temp_bak;
         $test = convert_image(get_base_url() . '/themes/default/images/button1.png', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, 'png', /*$using_path*/false, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(120, 26));
+        $this->assertTrue(cms_getimagesize_url($temp) == array(120, 26));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }

@@ -373,7 +373,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
         }
     }
     if (stripos($semihtml, '<tempcode') !== false) {
-        $semihtml = preg_replace_callback('#<tempcode( [^<>]*)' . '>\s*#', '_dedirectiveise', $semihtml);
+        $semihtml = cms_preg_replace_callback_safe('#<tempcode( [^<>]*)' . '>\s*#', '_dedirectiveise', $semihtml);
         $semihtml = preg_replace('#</tempcode\s*>#', '{+END}', $semihtml);
     }
 }
@@ -627,7 +627,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
     // Cleanup from certain word processors
     // LibreOffice
     $semihtml = str_replace('<h2 class="western">', '<h2>', $semihtml);
-    $semihtml = preg_replace('#</(ul|ol|h1|h2|h3|h4|h5|h6)>\s*<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '</${1}>', $semihtml);
+    $semihtml = cms_preg_replace_safe('#</(ul|ol|h1|h2|h3|h4|h5|h6)>\s*<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '</${1}>', $semihtml);
     $semihtml = preg_replace('#<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '', $semihtml);
     $semihtml = preg_replace('#<li>\s*<p style="margin-bottom:\s*0(cm|em|px)?">(.*)</p>\s*</li>#Us', '<li>${2}</li>', $semihtml);
     $semihtml = preg_replace('#<p style="margin-bottom:\s*0(cm|em|px)?">(.*)</p>\s*<(ul|ol|h1|h2|h3|h4|h5|h6)>#Us', '${2}<${3}>', $semihtml);
@@ -668,13 +668,13 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
         'sub', 'sup', 'tt', 'del', 'ruby', 'a', 'bdo', 'img',
         'ins', 'param', 'textarea', 'button', 'input', 'select',
         'object', 'caption', 'label', 'b', 'i', 'small', 'big');
-    $semihtml = preg_replace('#(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)\s+#', '${1}</CDATA__space>', $semihtml);
-    $semihtml = preg_replace('#\s+(</(' . implode('|', $inline_elements) . ')>)#', '</CDATA__space>${1}', $semihtml);
-    $semihtml = preg_replace('#([^>\s])\s+(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)#', '${1}</CDATA__space>${2}', $semihtml);
-    $semihtml = preg_replace('#(</(' . implode('|', $inline_elements) . ')>)\s+#', '${1}</CDATA__space>', $semihtml);
-    $semihtml = preg_replace('#>\s+#', '>', $semihtml); // NB: Only non-inline, due to above CDATA__space
-    $semihtml = preg_replace('#\s+<#', '<', $semihtml); // ditto
-    $semihtml = preg_replace('#(\s)\s*#', '${1}', $semihtml);
+    $semihtml = cms_preg_replace_safe('#(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)\s+#', '${1}</CDATA__space>', $semihtml);
+    $semihtml = cms_preg_replace_safe('#\s+(</(' . implode('|', $inline_elements) . ')>)#', '</CDATA__space>${1}', $semihtml);
+    $semihtml = cms_preg_replace_safe('#([^>\s])\s+(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)#', '${1}</CDATA__space>${2}', $semihtml);
+    $semihtml = cms_preg_replace_safe('#(</(' . implode('|', $inline_elements) . ')>)\s+#', '${1}</CDATA__space>', $semihtml);
+    $semihtml = cms_preg_replace_safe('#>\s+#', '>', $semihtml); // NB: Only non-inline, due to above CDATA__space
+    $semihtml = cms_preg_replace_safe('#\s+<#', '<', $semihtml); // ditto
+    $semihtml = cms_preg_replace_safe('#(\s)\s*#', '${1}', $semihtml);
 
     // Clean redundant CSS syntax
     do
@@ -692,7 +692,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
     }
 
     // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak in-between. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
-    $semihtml = preg_replace('#([^\s<>]|</(' . implode('|', $inline_elements) . ')>)(<(div|p))#', '${1}<br />${3}', $semihtml);
+    $semihtml = cms_preg_replace_safe('#([^\s<>]|</(' . implode('|', $inline_elements) . ')>)(<(div|p))#', '${1}<br />${3}', $semihtml);
 
     // Reorder XHTML attributes alphabetically, so our regexp's match better
     $semihtml = preg_replace_callback('#<([^>\s]+)\s([^>]+)>#', '_reorder_xhtml_attributes', $semihtml);
@@ -904,20 +904,20 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
             if (stripos($semihtml, '[' . $tagx) !== false) {
                 $semihtml = comcode_preg_replace($tagx, '#^(\[' . $tag . '\])(.*)\\1(.*)\[/' . $tagx . '\](.*)\[/' . $tagx . '\]$#si', '${1}${2}${3}${4}[/' . $tagx . ']', $semihtml);
 
-                $semihtml = preg_replace('#(\[' . $tag . '\])([^\[\]]*)\[/' . $tagx . '\]((&nbsp;|</CDATA__space>|\s)*)\\1#si', '${1}${2}${3}', $semihtml); // Only works in simple case, not when there are tags nested within first tag. Can't use comcode_preg_replace as we are joining two tags (i.e. not operating over single bind)
+                $semihtml = cms_preg_replace_safe('#(\[' . $tag . '\])([^\[\]]*)\[/' . $tagx . '\]((&nbsp;|</CDATA__space>|\s)*)\\1#si', '${1}${2}${3}', $semihtml); // Only works in simple case, not when there are tags nested within first tag. Can't use comcode_preg_replace as we are joining two tags (i.e. not operating over single bind)
             }
         }
 
         // Cleanup lines filled with spaces/font-junk
         foreach ($text_formatting_tags as $tag) {
             if (stripos($semihtml, '[' . $tag) !== false) {
-                $semihtml = preg_replace('#(\[' . $tag . '[^\]]*\])((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)#i', '${2}${1}', $semihtml); // Tag starting unnecessarily early -> Move it back
-                $semihtml = preg_replace('#((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)(\[/' . $tag . '\])#i', '${3}${1}', $semihtml); // Tag ending unnecessarily late -> Move it back
-                $semihtml = preg_replace('#\[' . $tag . '[^\]]*\]((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)\[/' . $tag . '\]#i', '${1}', $semihtml); // Tag wrapping whitespace -> White space
+                $semihtml = cms_preg_replace_safe('#(\[' . $tag . '[^\]]*\])((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)#i', '${2}${1}', $semihtml); // Tag starting unnecessarily early -> Move it back
+                $semihtml = cms_preg_replace_safe('#((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)(\[/' . $tag . '\])#i', '${3}${1}', $semihtml); // Tag ending unnecessarily late -> Move it back
+                $semihtml = cms_preg_replace_safe('#\[' . $tag . '[^\]]*\]((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)\[/' . $tag . '\]#i', '${1}', $semihtml); // Tag wrapping whitespace -> White space
             }
         }
-        $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
-    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
+        $semihtml = cms_preg_replace_safe('#(&nbsp;|</CDATA__space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
+    } while (cms_preg_replace_safe('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     // Undone center tagging
     $semihtml = comcode_preg_replace('left', '#^\[left\]\[center\](.*)\[/center\]\[/left\]$#si', '[left]${1}[/left]', $semihtml);
@@ -940,10 +940,10 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
     $semihtml = preg_replace('#\[align="\w+"\]\s*(&nbsp;)?\s*\[/align\]#', '', $semihtml);
 
     // Cleanup list Comcode (nice and pretty)
-    $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*\[/\*\](&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*#', '[/*]', $semihtml);
-    $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*\[\*\](&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*#', '[*]', $semihtml);
-    $semihtml = preg_replace('#\[/\*\]([^\s])#', '[/*]<cmsbr />${1}', $semihtml);
-    $semihtml = preg_replace('#\[list\]([^\s])#', '[list]<cmsbr />${1}', $semihtml);
+    $semihtml = cms_preg_replace_safe('#(&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*\[/\*\](&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*#', '[/*]', $semihtml);
+    $semihtml = cms_preg_replace_safe('#(&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*\[\*\](&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*#', '[*]', $semihtml);
+    $semihtml = cms_preg_replace_safe('#\[/\*\]([^\s])#', '[/*]<cmsbr />${1}', $semihtml);
+    $semihtml = cms_preg_replace_safe('#\[list\]([^\s])#', '[list]<cmsbr />${1}', $semihtml);
 
     // Cleanup various blocks where we can afford a blank line
     global $BLOCK_TAGS;
@@ -1159,9 +1159,9 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
                     $before = substr($semihtml, 0, $start);
                     $after = substr($semihtml, $end + $lengths[$i]);
                     if (is_array($replacement)) {
-                        $subbed = preg_replace_callback($pattern, $replacement[0], $segment);
+                        $subbed = cms_preg_replace_callback_safe($pattern, $replacement[0], $segment);
                     } else {
-                        $subbed = preg_replace($pattern, $replacement, $segment);
+                        $subbed = cms_preg_replace_safe($pattern, $replacement, $segment);
                     }
                     $semihtml = $before . $subbed . $after;
 
@@ -1172,7 +1172,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
                 }
             }
         }
-    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
+    } while (cms_preg_replace_safe('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != cms_preg_replace_safe('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     return $semihtml;
 }
@@ -1229,7 +1229,7 @@ function array_html_preg_replace($element, $array, $semihtml)
     if ($easy_replace) {
         foreach ($array as $temp) {
             list($pattern, $replacement) = $temp;
-            $semihtml = preg_replace(str_replace('$#', '#', str_replace('#^', '#', $pattern)), $replacement, $semihtml);
+            $semihtml = cms_preg_replace_safe(str_replace('$#', '#', str_replace('#^', '#', $pattern)), $replacement, $semihtml);
         }
         return $semihtml;
     }
@@ -1277,7 +1277,7 @@ function array_html_preg_replace($element, $array, $semihtml)
                     $segment = substr($semihtml, $start, $end + $length - $start);
                     $before = substr($semihtml, 0, $start);
                     $after = substr($semihtml, $end + $length);
-                    $subbed = preg_replace($pattern . 'A', $replacement, $segment);
+                    $subbed = cms_preg_replace_safe($pattern . 'A', $replacement, $segment);
                     $semihtml = $before . $subbed . $after;
                     if ($semihtml != $old_semihtml) {
                         break 2; // We need to start again now as the offsets have all changed
@@ -1286,7 +1286,7 @@ function array_html_preg_replace($element, $array, $semihtml)
             }
             unset($array[$index]); // If we are going to recurse, we don't want extra work -- let's record that this one completed
         }
-    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
+    } while (cms_preg_replace_safe('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != cms_preg_replace_safe('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     return $semihtml;
 }

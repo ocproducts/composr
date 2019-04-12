@@ -35,6 +35,10 @@ class Hook_upon_query_banner_click_points
             return;
         }
 
+        if (get_mass_import_mode()) {
+            return;
+        }
+
         if (strpos($query, 'INTO ' . get_table_prefix() . 'banner_clicks') !== false) {
             load_user_stuff();
             $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
