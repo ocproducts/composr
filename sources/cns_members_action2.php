@@ -246,7 +246,7 @@ function cns_member_external_linker($type, $username, $password, $email_check = 
         $primary_group = get_first_default_group();
     }
 
-    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob', $dob_year, $dob_month, $dob_day);
+    list($dob_year, $dob_month, $dob_day) = post_param_date_components('birthday', $dob_year, $dob_month, $dob_day);
 
     $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, 0, true);
     $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
@@ -575,7 +575,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
         $default_time = ($dob_month === null) ? null : usertime_to_utctime(mktime(0, 0, 0, $dob_month, $dob_day, $dob_year));
         if (get_option_with_overrides('dobs', $adjusted_config_options) == (($member_id === null) ? '2' : '1')) {
             $dob_required = member_field_is_required($member_id, 'dob');
-            $fields->attach(form_input_date(do_lang_tempcode($dob_required ? 'DATE_OF_BIRTH' : 'ENTER_YOUR_BIRTHDAY'), '', 'dob', $dob_required, false, false, $default_time, -130));
+            $fields->attach(form_input_date(do_lang_tempcode($dob_required ? 'DATE_OF_BIRTH' : 'ENTER_YOUR_BIRTHDAY'), '', 'birthday', $dob_required, false, false, $default_time, -130));
             if (addon_installed('cns_forum')) {
                 $fields->attach(form_input_tick(do_lang_tempcode('RELATED_FIELD', do_lang_tempcode('REVEAL_AGE')), do_lang_tempcode('DESCRIPTION_REVEAL_AGE'), 'reveal_age', $reveal_age == 1));
             }
