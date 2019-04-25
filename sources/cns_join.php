@@ -177,7 +177,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     if ($email_address === null) {
         $confirm_email_address = post_param_string('email_address_confirm', null);
-        $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address', null, null, $adjusted_config_options) ? false : ''));
+        $email_address = trim(post_param_string('email', member_field_is_required(null, 'email_address', null, null, $adjusted_config_options) ? false : ''));
         if ($confirm_email_address !== null) {
             if (trim($confirm_email_address) != $email_address) {
                 warn_exit(make_string_tempcode(escape_html(do_lang('EMAIL_ADDRESS_MISMATCH'))));
@@ -190,7 +190,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     // Check e-mail domain, if applicable
-    $email_address = trim(post_param_string('email_address'));
+    $email_address = trim(post_param_string('email'));
     if ($email_address != '') {
         $valid_email_domains = get_option_with_overrides('valid_email_domains', $adjusted_config_options);
         if ($valid_email_domains != '') {
@@ -277,7 +277,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $test = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username'), array('m_email_address' => $email_address), '', 1);
         if (array_key_exists(0, $test)) {
             if ($test[0]['m_username'] != $username) {
-                $reset_url = build_url(array('page' => 'lost_password', 'email_address' => $email_address), get_module_zone('lost_password'));
+                $reset_url = build_url(array('page' => 'lost_password', 'email' => $email_address), get_module_zone('lost_password'));
                 warn_exit(do_lang_tempcode('EMAIL_ADDRESS_IN_USE', escape_html(get_site_name()), escape_html($reset_url->evaluate())));
             }
             $member_id = $test[0]['id'];

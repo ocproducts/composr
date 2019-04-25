@@ -226,7 +226,7 @@ function cns_member_external_linker($type, $username, $password, $email_check = 
     require_code('temporal2');
     require_code('cns_groups');
 
-    $email_address = trim(post_param_string('email_address', $email_address));
+    $email_address = trim(post_param_string('email', $email_address));
 
     $groups = cns_get_all_default_groups(true); // $groups will contain the built in default primary group too (it is not $secondary_groups)
     $primary_group = post_param_integer('primary_group', null);
@@ -270,7 +270,7 @@ function cns_member_external_linker($type, $username, $password, $email_check = 
         if ($test !== null) {
             global $MEMBER_CACHED;
             $MEMBER_CACHED = db_get_first_id();
-            $reset_url = build_url(array('page' => 'lost_password', 'email_address' => $email_address), get_module_zone('lost_password'));
+            $reset_url = build_url(array('page' => 'lost_password', 'email' => $email_address), get_module_zone('lost_password'));
             warn_exit(do_lang_tempcode('EMAIL_ADDRESS_IN_USE', escape_html(get_site_name()), escape_html($reset_url->evaluate())));
         }
     }
@@ -534,7 +534,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
     // E-mail address
     if (cns_field_editable('email', $special_type)) {
         if ($email_address == '') {
-            $email_address = trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX));
+            $email_address = trim(get_param_string('email', '', INPUT_FILTER_GET_COMPLEX));
         }
         $email_description = new Tempcode();
         $valid_email_domains = get_option_with_overrides('valid_email_domains', $adjusted_config_options);
@@ -548,7 +548,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
 
         $email_address_required = member_field_is_required($member_id, 'email_address');
 
-        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), $email_description, 'email_address', $email_address, $email_address_required));
+        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), $email_description, 'email', $email_address, $email_address_required));
         if (($member_id === null) && ($email_address == '') && (get_option_with_overrides('email_confirm_join', $adjusted_config_options) == '1')) {
             $fields->attach(form_input_email(do_lang_tempcode('CONFIRM_EMAIL_ADDRESS'), '', 'email_address_confirm', '', $email_address_required));
         }

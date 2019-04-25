@@ -340,7 +340,7 @@ function try_httpauth_login()
     if (($member_id === null) && ((running_script('index')) || (running_script('execute_temp')))) {
         require_code('cns_members_action');
         require_code('cns_members_action2');
-        if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
+        if ((trim(post_param_string('email', '')) == '') && (get_option('finish_profile') == '1')) {
             require_code('failure');
             if (throwing_errors()) {
                 throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));

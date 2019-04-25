@@ -92,11 +92,11 @@ function set_from_referrer_field()
     $referrer_member = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_equal_to('m_username', $referrer) . ' OR ' . db_string_equal_to('m_email_address', $referrer));
     if ($referrer_member !== null) {
         $GLOBALS['FORUM_DB']->query_delete('f_invites', array(
-            'i_email_address' => post_param_string('email_address'),
+            'i_email_address' => post_param_string('email'),
         ), '', 1); // Delete old invites for this e-mail address
         $GLOBALS['FORUM_DB']->query_insert('f_invites', array(
             'i_inviter' => $referrer_member,
-            'i_email_address' => post_param_string('email_address'),
+            'i_email_address' => post_param_string('email'),
             'i_time' => time(),
             'i_taken' => 0,
         ));

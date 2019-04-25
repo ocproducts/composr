@@ -96,7 +96,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
         if ($test) {
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $completion_form_submitted = (trim(post_param_string('email_address', '')) != '');
+            $completion_form_submitted = (trim(post_param_string('email', '')) != '');
             if ((!$completion_form_submitted) && (get_option('finish_profile') == '1')) { // UI
                 require_code('failure');
                 if (throwing_errors()) {

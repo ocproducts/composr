@@ -146,9 +146,9 @@ class Module_join
         // Show rules
         $rules = request_page('_rules', true, get_comcode_zone('rules'), null, true);
         $map = array('page' => '_SELF', 'type' => 'step2');
-        $email_address = trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX));
+        $email_address = trim(get_param_string('email', '', INPUT_FILTER_GET_COMPLEX));
         if ($email_address != '') {
-            $map['email_address'] = $email_address;
+            $map['email'] = $email_address;
         }
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {

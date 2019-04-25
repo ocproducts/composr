@@ -191,7 +191,7 @@ class Module_contact_member
             $fields->attach($name_field);
         }
 
-        $email_field = form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('YOUR_ADDRESS'), 'email_address', $default_email, true);
+        $email_field = form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('YOUR_ADDRESS'), 'email', $default_email, true);
         if ($default_email == '') {
             $fields->attach($email_field);
         }
@@ -281,7 +281,7 @@ class Module_contact_member
 
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
 
-        $from_email = trim(post_param_string('email_address'));
+        $from_email = trim(post_param_string('email'));
         require_code('type_sanitisation');
         if (!is_email_address($from_email)) {
             warn_exit(do_lang_tempcode('INVALID_EMAIL_ADDRESS'));

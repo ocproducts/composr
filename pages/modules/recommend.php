@@ -197,7 +197,7 @@ class Module_recommend
             return $this->actual();
         }
 
-        // If reached these, then there should be set manually at least on e-mail address!
+        // If reached these, then there should be set manually at least one e-mail address!
         if (array_key_exists('email_address_0', $_POST) && strlen(trim($_POST['email_address_0'])) == 0) {
             warn_exit(do_lang_tempcode('ERROR_NO_CONTACTS_SELECTED'));
         }
@@ -695,7 +695,7 @@ class Module_recommend
                 }
 
                 $referring_username = is_guest() ? null : get_member();
-                $_url = (post_param_integer('invite', 0) == 1) ? build_url(array('page' => 'join', 'email_address' => $email_address, '_lead_source_description' => $_lead_source_description, 'keep_referrer' => $referring_username), get_module_zone('join')) : build_url(array('page' => '', 'keep_referrer' => $referring_username), '');
+                $_url = (post_param_integer('invite', 0) == 1) ? build_url(array('page' => 'join', 'email' => $email_address, '_lead_source_description' => $_lead_source_description, 'keep_referrer' => $referring_username), get_module_zone('join')) : build_url(array('page' => '', 'keep_referrer' => $referring_username), '');
                 $url = $_url->evaluate();
                 $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
                 $_message = do_lang((post_param_integer('invite', 0) == 1) ? 'INVITE_MEMBER_MESSAGE' : 'RECOMMEND_MEMBER_MESSAGE', $name, $url, array(get_site_name(), $join_url)) . $message;

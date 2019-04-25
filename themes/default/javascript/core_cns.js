@@ -444,7 +444,7 @@
                 return false;
             }
 
-            if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value !== form.elements['email_address'].value)) {
+            if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value !== form.elements['email'].value)) {
                 $cms.ui.alert('{!EMAIL_ADDRESS_MISMATCH;^}');
                 return false;
             }
@@ -460,11 +460,11 @@
             values.push(form.elements['password'].value);
 
             if (params.invitesEnabled) {
-                values.push(form.elements['email_address'].value);
+                values.push(form.elements['email'].value);
             }
 
             if (params.onePerEmailAddress) {
-                values.push(form.elements['email_address'].value);
+                values.push(form.elements['email'].value);
             }
 
             if (params.useCaptcha && ($cms.configOption('recaptcha_site_key') === '')) {
@@ -486,12 +486,12 @@
             checkPromises.push($cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value)));
 
             if (params.invitesEnabled) {
-                url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value) + $cms.keep();
+                url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email'].value) + $cms.keep();
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
             if (params.onePerEmailAddress) {
-                url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value) + $cms.keep();
+                url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email'].value) + $cms.keep();
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 

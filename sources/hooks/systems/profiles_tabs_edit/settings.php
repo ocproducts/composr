@@ -104,7 +104,7 @@ class Hook_profiles_tabs_edit_settings
             }
 
             if ((cns_field_editable('email', $special_type)) && (!fractional_edit())) {
-                $email_address = trim(post_param_string('email_address', member_field_is_required($member_id_of, 'email_address', null, $member_id_viewing) ? false : ''));
+                $email_address = trim(post_param_string('email', member_field_is_required($member_id_of, 'email_address', null, $member_id_viewing) ? false : ''));
             }
 
             if (!fractional_edit()) {

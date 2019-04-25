@@ -36,7 +36,7 @@ class Hook_endpoint_account_lost_password
         }
 
         $username = trim(either_param_string('username', ''));
-        $email_address = trim(either_param_string('email_address', ''));
+        $email_address = trim(either_param_string('email', ''));
 
         require_code('cns_lost_password');
         require_lang('cns');

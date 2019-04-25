@@ -449,7 +449,7 @@ class Module_sites
 
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('CMS_CODENAME'), do_lang('CMS_CODENAME_DESCRIPTION'), 'codename', '', true));
-        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CMS_YOUR_EMAIL_ADDRESS'), 'email_address', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), true));
+        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CMS_YOUR_EMAIL_ADDRESS'), 'email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), true));
         $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), do_lang_tempcode('CMS_PASSWORD'), 'password', true));
         $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'confirm_password', true));
 
@@ -481,7 +481,7 @@ class Module_sites
 
         $codename = strtolower(post_param_string('codename'));
         $name = post_param_string('name', '');
-        $email_address = post_param_string('email_address');
+        $email_address = post_param_string('email');
         $description = post_param_string('description', '');
         $category = post_param_string('category', '');
         $show_in_directory = post_param_integer('show_in_directory', 0);
