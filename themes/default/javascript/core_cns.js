@@ -463,7 +463,7 @@
                 values.push(form.elements['email_address'].value);
             }
 
-            if (params.invitesEnabled) {
+            if (params.onePerEmailAddress) {
                 values.push(form.elements['email_address'].value);
             }
 
@@ -471,7 +471,7 @@
                 values.push(form.elements['captcha'].value);
             }
 
-            if ((validValues != null)) {
+            if ((validValues != null) && (validValues.length === values.length)) {
                 var areSame = validValues.every(function (element, index) {
                     return element === values[index];
                 });
