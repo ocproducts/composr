@@ -210,6 +210,6 @@ function clean_installer_output_for_code_display($data)
     $data = preg_replace('#^.*An error has occurred#s', 'An error has occurred', $data);
     $data = str_replace('>', ">\n", $data);
     $data = strip_tags($data);
-    $data = preg_replace('#(\s*\n\s*)+#', "\n", $data); // TODO: Change to cms_preg_replace_safe when merged with master next
+    $data = cms_preg_replace_safe('#(\s*\n\s*)+#', "\n", $data);
     return $data;
 }

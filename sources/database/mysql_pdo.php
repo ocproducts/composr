@@ -55,6 +55,8 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             critical_error('PASSON', $error);
         }
 
+        $init_queries = $this->get_init_queries();
+
         // Potential caching
         $x = serialize(array($db_user, $db_host, $db_name));
         if (array_key_exists($x, $this->cache_db)) {
@@ -66,12 +68,14 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             $db_port = intval($_db_port);
         }
         try {
+            global $SITE_INFO;
             $dsn = 'mysql:host=' . $db_host . ';port=' . strval($db_port) . ';dbname=' . $db_name;
-            $db_link = new PDO($dsn, $db_user, $db_password, array(
+            $pdo_options = array(
                 PDO::ATTR_PERSISTENT => $persistent,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $SITE_INFO['database_charset'],
-            ));
+            );
+            $db_link = @new PDO($dsn, $db_user, $db_password, $pdo_options);
         }
         catch (PDOException $e) {
             $error = 'Could not connect to database (' . $e->getMessage() . ')';
@@ -79,14 +83,13 @@ class Database_Static_mysql_pdo extends Database_super_mysql
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
-            critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
+            critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));
         }
 
         $this->last_select_db = $db_link;
 
         $this->cache_db[$x] = $db_link;
 
-        $init_queries = $this->get_init_queries();
         foreach ($init_queries as $init_query) {
             try {
                 $db_link->query($init_query);
@@ -118,7 +121,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
         static $version = null;
         if ($version === null) {
             $version = ''; // Temporary, to avoid infinite recursion
-            $_version = $this->db_query('SELECT version() AS version', $db, null, null, true);
+            $_version = $this->query('SELECT version() AS version', $connection, null, 0, true);
             if (array_key_exists(0, $_version)) {
                 $version = $_version[0]['version'];
             } else {
@@ -134,7 +137,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
         $this->apply_sql_limit_clause($query, $max, $start);
 
         try {
-            $results = $db->query($query);
+            $results = $connection->query($query);
         }
         catch (PDOException $e) {
             $this->handle_failed_query($query, $e->getMessage(), $connection);
@@ -150,10 +153,10 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             if (strtoupper(substr($query, 0, 7)) === 'UPDATE ') {
                 return $results->rowCount();
             }
-            $ins = $db->lastInsertId();
+            $ins = $connection->lastInsertId();
             if ($ins === 0) {
                 $table = substr($query, 12, strpos($query, ' ', 12) - 12);
-                $rows = $this->db_query('SELECT MAX(id) AS x FROM ' . $table, $db, 1, 0, false, false);
+                $rows = $this->db_query('SELECT MAX(id) AS x FROM ' . $table, $connection, 1, 0, false, false);
                 return $rows[0]['x'];
             }
             return $ins;

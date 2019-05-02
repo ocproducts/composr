@@ -32,6 +32,10 @@ class Hook_sw_core_cns
     {
         $settings = array();
 
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         require_lang('cns');
         require_lang('cns_special_cpf');
 
@@ -39,18 +43,18 @@ class Hook_sw_core_cns
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array('id' => db_get_first_id() + 7));
             $settings['have_default_rank_set'] = ($test === null) ? '0' : '1';
 
-            $sql = 'SELECT * FROM ' . get_table_prefix() . 'f_emoticons WHERE 1=1';
+            $sql = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons WHERE 1=1';
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ':P');
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ';)');
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ':)');
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ':\'(');
-            $test = $GLOBALS['SITE_DB']->query($sql);
+            $test = $GLOBALS['FORUM_DB']->query($sql);
             $settings['have_default_full_emoticon_set'] = (count($test) != 0) ? '1' : '0';
 
             $have_default_cpf_set = false;
             $fields_l = array('interests', 'location', 'occupation');
             foreach ($fields_l as $field) {
-                $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
+                $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
                 if ($test !== null) {
                     $have_default_cpf_set = true;
                     break;
@@ -122,7 +126,7 @@ class Hook_sw_core_cns
                 }
             }
             if (post_param_integer('have_default_full_emoticon_set', 0) == 0) {
-                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
+                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
             }
             if (post_param_integer('have_default_cpf_set', 0) == 0) {
                 $fields = array('interests', 'location', 'occupation');

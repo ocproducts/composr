@@ -1,4 +1,4 @@
-The timeout<?php /*
+<?php /*
 
  Composr
  Copyright (c) ocProducts, 2004-2018
@@ -1399,7 +1399,7 @@ class HttpDownloaderSockets extends HttpDownloader
             $time_init = time();
             $line = '';
             while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
-                if ((function_exists('stream_select')) && (count($_frh) > 0) && (!stream_select($_frh, $_fwh, $_fwh, intval($this->timeout), fmod($this->timeout, 1.0) / 1000000.0))) {
+                if ((function_exists('stream_select')) && (count($_frh) > 0) && (!stream_select($_frh, $_fwh, $_fwh, intval($this->timeout), intval(fmod($this->timeout, 1.0) / 1000000.0)))) {
                     if (($input === '') && ($time_init + $this->timeout < time())) {
                         if ((!$chunked) || ($buffer_unprocessed == '')) {
                             $line = false; // Manual timeout

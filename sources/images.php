@@ -38,7 +38,7 @@ function init__images()
 }
 
 /**
- * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ * Find image dimensions of a URL. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
  * @param  URLPATH $url The URL to the image file
  * @param  boolean $only_if_local Whether only to accept local URLs (usually for performance reasons)
@@ -70,7 +70,7 @@ function cms_getimagesize_url($url, $only_if_local = false)
 }
 
 /**
- * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ * Find image dimensions of a file path. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
  * @param  string $path The path to the image file
  * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)

@@ -110,7 +110,7 @@ The fastest way to configure PHP is usually as FPM (FastCGI), on top of a thread
  - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
  - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
  - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
- - Configure your SSL options appropriately; basically there is a tradeoff between perfect privacy ("Perfect Forward Secrecy") and speed.
+ - Configure your SSL options appropriately; basically there is a trade-off between perfect privacy ("Perfect Forward Secrecy") and speed.
  - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit).
  - You may want to use only systemd's journald, rather than rsyslogd; on some Linux system rsyslogd is configured to mirror entries written to journald, which can be very intensive due to the frequent reading in and out. journald is higher performance as it is an efficient binary format with a cursor feature.
  - Consider whether you want journaling or not -- it has a significant I/O overhead.

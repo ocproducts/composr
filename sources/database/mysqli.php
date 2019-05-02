@@ -42,7 +42,7 @@ class Database_Static_mysqli extends Database_super_mysql
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
      * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
-     * @return ?array A database connection (note for MySQL, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: error)
+     * @return ?mixed A database connection (note for this driver, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: error)
      */
     public function get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
@@ -140,7 +140,7 @@ class Database_Static_mysqli extends Database_super_mysql
 
         static $version = null;
         if ($version === null) {
-            $version = mysqli_get_server_version($db);
+            $version = mysqli_get_server_version($db_link);
         }
         if ($version >= 80000) {
             $query = $this->fix_mysql8_query($query);

@@ -38,8 +38,11 @@ class Hook_config_block_top_language
             'explanation' => 'CONFIG_OPTION_block_top_language',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
-            'addon' => 'core_configuration',
+            'public' => false,
+
+            'addon' => 'language_block',
         );
     }
 
@@ -50,6 +53,10 @@ class Hook_config_block_top_language
      */
     public function get_default()
     {
+        if (!addon_installed('language_block')) {
+            return null;
+        }
+
         if (!multi_lang()) {
             return null;
         }

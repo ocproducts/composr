@@ -223,7 +223,7 @@ class lang_no_unused_test_set extends cms_test_case
             _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
 
             if ($cli) {
-                echo 'Processing: ' . $file . "\n";
+                echo 'Processing: ' . $path . "\n";
             }
 
             foreach ($input as $key => $val) {

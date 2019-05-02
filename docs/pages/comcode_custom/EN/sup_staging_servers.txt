@@ -198,7 +198,7 @@ Here are some assorted tips to help with portability:
 
 [title="2"]Helping users use the correct server[/title]
 
-You can make [tt]favicon_staging[/tt] and [tt]favicon_dev[/tt] theme thages. These (by default) override the favicon if these environments are detected. The development environment is detected by [tt]localhost[/tt]. The staging environment is detected if the Health Check addon is configured with the "Test site" option enabled.
+You can make [tt]favicon_staging[/tt] and [tt]favicon_dev[/tt] theme images. These (by default) override the favicon if these environments are detected. The development environment is detected by [tt]localhost[/tt]. The staging environment is detected if the Health Check addon is configured with the "Test site" option enabled.
 
 You can also make a Composr [tt]systems/startup[/tt] hook to add a notice only for the staging site.
 

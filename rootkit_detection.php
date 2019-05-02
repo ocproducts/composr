@@ -13,7 +13,7 @@
  * @package    rootkit_detector
  */
 
-/*EXTRA FUNCTIONS: mysqli\_.+*/
+/*EXTRA FUNCTIONS: [\w\\]*PushTask|mysqli\_.+|Message*/
 
 // Fixup SCRIPT_FILENAME potentially being missing
 $_SERVER['SCRIPT_FILENAME'] = __FILE__;

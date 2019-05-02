@@ -176,10 +176,11 @@ class Database_super_mysql extends DatabaseDriver
         }
         return $new_query;
     }
+
     /**
      * Tokenise a MySQL query (assumes a basic syntax Composr is using).
      *
-     * @param  string $query Query
+     * @param string $query Query
      * @return array The tokens
      */
     protected function tokenise_query($query)
@@ -188,6 +189,7 @@ class Database_super_mysql extends DatabaseDriver
         if ($symbolic_tokens === null) {
             $symbolic_tokens = array_flip(array("\t", ' ', "\n", '+', '-', '*', '/', '<>', '>', '<', '>=', '<=', '=', '(', ')', ','));
         }
+
         $i = 0;
         $query .= ' '; // Cheat so that we do not have to handle the end state differently
         $len = strlen($query);
@@ -196,17 +198,21 @@ class Database_super_mysql extends DatabaseDriver
         $doing_symbol_delimiter = true;
         while ($i < $len) {
             $next = $query[$i];
+
             if ($next == "'") {
                 if ($current_token != '') {
                     $tokens[] = $current_token;
                 }
                 $current_token = '';
+
                 $i++;
                 $backslash_mode = false;
                 while ($i < $len) {
                     $next = $query[$i];
+
                     if ($backslash_mode) {
                         $current_token .= $next;
+                        $backslash_mode = false;
                     } else {
                         if ($next == '\\') {
                             $current_token .= $next;
@@ -218,6 +224,7 @@ class Database_super_mysql extends DatabaseDriver
                             $current_token .= $next;
                         }
                     }
+
                     $i++;
                 }
                 $current_token = '';
@@ -226,15 +233,18 @@ class Database_super_mysql extends DatabaseDriver
                     $tokens[] = $current_token;
                 }
                 $current_token = '';
+
                 $i += 2;
                 while ($i < $len) {
                     $next = $query[$i];
+
                     if (($next == '*') && ($i + 1 < $len) && ($query[$i + 1] == '/')) {
                         $tokens[] = '/*' . $current_token . '*/';
                         break;
                     } else {
                         $current_token .= $next;
                     }
+
                     $i++;
                 }
                 $current_token = '';
@@ -253,8 +263,10 @@ class Database_super_mysql extends DatabaseDriver
                     }
                 }
             }
+
             $i++;
         }
+
         return $tokens;
     }
 

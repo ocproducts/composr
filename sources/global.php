@@ -127,7 +127,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
             $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
 
             if (strpos($custom, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
-                // We need to identify the new functions and classes. Ideally we'd use get_defined_functions and get_declared_classes, and do a diff before/after - but this does a massive amount of memory access 
+                // We need to identify the new functions and classes. Ideally we'd use get_defined_functions and get_declared_classes, and do a diff before/after - but this does a massive amount of memory access
                 $function_matches = array();
                 $possible_new_functions = array();
                 $num_function_matches = preg_match_all('#\sfunction\s+(\w+)\(#', $custom, $function_matches);
@@ -729,7 +729,7 @@ cms_ini_set('default_socket_timeout', '60');
 cms_ini_set('html_errors', '1');
 cms_ini_set('docref_root', 'http://php.net/manual/en/');
 cms_ini_set('docref_ext', '.php');
-safe_ini_set('pcre.jit', '0'); // Compatibility issue in PHP 7.3, "JIT compilation failed: no more memory"
+cms_ini_set('pcre.jit', '0'); // Compatibility issue in PHP 7.3, "JIT compilation failed: no more memory"
 
 // Get ready for some global variables
 global $REQUIRED_CODE, $REQUIRING_CODE, $CURRENT_SHARE_USER, $PURE_POST, $IN_MINIKERNEL_VERSION;
@@ -805,7 +805,7 @@ if (count($SITE_INFO) == 0) {
 // Make sure we have the correct IP address in REMOTE_ADDR
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
     if (empty($SITE_INFO['trusted_proxies'])) {
-        $trusted_proxies = '103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/12,108.162.192.0/18,131.0.72.0/22,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,2400:cb00::/32,2405:b500::/32,2606:4700::/32,2803:f800::/32,2c0f:f248::/32,2a06:98c0::/29';
+        $trusted_proxies = '173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/12,172.64.0.0/13,131.0.72.0/22,2400:cb00::/32,2606:4700::/32,2803:f800::/32,2405:b500::/32,2405:8100::/32,2a06:98c0::/29,2c0f:f248::/32';
     } else {
         $trusted_proxies = $SITE_INFO['trusted_proxies'];
     }

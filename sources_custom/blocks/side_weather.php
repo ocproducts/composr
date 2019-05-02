@@ -108,7 +108,7 @@ class Block_side_weather
 
                 $woeid = $this->_get_woeid($_woeid);
                 if ($woeid === null) {
-                    return do_template('RED_ALERT', array('_GUID' => 'kff1df2t2tp3wil1mbn7lxz8il9zrex7', 'TEXT' => do_lang_tempcode('WEATHER_LOCATON_NOT_FOUND')));
+                    return do_template('RED_ALERT', array('_GUID' => 'kff1df2t2tp3wil1mbn7lxz8il9zrex7', 'TEXT' => do_lang_tempcode('WEATHER_LOCATION_NOT_FOUND')));
                 }
 
                 $GLOBALS['SITE_DB']->query_insert('cached_weather_codes', array(

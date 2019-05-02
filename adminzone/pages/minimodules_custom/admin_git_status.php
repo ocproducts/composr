@@ -18,6 +18,8 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 require_code('git_status');
 require_code('files');
 
+require_javascript('git_status');
+
 $type = get_param_string('type', 'browse');
 if ($type == 'browse') {
     git_status__browse();

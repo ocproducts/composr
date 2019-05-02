@@ -48,6 +48,10 @@ class mail_test_set extends cms_test_case
 
             $this->assertTrue(!file_exists($a));
             $this->assertTrue(!file_exists($b));
+
+            if (file_exists($a)) {
+                unlink($a);
+            }
         }
     }
 }

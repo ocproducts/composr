@@ -734,7 +734,7 @@ header h1 {
 	}
 /*{+END}*/
 
-.global-navigation .top-buttons, 
+.global-navigation .top-buttons,
 .global-navigation .top-form {
 	padding: 0.5em 0;
 	margin-right: 1em;
@@ -4119,7 +4119,7 @@ div.proceed-button-left-2 {
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 
-.top-button-popup .associated-links-block-group, 
+.top-button-popup .associated-links-block-group,
 .notification+.notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};

@@ -3029,7 +3029,7 @@ php_value allow_url_include "off"
 # This causes unstability (and is known/documented to) but some hosts turn it on
 php_value mbstring.func_overload "0"
 
-# SpamAssassin does not	like this
+# SpamAssassin does not like this
 php_flag mail.add_x_header off
 
 # Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
@@ -3060,7 +3060,7 @@ php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
 
 # Sandbox Composr to its own directory
-# php_value open_basedir "/tmp:/home/blah/public_html/composr/"		But needs customising for your server and only works outside php.ini in PHP6+
+# php_value open_basedir "/tmp:/home/blah/public_html/composr/" # But needs customising for your server and only works outside php.ini in PHP6+
 </IfModule>
 END;
 

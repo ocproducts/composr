@@ -78,6 +78,10 @@ class Hook_rss_comcode_pages
                     break;
                 }
 
+                if (is_integer($page)) {
+                    $page = strval($page);
+                }
+
                 if (substr($page, 0, 6) == 'panel_') {
                     continue;
                 }

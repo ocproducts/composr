@@ -68,7 +68,7 @@ class Database_Static_postgresql extends DatabaseDriver
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
      * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
-     * @return ?array A database connection (null: failed)
+     * @return ?mixed A database connection (null: failed)
      */
     public function get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {

@@ -66,10 +66,8 @@ class lang_spelling_test_set extends cms_test_case
                 if (in_array(basename($path), array(
                     'synonyms.txt',
                     'unbannable_ips.txt',
+                    'sitemap.txt',
                 ))) {
-                    continue;
-                }
-                if ($file == 'sitemap.txt') {
                     continue;
                 }
 
@@ -91,7 +89,7 @@ class lang_spelling_test_set extends cms_test_case
         }
     }
 
-    // NB: This is also calleed from the other spell check test, which scans a much larger field of text
+    // NB: This is also called from the other spell check test, which scans a much larger field of text
     public function check($ob, $path, $key, $string, $verbose)
     {
         $file = basename($path);
@@ -133,6 +131,8 @@ class lang_spelling_test_set extends cms_test_case
                     'DASHBOARD_COMPOSR_NEWS',
                     'CONFIG_OPTION_dashboard_composr_news',
                     'CONFIG_OPTION_dashboard_tips',
+                    'CONFIG_OPTION_keywords',
+                    'DESCRIPTION_META_KEYWORDS',
                 ))) &&
                 (!in_array($file, array(
                     'lang.ini',
@@ -150,8 +150,11 @@ class lang_spelling_test_set extends cms_test_case
         }
 
         // Bad use of it's. Imperfect test, but would rather have it anyway due to the prevalence of these mistakes. People can expand contractions to workaround.
-        if (preg_match('#it\'s (own|permission|id |definition|filename|contents|run|database|parent|child|cach|interface|use |various|result|properties)#', $string) != 0) {
-            $ob->assertTrue(false, 'The phrase "it\'s own" was used in ' . $path . '. This should be changed to "its own". There could be more infractions that we could not auto-detect.');
+        if ($path != 'sources/notifications.php') {
+            $matches = array();
+            if (preg_match('#it\'s (own|permission|id |definition|filename|contents|run|database|parent|child|cach|interface|use |various|result|properties)#', $string, $matches) != 0) {
+                $ob->assertTrue(false, 'The phrase "' . $matches[0] . '" was used in ' . $path . '. This should be changed to "its own". There could be more infractions that we could not auto-detect.');
+            }
         }
 
         // Hyphen wanted (we want our canonical way)

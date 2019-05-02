@@ -256,7 +256,7 @@
 							{+END}
 						{+END}
 
-						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
+						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews}}}
 						{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
 
 						<div class="proceed-button buttons-group {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">

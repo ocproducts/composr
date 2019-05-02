@@ -354,7 +354,7 @@ class Block_main_multi_content
             }
         }
 
-        if ((can_arbitrary_groupby()) && (is_string($info['id_field']))) {
+        if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) {
             $query .= ' GROUP BY r.' . $info['id_field'];
         }
 

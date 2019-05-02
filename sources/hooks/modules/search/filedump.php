@@ -121,7 +121,7 @@ class Hook_search_filedump extends FieldsSearchHook
             $search_under = '';
         }
 
-        $files = get_directory_contents(get_custom_file_base() . '/uploads/filedump/' . (($search_under == '') ? '' : ($search_under . '/')));
+        $files = get_directory_contents(get_custom_file_base() . '/uploads/filedump' . (($search_under == '') ? '' : ('/' . $search_under)));
         $_rows = $GLOBALS['SITE_DB']->query_select('filedump');
         $rows = array();
         foreach ($_rows as $row) {

@@ -872,11 +872,11 @@ function _seo_meta_find_data($keyword_sources, $description = '')
                 if ($is_in_word) {
                     // Exiting word?
                     $is_exiting_word = false;
-                    if ($i == $len - 1) { // End of string
+                    if ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
+                        $is_exiting_word = true;
+                    } elseif ($i == $len - 1) { // End of string; we don't look for outstanding words at the end of the loop so we have to trigger $is_exiting_word early
                         $is_exiting_word = true;
                         $i++; // This is the last character, so we need to move the cursor past it
-                    } elseif ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
-                        $is_exiting_word = true;
                     }
                     if ($is_exiting_word) {
                         $this_word = substr($source, $word_start, $i - $word_start);

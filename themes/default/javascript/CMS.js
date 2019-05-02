@@ -1214,9 +1214,11 @@
      * @param {string} url
      * @param {function|null} [callback]
      * @param {string|null} [post] - Note that 'post' is not an array, it's a string (a=b)
+     * @param {integer} [timeout]
+     * @param {boolean} [synchronous]
      * @returns { Promise }
      */
-    $cms.doAjaxRequest = function doAjaxRequest(url, callback, post, timeout) {
+    $cms.doAjaxRequest = function doAjaxRequest(url, callback, post, timeout, synchronous) {
         url = strVal(url);
         timeout = intVal(timeout, 10000);
 

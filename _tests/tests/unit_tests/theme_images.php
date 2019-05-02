@@ -32,7 +32,7 @@ class theme_images_test_set extends cms_test_case
     public function testSVGQuality()
     {
         require_code('files2');
-        $files = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default/', 0, true, true, array('svg'));
+        $files = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default', 0, true, true, array('svg'));
 
         foreach ($files as $path) {
             $c = file_get_contents($path);
@@ -232,7 +232,7 @@ class theme_images_test_set extends cms_test_case
                 if (in_array($image, array('tracker/credit', 'icons/calendar/booking', 'youtube_channel_integration/youtube_channel_integration_icon'))) { // Addon files not used by default but useful
                     continue;
                 }
-                if (preg_match('#^([12]x/)?(chatcode_editor|results|cns_post_map|cns_general|progress_indicator|comcode_editor|realtime_rain|logo|cns_default_avatars|flags|icons/spare|icons|icons_monochrome|twitter_feed)/#', $image) != 0) { // Dynamic choices / dynamic sets
+                if (preg_match('#^([12]x/)?(chatcode_editor|results|cns_post_map|cns_general|progress_indicator|comcode_editor|realtime_rain|logo|cns_default_avatars|flags|flags_large|icons/spare|icons|icons_monochrome|twitter_feed)/#', $image) != 0) { // Dynamic choices / dynamic sets
                     continue;
                 }
                 if (preg_match('#^calendar/priority_#', $image) != 0) { // Dynamic set

@@ -114,6 +114,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        BLOCK_TOP_LANGUAGE
+        BLOCK_TRANS_NAME_top_language
+        CONFIG_OPTION_block_top_language
         LEVEL_1_HEADERS_PROBLEM
         LEVEL_2_HEADERS_PROBLEM
         PAGE_INTEGRITY_PROBLEM
@@ -10141,6 +10144,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUBSCRIPTION_TERM_END_TIME
         SUBSCRIPTION_TERM_START_TIME
         SUCCESS
+        SUCCESS_MAIL_SENT
         SUCCESSFUL_CONFIRM
         SUCCESS_NEWSLETTER_AUTO
         SUCCESS_NEWSLETTER_AUTO_INSTANT

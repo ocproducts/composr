@@ -25,16 +25,16 @@ class url_management_test_set extends cms_test_case
 
         $expected = $zone . ':downloads:browse:testxx123:foo=bar';
 
-        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'pg/downloads/browse/testxx123?foo=bar');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'pg/downloads/browse/testxx123?foo=bar', false, false);
         $this->assertTrue($test == $expected, 'Got wrong page-link for decode on PG scheme (' . $test . '), ' . $expected . ' expected');
 
-        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'downloads/browse/testxx123?foo=bar');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'downloads/browse/testxx123?foo=bar', false, false);
         $this->assertTrue($test == $expected, 'Got wrong page-link for decode on SIMPLE scheme (' . $test . '), ' . $expected . ' expected');
 
-        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'downloads/browse/testxx123.htm?foo=bar');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'downloads/browse/testxx123.htm?foo=bar', false, false);
         $this->assertTrue($test == $expected, 'Got wrong page-link for decode on HTM scheme (' . $test . '), ' . $expected . ' expected');
 
-        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'index.php?page=downloads&type=browse&id=testxx123&&foo=bar');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'index.php?page=downloads&type=browse&id=testxx123&&foo=bar', false, false);
         $this->assertTrue($test == $expected, 'Got wrong page-link for decode on RAW scheme (' . $test . '), ' . $expected . ' expected');
     }
 

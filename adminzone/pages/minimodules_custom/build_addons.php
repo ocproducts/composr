@@ -158,7 +158,7 @@ if (get_param_integer('export_themes', 0) == 1) {
     require_code('files2');
     $themes = find_all_themes();
 
-    $page_files = get_directory_contents(get_custom_file_base() . '/', '', 0, true, true, array('txt'));
+    $page_files = get_directory_contents(get_custom_file_base(), '', 0, true, true, array('txt'));
     foreach (array_keys($themes) as $theme) {
         if (($only !== null) && ($only !== $theme)) {
             continue;

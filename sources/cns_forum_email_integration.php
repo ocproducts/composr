@@ -329,7 +329,7 @@ class ForumEmailIntegration extends EmailIntegration
                 foreach ($strings as $s) {
                     $text = preg_replace('#' . $s . '#is', '', $text);
                 }
-                $text = preg_replace('#(<[^/][^<>]*>\s*)*$#is', '', $text); // Remove left over tags on end (as the rest may have just been chopped off) // TODO: Change to cms_preg_replace_safe when merged with master next
+                $text = cms_preg_replace_safe('#(<[^/][^<>]*>\s*)*$#is', '', $text); // Remove left over tags on end (as the rest may have just been chopped off)
                 require_code('xhtml');
                 $text = xhtmlise_html($text, true); // Fix any HTML errors (e.g. uneven tags, which would break out layout)
                 break;

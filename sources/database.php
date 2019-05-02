@@ -1156,9 +1156,9 @@ class DatabaseConnector
      */
     public function ensure_connected()
     {
-        if (isset($this->connection_read[4])) { // Okay, we can't be lazy anymore
+        if ((is_array($this->connection_read)) && (isset($this->connection_read[4]))) { // Okay, we can't be lazy anymore
             $this->connection_read = call_user_func_array(array($this->static_ob, 'get_connection'), $this->connection_read);
-            if (isset($this->connection_write[4])) { // Okay, we can't be lazy anymore
+            if ((is_array($this->connection_write)) && (isset($this->connection_write[4]))) { // Okay, we can't be lazy anymore
                 $this->connection_write = call_user_func_array(array($this->static_ob, 'get_connection'), $this->connection_write);
             }
             if (isset($GLOBALS['SITE_DB']) && $this === $GLOBALS['SITE_DB']) {

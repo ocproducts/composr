@@ -32,7 +32,7 @@
 			{+END}
 		</a>
 	</div>
-	
+
 	{+START,IF,{$NOT,{$CONFIG_OPTION,pt_notifications_as_web}}}{+START,IF,{$CNS}}
 		<div class="top-button-wrapper js-clickout-hide-top-pts">
 			<div class="top-button-popup" id="pts-rel" style="display: none">
