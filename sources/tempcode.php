@@ -2016,7 +2016,7 @@ class Tempcode
     /**
      * Parse the current Tempcode object, then echo it to the browser.
      *
-     * @param  ?LANGUAGE_NAME $current_lang The language to evaluate with (null: current users language)
+     * @param  ?LANGUAGE_NAME $current_lang The language to evaluate with (null: current user's language)
      * @param  boolean $stop_if_stuck Whether to stop if we are stuck of a seq_part with parameters yet-unbound, and to continue from last resume point
      * @return string Blank string. Allows chaining within echo statements
      */
