@@ -122,7 +122,7 @@ class Hook_vb3
             $sql_user = $config['MasterServer']['username'];
             $sql_pass = $config['MasterServer']['password'];
             $sql_tbl_prefix = $config['Database']['tableprefix'];
-            $sql_tbl_prefix = $config['MasterServer']['servername'];
+            $sql_host = $config['MasterServer']['servername'];
         }
 
         return array($sql_database, $sql_user, $sql_pass, $sql_tbl_prefix, $sql_host);
