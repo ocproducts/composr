@@ -700,13 +700,11 @@ function set_short_title($title)
  */
 function process_url_monikers($page, $redirect_if_non_canonical = true)
 {
-    if ($env_change) {
-        static $run_once = false;
-        if ($run_once) {
-            return;
-        }
-        $run_once = true;
+    static $run_once = false;
+    if ($run_once) {
+        return;
     }
+    $run_once = true;
 
     $zone = get_zone_name();
     $type = get_param_string('type', null, true);
