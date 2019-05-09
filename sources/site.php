@@ -724,11 +724,13 @@ function set_short_title($title)
  */
 function process_url_monikers($redirect_if_non_canonical = true, $env_change = true, &$page = null, &$zone = null, &$type = null, &$url_id = null, $consider_nulls_as_unpassed = true)
 {
-    static $run_once = false;
-    if ($run_once) {
-        return;
+    if ($env_change) {
+        static $run_once = false;
+        if ($run_once) {
+            return;
+        }
+        $run_once = true;
     }
-    $run_once = true;
 
     $_page = $page;
     if ($page === null) {
