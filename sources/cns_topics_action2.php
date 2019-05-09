@@ -428,7 +428,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
 
         // Update sitemap
         require_code('sitemap_xml');
-        notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_info[0]['id']), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($to)));
+        notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topics[0]), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($to)));
     } else { // Unknown number
         if (count($topics) == 0) {
             return; // Nuts, lol
