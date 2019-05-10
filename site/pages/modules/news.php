@@ -259,13 +259,19 @@ class Module_news
         if ($type == 'browse') {
             $blog = get_param_integer('blog', null);
 
-            $select = get_param_string('id', get_param_string('select', '*'));
+            $_select = get_param_string('id', null);
+            if ($_select !== null) {
+                $select = $_select . '*';
+            } else {
+                $select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
+            }
             $select_and = get_param_string('select_and', '*', INPUT_FILTER_GET_COMPLEX);
 
             $news_cat_id = null;
             $news_cat_rows = array();
-            if (is_numeric($select)) {
-                $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('id' => intval($select)), '', 1);
+            $matches = array();
+            if (preg_match('#^(\d+)\*$#', $select, $matches) != 0) {
+                $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('id' => intval($matches[1])), '', 1);
                 if (array_key_exists(0, $news_cat_rows)) {
                     $news_cat_id = intval($select);
                 }
@@ -286,7 +292,7 @@ class Module_news
             // Metadata
             if ($news_cat_id !== null) {
                 set_extra_request_metadata(array(
-                    'identifier' => '_SEARCH:news:browse:select=:' . strval($news_cat_id),
+                    'identifier' => '_SEARCH:news:browse:' . strval($news_cat_id),
                 ), $news_cat_rows[0], 'news_category', strval($news_cat_id));
             }
 

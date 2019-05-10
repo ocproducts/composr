@@ -82,7 +82,7 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
         do {
             $rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array(), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
-                $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':select=' . strval($row['id']);
+                $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':' . strval($row['id']);
                 if (strpos($page_link, ':blog=0') !== false) {
                     $child_page_link .= ':blog=0';
                 }
@@ -127,9 +127,7 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
             return null;
         }
 
-        $_page_link = str_replace(':select=', ':', $page_link);
-
-        $_ = $this->_create_partial_node_structure($_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
+        $_ = $this->_create_partial_node_structure($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
         if ($_ === null) {
             return null;
         }
