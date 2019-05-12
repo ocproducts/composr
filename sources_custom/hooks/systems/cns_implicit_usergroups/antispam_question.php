@@ -33,8 +33,18 @@ class Hook_implicit_usergroups_antispam_question
     Show on the join form = yes
     */
 
-    protected $field_id = 46;
+    protected $field_name = 'What is Composr a kind of?';
     protected $expected_answer = 'Content Management System';
+
+    protected $field_id = null;
+
+    /**
+     * Constructor.
+     */
+    function __construct()
+    {
+        $this->field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $this->field_name));
+    }
 
     /**
      * Run function for implicit usergroup hooks. Finds the group IDs it is bound to.
@@ -67,18 +77,26 @@ class Hook_implicit_usergroups_antispam_question
      */
     public function get_member_list($group_id)
     {
+        if ($this->field_id === null) {
+            return array();
+        }
+
         return list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where()));
     }
 
     /**
-     * Run function for implicit usergroup hooks. Finds all members in the group.
+     * Run function for implicit usergroup hooks. Finds how many members in the group.
      *
      * @param  GROUP $group_id The group ID to check (if only one group supported by the hook, can be ignored).
-     * @return ?array The list of members (null: unsupported by hook).
+     * @return ?array The number of members (null: unsupported by hook).
      */
     public function get_member_list_count($group_id)
     {
-        return $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where());
+        if ($this->field_id === null) {
+            return 0;
+        }
+
+        return $GLOBALS['FORUM_DB']->query_value('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where());
     }
 
     /**
@@ -91,6 +109,10 @@ class Hook_implicit_usergroups_antispam_question
      */
     public function is_member_within($member_id, $group_id, &$is_exclusive = null)
     {
+        if ($this->field_id === null) {
+            return false;
+        }
+
         $is_exclusive = true;
 
         require_code('cns_members');
