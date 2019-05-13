@@ -61,3 +61,7 @@ var editor_settings={
 	{+END}
 	magicline_everywhere: true
 };
+
+// Fix auto-formatting issue
+CKEDITOR.dtd.$block.object = 1;
+CKEDITOR.dtd.$block.param = 1;
