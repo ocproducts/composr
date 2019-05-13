@@ -53,7 +53,7 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
 
     log_it('EDIT_MULTI_MODERATION', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('multi_moderation', strval($id));
     }
@@ -77,7 +77,7 @@ function cns_delete_multi_moderation($id)
 
     log_it('DELETE_MULTI_MODERATION', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('multi_moderation', strval($id));
     }

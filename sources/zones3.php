@@ -96,7 +96,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
 
     log_it('EDIT_ZONE', $zone);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('zone', $zone);
     }
@@ -233,7 +233,7 @@ function actual_delete_zone_lite($zone)
 
     log_it('DELETE_ZONE', $zone);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('zone', $zone);
     }
@@ -568,7 +568,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     // Log
     log_it('COMCODE_PAGE_EDIT', $new_file, $zone);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('comcode_page', $zone . ':' . $new_file);
     }

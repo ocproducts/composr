@@ -340,7 +340,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
 
     log_it('ADD_DOWNLOAD_CATEGORY', strval($id), $category);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('download_category', strval($id), null, null, true);
     }
@@ -426,7 +426,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
 
     log_it('EDIT_DOWNLOAD_CATEGORY', strval($category_id), $category);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('download_category', strval($category_id));
     }
@@ -481,7 +481,7 @@ function delete_download_category($category_id)
 
     log_it('DELETE_DOWNLOAD_CATEGORY', strval($category_id), get_translated_text($category));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('download_category', strval($category_id));
     }
@@ -996,7 +996,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
 
     log_it('ADD_DOWNLOAD', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('download', strval($id), null, null, true);
     }
@@ -1193,7 +1193,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
 
     log_it('EDIT_DOWNLOAD', strval($id), get_translated_text($myrow['name']));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('download', strval($id));
     }
@@ -1279,7 +1279,7 @@ function delete_download($id, $leave = false)
 
     log_it('DELETE_DOWNLOAD', strval($id), get_translated_text($myrow['name']));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('download', strval($id));
     }
@@ -1304,7 +1304,7 @@ function add_download_licence($title, $text)
 
     log_it('ADD_DOWNLOAD_LICENCE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('download_licence', strval($id), null, null, true);
     }
@@ -1325,7 +1325,7 @@ function edit_download_licence($id, $title, $text)
 
     log_it('EDIT_DOWNLOAD_LICENCE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('download_licence', strval($id));
     }
@@ -1350,7 +1350,7 @@ function delete_download_licence($id)
 
     log_it('DELETE_DOWNLOAD_LICENCE', strval($id), $myrow['l_title']);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('download_licence', strval($id));
     }

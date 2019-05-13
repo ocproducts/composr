@@ -154,7 +154,7 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
     require_code('member_mentions');
     dispatch_member_mention_notifications('poll', strval($id), $submitter);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('poll', strval($id), null, null, true);
     }
@@ -201,7 +201,7 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
 
     log_it('EDIT_POLL', strval($id), $question);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('poll', strval($id));
     }
@@ -305,7 +305,7 @@ function delete_poll($id)
 
     log_it('DELETE_POLL', strval($id), $question);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('poll', strval($id));
     }

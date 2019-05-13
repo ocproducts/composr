@@ -433,7 +433,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         cms_profile_start_for('cns_make_post:generate_resource_fs_moniker');
         require_code('resource_fs');
         generate_resource_fs_moniker('post', strval($post_id), null, null, true);
@@ -454,7 +454,9 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     require_code('autosave');
     clear_cms_autosave();
 
-    set_value('cns_post_count', strval(intval(get_value('cns_post_count')) + 1));
+    if (!get_mass_import_mode()) {
+        set_value('cns_post_count', strval(intval(get_value('cns_post_count')) + 1));
+    }
 
     cms_profile_end_for('cns_make_post', '#' . strval($post_id));
 
@@ -482,19 +484,32 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
         if (is_null($ALL_FORUM_POST_COUNT_INFO_CACHE)) {
             $ALL_FORUM_POST_COUNT_INFO_CACHE = collapse_2d_complexity('id', 'f_post_count_increment', $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
         }
-        $member_post_count = 0;
-        foreach ($ALL_FORUM_POST_COUNT_INFO_CACHE as $forum_id => $post_count_increment) {
-            if ($post_count_increment == 1) {
-                $map = array('p_poster' => $member_id, 'p_cache_forum_id' => $forum_id);
-                if (addon_installed('unvalidated')) {
-                    $map['p_validated'] = 1;
-                }
-                $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
+        if (array_values(array_unique($ALL_FORUM_POST_COUNT_INFO_CACHE)) == array(1)) {
+            // Optimisation, f_post_count_increment set on all forums
+            $map = array('p_poster' => $member_id);
+            if (addon_installed('unvalidated')) {
+                $map['p_validated'] = 1;
             }
-        }
-        $map = array('p_poster' => $member_id, 'p_cache_forum_id' => null);
-        if (addon_installed('unvalidated')) {
-            $map['p_validated'] = 1;
+            $member_post_count = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
+        } else {
+            // Forum posts
+            $member_post_count = 0;
+            foreach ($ALL_FORUM_POST_COUNT_INFO_CACHE as $forum_id => $post_count_increment) {
+                if ($post_count_increment == 1) {
+                    $map = array('p_poster' => $member_id, 'p_cache_forum_id' => $forum_id);
+                    if (addon_installed('unvalidated')) {
+                        $map['p_validated'] = 1;
+                    }
+                    $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
+                }
+            }
+
+            // Private topic posts
+            $map = array('p_poster' => $member_id, 'p_cache_forum_id' => null);
+            if (addon_installed('unvalidated')) {
+                $map['p_validated'] = 1;
+            }
+            $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
         }
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_num_posts' => $member_post_count), array('id' => $member_id));
     } else {

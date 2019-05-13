@@ -342,7 +342,7 @@ class Hook_vb3
                     $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row['homepage']) > 0) ? ('[url]' . $row['homepage'] . '[/url]') : '';
                 }
 
-                $signature = $row['signature'];
+                $signature = '[semihtml]' . $row['signature'] . '[/semihtml]';
                 $validated = 1;
                 $reveal_age = ($row['birthday'] != '') ? 1 : 0;
                 $bits = explode('-', $row['birthday']);
@@ -401,14 +401,14 @@ class Hook_vb3
     {
         global $STRICT_FILE;
 
-        $dbname = null;
-        require($file_base . '/includes/config.php');
-
         $row_start = 0;
         $rows = array();
         do {
             $extra = '';
-            if (is_null($dbname)) {
+
+            $is_vb35 = ($db->query_select_value('customprofilepic', 'COUNT(*)', array('filedata' => ''), '', true) !== null); // i.e. if it doesn't fail
+
+            if ($is_vb35) {
                 $extra = ',a.filedata AS avatardata,p.filedata AS profilepicdata';
             }
             $query = 'SELECT *,p.filename AS p_filename,a.filename AS a_filename,u.userid AS userid' . $extra . ' FROM ' . $table_prefix . 'user u LEFT JOIN ' . $table_prefix . 'customavatar a ON a.userid=u.userid LEFT JOIN ' . $table_prefix . 'customprofilepic p ON p.userid=u.userid ORDER BY u.userid';
@@ -547,7 +547,7 @@ class Hook_vb3
                 continue;
             }
 
-            $name = $row['title'];
+            $name = html_entity_decode($row['title'], ENT_QUOTES, get_charset());
             $description = html_to_comcode($row['description']);
             $position = $row['displayorder'];
             $post_count_increment = 1;//$row['options']&4096; This didn't work, not important though
@@ -655,6 +655,8 @@ class Hook_vb3
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'threadread', null, null, true);
         if (!is_null($rows)) {
             foreach ($rows as $row) {
+                send_http_output_ping();
+
                 $member_id = import_id_remap_get('member', strval($row['userid']), true);
                 $topic_id = import_id_remap_get('topic', strval($row['threadid']), true);
                 if (is_null($member_id)) {
@@ -682,10 +684,26 @@ class Hook_vb3
         global $STRICT_FILE;
 
         $row_start = 0;
+
+        // Optimisation to speed through quickly, as can be slow scrolling through so many posts we may have already imported!
+        do {
+            $rows = $db->query('SELECT postid FROM ' . $table_prefix . 'post ORDER BY postid', 1, $row_start + 200 - 1);
+            if ((!array_key_exists(0, $rows)) || (!import_check_if_imported('post', strval($rows[0]['postid'])))) {
+                break;
+            }
+
+            $row_start += 200;
+        } while (true);
+
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'post WHERE visible=1 ORDER BY postid', 200, $row_start);
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'post ORDER BY postid', 200, $row_start);
             foreach ($rows as $row) {
+                if ($row['visible'] == 0) { // We don't have in WHERE query as there's no index for it
+                    import_id_remap_put('post', strval($row['postid']), -1);
+                    continue;
+                }
+
                 if (import_check_if_imported('post', strval($row['postid']))) {
                     continue;
                 }
@@ -823,7 +841,7 @@ class Hook_vb3
                 }
 
                 $post_id = import_id_remap_get('post', strval($row['postid']), true);
-                if (is_null($post_id)) {
+                if ((is_null($post_id)) || ($post_id == -1)) {
                     continue;
                 }
 
@@ -902,7 +920,7 @@ class Hook_vb3
                 $thumb_filename = find_derivative_filename('uploads/' . $sections . '_thumbs', $filename);
                 $path = get_custom_file_base() . '/uploads/' . $sections . '_thumbs/' . $thumb_filename;
                 cms_file_put_contents_safe($path, $thumbnail_data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                $thumb_url = 'uploads/' . $sections . '/' . $thumb_filename;
+                $thumb_url = 'uploads/' . $sections . '_thumbs/' . $thumb_filename;
 
                 return array($url, $thumb_url);
             }

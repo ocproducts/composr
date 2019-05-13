@@ -145,7 +145,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         cns_force_update_forum_caching($forum_id, 0, 0);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('topic', strval($topic_id));
     }
@@ -327,7 +327,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         decache('_get_pts', null, $info[0]['t_pt_to']);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('topic', strval($topic_id));
     }
