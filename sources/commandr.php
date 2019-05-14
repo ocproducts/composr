@@ -1213,7 +1213,7 @@ class Virtual_shell
                 }
                 $_commandr_state_diff = base64_decode($_COOKIE['commandr_state']);
                 secure_serialized_data($_commandr_state_diff);
-                $commandr_state_diff = @unserialize($_commandr_state_diff);
+                $commandr_state_diff = @unserialize($_commandr_state_diff, array('allowed_classes' => false));
                 if (!is_array($commandr_state_diff)) {
                     $commandr_state_diff = array();
                 }
@@ -1227,7 +1227,7 @@ class Virtual_shell
                 }
                 $_commandr_state_lang_diff = base64_decode($_COOKIE['commandr_state_lang']);
                 secure_serialized_data($_commandr_state_lang_diff);
-                $commandr_state_lang_diff = @unserialize($_commandr_state_lang_diff);
+                $commandr_state_lang_diff = @unserialize($_commandr_state_lang_diff, array('allowed_classes' => false));
                 if (!is_array($commandr_state_lang_diff)) {
                     $commandr_state_lang_diff = array();
                 }
@@ -1246,7 +1246,7 @@ class Virtual_shell
                 }
                 $_commandr_state_code_diff = base64_decode($_COOKIE['commandr_state_code']);
                 secure_serialized_data($_commandr_state_code_diff);
-                $commandr_state_code_diff = @unserialize($_commandr_state_code_diff);
+                $commandr_state_code_diff = @unserialize($_commandr_state_code_diff, array('allowed_classes' => false));
                 if (!is_array($commandr_state_code_diff)) {
                     $commandr_state_code_diff = array();
                 }

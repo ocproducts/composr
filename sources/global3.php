@@ -3436,7 +3436,7 @@ function appengine_live_guard()
  * Check serialized data for objects, as a security measure.
  *
  * @param string $data &$data Serialized data
- * @param ?mixed     $safe_replacement What to substitute if objects are contained (null: substitute null)
+ * @param ?mixed $safe_replacement What to substitute if objects are contained (null: substitute null)
  */
 function secure_serialized_data(&$data, $safe_replacement = null)
 {
@@ -3444,12 +3444,13 @@ function secure_serialized_data(&$data, $safe_replacement = null)
     //  Would be a vulnerability if there's a defined class where such method invocation has dangerous side-effects
 
     $matches = array();
-    $num_matches = preg_match_all('#(^|;)O:\d+:"([^"]+)"#', $data, $matches);
+    $num_matches = preg_match_all('#(^|;)O:[\d\+\-\.]+:"([^"]+)"#', $data, $matches);
     for ($i = 0; $i < $num_matches; $i++) {
         $harsh = true; // Could be turned into a method parameter later, if needed
         if ($harsh) {
             $bad_methods = array(
                 '__.*',
+                'code_to_preexecute',
             );
         } else {
             $bad_methods = array(
@@ -3463,10 +3464,12 @@ function secure_serialized_data(&$data, $safe_replacement = null)
                 '__set',
                 '__call',
                 '__callStatic',
+                'code_to_preexecute',
             );
         }
 
-        $methods = get_class_methods($matches[2][$i]);
+        $class_name = $matches[2][$i];
+        $methods = get_class_methods($class_name);
 
         foreach ($bad_methods as $bad_method) {
             foreach ($methods as $method) {

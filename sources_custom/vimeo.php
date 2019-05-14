@@ -253,7 +253,8 @@ class phpVimeo
                throw new VimeoAPIException('API call returned false;', 0);
             }
 
-            $response = unserialize($response);
+            secure_serialized_data($response);
+            $response = unserialize($response, array('allowed_classes' => false));
 
             if ($response->stat == 'ok') {
                 return $response;
