@@ -194,9 +194,17 @@ class Hook_vb3
 
             $map = array();
             $map['g_max_attachments_per_post'] = $PROBED_FORUM_CONFIG['attachlimit'];
-            $map['g_max_post_length_comcode'] = $PROBED_FORUM_CONFIG['postmaxchars'];
+            if ($PROBED_FORUM_CONFIG['postmaxchars'] > 0) {
+                $map['g_max_post_length_comcode'] = $PROBED_FORUM_CONFIG['postmaxchars'];
+            } else {
+                $map['g_max_post_length_comcode'] = 1000000;
+            }
             if (array_key_exists('sigmax', $map)) {
-                $map['g_max_sig_length_comcode'] = $PROBED_FORUM_CONFIG['sigmax'];
+                if ($PROBED_FORUM_CONFIG['sigmax'] > 0) {
+                    $map['g_max_sig_length_comcode'] = $PROBED_FORUM_CONFIG['sigmax'];
+                } else {
+                    $map['g_max_sig_length_comcode'] = 1000000;
+                }
             }
             $GLOBALS['FORUM_DB']->query_update('f_groups', $map, array('id' => $id), '', 1);
 
