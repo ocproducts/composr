@@ -80,11 +80,11 @@ function cns_check_post($post, $topic_id = null, $poster = null)
     check_comcode($post, null, false, null, true);
 
     if (strlen($post) == 0) {
-        warn_exit(do_lang_tempcode('POST_TOO_SHORT'));
+        warn_exit(do_lang_tempcode('cns:POST_TOO_SHORT'));
     }
     require_code('cns_groups');
     if (strlen($post) > cns_get_member_best_group_property($poster, 'max_post_length_comcode')) {
-        warn_exit(make_string_tempcode(escape_html(do_lang('POST_TOO_LONG'))));
+        warn_exit(make_string_tempcode(escape_html(do_lang('cns:POST_TOO_LONG'))));
     }
 
     if (!is_null($topic_id)) {
@@ -99,7 +99,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
                 $last_posts[0]['p_poster'] = -1;
             }
             if (($last_posts[0]['p_poster'] == $poster) && (get_translated_text($last_posts[0]['p_post'], $GLOBALS['FORUM_DB']) == $post) && (get_param_integer('keep_debug_notifications', 0) != 1)) {
-                warn_exit(do_lang_tempcode('DOUBLE_POST_PREVENTED'));
+                warn_exit(do_lang_tempcode('cns:DOUBLE_POST_PREVENTED'));
             }
         }
 
