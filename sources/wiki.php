@@ -209,7 +209,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
         decache('main_staff_checklist');
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('wiki_post', strval($post_id), null, null, true);
     }
@@ -306,7 +306,7 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
         }
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('wiki_post', strval($post_id));
     }
@@ -363,7 +363,7 @@ function wiki_delete_post($post_id, $member = null)
     // Stat
     update_stat('num_wiki_posts', -1);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('wiki_post', strval($post_id));
     }
@@ -448,7 +448,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
         }
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('wiki_page', strval($page_id), null, null, true);
     }
@@ -538,7 +538,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
         dispatch_wiki_page_notification($page_id, 'EDIT');
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('wiki_page', strval($page_id));
     }
@@ -606,7 +606,7 @@ function wiki_delete_page($page_id)
         update_catalogue_content_ref('wiki_page', strval($page_id), '');
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('wiki_page', strval($page_id));
     }

@@ -505,7 +505,7 @@ function ajax_tree_script()
         $_options = serialize(array());
     }
     secure_serialized_data($_options);
-    $options = @unserialize($_options);
+    $options = @unserialize($_options, array('allowed_classes' => false));
     if ($options === false) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }

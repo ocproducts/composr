@@ -556,6 +556,17 @@ class Hook_phpbb2
         global $STRICT_FILE;
 
         $row_start = 0;
+
+        // Optimisation to speed through quickly, as can be slow scrolling through so many posts we may have already imported!
+        do {
+            $rows = $db->query('SELECT p.post_id FROM ' . $table_prefix . 'posts p ORDER BY p.post_id', 1, $row_start + 200 - 1);
+            if ((!array_key_exists(0, $rows)) || (!import_check_if_imported('post', strval($rows[0]['post_id'])))) {
+                break;
+            }
+
+            $row_start += 200;
+        } while (true);
+
         $rows = array();
         do {
             $rows = $db->query('SELECT * FROM ' . $table_prefix . 'posts p LEFT JOIN ' . $table_prefix . 'posts_text t ON p.post_id=t.post_id ORDER BY p.post_id', 200, $row_start);

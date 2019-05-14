@@ -1314,7 +1314,7 @@ class Module_admin_newsletter extends Standard_crud_module
         if (!is_null($csv_data)) {
             $hidden->attach(form_input_hidden('csv_data', $csv_data));
             secure_serialized_data($csv_data, array());
-            $_csv_data = unserialize($csv_data);
+            $_csv_data = unserialize($csv_data, array('allowed_classes' => false));
             $num_csv_data = count($_csv_data) - 1;
             $send_to_help = do_lang_tempcode('SOME_NEWSLETTER_TARGETS_KNOWN', escape_html(integer_format($num_csv_data)));
         }

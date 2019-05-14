@@ -1000,6 +1000,17 @@ class Hook_smf2
         global $STRICT_FILE;
 
         $row_start = 0;
+
+        // Optimisation to speed through quickly, as can be slow scrolling through so many posts we may have already imported!
+        do {
+            $rows = $db->query('SELECT p.id_msg FROM ' . $table_prefix . 'messages p ORDER BY p.id_msg', 1, $row_start + 200 - 1);
+            if ((!array_key_exists(0, $rows)) || (!import_check_if_imported('post', strval($rows[0]['id_msg'])))) {
+                break;
+            }
+
+            $row_start += 200;
+        } while (true);
+
         $rows = array();
         do {
             $rows = $db->query('SELECT * FROM ' . $table_prefix . 'messages p ORDER BY p.id_msg', 200, $row_start);

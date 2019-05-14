@@ -98,7 +98,10 @@ function init__users()
         $_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
     }
     if ((empty($_SERVER['PHP_AUTH_USER'])) && (!empty($_SERVER['HTTP_AUTHORIZATION']))) {
-        list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':' , base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+        $bits = explode(':' , base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)), 2);
+        if (count($bits) == 2) {
+            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = $bits;
+        }
     }
     if ((empty($_SERVER['PHP_AUTH_USER'])) && (!empty($_SERVER['REDIRECT_REMOTE_USER']))) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REDIRECT_REMOTE_USER']);

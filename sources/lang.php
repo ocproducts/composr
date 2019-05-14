@@ -159,7 +159,7 @@ function lang_load_runtime_processing()
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
@@ -609,7 +609,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  * Include all the language files for use in the script.
  * NOTE: This may reduce performance, so you should only use it if you really have to.
  *
- * @param ?LANGUAGE_NAME   $lang The language to include files from (null: use current users language).
+ * @param ?LANGUAGE_NAME   $lang The language to include files from (null: use current user's language).
  * @param boolean $only_if_for_lang Only load it up if it is specifically defined for our language.
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
@@ -681,7 +681,7 @@ function protect_from_escaping($in)
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  *

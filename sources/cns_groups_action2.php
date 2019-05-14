@@ -176,7 +176,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
 
     log_it('EDIT_GROUP', strval($group_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('group', strval($group_id));
     }
@@ -253,7 +253,7 @@ function cns_delete_group($group_id, $target_group = null)
 
     log_it('DELETE_GROUP', strval($group_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('group', strval($group_id));
     }

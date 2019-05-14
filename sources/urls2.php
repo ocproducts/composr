@@ -531,7 +531,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     $page = fix_page_name_dashing($zone, $attributes['page']);
 
     require_code('site');
-    if (_request_page($page, $zone) === false) {
+    if (_request_page($page, $zone, null, fallback_lang()) === false) {
         return '';
     }
 
@@ -552,6 +552,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 
         $page_link .= ':' . $attributes['id'];
     }
+    $devtest_there = array_key_exists('keep_devtest', $attributes);
+    if ($devtest_there) {
+        unset($attributes['keep_devtest']);
+    }
     foreach ($attributes as $key => $val) {
         if (!is_string($val)) {
             $val = strval($val);
@@ -566,6 +570,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     if (array_key_exists('fragment', $parsed_url)) {
         $page_link .= '#' . $parsed_url['fragment'];
     }
+
+    // TODO: $conv_url = page_link_to_url($page_link . ($devtest_there ? ':keep_devtest=1' : '')); in v11
 
     return $page_link;
 }
