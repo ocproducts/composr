@@ -20,6 +20,13 @@
  */
 class http_timeouts_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        disable_php_memory_limit();
+    }
+
     public function testTimeouts()
     {
         if (!function_exists('curl_init')) {
@@ -30,16 +37,16 @@ class http_timeouts_test_set extends cms_test_case
         $timeout = 3.0;
 
         // Test timeout not being hit for large file
-        $url = 'http://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4';
+        $url = 'http://www.html5videoplayer.net/videos/toystory.mp4';
         $r1 = $this->_testCurl($url, $timeout);
         $this->assertTrue($r1[0]);
-        $this->assertTrue($r1[1] == 17839845, 'Wrong download size @ ' . strval($r1[1]));
+        $this->assertTrue($r1[1] == 33505479, 'Wrong download size @ ' . strval($r1[1]));
         $r2 = $this->_testURLWrappers($url, $timeout);
         $this->assertTrue($r2[0]);
-        $this->assertTrue($r2[1] == 17839845, 'Wrong download size @ ' . strval($r2[1]));
+        $this->assertTrue($r2[1] == 33505479, 'Wrong download size @ ' . strval($r2[1]));
         $r3 = $this->_testFSockOpen($url, $timeout);
         $this->assertTrue($r3[0]);
-        $this->assertTrue($r3[1] >= 17839845, 'Wrong download size @ ' . strval($r3[1]));
+        $this->assertTrue($r3[1] >= 33505479, 'Wrong download size @ ' . strval($r3[1]));
 
         // Test timeout being hit for something that really is timing out
         $url = get_base_url() . '/_tests/sleep.php?timeout=' . float_to_raw_string($timeout);
@@ -72,7 +79,6 @@ class http_timeouts_test_set extends cms_test_case
         ini_set('allow_url_fopen', '1');
         ini_set('default_socket_timeout', strval(intval(ceil($timeout))));
         $result = @file_get_contents($url);
-
         return array(is_string($result), is_string($result) ? strlen($result) : 0);
     }
 
