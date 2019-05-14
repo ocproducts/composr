@@ -180,6 +180,11 @@ class tasks_test_set extends cms_test_case
             return;
         }
 
+        if ($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') > 1000) {
+            $this->assertTrue(false, 'Test will not work on databases with a lot of users');
+            return;
+        }
+
         $tmp_path = cms_tempnam();
 
         cms_file_put_contents_safe($tmp_path, "Username,E-mail\nTestingABC,test@example.com");
