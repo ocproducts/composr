@@ -115,7 +115,7 @@ function _get_notification_ob_for_code($notification_code)
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */

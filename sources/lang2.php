@@ -22,7 +22,7 @@
  * Edit a language string direct from something saved into the code.
  *
  * @param  ID_TEXT $codename The language string ID
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  */
 function inline_language_editing(&$codename, $lang)
 {

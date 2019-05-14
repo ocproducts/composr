@@ -96,7 +96,7 @@ Activity can be syndicated:
 2) By individual users to their own Twitter accounts (if they have authorised this via the activity tab in their profile)
 
 Set up is a little tricky:
-1) you need to set up an application on Twitter
+1) you need to set up an application on Twitter, with callback URLs of https://yourbaseurl/adminzone/twitter-oauth.htm and https://yourbaseurl/members/view.htm (or whatever the correct URLs are in your current URL Scheme)
 2) you need to configure Composr to use the Twitter API via Admin Zone > Setup > Configuration > Composr APIs > Twitter syndication
 3) you need to authorise the site via Admin Zone > Setup > Twitter syndication
 

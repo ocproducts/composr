@@ -258,7 +258,7 @@ function add_menu_item($menu_id, $order, $parent, $caption, $url, $check_permiss
     if ($menu_id != '_preview') {
         log_it('ADD_MENU_ITEM', strval($id), $caption);
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             generate_resource_fs_moniker('menu_item', strval($id), null, null, true);
         }
@@ -306,7 +306,7 @@ function edit_menu_item($id, $menu_id, $order, $parent, $caption, $url, $check_p
 
     log_it('EDIT_MENU_ITEM', strval($id), $caption);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('menu_item', strval($id));
     }
@@ -335,7 +335,7 @@ function delete_menu_item($id)
     if ($menu_id != '_preview') {
         log_it('DELETE_MENU_ITEM', strval($id), $caption);
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             expunge_resource_fs_moniker('menu_item', strval($id));
         }
@@ -376,7 +376,7 @@ function delete_menu($menu_id)
         decache('menu');
         persistent_cache_delete(array('MENU', $menu_id));
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             expunge_resource_fs_moniker('menu', $menu_id);
         }

@@ -78,7 +78,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
 
     log_it('ADD_USERGROUP_SUBSCRIPTION', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('usergroup_subscription', strval($id), null, null, true);
     }
@@ -197,7 +197,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
 
     log_it('EDIT_USERGROUP_SUBSCRIPTION', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('usergroup_subscription', strval($id));
     }
@@ -271,7 +271,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     log_it('DELETE_USERGROUP_SUBSCRIPTION', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('usergroup_subscription', strval($id));
     }

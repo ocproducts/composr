@@ -410,7 +410,7 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
 
     secure_serialized_data($_result);
 
-    $result = @unserialize($_result);
+    $result = @unserialize($_result, array('allowed_classes' => false));
     if ($result !== false) {
         if ($result['success']) {
             foreach (array('username', 'email', 'ip') as $criterion) {

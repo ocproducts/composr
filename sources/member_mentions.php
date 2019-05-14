@@ -27,6 +27,10 @@
  */
 function dispatch_member_mention_notifications($content_type, $content_id, $submitter = null)
 {
+    if (get_mass_import_mode()) {
+        return;
+    }
+
     global $MEMBER_MENTIONS_IN_COMCODE;
     if ((!isset($MEMBER_MENTIONS_IN_COMCODE)) || (count($MEMBER_MENTIONS_IN_COMCODE) == 0)) {
         return;

@@ -1328,7 +1328,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
- * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
+ * @param  ?LANGUAGE_NAME $lang Language name (null: user's language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  */
@@ -1336,7 +1336,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
 {
     $details = persistent_cache_get(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check));
     if ($details === null || $details === false/*caching negativity breaks things if the page subsequently appears - even adding a page does a pre-check so would net a cached false*/) {
-        $details = __request_page($codename, $zone, $page_type, null, $no_redirect_check);
+        $details = __request_page($codename, $zone, $page_type, $lang, $no_redirect_check);
         persistent_cache_set(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check), $details);
     }
     return $details;
@@ -1348,7 +1348,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
- * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
+ * @param  ?LANGUAGE_NAME $lang Language name (null: user's language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  * @ignore

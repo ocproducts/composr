@@ -469,7 +469,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
 
     log_it('ADD_IMAGE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('image', strval($id), null, null, true);
     }
@@ -619,7 +619,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
 
     log_it('EDIT_IMAGE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('image', strval($id));
     }
@@ -700,7 +700,7 @@ function delete_image($id, $delete_full = true)
 
     log_it('DELETE_IMAGE', strval($id), get_translated_text($title));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('image', strval($id));
     }
@@ -961,7 +961,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
 
     log_it('ADD_VIDEO', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('video', strval($id), null, null, true);
     }
@@ -1125,7 +1125,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
 
     log_it('EDIT_VIDEO', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('video', strval($id));
     }
@@ -1214,7 +1214,7 @@ function delete_video($id, $delete_full = true)
 
     log_it('DELETE_VIDEO', strval($id), get_translated_text($title));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('video', strval($id));
     }
@@ -1364,7 +1364,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
 
     log_it('ADD_GALLERY', $name, $fullname);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('gallery', $name, null, null, true);
     }
@@ -1543,7 +1543,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     log_it('EDIT_GALLERY', $name, $fullname);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('gallery', $name);
     }
@@ -1640,7 +1640,7 @@ function delete_gallery($name)
 
     log_it('DELETE_GALLERY', $name, get_translated_text($rows[0]['fullname']));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('gallery', $name);
     }

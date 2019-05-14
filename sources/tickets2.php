@@ -69,7 +69,7 @@ function add_ticket_type($ticket_type_name, $guest_emails_mandatory = 0, $search
 
     log_it('ADD_TICKET_TYPE', strval($ticket_type_id), $ticket_type_name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('ticket_type', strval($ticket_type_id), null, null, true);
     }
@@ -98,7 +98,7 @@ function edit_ticket_type($ticket_type_id, $ticket_type_name, $guest_emails_mand
 
     log_it('EDIT_TICKET_TYPE', strval($ticket_type_id), $ticket_type_name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('ticket_type', strval($ticket_type_id), $ticket_type_name);
     }
@@ -123,7 +123,7 @@ function delete_ticket_type($ticket_type_id)
 
     log_it('DELETE_TICKET_TYPE', strval($ticket_type_id), $_ticket_type_name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('ticket_type', strval($ticket_type_id));
     }
