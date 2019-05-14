@@ -43,7 +43,16 @@ class Hook_implicit_usergroups_antispam_question
      */
     function __construct()
     {
-        $this->field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $this->field_name));
+        global $ANTISPAM_QUESTION_FIELD_ID;
+        if (!isset($ANTISPAM_QUESTION_FIELD_ID)) {
+            $ANTISPAM_QUESTION_FIELD_ID = mixed();
+            $ANTISPAM_QUESTION_FIELD_ID = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $this->field_name));
+            if ($ANTISPAM_QUESTION_FIELD_ID === null) {
+                $ANTISPAM_QUESTION_FIELD_ID = false;
+            }
+        }
+
+        $this->field_id = ($ANTISPAM_QUESTION_FIELD_ID === false) ? null : $ANTISPAM_QUESTION_FIELD_ID;
     }
 
     /**
