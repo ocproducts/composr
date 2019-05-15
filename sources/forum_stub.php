@@ -77,9 +77,10 @@ class Forum_driver_base
      * @param  MEMBER $id The forum member
      * @param  boolean $definitely_profile Whether to be insistent that we go to the profile, rather than possibly starting an IM which can link to the profile
      * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
+     * @param  ?string $username Username, passed for performance reasons (null: look it up)
      * @return mixed The URL
      */
-    public function member_profile_url($id, $definitely_profile = false, $tempcode_okay = false)
+    public function member_profile_url($id, $definitely_profile = false, $tempcode_okay = false, $username = null)
     {
         $url = mixed();
 
@@ -91,7 +92,7 @@ class Forum_driver_base
             return $url;
         }
 
-        $url = $this->_member_profile_url($id, $tempcode_okay);
+        $url = $this->_member_profile_url($id, $tempcode_okay, $username);
         if (($tempcode_okay) && (!is_object($url))) {
             $url = make_string_tempcode($url);
         }

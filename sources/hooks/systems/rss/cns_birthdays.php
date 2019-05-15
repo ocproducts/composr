@@ -70,6 +70,8 @@ class Hook_rss_cns_birthdays
         }
         $rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_dob_day,m_dob_month,m_dob_year,m_username,m_reveal_age,m_join_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members p' . $join . ' WHERE m_validated=1 AND ' . $filters . ' AND m_dob_day IS NOT NULL ORDER BY ' . $order, $max);
 
+        $rows = remove_duplicate_rows($rows);
+
         $done = 0;
 
         $year = intval(date('Y', time()));
@@ -110,6 +112,8 @@ class Hook_rss_cns_birthdays
             sort_maps_by($rows, 'birthday_time');
         }
 
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $row['m_username'];
@@ -128,7 +132,7 @@ class Hook_rss_cns_birthdays
             $category = do_lang('BIRTHDAY');
             $category_raw = do_lang('BIRTHDAY');
 
-            $view_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true, false);
+            $view_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true, false, $row['m_username']);
 
             $if_comments = new Tempcode();
 
