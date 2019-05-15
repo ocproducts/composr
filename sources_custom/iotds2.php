@@ -66,7 +66,7 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
 
     log_it('ADD_IOTD', strval($id), $caption);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('iotd', strval($id), null, null, true);
     }
@@ -158,7 +158,7 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
 
     log_it('EDIT_IOTD', strval($id), get_translated_text($_caption));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('iotd', strval($id));
     }
@@ -202,7 +202,7 @@ function delete_iotd($id)
 
     log_it('DELETE_IOTD', strval($id), get_translated_text($caption));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('iotd', strval($id));
     }

@@ -239,7 +239,7 @@ function git_status__revert()
 
 function git_status__local_diff()
 {
-    $path = get_param_string('id', false, true);
+    $path = get_param_string('id', false, INPUT_FILTER_NONE);
 
     $diff = get_local_diff($path);
 
@@ -248,7 +248,7 @@ function git_status__local_diff()
 
 function git_status__remote_diff()
 {
-    $path = get_param_string('id', false, true);
+    $path = get_param_string('id', false, INPUT_FILTER_NONE);
 
     $diff = get_remote_diff($path);
 

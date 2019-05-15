@@ -46,6 +46,8 @@ if (!addon_installed('composr_homesite')) {
 
 require_code('composr_homesite');
 
+$result = mixed();
+
 switch (get_param_string('type')) {
     case 'test_upload':
         $result = true;

@@ -180,7 +180,7 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Tokenise a MySQL query (assumes a basic syntax Composr is using).
      *
-     * @param string $query Query
+     * @param  string $query Query
      * @return array The tokens
      */
     protected function tokenise_query($query)

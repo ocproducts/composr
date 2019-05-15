@@ -29,6 +29,10 @@ function unit_testing_run()
     require_code('_tests/simpletest/collector.php');
     require_code('_tests/cmstest/cms_test_case.php');
 
+    if ((isset($_SERVER['argv'])) && (in_array('debug', $_SERVER['argv']))) {
+        $_GET['debug'] = '1';
+    }
+
     $id = get_param_string('id', null);
     if (($id === null) && (isset($_SERVER['argv'][1]))) {
         $id = $_SERVER['argv'][1];

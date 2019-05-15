@@ -169,7 +169,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
         $map += insert_lang_comcode('skills', $skills, 3);
         $GLOBALS['SITE_DB']->query_insert('authors', $map);
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             generate_resource_fs_moniker('author', $author, null, null, true);
         }
@@ -212,7 +212,7 @@ function delete_author($author)
 
     log_it('DELETE_AUTHOR', $author);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('author', $author);
     }

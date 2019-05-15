@@ -80,11 +80,11 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         $themed_suffix = get_param_string('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . '__';
         $themed_version = dirname($full) . '/' . $themed_suffix . basename($full);
 
-        if ((!file_exists($full)) && (!file_exists($themed_version))) {
-            continue;
-        }
-
         if ((get_param_integer('keep_theme_test', 0) == 1) && (file_exists($themed_version))) {
+            if (!file_exists($themed_version)) {
+                continue;
+            }
+
             $mode = fileperms($themed_version);
             $mtime = isset($mtimes[$val]) ? $mtimes[$val] : filemtime($themed_version);
             if ($mtime > $max_mtime) {
@@ -92,6 +92,10 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             }
             tar_add_file($tar, $val, $themed_version, $mode, $mtime, true);
         } else {
+            if (!file_exists($full)) {
+                continue;
+            }
+
             $mode = fileperms($full);
             $mtime = isset($mtimes[$val]) ? $mtimes[$val] : filemtime($full);
             if ($mtime > $max_mtime) {

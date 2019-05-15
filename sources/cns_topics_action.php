@@ -127,7 +127,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
 
     $topic_id = $GLOBALS['FORUM_DB']->query_insert('f_topics', $map, true);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('topic', strval($topic_id), null, null, true);
     }
@@ -140,7 +140,9 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         decache_private_topics($pt_to);
     }
 
-    set_value('cns_topic_count', strval(intval(get_value('cns_topic_count')) + 1));
+    if (!get_mass_import_mode()) {
+        set_value('cns_topic_count', strval(intval(get_value('cns_topic_count')) + 1));
+    }
 
     return $topic_id;
 }

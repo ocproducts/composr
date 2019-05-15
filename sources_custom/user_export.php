@@ -22,7 +22,7 @@ function init__user_export()
 
     define('USER_EXPORT_PATH', 'data_custom/modules/user_export/out.csv');
 
-    define('USER_EXPORT_IPC_AUTO_REEXPORT', true);
+    define('USER_EXPORT_IPC_AUTO_REEXPORT', false);
     define('USER_EXPORT_IPC_URL_EDIT', null); // add or edit
     define('USER_EXPORT_IPC_URL_DELETE', null);
     define('USER_EXPORT_EMAIL', null);

@@ -721,13 +721,14 @@ function set_short_title($title)
  * @param  ?ID_TEXT $type The screen type to do it for (null: read from the environment / really not passed)
  * @param  ?ID_TEXT $url_id The ID to do it for (null: read from the environment / really not passed)
  * @param  boolean $consider_nulls_as_unpassed If any nulls are passed it's considered as 'really not passed' rather than 'read from environment' for $type and $url_id
+ * @return boolean Found via moniker
  */
 function process_url_monikers($redirect_if_non_canonical = true, $env_change = true, &$page = null, &$zone = null, &$type = null, &$url_id = null, $consider_nulls_as_unpassed = true)
 {
     if ($env_change) {
         static $run_once = false;
         if ($run_once) {
-            return;
+            return false;
         }
         $run_once = true;
     }
@@ -801,7 +802,7 @@ function process_url_monikers($redirect_if_non_canonical = true, $env_change = t
                             $url_id = $test[0]['m_resource_id'];
                         }
                     }
-                    return;
+                    return true;
                 }
             }
         }
@@ -844,7 +845,7 @@ function process_url_monikers($redirect_if_non_canonical = true, $env_change = t
                         $monikers = $GLOBALS['SITE_DB']->query_select($table, array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
                         if (!array_key_exists(0, $monikers)) { // hmm, deleted?
                             if (!$ob_info['id_field_numeric']) {
-                                return;
+                                return false;
                             }
 
                             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -869,11 +870,13 @@ function process_url_monikers($redirect_if_non_canonical = true, $env_change = t
                             }
                         }
                     }
-                    return;
+                    return false;
                 }
             }
         }
     }
+
+    return false;
 }
 
 /**

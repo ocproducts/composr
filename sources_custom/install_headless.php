@@ -17,7 +17,7 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
 {
     // Most Composr MySQL drivers auto-create the DB if missing, if root, but mysql_pdo does not because of how the connection works
     if (get_db_site_user() == 'root') {
-        $GLOBALS['SITE_DB']->query('CREATE DATABASE IF NOT EXISTS ' . $database, null, null, true);
+        $GLOBALS['SITE_DB']->query('CREATE DATABASE IF NOT EXISTS ' . $database, null, 0, true);
     }
 
     copy(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
@@ -31,7 +31,7 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         $data = $http_result->data;
         $success = ($http_result->message == '200') && (strpos($data, '<!--ERROR-->') === false);
 
-        if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
+        if (/*(!$success) && */(isset($_GET['debug']))) {
             @var_dump($url);
             @var_dump($http_result->message);
             $error = $url . ' : ' . clean_installer_output_for_code_display($data);
@@ -184,7 +184,7 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         $data = $http_result->data;
         $success = ($http_result->message == '200') && (strpos($data, '<!--ERROR-->') === false);
 
-        if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
+        if (/*(!$success) && */(isset($_GET['debug']))) {
             @var_dump($url);
             @var_dump($http_result->message);
             $error = $url . ' : ' . clean_installer_output_for_code_display($data);

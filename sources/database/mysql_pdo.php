@@ -140,7 +140,9 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             $results = $connection->query($query);
         }
         catch (PDOException $e) {
-            $this->handle_failed_query($query, $e->getMessage(), $connection);
+            if (!$fail_ok) {
+                $this->handle_failed_query($query, $e->getMessage(), $connection);
+            }
             return null;
         }
 
@@ -153,7 +155,7 @@ class Database_Static_mysql_pdo extends Database_super_mysql
             if (strtoupper(substr($query, 0, 7)) === 'UPDATE ') {
                 return $results->rowCount();
             }
-            $ins = $connection->lastInsertId();
+            $ins = intval($connection->lastInsertId());
             if ($ins === 0) {
                 $table = substr($query, 12, strpos($query, ' ', 12) - 12);
                 $rows = $this->db_query('SELECT MAX(id) AS x FROM ' . $table, $connection, 1, 0, false, false);

@@ -74,3 +74,7 @@ var editorSettings = {
 if ($cms.configOption('wysiwyg_font_units') === 'em') {
     editorSettings.fontSize_sizes = '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em';
 }
+
+// Fix auto-formatting issue
+CKEDITOR.dtd.$block.object = 1;
+CKEDITOR.dtd.$block.param = 1;

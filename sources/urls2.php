@@ -520,15 +520,17 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
-    $page = fix_page_name_dashing($zone, $attributes['page']);
+    $page = $attributes['page']; // Any incorrect dashing will be fixed inside process_url_monikers, if there's a moniker
 
     // Resolve monikers back to canonical URL parameters
     $type = array_key_exists('type', $attributes) ? $attributes['type'] : null;
     $id = array_key_exists('id', $attributes) ? $attributes['id'] : null;
-    process_url_monikers(false, false, $page, $zone, $type, $id, false);
+    if (!process_url_monikers(false, false, $page, $zone, $type, $id, false)) {
+        $page = fix_page_name_dashing($zone, $attributes['page']); // Not via a moniker
+    }
 
     require_code('site');
-    if (_request_page($page, $zone) === false) {
+    if (_request_page($page, $zone, null, fallback_lang()) === false) {
         return '';
     }
 
@@ -549,6 +551,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 
         $page_link .= ':' . $attributes['id'];
     }
+    $devtest_there = array_key_exists('keep_devtest', $attributes);
+    if ($devtest_there) {
+        unset($attributes['keep_devtest']);
+    }
     foreach ($attributes as $key => $val) {
         if (!is_string($val)) {
             $val = strval($val);
@@ -567,7 +573,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     // Confirm it loops correctly
     if ($perfect_only) {
         push_no_keep_context();
-        $conv_url = page_link_to_url($page_link);
+        $conv_url = page_link_to_url($page_link . ($devtest_there ? ':keep_devtest=1' : ''));
         pop_no_keep_context();
         if ($conv_url != $url_in) {
             return '';

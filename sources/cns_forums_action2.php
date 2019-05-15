@@ -46,7 +46,7 @@ function cns_edit_forum_grouping($forum_grouping_id, $title, $description, $expa
 
     log_it('EDIT_FORUM_GROUPING', strval($forum_grouping_id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('forum_grouping', strval($forum_grouping_id));
     }
@@ -74,7 +74,7 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
 
     log_it('DELETE_FORUM_GROUPING', strval($forum_grouping_id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('forum_grouping', strval($forum_grouping_id));
     }
@@ -191,7 +191,7 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
 
     log_it('EDIT_FORUM', strval($forum_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('forum', strval($forum_id));
     }
@@ -253,7 +253,7 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
 
     log_it('DELETE_FORUM', strval($forum_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('forum', strval($forum_id));
     }

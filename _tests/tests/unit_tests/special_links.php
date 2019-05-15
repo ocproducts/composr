@@ -20,14 +20,14 @@ class special_links_test_set extends cms_test_case
 {
     public function testISBN()
     {
-        $c = http_get_contents('https://www.bookfinder.com/search/?isbn=0241968984&mode=isbn&st=sr&ac=qr', array('trigger_error' => false, 'timeout' => 10.0, 'ua' => false/*seems to dislike bots*/));
+        $c = http_get_contents('https://www.bookfinder.com/search/?isbn=0241968984&mode=isbn&st=sr&ac=qr', array('trigger_error' => false, 'timeout' => 10.0, 'ua' => false)); // seems to dislike bots
         $this->assertTrue(strpos($c, 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
 
         if (php_function_allowed('usleep')) {
             usleep(1000000);
         }
 
-        $c = http_get_contents('https://www.bookfinder.com/search/?isbn=978-0241968987&mode=isbn&st=sr&ac=qr', array('trigger_error' => false, 'timeout' => 10.0, 'ua' => false/*seems to dislike bots*/));
+        $c = http_get_contents('https://www.bookfinder.com/search/?isbn=978-0241968987&mode=isbn&st=sr&ac=qr', array('trigger_error' => false, 'timeout' => 10.0, 'ua' => false)); // seems to dislike bots
         $this->assertTrue(strpos($c, 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
     }
 
@@ -47,7 +47,7 @@ class special_links_test_set extends cms_test_case
     {
         $urls = array(
             'https://seositecheckup.com/' => true,
-            'https://www.google.com/webmasters/tools/home' => false,
+            //'https://www.google.com/webmasters/tools/home?pli=1' => false,        Only works if logged in
             'https://www.bing.com/toolbox/webmaster/' => false,
             'https://webmaster.yandex.com/' => false,
             'https://www.thehoth.com/' => true,
@@ -66,18 +66,32 @@ class special_links_test_set extends cms_test_case
             'https://glockapps.com/spam-testing/' => true,
         );
         foreach ($urls as $url => $test_no_redirecting) {
-            $result = cms_http_request($url, array('trigger_error' => false));
-            $this->assertTrue(is_string($result->data), 'External link (' . $url . ') not working, fix test and use within Composr (separate)');
             if ($test_no_redirecting) {
+                $result = cms_http_request($url, array('trigger_error' => false));
+                $this->assertTrue(is_string($result->data), 'External link (' . $url . ') not working, fix test and use within Composr (separate)');
                 $this->assertTrue($result->download_url == $url, 'External link (' . $url . ') redirecting elsewhere, fix test and use within Composr (separate)');
+            } else {
+                $exists = check_url_exists($url, 60 * 60 * 24 * 100);
+                if (!$exists) {
+                    $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
+                }
+                $this->assertTrue($exists, 'External link (' . $url . ') not working, fix test and use within Composr (separate)');
             }
         }
     }
 
     public function testMiscLinks()
     {
-        $this->assertTrue(is_string(http_get_contents('http://www.google.com/search?as_lq=' . urlencode('http://example.com/'), array('trigger_error' => false))), 'Google backreferences link broken');
-
-        $this->assertTrue(is_string(http_get_contents('https://duckduckgo.com/?q=tile+background&iax=images&ia=images', array('trigger_error' => false))), 'DuckDuckGo search broken');
+        $urls = array(
+            'http://www.google.com/search?as_lq=' . urlencode('http://example.com/'),
+            'https://duckduckgo.com/?q=tile+background&iax=images&ia=images',
+        );
+        foreach ($urls as $url) {
+            $exists = check_url_exists($url, 60 * 60 * 24 * 100);
+            if (!$exists) {
+                $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
+            }
+            $this->assertTrue($exists, 'External link (' . $url . ') not working, fix test and use within Composr (separate)');
+        }
     }
 }

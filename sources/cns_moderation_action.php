@@ -52,7 +52,7 @@ function cns_make_multi_moderation($name, $post_text, $move_to, $pin_state, $ope
 
     log_it('ADD_MULTI_MODERATION', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('multi_moderation', strval($id), null, null, true);
     }

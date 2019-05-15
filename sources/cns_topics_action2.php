@@ -140,7 +140,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         cns_force_update_forum_caching($forum_id, 0, 0);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('topic', strval($topic_id));
     }
@@ -320,7 +320,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         decache_private_topics($info[0]['t_pt_to']);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('topic', strval($topic_id));
     }
@@ -421,7 +421,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
 
         // Update sitemap
         require_code('sitemap_xml');
-        notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_info[0]['id']), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($to)));
+        notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topics[0]), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($to)));
     } else { // Unknown number
         if (count($topics) == 0) {
             return; // Nuts, lol

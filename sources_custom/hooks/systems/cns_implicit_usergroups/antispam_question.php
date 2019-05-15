@@ -33,8 +33,27 @@ class Hook_implicit_usergroups_antispam_question
     Show on the join form = yes
     */
 
-    protected $field_id = 46;
+    protected $field_name = 'What is Composr a kind of?';
     protected $expected_answer = 'Content Management System';
+
+    protected $field_id = null;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        global $ANTISPAM_QUESTION_FIELD_ID;
+        if (!isset($ANTISPAM_QUESTION_FIELD_ID)) {
+            $ANTISPAM_QUESTION_FIELD_ID = mixed();
+            $ANTISPAM_QUESTION_FIELD_ID = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $this->field_name));
+            if ($ANTISPAM_QUESTION_FIELD_ID === null) {
+                $ANTISPAM_QUESTION_FIELD_ID = false;
+            }
+        }
+
+        $this->field_id = ($ANTISPAM_QUESTION_FIELD_ID === false) ? null : $ANTISPAM_QUESTION_FIELD_ID;
+    }
 
     /**
      * Run function for implicit usergroup hooks. Finds the group IDs it is bound to.
@@ -67,6 +86,10 @@ class Hook_implicit_usergroups_antispam_question
      */
     public function get_member_list($group_id)
     {
+        if ($this->field_id === null) {
+            return 0;
+        }
+
         if (!addon_installed('antispam_question')) {
             return array();
         }
@@ -82,6 +105,10 @@ class Hook_implicit_usergroups_antispam_question
      */
     public function get_member_list_count($group_id)
     {
+        if ($this->field_id === null) {
+            return 0;
+        }
+
         if (!addon_installed('antispam_question')) {
             return 0;
         }
@@ -99,6 +126,10 @@ class Hook_implicit_usergroups_antispam_question
      */
     public function is_member_within($member_id, $group_id, &$is_exclusive = null)
     {
+        if ($this->field_id === null) {
+            return 0;
+        }
+
         if (!addon_installed('antispam_question')) {
             return false;
         }

@@ -67,6 +67,7 @@ class Block_main_sortable_table
 
         require_javascript('sortable_tables');
         require_css('sortable_tables');
+        require_lang('sortable_tables');
 
         disable_php_memory_limit();
 

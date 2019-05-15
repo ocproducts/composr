@@ -453,7 +453,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
             return;
         }
 
-        $this->assert_true(preg_replace('#\n#', '', "\n") == '', 'PHP is using a non-default copy of the PCRE library that is not configured with the usual line endings, which will cause some major problems'); // Checks correct line endings
-        $this->assert_true(@preg_replace('#\n#u', '', "\n") !== false, 'PCRE does not have inbuilt Unicode support, which means Unicode may not work correctly'); // Checks correct line endings
+        $this->assertTrue(preg_replace('#\n#', '', "\n") == '', 'PHP is using a non-default copy of the PCRE library that is not configured with the usual line endings, which will cause some major problems'); // Checks correct line endings
+        $this->assertTrue(@preg_replace('#\n#u', '', "\n") !== false, 'PCRE does not have inbuilt Unicode support, which means Unicode may not work correctly'); // Checks correct line endings
     }
 }

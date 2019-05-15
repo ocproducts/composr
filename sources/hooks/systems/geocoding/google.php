@@ -66,10 +66,17 @@ class Hook_geocoding_google
         $latitude = $r['geometry']['location']['lat'];
         $longitude = $r['geometry']['location']['lng'];
 
-        $ne_latitude = $r['geometry']['bounds']['northeast']['lat'];
-        $ne_longitude = $r['geometry']['bounds']['northeast']['lng'];
-        $sw_latitude = $r['geometry']['bounds']['southwest']['lat'];
-        $sw_longitude = $r['geometry']['bounds']['southwest']['lng'];
+        if (array_key_exists('bounds', $r['geometry'])) {
+            $ne_latitude = $r['geometry']['bounds']['northeast']['lat'];
+            $ne_longitude = $r['geometry']['bounds']['northeast']['lng'];
+            $sw_latitude = $r['geometry']['bounds']['southwest']['lat'];
+            $sw_longitude = $r['geometry']['bounds']['southwest']['lng'];
+        } else {
+            $ne_latitude = $latitude;
+            $ne_longitude = $longitude;
+            $sw_latitude = $latitude;
+            $sw_longitude = $longitude;
+        }
 
         return array($latitude, $longitude, $ne_latitude, $ne_longitude, $sw_latitude, $sw_longitude);
     }

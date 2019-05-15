@@ -575,12 +575,15 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @param  MEMBER $id The member ID
      * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
+     * @param  ?string $username Username, passed for performance reasons (null: look it up)
      * @return mixed The URL to the member profile
      */
-    protected function _member_profile_url($id, $tempcode_okay = false)
+    protected function _member_profile_url($id, $tempcode_okay = false, $username = null)
     {
         if (get_option('username_profile_links') == '1') {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($id, false, USERNAME_DEFAULT_ID_TIDY);
+            if ($username === null) {
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($id, false, USERNAME_DEFAULT_ID_TIDY);
+            }
             $map = array('page' => 'members', 'type' => 'view', 'id' => $username);
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();

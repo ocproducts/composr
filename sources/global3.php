@@ -3708,7 +3708,13 @@ function send_http_output_ping()
     $DOING_OUTPUT_PINGS = true;
 
     if ((running_script('index')) && (!is_cli())) {
+        if (!headers_sent()) {
+            cms_ini_set('zlib.output_compression', 'Off'); // Otherwise it can compress all the spaces to nothing
+            cms_ob_end_clean(); // Otherwise flushing won't help
+        }
+
         echo ' ';
+        flush();
     }
 }
 

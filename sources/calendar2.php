@@ -180,7 +180,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
 
     log_it('ADD_CALENDAR_EVENT', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('event', strval($id), null, null, true);
     }
@@ -382,7 +382,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
 
     log_it('EDIT_CALENDAR_EVENT', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('event', strval($id));
     }
@@ -473,7 +473,7 @@ function delete_calendar_event($id)
 
     log_it('DELETE_CALENDAR_EVENT', strval($id), $e_title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('event', strval($id));
     }
@@ -509,7 +509,7 @@ function add_event_type($title, $logo, $external_feed = '')
 
     log_it('ADD_EVENT_TYPE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('calendar_type', strval($id), null, null, true);
     }
@@ -553,7 +553,7 @@ function edit_event_type($id, $title, $logo, $external_feed)
     $map += lang_remap_comcode('t_title', $myrow['t_title'], $title);
     $GLOBALS['SITE_DB']->query_update('calendar_types', $map, array('id' => $id), '', 1);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('calendar_type', strval($id));
     }
@@ -605,7 +605,7 @@ function delete_event_type($id)
 
     log_it('DELETE_EVENT_TYPE', strval($id), get_translated_text($myrow['t_title']));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('calendar_type', strval($id));
     }

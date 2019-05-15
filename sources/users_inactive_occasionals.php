@@ -384,7 +384,7 @@ function try_cookie_login()
 
             $the_cookie = $_COOKIE[$base];
 
-            $unserialize = @unserialize($the_cookie);
+            $unserialize = @unserialize($the_cookie, array('allowed_classes' => false));
 
             if (is_array($unserialize)) {
                 if (array_key_exists($real_member_cookie, $unserialize)) {

@@ -41,7 +41,7 @@ function cns_make_post_template($title, $text, $forum_multi_code, $use_default_f
 
     log_it('ADD_POST_TEMPLATE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('post_template', strval($id), null, null, true);
     }
@@ -77,7 +77,7 @@ function cns_make_emoticon($code, $theme_img_code, $relevance_level = 1, $use_to
         'e_is_special' => $is_special,
     ));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('emoticon', $code, null, null, true);
     }
@@ -118,7 +118,7 @@ function cns_make_welcome_email($name, $subject, $text, $send_time, $newsletter 
     $map += insert_lang('w_text', $text, 2);
     $id = $GLOBALS['SITE_DB']->query_insert('f_welcome_emails', $map, true);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('welcome_email', strval($id), null, null, true);
     }

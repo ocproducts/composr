@@ -36,6 +36,7 @@ class Hook_task_cns_members_recache
         require_code('cns_posts_action2');
 
         $num_members = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)');
+        $num_warnings_total = $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'COUNT(*)');
 
         // Members
         $start = 0;
@@ -45,8 +46,11 @@ class Hook_task_cns_members_recache
                 task_log($this, 'Recaching member', $start + $i, $num_members);
 
                 cns_force_update_member_post_count($member['id']);
-                $num_warnings = $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'COUNT(*)', array('w_member_id' => $member['id'], 'w_is_warning' => 1));
-                $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_warnings' => $num_warnings), array('id' => $member['id']), '', 1);
+
+                if ($num_warnings_total > 0) {
+                    $num_warnings = $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'COUNT(*)', array('w_member_id' => $member['id'], 'w_is_warning' => 1));
+                    $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_warnings' => $num_warnings), array('id' => $member['id']), '', 1);
+                }
             }
             $start += 500;
         } while (array_key_exists(0, $members));

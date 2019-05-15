@@ -3089,10 +3089,11 @@ function unlink($filename, $context = null)
 /**
  * Creates a PHP value from a stored representation.
  *
- * @param  string $str Serialised string
- * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialised)
+ * @param  string $str Serialized string
+ * @param  ?array $options Extra options (null: none)
+ * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized)
  */
-function unserialize($str)
+function unserialize($str, $options = null)
 {
     return 0;
 }

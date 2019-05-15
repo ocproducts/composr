@@ -209,13 +209,20 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
                     }
                 }
             }
-        } elseif ((preg_match('#^(.+)~$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3~'
-            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
-            foreach ($subtree as $ii) {
+        } elseif (preg_match('#^(.+)\~$#', $token, $matches) != 0) { // e.g. '3~'
+            if ($parent_spec__parent_name === null) {
                 if ($out_and != '') {
                     $out_and .= ' AND ';
                 }
-                $out_and .= _selectcode_neq($category_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
+                $out_and .= _selectcode_neq($category_field_name, $matches[1], $numeric_category_set_ids);
+            } else {
+                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
+                foreach ($subtree as $ii) {
+                    if ($out_and != '') {
+                        $out_and .= ' AND ';
+                    }
+                    $out_and .= _selectcode_neq($category_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
+                }
             }
         } else { // e.g. "1"
             if ($out_or != '') {

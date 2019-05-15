@@ -711,7 +711,10 @@ function fixup_bad_php_env_vars()
         }
 
         if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
-            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':' , base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+            $bits = explode(':' , base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)), 2);
+            if (count($bits) == 2) {
+                list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = $bits;
+            }
         } elseif (!empty($_SERVER['REDIRECT_REMOTE_USER'])) {
             $_SERVER['PHP_AUTH_USER'] = $_SERVER['REDIRECT_REMOTE_USER'];
         } elseif (!empty($_SERVER['REMOTE_USER'])) {

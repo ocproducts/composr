@@ -415,7 +415,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
         delete_value('cns_newest_member_username');
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('member', strval($member_id), null, null, true);
     }
@@ -435,7 +435,9 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
         delete_cache_entry('main_members');
     }
 
-    set_value('cns_member_count', strval(intval(get_value('cns_member_count')) + 1));
+    if (!get_mass_import_mode()) {
+        set_value('cns_member_count', strval(intval(get_value('cns_member_count')) + 1));
+    }
 
     if ($validated == 1) {
         require_code('sitemap_xml');
@@ -1006,7 +1008,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     log_it('ADD_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('cpf', strval($id), null, null, true);
     }

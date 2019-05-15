@@ -29,7 +29,6 @@ class Module_cms_tutorials extends Standard_crud_module
     protected $menu_label = 'TUTORIALS';
     protected $select_name = 'TUTORIALS';
     protected $orderer = 't_title';
-    protected $orderer_is_multi_lang = false;
     protected $table = 'tutorials_external';
     protected $do_preview = null;
 

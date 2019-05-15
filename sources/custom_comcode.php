@@ -79,7 +79,7 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
 
     log_it('ADD_CUSTOM_COMCODE_TAG', $tag);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('custom_comcode_tag', $tag, null, null, true);
     }
@@ -151,7 +151,7 @@ function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace,
 
     log_it('EDIT_CUSTOM_COMCODE_TAG', $tag, $old_tag);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('custom_comcode_tag', $tag);
     }
@@ -181,7 +181,7 @@ function delete_custom_comcode_tag($tag)
 
     log_it('DELETE_CUSTOM_COMCODE_TAG', $tag);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('custom_comcode_tag', $tag);
     }

@@ -1242,7 +1242,7 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
     unset($GLOBALS['TIMEZONE_MEMBER_CACHE'][$member_id]);
     unset($GLOBALS['USER_NAME_CACHE'][$member_id]);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('member', strval($member_id));
     }
@@ -1333,7 +1333,7 @@ function cns_delete_member($member_id)
 
     log_it('DELETE_MEMBER', strval($member_id), $username);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('member', strval($member_id));
     }
@@ -1477,7 +1477,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 
     log_it('EDIT_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('cpf', strval($id));
     }
@@ -1515,7 +1515,7 @@ function cns_delete_custom_field($id)
 
     log_it('DELETE_CUSTOM_PROFILE_FIELD', strval($id), get_translated_text($_name, $GLOBALS['FORUM_DB']));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('cpf', strval($id));
     }

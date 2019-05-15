@@ -20,6 +20,12 @@ class form_to_email_test_set extends cms_test_case
 {
     public function testFormToEmail()
     {
+        global $SITE_INFO;
+        if ((isset($SITE_INFO['no_email_output'])) && ($SITE_INFO['no_email_output'] == '1')) {
+            $this->assertTrue(false, 'Test will not work if no_email_output is set');
+            return;
+        }
+
         $GLOBALS['SITE_DB']->query_delete('logged_mail_messages');
 
         $bak = get_option('mail_queue_debug');
