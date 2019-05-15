@@ -12,7 +12,7 @@ This tutorial does not cover validation, which is covered in the [page="_SEARCH:
 [title="2"]CAPTCHA[/title]
 
 [media width="150" description="The CAPTCHA" float="right"]data_custom/images/docs/tut_antispam/captcha.png[/media]
-CAPTCHA is the conventional tool to stop guest actions (such as joining, or posting) without first proving your human.
+CAPTCHA is the conventional tool to stop guest actions (such as joining, or posting) without first proving you're human.
 Composr uses a unique method behind-the-scenes to generate the CAPTCHA (the 'CSS' method), which has proven very effective.
 
 Generally-speaking, CAPTCHA will fully protect you from spam. The exception tends to be when real humans do set up accounts, then spam using them. Some spammers subcontract CAPTCHA solution to humans on low-salaries. Other spammers serve target site's CAPTCHAs out to video sites (for example) where viewers unwittingly are made to solve them in order to be allowed to watch a video.

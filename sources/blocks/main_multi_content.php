@@ -361,6 +361,10 @@ class Block_main_multi_content
             }
         }
 
+        if ((can_arbitrary_groupby()) && (is_string($info['id_field']))) {
+            $query .= ' GROUP BY r.' . $info['id_field'];
+        }
+
         if ((($sort == 'average_rating') || ($sort == 'compound_rating')) && (array_key_exists('feedback_type_code', $info)) && ($info['feedback_type_code'] === null)) {
             $sort = 'title';
         }
@@ -389,7 +393,7 @@ class Block_main_multi_content
                     case 'fixed_random ASC':
                         $clause = db_cast('r.' . $first_id_field, 'INT');
                         $clause = '(' . db_function('MOD', array($clause, date('d'))) . ')';
-                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',' . $clause . ' AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
+                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',' . $clause . ' AS fixed_random ' . $query . ' ORDER BY fixed_random', $max + $start, 0, false, true, $lang_fields);
                         break;
                     case 'recent_contents':
                     case 'recent_contents ASC':
@@ -427,7 +431,7 @@ class Block_main_multi_content
                                 $order_by .= ' DESC';
                             }
 
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $order_by, $max, $start);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $order_by, $max + $start, 0);
 
                             break;
                         }
@@ -435,13 +439,13 @@ class Block_main_multi_content
                     case 'recent ASC':
                     case 'recent DESC':
                         if ((array_key_exists('date_field', $info)) && ($info['date_field'] !== null)) {
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['date_field'] . (($sort != 'recent asc') ? ' DESC' : ' ASC'), $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['date_field'] . (($sort != 'recent asc') ? ' DESC' : ' ASC'), $max + $start, 0, false, true, $lang_fields);
                             break;
                         }
                         $sort = $first_id_field;
                     case 'views':
                         if ((array_key_exists('views_field', $info)) && ($info['views_field'] !== null)) {
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['views_field'] . ' DESC', $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY r.' . $info['views_field'] . ' DESC', $max + $start, 0, false, true, $lang_fields);
                             break;
                         }
                         $sort = $first_id_field;
@@ -454,7 +458,7 @@ class Block_main_multi_content
                             }
 
                             $select_rating = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . db_cast($first_id_field, 'CHAR') . ') AS average_rating';
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . ' ORDER BY ' . $sort, $max + $start, 0, false, true, $lang_fields);
                             break;
                         }
                         $sort = $first_id_field;
@@ -467,7 +471,7 @@ class Block_main_multi_content
                             }
 
                             $select_rating = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . db_cast($first_id_field, 'CHAR') . ') AS compound_rating';
-                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
+                            $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . ' ORDER BY ' . $sort, $max + $start, 0, false, true, $lang_fields);
                             break;
                         }
                         $sort = $first_id_field;
@@ -493,10 +497,10 @@ class Block_main_multi_content
                                 $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
                             }
                         }
-                        $rows = $info['connection']->query($sql, $max, $start, false, true, $lang_fields);
+                        $rows = $info['connection']->query($sql, $max + $start, 0, false, true, $lang_fields);
                         break;
                     default: // Some manual order
-                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
+                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ' . $sort, $max + $start, 0, false, true, $lang_fields);
                         break;
                 }
             }
@@ -613,8 +617,9 @@ class Block_main_multi_content
 
         $rendered_content = array();
         $content_data = array();
+        $rows_skipped = 0;
         foreach ($rows as $row) {
-            if (count($done_already) == $max) {
+            if (count($done_already) == $start + $max) {
                 break;
             }
 
@@ -623,9 +628,15 @@ class Block_main_multi_content
 
             // De-dupe
             if (array_key_exists($content_id, $done_already)) {
+                $rows_skipped++;
                 continue;
             }
             $done_already[$content_id] = 1;
+
+            if (count($done_already) < $start) {
+                $rows_skipped++;
+                continue;
+            }
 
             // Lifetime managing
             if ($lifetime !== null) {
@@ -692,7 +703,7 @@ class Block_main_multi_content
         $pagination = mixed();
         if ($do_pagination) {
             require_code('templates_pagination');
-            $pagination = pagination(do_lang_tempcode($info['content_type_label']), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows);
+            $pagination = pagination(do_lang_tempcode($info['content_type_label']), $start, $block_id . '_start', $max, $block_id . '_max', $max_rows - $rows_skipped);
         }
 
         return do_template('BLOCK_MAIN_MULTI_CONTENT', array(

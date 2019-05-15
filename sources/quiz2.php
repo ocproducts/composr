@@ -390,7 +390,7 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
 
     log_it('ADD_QUIZ', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('quiz', strval($id), null, null, true);
     }
@@ -498,7 +498,7 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
 
     log_it('EDIT_QUIZ', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('quiz', strval($id));
     }
@@ -558,7 +558,7 @@ function delete_quiz($id)
 
     log_it('DELETE_QUIZ', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('quiz', strval($id));
     }

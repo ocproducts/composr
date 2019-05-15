@@ -276,9 +276,9 @@ class Module_admin_import
         require_code('form_templates');
         foreach ($_sessions as $session) {
             if ($session['imp_session'] == get_session_id()) {
-                $text = do_lang_tempcode('IMPORT_SESSION_CURRENT', escape_html($session['imp_db_name']));
+                $text = do_lang_tempcode('IMPORT_SESSION_CURRENT', escape_html($session['imp_db_name'] . ', ' . $session['imp_session']));
             } else {
-                $text = do_lang_tempcode('IMPORT_SESSION_EXISTING_REMAP', escape_html($session['imp_db_name']));
+                $text = do_lang_tempcode('IMPORT_SESSION_EXISTING_REMAP', escape_html($session['imp_db_name'] . ', ' . $session['imp_session']));
             }
             $sessions->attach(form_input_list_entry($session['imp_session'], false, $text));
         }
@@ -360,21 +360,21 @@ class Module_admin_import
             $db_name = get_db_site();
             $db_user = get_db_site_user();
             $db_table_prefix = array_key_exists('prefix', $info) ? $info['prefix'] : $GLOBALS['SITE_DB']->get_table_prefix();
-            $refresh_time = 15;
+            $refresh_time = 0;
         }
 
         // Build the form
         $fields = new Tempcode();
         require_code('form_templates');
-        if (!method_exists($object, 'probe_db_access')) {
+        if ((!method_exists($object, 'probe_db_access')) || (get_param_integer('keep_manual_import_config', 0) == 1)) {
             $fields->attach(form_input_line(do_lang_tempcode('installer:DATABASE_NAME'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_name', $db_name, true));
             $fields->attach(form_input_line(do_lang_tempcode('installer:DATABASE_USERNAME'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_user', $db_user, true));
             $fields->attach(form_input_password(do_lang_tempcode('installer:DATABASE_PASSWORD'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_password', false)); // Not required as there may be a blank password
-            $fields->attach(form_input_line(do_lang_tempcode('TABLE_PREFIX'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_table_prefix', $db_table_prefix, true));
+            $fields->attach(form_input_line(do_lang_tempcode('TABLE_PREFIX'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_table_prefix', $db_table_prefix, false));
         }
         $fields->attach(form_input_line(do_lang_tempcode('FILE_BASE'), do_lang_tempcode('FROM_IMPORTING_SYSTEM'), 'old_base_dir', $old_base_dir, true));
         if (intval(ini_get('safe_mode')) == 0) {
-            $fields->attach(form_input_integer(do_lang_tempcode('REFRESH_TIME'), do_lang_tempcode('DESCRIPTION_REFRESH_TIME'), 'refresh_time', $refresh_time, true));
+            $fields->attach(form_input_integer(do_lang_tempcode('REFRESH_TIME'), do_lang_tempcode('DESCRIPTION_REFRESH_TIME'), 'refresh_time', ($refresh_time == 0) ? null : $refresh_time, false));
         }
         if (method_exists($object, 'get_extra_fields')) {
             $fields->attach($object->get_extra_fields());
@@ -402,7 +402,7 @@ class Module_admin_import
 
         // Test import source is good
         $db_host = get_db_site_host();
-        if (method_exists($object, 'probe_db_access')) {
+        if ((method_exists($object, 'probe_db_access')) && (get_param_integer('keep_manual_import_config', 0) == 0)) {
             $probe = $object->probe_db_access(either_param_string('old_base_dir'));
             list($db_name, $db_user, $db_password, $db_table_prefix) = $probe;
             if (array_key_exists(4, $probe)) {
@@ -423,7 +423,7 @@ class Module_admin_import
 
         // Save data
         $old_base_dir = either_param_string('old_base_dir');
-        $refresh_time = either_param_integer('refresh_time', 15); // Shouldn't default, but reported on some systems to do so
+        $refresh_time = either_param_integer('refresh_time', 0); // Shouldn't default, but reported on some systems to do so
         $GLOBALS['SITE_DB']->query_delete('import_session', array('imp_session' => get_session_id()), '', 1);
         $GLOBALS['SITE_DB']->query_insert('import_session', array(
             'imp_hook' => $importer,
@@ -460,7 +460,7 @@ class Module_admin_import
             $db_user = get_db_site_user();
             $db_table_prefix = array_key_exists('prefix', $info) ? $info['prefix'] : $GLOBALS['SITE_DB']->get_table_prefix();
             $db_host = get_db_site_host();
-            $refresh_time = 15;
+            $refresh_time = 0;
         }
 
         $_import_list = $info['import'];
@@ -546,12 +546,14 @@ class Module_admin_import
         }
 
         $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
-        $refresh_time = either_param_integer('refresh_time', 15); // Shouldn't default, but reported on some systems to do so
+        $refresh_time = either_param_integer('refresh_time', 0); // Shouldn't default, but reported on some systems to do so
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit($refresh_time);
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
         send_http_output_ping();
+
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         safe_ini_set('log_errors', '0');
         global $I_REFRESH_URL;
@@ -567,7 +569,7 @@ class Module_admin_import
             warn_exit(do_lang_tempcode('BAD_IMPORT_PATH', escape_html($old_base_dir)));
         }
         $db_host = get_db_site_host();
-        if (method_exists($object, 'probe_db_access')) {
+        if ((method_exists($object, 'probe_db_access')) && (get_param_integer('keep_manual_import_config', 0) == 0)) {
             $probe = $object->probe_db_access(either_param_string('old_base_dir'));
             list($db_name, $db_user, $db_password, $db_table_prefix) = $probe;
             if (array_key_exists(4, $probe)) {

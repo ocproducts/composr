@@ -125,13 +125,13 @@ function _length_so_far($bits, $i)
 function substitute_comment_encapsulated_tempcode($data)
 {
     // HTML comment
-    $data = preg_replace('#<!--\s*\{(((?!-->).)*)\}\s*-->#', '{${1}}', $data);
+    $data = cms_preg_replace_safe('#<!--\s*\{(((?!-->).)*)\}\s*-->#', '{${1}}', $data);
 
     // HTML attribute
     $data = preg_replace('#\sx-tempcode(-\w+)?="\{([^"]*)\}"#', '{${2}}', $data);
 
     // CSS/JS comment
-    $data = preg_replace('#/\*\s*\{([^a-z0-9])(((?!\*/).)*)\}\s*\*/#', '{${1}${2}}', $data);
+    $data = cms_preg_replace_safe('#/\*\s*\{([^a-z0-9])(((?!\*/).)*)\}\s*\*/#', '{${1}${2}}', $data);
 
     return $data;
 }

@@ -25,6 +25,11 @@ class notifications_test_set extends cms_test_case
             return;
         }
 
+        if ($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') > 1000) {
+            $this->assertTrue(false, 'Test will not work on databases with a lot of users');
+            return;
+        }
+
         require_code('notifications');
         require_code('hooks/systems/notifications/cns_birthday');
         require_code('hooks/systems/notifications/cns_friend_birthday');

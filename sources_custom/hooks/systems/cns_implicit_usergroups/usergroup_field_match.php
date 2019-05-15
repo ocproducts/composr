@@ -95,10 +95,10 @@ class Hook_implicit_usergroups_usergroup_field_match
     }
 
     /**
-     * Run function for implicit usergroup hooks. Finds all members in the group.
+     * Run function for implicit usergroup hooks. Finds how many members in the group.
      *
      * @param  GROUP $group_id The group ID to check (if only one group supported by the hook, can be ignored).
-     * @return ?array The list of members (null: unsupported by hook).
+     * @return ?array The number of members (null: unsupported by hook).
      */
     public function get_member_list_count($group_id)
     {

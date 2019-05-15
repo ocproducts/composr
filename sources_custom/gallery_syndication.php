@@ -195,7 +195,7 @@ function _get_local_video($row)
         '_raw_url' => $row['url'],
         'thumb_url' => $row['thumb_url'],
         'allow_rating' => ($row['allow_rating'] == 1),
-        'allow_comments' => ($row['allow_comments'] == 1),
+        'allow_comments' => ($row['allow_comments'] >= 1),
         'validated' => ($row['validated'] == 1),
     );
 }

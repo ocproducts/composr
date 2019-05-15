@@ -28,8 +28,9 @@ class _critical_error_display_test_set extends cms_test_case
 
         $c_path = get_file_base() . '/_config.php';
         rename($c_path, $c_path . '.old');
-        $result = http_download_file(get_base_url() . '/index.php');
-        $this->assertTrue(strpos($result, '_critical_error.html') !== false);
+        $result = http_download_file(get_base_url() . '/index.php', null, false, true);
+        global $HTTP_DOWNLOAD_URL;
+        $this->assertTrue(strpos($HTTP_DOWNLOAD_URL, '_critical_error.html') !== false);
         rename($c_path . '.old', $c_path);
 
         unlink($e_path);

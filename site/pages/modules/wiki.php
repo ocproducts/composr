@@ -132,7 +132,7 @@ class Module_wiki
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'cdate_and_time', array('date_and_time'));
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'svalidated', array('validated'));
 
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_wiki', 20, 1, 0, 0, 0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_wiki', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'ftjoin_spm', array('the_message'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spt', array('title'));
@@ -957,14 +957,14 @@ class Module_wiki
         }
 
         if ($mode == 'edit') {
-            $_id = get_param_wiki_chain('id', strval($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'page_id', array('id' => $post_id))));
-            $id = $_id[0];
-
             $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $post_id), '', 1);
             if (!array_key_exists(0, $rows)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_post'));
             }
             $myrow = $rows[0];
+
+            $_id = get_param_wiki_chain('id', strval($myrow['page_id']));
+            $id = $_id[0];
 
             if (!has_category_access(get_member(), 'wiki_page', strval($myrow['page_id']))) {
                 access_denied('CATEGORY_ACCESS');

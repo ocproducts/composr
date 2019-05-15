@@ -35,7 +35,7 @@
 	{+START,IF,{$GT,{NUM_ROWS},{MAX}}}
 		<div class="pagination force_margin">
 			<nav class="float_surrounder">
-				<!--<a href="#" class="table-page:1 results_continue">{!FIRST}</a>--><a href="#" class="table-page:previous results_continue">&laquo; {!PREVIOUS}</a><a href="#" class="table-page:next results_continue">{!NEXT} &raquo;</a><span class="table-page-number results_page_num">1</span><span>of</span><span class="table-page-count results_page_num">1</span>
+				<!--<a href="#" class="table-page:1 results_continue">{!FIRST}</a>--><a href="#" class="table-page:previous results_continue">&laquo; {!PREVIOUS}</a><a href="#" class="table-page:next results_continue">{!NEXT} &raquo;</a><span class="table-page-number results_page_num">1</span><span>{!SORTABLE_OF}</span><span class="table-page-count results_page_num">1</span>
 			</nav>
 		</div>
 	{+END}

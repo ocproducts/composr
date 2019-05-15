@@ -197,7 +197,7 @@ function check_has_page_access()
     if ($ZONE['zone_require_session'] == 1) {
         set_no_clickjacking_csp();
     }
-    if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login')) {
+    if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login') && (!is_guest())) {
         access_denied((($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) ? 'ZONE_ACCESS_SESSION' : 'ZONE_ACCESS', $ZONE['zone_name'], true);
     } else {
         if (($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) {
@@ -964,7 +964,7 @@ function do_site()
 
     // Load up our frames into strings. Note that the header and the footer are fixed already.
     $middle = request_page(get_page_name(), true, null, null, false, false, $out);
-    if (($middle === null) || ($middle->is_empty_shell())) {
+    if ($middle->is_empty_shell()) {
         set_http_status_code('404');
 
         $title = get_screen_title('ERROR_OCCURRED');
@@ -1081,6 +1081,17 @@ function save_static_caching($out, $mime_type = 'text/html')
 {
     global $SITE_INFO;
     if ((cms_srv('REQUEST_METHOD') != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        if ((get_zone_name() == '') && (get_zone_default_page('') == get_page_name()) && (count(array_diff(array_keys($_GET), array('page', 'keep_session', 'keep_devtest', 'keep_failover'))) > 0)) {
+            /*TODO: Reenable in v11
+            if ($debugging) {
+                if (php_function_allowed('error_log')) {
+                    @error_log('SC save: No, home page has spurious parameters, likely a bot probing');
+                }
+            }*/
+
+            return;
+        }
+
         $bot_type = get_bot_type();
         $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
         $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
@@ -1182,6 +1193,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
     cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
         cms_file_put_contents_safe($fast_cache_path . '.gz', gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
+        //unlink($fast_cache_path); Actually, we should not assume all user agents support gzip
     }
 }
 
@@ -1195,7 +1207,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * @param  boolean $being_included Whether the page is being included from another
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @param  ?object $out Semi-filled output template (null: definitely not doing output streaming)
- * @return ?Tempcode The page (null: no page)
+ * @return Tempcode The page
  */
 function request_page($codename, $required, $zone = null, $page_type = null, $being_included = false, $no_redirect_check = false, &$out = null)
 {
@@ -1216,7 +1228,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     if ($REQUEST_PAGE_NEST_LEVEL > 20) {
         $REQUEST_PAGE_NEST_LEVEL = 0;
         attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html($codename), escape_html(do_lang('PAGE'))), 'warn');
-        return null;
+        return new Tempcode();
     }
 
     // Run hooks, if any exist
@@ -1357,7 +1369,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
- * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
+ * @param  ?LANGUAGE_NAME $lang Language name (null: user's language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  */
@@ -1365,7 +1377,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
 {
     $details = persistent_cache_get(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check));
     if ($details === null || $details === false/*caching negativity breaks things if the page subsequently appears - even adding a page does a pre-check so would net a cached false*/) {
-        $details = __request_page($codename, $zone, $page_type, null, $no_redirect_check);
+        $details = __request_page($codename, $zone, $page_type, $lang, $no_redirect_check);
         persistent_cache_set(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check), $details);
     }
     return $details;
@@ -1377,7 +1389,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
- * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
+ * @param  ?LANGUAGE_NAME $lang Language name (null: user's language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
  * @ignore

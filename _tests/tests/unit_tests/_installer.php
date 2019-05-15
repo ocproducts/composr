@@ -112,7 +112,7 @@ class _installer_test_set extends cms_test_case
             $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
             if (!isset($_GET['debug'])) {
-                $fail_message .= ' -- append &debug=1 to the URL to get debug output';
+                $fail_message .= ' -- append &debug=1 to the URL to get debug output / pass debug CLI parameter';
             }
             $this->assertTrue($success, $fail_message);
 

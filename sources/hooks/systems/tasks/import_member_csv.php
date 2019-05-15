@@ -147,10 +147,10 @@ class Hook_task_import_member_csv
                     }
 
                     // Tidy up forename
-                    $_forename = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', preg_replace('#[\s\.].*#', '', $forename));
+                    $_forename = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', cms_preg_replace_safe('#[\s\.].*#', '', $forename));
 
                     // Tidy up surname (last bit strips like 'OBE')
-                    $_surname = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', trim(preg_replace('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
+                    $_surname = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', trim(cms_preg_replace_safe('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
 
                     // Put it together
                     $line['Username'] = ucfirst($_forename) . ucfirst($_surname) . $year;
@@ -215,7 +215,7 @@ class Hook_task_import_member_csv
 
             // Set up member row
             if ((array_key_exists('Password', $line)) && ($line['Password'] != '')) {
-                $parts = preg_split('#\s*/\s*#', $line['Password'], 3);
+                $parts = cms_preg_split_safe('#\s*/\s*#', $line['Password'], 3);
                 $password = $parts[0];
                 $salt = array_key_exists(1, $parts) ? $parts[1] : null;
                 $password_compatibility_scheme = array_key_exists(2, $parts) ? $parts[2] : null;
@@ -230,10 +230,10 @@ class Hook_task_import_member_csv
             } else {
                 $email_address = null;
             }
-            if (preg_match('#^([^\s]*)\s+\(.*\)$#', $email_address, $matches) != 0) {
+            if (cms_preg_match_safe('#^([^\s]*)\s+\(.*\)$#', $email_address, $matches) != 0) {
                 $email_address = $matches[1];
             }
-            if (preg_match('#^.*\s+<(.*)>$#', $email_address, $matches) != 0) {
+            if (cms_preg_match_safe('#^.*\s+<(.*)>$#', $email_address, $matches) != 0) {
                 $email_address = $matches[1];
             }
             if ((array_key_exists($dob_key, $line)) && ($line[$dob_key] != '')) {

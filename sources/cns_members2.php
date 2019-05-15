@@ -124,7 +124,7 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
             'primary_group_name' => cns_get_group_name($primary_group),
         );
         $poster_details['custom_fields'] = cns_get_all_custom_fields_match_member(
-            $poster_details['poster'],
+            $poster_details['poster'], // member
             ((get_member() != $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
             ((get_member() == $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // owner view
             null, // owner set
@@ -135,7 +135,7 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
         );
         if ($preview) {
             $poster_details['custom_fields_full'] = cns_get_all_custom_fields_match_member(
-                $poster_details['poster'],
+                $poster_details['poster'], // member
                 ((get_member() != $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
                 ((get_member() == $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // owner view
                 null, // owner set

@@ -424,14 +424,14 @@ class Module_admin_config
         foreach (array_keys($options) as $group) {
             $_group = do_lang($group);
 
-            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', strip_tags($_group))));
+            $_group = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', strip_tags($_group))));
             if ((isset($all_known_groups[$_group])) && ($all_known_groups[$_group] != $group)) {
                 $_group = 'std_' . $group; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
 
             $all_known_groups[$_group] = $group;
         }
-        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
+        $advanced_key = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
         ksort($all_known_groups);
         if (isset($all_known_groups[$advanced_key])) { // Advanced goes last
             $temp = $all_known_groups[$advanced_key];

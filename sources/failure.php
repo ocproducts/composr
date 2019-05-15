@@ -822,6 +822,9 @@ function get_webservice_result($error_message)
     if (get_domain() == 'compo.sr') {
         return null;
     }
+    if (get_domain() == 'ocproducts.com') {
+        return null;
+    }
     if (get_domain() == 'localhost') {
         return null; // In case of no Internet connection
     }
@@ -831,6 +834,7 @@ function get_webservice_result($error_message)
     }
 
     require_code('files');
+    require_code('files2');
     global $DONE_ONE_WEB_SERVICE;
     if (($GLOBALS['DOWNLOAD_LEVEL'] > 0) || ($DONE_ONE_WEB_SERVICE)) {
         return null;
@@ -876,7 +880,8 @@ function get_webservice_result($error_message)
     }
 
     require_code('version2');
-    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand), null, false);
+    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand);
+    list($result) = cache_and_carry('http_download_file', array($url, null, false), 60 * 24 * 31/*once a month*/);
     if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] != 'text/plain') {
         return null;
     }

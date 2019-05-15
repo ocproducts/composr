@@ -70,7 +70,12 @@
 			<div class="grating">{RATING_DETAILS}</div>
 		{+END}{+END}
 		<p class="gallery_regular_thumb_comments_count">
-			<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+			{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
+				<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+			{+END}
+			{+START,IF_NON_PASSED_OR_FALSE,COMMENT_COUNT}
+				<a href="{VIEW_URL*}">{!VIEW}</a>
+			{+END}
 		</p>
 	</div>
 {+END}

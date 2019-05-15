@@ -426,7 +426,8 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
 
     $url = preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $url);
 
-    $box_size = (($width === null) && ($height === null));
+    $default_size = ($width === null) && ($height === null);
+    $box_size = $default_size;
 
     if ($width === null) {
         $width = intval(get_option('thumb_width'));
@@ -436,7 +437,10 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
     }
 
     if (!$is_thumbnail_already) {
-        $new_name = strval($width) . '_' . strval($height) . '_';
+        $new_name = '';
+        if (!$default_size) {
+            $new_name .= strval($width) . '_' . strval($height) . '_';
+        }
         if ($only_make_smaller) {
             $new_name .= 'only_smaller_';
         }

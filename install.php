@@ -485,12 +485,17 @@ function step_1()
     unset($langs['EN']);
     $langs = array_merge(array('EN' => 'lang'), $langs);
     $tlanguages = new Tempcode();
+    $tcount = 0;
     foreach (array_keys($langs) as $lang) {
         if (array_key_exists($lang, $lookup)) {
             $stub = ($lang == 'EN') ? '' : (' (unofficial, ' . strval(intval(round(100.0 * $lang_count[$lang] / $lang_count['EN']))) . '% changed)');
             $entry = do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $lang == user_lang(), 'DISABLED' => false, 'NAME' => $lang, 'CLASS' => '', 'TEXT' => $lookup[$lang] . $stub));
             $tlanguages->attach($entry);
+            $tcount++;
         }
+    }
+    if ($tcount == 1) {
+        $tlanguages = new Tempcode(); // No selection
     }
 
     // UI...
@@ -642,6 +647,9 @@ function step_3()
         if (($database == 'mysqli') && (!function_exists('mysqli_connect'))) {
             continue;
         }
+        if (($database == 'mysql_pdo') && ((!class_exists('PDO')) || (!defined('PDO::MYSQL_ATTR_USE_BUFFERED_QUERY')))) {
+            continue;
+        }
         if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
             continue;
         }
@@ -651,7 +659,10 @@ function step_3()
         if (($database == 'mysql') && (!function_exists('mysqli_connect'))) {
             $selected = true;
         }
-        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
+        if (($database == 'mysql_pdo') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
+            $selected = true;
+        }
+        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect')) && ((!class_exists('PDO')) || (!defined('PDO::MYSQL_ATTR_USE_BUFFERED_QUERY')))) {
             $selected = true;
         }
         if (($database == 'access') && (!function_exists('odbc_connect'))) {

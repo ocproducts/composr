@@ -86,6 +86,11 @@ class tasks_test_set extends cms_test_case
             return;
         }
 
+        if ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)') > 1000) {
+            $this->assertTrue(false, 'Test will not work on databases with a lot of calendar events');
+            return;
+        }
+
         require_code('calendar2');
 
         // Add complex event with start and recurrence
@@ -177,6 +182,11 @@ class tasks_test_set extends cms_test_case
     {
         $only = get_param_string('only', null);
         if (($only !== null) && ($only != 'testMemberCSV')) {
+            return;
+        }
+
+        if ($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') > 1000) {
+            $this->assertTrue(false, 'Test will not work on databases with a lot of users');
             return;
         }
 

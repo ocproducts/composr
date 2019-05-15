@@ -84,7 +84,7 @@ forum	board	bbs	cns_forum	message board
 thread	topic
 karma	point
 batch	bulk	mass
-subscribe	track	notification	alert	monitor	watch	follow
+subscribe	track	notification	alert	monitor	watch	follow	tracking
 bbcode	wikicode	comcode	shortcode
 html	xhtml
 knowledgebase	wiki
@@ -150,3 +150,5 @@ raw	plain	pure
 sandbox	staging
 popular	top
 recent	latest
+autofill	autocomplete	autosuggest
+update	upgrade

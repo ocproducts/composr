@@ -110,6 +110,7 @@ class Hook_addon_registry_core_database_drivers
             'sources/database/index.html',
             'sources/database/mysql.php',
             'sources/database/mysqli.php',
+            'sources/database/mysql_pdo.php',
             'sources/database/mysql_dbx.php',
             'sources/database/oracle.php',
             'sources/database/postgresql.php',

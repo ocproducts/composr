@@ -122,9 +122,9 @@ while (($r = fgetcsv($csvfile, 1024000)) !== false) {
     $title = trim($r[3]);
     $time = ($r[4] == '') ? time() : strtotime($r[4]);
     $r[5] = trim($r[5]);
-    $r[5] = preg_replace('#.*<body[^<>]*>\s*#si', '', $r[5]);
-    $r[5] = preg_replace('#\s*<h1[^<>]*>[^<>]*</h1>\s*#si', '', $r[5]);
-    $r[5] = preg_replace('#\s*</body>\s*</html>#si', '', $r[5]);
+    $r[5] = cms_preg_replace_safe('#.*<body[^<>]*>\s*#si', '', $r[5]);
+    $r[5] = cms_preg_replace_safe('#\s*<h1[^<>]*>[^<>]*</h1>\s*#si', '', $r[5]);
+    $r[5] = cms_preg_replace_safe('#\s*</body>\s*</html>#si', '', $r[5]);
     $news_article = '[html]' . $r[5] . '[/html]';
     $news = empty($r[6]) ? '' : $r[6]; // Summary
 
@@ -157,7 +157,7 @@ function parse_ezinearticles($r)
     $date = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
     $matches = array();
-    preg_match('#<a href="[^"]*" rel="author" class="author-name" title="[^"]*">\s*(.*)\s*</a>#Us', $f, $matches);
+    cms_preg_match_safe('#<a href="[^"]*" rel="author" class="author-name" title="[^"]*">\s*(.*)\s*</a>#Us', $f, $matches);
     $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
     $matches = array();
@@ -169,10 +169,10 @@ function parse_ezinearticles($r)
     $matches = array();
     preg_match('#<textarea id="formatted-article" wrap="physical" style="width:98%;height:200px;" readonly>(.*)</textarea>#Us', $f, $matches);
     $body = $matches[1];
-    $body = preg_replace('#.*<body[^<>]*>\s*#si', '', $body);
-    $body = preg_replace('#\s*<h1[^<>]*>[^<>]*</h1>\s*#si', '', $body);
-    $body = preg_replace('#\s*</body>\s*</html>#si', '', $body);
-    $body = preg_replace('#^\s*<p>.*<br>\s*By .*</p>#U', '', $body);
+    $body = cms_preg_replace_safe('#.*<body[^<>]*>\s*#si', '', $body);
+    $body = cms_preg_replace_safe('#\s*<h1[^<>]*>[^<>]*</h1>\s*#si', '', $body);
+    $body = cms_preg_replace_safe('#\s*</body>\s*</html>#si', '', $body);
+    $body = cms_preg_replace_safe('#^\s*<p>.*<br>\s*By .*</p>#U', '', $body);
 
     $matches = array();
     preg_match('#<textarea rows="5" id="article-summary" cols="50" wrap="physical" readonly>(.*)</textarea>#Us', $f, $matches);
@@ -211,7 +211,7 @@ function parse_articlesbase($r)
     $date = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
     $matches = array();
-    if ((preg_match('#rel="author" itemprop="author">.*</a>\s*</strong>\s*<p>(.*) is #Us', $f, $matches) != 0) && (strlen($matches[1]) < 20)) {
+    if ((cms_preg_match_safe('#rel="author" itemprop="author">.*</a>\s*</strong>\s*<p>(.*) is #Us', $f, $matches) != 0) && (strlen($matches[1]) < 20)) {
         $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
     } else {
         preg_match('#rel="author" itemprop="author">(.*)</a>#Us', $f, $matches);
@@ -227,8 +227,8 @@ function parse_articlesbase($r)
     $matches = array();
     preg_match('#<textarea id="ezine_html" onclick="\$\(this\).select\(\)">(.*)</textarea>#Us', $f, $matches);
     $body = $matches[1];
-    $body = preg_replace('#\s*<h1[^<>]*>[^<>]*</h1>\s*#si', '', $body);
-    $body = preg_replace('#^\s*<strong>Author: .*</strong><br />#U', '', $body);
+    $body = cms_preg_replace_safe('#\s*<h1[^<>]*>[^<>]*</h1>\s*#si', '', $body);
+    $body = cms_preg_replace_safe('#^\s*<strong>Author: .*</strong><br />#U', '', $body);
 
     $matches = array();
     preg_match('#<textarea class="summary" id="ezine_summary">(.*)</textarea>#Us', $f, $matches);
@@ -259,7 +259,7 @@ function parse_articletrader($r)
     $synd_url = $matches[1];
 
     $matches = array();
-    preg_match("#<div style='font-size:80%;margin-top:0px'>Submitted by <a href='[^']*'>(.*)</a><br>\s*(.*)</div>#Us", $f, $matches);
+    cms_preg_match_safe("#<div style='font-size:80%;margin-top:0px'>Submitted by <a href='[^']*'>(.*)</a><br>\s*(.*)</div>#Us", $f, $matches);
     $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
     $date = html_entity_decode($matches[2], ENT_QUOTES, get_charset());
 

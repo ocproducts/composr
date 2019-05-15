@@ -859,7 +859,8 @@ class Module_admin_setupwizard
 
         $header_text = post_param_string('header_text');
         $name = post_param_string('site_name');
-        $font = post_param_string('font', 'Vera');
+        require_code('fonts');
+        $font = post_param_string('font', find_default_font());
         $theme = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
         $installprofile = post_param_string('installprofile', '');
 

@@ -110,7 +110,6 @@ abstract class Standard_crud_module
     public $table_prefix = '';
     public $array_key = 'id';
     public $title_is_multi_lang = true;
-    public $orderer_is_multi_lang = null;
     public $orderer = null;
     public $table = null; // Actually, this is used by choose_feedback_fields_statistically also
 
@@ -1106,32 +1105,32 @@ abstract class Standard_crud_module
             }
         }
 
-        $orderer_is_multi_lang = $this->orderer_is_multi_lang;
-        if (is_null($orderer_is_multi_lang)) {
-            $orderer_is_multi_lang = $this->title_is_multi_lang;
-        }
-
         $select_field = !is_null($this->orderer) ? $this->orderer : ($this->table_prefix . strtolower($this->select_name));
+
+        $table_raw = (is_null($this->table) ? $this->module_type : $this->table);
+        $table = $table_raw . ' r';
+        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails r') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
         if (is_null($orderer)) {
             $orderer = $select_field;
         }
-        $table_raw = (is_null($this->table) ? $this->module_type : $this->table);
-        $table = $table_raw . ' r';
-        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails r') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-        if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
+        $orderer_is_multi_lang = isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw][preg_replace('# (ASC|DESC)$#', '', $orderer)]);
+
+        if ($orderer_is_multi_lang) {
             $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
             if (substr($orderer, -5) == ' DESC') {
                 $_orderer .= ' DESC';
             }
             $orderer = $_orderer;
-        } elseif (substr($orderer, 0, 1) != '(') { // If not a subquery
+        } elseif ((substr($orderer, 0, 1) != '(') && (strpos($orderer, '.') === false)) { // If not a subquery and not already dotted
             $orderer = 'r.' . $orderer;
         }
+
         if ($force_site_db) {
             $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
         }
+
         $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, '', false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($max_rows == 0) {
             return array(array(), 0);
@@ -1141,13 +1140,15 @@ abstract class Standard_crud_module
             $max = get_param_integer('max', 20);
         }
         $rows = $db->query_select($table . $join, array('r.*'), $where, 'ORDER BY ' . $orderer, $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
+
         if ($force_site_db) {
             $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
         }
+
         $_entries = array();
         foreach ($rows as $row) {
             $key = $row[$this->array_key];
-            $readable = $orderer_is_multi_lang ? get_translated_text($row[$select_field], $db) : $row[$select_field];
+            $readable = $row[$select_field];
             if (is_integer($readable)) {
                 $readable = '#' . strval($readable);
             }

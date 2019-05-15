@@ -263,7 +263,16 @@ function get_credits_profile_field_id($field_name = 'cms_support_credits')
     if (preg_match('/\W/', $field_name)) {
         log_hack_attack_and_exit('HACK_ATTACK');
     }
-    $fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 1, null);
+    $fields = cns_get_all_custom_fields_match(
+        null, // groups
+        null, // public view
+        null, // owner view
+        null, // owner set
+        null, // required
+        null, // show in posts
+        null, // show in post previews
+        1 // special start
+    );
     $field_id = null;
     foreach ($fields as $field) {
         if ($field['trans_name'] == $field_name) {

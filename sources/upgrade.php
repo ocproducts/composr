@@ -106,7 +106,7 @@ function upgrade_script()
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
                         secure_serialized_data($news);
-                        $details = unserialize($news);
+                        $details = unserialize($news, array('allowed_classes' => false));
                         if ($details[0] != '') {
                             $l_refer_release_notes = $details[0];
                             if ($details[2] != '') {
@@ -623,7 +623,9 @@ function post_fields_relay()
 {
     $hidden = '';
     foreach (array_keys($_POST) as $key) {
-        $hidden .= '<input type="hidden" name="' . escape_html($key) . '" value="' . escape_html(post_param_string($key)) . '" />';
+        if (preg_match('#^(news_id$|from_version$|given_password$|ftp_)#', $key) != 0) {
+            $hidden .= '<input type="hidden" name="' . escape_html($key) . '" value="' . escape_html(post_param_string($key)) . '" />';
+        }
     }
     return $hidden;
 }

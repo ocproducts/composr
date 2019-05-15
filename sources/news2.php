@@ -52,7 +52,7 @@ function add_news_category($title, $img = 'newscats/general', $notes = '', $owne
 
     log_it('ADD_NEWS_CATEGORY', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('news_category', strval($id), null, null, true);
     }
@@ -128,7 +128,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
 
     log_it('EDIT_NEWS_CATEGORY', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('news_category', strval($id));
     }
@@ -204,7 +204,7 @@ function delete_news_category($id)
         }
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('news_category', strval($id));
     }
@@ -360,7 +360,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
 
     log_it('ADD_NEWS', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('news', strval($id), null, null, true);
     }
@@ -568,7 +568,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
 
     log_it('EDIT_NEWS', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('news', strval($id));
     }
@@ -711,7 +711,7 @@ function delete_news($id)
 
     log_it('DELETE_NEWS', strval($id), $_title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('news', strval($id));
     }

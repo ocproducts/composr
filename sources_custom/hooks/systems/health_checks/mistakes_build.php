@@ -34,7 +34,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
     {
         $this->process_checks_section('testManualWebStandards', 'Manual checks for web standards', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testGuestAccess', 'Guest access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testBrokenLinks', 'Broken links', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testBrokenLinks', 'Broken links (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testIncompleteContent', 'Incomplete content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
@@ -156,17 +156,11 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
         foreach ($_urls as $url) {
             // Check
-            /*
-            $data = http_download_file($url, 0, false);
-            $ok = ($data !== null);
-            */
-            for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue
-                $ok = check_url_exists($url, 60 * 60 * 24 * 1);
-                if ($ok) {
-                    break;
-                }
+            $exists = check_url_exists($url, 60 * 60 * 24 * 1);
+            if (!$exists) {
+                $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
             }
-            $this->assert_true($ok, 'Broken link: [tt]' . $url . '[/tt] (caching is 1 day on these checks)');
+            $this->assert_true($exists, 'Broken link: [tt]' . $url . '[/tt]');
         }
     }
 

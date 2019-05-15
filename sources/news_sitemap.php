@@ -113,7 +113,7 @@ function build_news_sitemap()
                                         <news:genres>' . xmlentities(implode(', ', $genres)) . '</news:genres>
                                         <news:publication_date>' . xmlentities(date('Y-m-d', $row['date_and_time']) . 'T' . date('H:i:s+00:00', $row['date_and_time'])) . '</news:publication_date>
                                         <news:title>' . xmlentities(get_translated_text($row['title'])) . '</news:title>
-                                        <news:keywords>' . xmlentities(((trim($meta[0], ' ,') == '') ? '' : preg_replace('#\s*,\s*#', ', ', $meta[0]))) . '</news:keywords>
+                                        <news:keywords>' . xmlentities(((trim($meta[0], ' ,') == '') ? '' : cms_preg_replace_safe('#\s*,\s*#', ', ', $meta[0]))) . '</news:keywords>
             ');
             if (!is_null($site_location)) {
                 fwrite($sitemap_file, '

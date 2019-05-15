@@ -2945,8 +2945,8 @@ END;
      * @param  BINARY $is_private Whether it is a private poll (blind poll, where the results aren't visible until made public)
      * @param  BINARY $is_open Whether the poll is open for voting
      * @param  BINARY $requires_reply Whether a reply to the poll topic is required before voting
-     * @param  BINARY $minimum_selections The minimum number of selections for voters
-     * @param  BINARY $maximum_selections The maximum number of selections for voters
+     * @param  integer $minimum_selections The minimum number of selections for voters
+     * @param  integer $maximum_selections The maximum number of selections for voters
      * @return Tempcode The Tempcode for the fields
      */
     public function get_poll_form_fields($question = '', $answers = null, $is_private = 0, $is_open = 1, $requires_reply = 0, $minimum_selections = 1, $maximum_selections = 1)

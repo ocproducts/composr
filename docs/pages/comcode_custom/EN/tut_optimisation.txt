@@ -97,6 +97,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
  - If you have large numbers of topics then consider deleting topics that have little value.
  - Deny guest access to pages that are necessarily computational intensive -- to stop bots consuming too many resources.
+ - If you have custom [tt].php[/tt] scripts that are called a lot, consider whether they could just be static files -- or if the output can be statically cached and a transparent webserver-level redirect can be used to bypass PHP. PHP has infinitely more overhead than a static file, and is often a bottleneck due to limited quantities of FastCGI workers.
 
 [title="2"]Server configuration tips[/title]
 
@@ -111,8 +112,13 @@ The fastest way to configure PHP is usually as FPM (FastCGI), on top of a thread
  - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
  - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
  - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
+ - Configure your SSL options appropriately; basically there is a tradeoff between perfect privacy ("Perfect Forward Secrecy") and speed.
+ - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit).
+ - You may want to use only systemd's journald, rather than rsyslogd; on some Linux system rsyslogd is configured to mirror entries written to journald, which can be very intensive due to the frequent reading in and out. journald is higher performance as it is an efficient binary format with a cursor feature.
+ - Consider whether you want journaling or not -- it has a significant I/O overhead.
+ - If you use Dropbox for server backup, and have other users actively saving files into the account, only keep it started for a short time after your backup script finishes -- as it will do a lot of I/O updating its SQLite databases whenever any file in Dropbox is changed.
 
-Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer.
+Your server should be using none, or very little, swapspace. If swapspace is being used it implies that the server doesn't think the free RAM is enough and it will be actively moving stuff into and out of that swap space as your server serves web requests -- a real performance killer. You can [url="adjust the threshold when a Linux server will start using swapspace"]https://www.howtoforge.com/tutorial/linux-swappiness/[/url].
 
 [title="2"]Persistent cache[/title]
 
@@ -642,7 +648,7 @@ if (function_exists('tideways_xhprof_enable')) {
 };
 [/code]
 The collected xhprof data can be viewed in Facebook's standard [url="xhprof_html"]https://github.com/preinheimer/xhprof[/url] tool.
-The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the enviroment status when the profiling happened.
+The collected [tt].context[/tt] files can be viewed in any text editor, and are designed to give a little context to the environment status when the profiling happened.
 
 [title="3"]Commercial dashboards[/title]
 
@@ -704,6 +710,53 @@ In these kinds of situations you need to identify what server resource is deplet
 3) CPU
 4) Network I/O (available bandwidth)
 
+A good system administrator will:
+1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
+2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
+3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+
+[title="3"]Potential bottlenecks[/title]
+
+Here's a list of metrics you may want to be considering...
+ - Memory:
+  - Free non-swap memory
+  - Assigned swap memory
+  - Swapping rate
+  - MySQL memory usage specifically
+  - Combined PHP memory usage specifically
+ - Processes:
+  - Process count
+  - Process count of PHP CLI processes specifically
+  - Process count of PHP web processes specifically
+ - Queues:
+  - Queued MySQL queries
+  - Queued web requests
+ - CPU (&dagger;):
+  - Uptime
+  - CPU utilisation
+ - Local I/O:
+  - Disk I/O load
+  - I/O wait time
+  - I/O queue length
+  - Performance:
+   - I/O read latency
+   - I/O write latency
+   - I/O read throughput
+   - I/O write throughput
+ - Network I/O:
+  - Network I/O load
+  - Inbound bandwidth utilisation
+  - Outbound bandwidth utilisation
+  - Packet loss percentage
+  - Inbound ping time
+  - Outbound ping time
+  - Inbound network pipe speed
+  - Outbound network pipe speed
+
+&dagger; I/O load will also raise these metrics, which can be confusing.
+
+[title="3"]Diagnostic tools[/title]
+
 There are are various commands on Linux that are useful during diagnosis...
 {|
 ! Command
@@ -724,9 +777,9 @@ There are are various commands on Linux that are useful during diagnosis...
 |-
 | [tt]top -n1[/tt]
 | Show active processes, sorted by CPU usage; also, total CPU usage, memory usage, and I/O wait time
-| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted.
+| This will tell you what processes are using a lot of CPU or memory (press [tt]M[/tt] to sort by memory), as well as giving you good clues to what resource is primarily depleted. You may also want to try [tt]atop[/tt] which is similar but better.
 |-
-| [tt]iostat[/tt]
+| [tt]iostat -xt 1[/tt]
 | Show CPU and disk load
 | This is useful to find disk I/O load.
 |-
@@ -737,20 +790,161 @@ There are are various commands on Linux that are useful during diagnosis...
 | [tt]vmstat 1[/tt]
 | Watch virtual memory
 | Watching the numbers changing will tell you if the server is 'page swapping' due to low memory (which is a huge performance killer).
+|-
+| [tt]fatrace[/tt]
+| Watch disk reads
+| This will give you much more insight than just looking at live load numbers. If you have a problem with I/O queue buildup (different whatever your I/O throughput is, due to latency) then this will help you find what the I/O is being spent on. Note that writes to a swap partition will not show up here. On my testing I also found some other minor file accesses not showing up, and I don't know why.
 |}
-Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput).
+
+Additionally, the Apache web server has [tt]mod_status[/tt] which can be configured to show what web requests are coming in, and how long they last for. This tells you a lot more than the Apache access log will, although looks at the Apache access log is still important to find actual timestamps of requests (i.e. to gauge throughput) and to make sure you're not overlooking request volume from individual hosts (which may use [tt]KeepAlive[/tt] and therefore keep on the same Apache slots).
+
+Some of the sample commands above are configured to keep showing results in a loop. Note that you will miss things doing this. For example, from experience if swapping is happening you may not actually see it in the [tt]vmstat[/tt] output.
 
 There is an 'art' to finding the cause of a performance slow-down. Often just one depleted resource will have a knock-on effect on others. For example, if I/O is saturated, memory may become depleted as Apache processes back up.
 
-A good system administrator will:
-1) Stay on top of performance metrics, to know what needs optimising or where to spend more on hardware.
-2) Develop experience isolating the cause of slow-downs, pointing to programmers where they need to do profiling and optimisation.
-3) Configure a server so that excess activity results in appropriate error messages, rather than a crashed server (for example, by configuring the Apache settings to limit the number of processes and threads to what the server can actually handle).
+[title="3"]Tips[/title]
 
 Some further tips:
- - If you are on a VPS ask the webhost whether there is too much load on the host machine. Also consider that they may have a 'burst' policy, so your VPS may be running slowly due to processing it has done recently, rather than in that exact moment.
+ - If you are on a VPS or shared hosting ask the webhost whether there is too much load on the host machine at some points during the day. For a VPS, consider whether you have dedicated cores, have virtual cores in a small shared pool (worst, depending on your 'neighbours'), or whether you have virtual cores in a large pool (very efficient and adaptive, so long as the host's cores aren't all full). Note that a VPS cannot truly know what load the host machine is under, so will not be optimal in how it manages system load -- for example, low-priority tasks such as flushing disk write caches may happen when the VM 'thinks' the disk is under low load, when the real disk may actually be under high load.
+ - If you are on a VPS then don't assume that I/O will be as a regular machine's HDD or SSD -- there's a good chance the host is using some kind of storage array with its own latency, in addition to VM overhead. I/O is always queued on any architecture so you'll get queue buildup, on both the VPS and the host, exacerbated by the latency. From my testing it seems Linux will flush disk writes early (to log files, for example) if it thinks the disk is free, which can actually lock things up badly on a VPS.
  - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
  - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
+ - If you are seeing swap space used even when you have plenty of free RAM and a low [tt]swappiness[/tt] setting, you can do [tt]swapoff -a; swapon -a[/tt] to force it to clear.
+ - Check your [tt]robots.txt[/tt] file actually can be called by URL (it's easy to accidentally set the wrong file permissions on it and not notice, for example).
+
+[title="3"]Improving Apache access logs[/title]
+
+Staring at an Apache access log can be frustrating, especially if you have a lot of static file requests, or your server's traffic is split across different logs. You also can't graph a raw log.
+
+It may therefore be useful to use a custom script to visualise a log. Here is one I wrote for the compo.sr web server (which runs ISPConfig):
+[codebox="PHP"]
+<?php
+
+// Config
+$cutoff = time() - 60 * 60 * 5;
+$php_only = true;
+$filter_403 = true;
+$common_fast_urls = array(
+    'https://compo.sr/backend.php?type=rss&mode=news',
+);
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+$results = array();
+$files = glob('/var/www/*/log/access.log');
+foreach ($files as $file_path) {
+    if (!file_exists($file_path)) {
+        continue;
+    }
+
+    echo 'Processing ' . $file_path . "\n";
+    flush();
+
+    $domain = basename(dirname(dirname($file_path)));
+
+    if ($cutoff === null) {
+        $lines = file($file_path);
+    } else {
+        $lines = explode("\n", shell_exec('tail -n 1000 ' . $file_path));
+    }
+
+    echo ' found ' . strval(count($lines)) . ' lines' . "\n";
+    flush();
+
+    foreach ($lines as $line) {
+        $parsed = parse_log_line($domain, $line);
+        if (
+            ($parsed !== null) &&
+            ((!$filter_403) || ($parsed['response_code'] != 403)) &&
+            (($cutoff === null) || ($parsed['timestamp'] > $cutoff)) &&
+            ((!$php_only) || (preg_match('#\.(php|htm)#', $parsed['url']) != 0) &&
+            (!in_array($parsed['url'], $common_fast_urls))
+        ) {
+            $results[] = $parsed;
+        }
+    }
+}
+
+usort($results, function ($a, $b) {
+    return ($a['timestamp'] > $b['timestamp']) ? 1 : (($a['timestamp'] == $b['timestamp']) ? 0 : -1);
+});
+
+foreach ($results as $i => $result) {
+    if ($i == 0) {
+        foreach (array_keys($result) as $j => $key) {
+            if ($j != 0) {
+                echo "\t";
+            }
+            echo '"' . str_replace('"', '""', $key) . '"';
+        }
+        echo "\n";
+    }
+
+    foreach (array_values($result) as $j => $val) {
+        if ($j != 0) {
+            echo "\t";
+        }
+        if (empty($val)) {
+            echo '"-"'; // Otherwise Excel will mess up column alignment
+        } else {
+            echo '"' . str_replace('"', '""', $val) . '"';
+        }
+    }
+    echo "\n";
+}
+
+function parse_log_line($hostname, $line)
+{
+    /*
+    Log file format for our configured/chosen LogFormat in Apache...
+
+    Remote hostname. Will log the IP address if HostnameLookups is set to Off, which is the default. If it logs the hostname for only a few hosts, you probably have access control directives mentioning them by name. See the Require host documentation.
+    Remote logname (from identd, if supplied). This will return a dash unless mod_ident is present and IdentityCheck is set On.
+    Remote user if the request was authenticated. May be bogus if return status (%s) is 401 (unauthorized).
+    Time the request was received, in the format [18/Sep/2011:19:18:28 -0400]. The last number indicates the timezone offset from GMT
+    First line of request.
+    Status. For requests that have been internally redirected, this is the status of the original request. Use %>s for the final status.
+    Bytes sent, including headers. May be zero in rare cases such as when a request is aborted before a response is sent. You need to enable mod_logio to use this.
+    Referer
+    User-agent
+    The time taken to serve the request, in microseconds. [was added on to the default manually, not normally present]
+    */
+
+    $matches = array();
+    if (preg_match('#^(\d+\.\d+\.\d+\.\d+) [^ ]+ [^ ]+ \[([^\[\]]*)\] "(\w+) ([^" ]*) HTTP/([\d\.]+)" (\d+) (\d+) "([^"]*)" "([^"]*)" (\d+)$#', $line, $matches) != 0) {
+        return array(
+            'ip_address' => $matches[1],
+            'date_time' => $matches[2],
+            'timestamp' => strtotime($matches[2]),
+            'http_method' => $matches[3],
+            'url' => 'https://' . $hostname . $matches[4], // We don't actually know in Apache if it is https or http, let's assume https
+            'http_version' => floatval($matches[5]),
+            'response_code' => intval($matches[6]),
+            'bytes' => intval($matches[7]),
+            'referer' => (trim($matches[8], " \t-") == '') ? null : $matches[8],
+            'user_agent' => (trim($matches[9], " \t-") == '') ? null : $matches[9],
+            'time_microseconds' => intval($matches[10]),
+        );
+    }
+
+    return null;
+}
+[/codebox]
+
+The script outputs a tab-separated format that can be directly copy & pasted into Excel. Excel can then be used to sort and graph the results very easily.
+
+This script will need customising for your particular architecture.
+
+[title="3"]Benchmarking[/title]
+
+Slow-downs may be a result of something inherent in your architecture that you didn't expect, and not directly related to your load.
+
+Here are a few useful Linux benchmarking tools:
+ - [tt]sysbench[/tt] -- examine your CPU performance
+ - [tt]dd[/tt] -- while not actually a benchmarking tool, it can help you find your disk read and write performance (you can find examples online)
+ - [tt]bonnie++[/tt] -- examine detailed disk I/O characteristics
+ - [tt]siege[/tt] -- gauge your web throughput
 
 [title="2"]See also[/title]
 

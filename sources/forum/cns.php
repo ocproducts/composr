@@ -450,7 +450,17 @@ class Forum_driver_cns extends Forum_driver_base
 
         require_code('cns_members');
 
-        $info = cns_get_all_custom_fields_match_member($member, null, null, null, null, null, null, null, 1);
+        $info = cns_get_all_custom_fields_match_member(
+            $member, // member
+            null, // public view
+            null, // owner view
+            null, // owner set
+            null, // encrypted
+            null, // required
+            null, // show in posts
+            null, // show in post previews
+            1 // special
+        );
         $out = array();
         foreach ($info as $field => $value) {
             $out[substr($field, 4)] = $value['RAW'];
@@ -559,12 +569,15 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @param  MEMBER $id The member ID
      * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
+     * @param  ?string $username Username, passed for performance reasons (null: look it up)
      * @return mixed The URL to the member profile
      */
-    protected function _member_profile_url($id, $tempcode_okay = false)
+    protected function _member_profile_url($id, $tempcode_okay = false, $username = null)
     {
         if (get_option('username_profile_links') == '1') {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
+            if ($username === null) {
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
+            }
             $map = array('page' => 'members', 'type' => 'view', 'id' => is_null($username) ? strval($id) : $username);
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();

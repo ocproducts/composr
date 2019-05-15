@@ -768,7 +768,7 @@ class Module_topicview
             }
             $more_url = build_url($map, get_module_zone('topics'));
             if (isset($topic_info['first_post'])) {
-                $post_row = db_map_restrict($topic_info['row'], array('id', 'p_post'));
+                $post_row = db_map_restrict($topic_info['row'], array('id', 'p_post'), array('id' => 't_cache_first_post_id'));
                 $_postdetails = get_translated_tempcode('f_posts', $post_row, 'p_post', $GLOBALS['FORUM_DB']);
             } else {
                 $_postdetails = new Tempcode();

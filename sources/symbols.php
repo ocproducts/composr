@@ -1310,7 +1310,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
             $value = @html_entity_decode($value, ENT_QUOTES, get_charset());
         }
         if ((!isset($param[2])) || ($param[2] == '0')) {
-            $value = trim(preg_replace('#(\s|&nbsp;)+#', ' ', $value));
+            $value = trim(cms_preg_replace_safe('#(\s|&nbsp;)+#', ' ', $value));
         }
     }
 
@@ -1748,7 +1748,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
         $comcodeless = strip_comcode($SHORT_TITLE); // This is not HTML
 
         // Strip 'Welcome to' off if it's there
-        $value = preg_replace('#' . preg_quote(do_lang('WELCOME_TO_STRIPPABLE') . ' ' . get_site_name(), '#') . '([^-]+\s*-\s*)?#', '', $comcodeless);
+        $value = cms_preg_replace_safe('#' . preg_quote(do_lang('WELCOME_TO_STRIPPABLE') . ' ' . get_site_name(), '#') . '([^-]+\s*-\s*)?#', '', $comcodeless);
 
         // Strip site name off it it's there (it'll be put on in the templates, so we don't want it twice)
         $stub = get_site_name() . ' - ';

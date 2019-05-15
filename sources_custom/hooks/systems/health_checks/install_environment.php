@@ -34,6 +34,7 @@ class Hook_health_check_install_environment extends Hook_Health_Check
     {
         $this->process_checks_section('testInstallEnvironment', 'PHP functionality etc', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testUnicode', 'Database Unicode settings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testPCRE', 'PCRE settings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -75,5 +76,19 @@ class Hook_health_check_install_environment extends Hook_Health_Check
 
         $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(chr(hexdec('F0')) . chr(hexdec('9F')) . chr(hexdec('98')) . chr(hexdec('8E'))) . '\'')));
         $this->assert_true($cnt == 1, 'Database connection is not encoding Unicode properly (emojis, utf8mb4)');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testPCRE($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $this->assert_true(preg_replace('#\n#', '', "\n") == '', 'PHP is using a non-default copy of the PCRE library that is not configured with the usual line endings, which will cause some major problems'); // Checks correct line endings
+        $this->assert_true(@preg_replace('#\n#u', '', "\n") !== false, 'PCRE does not have inbuilt Unicode support, which means Unicode may not work correctly'); // Checks correct line endings
     }
 }

@@ -27,7 +27,6 @@ class Module_cms_booking extends Standard_crud_module
     public $user_facing = false;
     public $menu_label = 'BOOKINGS';
     public $orderer = 'sort_order';
-    public $orderer_is_multi_lang = false;
     public $title_is_multi_lang = true;
     public $table = 'bookable';
     public $bookings_crud_module;
@@ -412,7 +411,6 @@ class Module_cms_booking_supplements extends Standard_crud_module
     public $user_facing = false;
     public $menu_label = 'BOOKINGS';
     public $orderer = 'sort_order';
-    public $orderer_is_multi_lang = false;
     public $title_is_multi_lang = true;
     public $table = 'bookable_supplement';
 
@@ -612,7 +610,6 @@ class Module_cms_booking_blacks extends Standard_crud_module
     public $user_facing = false;
     public $menu_label = 'BOOKINGS';
     public $orderer = 'id';
-    public $orderer_is_multi_lang = false;
     public $title_is_multi_lang = true;
     public $table = 'bookable_blacked';
 

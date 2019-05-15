@@ -328,9 +328,10 @@ function try_su_login($member_id)
 /**
  * Try and login via HTTP authentication. This function is only called if HTTP authentication is currently active. With HTTP authentication we trust the PHP_AUTH_USER setting.
  *
+ * @param  boolean $quick_only Whether to just do a quick check, don't establish new sessions
  * @return ?MEMBER Logged in member (null: no log in happened)
  */
-function try_httpauth_login()
+function try_httpauth_login($quick_only = false)
 {
     global $LDAP_CONNECTION;
 
@@ -339,7 +340,7 @@ function try_httpauth_login()
     require_lang('cns');
 
     $member_id = cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']);
-    if ((is_null($member_id)) && ((running_script('index')) || (running_script('execute_temp')))) {
+    if ((is_null($member_id)) && ((running_script('index')) || (running_script('execute_temp'))) && (!$quick_only)) {
         require_code('cns_members_action');
         require_code('cns_members_action2');
         if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
@@ -358,7 +359,7 @@ function try_httpauth_login()
         }
     }
 
-    if (!is_null($member_id)) {
+    if ((!is_null($member_id)) && (!$quick_only)) {
         create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }
 
@@ -391,7 +392,7 @@ function try_cookie_login()
 
             secure_serialized_data($the_cookie, array());
 
-            $unserialize = @unserialize($the_cookie);
+            $unserialize = @unserialize($the_cookie, array('allowed_classes' => false));
 
             if (is_array($unserialize)) {
                 if (array_key_exists($real_member_cookie, $unserialize)) {

@@ -159,7 +159,7 @@ function lang_load_runtime_processing()
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  */
@@ -223,8 +223,11 @@ function user_lang()
             $lang = filter_naughty($lang);
         }
     }
+    if (($lang != '') && (!does_lang_exist($lang))) {
+        $lang = '';
+    }
 
-    // Still booting up somehow, so we need to do a non-cache exit
+    // Still booting up somehow, so we need to do a cruder non-cache-setting code branch
     if ((!function_exists('get_member')) || ($USER_LANG_LOOP) || ($MEMBER_CACHED === null)) {
         // Quick exit: Cache
         global $USER_LANG_EARLY_CACHED;
@@ -232,17 +235,13 @@ function user_lang()
             return $USER_LANG_EARLY_CACHED;
         }
 
-        // Quick exit: Was from URL
-        if (($lang != '') && (does_lang_exist($lang))) {
-            $USER_LANG_EARLY_CACHED = $lang;
-            return $USER_LANG_EARLY_CACHED;
-        }
-
         // In browser?
-        if ((array_key_exists('GET_OPTION_LOOP', $GLOBALS)) && (!$GLOBALS['GET_OPTION_LOOP']) && (function_exists('get_option')) && (get_option('detect_lang_browser') == '1')) {
-            $lang = get_lang_browser();
-            if ($lang === null) {
-                $lang = '';
+        if ($lang == '') {
+            if ((array_key_exists('GET_OPTION_LOOP', $GLOBALS)) && (!$GLOBALS['GET_OPTION_LOOP']) && (function_exists('get_option')) && (get_option('detect_lang_browser') == '1')) {
+                $lang = get_lang_browser();
+                if ($lang === null) {
+                    $lang = '';
+                }
             }
         }
 
@@ -260,7 +259,7 @@ function user_lang()
     $USER_LANG_LOOP = true;
 
     // In member or browser?
-    if (($lang == '') || (!does_lang_exist($lang))) {
+    if ($lang == '') {
         if (
             (
                 (get_forum_type() == 'cns') ||
@@ -358,7 +357,7 @@ function does_lang_exist($lang)
     $file_b = get_custom_file_base() . '/lang_custom/' . $lang;
     $file_c = get_file_base() . '/lang_custom/' . $lang;
 
-    return is_dir($file_a) || is_dir($file_b) || is_dir($file_c);
+    return is_dir($file_c) || is_dir($file_b) || is_dir($file_a);
 }
 
 /**
@@ -610,7 +609,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  * Include all the language files for use in the script.
  * NOTE: This may reduce performance, so you should only use it if you really have to.
  *
- * @param ?LANGUAGE_NAME   $lang The language to include files from (null: use current users language).
+ * @param ?LANGUAGE_NAME   $lang The language to include files from (null: use current user's language).
  * @param boolean $only_if_for_lang Only load it up if it is specifically defined for our language.
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
@@ -682,7 +681,7 @@ function protect_from_escaping($in)
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)
  * @param  ?mixed $parameter2 The second parameter [string or Tempcode] (replaces {2}) (null: none)
  * @param  ?mixed $parameter3 The third parameter (replaces {3}). May be an array of [of string or Tempcode], to allow any number of additional args (null: none)
- * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
+ * @param  ?LANGUAGE_NAME $lang The language to use (null: user's language)
  * @param  boolean $require_result Whether to cause Composr to exit if the lookup does not succeed
  * @return ?mixed The human-readable content (null: not found). String normally. Tempcode if Tempcode parameters.
  *

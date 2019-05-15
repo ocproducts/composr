@@ -27,13 +27,17 @@
  * @param  ID_TEXT $new_zone The zone.
  * @param  ID_TEXT $new_current_script The running script.
  * @param  boolean $erase_keep_also Whether to get rid of keep_ variables in current URL.
+ * @param  ?boolean $new_in_self_routing_script Whether we are in a self-routing script (null: if new_current_script is 'index').
  * @return array A list of parameters that would be required to be passed back to reset the state.
  */
-function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_script = 'index', $erase_keep_also = false)
+function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_script = 'index', $erase_keep_also = false, $new_in_self_routing_script = null)
 {
+    global $IN_SELF_ROUTING_SCRIPT;
+
     $old_get = $_GET;
     $old_zone = get_zone_name();
     $old_current_script = current_script();
+    $old_in_self_routing_script = $IN_SELF_ROUTING_SCRIPT;
 
     foreach ($_GET as $key => $val) {
         if (is_integer($key)) {
@@ -58,11 +62,16 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
 
     global $PAGE_NAME_CACHE;
     $PAGE_NAME_CACHE = null;
+    if ($new_in_self_routing_script === null) {
+        $IN_SELF_ROUTING_SCRIPT = ($new_current_script == 'index');
+    } else {
+        $IN_SELF_ROUTING_SCRIPT = $new_in_self_routing_script;
+    }
     global $RUNNING_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE;
     $RUNNING_SCRIPT_CACHE = array();
     $WHAT_IS_RUNNING_CACHE = $new_current_script;
 
-    return array($old_get, $old_zone, $old_current_script, true);
+    return array($old_get, $old_zone, $old_current_script, $old_in_self_routing_script, true);
 }
 
 /**
@@ -522,7 +531,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     $page = fix_page_name_dashing($zone, $attributes['page']);
 
     require_code('site');
-    if (_request_page($page, $zone) === false) {
+    if (_request_page($page, $zone, null, fallback_lang()) === false) {
         return '';
     }
 
@@ -543,6 +552,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 
         $page_link .= ':' . $attributes['id'];
     }
+    $devtest_there = array_key_exists('keep_devtest', $attributes);
+    if ($devtest_there) {
+        unset($attributes['keep_devtest']);
+    }
     foreach ($attributes as $key => $val) {
         if (!is_string($val)) {
             $val = strval($val);
@@ -557,6 +570,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     if (array_key_exists('fragment', $parsed_url)) {
         $page_link .= '#' . $parsed_url['fragment'];
     }
+
+    // TODO: $conv_url = page_link_to_url($page_link . ($devtest_there ? ':keep_devtest=1' : '')); in v11
 
     return $page_link;
 }

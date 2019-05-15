@@ -174,19 +174,17 @@ class Module_admin_cmsusers
         if ($sortby != 'acp') {
             $order_by = 'GROUP BY website_url,website_name ' . $order_by;
         } else {
+            $order_by = 'GROUP BY website_url ' . $order_by;
             $max = 1000;
         }
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT website_url,website_name,MAX(l_version) AS l_version,MAX(hittime) AS hittime FROM ' . get_table_prefix() . 'logged WHERE website_url NOT LIKE \'%.composr.info%\' AND ' . db_string_not_equal_to('website_name', '') . ' AND ' . db_string_not_equal_to('website_name', '(unnamed)') . ' ' . $order_by, $max);
+        $rows = remove_duplicate_rows($rows, 'website_url');
 
         $seen_before = array();
 
         $_rows = new Tempcode();
         foreach ($rows as $i => $r) {
-            if (array_key_exists($r['website_url'], $seen_before)) {
-                continue;
-            }
-
             // Test that they give feature permission
             $url_parts = parse_url($r['website_url']);
             if (!array_key_exists('host', $url_parts)) {
@@ -196,8 +194,6 @@ class Module_admin_cmsusers
             if ((is_null($perm)) && (get_param_integer('no_feature', 0) == 1)) {
                 continue;
             }
-
-            $seen_before[$r['website_url']] = 1;
 
             $rt = array();
             $rt['VERSION'] = $r['l_version'];

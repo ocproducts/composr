@@ -35,8 +35,12 @@ class Hook_check_mysql_version
 
         // If you really need to fiddle it and don't care about emoji, add this to _config.php while installing (before step 5 runs):   $SITE_INFO['database_charset'] = 'utf8';
 
+        if (!isset($GLOBALS['SITE_DB'])) {
+            return array();
+        }
+
         $warning = array();
-        if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
+        if ((!is_array($GLOBALS['SITE_DB']->connection_read)) || (count($GLOBALS['SITE_DB']->connection_read) <= 4)) {
             if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
                 $__version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($__version !== false) {
@@ -52,6 +56,11 @@ class Hook_check_mysql_version
                     if (version_compare($version, $minimum_version, '<')) {
                         $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
                     }
+                }
+            } elseif (get_db_type() == 'mysql_pdo') {
+                $version = $GLOBALS['SITE_DB']->query_value_if_there('SELECT version()');
+                if (version_compare($version, $minimum_version, '<')) {
+                    $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
                 }
             }
         }

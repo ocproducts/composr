@@ -36,6 +36,7 @@ class Hook_symbol_CATALOGUE_ENTRY_BACKREFS
             $limit = isset($param[1]) ? intval($param[1]) : null;
             $resolve = isset($param[2]) ? $param[2] : ''; // Content-type to associate back to, and fetch the ID for
             $rating_type = isset($param[3]) ? $param[3] : ''; // If non empty, it will get the highest rated first
+            $field_id = ((isset($param[4])) && ($param[4] != '')) ? intval($param[4]) : null; // Limit to a particular field ID
 
             static $cache = array();
             $cache_key = serialize($param);
@@ -44,7 +45,10 @@ class Hook_symbol_CATALOGUE_ENTRY_BACKREFS
             }
 
             $done = 0;
-            $table = 'catalogue_fields f JOIN ' . get_table_prefix() . 'catalogue_efv_short s ON f.id=s.cf_id AND ' . db_string_equal_to('cf_type', 'reference') . ' OR cf_type LIKE \'' . db_encode_like('ck\_%') . '\'';
+            $table = 'catalogue_fields f JOIN ' . get_table_prefix() . 'catalogue_efv_short s ON (f.id=s.cf_id AND ' . db_string_equal_to('cf_type', 'reference') . ' OR cf_type LIKE \'' . db_encode_like('ck\_%') . '\')';
+            if ($field_id !== null) {
+                $table .= ' AND f.id=' . strval($field_id);
+            }
             $select = array('ce_id');
             $order_by = '';
             if ($resolve != '') {

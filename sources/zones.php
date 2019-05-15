@@ -214,7 +214,9 @@ function _solemnly_leave(&$out = null)
 
     if (!has_solemnly_declared(I_UNDERSTAND_PATH_INJECTION)) {
         foreach ($_GET as $param) {
-            filter_naughty($param);
+            if (is_string($param)) {
+                filter_naughty($param);
+            }
         }
     }
 

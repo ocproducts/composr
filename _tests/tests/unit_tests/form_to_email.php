@@ -20,6 +20,12 @@ class form_to_email_test_set extends cms_test_case
 {
     public function testFormToEmail()
     {
+        global $SITE_INFO;
+        if ((isset($SITE_INFO['no_email_output'])) && ($SITE_INFO['no_email_output'] == '1')) {
+            $this->assertTrue(false, 'Test will not work if no_email_output is set');
+            return;
+        }
+
         $GLOBALS['SITE_DB']->query_delete('logged_mail_messages');
 
         $bak = get_option('mail_queue_debug');
@@ -28,7 +34,7 @@ class form_to_email_test_set extends cms_test_case
         http_download_file($url, null, true, false, 'Composr', array('foo' => 'bar'));
         set_option('mail_queue_debug', $bak);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'));
+        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), null, 'ORDER BY id DESC', 1);
         foreach ($rows as $row) {
             $this->assertTrue(strpos($row['m_message'], 'bar') !== false);
         }
