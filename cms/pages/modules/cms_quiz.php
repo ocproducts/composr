@@ -40,7 +40,6 @@ class Module_cms_quiz extends Standard_crud_module
     public $menu_label = 'QUIZZES';
     public $table = 'quizzes';
     public $orderer = 'q_add_date';
-    public $orderer_is_multi_lang = false;
 
     public $donext_type = null;
     public $donext_entry_content_type = 'quiz';

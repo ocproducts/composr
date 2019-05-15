@@ -28,7 +28,6 @@ class Module_cms_calendar extends Standard_crud_module
     public $lang_type = 'CALENDAR_EVENT';
     public $select_name = 'TITLE';
     public $orderer = 'id';
-    public $orderer_is_multi_lang = false;
     public $array_key = 'id';
     public $title_is_multi_lang = true;
     public $non_integer_id = false;

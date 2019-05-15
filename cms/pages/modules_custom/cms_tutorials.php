@@ -29,7 +29,6 @@ class Module_cms_tutorials extends Standard_crud_module
     public $menu_label = 'TUTORIALS';
     public $select_name = 'TUTORIALS';
     public $orderer = 't_title';
-    public $orderer_is_multi_lang = false;
     public $table = 'tutorials_external';
     public $do_preview = null;
 
