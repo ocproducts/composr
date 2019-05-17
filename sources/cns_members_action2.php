@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -248,7 +248,17 @@ function cns_member_external_linker($type, $username, $password, $email_check = 
 
     list($dob_year, $dob_month, $dob_day) = post_param_date_components('birthday', $dob_year, $dob_month, $dob_day);
 
-    $custom_fields = cns_get_all_custom_fields_match(cns_get_all_default_groups(true), null, null, null, null, null, null, 0, true);
+    $custom_fields = cns_get_all_custom_fields_match(
+        cns_get_all_default_groups(true), // groups
+        null, // public view
+        null, // owner view
+        null, // owner set
+        null, // required
+        null, // show in posts
+        null, // show in post previews
+        null, // special start
+        true // show on join form
+    );
     $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     foreach ($actual_custom_fields as $key => $val) {
         if ($val == STRING_MAGIC_NULL) {
@@ -786,14 +796,14 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
     }
 
     $_custom_fields = cns_get_all_custom_fields_match(
-        $groups,
+        $groups, // groups
         ($mini_mode || ($member_id === null) || ($member_id == get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // public view
-        ($mini_mode || ($member_id === null) || ($member_id != get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // owner view
+        null, // owner view
         ($mini_mode || ($member_id === null) || ($member_id != get_member()) || (has_privilege(get_member(), 'view_any_profile_field'))) ? null : 1, // owner set
         null, // required
         null, // show in posts
         null, // show in post previews
-        0, // special start
+        null, // special start
         $mini_mode ? true : null, // show on join form,
         $adjusted_config_options
     );
@@ -1232,7 +1242,7 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
     unset($GLOBALS['TIMEZONE_MEMBER_CACHE'][$member_id]);
     unset($GLOBALS['USER_NAME_CACHE'][$member_id]);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('member', strval($member_id));
     }
@@ -1323,7 +1333,7 @@ function cns_delete_member($member_id)
 
     log_it('DELETE_MEMBER', strval($member_id), $username);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('member', strval($member_id));
     }
@@ -1467,7 +1477,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 
     log_it('EDIT_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('cpf', strval($id));
     }
@@ -1505,7 +1515,7 @@ function cns_delete_custom_field($id)
 
     log_it('DELETE_CUSTOM_PROFILE_FIELD', strval($id), get_translated_text($_name, $GLOBALS['FORUM_DB']));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('cpf', strval($id));
     }
@@ -1746,7 +1756,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     // Check for whitespace
     if ($username !== null) {
         $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-        if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
+        if (($prohibit_username_whitespace === '1') && (cms_preg_match_safe('#\s#', $username) != 0) && ($username_changed)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
@@ -1755,7 +1765,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     }
     if ($password !== null) {
         $prohibit_password_whitespace = get_option('prohibit_password_whitespace');
-        if (($prohibit_password_whitespace === '1') && (preg_match('#\s#', $password) != 0) && ($username_changed)) {
+        if (($prohibit_password_whitespace === '1') && (cms_preg_match_safe('#\s#', $password) != 0) && ($username_changed)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }

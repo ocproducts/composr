@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -101,7 +101,7 @@ class Hook_profiles_tabs_about
             require_lang('lookup');
             $modules[] = array('audit', do_lang_tempcode('INVESTIGATE_USER'), build_url(array('page' => 'admin_lookup', 'param' => $member_id_of), get_module_zone('admin_lookup')), 'menu/adminzone/tools/users/investigate_user');
         }
-        if (has_actual_page_access($member_id_viewing, 'admin_security')) {
+        if ((addon_installed('securitylogging')) && (has_actual_page_access($member_id_viewing, 'admin_security'))) {
             require_lang('security');
             $modules[] = array('audit', do_lang_tempcode('SECURITY_LOG'), build_url(array('page' => 'admin_security', 'member_id' => $member_id_of), get_module_zone('admin_security')), 'menu/adminzone/audit/security_log');
         }
@@ -163,6 +163,10 @@ class Hook_profiles_tabs_about
             $links = new Tempcode();
 
             foreach ($modules as $mi => $module) {
+                if ($module === null) {
+                    continue;
+                }
+
                 if (count($module) == 4) {
                     list($_section_code, $lang, $url, $icon) = $module;
                     $rel = null;

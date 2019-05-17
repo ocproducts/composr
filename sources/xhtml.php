@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -398,7 +398,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                 $matches = array();
                 if (isset($html[$i + 1]) && strtolower($html[$i + 1]) == 'i'/*Optimisation before we bother looking harder*/ && preg_match('#<img[^<>]+src="([^"]+)"#iA', $html, $matches, 0, $i) != 0) {
                     require_code('images');
-                    $test = cms_getimagesize(html_entity_decode($matches[1], ENT_QUOTES)); // Safe way to grab image dimensions
+                    $test = cms_getimagesize_url(html_entity_decode($matches[1], ENT_QUOTES), true); // Safe way to grab image dimensions
                     if ($test === false) {
                         $width = intval(get_option('thumb_width'));
                         $height = intval(get_option('thumb_width'));

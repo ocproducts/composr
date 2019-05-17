@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -152,14 +152,19 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
 
         // Send the message, and error collection
         $error = '';
+        $failures = array();
         try {
-            $result = $mailer->send($message);
+            $result = $mailer->send($message, $failures);
         } catch (Exception $e) {
             $error = $e->getMessage();
             $worked = false;
         }
         if (($error == '') && (!$result)) {
-            $error = 'Unknown error';
+            if (count($failures) == 0) {
+                $error = 'Unknown error';
+            } else {
+                $error = 'Rejected addresses: ' . implode(', ', $failures);
+            }
         }
 
         return array($worked, $error);

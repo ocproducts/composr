@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -92,7 +92,7 @@ class Hook_notification_ticket_new_staff extends Hook_Notification
      */
     public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
-        $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max, false);
+        $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
         $members = $this->_all_members_who_have_enabled_with_privilege($members, 'support_operator', $notification_code, $category, $to_member_ids, $start, $max);
 
         return $members;

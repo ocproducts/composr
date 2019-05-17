@@ -753,7 +753,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$TRANSLATION_LINKS}</td>
-			<td>HTML code for metdata-linkage to translations</td>
+			<td>HTML code for metadata-linkage to translations</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MOBILE}</td>
@@ -1362,7 +1362,7 @@ where:
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FORM_TO_EMAIL_URL,pagename}</td>
-			<td>Used to cleanly produce a URL to the <kbd>form_to_mail</kbd> script. Documented in the [/html][page="_SEARCH:tut_feedback"]Feedback and user interaction[/page][html] tutorial.</td>
+			<td>[/html]Used to cleanly produce a URL to the [tt]form_to_mail[/tt] script. Documented in the [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page] tutorial.[html]</td>
 		</tr>
 	</tbody>
 </table>

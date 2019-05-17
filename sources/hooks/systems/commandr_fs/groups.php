@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -339,7 +339,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $join_time = $this->_default_property_time($properties, 'join_time');
 
         require_code('cns_members');
-        $custom_fields = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, null, null);
+        $custom_fields = cns_get_all_custom_fields_match();
         $actual_custom_fields = array();
         $props_already = array();
         foreach ($custom_fields as $i => $custom_field) {

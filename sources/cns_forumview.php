@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -100,6 +100,7 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
  * @param  integer $max Maximum results to show
  * @param  integer $start Offset for result showing
  * @param  integer $true_start True offset when disconsidering keyset pagination
+ * @param  string $sort Sort order (not SQL-ready)
  * @param  string $sql_sup Extra SQL to append for where clause
  * @param  string $sql_sup_order_by Extra SQL to append as order clause
  * @param  string $keyset_field_stripped Keyset field name so that we can extract values from DB result sets
@@ -108,7 +109,7 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
  * @param  Tempcode $breadcrumbs The breadcrumbs
  * @return mixed Either Tempcode (an interface that must be shown) or a pair: The main Tempcode, the forum name (string). For a PT view, it is always a tuple, never raw Tempcode (as it can go inside a tabset).
  */
-function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $true_start, $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $of_member_id, $breadcrumbs)
+function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $true_start, $sort, $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $of_member_id, $breadcrumbs)
 {
     require_css('cns');
 
@@ -416,7 +417,6 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         require_code('templates_pagination');
         $pagination = pagination(make_string_tempcode(escape_html($forum_name)), $true_start, 'forum_start', $max, 'forum_max', $details['max_rows'], false, 5, null, ($type == 'pt' && get_page_name() == 'members') ? 'tab--pts' : '', $keyset_value);
 
-        $sort = array_key_exists('sort', $details) ? $details['sort'] : 'last_post';
         $topic_wrapper = do_template('CNS_FORUM_TOPIC_WRAPPER', array(
             '_GUID' => 'e452b81001e5c6b7adb4d82e627bf983',
             'TYPE' => $type,
@@ -499,7 +499,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     $topic = array();
 
     if ($topic_row['p_post'] !== null) {
-        $post_row = db_map_restrict($topic_row, array('p_post')) + array('id' => $topic_row['t_cache_first_post_id']);
+        $post_row = db_map_restrict($topic_row, array('id', 'p_post'), array('id' => 't_cache_first_post_id'));
         $topic['first_post'] = get_translated_tempcode('f_posts', $post_row, 'p_post', $GLOBALS['FORUM_DB']);
     } else {
         $topic['first_post'] = new Tempcode();

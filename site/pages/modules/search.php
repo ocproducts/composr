@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -264,9 +264,9 @@ class Module_search
             $info = $ob->info();
             if (($info === null) || ($info === false)) {
                 if ($info === null) {
-                    set_http_status_code('404');
+                    set_http_status_code(404);
                 } else {
-                    set_http_status_code('401');
+                    set_http_status_code(401);
                 }
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
             }
@@ -579,7 +579,7 @@ class Module_search
 
         // Search keyword highlighting in any loaded Comcode
         global $SEARCH__CONTENT_BITS;
-        $_content_bits = explode(' ', str_replace('"', '', preg_replace('#(^|\s)\+#', '', preg_replace('#(^|\s)\-#', '', $content))));
+        $_content_bits = explode(' ', str_replace('"', '', cms_preg_replace_safe('#(^|\s)\+#', '', cms_preg_replace_safe('#(^|\s)\-#', '', $content))));
         $SEARCH__CONTENT_BITS = array();
         require_code('textfiles');
         $too_common_words = explode("\n", read_text_file('too_common_words', '', true));
@@ -647,7 +647,7 @@ class Module_search
                 $only_search_meta = get_param_integer('only_search_meta', 0) == 1;
                 $direction = get_param_string('direction', 'ASC');
                 if (php_function_allowed('set_time_limit')) {
-                    @set_time_limit(5); // Prevent errant search hooks (easily written!) taking down a server. Each call given 5 seconds (calling set_time_limit resets the timer).
+                    @set_time_limit(10); // Prevent errant search hooks (easily written!) taking down a server. Each call given 5 seconds (calling set_time_limit resets the timer).
                 }
                 $hook_results = $ob->run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $max, $boolean_operator, $where_clause, $search_under, $boolean_search ? 1 : 0);
                 if ($hook_results === null) {

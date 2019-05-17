@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -238,9 +238,10 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
  * @param  string $in Plain-text/Comcode
  * @param  boolean $for_extract Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)
  * @param  array $tags_to_preserve List of tags to preserve
+ * @param  boolean $include_urls Whether to include URLs in the text version
  * @return string Purified plain-text
  */
-function strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
+function strip_comcode($in, $for_extract = false, $tags_to_preserve = array(), $include_urls = true)
 {
     $text = $in;
 
@@ -262,7 +263,7 @@ function strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
     }
 
     require_code('comcode_to_text');
-    $text = _strip_comcode($text, $for_extract, $tags_to_preserve);
+    $text = _strip_comcode($text, $for_extract, $tags_to_preserve, $include_urls);
 
     $done[$text] = $text;
     return $text;

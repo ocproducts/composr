@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -37,6 +37,35 @@ class lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'pushtask',
+            'textareacopycode',
+            'gitstatus',
+            'utilisation',
+            'distro',
+            'phpbeans',
+            'javabeans',
+            'systemd',
+            'rsyslogd',
+            'orm',
+            'journald',
+            'laravel',
+            'conposr',
+            'autofill',
+            'autosuggest',
+            'benchmarking',
+            'bitstream',
+            'canonicalisation',
+            'collegehumor',
+            'dejavu',
+            'dvds',
+            'freefont',
+            'hdd',
+            'imagettftext',
+            'ish',
+            'journaling',
+            'newrelic',
+            'swapspace',
+            'xhprof',
             'linters',
             'fpm',
             'defs',
@@ -596,7 +625,6 @@ class lang_spelling_epic_test_set extends cms_test_case
             'bitmask',
             'bitmasked',
             'bitnami',
-            'bitstream',
             'bizarro',
             'blackbox',
             'blackhole',

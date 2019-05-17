@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -28,7 +28,6 @@ class Module_cms_calendar extends Standard_crud_module
     protected $lang_type = 'CALENDAR_EVENT';
     protected $select_name = 'TITLE';
     protected $orderer = 'id';
-    protected $orderer_is_multi_lang = false;
     protected $array_key = 'id';
     protected $title_is_multi_lang = true;
     protected $non_integer_id = false;
@@ -268,7 +267,8 @@ class Module_cms_calendar extends Standard_crud_module
             if (array_key_exists($row['e_type'], $types)) {
                 $type = $types[$row['e_type']];
             } else {
-                $type = get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_types', 't_title', array('id' => $row['e_type'])));
+                $_type = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 't_title', array('id' => $row['e_type']));
+                $type = ($_type === null) ? do_lang('UNKNOWN') : get_translated_text($_type);
                 $types[$row['e_type']] = $type;
             }
 
@@ -1247,6 +1247,8 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         ical_import($ical_url);
+
+        delete_cache_entry('side_calendar');
 
         return inform_screen($this->title, do_lang_tempcode('IMPORT_ICAL_DONE'));
     }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -140,6 +140,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/business_post_code.php',
             'sources/hooks/systems/config/business_country.php',
             'sources/hooks/systems/config/currency.php',
+            'sources/hooks/systems/config/currency_api_key.php',
             'sources/hooks/systems/config/ecommerce_test_mode.php',
             'sources/hooks/systems/config/payment_gateway_username.php',
             'sources/hooks/systems/config/payment_gateway_digest.php',

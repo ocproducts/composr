@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -381,10 +381,20 @@ class Hook_addon_registry_core_html_abstractions
      */
     public function tpl_preview__with_whitespace()
     {
+        $out = new Tempcode();
+
+        $out->attach(do_lorem_template('WITH_WHITESPACE', array(
+            'CONTENT' => lorem_phrase(),
+            'USING_TEXTAREA' => false,
+        )));
+
+        $out->attach(do_lorem_template('WITH_WHITESPACE', array(
+            'CONTENT' => lorem_phrase(),
+            'USING_TEXTAREA' => true,
+        )));
+
         return array(
-            lorem_globalise(do_lorem_template('WITH_WHITESPACE', array(
-                'CONTENT' => lorem_phrase(),
-            )), null, '', true)
+            lorem_globalise($out, null, '', true)
         );
     }
 

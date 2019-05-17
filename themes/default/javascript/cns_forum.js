@@ -15,8 +15,9 @@
         events: function () {
             return {
                 'click .js-click-mark-all-topics': 'markAllTopics',
-                'change .js-select-change-submit-form': 'changeSubmit',
-                'click .js-click-btn-add-form-marked-posts': 'cnsAddFormMarkedPosts'
+                'change .js-moderator-action-submit-form': 'moderatorActionSubmitForm',
+                'change .js-max-change-submit-form': 'maxChangeSubmitForm',
+                'change .js-order-change-submit-form': 'maxChangeSubmitForm',
             };
         },
 
@@ -26,18 +27,23 @@
             });
         },
 
-        changeSubmit: function (e, select) {
+        moderatorActionSubmitForm: function (e, select) {
+            if (select.selectedIndex != 0) {
+                if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
+                    $dom.submit(select.form);
+                } else {
+                    $cms.ui.alert('{!NOTHING_SELECTED;}');
+                }
+            }
+        },
+
+        maxChangeSubmitForm: function (e, select) {
             $dom.submit(select.form);
         },
 
-        cnsAddFormMarkedPosts: function (e, btn) {
-            if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
-                $cms.ui.disableButton(btn);
-            } else {
-                $cms.ui.alert('{!NOTHING_SELECTED;}');
-                e.preventDefault();
-            }
-        }
+        orderChangeSubmitForm: function (e, select) {
+            $dom.submit(select.form);
+        },
     });
 
     $cms.functions.moduleTopicsPostJavascript = function moduleTopicsPostJavascript(size, stub) {
@@ -175,12 +181,24 @@
             $cms.ui.disableButton(clicked);
         });
 
-        $dom.on(container, 'click', '.js-click-require-tma-type-selection', function (e, btn) {
-            if ($dom.$('#tma-type').selectedIndex !== -1) {
-                $cms.ui.disableButton(btn);
-            } else {
-                e.preventDefault();
+        $dom.on(container, 'click', '.js-topic-moderator-action-submit-form', function (e, select) {
+            if (select.selectedIndex !== -1) {
+                $dom.submit(select.form);
             }
+        });
+
+        $dom.on(container, 'click', '.js-moderator-action-submit-form', function (e, select) {
+            if (select.selectedIndex !== -1) {
+                if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
+                    $dom.submit(select.form);
+                } else {
+                    $cms.ui.alert('{!NOTHING_SELECTED;}');
+                }
+            }
+        });
+
+        $dom.on(container, 'click', '.js-order-change-submit-form', function (e, select) {
+            $dom.submit(select.form);
         });
     };
 

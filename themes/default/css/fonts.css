@@ -1,55 +1,7 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 */
-
-@font-face
-{
-	font-family: Aerial;
-	src: url('{$BASE_URL;}/data/fonts/Aerial.ttf');
-}
-
-@font-face
-{
-	font-family: AerialBd;
-	src: url('{$BASE_URL;}/data/fonts/AerialBd.ttf');
-}
-
-@font-face
-{
-	font-family: AerialBdIt;
-	src: url('{$BASE_URL;}/data/fonts/AerialBdIt.ttf');
-}
-
-@font-face
-{
-	font-family: AerialIt;
-	src: url('{$BASE_URL;}/data/fonts/AerialIt.ttf');
-}
-
-@font-face
-{
-	font-family: AerialMono;
-	src: url('{$BASE_URL;}/data/fonts/AerialMono.ttf');
-}
-
-@font-face
-{
-	font-family: AerialMonoBd;
-	src: url('{$BASE_URL;}/data/fonts/AerialMonoBd.ttf');
-}
-
-@font-face
-{
-	font-family: AerialMonoBdIt;
-	src: url('{$BASE_URL;}/data/fonts/AerialMonoBdIt.ttf');
-}
-
-@font-face
-{
-	font-family: AerialMonoIt;
-	src: url('{$BASE_URL;}/data/fonts/AerialMonoIt.ttf');
-}
 
 @font-face
 {
@@ -77,126 +29,48 @@
 
 @font-face
 {
-	font-family: toga;
-	src: url('{$BASE_URL;}/data/fonts/toga.ttf');
+	font-family: FreeSans;
+	src: url('{$BASE_URL;}/data/fonts/FreeSans.ttf');
 }
 
 @font-face
 {
-	font-family: togabd;
-	src: url('{$BASE_URL;}/data/fonts/togabd.ttf');
+	font-family: FreeSansBold;
+	src: url('{$BASE_URL;}/data/fonts/FreeSansBold.ttf');
 }
 
 @font-face
 {
-	font-family: togabi;
-	src: url('{$BASE_URL;}/data/fonts/togabi.ttf');
+	font-family: FreeSansBoldOblique;
+	src: url('{$BASE_URL;}/data/fonts/FreeSansBoldOblique.ttf');
 }
 
 @font-face
 {
-	font-family: togait;
-	src: url('{$BASE_URL;}/data/fonts/togait.ttf');
+	font-family: FreeSansOblique;
+	src: url('{$BASE_URL;}/data/fonts/FreeSansOblique.ttf');
 }
 
 @font-face
 {
-	font-family: togase;
-	src: url('{$BASE_URL;}/data/fonts/togase.ttf');
+	font-family: FreeSerif;
+	src: url('{$BASE_URL;}/data/fonts/FreeSerif.ttf');
 }
 
 @font-face
 {
-	font-family: togasebd;
-	src: url('{$BASE_URL;}/data/fonts/togasebd.ttf');
+	font-family: FreeSerifBold;
+	src: url('{$BASE_URL;}/data/fonts/FreeSerifBold.ttf');
 }
 
 @font-face
 {
-	font-family: Tymes;
-	src: url('{$BASE_URL;}/data/fonts/Tymes.ttf');
+	font-family: FreeSerifBoldItalic;
+	src: url('{$BASE_URL;}/data/fonts/FreeSerifBoldItalic.ttf');
 }
 
 @font-face
 {
-	font-family: TymesBd;
-	src: url('{$BASE_URL;}/data/fonts/TymesBd.ttf');
-}
-
-@font-face
-{
-	font-family: Vera;
-	src: url('{$BASE_URL;}/data/fonts/Vera.ttf');
-}
-
-@font-face
-{
-	font-family: VeraBd;
-	src: url('{$BASE_URL;}/data/fonts/VeraBd.ttf');
-}
-
-@font-face
-{
-	font-family: VeraBI;
-	src: url('{$BASE_URL;}/data/fonts/VeraBI.ttf');
-}
-
-@font-face
-{
-	font-family: VeraIt;
-	src: url('{$BASE_URL;}/data/fonts/VeraIt.ttf');
-}
-
-@font-face
-{
-	font-family: VeraMoBd;
-	src: url('{$BASE_URL;}/data/fonts/VeraMoBd.ttf');
-}
-
-@font-face
-{
-	font-family: VeraMoBI;
-	src: url('{$BASE_URL;}/data/fonts/VeraMoBI.ttf');
-}
-
-@font-face
-{
-	font-family: VeraMoIt;
-	src: url('{$BASE_URL;}/data/fonts/VeraMoIt.ttf');
-}
-
-@font-face
-{
-	font-family: VeraMono;
-	src: url('{$BASE_URL;}/data/fonts/VeraMono.ttf');
-}
-
-@font-face
-{
-	font-family: Veranda;
-	src: url('{$BASE_URL;}/data/fonts/Veranda.ttf');
-}
-
-@font-face
-{
-	font-family: VerandaBd;
-	src: url('{$BASE_URL;}/data/fonts/VerandaBd.ttf');
-}
-
-@font-face
-{
-	font-family: VerandaBdIt;
-	src: url('{$BASE_URL;}/data/fonts/VerandaBdIt.ttf');
-}
-
-@font-face
-{
-	font-family: VerandaIt;
-	src: url('{$BASE_URL;}/data/fonts/VerandaIt.ttf');
-}
-
-@font-face
-{
-	font-family: VeraSe;
-	src: url('{$BASE_URL;}/data/fonts/VeraSe.ttf');
+	font-family: FreeSerifItalic;
+	src: url('{$BASE_URL;}/data/fonts/FreeSerifItalic.ttf');
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -248,7 +248,7 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
 
     delete_cache_entry('menu');
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('zone', $zone, null, null, true);
     }

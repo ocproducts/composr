@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -27,7 +27,6 @@ class Module_cms_booking extends Standard_crud_module
     protected $user_facing = false;
     protected $menu_label = 'BOOKINGS';
     protected $orderer = 'sort_order';
-    protected $orderer_is_multi_lang = false;
     protected $title_is_multi_lang = true;
     protected $table = 'bookable';
     protected $bookings_crud_module;
@@ -417,7 +416,6 @@ class Module_cms_booking_supplements extends Standard_crud_module
     protected $user_facing = false;
     protected $menu_label = 'BOOKINGS';
     protected $orderer = 'sort_order';
-    protected $orderer_is_multi_lang = false;
     protected $title_is_multi_lang = true;
     protected $table = 'bookable_supplement';
 
@@ -612,7 +610,6 @@ class Module_cms_booking_blacks extends Standard_crud_module
     protected $user_facing = false;
     protected $menu_label = 'BOOKINGS';
     protected $orderer = 'id';
-    protected $orderer_is_multi_lang = false;
     protected $title_is_multi_lang = true;
     protected $table = 'bookable_blacked';
 

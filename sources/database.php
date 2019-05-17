@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -326,13 +326,14 @@ function db_function($function, $args = array())
  *
  * @param  array $row DB table row
  * @param  array $fields List of fields to copy through
+ * @param  array $remap Remapping of fields, if we need to do some kind of substitution as well (usually this will be because the row came from a join and we had to rename fields)
  * @return array Map of fields
  */
-function db_map_restrict($row, $fields)
+function db_map_restrict($row, $fields, $remap = array())
 {
     $out = array();
     foreach ($fields as $field) {
-        $out[$field] = $row[$field];
+        $out[$field] = $row[(array_key_exists($field, $remap) && array_key_exists($remap[$field], $row)) ? $remap[$field] : $field];
         if (isset($row[$field . '__text_parsed'])) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }
@@ -962,6 +963,7 @@ class DatabaseDriver
                 switch (get_db_type()) {
                     case 'mysql':
                     case 'mysqli':
+                    case 'mysql_pdo':
                         $function = 'CHAR_LENGTH';
                         break;
 
@@ -1064,6 +1066,7 @@ class DatabaseDriver
                         return '(SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                     case 'mysql':
                     case 'mysqli':
+                    case 'mysql_pdo':
                     default:
                         return '(SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1] . ')';
                 }
@@ -1153,9 +1156,9 @@ class DatabaseConnector
      */
     public function ensure_connected()
     {
-        if (isset($this->connection_read[4])) { // Okay, we can't be lazy anymore
+        if ((is_array($this->connection_read)) && (isset($this->connection_read[4]))) { // Okay, we can't be lazy anymore
             $this->connection_read = call_user_func_array(array($this->static_ob, 'get_connection'), $this->connection_read);
-            if (isset($this->connection_write[4])) { // Okay, we can't be lazy anymore
+            if ((is_array($this->connection_write)) && (isset($this->connection_write[4]))) { // Okay, we can't be lazy anymore
                 $this->connection_write = call_user_func_array(array($this->static_ob, 'get_connection'), $this->connection_write);
             }
             if (isset($GLOBALS['SITE_DB']) && $this === $GLOBALS['SITE_DB']) {
@@ -1418,7 +1421,7 @@ class DatabaseConnector
                     }
 
                     if ($end !== '') {
-                        $end = preg_replace('#(^|,|\s)([a-z]+)($|,|\s)#', '${1}main.${2}${3}', $end);
+                        $end = cms_preg_replace_safe('#(^|,|\s)([a-z]+)($|,|\s)#', '${1}main.${2}${3}', $end);
                     }
 
                     $field_prefix = 'main.';
@@ -1503,7 +1506,7 @@ class DatabaseConnector
     {
         global $DEV_MODE;
         if ((!$skip_safety_check) && (stripos($query, 'union') !== false) && (strpos(get_db_type(), 'mysql') !== false)) {
-            $_query = preg_replace('#\s#', ' ', strtolower($query));
+            $_query = cms_preg_replace_safe('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query, 'insert into ') + substr_count($_query, 'replace into ') + substr_count($_query, 'update ') + substr_count($_query, 'select ') + substr_count($_query, 'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {
                 log_hack_attack_and_exit('SQL_INJECTION_HACK', $query);
@@ -1608,6 +1611,7 @@ class DatabaseConnector
             cms_profile_end_for('_query:HIGH_VOLUME_ALERT');
         }
 
+        // Optimisation: Load language fields in advance so we don't need to do additional details when calling get_translated_* functions
         $lang_strings_expecting = array();
         if ($lang_fields !== null) {
             if (multi_lang_content()) {

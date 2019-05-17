@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -151,9 +151,16 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
     $catalogue_name = null;
     $fields = null;
 
+    global $CMA_HOOK_CATALOGUE_NAME_CACHE;
+    if (isset($CMA_HOOK_CATALOGUE_NAME_CACHE[$url_parts['id']])) {
+        $catalogue_name = $CMA_HOOK_CATALOGUE_NAME_CACHE[$url_parts['id']];
+    } else {
+        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
+        $CMA_HOOK_CATALOGUE_NAME_CACHE[$url_parts['id']] = $catalogue_name;
+    }
+
     $unique_key_num = 0;
     if ($resource_fs_style) {
-        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         foreach ($fields as $i => $f) {
             if ($f['cf_type'] == 'codename') {
@@ -186,8 +193,20 @@ function generate_catalogue_thumb_field($url_parts)
 {
     $unique_key_num = null;
 
-    $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
+    global $CMA_HOOK_CATALOGUE_NAME_CACHE;
+    if (isset($CMA_HOOK_CATALOGUE_NAME_CACHE[$url_parts['id']])) {
+        $catalogue_name = $CMA_HOOK_CATALOGUE_NAME_CACHE[$url_parts['id']];
+    } else {
+        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
+        $CMA_HOOK_CATALOGUE_NAME_CACHE[$url_parts['id']] = $catalogue_name;
+    }
+
+    global $CAT_FIELDS_CACHE;
+    if (array_key_exists($catalogue_name, $CAT_FIELDS_CACHE)) {
+        $fields = $CAT_FIELDS_CACHE[$catalogue_name];
+    } else {
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
+    }
     foreach ($fields as $i => $f) {
         if ($f['cf_type'] == 'picture') {
             $unique_key_num = $i;

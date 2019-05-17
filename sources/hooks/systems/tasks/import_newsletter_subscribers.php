@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -38,6 +38,8 @@ class Hook_task_import_newsletter_subscribers
             return null;
         }
 
+        set_mass_import_mode();
+
         require_lang('cns');
         require_lang('newsletter');
         require_code('newsletter');
@@ -62,8 +64,6 @@ class Hook_task_import_newsletter_subscribers
             $del = ';';
         }
         rewind($myfile);
-
-        set_mass_import_mode();
 
         $email_index = 0;
         $forename_index = null;

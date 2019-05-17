@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -484,12 +484,17 @@ function step_1()
     unset($langs['EN']);
     $langs = array_merge(array('EN' => 'lang'), $langs);
     $tlanguages = new Tempcode();
+    $tcount = 0;
     foreach (array_keys($langs) as $lang) {
         if (array_key_exists($lang, $lookup)) {
             $stub = ($lang == 'EN') ? '' : (' (unofficial, ' . strval(intval(round(100.0 * $lang_count[$lang] / $lang_count['EN']))) . '% changed)');
             $entry = do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $lang == user_lang(), 'DISABLED' => false, 'NAME' => $lang, 'CLASS' => '', 'TEXT' => $lookup[$lang] . $stub));
             $tlanguages->attach($entry);
+            $tcount++;
         }
+    }
+    if ($tcount == 1) {
+        $tlanguages = new Tempcode(); // No selection
     }
 
     // UI...
@@ -653,10 +658,16 @@ function step_3()
         if (($database == 'mysqli') && (!function_exists('mysqli_connect'))) {
             continue;
         }
+        if (($database == 'mysql_pdo') && ((!class_exists('PDO')) || (!defined('PDO::MYSQL_ATTR_USE_BUFFERED_QUERY')))) {
+            continue;
+        }
         if ($database == 'mysqli') {
             $selected = true;
         }
         if (($database == 'mysql') && (!function_exists('mysqli_connect'))) {
+            $selected = true;
+        }
+        if (($database == 'mysql_pdo') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
             $selected = true;
         }
         if (($database == 'ibm') && (!function_exists('odbc_connect'))) {
@@ -1153,6 +1164,12 @@ function step_5()
 
     // Cleanup base URL
     $_POST['base_url'] = normalise_idn_url($_POST['base_url']);
+
+    // Test URL
+    $parsed = @parse_url(post_param_string('base_url'));
+    if (($parsed === false) || (!array_key_exists('scheme', $parsed)) || (!array_key_exists('host', $parsed))) {
+        warn_exit(do_lang_tempcode('INVALID_BASE_URL', escape_html(post_param_string('base_url'))));
+    }
 
     // Check cookie settings. IF THIS CODE IS CHANGED ALSO CHANGE COPY&PASTED CODE IN CONFIG_EDITOR.PHP
     $cookie_path = post_param_string('cookie_path');
@@ -2985,10 +3002,11 @@ function test_htaccess($conn)
     $clauses = array();
 
     $clauses[] = <<<END
-# Disable inaccurate security scanning (Composr has its own)
+# Disable inaccurate security scanning (Composr has its own). This disabling only works with modsecurity1 unfortunately.
 <IfModule mod_security.c>
 SecFilterEngine Off
 SecFilterScanPOST Off
+SecRuleRemoveById 300018 340147 340014 950119 950120 973331
 </IfModule>
 END;
 
@@ -3004,8 +3022,14 @@ php_value memory_limit "128M"
 php_value max_execution_time "30"
 php_value max_input_vars "2000"
 
+# General security strengthening that Composr can tolerate
+php_value expose_php "off"
+php_value allow_url_include "off"
+
 # This causes unstability (and is known/documented to) but some hosts turn it on
 php_value mbstring.func_overload "0"
+
+# SpamAssassin does not like this
 php_flag mail.add_x_header off
 
 # Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
@@ -3036,18 +3060,21 @@ php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
 
 # Sandbox Composr to its own directory
-# php_value open_basedir "/tmp:/home/blah/public_html/composr/"    But needs customising for your server and only works outside php.ini in PHP6+
+# php_value open_basedir "/tmp:/home/blah/public_html/composr/" # But needs customising for your server and only works outside php.ini in PHP6+
 </IfModule>
 END;
 
     $base = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
     $clauses[] = <<<END
-<FilesMatch !"\.(jpg|jpeg|gif|png|ico|cur)$">
+
+# Set Composr to handle 404 errors. Assume Composr is in the root
+<FilesMatch "(?<!\.jpg|\.jpeg|\.gif|\.png|\.ico|\.cur|\.svg|\.css|\.js)$">
 ErrorDocument 404 {$base}/index.php?page=404
 </FilesMatch>
 END;
 
     $clauses[] = <<<END
+
 # Compress some static resources
 <IfModule mod_deflate.c>
 <IfModule mod_filter.c>
@@ -3061,23 +3088,54 @@ SetEnvIfNoCase Request_URI \.tar$ no-gzip dont-vary
 </IfModule>
 END;
 
+    $clauses[] = <<<END
+
+# Exotic file types we may want
+AddType text/vtt .vtt
+END;
+
     /*REWRITE RULES START*/
     $clauses[] = <<<END
 
 # Needed for mod_rewrite. Disable this line if your server does not have AllowOverride permission (can be one cause of Internal Server Errors)
-Options +FollowSymLinks -MultiViews
+Options +SymLinksIfOwnerMatch -MultiViews
 
 RewriteEngine on
 
+# Needed to pass HTTP-auth header on PHP CGI (it's not automatic, unlike PHP Module)
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Ad-hoc redirects go here. If this file is writeable, Composr will write in configured redirects below)
+# RewriteRule somerule sometarget (leave this comment here!)
 
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
+# Rewrite .gif emoticons for browsers that support APNG (LEGACY; when possible we want to get rid of the gifs, but Edge does not yet support)
+RewriteCond %{HTTP_USER_AGENT} (Chrom|Firefox|Safari)
+RewriteRule ^(themes/default/images/cns_emoticons/.*\.gif)$ $1.png [L,QSA]
+
 # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
+RewriteCond $1 ^\d+.shtml [OR]
+RewriteCond $1 \.(1st|3g2|3gp|3gp2|3gpp|3p|7z|aac|ai|aif|aifc|aiff|asf|atom|avi|bmp|bz2|css|csv|cur|dat|diff|dmg|doc|docx|dot|dotx|eml|exe|f4v|gif|gz|html|ico|ics|ini|iso|jpe|jpeg|jpg|js|json|keynote|log|m2v|m4v|mdb|mid|mov|mp2|mp3|mp4|mpa|mpe|mpeg|mpg|mpv2|numbers|odb|odc|odg|odi|odp|ods|odt|ogg|ogv|otf|pages|patch|pdf|php|png|ppt|pptx|ps|psd|pub|qt|ra|ram|rar|rm|rss|rtf|sql|svg|swf|tar|tga|tgz|tif|tiff|torrent|tpl|ttf|txt|vsd|vtt|wav|weba|webm|webp|wma|wmv|woff|xls|xlsx|xml|xsd|xsl|zip) [OR]
 RewriteCond %{DOCUMENT_ROOT}/$1 -f [OR]
 RewriteCond %{DOCUMENT_ROOT}/$1 -l [OR]
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteRule (.*) - [L]
+RewriteCond %{DOCUMENT_ROOT}/$1 -d [OR]
+RewriteCond $1 -f [OR]
+RewriteCond $1 -l [OR]
+RewriteCond $1 -d
+RewriteRule ^(.*) - [L]
+
+# crossdomain.xml is actually Composr-driven
+RewriteRule ^crossdomain\.xml data/crossdomain.php
+
+# WebDAV implementation (requires the non-bundled WebDAV addon)
+RewriteRule ^webdav(/.*|$) data_custom/webdav.php
+RewriteCond %{HTTP_HOST} ^webdav\..*
+RewriteRule ^(.*)$ data_custom/webdav.php
+
+#FAILOVER STARTS
+### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###
+#FAILOVER ENDS
 
 # Redirect away from modules called directly by URL. Helpful as it allows you to "run" a module file in a debugger and still see it running.
 RewriteRule ^([^=]*)pages/(modules|modules_custom)/([^/]*)\.php$ $1index.php\?page=$3 [L,QSA,R]
@@ -3089,7 +3147,7 @@ RewriteRule ^([^=]*)pg/s/([^\&\?]*)/index\.php$ $1index.php\?page=wiki&id=$2 [L,
 RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)/index\.php(.*)$ $1index.php\?page=$2&type=$3&id=$4$5 [L,QSA]
 RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/index\.php(.*)$ $1index.php\?page=$2&type=$3$4 [L,QSA]
 RewriteRule ^([^=]*)pg/([^/\&\?]*)/index\.php(.*)$ $1index.php\?page=$2$3 [L,QSA]
-RewriteRule ^([^=]*)pg/index\.php(.*)$ $1index.php\?page=$3 [L,QSA]
+RewriteRule ^([^=]*)pg/index\.php(.*)$ $1index.php\?page=$2 [L,QSA]
 
 # PG STYLE: Now the same as the above sets, but without any additional parameters (and thus no index.php)
 RewriteRule ^([^=]*)pg/s/([^\&\?]*)$ $1index.php\?page=wiki&id=$2 [L,QSA]
@@ -3105,25 +3163,25 @@ RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.php\?$4&page=$2
 RewriteRule ^([^=]*)pg/([^/\&\?\.]*)&(.*)$ $1index.php\?$3&page=$2 [L,QSA]
 
 # HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # HTM STYLE: These are standard patterns
-RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 
 # SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-#RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 #RewriteRule ^s/([^\&\?]*)$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # SIMPLE STYLE: These are standard patterns
-#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
-#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms|docs)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,QSA]

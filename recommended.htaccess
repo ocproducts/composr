@@ -53,7 +53,7 @@ php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
 
 # Sandbox Composr to its own directory
-# php_value open_basedir "/tmp:/home/blah/public_html/composr/"		But needs customising for your server and only works outside php.ini in PHP6+
+# php_value open_basedir "/tmp:/home/blah/public_html/composr/" # But needs customising for your server and only works outside php.ini in PHP6+
 </IfModule>
 
 # Set Composr to handle 404 errors. Assume Composr is in the root
@@ -128,9 +128,9 @@ RewriteRule ^(.*) - [L]
 RewriteRule ^crossdomain\.xml data/crossdomain.php
 
 # WebDAV implementation (requires the non-bundled WebDAV addon)
-RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteRule ^webdav(/.*|$) data_custom/webdav.php
 RewriteCond %{HTTP_HOST} ^webdav\..*
-RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteRule ^(.*)$ data_custom/webdav.php
 
 #FAILOVER STARTS
 ### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -69,7 +69,6 @@ class Hook_notification_cns_birthday extends Hook_Notification
     {
         $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
         $members = $this->_all_members_who_have_enabled_with_page_access($members, 'members', $notification_code, $category, $to_member_ids, $start, $max);
-        $members = $this->_all_members_who_have_enabled_with_category_access($members, 'members', $notification_code, $category, $to_member_ids, $start, $max);
 
         return $members;
     }

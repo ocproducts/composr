@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -76,6 +76,10 @@ class Hook_rss_comcode_pages
             foreach (array_keys($pages) as $i => $page) {
                 if ($i == $max) {
                     break;
+                }
+
+                if (is_integer($page)) {
+                    $page = strval($page);
                 }
 
                 if (substr($page, 0, 6) == 'panel_') {

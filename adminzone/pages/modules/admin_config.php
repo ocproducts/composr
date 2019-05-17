@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -425,7 +425,7 @@ class Module_admin_config
         foreach (array_keys($options) as $group) {
             $_group = do_lang($group);
 
-            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', strip_tags($_group))));
+            $_group = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', strip_tags($_group))));
             if ((isset($all_known_groups[$_group])) && ($all_known_groups[$_group] != $group)) {
                 $_group = 'std_' . $group; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
@@ -435,14 +435,14 @@ class Module_admin_config
 
         ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
 
-        $general_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('GENERAL'))));
+        $general_key = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', do_lang('GENERAL'))));
         if (isset($all_known_groups[$general_key])) { // General goes first
             $temp = $all_known_groups[$general_key];
             unset($all_known_groups[$general_key]);
             array_unshift($all_known_groups, $temp);
         }
 
-        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
+        $advanced_key = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
         if (isset($all_known_groups[$advanced_key])) { // Advanced goes last
             $temp = $all_known_groups[$advanced_key];
             unset($all_known_groups[$advanced_key]);

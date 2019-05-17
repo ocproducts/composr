@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -114,6 +114,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        BLOCK_TOP_LANGUAGE
+        BLOCK_TRANS_NAME_top_language
+        CONFIG_OPTION_block_top_language
         LEVEL_1_HEADERS_PROBLEM
         LEVEL_2_HEADERS_PROBLEM
         PAGE_INTEGRITY_PROBLEM
@@ -437,6 +440,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPAMMER_DETECTION_HEURISTICS
         SPAM_HEURISTIC_CONFIDENCE_ALIEN_CODE
         ACCEPTED_MEDIA_TYPES
+        INVALID_BASE_URL
         WORDFILTER
         AUDIT
         DESCRIPTION_REORGANISE_UPLOADS
@@ -2938,6 +2942,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_csrf_token_expire_fresh
         CONFIG_OPTION_csrf_token_expire_new
         CONFIG_OPTION_css_captcha
+        CURRENCY_API_KEY
+        CONFIG_OPTION_currency_api_key
         CONFIG_OPTION_currency
         CONFIG_OPTION_decryption_key
         CONFIG_OPTION_deeper_admin_breadcrumbs
@@ -5276,6 +5282,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HTTPAUTH_IS_ENABLED
         HTTP_DOWNLOAD_BAD_URL
         HTTP_DOWNLOAD_CUT_SHORT
+        HTTP_DOWNLOAD_CONNECTION_STALLED
         HTTP_DOWNLOAD_NO_SERVER
         HTTP_DOWNLOAD_STATUS_NOT_FOUND
         HTTP_DOWNLOAD_STATUS_SERVER_ERROR
@@ -10137,6 +10144,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUBSCRIPTION_TERM_END_TIME
         SUBSCRIPTION_TERM_START_TIME
         SUCCESS
+        SUCCESS_MAIL_SENT
         SUCCESSFUL_CONFIRM
         SUCCESS_NEWSLETTER_AUTO
         SUCCESS_NEWSLETTER_AUTO_INSTANT

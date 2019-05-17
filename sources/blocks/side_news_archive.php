@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -169,7 +169,7 @@ class Block_side_news_archive
                         break;
                 }
 
-                $url = build_url(array('page' => 'news', 'type' => 'browse', 'select' => $select, 'start' => count($rows) - $offset - 1, 'year' => $current_year, 'month' => $current_month), $zone);
+                $url = build_url(array('page' => 'news', 'type' => 'browse', 'select' => $select, 'module_start' => count($rows) - $offset - 1, 'year' => $current_year, 'month' => $current_month), $zone);
 
                 array_unshift($years[$current_year]['TIMES'], array('URL' => $url, 'MONTH' => strval($current_month), 'MONTH_STRING' => $month_string));
             }

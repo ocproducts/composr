@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -185,7 +185,14 @@ function save_message_into_sugarcrm_as_configured($subject, $body, $from_email, 
 {
     $sync_type = post_param_string('sugarcrm_messaging_sync_type', get_option('sugarcrm_messaging_sync_type'));
     $messaging_mappings = explode("\n", get_option('sugarcrm_messaging_mappings'));
-    return save_message_into_sugarcrm($sync_type, $messaging_mappings, $subject, $body, $from_email, $from_name, $attachments, $data, $posted_data, $timestamp);
+    $ret = save_message_into_sugarcrm($sync_type, $messaging_mappings, $subject, $body, $from_email, $from_name, $attachments, $data, $posted_data, $timestamp);
+
+    if ((get_option('sugarcrm_exclusive_messaging') == '1') || ((isset($posted_data['_sugarcrm_exclusive_messaging'])) && ($posted_data['_sugarcrm_exclusive_messaging'] == '1'))) {
+        require_code('files2');
+        clean_temporary_mail_attachments($attachments);
+    }
+
+    return $ret;
 }
 
 function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp = null)

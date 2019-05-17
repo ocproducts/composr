@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -13,7 +13,7 @@
  * @package    rootkit_detector
  */
 
-/*EXTRA FUNCTIONS: mysqli\_.+*/
+/*EXTRA FUNCTIONS: [\w\\]*PushTask|mysqli\_.+|Message*/
 
 // Fixup SCRIPT_FILENAME potentially being missing
 $_SERVER['SCRIPT_FILENAME'] = __FILE__;

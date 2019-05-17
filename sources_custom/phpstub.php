@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -104,6 +104,18 @@ function password_get_info($hash)
 function abs($number)
 {
     return 0;
+}
+
+/**
+ * Returns the floating point remainder (modulo) of the division of the arguments.
+ *
+ * @param  float $x The dividend
+ * @param  float $y The divisor
+ * @return mixed The remainder
+ */
+function fmod($x, $y)
+{
+    return 0.0;
 }
 
 /**
@@ -1476,7 +1488,7 @@ function imagettftext($handle, $size, $angle, $x, $y, $colour, $fontfile, $text)
 /**
  * Return the image types supported by this execution environment.
  *
- * @return integer Bit field of constants: IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP
+ * @return integer Bit field of constants: IMG_GIF | IMG_JPG | IMG_PNG
  */
 function imagetypes()
 {
@@ -2361,10 +2373,10 @@ function preg_grep($pattern, $subject, $flags = 0)
  * @param  mixed $pattern The pattern (string or array)
  * @param  mixed $replacement The replacement string (string or array)
  * @param  string $subject The subject string
- * @param  ?integer $limit The limit of replacements (null: no limit)
+ * @param  integer $limit The limit of replacements (-1: no limit)
  * @return ~string The string with replacements made (false: error)
  */
-function preg_replace($pattern, $replacement, $subject, $limit = null)
+function preg_replace($pattern, $replacement, $subject, $limit = -1)
 {
     return '';
 }
@@ -2375,10 +2387,10 @@ function preg_replace($pattern, $replacement, $subject, $limit = null)
  * @param  string $pattern The pattern
  * @param  mixed $callback The callback
  * @param  string $subject The subject string
- * @param  ?integer $limit The limit of replacements (null: no limit)
+ * @param  integer $limit The limit of replacements (-1: no limit)
  * @return ~string The string with replacements made (false: error)
  */
-function preg_replace_callback($pattern, $callback, $subject, $limit = null)
+function preg_replace_callback($pattern, $callback, $subject, $limit = -1)
 {
     return '';
 }
@@ -3077,10 +3089,11 @@ function unlink($filename, $context = null)
 /**
  * Creates a PHP value from a stored representation.
  *
- * @param  string $str Serialised string
- * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialised)
+ * @param  string $str Serialized string
+ * @param  ?array $options Extra options (null: none)
+ * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized)
  */
-function unserialize($str)
+function unserialize($str, $options = null)
 {
     return 0;
 }
@@ -5335,7 +5348,6 @@ acosh
 atanh
 expm1
 log1p
-fmod
 getopt
 settype
 dir

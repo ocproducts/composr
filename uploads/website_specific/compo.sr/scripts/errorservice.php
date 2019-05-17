@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licensing information.

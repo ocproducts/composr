@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -24,8 +24,8 @@
 function fake_levenshtein($a, $b)
 {
     // Some stripping, for performance, and because white space doesn't matter so much in HTML anyway
-    $a = preg_replace('#\s#', '', $a);
-    $b = preg_replace('#\s#', '', $b);
+    $a = cms_preg_replace_safe('#\s#', '', $a);
+    $b = cms_preg_replace_safe('#\s#', '', $b);
 
     $a_len = strlen($a);
     $b_len = strlen($b);

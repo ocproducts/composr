@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -23,12 +23,18 @@
  *
  * @param  GROUP $group_id The usergroup
  * @param  MEMBER $member_id The member
+ * @param  ?array $group_row Database row for usergroup, passed for performance optimisation (null: lookup)
  * @return boolean The answer
  */
-function cns_may_control_group($group_id, $member_id)
+function cns_may_control_group($group_id, $member_id, $group_row = null)
 {
-    $leader = cns_get_group_property($group_id, 'group_leader');
-    $is_super_admin = cns_get_group_property($group_id, 'is_super_admin');
+    if ($group_row === null) {
+        $leader = cns_get_group_property($group_id, 'group_leader');
+        $is_super_admin = cns_get_group_property($group_id, 'is_super_admin');
+    } else {
+        $leader = $group_row['g_group_leader'];
+        $is_super_admin = $group_row['g_is_super_admin'];
+    }
     return (($member_id === $leader) || ($GLOBALS['CNS_DRIVER']->is_super_admin($member_id)) || ((has_privilege($member_id, 'control_usergroups')) && ($is_super_admin == 0)));
 }
 
@@ -170,7 +176,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
 
     log_it('EDIT_GROUP', strval($group_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('group', strval($group_id));
     }
@@ -247,7 +253,7 @@ function cns_delete_group($group_id, $target_group = null)
 
     log_it('DELETE_GROUP', strval($group_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('group', strval($group_id));
     }

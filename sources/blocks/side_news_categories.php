@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -88,35 +88,36 @@ class Block_side_news_categories
 
         $cnt = $GLOBALS['SITE_DB']->query_select_value('news_categories', 'COUNT(*)', array('nc_owner' => null));
         if ($cnt > 100) {
-            $categories = $GLOBALS['SITE_DB']->query('SELECT r.* FROM ' . get_table_prefix() . 'news_categories r WHERE nc_owner IS NULL AND EXISTS (SELECT * FROM ' . get_table_prefix() . 'news n WHERE n.news_category=r.id AND n.validated=1) AND ' . $q_filter);
+            $_categories = $GLOBALS['SITE_DB']->query('SELECT r.* FROM ' . get_table_prefix() . 'news_categories r WHERE nc_owner IS NULL AND EXISTS (SELECT * FROM ' . get_table_prefix() . 'news n WHERE n.news_category=r.id AND n.validated=1) AND ' . $q_filter);
         } else {
-            $categories = $GLOBALS['SITE_DB']->query_select('news_categories r', array('*'), array('nc_owner' => null), ' AND ' . $q_filter);
+            $_categories = $GLOBALS['SITE_DB']->query_select('news_categories r', array('*'), array('nc_owner' => null), ' AND ' . $q_filter);
         }
 
-        $categories2 = array();
-        foreach ($categories as $category) {
+        $categories = array();
+        foreach ($_categories as $category) {
             if ((!$check_perms) || (has_category_access(get_member(), 'news', strval($category['id'])))) {
                 $join = ' LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id';
                 $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news p' . $join . ' WHERE validated=1 AND (news_entry_category=' . strval($category['id']) . ' OR news_category=' . strval($category['id']) . ')');
                 if ($count > 0) {
                     $category['_nc_title'] = get_translated_text($category['nc_title']);
-                    $categories2[] = $category;
+                    $categories[] = array($category, $count, $category['_nc_title']);
                 }
             }
         }
-        if (count($categories2) == 0) {
-            foreach ($categories as $category) {
+        if (count($categories) == 0) {
+            foreach ($_categories as $category) {
                 if ((!$check_perms) || (has_category_access(get_member(), 'news', strval($category['id'])))) {
                     $category['_nc_title'] = get_translated_text($category['nc_title']);
-                    $categories2[] = $category;
+                    $categories[] = array($category, $count, $category['_nc_title']);
                 }
             }
         }
 
-        sort_maps_by($categories2, '_nc_title', false, true);
+        sort_maps_by($categories, 2);
 
         $_categories = array();
-        foreach ($categories2 as $category) {
+        foreach ($categories as $_category) {
+            list($category, $count) = $_category;
             $url = build_url(array('page' => 'news', 'type' => 'browse', 'id' => $category['id']), get_module_zone('news'));
             $name = $category['_nc_title'];
             $_categories[] = array('URL' => $url, 'NAME' => $name, 'COUNT' => integer_format($count));

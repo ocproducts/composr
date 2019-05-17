@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -39,6 +39,10 @@ class Hook_upon_query_user_export
         }
 
         if (strpos($query, 'f_member') === false) {
+            return;
+        }
+
+        if (get_mass_import_mode()) {
             return;
         }
 
@@ -85,6 +89,10 @@ class Hook_upon_query_user_export
         }
 
         if (strpos($query, 'f_member') === false) {
+            return;
+        }
+
+        if (get_mass_import_mode()) {
             return;
         }
 

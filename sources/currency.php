@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -237,15 +237,21 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
  */
 function _currency_convert__currency_conv_api($amount, $from_currency, $to_currency)
 {
+    $api_key = get_option('currency_api_key');
+    if ($api_key == '') {
+        return null;
+    }
+
     $rate_key = urlencode($from_currency) . '_' . urlencode($to_currency);
     $cache_key = 'currency_' . $rate_key;
-
-    $test = get_value($cache_key, null, true);
+    $cache_minutes = 60 * 24;
+    $cache_cutoff = time() - 60 * $cache_minutes;
+    $test = get_value_newer_than($cache_key, $cache_minutes, true);
     if ($test !== null) {
         return round(floatval($test) * $amount, 2);
     }
 
-    $conv_api_url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $rate_key . '&compact=y';
+    $conv_api_url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $rate_key . '&compact=y&apiKey=' . urlencode($api_key);
     $result = http_get_contents($conv_api_url, array('trigger_error' => false));
     if (is_string($result)) {
         $data = json_decode($result, true);

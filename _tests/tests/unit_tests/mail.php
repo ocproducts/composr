@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -48,6 +48,10 @@ class mail_test_set extends cms_test_case
 
             $this->assertTrue(!file_exists($a));
             $this->assertTrue(!file_exists($b));
+
+            if (file_exists($a)) {
+                unlink($a);
+            }
         }
     }
 }

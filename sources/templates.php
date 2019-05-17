@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -118,7 +118,7 @@ function get_screen_title($title, $dereference_lang = true, $params = array(), $
     if ($dereference_lang) {
         $_title = do_lang_tempcode($title, array_shift($params), array_shift($params), $params);
     } else {
-        $_title = is_object($title) ? $title : make_string_tempcode($title);
+        $_title = is_object($title) ? $title : make_string_tempcode(escape_html($title));
     }
 
     if (function_exists('get_session_id')) {
@@ -328,14 +328,15 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
  * Display some raw text so that it is repeated as raw visually in HTML.
  *
  * @param  string $in Input
+ * @param  boolean $using_textarea Whether to show using a textarea (more reliable to use clipboard to get from)
  * @return Tempcode Output
  */
-function with_whitespace($in)
+function with_whitespace($in, $using_textarea = false)
 {
     if ($in == '') {
         return new Tempcode();
     }
-    return do_template('WITH_WHITESPACE', array('_GUID' => 'be3b74901d5522d4e67ff6313ad61643', 'CONTENT' => $in));
+    return do_template('WITH_WHITESPACE', array('_GUID' => 'be3b74901d5522d4e67ff6313ad61643', 'CONTENT' => $in, 'USING_TEXTAREA' => $using_textarea));
 }
 
 /**

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -486,7 +486,7 @@ function transifex_pull_script()
     }
 
     if ($output) {
-        header('Content-type: application/octet-stream');
+        header('Content-Type: application/octet-stream' . '; authoritative=true;');
         require_code('version2');
         if ($lang === null) {
             $filename = 'languages-' . get_version_branch(floatval(cms_version_number())) . '.tar';
@@ -619,7 +619,7 @@ Translations may also be downloaded directly from Transifex.";
 {$open} /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 

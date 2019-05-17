@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -39,6 +39,8 @@ class Hook_task_import_wordpress
         if (!addon_installed('news')) {
             return null;
         }
+
+        set_mass_import_mode();
 
         require_lang('news');
         require_code('news');
@@ -470,6 +472,13 @@ class Hook_task_import_wordpress
         }
 
         pop_lax_comcode();
+
+        delete_cache_entry('main_news');
+        delete_cache_entry('main_image_fader_news');
+        delete_cache_entry('side_news');
+        delete_cache_entry('side_news_archive');
+        delete_cache_entry('bottom_news');
+        delete_cache_entry('side_news_categories');
 
         $ret = do_lang_tempcode('IMPORT_WORDPRESS_DONE');
         return array('text/html', $ret);

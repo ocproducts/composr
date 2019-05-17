@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -161,16 +161,8 @@ function static_evaluate_tempcode($ob)
  */
 function php_addslashes_twice($in)
 {
-    $in2 = php_addslashes($in);
-    return ($in === $in2) ? $in : php_addslashes($in2);
-
-    // This code does not work, provides awfully confusing Tempcode errors...
-
-    /*
     global $PHP_REP_FROM, $PHP_REP_TO_TWICE;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO_TWICE, $in);
-    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
-    */
 }
 
 /**
@@ -220,7 +212,10 @@ function otp($var, $origin = '')
  */
 function missing_template_parameter($origin)
 {
-    list($parameter, $template_name) = ($origin === '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode('/', $origin, 2);
+    if (strpos($origin, ':') === false) {
+        return '';
+    }
+    list($template_name, $parameter) = ($origin === '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode(':', $origin, 2);
     if (strtolower($template_name) !== $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }
@@ -889,9 +884,9 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
     $loaded_this_once = isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory][$non_custom_only]);
 
     // Load from run-time cache?
-    if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
+    if (isset($LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
         // We have run-time caching
-        $_data = $LOADED_TPL_CACHE[$codename][$theme];
+        $_data = $LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory];
     }
 
     // Find where template is on disk
@@ -989,7 +984,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
 
     if ((($loaded_this_once) || (($suffix == '.tpl') && (substr($codename, -7) !== '_SCREEN'))) && (!isset($LOADED_TPL_CACHE[$codename][$theme])) && (!$inlining_mode)) { // On 3rd load (and onwards) it will be fully cached
         // Set run-time cache
-        $LOADED_TPL_CACHE[$codename][$theme] = $_data;
+        $LOADED_TPL_CACHE[$codename][$lang][$theme][$suffix][$directory] = $_data;
     }
 
     // Optimisation

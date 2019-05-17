@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -1045,8 +1045,6 @@ class Module_cms_catalogues extends Standard_crud_module
     public function _import_catalogue()
     {
         check_privilege('mass_import');
-
-        set_mass_import_mode();
 
         $catalogue_name = get_param_string('catalogue_name');
 

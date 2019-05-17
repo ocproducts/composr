@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -95,7 +95,7 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         if ($topic_row['p_post'] === null) {
             $topic['first_post'] = new Tempcode();
         } else {
-            $post_row = db_map_restrict($topic_row, array('p_post')) + array('id' => $topic_row['t_cache_first_post_id']);
+            $post_row = db_map_restrict($topic_row, array('id', 'p_post'), array('id' => 't_cache_first_post_id'));
             $topic['first_post'] = get_translated_tempcode('f_posts', $post_row, 'p_post', $GLOBALS['FORUM_DB']);
         }
         $topic['first_post']->singular_bind('ATTACHMENT_DOWNLOADS', make_string_tempcode('?'));

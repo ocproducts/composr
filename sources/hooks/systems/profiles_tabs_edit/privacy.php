@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -135,10 +135,10 @@ class Hook_profiles_tabs_edit_privacy
             }
 
             $cpf_title = get_translated_text($cpf_data[0]['cf_name'], $GLOBALS['FORUM_DB']);
-            if ((preg_replace('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf_title) === '') && (count($custom_fields) > 15)) {
+            if ((cms_preg_replace_safe('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf_title) === '') && (count($custom_fields) > 15)) {
                 continue; // If there are lots of CPFs, and this one seems to have a blank name, skip it (likely corrupt data)
             }
-            if ((preg_replace('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf) === '') && (count($custom_fields) > 15)) {
+            if ((cms_preg_replace_safe('#^((\s)|(<br\s*/?' . '>)|(&nbsp;))*#', '', $cpf) === '') && (count($custom_fields) > 15)) {
                 continue; // If there are lots of CPFs, and this one seems to have a blank value, skip it
             }
 

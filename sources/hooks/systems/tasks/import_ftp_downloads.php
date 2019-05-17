@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -39,7 +39,10 @@ class Hook_task_import_ftp_downloads
             return null;
         }
 
+        set_mass_import_mode();
+
         require_code('downloads2');
+
         require_lang('downloads');
 
         // Firstly, parse the server URL, to make sure it is fine

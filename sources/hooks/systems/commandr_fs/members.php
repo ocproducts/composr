@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -140,7 +140,7 @@ class Hook_commandr_fs_members
                 }
 
                 $cpf_name = get_translated_text($_cpf_name);
-                if (preg_match('#^[\w\s]*$#', $cpf_name) == 0) {
+                if (cms_preg_match_safe('#^[\w\s]*$#', $cpf_name) == 0) {
                     $cpf_name = $_i;
                 }
 

@@ -1,9 +1,9 @@
-<?php /*
+ <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2019
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -33,6 +33,9 @@ $g_db_username = $SITE_INFO['db_site_user'];
 $g_db_password = $SITE_INFO['db_site_password'];
 $g_database_name = $SITE_INFO['db_site'];
 $g_db_type = $SITE_INFO['db_type'];
+if ($g_db_type == 'mysql_pdo') {
+	$g_db_type = 'mysqli';
+}
 $cms_sc_db_prefix = $SITE_INFO['table_prefix'];
 $cms_sc_session_cookie_name = $SITE_INFO['session_cookie'];
 $cms_sc_multi_lang_content = (!isset($SITE_INFO['multi_lang_content'])) || ($SITE_INFO['multi_lang_content'] == '1');
@@ -42,7 +45,7 @@ $g_allow_file_upload = ON;
 $g_file_upload_method = DISK;
 $g_max_file_size = 25000000; // in bytes
 $g_preview_attachments_inline_max_size = 256 * 1024;
-$g_allowed_files = 'pages,numbers,patch,diff,swf,sql,odg,odp,odt,ods,ps,pdf,doc,ppt,csv,xls,docx,docb,docm,pptx,xlsx,xlsb,xlsm,pub,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,flv,avi,mov,mpg,mpeg,mp4,asf,wmv,ram,ra,rm,qt,zip,tar,rar,gz,wav,mp3,ogg,torrent,php,css,tpl,ini,eml';
+$g_allowed_files = '1st,3g2,3gp,3gp2,3gpp,3p,7z,aac,ai,aif,aifc,aiff,bz2,cur,dat,dot,dotx,f4v,ico,ics,iso,jpe,keynote,log,m2v,m4v,mdb,mid,mp2,mpa,mpe,mpv2,odb,odc,odi,ogv,otf,rtf,tgz,tiff,ttf,vsd,vtt,weba,webm,webp,wma,pages,numbers,patch,diff,sql,odg,odp,odt,ods,ps,pdf,doc,ppt,csv,xls,docx,pptx,xlsx,pub,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,avi,mov,mpg,mpeg,mp4,asf,wmv,ram,ra,rm,qt,zip,tar,rar,gz,wav,mp3,ogg,torrent,php,tpl,ini,eml';
 $g_disallowed_files = '';
 $g_absolute_path_default_upload_folder = __DIR__ . '/../uploads/';
 

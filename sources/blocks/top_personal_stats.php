@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -56,6 +56,8 @@ class Block_top_personal_stats
         require_css('personal_stats');
 
         $block_id = get_block_id($map);
+
+        require_javascript('sound');
 
         $member_id = get_member();
 

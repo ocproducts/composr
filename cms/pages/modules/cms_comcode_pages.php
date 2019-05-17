@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -219,12 +219,10 @@ class Module_cms_comcode_pages
             }
 
             $_out = array();
-            if ($lang != get_site_default_lang()) {
-                $_out += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-                $_out += find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+            foreach (array_unique(array(fallback_lang(), get_site_default_lang(), $lang)) as $_lang) {
+                $_out += find_all_pages($zone, 'comcode_custom/' . $_lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
+                $_out += find_all_pages($zone, 'comcode/' . $_lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
             }
-            $_out += find_all_pages($zone, 'comcode_custom/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
-            $_out += find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__NEWEST);
 
             foreach ($_out as $page => $subdir) {
                 if (is_integer($page)) {
@@ -780,6 +778,10 @@ class Module_cms_comcode_pages
             // Older versions of PHP on Windows cannot handle utf-8 filenames
             require_code('character_sets');
             $file = transliterate_string($file);
+        }
+
+        if (strlen($file) > 80) {
+            warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
         require_code('type_sanitisation');

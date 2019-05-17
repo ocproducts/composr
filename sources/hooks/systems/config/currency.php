@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -34,7 +34,7 @@ class Hook_config_currency
             'human_name' => 'CURRENCY',
             'type' => 'special',
             'category' => 'ECOMMERCE',
-            'group' => 'GENERAL',
+            'group' => 'CURRENCY',
             'explanation' => 'CONFIG_OPTION_currency',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

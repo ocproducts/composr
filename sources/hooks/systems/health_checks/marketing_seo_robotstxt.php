@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -268,7 +268,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
                 case 'allow':
                 case 'disallow':
                     if ($rule == '') {
-                        continue; // Ignored rule
+                        break; // Ignored rule
                     }
 
                     if (preg_match('#^' . $rule . '#', $url_path) != 0) {

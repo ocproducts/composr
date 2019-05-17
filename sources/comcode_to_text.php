@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -24,17 +24,22 @@
  * @param  string $in Comcode text to change
  * @param  boolean $for_extract Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)
  * @param  array $tags_to_preserve List of tags to preserve
+ * @param  boolean $include_urls Whether to include URLs in the text version
  * @return string Clean text
  */
-function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
+function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array(), $include_urls = false)
 {
     $text = $in;
-
-    //$text = str_replace("\n", '', $text);
 
     // Very simple case
     if ((strpos($text, '[') === false) && (strpos($text, '{') === false)) {
         return trim($text);
+    }
+
+    if ($include_urls) {
+        $tags_to_preserve[] = 'media';
+        $tags_to_preserve[] = 'url';
+        $tags_to_preserve[] = 'email';
     }
 
     // Strip resource loader
@@ -205,7 +210,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 
     if (stripos($text, '[title') !== false) {
         if (!in_array('title', $tags_to_preserve)) {
-            $text = preg_replace_callback('#(\s*)\[title([^\]]*)\](.*)\[/title\]#Usi', '_title_callback', $text);
+            $text = cms_preg_replace_callback_safe('#(\s*)\[title([^\]]*)\](.*)\[/title\]#Usi', '_title_callback', $text);
         }
     }
 
@@ -233,6 +238,11 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
         'attachment',
         'attachment_safe',
     ), $tags_to_preserve);
+    if ($include_urls) {
+        $tags_to_strip_entirely[] = 'media';
+        $tags_to_strip_entirely[] = 'url';
+        $tags_to_strip_entirely[] = 'email';
+    }
     foreach ($tags_to_strip_entirely as $s) {
         if (stripos($text, '[' . $s) !== false) {
             $text = preg_replace('#\[' . $s . '[^\]]*\].*\[/' . $s . '\]#Usi', '', $text);

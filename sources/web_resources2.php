@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -283,7 +283,7 @@ function _css_compile($active_theme, $theme, $c, $full_path, $minify = true)
     $out = preg_replace_callback('#\@cms_include\(\'?(\w+)/(\w+)/(\w+)\'?\);#', '_css_cms_include', $out);
 
     // Strip empty comments (would have encapsulated Tempcode comments)
-    $out = preg_replace('#/\*\s*\*/#', '', $out);
+    $out = cms_preg_replace_safe('#/\*\s*\*/#', '', $out);
 
     // The language may need to filter it
     global $LANG_FILTER_OB;

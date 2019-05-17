@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -443,7 +443,7 @@ class Module_admin_actionlog
         $fields = array(
             'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], '', false),
             'DATE_TIME' => get_timezoned_date_time($row['date_and_time']),
-            'TYPE' => $type_str,
+            'ACTION' => $type_str,
             'PARAMETER_A' => ($row['param_a'] === null) ? '' : $row['param_a'],
             'PARAMETER_B' => ($row['param_b'] === null) ? '' : $row['param_b'],
         );
@@ -543,14 +543,14 @@ class Module_admin_actionlog
                 }
             }
 
-            $fields['TEXT_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('_GUID' => '8141337923279a8a12646d0e29230f60', 'CONTENT' => $revision['r_original_text']));
+            $fields['TEXT_PRIOR_TO_REVISION'] = with_whitespace($revision['r_original_text'], true);
 
             if (isset($revision['r_original_resource_fs_path'])) {
                 $fields['RESOURCE_FS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
             }
 
             if (isset($revision['r_original_resource_fs_record']) && strlen($revision['r_original_resource_fs_record']) < 1024 * 50/*50kb reasonable limit*/) {
-                $fields['RESOURCE_FS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('_GUID' => '985c7727f882d0899f18dcdf6323b00c', 'CONTENT' => $revision['r_original_resource_fs_record']));
+                $fields['RESOURCE_FS_RECORD_PRIOR_TO_REVISION'] = with_whitespace($revision['r_original_resource_fs_record'], true);
             }
 
             if (has_privilege(get_member(), 'delete_revisions')) {

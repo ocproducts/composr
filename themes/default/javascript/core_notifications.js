@@ -171,6 +171,10 @@
             return;
         }
 
+        if (document.hidden) {
+            return; /*{$,Don't hurt server performance needlessly when running in a background tab - let an e-mail notification alert them instead}*/
+        }
+
         var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller';
         if (window.maxNotificationsToShow !== undefined) {
             url += '&max=' + window.maxNotificationsToShow;

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -69,11 +69,11 @@ function cns_check_post($post, $topic_id = null, $poster = null)
     check_comcode($post, null, false, null, true);
 
     if (strlen($post) == 0) {
-        warn_exit(do_lang_tempcode('POST_TOO_SHORT'));
+        warn_exit(do_lang_tempcode('cns:POST_TOO_SHORT'));
     }
     require_code('cns_groups');
     if (strlen($post) > cns_get_member_best_group_property($poster, 'max_post_length_comcode')) {
-        warn_exit(make_string_tempcode(escape_html(do_lang('POST_TOO_LONG'))));
+        warn_exit(make_string_tempcode(escape_html(do_lang('cns:POST_TOO_LONG'))));
     }
 
     if ($topic_id !== null) {
@@ -88,7 +88,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
                 $last_posts[0]['p_poster'] = -1;
             }
             if (($last_posts[0]['p_poster'] == $poster) && (get_translated_text($last_posts[0]['p_post'], $GLOBALS['FORUM_DB']) == $post) && (get_param_integer('keep_debug_notifications', 0) != 1)) {
-                warn_exit(do_lang_tempcode('DOUBLE_POST_PREVENTED'));
+                warn_exit(do_lang_tempcode('cns:DOUBLE_POST_PREVENTED'));
             }
         }
 
@@ -411,7 +411,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         cms_profile_start_for('cns_make_post:generate_resource_fs_moniker');
         require_code('resource_fs');
         generate_resource_fs_moniker('post', strval($post_id), null, null, true);
@@ -435,7 +435,9 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     require_code('autosave');
     clear_cms_autosave();
 
-    set_value('cns_post_count', strval(intval(get_value('cns_post_count')) + 1));
+    if (!get_mass_import_mode()) {
+        set_value('cns_post_count', strval(intval(get_value('cns_post_count')) + 1));
+    }
 
     cms_profile_end_for('cns_make_post', '#' . strval($post_id));
 
@@ -463,19 +465,32 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
         if ($all_forum_post_count_info_cache === null) {
             $all_forum_post_count_info_cache = collapse_2d_complexity('id', 'f_post_count_increment', $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
         }
-        $member_post_count = 0;
-        foreach ($all_forum_post_count_info_cache as $forum_id => $post_count_increment) {
-            if ($post_count_increment == 1) {
-                $map = array('p_poster' => $member_id, 'p_cache_forum_id' => $forum_id);
-                if (addon_installed('unvalidated')) {
-                    $map['p_validated'] = 1;
-                }
-                $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
+        if (array_values(array_unique($all_forum_post_count_info_cache)) == array(1)) {
+            // Optimisation, f_post_count_increment set on all forums
+            $map = array('p_poster' => $member_id);
+            if (addon_installed('unvalidated')) {
+                $map['p_validated'] = 1;
             }
-        }
-        $map = array('p_poster' => $member_id, 'p_cache_forum_id' => null);
-        if (addon_installed('unvalidated')) {
-            $map['p_validated'] = 1;
+            $member_post_count = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
+        } else {
+            // Forum posts
+            $member_post_count = 0;
+            foreach ($all_forum_post_count_info_cache as $forum_id => $post_count_increment) {
+                if ($post_count_increment == 1) {
+                    $map = array('p_poster' => $member_id, 'p_cache_forum_id' => $forum_id);
+                    if (addon_installed('unvalidated')) {
+                        $map['p_validated'] = 1;
+                    }
+                    $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
+                }
+            }
+
+            // Private topic posts
+            $map = array('p_poster' => $member_id, 'p_cache_forum_id' => null);
+            if (addon_installed('unvalidated')) {
+                $map['p_validated'] = 1;
+            }
+            $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
         }
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_num_posts' => $member_post_count), array('id' => $member_id));
     } else {

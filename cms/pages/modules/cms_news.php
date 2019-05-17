@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -421,7 +421,7 @@ class Module_cms_news extends Standard_crud_module
         $hidden = new Tempcode();
 
         if (get_value('disable_news_repimages') !== '1') {
-            $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'icons/news', false, $image));
+            $fields2->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_NEWS_IMAGE_OVERRIDE'), $hidden, 'image', 'icons/news', false, $image));
         }
 
         if ((addon_installed('calendar')) && (has_privilege(get_member(), 'scheduled_publication_times'))) {
@@ -823,8 +823,6 @@ class Module_cms_news extends Standard_crud_module
     public function _import_news()
     {
         check_privilege('mass_import');
-
-        set_mass_import_mode();
 
         $is_validated = post_param_integer('auto_validate', 0);
         if (!addon_installed('unvalidated')) {

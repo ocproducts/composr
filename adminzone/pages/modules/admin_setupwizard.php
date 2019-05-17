@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -1082,7 +1082,8 @@ class Module_admin_setupwizard
 
         $header_text = post_param_string('header_text');
         $name = post_param_string('site_name');
-        $font = post_param_string('font', 'Vera');
+        require_code('fonts');
+        $font = post_param_string('font', find_default_font());
         $installprofile = post_param_string('installprofile', '');
         $source_theme = post_param_string('source_theme', '');
 

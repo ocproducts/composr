@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -33,6 +33,8 @@ class Hook_task_import_members
      */
     public function run($default_password, $use_temporary_passwords, $path)
     {
+        set_mass_import_mode();
+
         require_lang('cns');
         require_code('cns_members_action');
         require_code('fields');
@@ -146,10 +148,10 @@ class Hook_task_import_members
                     }
 
                     // Tidy up forename
-                    $_forename = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', preg_replace('#[\s\.].*#', '', $forename));
+                    $_forename = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', cms_preg_replace_safe('#[\s\.].*#', '', $forename));
 
                     // Tidy up surname (last bit strips like 'OBE')
-                    $_surname = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', trim(preg_replace('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
+                    $_surname = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', trim(cms_preg_replace_safe('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
 
                     // Put it together
                     $line['Username'] = ucfirst($_forename) . ucfirst($_surname) . $year;
@@ -229,10 +231,10 @@ class Hook_task_import_members
             } else {
                 $email_address = null;
             }
-            if (preg_match('#^([^\s]*)\s+\(.*\)$#', $email_address, $matches) != 0) {
+            if (cms_preg_match_safe('#^([^\s]*)\s+\(.*\)$#', $email_address, $matches) != 0) {
                 $email_address = $matches[1];
             }
-            if (preg_match('#^.*\s+<(.*)>$#', $email_address, $matches) != 0) {
+            if (cms_preg_match_safe('#^.*\s+<(.*)>$#', $email_address, $matches) != 0) {
                 $email_address = $matches[1];
             }
             if ((array_key_exists($dob_key, $line)) && ($line[$dob_key] != '')) {
@@ -373,15 +375,24 @@ class Hook_task_import_members
             if ($new_member) {
                 if ($password === null) {
                     $password = $default_password;
+                    $using_default_password = true;
                     if ($password === null) {
                         continue;
                     }
+                } else {
+                    $using_default_password = false;
                 }
                 if ($salt === null) {
                     $salt = '';
                 }
                 if ($password_compatibility_scheme === null) {
                     $password_compatibility_scheme = ($use_temporary_passwords ? 'temporary' : '');
+                }
+
+                if ($using_default_password) {
+                    // Minimise setting time, so we aren't taking ages encrypting the same password (which presumably we know isn't very secure anyway)
+                    $cr_bak = get_option('crypt_ratchet');
+                    set_option('crypt_ratchet', '4');
                 }
 
                 $linked_id = cns_make_member(
@@ -428,6 +439,10 @@ class Hook_task_import_members
                 $all_members[$linked_id] = $username;
                 $all_members_flipped[$username] = $linked_id;
                 $num_added++;
+
+                if ($using_default_password) {
+                    set_option('crypt_ratchet', $cr_bak);
+                }
             } else {
                 $old_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($linked_id, 'm_username');
                 if ($old_username == $username) {
@@ -497,6 +512,11 @@ class Hook_task_import_members
         }
 
         $outputted_messages->attach(do_lang_tempcode('NUM_MEMBERS_IMPORTED', escape_html(integer_format($num_added)), escape_html(integer_format($num_edited))));
+
+        delete_cache_entry('side_stats');
+        delete_cache_entry('main_members');
+        delete_value('cns_newest_member_id');
+        delete_value('cns_newest_member_username');
 
         @unlink($path);
         sync_file($path);

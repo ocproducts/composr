@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -258,16 +258,30 @@ function _cms_http_request($url, $options = array())
     $filesystem_priority = $filesystem->may_run_for($url, $options);
 
     if ($curl_priority > $sockets_priority && $curl_priority > $file_wrapper_priority && $curl_priority > $filesystem_priority) {
-        $curl->run($url, $options);
-        return $curl;
-    } elseif ($sockets_priority > $file_wrapper_priority && $sockets_priority > $filesystem_priority) {
-        $sockets->run($url, $options);
-        return $sockets;
-    } elseif ($file_wrapper_priority > $filesystem_priority) {
-        $file_wrapper->run($url, $options);
-        return $file_wrapper;
+        $test = $curl->run($url, $options);
+        if ($test !== false) {
+            return $curl;
+        }
     }
+
+    if ($sockets_priority > $file_wrapper_priority && $sockets_priority > $filesystem_priority) {
+        $test = $sockets->run($url, $options);
+        if ($test !== false) {
+            return $sockets;
+        }
+    }
+
+    if ($file_wrapper_priority > $filesystem_priority) {
+        $test = $file_wrapper->run($url, $options);
+        if ($test !== false) {
+            return $file_wrapper;
+        }
+    }
+
     $filesystem->run($url, $options);
+    if ($test === false) {
+        fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
     return $filesystem;
 }
 
@@ -298,7 +312,7 @@ abstract class HttpDownloader
     protected $write_to_file = null; // ?resource. File handle to write to (null: do not do that)
     protected $referer = null; // ?string. The HTTP referer (null: none)
     protected $auth = null; // ?array. A pair: authentication username and password (null: none)
-    protected $timeout = 6.0; // float. The timeout
+    protected $timeout = 6.0; // float. The timeout (for connecting/stalling, not for overall download time); usually it is rounded up to the nearest second, depending on the downloader implementation
     protected $raw_post = false; // boolean. Whether to treat the POST parameters as a raw POST (rather than using MIME)
     protected $files = array(); // array. Files to send. Map between field name to file path
     protected $extra_headers = array(); // array. Extra headers to send
@@ -351,6 +365,7 @@ abstract class HttpDownloader
      *
      * @param  URLPATH $url The URL to download
      * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
+     * @return ~?string The data downloaded (null: error) (false: backend failed)
      */
     public function run($url, $options = array())
     {
@@ -602,6 +617,8 @@ abstract class HttpDownloader
         $this->data = $this->_run($url, $options);
         $this->detect_character_encoding();
         $DOWNLOAD_LEVEL--;
+
+        return $this->data;
     }
 
     /**
@@ -701,7 +718,7 @@ abstract class HttpDownloader
      *
      * @param  URLPATH $url The URL to download
      * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
-     * @return ?string The data downloaded (null: error)
+     * @return ~?string The data downloaded (null: error) (false: backend failed)
      */
     abstract protected function _run($url, $options);
 
@@ -950,7 +967,7 @@ class HttpDownloaderCurl extends HttpDownloader
      *
      * @param  URLPATH $url The URL to download
      * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
-     * @return ?string The data downloaded (null: error)
+     * @return ~?string The data downloaded (null: error) (false: backend failed)
      */
     protected function _run($url, $options)
     {
@@ -1072,15 +1089,20 @@ class HttpDownloaderCurl extends HttpDownloader
         if ($curl_result === false) {
             // Error
             $error = curl_error($ch);
+            $curl_errno = curl_errno($ch);
             curl_close($ch);
 
-            if ($this->trigger_error) {
-                warn_exit(protect_from_escaping($error), false, true);
-            } else {
-                $this->message_b = protect_from_escaping($error);
+            $possible_internal_curl_errors = array(1, 2, 4, 5, 16, 34, 35, 41, 43, 45, 48, 52, 53, 54, 55, 56, 58, 59, 60, 64, 66, 77, 80, 81, 82, 83, 89, 90, 91, 92);
+            if (!in_array($curl_errno, $possible_internal_curl_errors)) {
+                if ($this->trigger_error) {
+                    warn_exit(protect_from_escaping($error), false, true);
+                } else {
+                    $this->message_b = protect_from_escaping($error);
+                }
+                return null;
             }
 
-            return null;
+            return false; // Failed on this backend
         }
 
         // Response metadata that cURL lets us gather easily
@@ -1296,7 +1318,7 @@ class HttpDownloaderSockets extends HttpDownloader
      *
      * @param  URLPATH $url The URL to download
      * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
-     * @return ?string The data downloaded (null: error)
+     * @return ~?string The data downloaded (null: error) (false: backend failed)
      */
     protected function _run($url, $options)
     {
@@ -1321,11 +1343,11 @@ class HttpDownloaderSockets extends HttpDownloader
 
         if ($mysock !== false) {
             if (function_exists('stream_set_timeout')) {
-                if (@stream_set_timeout($mysock, intval($this->timeout)) === false) {
+                if (@stream_set_timeout($mysock, intval($this->timeout), fmod($timeout, 1.0) / 1000000.0) === false) {
                     $mysock = false;
                 }
             } elseif (function_exists('socket_set_timeout')) {
-                if (@socket_set_timeout($mysock, intval($this->timeout)) === false) {
+                if (@socket_set_timeout($mysock, intval($this->timeout), fmod($timeout, 1.0) / 1000000.0) === false) {
                     $mysock = false;
                 }
             }
@@ -1372,8 +1394,28 @@ class HttpDownloaderSockets extends HttpDownloader
             $first_fail_time = null;
             $chunked = false;
             $buffer_unprocessed = '';
+            $_frh = array($mysock);
+            $_fwh = null;
             $time_init = time();
+            $line = '';
             while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
+                if ((function_exists('stream_select')) && (count($_frh) > 0) && (!stream_select($_frh, $_fwh, $_fwh, intval($this->timeout), intval(fmod($this->timeout, 1.0) / 1000000.0)))) {
+                    if (($input === '') && ($time_init + $this->timeout < time())) {
+                        if ((!$chunked) || ($buffer_unprocessed == '')) {
+                            $line = false; // Manual timeout
+                            if ($this->trigger_error) {
+                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_CONNECTION_STALLED', escape_html($url)));
+                            } else {
+                                $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_CONNECTION_STALLED', escape_html($url));
+                            }
+
+                            $this->message = 'connection-stalled';
+
+                            return null;
+                        }
+                    }
+                }
+
                 $line = @fread($mysock, 32000);
                 if (($input === '') && ($time_init + $this->timeout < time())) {
                     $line = false; // Manual timeout
@@ -1733,7 +1775,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
      *
      * @param  URLPATH $url The URL to download
      * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
-     * @return ?string The data downloaded (null: error)
+     * @return ~?string The data downloaded (null: error) (false: backend failed)
      */
     protected function _run($url, $options)
     {
@@ -1894,7 +1936,7 @@ class HttpDownloaderFilesystem extends HttpDownloader
      *
      * @param  URLPATH $url The URL to download
      * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
-     * @return ?string The data downloaded (null: error)
+     * @return ~?string The data downloaded (null: error) (false: backend failed)
      */
     protected function _run($url, $options)
     {

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -76,9 +76,9 @@ class comcode_wysiwyg_test_set extends cms_test_case
         $this->assertTrue($out == $got);
     }
 
-    public function testStaffNoteTag() // WYSIWYG_COMCODE__XML_BLOCK_ESCAPED
+    public function testStaffNoteTag() // WYSIWYG_COMCODE__XML_BLOCK
     {
-        $this->assertTrue(wysiwyg_comcode_markup_style('staff_note') == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED);
+        $this->assertTrue(wysiwyg_comcode_markup_style('staff_note') == WYSIWYG_COMCODE__XML_BLOCK);
 
         // Not semihtml...
 
@@ -91,15 +91,15 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "<comcode-staff_note>a&lt;br /&gt;<br />\nb</comcode-staff_note>";
+        $out = "<comcode-staff_note>a<br />\nb</comcode-staff_note>";
 
         $got = add_wysiwyg_comcode_markup('staff_note', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);
     }
 
-    public function testCodeTag() // WYSIWYG_COMCODE__XML_BLOCK_ESCAPED
+    public function testCodeTag() // WYSIWYG_COMCODE__XML_BLOCK
     {
-        $this->assertTrue(wysiwyg_comcode_markup_style('code') == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED);
+        $this->assertTrue(wysiwyg_comcode_markup_style('code') == WYSIWYG_COMCODE__XML_BLOCK);
 
         // Not semihtml...
 
@@ -112,7 +112,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "<comcode-code>a&lt;br /&gt;<br />\nb</comcode-code>";
+        $out = "<comcode-code>a<br />\nb</comcode-code>";
 
         $got = add_wysiwyg_comcode_markup('code', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);

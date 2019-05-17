@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -42,7 +42,7 @@ class Database_Static_mysql extends Database_super_mysql
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
      * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
-     * @return ?array A database connection (note for MySQL, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: failed)
+     * @return ?mixed A database connection (note for this driver, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: failed)
      */
     public function get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
@@ -56,7 +56,7 @@ class Database_Static_mysql extends Database_super_mysql
         }
 
         // Potential caching
-        $x = serialize(array($db_name, $db_host));
+        $x = serialize(array($db_user, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db[1] !== $db_name) {
                 mysql_select_db($db_name, $this->cache_db[$x]);
@@ -131,6 +131,16 @@ class Database_Static_mysql extends Database_super_mysql
         if ($this->last_select_db[1] !== $db_name) {
             mysql_select_db($db_name, $db_link);
             $this->last_select_db = $db_name;
+        }
+
+        static $version = null;
+        if ($version === null) {
+            $version = @mysql_get_server_info($db);
+        }
+        if ($version !== false) {
+            if (version_compare($version, '8', '>=')) {
+                $query = $this->fix_mysql8_query($query);
+            }
         }
 
         $this->apply_sql_limit_clause($query, $max, $start);

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -514,6 +514,7 @@ class Hook_addon_registry_galleries
                 'FULL_URL' => placeholder_url(),
                 'THUMB_URL' => placeholder_url(),
                 'CAT' => lorem_word(),
+                'COMMENT_COUNT' => true,
             )), null, '', true),
         );
     }
@@ -546,6 +547,7 @@ class Hook_addon_registry_galleries
                 'EDIT_DATE_RAW' => placeholder_date(),
                 'VIEWS' => placeholder_id(),
                 '_EDIT_URL' => placeholder_url(),
+                'COMMENT_COUNT' => true,
             );
             $entry = do_lorem_template('GALLERY_IMAGE', $map);
             $entries->attach(do_lorem_template('GALLERY_ENTRY_WRAP', array('ENTRY' => $entry) + $map));
@@ -663,6 +665,7 @@ class Hook_addon_registry_galleries
             'VIDEO_DETAILS' => lorem_phrase(),
             'VIEW_URL' => placeholder_url(),
             'EDIT_URL' => placeholder_url(),
+            'COMMENT_COUNT' => true,
         ));
         $tags = do_lorem_template('TAGS', array(
             'TAG' => lorem_word(),
@@ -783,6 +786,7 @@ class Hook_addon_registry_galleries
             'THUMB' => placeholder_url(),
             'VIEW_URL' => placeholder_url(),
             'EDIT_URL' => placeholder_url(),
+            'COMMENT_COUNT' => true,
         ));
         $tags = do_lorem_template('TAGS', array(
             'TAG' => lorem_word(),
@@ -908,6 +912,7 @@ class Hook_addon_registry_galleries
             'ADD_DATE_RAW' => placeholder_date(),
             'VIEWS' => placeholder_number(),
             '_EDIT_URL' => placeholder_url(),
+            'COMMENT_COUNT' => true,
         );
         $entry = do_lorem_template('GALLERY_IMAGE', $map);
         $entries = new Tempcode();
@@ -935,6 +940,7 @@ class Hook_addon_registry_galleries
             'FULL_URL' => placeholder_url(),
             'THUMB_URL' => placeholder_url(),
             'CAT' => lorem_word(),
+            'COMMENT_COUNT' => true,
         );
         $entry = do_lorem_template('GALLERY_VIDEO', $map);
         $entries->attach(do_lorem_template('GALLERY_ENTRY_WRAP', array('ENTRY' => $entry) + $map));

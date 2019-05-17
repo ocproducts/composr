@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -202,6 +202,8 @@ function _custom_comcode_import($db)
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_custom_bbcode')) {
             $custom_bbcode = $GLOBALS['FORUM_DRIVER']->get_custom_bbcode();
             foreach ($custom_bbcode as $code) {
+                $code['tag'] = strtolower($code['tag']);
+
                 $VALID_COMCODE_TAGS[$code['tag']] = true;
                 if ($code['block_tag'] == 1) {
                     $BLOCK_TAGS[$code['tag']] = true;
@@ -234,6 +236,8 @@ function _custom_comcode_import($db)
             $tags = array_merge($tags, $db->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
         }
         foreach ($tags as $tag) {
+            $tag['tag_tag'] = strtolower($tag['tag_tag']);
+
             $VALID_COMCODE_TAGS[$tag['tag_tag']] = true;
             if ($tag['tag_block_tag'] == 1) {
                 $BLOCK_TAGS[$tag['tag_tag']] = true;
@@ -255,6 +259,8 @@ function _custom_comcode_import($db)
             if ($tag === null) {
                 continue;
             }
+
+            $tag['tag_tag'] = strtolower($tag['tag_tag']);
 
             $VALID_COMCODE_TAGS[$tag['tag_tag']] = true;
             if ($tag['tag_block_tag'] == 1) {
@@ -849,7 +855,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     if (($i == 0) && (str_replace(array('&nbsp;', '<br />', ' '), array('', '', ''), trim($part)) == '')) {
                         continue;
                     }
-                    $temp_tpl->attach('<li>' . preg_replace('#<br />(\&nbsp;|\s)*$#D', '', preg_replace('#^<br />(\&nbsp;|\s)*#D', '', $part)) . '</li>');
+                    $temp_tpl->attach('<li>' . cms_preg_replace_safe('#<br />(\&nbsp;|\s)*$#D', '', cms_preg_replace_safe('#^<br />(\&nbsp;|\s)*#D', '', $part)) . '</li>');
                 }
                 $temp_tpl->attach('</' . $tag . '>');
             } else {
@@ -858,7 +864,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     if (($i == 0) && (str_replace(array('&nbsp;', '<br />', ' '), array('', '', ''), trim($part)) == '')) {
                         continue;
                     }
-                    $temp_tpl->attach('<li>' . preg_replace('#<br />(\&nbsp;|\s)*$#D', '', preg_replace('#^<br />(\&nbsp;|\s)*#D', '', $part)) . '</li>');
+                    $temp_tpl->attach('<li>' . cms_preg_replace_safe('#<br />(\&nbsp;|\s)*$#D', '', preg_replace('#^<br />(\&nbsp;|\s)*#D', '', $part)) . '</li>');
                 }
                 $temp_tpl->attach('</ul>');
             }
@@ -2529,6 +2535,10 @@ function get_tutorial_link($name)
  */
 function set_tutorial_link($name, $value)
 {
+    if (strpos($value, ':search:') !== false) {
+        return; // Do not want tutorial links to search results page
+    }
+
     if (get_tutorial_link($name) !== $value) {
         $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
         $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition

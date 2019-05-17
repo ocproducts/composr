@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 */
 
 /*{+START,CSS_MODE,mobile}*/
@@ -38,6 +38,10 @@
 	{$BETA_CSS_PROPERTY,display: flex;}
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	margin: -0.5em 0 0 -0.5em;
+}
+
+.filedump-filter #type_filter_filedump_1, .filedump-filter #type_filter_filedump_2 {
+	max-width: 5em;
 }
 
 .filedump-thumbnails .box {

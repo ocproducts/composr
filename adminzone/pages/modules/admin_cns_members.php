@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -842,8 +842,6 @@ class Module_admin_cns_members
     public function _import_csv()
     {
         check_privilege('mass_import');
-
-        set_mass_import_mode();
 
         $default_password = post_param_string('default_password', false, INPUT_FILTER_NONE);
 

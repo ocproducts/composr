@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -357,6 +357,25 @@ function init__locations()
         'WI' => 'Wisconsin',
         'WY' => 'Wyoming',
     );
+
+    if (user_lang() != fallback_lang()) {
+        require_lang('locations');
+
+        foreach ($COUNTRY_LIST as $continent_text => &$countries) {
+            foreach ($countries as $country_code => &$country_text) {
+                $_country_text = do_lang('COUNTRY_' . $country_code, null, null, null, null, false);
+                if ($_country_text !== null) {
+                    $country_text = $_country_text;
+                }
+            }
+
+            $_continent_text = do_lang('CONTINENT_' . fix_id($continent_text), null, null, null, null, false);
+            if (($_continent_text !== null) && ($_continent_text != $continent_text)) {
+                $COUNTRY_LIST[$_continent_text] = $countries;
+                unset($COUNTRY_LIST[$continent_text]);
+            }
+        }
+    }
 }
 
 /**

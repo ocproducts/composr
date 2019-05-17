@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -28,8 +28,8 @@ class _critical_error_display_test_set extends cms_test_case
 
         $c_path = get_file_base() . '/_config.php';
         rename($c_path, $c_path . '.old');
-        $result = http_get_contents(get_base_url() . '/index.php');
-        $this->assertTrue(strpos($result, '_critical_error.html') !== false);
+        $result = cms_http_request(get_base_url() . '/index.php');
+        $this->assertTrue(strpos($result->download_url, '_critical_error.html') !== false);
         rename($c_path . '.old', $c_path);
 
         unlink($e_path);

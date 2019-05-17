@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -318,9 +318,9 @@ class Module_admin_email_log
 
         $fields['MESSAGE'] = protect_from_escaping(comcode_to_tempcode($row['m_message']));
 
-        $fields['TEXT'] = do_template('WITH_WHITESPACE', array('_GUID' => 'b141337923279a8a12646d0e29230f60', 'CONTENT' => $body));
+        $fields['TEXT'] = with_whitespace($body);
 
-        $fields['_COMCODE'] = do_template('WITH_WHITESPACE', array('_GUID' => 'a141337923279a8a12646d0e29230f60', 'CONTENT' => $row['m_message']));
+        $fields['_COMCODE'] = with_whitespace($row['m_message'], true);
 
         $attachments = @unserialize($row['m_attachments']);
         if (!is_array($attachments)) {

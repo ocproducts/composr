@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -223,8 +223,11 @@ function user_lang()
             $lang = filter_naughty($lang);
         }
     }
+    if (($lang != '') && (!does_lang_exist($lang))) {
+        $lang = '';
+    }
 
-    // Still booting up somehow, so we need to do a non-cache exit
+    // Still booting up somehow, so we need to do a cruder non-cache-setting code branch
     if ((!function_exists('get_member')) || ($USER_LANG_LOOP) || ($MEMBER_CACHED === null)) {
         // Quick exit: Cache
         global $USER_LANG_EARLY_CACHED;
@@ -232,17 +235,13 @@ function user_lang()
             return $USER_LANG_EARLY_CACHED;
         }
 
-        // Quick exit: Was from URL
-        if (($lang != '') && (does_lang_exist($lang))) {
-            $USER_LANG_EARLY_CACHED = $lang;
-            return $USER_LANG_EARLY_CACHED;
-        }
-
         // In browser?
-        if ((array_key_exists('GET_OPTION_LOOP', $GLOBALS)) && (!$GLOBALS['GET_OPTION_LOOP']) && (function_exists('get_option')) && (get_option('detect_lang_browser') == '1')) {
-            $lang = get_lang_browser();
-            if ($lang === null) {
-                $lang = '';
+        if ($lang == '') {
+            if ((array_key_exists('GET_OPTION_LOOP', $GLOBALS)) && (!$GLOBALS['GET_OPTION_LOOP']) && (function_exists('get_option')) && (get_option('detect_lang_browser') == '1')) {
+                $lang = get_lang_browser();
+                if ($lang === null) {
+                    $lang = '';
+                }
             }
         }
 
@@ -260,7 +259,7 @@ function user_lang()
     $USER_LANG_LOOP = true;
 
     // In member or browser?
-    if (($lang == '') || (!does_lang_exist($lang))) {
+    if ($lang == '') {
         if (
             (
                 (get_forum_type() == 'cns') ||
@@ -358,7 +357,7 @@ function does_lang_exist($lang)
     $file_b = get_custom_file_base() . '/lang_custom/' . $lang;
     $file_c = get_file_base() . '/lang_custom/' . $lang;
 
-    return is_dir($file_a) || is_dir($file_b) || is_dir($file_c);
+    return is_dir($file_c) || is_dir($file_b) || is_dir($file_a);
 }
 
 /**

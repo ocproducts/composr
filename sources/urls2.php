@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -27,13 +27,17 @@
  * @param  ID_TEXT $new_zone The zone
  * @param  ID_TEXT $new_current_script The running script
  * @param  boolean $erase_keep_also Whether to get rid of keep_ variables in current URL
+ * @param  ?boolean $new_in_self_routing_script Whether we are in a self-routing script (null: if new_current_script is 'index')
  * @return array A list of parameters that would be required to be passed back to reset the state
  */
-function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_script = 'index', $erase_keep_also = false)
+function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_script = 'index', $erase_keep_also = false, $new_in_self_routing_script = null)
 {
+    global $IN_SELF_ROUTING_SCRIPT;
+
     $old_get = $_GET;
     $old_zone = get_zone_name();
     $old_current_script = current_script();
+    $old_in_self_routing_script = $IN_SELF_ROUTING_SCRIPT;
 
     foreach ($_GET as $key => $val) {
         if (is_integer($key)) {
@@ -58,11 +62,16 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
 
     global $PAGE_NAME_CACHE;
     $PAGE_NAME_CACHE = null;
+    if ($new_in_self_routing_script === null) {
+        $IN_SELF_ROUTING_SCRIPT = ($new_current_script == 'index');
+    } else {
+        $IN_SELF_ROUTING_SCRIPT = $new_in_self_routing_script;
+    }
     global $RUNNING_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE;
     $RUNNING_SCRIPT_CACHE = array();
     $WHAT_IS_RUNNING_CACHE = $new_current_script;
 
-    return array($old_get, $old_zone, $old_current_script, true);
+    return array($old_get, $old_zone, $old_current_script, $old_in_self_routing_script, true);
 }
 
 /**
@@ -105,6 +114,10 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = array
 
             if (is_array($val)) {
                 foreach ($val as $_key => $_val) { // We'll only support one level deep. Also no keep parameter array support.
+                    if (is_array($_val)) {
+                        continue; // Nested $_POST arrays should not happen in Composr, but may happen by hack-bots
+                    }
+
                     if ($process_for_key) {
                         $out->attach(form_input_hidden($key . '[' . $_key . ']', $_val));
                     }
@@ -507,15 +520,17 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
-    $page = fix_page_name_dashing($zone, $attributes['page']);
+    $page = $attributes['page']; // Any incorrect dashing will be fixed inside process_url_monikers, if there's a moniker
 
     // Resolve monikers back to canonical URL parameters
     $type = array_key_exists('type', $attributes) ? $attributes['type'] : null;
     $id = array_key_exists('id', $attributes) ? $attributes['id'] : null;
-    process_url_monikers(false, false, $page, $zone, $type, $id, false);
+    if (!process_url_monikers(false, false, $page, $zone, $type, $id, false)) {
+        $page = fix_page_name_dashing($zone, $attributes['page']); // Not via a moniker
+    }
 
     require_code('site');
-    if (_request_page($page, $zone) === false) {
+    if (_request_page($page, $zone, null, fallback_lang()) === false) {
         return '';
     }
 
@@ -536,6 +551,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 
         $page_link .= ':' . $attributes['id'];
     }
+    $devtest_there = array_key_exists('keep_devtest', $attributes);
+    if ($devtest_there) {
+        unset($attributes['keep_devtest']);
+    }
     foreach ($attributes as $key => $val) {
         if (!is_string($val)) {
             $val = strval($val);
@@ -554,7 +573,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     // Confirm it loops correctly
     if ($perfect_only) {
         push_no_keep_context();
-        $conv_url = page_link_to_url($page_link);
+        $conv_url = page_link_to_url($page_link . ($devtest_there ? ':keep_devtest=1' : ''));
         pop_no_keep_context();
         if ($conv_url != $url_in) {
             return '';
@@ -685,16 +704,18 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
             return $manually_chosen;
         }
 
-        // Deprecate old one if already exists
-        $old = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
-        if ($old !== null) {
+        // Deprecate old one(s) if already existing (there should only be 1 non-deprecated, but possible DB state may have gotten into a mess somehow)
+        $old_moniker_okay = null;
+        $old_monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_moniker'), array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
+        foreach (collapse_1d_complexity('m_moniker', $old_monikers) as $old) {
             // See if it is same as current
             if ($moniker === null) {
                 $scope = _give_moniker_scope($page, $type, $id, $zone, '');
                 $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, $old, $scope);
             }
             if ($moniker == $old) {
-                return $old; // hmm, ok it can stay actually
+                $old_moniker_okay = $old; // hmm, ok it can stay actually
+                continue;
             }
 
             // It's not. Although, the later call to _choose_moniker will allow us to use the same stem as the current active one, or even re-activate an old deprecated one, so long as it is on this same m_resource_page/m_resource_page/m_resource_id.
@@ -712,6 +733,10 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
                 $category_page = $parts[1];
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_deprecated=1 WHERE ' . db_string_equal_to('m_resource_page', $category_page) . ' AND m_moniker LIKE \'' . db_encode_like($old . '/%') . '\''); // Deprecate
             }
+        }
+
+        if ($old_moniker_okay !== null) {
+            return $old_moniker_okay;
         }
     }
 

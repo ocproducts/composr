@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -733,8 +733,6 @@ class Module_cms_blogs extends Standard_crud_module
     public function _import_wordpress()
     {
         check_privilege('mass_import', null, null, 'cms_news');
-
-        set_mass_import_mode();
 
         // Wordpress posts, XML file importing method
         if ((get_param_string('method') == 'xml')) {

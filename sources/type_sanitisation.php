@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -43,9 +43,11 @@ function init__type_sanitisation()
                 return preg_match('#^[\w\-]*$#', $string) != 0;
             }
 
-            $test = @preg_match('#^[\pL\w\-\.]*$#u', $string) != 0; // unicode version, may fail on some servers
-            if ($test !== false) {
-                return $test;
+            if (get_charset() == 'utf-8') {
+                $test = @preg_match('#^[\pL\w\-\.]*$#u', $string) != 0; // unicode version, may fail on some servers
+                if ($test !== false) {
+                    return $test;
+                }
             }
             return preg_match('#^[\w\-\.]*$#', $string) != 0;
         }

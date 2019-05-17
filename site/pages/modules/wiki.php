@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -1017,23 +1017,20 @@ class Module_wiki
         }
 
         if ($mode == 'edit') {
-            $page_id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_posts', 'page_id', array('id' => $post_id));
-            if ($page_id === null) {
+            $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $post_id), '', 1);
+            if (!array_key_exists(0, $rows)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_post'));
             }
-
-            $_id = get_param_wiki_chain('id', strval($page_id));
-            $id = $_id[0];
-
-            $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $post_id), '', 1);
             $myrow = $rows[0];
 
-            if (!has_category_access(get_member(), 'wiki_page', strval($myrow['page_id']))) {
+            $page_id = $myrow['page_id'];
+
+            if (!has_category_access(get_member(), 'wiki_page', strval($page_id))) {
                 access_denied('CATEGORY_ACCESS');
             }
 
             $original_poster = $myrow['member_id'];
-            check_edit_permission('low', $original_poster, array('wiki_page', $myrow['page_id']), 'cms_wiki');
+            check_edit_permission('low', $original_poster, array('wiki_page', $page_id), 'cms_wiki');
 
             // If we are editing, we need to retrieve the message
             $message = get_translated_text($myrow['the_message']);
@@ -1042,7 +1039,7 @@ class Module_wiki
             require_code('content2');
             $specialisation->attach(metadata_get_fields('wiki_post', strval($post_id)));
 
-            if (has_delete_permission('low', get_member(), $original_poster, 'cms_wiki', array('wiki_page', $myrow['page_id']))) {
+            if (has_delete_permission('low', get_member(), $original_poster, 'cms_wiki', array('wiki_page', $page_id))) {
                 $specialisation->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '569be0b840914473a0928606a045f838', 'TITLE' => do_lang_tempcode('ACTIONS'))));
                 $specialisation->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
             }
@@ -1053,18 +1050,18 @@ class Module_wiki
 
             list($warning_details, $ping_url) = handle_conflict_resolution();
 
-            if (has_privilege(get_member(), 'bypass_validation_lowrange_content', 'cms_wiki', array('wiki_page', $myrow['page_id']))) {
+            if (has_privilege(get_member(), 'bypass_validation_lowrange_content', 'cms_wiki', array('wiki_page', $page_id))) {
                 $specialisation->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'wiki_post'), 'validated', $validated == 1));
             }
         } else {
             $_id = get_param_wiki_chain('id');
-            $id = $_id[0];
+            $page_id = $_id[0];
 
-            if ($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $id)) >= intval(get_option('general_safety_listing_limit'))) {
+            if ($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $page_id)) >= intval(get_option('general_safety_listing_limit'))) {
                 warn_exit(do_lang_tempcode('TOO_MANY_WIKI_POSTS'));
             }
 
-            check_submit_permission('low', array('wiki_page', $id), 'cms_wiki');
+            check_submit_permission('low', array('wiki_page', $page_id), 'cms_wiki');
 
             $message = '';
 
@@ -1134,7 +1131,7 @@ class Module_wiki
 
         $breadcrumbs = breadcrumb_segments_to_tempcode(wiki_breadcrumbs($chain, null, true, true));
 
-        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', strval($id), INPUT_FILTER_GET_COMPLEX)), '_SELF');
+        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', strval($page_id), INPUT_FILTER_GET_COMPLEX)), '_SELF');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_post', 'id' => get_param_string('id', strval(db_get_first_id()), INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($_redir_url)), '_SELF');
 
         $hidden_fields->attach(form_input_hidden('post_id', ($post_id === null) ? '' : strval($post_id)));

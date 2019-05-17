@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -454,6 +454,7 @@ class Module_admin_version
                 'p_block_constraints' => 'LONG_TEXT',
                 'p_time' => 'TIME',
             ));
+            $GLOBALS['SITE_DB']->create_index('temp_block_permissions', 'p_session_id', array('p_session_id'));
 
             $GLOBALS['SITE_DB']->create_table('cron_caching_requests', array(
                 'id' => '*AUTO',

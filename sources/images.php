@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -38,7 +38,39 @@ function init__images()
 }
 
 /**
- * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ * Find image dimensions of a URL. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ *
+ * @param  URLPATH $url The URL to the image file
+ * @param  boolean $only_if_local Whether only to accept local URLs (usually for performance reasons)
+ * @return ~array The width and height (false: error)
+ */
+function cms_getimagesize_url($url, $only_if_local = false)
+{
+    if (url_is_local($url)) {
+        $url = get_custom_base_url() . '/' . $url;
+    }
+
+    $base_url = get_base_url();
+    $custom_base_url = get_custom_base_url();
+
+    if ((strpos($url, '.php') === false) && (substr($url, 0, strlen($base_url)) == $base_url)) {
+        $details = cms_getimagesize(get_file_base() . '/' . urldecode(substr($url, strlen($base_url) + 1)));
+    } elseif ((strpos($url, '.php') === false) && (substr($url, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($url, IMAGE_CRITERIA_GD_READ))) {
+        $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($url, strlen($custom_base_url) + 1)));
+    } else {
+        if ($only_if_local) {
+            return false;
+        }
+
+        $from_file = http_get_contents($url, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
+        $details = cms_getimagesizefromstring($from_file, get_file_extension($url));
+    }
+
+    return $details;
+}
+
+/**
+ * Find image dimensions of a file path. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
  * @param  string $path The path to the image file
  * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
@@ -158,7 +190,8 @@ function do_image_thumb($url, $caption = '', $js_tooltip = false, $is_thumbnail_
 
     $url = preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $url);
 
-    $box_size = (($width === null) && ($height === null));
+    $default_size = ($width === null) && ($height === null);
+    $box_size = $default_size;
 
     if ($width === null) {
         $width = intval(get_option('thumb_width'));
@@ -172,7 +205,10 @@ function do_image_thumb($url, $caption = '', $js_tooltip = false, $is_thumbnail_
     }
 
     if (!$is_thumbnail_already) {
-        $new_name = strval($width) . '_' . strval($height) . '_';
+        $new_name = '';
+        if (!$default_size) {
+            $new_name .= strval($width) . '_' . strval($height) . '_';
+        }
         if ($only_make_smaller) {
             $new_name .= 'only_smaller_';
         }

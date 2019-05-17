@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -1602,6 +1602,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/tut_sqlserver.txt',
             'docs/pages/comcode_custom/EN/sup_youtube_channel_integration_block_addon_documentation.txt',
             'docs/pages/comcode_custom/EN/tut_intl_maintenance.txt',
+            'docs/pages/comcode_custom/EN/sup_conposr.txt',
 
             'docs/composr-api-template/README.md',
             'docs/composr-api-template/class.xsl',

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -47,6 +47,11 @@ abstract class FieldsSearchHook
      */
     protected function _get_extra_sort_fields($catalogue_name)
     {
+        static $EXTRA_SORT_FIELDS_CACHE = array();
+        if (array_key_exists($catalogue_name, $EXTRA_SORT_FIELDS_CACHE)) {
+            return $EXTRA_SORT_FIELDS_CACHE[$catalogue_name];
+        }
+
         $extra_sort_fields = array();
 
         if (addon_installed('catalogues')) {
@@ -61,6 +66,8 @@ abstract class FieldsSearchHook
                 }
             }
         }
+
+        $EXTRA_SORT_FIELDS_CACHE[$catalogue_name] = $extra_sort_fields;
 
         return $extra_sort_fields;
     }

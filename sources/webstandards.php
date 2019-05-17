@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -486,7 +486,7 @@ function init__webstandards()
 
     global $REQUIRE_ANCESTOR;
     $REQUIRE_ANCESTOR = array(
-        'textarea' => 'form',
+        //'textarea' => 'form',
         //'input' => 'form',
         //'button' => 'form',
         'option' => 'form',

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -47,10 +47,10 @@ class file_type_whitelisting_test_set extends cms_test_case
         sort($file_types);
 
         $file_types_expected = $this->file_types;
-        $file_types_expected = array_diff($file_types_expected, array('exe', 'dmg', 'php', 'htm', 'html', 'svg', 'css', 'js', 'json', 'woff', 'xml', 'xsd', 'xsl', 'rss', 'atom')); // No executable or web formats should be uploaded by non-admins
+        $file_types_expected = array_diff($file_types_expected, array('exe', 'dmg', 'htm', 'html', 'svg', 'css', 'js', 'json', 'woff', 'xml', 'xsd', 'xsl', 'rss', 'atom')); // No executable or web formats should be uploaded by non-admins
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected);
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . implode(', ', array_merge(array_diff($file_types_expected, $file_types), array_diff($file_types, $file_types_expected))));
     }
 
     public function testConfigValidTypes()

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -331,6 +331,7 @@ class Hook_addon_registry_newsletter
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(
                 'BLOCK_ID' => lorem_word(),
+                'BLOCK_PARAMS' => '',
                 'URL' => placeholder_url(),
                 'NEWSLETTER_TITLE' => lorem_word(),
                 'NID' => placeholder_id(),

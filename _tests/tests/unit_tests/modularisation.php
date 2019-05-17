@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -55,7 +55,7 @@ class modularisation_test_set extends cms_test_case
             }
 
             foreach ($d as $path) {
-                $this->assertTrue(((!array_key_exists($path, $seen)) || (strpos($path, '_custom') !== false)), 'Double referenced: ' . $path);
+                $this->assertTrue(((!array_key_exists($path, $seen)) || (strpos($path, '_custom/') !== false)), 'Double referenced: ' . $path);
                 $seen[$path] = true;
 
                 if (preg_match('#^themes/default/images/(icons|icons_monochrome)/#', $path) != 0) {

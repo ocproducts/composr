@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -67,6 +67,7 @@ class Block_main_sortable_table
 
         require_javascript('sortable_tables');
         require_css('sortable_tables');
+        require_lang('sortable_tables');
 
         disable_php_memory_limit();
 

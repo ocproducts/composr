@@ -123,14 +123,14 @@ Keywords are considered language-neutral by default.
 You can then define language strings in any language pack's [tt]global[/tt] language file to override for a particular language.
 
 E.g.
-[code="ini"]
+[code="INI"]
 TAG_OVERRIDE_defaultness=standardeinstellung
 [/code]
 
 If you have non-alphanumeric characters then they should be substituted with an [tt]_[/tt] (underscore) symbol in the language string name.
 
 E.g. for "An example":
-[code="ini"]
+[code="INI"]
 TAG_OVERRIDE_An_example=ein Beispiel
 [/code]
 

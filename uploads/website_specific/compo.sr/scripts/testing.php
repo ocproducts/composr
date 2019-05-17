@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licensing information.
@@ -46,14 +46,26 @@ if (!addon_installed('composr_homesite')) {
 
 require_code('composr_homesite');
 
+$result = mixed();
+
 switch (get_param_string('type')) {
     case 'test_upload':
         $result = true;
         break;
 
     case 'http_status_check':
-        $http_result = cms_http_request(get_param_string('url', false, INPUT_FILTER_URL_GENERAL), array('bytes_limit' => 0));
-        $result = $http_result->message;
+        $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            $http_result = cms_http_request($url, array('bytes_limit' => 0, 'trigger_error' => false));
+            $result = @strval($http_result->message);
+
+            if ($result === '200') {
+                break;
+            }
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
+            }
+        }
         break;
 
     default:

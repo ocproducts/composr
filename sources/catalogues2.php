@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -182,7 +182,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
 
     log_it('ADD_CATALOGUE', $name, $_title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('catalogue', $name, null, null, true);
     }
@@ -192,6 +192,10 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
 
     if (substr($name, 0, 1) == '_') {
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
+    }
+
+    if (function_exists('decache')) {
+        delete_cache_entry('_field_type_selection');
     }
 
     require_code('sitemap_xml');
@@ -386,7 +390,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
 
     log_it('EDIT_CATALOGUE', $name, $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         if ($old_name != $name) { // We want special stability in catalogue addressing
             require_code('resource_fs');
             generate_resource_fs_moniker('catalogue', $name);
@@ -396,6 +400,8 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     if (substr($name, 0, 1) == '_') {
         persistent_cache_delete('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
     }
+
+    delete_cache_entry('_field_type_selection');
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit('_SEARCH:catalogues:index:' . $name);
@@ -452,7 +458,7 @@ function actual_delete_catalogue($name)
 
     log_it('DELETE_CATALOGUE', $name, $_title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('catalogue', $name);
     }
@@ -628,7 +634,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         copy_notifications_to_new_child('catalogue_entry', strval($parent_id), strval($id));
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('catalogue_category', strval($id), null, null, true);
     }
@@ -839,7 +845,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
 
     delete_cache_entry('main_cc_embed');
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('catalogue_category', strval($id));
     }
@@ -919,7 +925,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     delete_lang($myrow['cc_title']);
     delete_lang($myrow['cc_description']);
 
-    $old_parent_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_parent_id', array('id' => $id));
+    $old_parent_id = $myrow['cc_parent_id'];
 
     $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('id' => $id), '', 1);
 
@@ -937,7 +943,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     delete_cache_entry('main_cc_embed');
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('catalogue_category', strval($id));
     }
@@ -1114,7 +1120,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
 
         log_it('ADD_CATALOGUE_ENTRY', strval($id), $title);
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             generate_resource_fs_moniker('catalogue_entry', strval($id), null, null, true);
         }
@@ -1288,7 +1294,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
     if ($catalogue_name[0] != '_') {
         log_it('EDIT_CATALOGUE_ENTRY', strval($id), $title);
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             generate_resource_fs_moniker('catalogue_entry', strval($id));
         }
@@ -1410,7 +1416,7 @@ function actual_delete_catalogue_entry($id)
         log_it('DELETE_CATALOGUE_ENTRY', strval($id), $title);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('catalogue_entry', strval($id));
     }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -81,7 +81,7 @@ class Hook_rss_cns_forumview
                 }
 
                 $news_title = xmlentities($row['t_cache_first_title']);
-                $post_row = db_map_restrict($row, array('p_post')) + array('id' => $row['t_cache_first_post_id']);
+                $post_row = db_map_restrict($row, array('id', 'p_post'), array('id' => 't_cache_first_post_id'));
                 $_summary = get_translated_tempcode('f_posts', $post_row, 'p_post', $GLOBALS['FORUM_DB']);
                 $summary = xmlentities($_summary->evaluate());
                 $news = '';

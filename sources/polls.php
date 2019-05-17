@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -214,7 +214,7 @@ function vote_in_poll($poll_id, $cast, $myrow = null, $member_id = null, $ip = n
  *
  * @param  AUTO_LINK $poll_id The poll ID
  * @param  MEMBER $member_id Who to check for
- * @param  ?IP $ip The IP to check for (null: no IP check)
+ * @param  IP $ip The IP to check for
  * @return boolean Whether the current member may vote
  */
 function may_vote_in_poll($poll_id, $member_id, $ip)
@@ -227,18 +227,25 @@ function may_vote_in_poll($poll_id, $member_id, $ip)
         return false;
     }
 
-    if ((get_option('vote_member_ip_restrict') == '0') || ($ip === null)) {
-        if (is_guest($member_id)) {
-            if ($ip === null) {
-                return true;
-            }
-            return ($GLOBALS['SITE_DB']->query_select_value_if_there('poll_votes', 'id', array('v_poll_id' => $poll_id, 'v_voter_ip' => $ip)) === null);
+    // IP/member vote-once restrictions
+    $query = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'poll_votes WHERE v_poll_id=' . strval($poll_id);
+    $query .= ' AND (';
+    static $ip_restrict = null;
+    if ($ip_restrict === null) {
+        if ((!$GLOBALS['IS_ACTUALLY_ADMIN']) && ((get_option('vote_member_ip_restrict') == '1') || (is_guest()))) {
+            $ip_restrict = db_string_equal_to('v_voter_ip', get_ip_address());
         } else {
-            return ($GLOBALS['SITE_DB']->query_select_value_if_there('poll_votes', 'id', array('v_poll_id' => $poll_id, 'v_voter_id' => $member_id)) === null);
+            $ip_restrict = '1=0';
         }
     }
-
-    return ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'poll_votes WHERE v_poll_id=' . strval($poll_id) . ' AND (v_voter_id=' . strval($member_id) . ' OR ' . db_string_equal_to('v_voter_ip', $ip) . ')') === null);
+    $query .= $ip_restrict;
+    if (!is_guest()) {
+        $query .= ' OR ';
+        $query .= 'v_voter_id=' . strval(get_member());
+    }
+    $query .= ')';
+    $times_voted = $GLOBALS['SITE_DB']->query_value_if_there($query, false, true);
+    return ($times_voted == 0);
 }
 
 /**

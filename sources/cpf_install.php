@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -38,8 +38,8 @@ function install_gps_fields()
 {
     require_lang('cns');
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 20, 0, 0, 1, 0, '', 'float');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 20, 0, 0, 1, 0, '', 'float');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'float');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'float');
 }
 
 /**
@@ -60,8 +60,8 @@ function install_name_fields()
 {
     require_lang('cns');
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('firstname', 35, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('lastname', 35, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('firstname', 35, /*locked=*/0, /*viewable=*/1, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('lastname', 35, /*locked=*/0, /*viewable=*/1, /*settable=*/1, /*required=*/0, '', 'short_text');
 }
 
 /**
@@ -97,21 +97,21 @@ function install_address_fields()
 
     // Billing address...
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_street_address', 500, 0, 0, 1, 0, '', 'long_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_city', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_county', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_state', 100, 0, 0, 1, 0, '', 'state');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_post_code', 20, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_country', 5, 0, 0, 1, 0, '', 'country');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_street_address', 500, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'long_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_city', 40, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_county', 40, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_state', 100, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'state');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_post_code', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_country', 5, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'country');
 
     // Regular address (is also re-used for shipping)...
 
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('street_address', 500, 0, 0, 1, 0, '', 'long_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 0, 0, 1, 0, '', 'state');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, 0, 0, 1, 0, '', 'country');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('street_address', 500, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'long_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'state');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'country');
 }
 
 /**
@@ -130,5 +130,5 @@ function uninstall_mobile_phone_field()
 function install_mobile_phone_field()
 {
     require_lang('cns_special_cpf');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, 0, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text', 0, null, '', 'icons/contact_methods/telephone');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text', 0, null, '', 'icons/contact_methods/telephone');
 }

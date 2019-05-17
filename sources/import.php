@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -109,6 +109,8 @@ function import_id_remap_get($type, $id_old, $fail_ok = false)
  */
 function import_check_if_imported($type, $id_old)
 {
+    send_http_output_ping();
+
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('import_id_remap', 'id_new', array('id_session' => get_session_id(), 'id_type' => $type, 'id_old' => $id_old));
     return $test !== null;
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -173,7 +173,7 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
 
     log_it('ADD_GROUP', strval($group_id), $name);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('group', strval($group_id), null, null, true);
     }

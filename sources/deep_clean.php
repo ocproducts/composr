@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -33,7 +33,7 @@ function deep_clean($d, $heading = '')
 
     if ($is_html) {
         // Wrapper divs
-        while (preg_match('#^\s*<div[^<>]*>#i', $d) != 0 && preg_match('#</div>\s*$#i', $d) != 0) {
+        while (cms_preg_match_safe('#^\s*<div[^<>]*>#i', $d) != 0 && cms_preg_match_safe('#</div>\s*$#i', $d) != 0) {
             $matches = array();
             $count = preg_match_all('#</?div[^<>]*>#i', $d, $matches);
             $nesting_tally = 0;
@@ -46,8 +46,8 @@ function deep_clean($d, $heading = '')
                 }
             }
             if ($nesting_tally == 0) { // Tags do balance, so it closed right at the end
-                $d = preg_replace('#^\s*<div[^<>]*>#', '', $d);
-                $d = preg_replace('#</div>\s*$#s', '', $d);
+                $d = cms_preg_replace_safe('#^\s*<div[^<>]*>#', '', $d);
+                $d = cms_preg_replace_safe('#</div>\s*$#s', '', $d);
             } else {
                 break;
             }
@@ -57,10 +57,10 @@ function deep_clean($d, $heading = '')
     // Strip heading if it appears at the top
     if (!empty($heading)) {
         if ($is_html) {
-            $d = preg_replace('#^\s*<h\d[^<>]*>\s*' . preg_quote($heading, '') . '\s*</h\d>#', '', $d);
-            $d = preg_replace('#^\s*' . preg_quote($heading, '') . '\s*([^\w])#', '$1', $d);
+            $d = cms_preg_replace_safe('#^\s*<h\d[^<>]*>\s*' . preg_quote($heading, '') . '\s*</h\d>#', '', $d);
+            $d = cms_preg_replace_safe('#^\s*' . preg_quote($heading, '') . '\s*([^\w])#', '$1', $d);
         } else {
-            $d = preg_replace('#^\s*' . preg_quote($heading, '') . '\s*\r?\n#', '', $d);
+            $d = cms_preg_replace_safe('#^\s*' . preg_quote($heading, '') . '\s*\r?\n#', '', $d);
         }
     }
 
@@ -83,7 +83,7 @@ function deep_clean($d, $heading = '')
 
     // Convert indented "paragraphs" via nbsp into real paragraphs
     if ($is_html) {
-        $d = preg_replace('#(<br[^<>]*>|<p( [^<>]*)?' . '>|<div( [^<>]*)?' . '>)\s*(&nbsp;)+#i', '$1', $d);
+        $d = cms_preg_replace_safe('#(<br[^<>]*>|<p( [^<>]*)?' . '>|<div( [^<>]*)?' . '>)\s*(&nbsp;)+#i', '$1', $d);
     }
 
     if ($is_html) {
@@ -141,7 +141,7 @@ function deep_clean($d, $heading = '')
     if ($is_html) {
         // All using br and no paragraphs
         if ((preg_match('#<(p|div)( [^<>]*)?' . '>#i', $d) == 0) && (substr_count($d, '<br') >= 5)) {
-            $d = '<p>' . preg_replace('#(<br[^<>]*>\s*)+#i', '</p>' . "\n" . '<p>', $d) . '</p>';
+            $d = '<p>' . cms_preg_replace_safe('#(<br[^<>]*>\s*)+#i', '</p>' . "\n" . '<p>', $d) . '</p>';
         }
     }
 

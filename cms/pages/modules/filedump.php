@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -913,7 +913,7 @@ class Module_filedump
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
             $_description = substr($_description, 0, strlen($adv) + 1);
         }
-        $_description = preg_replace('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $_description);
+        $_description = cms_preg_replace_safe('#\s*' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\'](?-U)\.?(?U)#Ui', '', $_description);
         $thumb_ticked = true;
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $thumb_ticked = (post_param_integer('thumb', 0) == 1);

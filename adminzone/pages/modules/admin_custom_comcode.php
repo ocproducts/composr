@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -385,7 +385,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
         }
 
         foreach (array_unique($parameters) as $param) {
-            if (!in_array($param, $parameters_in_replace)) {
+            if ((!in_array($param, $parameters_in_replace)) && ($param != 'content')) {
                 attach_message(do_lang_tempcode('PARAMETER_DEFINED_NOT_USED', escape_html($param)), 'warn');
             }
         }

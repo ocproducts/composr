@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -68,7 +68,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
 
     log_it('ADD_AGGREGATE_TYPE_INSTANCE', strval($id), $aggregate_label);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('aggregate_type_instance', strval($id), null, null, true);
     }
@@ -125,7 +125,7 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
 
     log_it('EDIT_AGGREGATE_TYPE_INSTANCE', strval($id), $aggregate_label);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('aggregate_type_instance', strval($id));
     }
@@ -182,7 +182,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
 
     log_it('DELETE_AGGREGATE_TYPE_INSTANCE', strval($id), $aggregate_label);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('aggregate_type_instance', strval($id));
     }

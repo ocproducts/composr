@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -224,7 +224,7 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         cns_decache_cms_blocks($forum_id);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('post', strval($post_id));
     }
@@ -377,7 +377,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
         decache_private_topics($info[0]['t_pt_to']);
     }
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         foreach ($posts as $post) {
             expunge_resource_fs_moniker('post', strval($post));

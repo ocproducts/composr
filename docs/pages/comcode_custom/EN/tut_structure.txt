@@ -34,10 +34,10 @@ A page/zone combination is accessed by URL and it is invisible to the user, and 
 The actual page loaded is based on searching the disk's zone directory for files matching the page name (higher on the list = higher precedence):
  - customised module
  - module
- - customised Comcode page (users language)
- - Comcode page (users language)
- - customised HTML page (users language)
- - HTML page (users language)
+ - customised Comcode page (user's language)
+ - Comcode page (user's language)
+ - customised HTML page (user's language)
+ - HTML page (user's language)
  - customised mini-module
  - mini-module
  - customised Comcode page (site default language)

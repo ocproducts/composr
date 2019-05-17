@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -795,7 +795,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
         }
 
         // Clean up word pre-processing
-        $source = strip_comcode($source);
+        $source = strip_comcode($source, true);
         if (cms_mb_strtoupper($source) == $source) {
             $source = cms_mb_strtolower($source); // Don't leave in all caps, as is ugly, and also would break our Proper Noun detection
         }
@@ -823,11 +823,11 @@ function _seo_meta_find_data($keyword_sources, $description = '')
                 if ($is_in_word) {
                     // Exiting word?
                     $is_exiting_word = false;
-                    if ($i == $len - 1) { // End of string
+                    if ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
+                        $is_exiting_word = true;
+                    } elseif ($i == $len - 1) { // End of string; we don't look for outstanding words at the end of the loop so we have to trigger $is_exiting_word early
                         $is_exiting_word = true;
                         $i++; // This is the last character, so we need to move the cursor past it
-                    } elseif ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/cms_mb_strtolower(cms_mb_substr($source, $i + 1, 1)) == cms_mb_substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
-                        $is_exiting_word = true;
                     }
                     if ($is_exiting_word) {
                         $this_word = cms_mb_substr($source, $word_start, $i - $word_start);
@@ -872,11 +872,11 @@ function _seo_meta_find_data($keyword_sources, $description = '')
                 if ($is_in_word) {
                     // Exiting word?
                     $is_exiting_word = false;
-                    if ($i == $len - 1) { // End of string
+                    if ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
+                        $is_exiting_word = true;
+                    } elseif ($i == $len - 1) { // End of string; we don't look for outstanding words at the end of the loop so we have to trigger $is_exiting_word early
                         $is_exiting_word = true;
                         $i++; // This is the last character, so we need to move the cursor past it
-                    } elseif ((!$is_word_char) && (/*Not space-separated*/($current_char != ' ') || (/*Current word not starting with Caps*/!$word_starts_caps) || (/*Next word not starting with Caps*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1)))) { // End of apparent word and not a space-separated Proper Noun
-                        $is_exiting_word = true;
                     }
                     if ($is_exiting_word) {
                         $this_word = substr($source, $word_start, $i - $word_start);
@@ -958,7 +958,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     require_code('xhtml');
     $description = strip_comcode($description, true);
     $description = trim(preg_replace('#\n(-+|=+)(\n|$)#', ":$2", $description));
-    $description = trim(preg_replace('#\s+---+\s+#', ' ', $description));
+    $description = trim(cms_preg_replace_safe('#\s+---+\s+#', ' ', $description));
     $description = preg_replace('#\n+#', ' ', $description);
 
     if (cms_mb_strlen($description) > 160) {

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -331,7 +331,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
             if (function_exists('imagetypes')) {
                 require_code('images');
                 if (is_image($test_url, IMAGE_CRITERIA_GD_READ)) {
-                    $test = cms_getimagesize($test_url, get_file_extension($test_url));
+                    $test = cms_getimagesize_url($test_url);
 
                     if ($test === false) {
                         if (url_is_local($url)) {
@@ -469,7 +469,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
 
     log_it('ADD_BANNER', $name, $caption);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('banner', $name, null, null, true);
     }
@@ -594,7 +594,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
 
     log_it('EDIT_BANNER', $name, $caption);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('banner', $name);
     }
@@ -638,7 +638,7 @@ function delete_banner($name)
 
     log_it('DELETE_BANNER', $name, get_translated_text($caption));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('banner', $name);
     }
@@ -678,7 +678,7 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
 
     log_it('ADD_BANNER_TYPE', $id);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('banner_type', $id);
     }
@@ -736,7 +736,7 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
 
     log_it('EDIT_BANNER_TYPE', $old_id, $id);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('banner_type', $id);
     }
@@ -766,7 +766,7 @@ function delete_banner_type($id)
 
     log_it('DELETE_BANNER_TYPE', $id);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('banner_type', $id);
     }

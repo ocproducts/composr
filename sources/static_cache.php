@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -54,8 +54,8 @@ function static_cache__get_self_url_easy()
 {
     // May not be called from Composr, so can't rely on Composr's normal fixup_bad_php_env_vars function having being called
     $self_url = '';
-    if (!empty($_SERVER['REQUEST_URI'])) {
-        $self_url .= $_SERVER['REQUEST_URI'];
+    if ((!empty($_SERVER['HTTP_HOST'])) && (!empty($_SERVER['REQUEST_URI']))) {
+        $self_url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     } elseif (!empty($_SERVER['PHP_SELF'])) {
         $self_url .= $_SERVER['PHP_SELF'];
         if (count($_GET) != 0) {
@@ -78,6 +78,7 @@ function debugging_static_cache()
 
 /**
  * Find if we can use the static cache.
+ * For the save side, some additional checks are done in save_static_caching.
  *
  * @return boolean Whether we can
  */
@@ -167,7 +168,7 @@ function can_static_cache()
 function static_cache_current_url()
 {
     $url = static_cache__get_self_url_easy();
-    $url = preg_replace('#(keep_session|keep_devtest|keep_failover)=\d+#', '', $url);
+    $url = preg_replace('#(keep_session|for_session|keep_devtest|keep_failover)=\d+#', '', $url);
     $url = str_replace('keep_su=Guest', '', $url);
     $url = preg_replace('#\?&+#', '?', $url);
     $url = preg_replace('#&+#', '&', $url);
@@ -351,7 +352,7 @@ function static_cache($mode)
                         'session_id' => '',
                         'member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                         'date_and_time' => time(),
-                        'referer' => cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255),
+                        'referer' => cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255),
                         's_get' => '',
                         'post' => '',
                         'milliseconds' => 0,

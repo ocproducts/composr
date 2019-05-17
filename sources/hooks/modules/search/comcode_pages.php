@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -27,10 +27,15 @@ class Hook_search_comcode_pages extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
+     * @param  ?MEMBER $member_id The member ID to check with (null: current member)
      * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
-    public function info($check_permissions = true)
+    public function info($check_permissions = true, $member_id = null)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         require_lang('zones');
 
         $info = array();
@@ -139,7 +144,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
 
         // Calculate and perform query
         if ($g_or == '') {
-            $rows = get_search_rows('comcode_page', 'the_zone:the_page', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*', $nontrans_fields);
+            $rows = get_search_rows('comcode_page', 'the_zone:the_page', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.the_zone,r.the_page', $nontrans_fields);
         } else {
             $rows = get_search_rows('comcode_page', 'the_zone:the_page', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_zone_access z ON (z.zone_name=r.the_zone AND (' . str_replace('group_id', 'z.group_id', $g_or) . '))', $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*', $nontrans_fields);
         }

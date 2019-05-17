@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -265,7 +265,7 @@ class Block_main_content
                 push_output_state();
                 $result = request_page(array_key_exists(1, $bits) ? $bits[1] : get_comcode_zone($bits[0]), false, $bits[0], 'comcode_custom', true);
                 restore_output_state();
-                if ($result === null || $result->is_empty()) {
+                if ($result->is_empty()) {
                     return do_template('RED_ALERT', array('_GUID' => 'txon5apczl07u2gq77ags8mfu8bra1e7', 'TEXT' => do_lang_tempcode('MISSING_RESOURCE')));
                 }
             }

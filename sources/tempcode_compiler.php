@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -214,13 +214,13 @@ function _length_so_far($bits, $i)
 function substitute_comment_encapsulated_tempcode($data)
 {
     // HTML comment
-    $data = preg_replace('#<!--\s*\{(((?!-->).)*)\}\s*-->#', '{${1}}', $data);
+    $data = cms_preg_replace_safe('#<!--\s*\{(((?!-->).)*)\}\s*-->#', '{${1}}', $data);
 
     // HTML attribute
     $data = preg_replace('#\sx-tempcode(-\w+)?="\{([^"]*)\}"#', '{${2}}', $data);
 
     // CSS/JS comment
-    $data = preg_replace('#/\*\s*\{([^a-z0-9])(((?!\*/).)*)\}\s*\*/#', '{${1}${2}}', $data);
+    $data = cms_preg_replace_safe('#/\*\s*\{([^a-z0-9])(((?!\*/).)*)\}\s*\*/#', '{${1}${2}}', $data);
 
     return $data;
 }
@@ -297,7 +297,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $next_token = isset($bits[$i]) ? $bits[$i] : null;
                 if ($next_token === null) {
                     if ($tolerate_errors) {
-                        continue;
+                        continue 2;
                     }
                     warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                 }
@@ -572,7 +572,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         } else {
                             $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':null';
                             if ((!function_exists('get_value')) || (get_value('shortened_tempcode') !== '1')) {
-                                $temp .= ',"' . php_addslashes($parameter . '/' . $template_name) . '"';
+                                $temp .= ',"' . php_addslashes($template_name . ':' . $parameter) . '"';
                             }
                             $temp .= ')';
 
@@ -626,28 +626,28 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         $past_level_mode = $current_level_mode;
                         if ($stack === array()) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
                         list($current_level_mode, $current_level_data, $current_level_params, $directive_level_mode, $directive_level_data, $directive_level_params, $num_preprocessable_bits) = array_pop($stack);
                         if (!is_array($directive_level_params)) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
                         $directive_opener_params = array_merge($directive_level_params, array($directive_level_data));
                         if (($directive_level_mode !== PARSE_DIRECTIVE) || ($directive_opener_params[0][0] !== '"START"')) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
 
                         if (count($directive_opener_params) === 1) {
                             if ($tolerate_errors) {
-                                continue;
+                                continue 2;
                             }
                             warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
@@ -751,7 +751,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                         $preprocessable_bits = array();
                                     }
 
-                                    continue 2;
+                                    break 2;
                             }
                         }
 

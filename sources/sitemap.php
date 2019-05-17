@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -109,6 +109,10 @@ function init__sitemap()
 
     global $IS_SITEMAP_STRUCTURE_LOOPING;
     $IS_SITEMAP_STRUCTURE_LOOPING = array();
+
+    global $HAS_MANY_MATCH_KEYS, $MATCH_KEYS_CACHED;
+    $HAS_MANY_MATCH_KEYS = null;
+    $MATCH_KEYS_CACHED = null;
 }
 
 /**
@@ -491,12 +495,25 @@ abstract class Hook_sitemap_base
 
                 $groups2 = filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups($this->get_member($options), false));
 
-                $pg_where = '1=0';
-                $pg_where .= ' OR page_name LIKE \'' . db_encode_like('\_WILD:' . $page . ':%') . '\'';
-                $pg_where .= ' OR page_name LIKE \'' . db_encode_like($zone . ':' . $page . ':%') . '\'';
-                $pg_where .= ' OR page_name LIKE \'' . db_encode_like('\_WILD:\_WILD:%') . '\'';
-                $pg_where .= ' OR page_name LIKE \'' . db_encode_like($zone . ':\_WILD:%') . '\'';
-                $perhaps = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'group_page_access WHERE (' . $pg_where . ') AND (' . $groups . ')', null, 0, false, true);
+                global $HAS_MANY_MATCH_KEYS, $MATCH_KEYS_CACHED;
+                if ($HAS_MANY_MATCH_KEYS === null) {
+                    $HAS_MANY_MATCH_KEYS = ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'group_page_access WHERE page_name LIKE \'' . db_encode_like('%:%') . '\'') > 50);
+                }
+                if ($HAS_MANY_MATCH_KEYS) {
+                    $pg_where = '1=0';
+                    $pg_where .= ' OR page_name LIKE \'' . db_encode_like('\_WILD:' . $page . ':%') . '\'';
+                    $pg_where .= ' OR page_name LIKE \'' . db_encode_like($zone . ':' . $page . ':%') . '\'';
+                    $pg_where .= ' OR page_name LIKE \'' . db_encode_like('\_WILD:\_WILD:%') . '\'';
+                    $pg_where .= ' OR page_name LIKE \'' . db_encode_like($zone . ':\_WILD:%') . '\'';
+                    $perhaps = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'group_page_access WHERE (' . $pg_where . ') AND (' . $groups . ')', null, 0, false, true);
+                } else {
+                    // Optimisation, for when there are not a lot of match keys
+                    if ($MATCH_KEYS_CACHED === null) {
+                        $pg_where = 'page_name LIKE \'' . db_encode_like('%:%') . '\'';
+                        $MATCH_KEYS_CACHED = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'group_page_access WHERE (' . $pg_where . ') AND (' . $groups . ')', null, 0, false, true);
+                    }
+                    $perhaps = $MATCH_KEYS_CACHED;
+                }
 
                 $denied_groups = array();
                 foreach ($groups2 as $group) {

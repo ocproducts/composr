@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -119,7 +119,7 @@ class Module_polls
             $GLOBALS['SITE_DB']->create_index('poll', 'ftjoin_po4', array('option4'));
             $GLOBALS['SITE_DB']->create_index('poll', 'ftjoin_po5', array('option5'));
 
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_voting', 20, 1, 0, 0, 0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_voting', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 5)) {

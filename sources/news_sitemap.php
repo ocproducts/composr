@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -113,7 +113,7 @@ function build_news_sitemap()
                                         <news:genres>' . xmlentities(implode(', ', $genres)) . '</news:genres>
                                         <news:publication_date>' . xmlentities(date('Y-m-d', $row['date_and_time']) . 'T' . date('H:i:s+00:00', $row['date_and_time'])) . '</news:publication_date>
                                         <news:title>' . xmlentities(get_translated_text($row['title'])) . '</news:title>
-                                        <news:keywords>' . xmlentities(((trim($meta[0], ' ,') == '') ? '' : preg_replace('#\s*,\s*#', ', ', $meta[0]))) . '</news:keywords>
+                                        <news:keywords>' . xmlentities(((trim($meta[0], ' ,') == '') ? '' : cms_preg_replace_safe('#\s*,\s*#', ', ', $meta[0]))) . '</news:keywords>
             ');
             if ($site_location !== null) {
                 fwrite($sitemap_file, '

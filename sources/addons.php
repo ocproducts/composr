@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -99,10 +99,10 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
 
     if ($path === null) {
         $is_orig = false;
-        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name) . '.php';
+        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name, true) . '.php';
         if (!is_file($path)) {
             $is_orig = true;
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name) . '.php';
+            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name, true) . '.php';
         }
     } else {
         $is_orig = (strpos($path, '/sources_custom/hooks/systems/addon_registry/') !== false);

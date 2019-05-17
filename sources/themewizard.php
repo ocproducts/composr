@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -229,7 +229,7 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  * Generate a logo from the template.
  *
  * @param  string $name The site name
- * @param  string $font_choice The font name (in data/fonts)
+ * @param  ?string $font_choice The font name (in data/fonts) (null: default)
  * @param  string $logo_theme_image The logo theme image
  * @param  string $background_theme_image The background theme image. Not used for 'small' and 'small_white' $logo_type.
  * @param  boolean $raw Whether to output the logo to the browser, destroy then image, and exit the script (i.e. never returns)
@@ -237,7 +237,7 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  * @param  string $logo_type Logo type/size to generate. 'large' is for the bigger logo with background image, 'standalone' crops the background a bit, for use in e-mails etc., 'small' is the transparent logo without background, used for the small header type, and 'small_white' is used when the small header has a dark background
  * @return resource The image resource
  */
-function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/default_logos/logo1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $logo_type = 'large')
+function generate_logo($name, $font_choice = null, $logo_theme_image = 'logo/default_logos/logo1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $logo_type = 'large')
 {
     if (!headers_sent()) {
         header('X-Robots-Tag: noindex');
@@ -277,20 +277,15 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     );
 
     // Find font details
-    $ttf_font = get_file_base() . '/data_custom/fonts/' . $font_choice . '.ttf';
-    if (!is_file($ttf_font)) {
-        $ttf_font = get_file_base() . '/data/fonts/' . $font_choice . '.ttf';
-    }
-
-    $have_tff_support = (function_exists('imagettftext')) && (array_key_exists('FreeType Support', gd_info())) && (file_exists($ttf_font)) && (@imagettfbbox($logowizard_details['site_name_font_size'], 0.0, $ttf_font, 'test') !== false);
-
-    if ($have_tff_support) {
-        list(, , $font_width, , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size']), 0.0, $ttf_font, convert_to_html_encoding($name));
-        $font_height = max($font_height, -$font_height);
-    } else {
+    require_code('fonts');
+    $font_path = find_font_path($font_choice);
+    if (!has_ttf()) {
         $font = intval($logowizard_details['site_name_font_size_small_non_ttf']);
         $font_width = imagefontwidth($font) * strlen($name);
         $font_height = imagefontheight($font);
+    } else {
+        list(, , $font_width, , , , , $font_height) = imagettfbbox(26.0, 0.0, $font_path, convert_to_html_encoding($name));
+        $font_height = max($font_height, -$font_height);
     }
 
     // If we're doing a white logo, check if we might have a monochrome logo symbol
@@ -370,8 +365,8 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     // Write text onto the canvas
     $do = array();
     if (($font_width > intval($logowizard_details['site_name_split'])) && (strpos($name, ' ') !== false)) { // Split in two
-        if ($have_tff_support) {
-            list(, , , , , , , $small_font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $ttf_font, convert_to_html_encoding($name));
+        if (has_ttf()) {
+            list(, , , , , , , $small_font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $font_path, convert_to_html_encoding($name));
             $small_font_height = max($small_font_height, -$small_font_height);
         }
         $bits = explode(' ', $name);
@@ -384,19 +379,19 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
                 $text_line_2 .= $bit . ' ';
             }
         }
-        $do[] = array($text_line_1, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $small_font_height, intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
-        $do[] = array($text_line_2, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $small_font_height * 2 + intval($logowizard_details['site_name_split_gap']), intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
+        $do[] = array($text_line_1, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $small_font_height, intval($logowizard_details['site_name_font_size_small']), $font_path, $text_colour);
+        $do[] = array($text_line_2, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset_small']) + $small_font_height * 2 + intval($logowizard_details['site_name_split_gap']), intval($logowizard_details['site_name_font_size_small']), $font_path, $text_colour);
     } elseif ($font_width > intval($logowizard_details['site_name_split'])) { // Smaller font
-        if ($have_tff_support) {
-            list(, , , , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $ttf_font, convert_to_html_encoding($name));
+        if (has_ttf()) {
+            list(, , , , , , , $font_height) = imagettfbbox(floatval($logowizard_details['site_name_font_size_small']), 0.0, $font_path, convert_to_html_encoding($name));
             $font_height = max($font_height, -$font_height);
         }
-        $do[] = array($name, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset']) + $font_height, intval($logowizard_details['site_name_font_size_small']), $ttf_font, $text_colour);
+        $do[] = array($name, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset']) + $font_height, intval($logowizard_details['site_name_font_size_small']), $font_path, $text_colour);
     } else { // Show normally
-        $do[] = array($name, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset']) + $font_height, floatval($logowizard_details['site_name_font_size']), $ttf_font, $text_colour);
+        $do[] = array($name, intval($logowizard_details['site_name_x_offset']), intval($logowizard_details['site_name_y_offset']) + $font_height, floatval($logowizard_details['site_name_font_size']), $font_path, $text_colour);
     }
     foreach ($do as $i => $doing) {
-        if ($have_tff_support) {
+        if (has_ttf()) {
             imagettftext($im_canvas, (float)($doing[3]), 0.0, $doing[1], $doing[2], $doing[5], $doing[4], convert_to_html_encoding($doing[0]));
         } else {
             // @ needed for bizarre reasons due to type juggling in PHP (brought up by ocProducts PHP only)

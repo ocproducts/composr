@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -231,11 +231,11 @@ class Tempcode_test_set extends cms_test_case
 	</tr>
 	<tr>
 		<th>$SUBTRACT,3,2</th>
-		<td>1.00</td>
+		<td>1</td>
 	</tr>
 	<tr>
 		<th>$ADD,3,2</th>
-		<td>5.00</td>
+		<td>5</td>
 	</tr>
 </tbody></table>
 

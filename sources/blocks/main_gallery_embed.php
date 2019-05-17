@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -313,6 +313,7 @@ PHP;
                             'EDIT_DATE_RAW' => ($row_image['edit_date'] === null) ? '' : strval($row_image['edit_date']),
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
+                            'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row_image['allow_comments'] >= 1)),
                         );
                         $entry = do_template('GALLERY_IMAGE', $entry_map);
                         $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => '13134830e1ebea158ab44885eeec0953', 'ENTRY' => $entry) + $entry_map));
@@ -370,6 +371,7 @@ PHP;
                             'EDIT_DATE_RAW' => ($row_video['edit_date'] === null) ? '' : strval($row_video['edit_date']),
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
+                            'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row_video['allow_comments'] >= 1)),
                         );
                         $entry = do_template('GALLERY_VIDEO', $entry_map);
                         $entries->attach(do_template('GALLERY_ENTRY_WRAP', array('_GUID' => 'a0ff010ae7fd1f7b3341993072ed23cf', 'ENTRY' => $entry) + $entry_map));

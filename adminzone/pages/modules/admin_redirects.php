@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -256,6 +256,9 @@ class Module_admin_redirects
             )));
         }
         $default = explode(':', get_param_string('page_link', '*:'), 2);
+        if (count($default) == 1) {
+            $default = array('', $default[0]);
+        }
         if ($num_zones > 50) {
             $to_zones = new Tempcode();
             $from_zones = new Tempcode();

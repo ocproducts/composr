@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -203,7 +203,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
                     }
                 }
                 $start += SITEMAP_MAX_ROWS_PER_LOOP;
-            } while (count($zones) > 0);
+            } while (count($zones) >= SITEMAP_MAX_ROWS_PER_LOOP - 2/*2 rows may be abridged from results according to implementation filters*/);
 
             // Ones going last
             foreach ($last_ones as $_zone) {

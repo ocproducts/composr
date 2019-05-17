@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -27,9 +27,10 @@ class Hook_search_cns_posts extends FieldsSearchHook
      * Find details for this search hook.
      *
      * @param  boolean $check_permissions Whether to check permissions
+     * @param  ?MEMBER $member_id The member ID to check with (null: current member)
      * @return ~?array Map of search hook details (null: hook is disabled) (false: access denied)
      */
-    public function info($check_permissions = true)
+    public function info($check_permissions = true, $member_id = null)
     {
         if (!addon_installed('cns_forum')) {
             return null;
@@ -39,8 +40,12 @@ class Hook_search_cns_posts extends FieldsSearchHook
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         if ($check_permissions) {
-            if (!has_actual_page_access(get_member(), 'topicview')) {
+            if (!has_actual_page_access($member_id, 'topicview')) {
                 return false;
             }
         }
@@ -56,7 +61,7 @@ class Hook_search_cns_posts extends FieldsSearchHook
         $info['default'] = (get_option('search_cns_posts') == '1');
         $info['special_on'] = array();
         $info['special_off'] = array('open' => do_lang_tempcode('POST_SEARCH_OPEN'), 'closed' => do_lang_tempcode('POST_SEARCH_CLOSED'), 'pinned' => do_lang_tempcode('POST_SEARCH_PINNED'), 'starter' => do_lang_tempcode('POST_SEARCH_STARTER'));
-        if ((has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
+        if ((has_privilege($member_id, 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $info['special_off']['unvalidated'] = do_lang_tempcode('POST_SEARCH_UNVALIDATED');
         }
         $info['category'] = 'p_cache_forum_id';

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -723,7 +723,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
             if ($_fields !== null) {
                 $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
 
-                $queries = $db_static->create_index(get_table_prefix() . $table_name, $index_name, $_fields, $db->connection_write, $table_name, $unique_key_fields, $db);
+                $queries = $db_static->create_index($db->get_table_prefix() . $table_name, $index_name, $_fields, $db->connection_write, $table_name, $unique_key_fields, $db);
                 foreach ($queries as $sql) {
                     fwrite($out_file, $sql . ";\n");
                 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -463,7 +463,7 @@ function actual_delete_theme_image($id, $theme = null, $lang = null)
  */
 function export_theme_images()
 {
-    header('Content-type: text/csv; charset=' . get_charset());
+    header('Content-Type: application/octet-stream' . '; authoritative=true;');
     header('Content-Disposition: attachment; filename="theme_images.tar"');
 
     require_code('tar');

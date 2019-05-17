@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -48,6 +48,8 @@ class Hook_task_import_catalogue
         if (!addon_installed('catalogues')) {
             return null;
         }
+
+        set_mass_import_mode();
 
         require_code('catalogues2');
         require_lang('catalogues');

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -215,7 +215,9 @@ function _solemnly_leave(&$out = null)
 
     if (!has_solemnly_declared(I_UNDERSTAND_PATH_INJECTION)) {
         foreach ($_GET as $param) {
-            filter_naughty($param);
+            if (is_string($param)) {
+                filter_naughty($param);
+            }
         }
     }
 
@@ -818,7 +820,7 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
 
     global $ALL_ZONES_CACHE, $ALL_ZONES_TITLED_CACHE, $ZONE_DEFAULT_PAGES_CACHE, $SITE_INFO;
 
-    $using_default_params = (!$force_all) && ($start == 0) && ($max == 50);
+    $using_default_params = (!$force_all) && ($start == 0) && (($max == 50) || (($max > 50) && ($ALL_ZONES_CACHE !== null) && (count($ALL_ZONES_CACHE) < 30)));
     if ($using_default_params) {
         if ($get_titles) {
             if ($ALL_ZONES_TITLED_CACHE === null) {

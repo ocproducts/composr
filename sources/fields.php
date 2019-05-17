@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -833,7 +833,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
 
         $ret = apply_quick_caching($ret);
 
-        set_cache_entry('_field_type_selection', 60 * 60 * 24, $cache_identifier, $ret);
+        set_cache_entry('_field_type_selection', 60 * 24, $cache_identifier, $ret);
     }
 
     return $ret;

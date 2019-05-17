@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -38,7 +38,7 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
 
     log_it('EDIT_POST_TEMPLATE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('post_template', strval($id));
     }
@@ -60,7 +60,7 @@ function cns_delete_post_template($id)
 
     log_it('DELETE_POST_TEMPLATE', strval($id), $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('post_template', strval($id));
     }
@@ -142,7 +142,7 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
     require_code('themes2');
     tidy_theme_img_code($theme_img_code, $old_theme_img_code, 'f_emoticons', 'e_theme_img_code');
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('emoticon', $code);
     }
@@ -169,7 +169,7 @@ function cns_delete_emoticon($code)
     require_code('themes2');
     tidy_theme_img_code(null, $old_theme_img_code, 'f_emoticons', 'e_theme_img_code');
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('emoticon', $code);
     }
@@ -210,7 +210,7 @@ function cns_edit_welcome_email($id, $name, $subject, $text, $send_time, $newsle
     $map += lang_remap('w_text', $_text, $text);
     $GLOBALS['SITE_DB']->query_update('f_welcome_emails', $map, array('id' => $id), '', 1);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('welcome_email', strval($id));
     }
@@ -235,7 +235,7 @@ function cns_delete_welcome_email($id)
     delete_lang($_subject);
     delete_lang($_text);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('welcome_email', strval($id));
     }

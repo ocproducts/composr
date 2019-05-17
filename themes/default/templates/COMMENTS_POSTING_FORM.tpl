@@ -257,8 +257,8 @@
 								{+END}
 							{+END}
 
-							{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
-							{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
+						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews}}}
+						{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
 
 							<div class="proceed-button {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">
 								{+START,IF,{$DESKTOP}}{+START,IF,{$GET,has_preview_button}}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -59,7 +59,7 @@ function auto_decache($changed_base_url)
     erase_persistent_cache();
     if ($changed_base_url) {
         erase_comcode_page_cache();
-        set_value('last_base_url', get_base_url(false), true);
+        set_value('last_base_url', get_base_url(false));
     }
 }
 

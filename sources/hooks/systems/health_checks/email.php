@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -637,7 +637,7 @@ class Hook_health_check_email extends Hook_Health_Check
         ), get_site_default_lang(), false, 'MAIL', '.tpl', 'templates', $GLOBALS['FORUM_DRIVER']->get_theme(''));
         $html_version = $tpl->evaluate();
         $html_version_stripped = html_entity_decode(strip_tags($html_version), ENT_QUOTES);
-        $html_version_stripped = trim(preg_replace('#[\s-]+#', ' ', $html_version_stripped));
+        $html_version_stripped = trim(cms_preg_replace_safe('#[\s-]+#', ' ', $html_version_stripped));
 
         $tpl = do_template('MAIL', array(
             '_GUID' => '5767b9123a0871fb11b0d9bb60e5b98e',
@@ -648,7 +648,7 @@ class Hook_health_check_email extends Hook_Health_Check
             'CONTENT' => '',
         ), get_site_default_lang(), false, 'MAIL', '.txt', 'text', $GLOBALS['FORUM_DRIVER']->get_theme(''));
         $text_version = $tpl->evaluate();
-        $text_version_stripped = trim(preg_replace('#[\s-]+#', ' ', $text_version));
+        $text_version_stripped = trim(cms_preg_replace_safe('#[\s-]+#', ' ', $text_version));
 
         $this->assertTrue($html_version_stripped == $text_version_stripped, 'The HTML and text mail templates are not consistent, which can score you spam points');
     }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -83,11 +83,12 @@ class Forum_driver_base
      *
      * @param  MEMBER $id The forum member
      * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
+     * @param  ?string $username Username, passed for performance reasons (null: look it up)
      * @return mixed The URL
      */
-    public function member_profile_url($id, $tempcode_okay = false)
+    public function member_profile_url($id, $tempcode_okay = false, $username = null)
     {
-        $url = $this->_member_profile_url($id, $tempcode_okay);
+        $url = $this->_member_profile_url($id, $tempcode_okay, $username);
         if (($tempcode_okay) && (!is_object($url))) {
             $url = make_string_tempcode($url);
         }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -123,7 +123,7 @@ class Hook_import_vb3
             $sql_user = $config['MasterServer']['username'];
             $sql_pass = $config['MasterServer']['password'];
             $sql_tbl_prefix = $config['Database']['tableprefix'];
-            $sql_tbl_prefix = $config['MasterServer']['servername'];
+            $sql_host = $config['MasterServer']['servername'];
         }
 
         return array($sql_database, $sql_user, $sql_pass, $sql_tbl_prefix, $sql_host);
@@ -195,9 +195,17 @@ class Hook_import_vb3
 
             $map = array();
             $map['g_max_attachments_per_post'] = $PROBED_FORUM_CONFIG['attachlimit'];
-            $map['g_max_post_length_comcode'] = $PROBED_FORUM_CONFIG['postmaxchars'];
+            if ($PROBED_FORUM_CONFIG['postmaxchars'] > 0) {
+                $map['g_max_post_length_comcode'] = $PROBED_FORUM_CONFIG['postmaxchars'];
+            } else {
+                $map['g_max_post_length_comcode'] = 1000000;
+            }
             if (array_key_exists('sigmax', $map)) {
-                $map['g_max_sig_length_comcode'] = $PROBED_FORUM_CONFIG['sigmax'];
+                if ($PROBED_FORUM_CONFIG['sigmax'] > 0) {
+                    $map['g_max_sig_length_comcode'] = $PROBED_FORUM_CONFIG['sigmax'];
+                } else {
+                    $map['g_max_sig_length_comcode'] = 1000000;
+                }
             }
             $GLOBALS['FORUM_DB']->query_update('f_groups', $map, array('id' => $id), '', 1);
 
@@ -342,7 +350,7 @@ class Hook_import_vb3
                     $custom_fields[cns_make_predefined_content_field('website')] = (strlen($row['homepage']) > 0) ? ('[url]' . $row['homepage'] . '[/url]') : '';
                 }
 
-                $signature = $row['signature'];
+                $signature = '[semihtml]' . $row['signature'] . '[/semihtml]';
                 $validated = 1;
                 $reveal_age = ($row['birthday'] != '') ? 1 : 0;
                 $bits = explode('-', $row['birthday']);
@@ -443,14 +451,13 @@ class Hook_import_vb3
     {
         global $STRICT_FILE;
 
-        $dbname = null;
-        require($file_base . '/includes/config.php');
-
         $row_start = 0;
         $rows = array();
         do {
             $extra = '';
-            if ($dbname === null) {
+            $is_vb35 = ($db->query_select_value('customprofilepic', 'COUNT(*)', array('filedata' => ''), '', true) !== null); // i.e. if it doesn't fail
+
+            if ($is_vb35) {
                 $extra = ',a.filedata AS avatardata,p.filedata AS profilepicdata';
             }
             $query = 'SELECT *,p.filename AS p_filename,a.filename AS a_filename,u.userid AS userid' . $extra . ' FROM ' . $table_prefix . 'user u LEFT JOIN ' . $table_prefix . 'customavatar a ON a.userid=u.userid LEFT JOIN ' . $table_prefix . 'customprofilepic p ON p.userid=u.userid ORDER BY u.userid';
@@ -589,7 +596,7 @@ class Hook_import_vb3
                 continue;
             }
 
-            $name = $row['title'];
+            $name = html_entity_decode($row['title'], ENT_QUOTES, get_charset());
             $description = html_to_comcode($row['description']);
             $position = $row['displayorder'];
             $post_count_increment = 1;//$row['options']&4096; This didn't work, not important though
@@ -697,6 +704,8 @@ class Hook_import_vb3
         $rows = $db->query_select('threadread', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
+                send_http_output_ping();
+
                 $member_id = import_id_remap_get('member', strval($row['userid']), true);
                 $topic_id = import_id_remap_get('topic', strval($row['threadid']), true);
                 if ($member_id === null) {
@@ -724,10 +733,26 @@ class Hook_import_vb3
         global $STRICT_FILE;
 
         $row_start = 0;
+
+        // Optimisation to speed through quickly, as can be slow scrolling through so many posts we may have already imported!
+        do {
+            $rows = $db->query('SELECT postid FROM ' . $table_prefix . 'post ORDER BY postid', 1, $row_start + 200 - 1);
+            if ((!array_key_exists(0, $rows)) || (!import_check_if_imported('post', strval($rows[0]['postid'])))) {
+                break;
+            }
+
+            $row_start += 200;
+        } while (true);
+
         $rows = array();
         do {
-            $rows = $db->query_select('post', array('*'), array('visible' => 1), 'ORDER BY postid', 200, $row_start);
+            $rows = $db->query_select('post', array('*'), array(), 'ORDER BY postid', 200, $row_start);
             foreach ($rows as $row) {
+                if ($row['visible'] == 0) { // We don't have in WHERE query as there's no index for it
+                    import_id_remap_put('post', strval($row['postid']), -1);
+                    continue;
+                }
+
                 if (import_check_if_imported('post', strval($row['postid']))) {
                     continue;
                 }
@@ -865,7 +890,7 @@ class Hook_import_vb3
                 }
 
                 $post_id = import_id_remap_get('post', strval($row['postid']), true);
-                if ($post_id === null) {
+                if (($post_id === null) || ($post_id == -1)) {
                     continue;
                 }
 
@@ -1063,7 +1088,7 @@ class Hook_import_vb3
                     $recurrence = 'yearly ' . str_repeat('0', intval($bits[0]) - 1) . '1';
                     break;
             }
-            list($start_year, $start_month, $start_day, $start_hour, $start_minute) = explode('-', date('Y-m-d-h-i', strtotime($row['dateline'])));
+            list($start_year, $start_month, $start_day, $start_hour, $start_minute) = explode('-', date('Y-m-d-h-i', $row['dateline']));
             list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
             cns_over_msn();
             $id_new = add_calendar_event(db_get_first_id() + 1, $recurrence, $recurrences, 0, $row['title'], $row['event'], 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute, $end_year, $end_month, $end_day, 'day_of_month', $end_hour, $end_minute, null, 1, null, 1, 1, 1, 1, '', $submitter, 0, $row['dateline']);

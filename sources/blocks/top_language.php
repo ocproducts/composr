@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,7 +50,7 @@ class Block_top_language
     {
         $info = array();
         $info['cache_on'] = 'array(either_param_string(\'lang\',\'\'),isset($map[\'block_id\'])?$map[\'block_id\']:\'\',user_lang())';
-        $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
         return $info;
     }
 
@@ -62,6 +62,11 @@ class Block_top_language
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__messaged('language_block', $error_msg)) {
+            return $error_msg;
+        }
+
         if (!multi_lang()) {
             return new Tempcode();
         }
@@ -71,6 +76,8 @@ class Block_top_language
         }
 
         require_code('lang2');
+
+        $block_id = get_block_id($map);
 
         $langs = find_all_langs();
 
@@ -86,6 +93,7 @@ class Block_top_language
 
         return do_template('BLOCK_TOP_LANGUAGE', array(
             '_GUID' => '6dd7dd434722d7fd958773bd08e838c7',
+            'BLOCK_ID' => $block_id,
             'LANGS' => $langs,
             'CURRENT_LANG_FULL_NAME' => lookup_language_full_name($current_lang),
             'CURRENT_LANG_COUNTRY_FLAG' => strtolower($this->get_lang_country($current_lang)),

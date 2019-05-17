@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -2143,8 +2143,12 @@ class Module_topics
                 $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));
             }
         } else {
-            $title = get_screen_title('_ADD_POST_UNDER', true,
-                array(escape_html($topic_title), escape_html($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id)))));
+            $poster_name_if_guest_parent = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id));
+            if ($poster_name_if_guest_parent === null) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
+            }
+
+            $title = get_screen_title('_ADD_POST_UNDER', true, array(escape_html($topic_title), escape_html($poster_name_if_guest_parent)));
         }
 
         if ((post_param_integer('add_poll', 0) == 1) && (addon_installed('polls'))) {
@@ -2878,8 +2882,8 @@ END;
      * @param  BINARY $is_private Whether it is a private poll (blind poll, where the results aren't visible until made public)
      * @param  BINARY $is_open Whether the poll is open for voting
      * @param  BINARY $requires_reply Whether a reply to the poll topic is required before voting
-     * @param  BINARY $minimum_selections The minimum number of selections for voters
-     * @param  BINARY $maximum_selections The maximum number of selections for voters
+     * @param  integer $minimum_selections The minimum number of selections for voters
+     * @param  integer $maximum_selections The maximum number of selections for voters
      * @return Tempcode The Tempcode for the fields
      */
     public function get_poll_form_fields($question = '', $answers = array(), $is_private = 0, $is_open = 1, $requires_reply = 0, $minimum_selections = 1, $maximum_selections = 1)

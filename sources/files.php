@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -474,6 +474,9 @@ function should_ignore_file($path, $bitmask = 0)
 
         // Log files
         'log' => '.*',
+
+        // Custom fonts
+        'ttf' => 'data_custom/fonts',
 
         // Temporary files
         'tmp' => '.*',

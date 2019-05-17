@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -189,7 +189,9 @@ function post_fields_relay()
 {
     $hidden = '';
     foreach (array_keys($_POST) as $key) {
-        $hidden .= '<input type="hidden" name="' . escape_html($key) . '" value="' . escape_html(post_param_string($key)) . '" />';
+        if (preg_match('#^(news_id$|from_version$|given_password$|ftp_)#', $key) != 0) {
+            $hidden .= '<input type="hidden" name="' . escape_html($key) . '" value="' . escape_html(post_param_string($key)) . '" />';
+        }
     }
     return $hidden;
 }

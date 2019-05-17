@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 */
 
 /*
@@ -1307,7 +1307,7 @@ header.with-seed-navbar .top-button:hover {
 }
 /*{+END}*/
 
-.global-navigation .top-buttons, 
+.global-navigation .top-buttons,
 .global-navigation .top-form {
 	display: flex;
 	margin-left: auto;
@@ -6494,7 +6494,7 @@ div.proceed-button-left-2 {
 	z-index: 2000;
 }
 
-.top-button-popup .associated-links-block-group, 
+.top-button-popup .associated-links-block-group,
 .notification + .notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};

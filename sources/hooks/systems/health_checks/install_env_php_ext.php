@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -71,7 +71,8 @@ class Hook_health_check_install_env_php_ext extends Hook_Health_Check
 
             $this->assertTrue(function_exists('imagepng'), do_lang('NO_GD_ON_SERVER_PNG'));
             $this->assertTrue(function_exists('imagejpeg'), do_lang('NO_GD_ON_SERVER_JPEG'));
-            $this->assertTrue(function_exists('imagettfbbox'), do_lang('NO_GD_ON_SERVER_TTF'));
+            require_code('fonts');
+            $this->assertTrue(has_ttf(), do_lang('NO_GD_ON_SERVER_TTF'));
         }
     }
 

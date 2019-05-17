@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -123,7 +123,7 @@ class Hook_symbol_CHAT_IM
 
                 if ($may_cache) {
                     require_code('caches2');
-                    set_cache_entry('_chat_im', 60 * 60 * 24, $cache_identifier, $_value);
+                    set_cache_entry('_chat_im', 60 * 24, $cache_identifier, $_value);
                 }
             }
 

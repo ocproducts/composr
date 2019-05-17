@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -128,6 +128,7 @@ class Block_main_newsletter_signup
 
             return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array(
                 '_GUID' => '9953c83685df4970de8f23fcd5dd15bb',
+                'BLOCK_PARAMS' => block_params_arr_to_str($map),
                 'BLOCK_ID' => $block_id,
                 'NEWSLETTER_TITLE' => $newsletter_title,
                 'NID' => strval($newsletter_id),
@@ -137,6 +138,7 @@ class Block_main_newsletter_signup
         } else {
             return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(
                 '_GUID' => 'c0e6f9cdab3d624bf3d27b745e3de38f',
+                'BLOCK_PARAMS' => block_params_arr_to_str($map),
                 'BLOCK_ID' => $block_id,
                 'NEWSLETTER_TITLE' => $newsletter_title,
                 'NID' => strval($newsletter_id),

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -27,6 +27,6 @@ class cloudflare_ip_range_sync_test_set extends cms_test_case
         preg_match('#\$trusted_proxies = \'([^\']*)\';#', $c, $matches);
         $in_code = str_replace(',', "\n", $matches[1]);
 
-        $this->assertTrue($in_code == $current);
+        $this->assertTrue($in_code == $current, 'Expected ' . $current . ', got ' . $in_code);
     }
 }

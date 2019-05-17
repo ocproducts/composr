@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -235,7 +235,7 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  string $content_title The topic title; must be same as content title if this is for a comment topic
      * @param  string $topic_identifier_encapsulation_prefix This is put together with the topic identifier to make a more-human-readable topic title or topic description (hopefully the latter and a $content_title title, but only if the forum supports descriptions)
      * @param  ?URLPATH $content_url URL to the content (null: do not make spacer post)
-     * @param  ?TIME $time The post time (null: use current time)
+     * @param  ?TIME $time The topic time (null: use current time)
      * @param  ?IP $ip The post IP address (null: use current members IP address)
      * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked non-validated initially). This only works with the Conversr driver.
      * @param  ?BINARY $topic_validated Whether the topic is validated (null: unknown, find whether it needs to be marked non-validated initially). This only works with the Conversr driver.
@@ -456,7 +456,17 @@ class Forum_driver_cns extends Forum_driver_base
 
         require_code('cns_members');
 
-        $info = cns_get_all_custom_fields_match_member($member, null, null, null, null, null, null, null, 1);
+        $info = cns_get_all_custom_fields_match_member(
+            $member, // member
+            null, // public view
+            null, // owner view
+            null, // owner set
+            null, // encrypted
+            null, // required
+            null, // show in posts
+            null, // show in post previews
+            1 // special
+        );
         $out = array();
         foreach ($info as $field => $value) {
             $out[substr($field, 4)] = $value['RAW'];
@@ -565,12 +575,15 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @param  MEMBER $id The member ID
      * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
+     * @param  ?string $username Username, passed for performance reasons (null: look it up)
      * @return mixed The URL to the member profile
      */
-    protected function _member_profile_url($id, $tempcode_okay = false)
+    protected function _member_profile_url($id, $tempcode_okay = false, $username = null)
     {
         if (get_option('username_profile_links') == '1') {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($id, false, USERNAME_DEFAULT_ID_TIDY);
+            if ($username === null) {
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($id, false, USERNAME_DEFAULT_ID_TIDY);
+            }
             $map = array('page' => 'members', 'type' => 'view', 'id' => $username);
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();
@@ -1747,6 +1760,14 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
+        if (is_guest($member)) {
+            $test = persistent_cache_get('get_member_row_guest');
+            if ($test !== null) {
+                $this->MEMBER_ROWS_CACHED[$member] = $test;
+                return $test;
+            }
+        }
+
         $rows = $this->db->query_select('f_members m LEFT JOIN ' . $this->db->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             $this->MEMBER_ROWS_CACHED[$member] = null;
@@ -1758,7 +1779,13 @@ class Forum_driver_cns extends Forum_driver_base
             global $MEMBER_CACHE_FIELD_MAPPINGS;
             $MEMBER_CACHE_FIELD_MAPPINGS[$member] = $rows[0];
         }
+
         $this->MEMBER_ROWS_CACHED[$member] = $rows[0];
+
+        if (is_guest($member)) {
+            persistent_cache_set('get_member_row_guest', $this->MEMBER_ROWS_CACHED[$member]);
+        }
+
         return $this->MEMBER_ROWS_CACHED[$member];
     }
 

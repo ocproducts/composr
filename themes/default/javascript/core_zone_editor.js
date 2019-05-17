@@ -132,7 +132,7 @@
 
                 var editElement = $dom.$id('edit_' + id + '_textarea');
                 if (!editElement) {
-                    return; // Nothing interatively edited
+                    return; // Nothing interactively edited
                 }
 
                 $dom.html(element, '<div aria-busy="true" class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -152,7 +152,12 @@ function _download_associated_media(&$text, $old_url)
     if ((preg_match('#^https?://([^:/]+)#', $old_url, $matches2) != 0) && ($matches2[1] != $local_domain_1) && ($matches2[1] != $local_domain_2)) {
         require_code('crypt');
         $temp_filename = get_secure_random_string();
-        $temp_path = get_custom_file_base() . '/uploads/external_media/' . $temp_filename;
+        $temp_dir = get_custom_file_base() . '/uploads/external_media';
+        if (!file_exists($temp_dir)) {
+            require_code('files2');
+            make_missing_directory($temp_dir);
+        }
+        $temp_path = $temp_dir . '/' . $temp_filename;
 
         $write_to_file = fopen($temp_path, 'wb');
         $http_result = cms_http_request($old_url, array('write_to_file' => $write_to_file));

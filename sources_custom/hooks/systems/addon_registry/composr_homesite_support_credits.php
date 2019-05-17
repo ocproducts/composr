@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -184,7 +184,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'themes/default/javascript_custom/composr_homesite_support_credits.js',
             'sources_custom/hooks/systems/actionlog/composr_homesite_support_credits.php',
 
-            'tracker/.gitignore',
             'tracker/.editorconfig',
             'tracker/account_delete.php',
             'tracker/account_manage_columns_page.php',

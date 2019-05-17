@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -147,7 +147,7 @@ function ecv2_ADD($lang, $escaped, $param)
             $_value += floatval(str_replace(',', '', $p));
         }
 
-        $value = float_to_raw_string($_value);
+        $value = float_to_raw_string($_value, 20, true);
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -182,7 +182,7 @@ function ecv2_SUBTRACT($lang, $escaped, $param)
             }
         }
 
-        $value = float_to_raw_string($_value);
+        $value = float_to_raw_string($_value, 20, true);
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1515,10 +1515,13 @@ function ecv2_MOD($lang, $escaped, $param)
  */
 function ecv2_MULT($lang, $escaped, $param)
 {
-    $value = '1';
+    $_value = 1.0;
+
     foreach ($param as $p) {
-        $value = float_to_raw_string(floatval($value) * floatval($p), 20, true);
+        $_value *= floatval(str_replace(',', '', $p));
     }
+
+    $value = float_to_raw_string($_value, 20, true);
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);

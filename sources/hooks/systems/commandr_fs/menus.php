@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -121,7 +121,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         add_menu_item($menu, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
 
-        if ((addon_installed('commandr')) && (!running_script('install'))) {
+        if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
             require_code('resource_fs');
             generate_resource_fs_moniker('menu', $menu, null, null, true);
         }

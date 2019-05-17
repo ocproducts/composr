@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -64,6 +64,7 @@ class phpdoc_test_set extends cms_test_case
             'Get a well formed URL equivalent to the current URL.',
             'Syndicate human-intended descriptions of activities performed to the internal wall, and external listeners.',
             'Execute the module.',
+            'Execute the block.',
             'Find caching details for the block.',
             'Database driver class.',
             'Forum driver class.',

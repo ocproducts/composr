@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -590,7 +590,7 @@ class Module_admin_zones
         $hidden = new Tempcode();
 
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
-        $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('DEFAULT_PAGE'), do_lang_tempcode('DESCRIPTION_DEFAULT_PAGE'), 'default_page', $default_page, true));
+        $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('DEFAULT_PAGE'), do_lang_tempcode('DESCRIPTION_DEFAULT_PAGE'), 'default_page', $default_page, true, null, 80));
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('HEADER_TEXT'), do_lang_tempcode('DESCRIPTION_HEADER_TEXT'), 'header_text', $header_text, false));
         $list = '';
 

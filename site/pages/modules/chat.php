@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -132,7 +132,7 @@ class Module_chat
             $GLOBALS['SITE_DB']->create_index('chat_messages', 'ordering', array('date_and_time'));
             $GLOBALS['SITE_DB']->create_index('chat_messages', 'room_id', array('room_id'));
 
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_chat', 20, 1, 0, 0, 0, '', 'integer');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_chat', 20, /*locked=*/1, /*viewable=*/0, /*settable=*/0, /*required=*/0, '', 'integer');
 
             $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
             foreach (array_keys($usergroups) as $id) {

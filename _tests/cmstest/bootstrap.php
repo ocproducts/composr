@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -28,6 +28,10 @@ function unit_testing_run()
     require_code('_tests/simpletest/mock_objects.php');
     require_code('_tests/simpletest/collector.php');
     require_code('_tests/cmstest/cms_test_case.php');
+
+    if ((isset($_SERVER['argv'])) && (in_array('debug', $_SERVER['argv']))) {
+        $_GET['debug'] = '1';
+    }
 
     $id = get_param_string('id', null);
     if (($id === null) && (isset($_SERVER['argv'][1]))) {

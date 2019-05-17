@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -1176,7 +1176,7 @@ class Module_admin
                 break;
             }
         }
-        $post = ((strpos($raw_search_string, '"') !== false) || (!$found_some)) ? new Tempcode() : do_lang_tempcode('ADMINZONE_SEARCH_TIP', escape_html(preg_replace('#\s@\w+#', '', $raw_search_string)));
+        $post = ((strpos($raw_search_string, '"') !== false) || (!$found_some)) ? new Tempcode() : do_lang_tempcode('ADMINZONE_SEARCH_TIP', escape_html(cms_preg_replace_safe('#\s@\w+#', '', $raw_search_string)));
 
         if ((!$found_some) && ($this->and_query)) { // Oh well, try as an OR query then
             $this->and_query = false;

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -320,11 +320,11 @@ class Hook_task_export_members
                             // Pseudo fields
                             /*switch ($part) {
                                 case 'Initials':
-                                    $at = preg_replace('#\s*(\w)\w*\s*#', '${1}', $m['field_' . find_cpf_field_id('Forenames')] . ' ' . $m['field_' . find_cpf_field_id('Surname')]);
+                                    $at = cms_preg_replace_safe('#\s*(\w)\w*\s*#', '${1}', $m['field_' . find_cpf_field_id('Forenames')] . ' ' . $m['field_' . find_cpf_field_id('Surname')]);
                                     break 2;
 
                                 case 'Name':
-                                    $at = preg_replace('#\s.*$#', '', trim($m['field_' . find_cpf_field_id('Forenames')]));
+                                    $at = cms_preg_replace_safe('#\s.*$#', '', trim($m['field_' . find_cpf_field_id('Forenames')]));
                                     break 2;
                             }*/
 

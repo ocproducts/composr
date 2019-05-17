@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -29,6 +29,7 @@
  * @param  array $content_lang_string_changes Mapping of strings to change (from => to); if 'to' is null it should be the same as 'from'
  * @param  boolean $test_run Whether this is only a test run, don't change anything
  * @param  boolean $allow_multiple_matches Allow multiple matches of source strings (false if we'll require exactly one match)
+ * @return array A List of error message strings, problems that happened
  */
 function content_lang_string_translation($lang_from, $lang_to, $content_lang_string_changes, $test_run = false, $allow_multiple_matches = true)
 {
@@ -38,20 +39,24 @@ function content_lang_string_translation($lang_from, $lang_to, $content_lang_str
 
     // Checks...
 
+    $errors = array();
+
     foreach (array_keys($content_lang_string_changes) as $from) {
         $rows = $GLOBALS['SITE_DB']->query_select('translate', array('id'), array('language' => $lang_from, 'text_original' => $from));
 
         if (count($rows) == 0) {
-            warn_exit('No strings for \'' . $from . '\'');
+            $errors[] = 'No strings for \'' . $from . '\'';
+            unset($content_lang_string_changes[$from]);
         }
 
         if ((!$allow_multiple_matches) && (count($rows) > 1)) {
-            warn_exit('Multiple strings for \'' . $from . '\'');
+            $errors[] = 'Multiple strings for \'' . $from . '\'';
+            unset($content_lang_string_changes[$from]);
         }
     }
 
     if ($test_run) {
-        return;
+        return $errors;
     }
 
     // Make changes...
@@ -78,6 +83,8 @@ function content_lang_string_translation($lang_from, $lang_to, $content_lang_str
             ));
         }
     }
+
+    return $errors;
 }
 
 /**
@@ -89,12 +96,15 @@ function content_lang_string_translation($lang_from, $lang_to, $content_lang_str
  * @param  array $lang_string_changes A mapping of language file to a mapping of strings to change (from => to); if 'to' is null it should be the same as 'from'
  * @param  boolean $test_run Whether this is only a test run, don't change anything
  * @param  boolean $allow_multiple_matches Allow multiple matches of source strings (false if we'll require exactly one match)
+ * @return array A List of error message strings, problems that happened
  */
 function lang_string_translation($lang_from, $lang_to, $lang_string_changes, $test_run = false, $allow_multiple_matches = false)
 {
     require_code('files2');
 
     // Checks...
+
+    $errors = array();
 
     require_code('lang_compile');
 
@@ -104,17 +114,19 @@ function lang_string_translation($lang_from, $lang_to, $lang_string_changes, $te
 
         foreach (array_keys($_lang_string_changes) as $from) {
             if (!array_key_exists($from, $_lang_file_map_from)) {
-                warn_exit('No strings for \'' . $from . '\'');
+                $errors[] = 'No strings for \'' . $from . '\'';
+                unset($_lang_string_changes[$from]);
             }
 
             if ((!$allow_multiple_matches) && ($_lang_file_map_from[$from] > 1)) {
-                warn_exit('Multiple strings for \'' . $from . '\'');
+                $errors[] = 'Multiple strings for \'' . $from . '\'';
+                unset($_lang_string_changes[$from]);
             }
         }
     }
 
     if ($test_run) {
-        return;
+        return $errors;
     }
 
     // Make changes...
@@ -149,6 +161,8 @@ function lang_string_translation($lang_from, $lang_to, $lang_string_changes, $te
         }
         cms_file_put_contents_safe($lang_to_dir . '/' . $lang_file . '.ini', $out);
     }
+
+    return $errors;
 }
 
 /**

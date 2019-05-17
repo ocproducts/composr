@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -53,7 +53,7 @@ class Hook_rss_filedump
         require_code('files2');
 
         $content = new Tempcode();
-        $files = get_directory_contents(get_custom_file_base() . '/uploads/filedump/');
+        $files = get_directory_contents(get_custom_file_base() . '/uploads/filedump');
         $_rows = $GLOBALS['SITE_DB']->query_select('filedump', array('*'));
         if ($_rows === null) {
             return null;

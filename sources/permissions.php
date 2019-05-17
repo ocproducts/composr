@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -185,7 +185,9 @@ function has_zone_access($member_id, $zone)
     $sql .= ' UNION ALL ';
     $sql .= 'SELECT DISTINCT zone_name FROM ' . get_table_prefix() . 'member_zone_access WHERE member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
     $rows = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
-    $ZONE_ACCESS_CACHE[$member_id] = array();
+    if (!array_key_exists($member_id, $ZONE_ACCESS_CACHE)) {
+        $ZONE_ACCESS_CACHE[$member_id] = array();
+    }
     foreach ($rows as $row) {
         $ZONE_ACCESS_CACHE[$member_id][$row['zone_name']] = true;
     }
@@ -832,7 +834,9 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
         $sql .= 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_privileges WHERE ' . db_string_equal_to('module_the_name', 'forums') . ' AND member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
         $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
     }
-    $PRIVILEGE_CACHE[$member_id] = array();
+    if (!array_key_exists($member_id, $PRIVILEGE_CACHE)) {
+        $PRIVILEGE_CACHE[$member_id] = array();
+    }
     foreach ($perhaps as $p) {
         if (empty($PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']])) {
             $PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] = ($p['the_value'] == 1);

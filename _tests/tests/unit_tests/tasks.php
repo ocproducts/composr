@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -95,6 +95,11 @@ class tasks_test_set extends cms_test_case
         $debugging = (get_param_integer('debug', 0) == 1);
 
         if (($only !== null) && ($only != 'testCalendarICal')) {
+            return;
+        }
+
+        if ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)') > 1000) {
+            $this->assertTrue(false, 'Test will not work on databases with a lot of calendar events');
             return;
         }
 
@@ -219,6 +224,10 @@ class tasks_test_set extends cms_test_case
         $only = get_param_string('only', null);
         if (($only !== null) && ($only != 'testMemberCSV')) {
             return;
+        }
+
+        if ($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') > 1000) {
+            $this->assertTrue(false, 'Test will not work on databases with a lot of users');
         }
 
         if (get_forum_type() != 'cns') {

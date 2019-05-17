@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -154,7 +154,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
 
         $mb = 1024 * 1024;
         $directories = array(
-            'caches/guest_pages' => 500,
+            'caches/guest_pages' => 5000,
             'caches/lang' => 200,
             'caches/persistent' => 500,
             'caches/self_learning' => 500,

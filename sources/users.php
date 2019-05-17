@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -82,17 +82,6 @@ function init__users()
         if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
-    }
-
-    // Canonicalise various disparities in how HTTP auth environment variables are set
-    if (!empty($_SERVER['REDIRECT_REMOTE_USER'])) {
-        $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REDIRECT_REMOTE_USER']);
-    }
-    if (!empty($_SERVER['PHP_AUTH_USER'])) {
-        $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']);
-    }
-    if (!empty($_SERVER['REMOTE_USER'])) {
-        $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REMOTE_USER']);
     }
 
     $DOING_USERS_INIT = null;
@@ -272,7 +261,7 @@ function get_member($quick_only = false)
     // Try via additional login providers. They can choose whether to respect existing $member_id of get_session_id() settings. Some may do an account linkage, so we need to let them decide what to do.
     $hooks = find_all_hook_obs('systems', 'login_providers', 'Hook_login_provider_');
     foreach ($hooks as $ob) {
-        $member_id = $ob->try_login($member_id);
+        $member_id = $ob->try_login($member_id, $quick_only);
     }
 
     // Try via GAE Console
@@ -432,7 +421,7 @@ function is_httpauth_login()
     }
 
     require_code('cns_members');
-    return (!empty($_SERVER['PHP_AUTH_USER'])) && (cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']) !== null);
+    return (!empty($_SERVER['PHP_AUTH_USER'])) && (cns_authusername_is_bound_via_httpauth(preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER'])) !== null);
 }
 
 /**

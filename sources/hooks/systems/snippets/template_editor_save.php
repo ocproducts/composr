@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -82,13 +82,15 @@ class Hook_snippet_template_editor_save
                 require_code('revisions_engine_files');
                 $revision_engine = new RevisionEngineFiles();
                 $existing_path = find_template_path($_file, $subdir, $theme);
-                $revision_engine->add_revision(
-                    dirname($custom_path),
-                    $clean_file,
-                    ltrim($suffix, '.'),
-                    cms_file_get_contents_safe($existing_path),
-                    filemtime($existing_path)
-                );
+                if ($existing_path !== null) {
+                    $revision_engine->add_revision(
+                        dirname($custom_path),
+                        $clean_file,
+                        ltrim($suffix, '.'),
+                        cms_file_get_contents_safe($existing_path),
+                        filemtime($existing_path)
+                    );
+                }
             }
 
             // Clear caching

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -26,6 +26,11 @@ class sitemap_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
+        if ($GLOBALS['SITE_DB']->query_select_value('sitemap_cache', 'COUNT(*)') > 3000) {
+            $this->assertTrue(false, 'Test will not work on databases with a huge sitemap');
+            return;
+        }
 
         $this->establish_admin_session();
 
@@ -71,6 +76,10 @@ class sitemap_test_set extends cms_test_case
 
     public function testIsConclusive()
     {
+        if ($this->sitemap === null) {
+            return;
+        }
+
         // Test we have an arbitrary entry-point, just to ensure things are still generating deeply
         $this->assertTrue(isset($this->flattened['adminzone:admin_config:base']));
 
@@ -80,6 +89,10 @@ class sitemap_test_set extends cms_test_case
 
     public function testPageGroupingHelpDocsDefined()
     {
+        if ($this->sitemap === null) {
+            return;
+        }
+
         $applicable_page_groupings = array(
             'audit',
             'security',
@@ -127,6 +140,10 @@ class sitemap_test_set extends cms_test_case
 
     public function testHasIcons()
     {
+        if ($this->sitemap === null) {
+            return;
+        }
+
         foreach ($this->flattened as $k => $c) {
             if (preg_match('#^\w*:(\w*(:\w*)?)?$#', $k) != 0) {
                 if (in_array($k, array( // Exceptions
@@ -158,6 +175,10 @@ class sitemap_test_set extends cms_test_case
 
     public function testNoOrphans()
     {
+        if ($this->sitemap === null) {
+            return;
+        }
+
         foreach ($this->flattened as $c) {
             $this->assertTrue(!isset($c['is_unexpected_orphan']), 'Not tied in via page grouping ' . $c['title']->evaluate());
         }
@@ -165,6 +186,10 @@ class sitemap_test_set extends cms_test_case
 
     public function testNoIncompleteNodes()
     {
+        if ($this->sitemap === null) {
+            return;
+        }
+
         $props = array(
             'title',
             'content_type',

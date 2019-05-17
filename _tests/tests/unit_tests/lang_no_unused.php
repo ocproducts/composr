@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -28,10 +28,16 @@ class lang_no_unused_test_set extends cms_test_case
             set_time_limit(300);
         }
 
+        @set_time_limit(0);
+
         $all_code = '';
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
+            if (preg_match('#^sources_custom/aws/|sources_custom/geshi/|sources_custom/getid3/|sources_custom/ILess/|sources_custom/photobucket/|sources_custom/sabredav/|sources_custom/spout/|sources_custom/swift_mailer/|sources_custom/Transliterator/|tracker/#', $path) != 0) {
+                continue;
+            }
+
             $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('tpl'));
@@ -47,6 +53,10 @@ class lang_no_unused_test_set extends cms_test_case
         }
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('txt'));
         foreach ($files as $path) {
+            if (preg_match('#^(tracker/|data/modules/admin_stats/)#', $path) != 0) {
+                continue;
+            }
+
             $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('xml'));
@@ -113,6 +123,7 @@ class lang_no_unused_test_set extends cms_test_case
             'HEALTH_CHECK_SUBJECT_',
             'RECAPTCHA_ERROR_',
         );
+        $_skip_prefixes = '#^(' . implode('|', $skip_prefixes) . ')#';
 
         $skip_prefixes_regexp = '#^(' . implode('|', $skip_prefixes) . ')#';
 
@@ -210,22 +221,34 @@ class lang_no_unused_test_set extends cms_test_case
             'TAX_SALES',
             'TAX_VAT',
         ));
+        $_skip = array_flip($skip);
+
+        $cli = is_cli();
 
         $files = get_directory_contents(get_file_base() . '/lang/EN', get_file_base() . '/lang/EN', null, false, true, array('ini'));
         foreach ($files as $path) {
             $input = array();
             _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
 
+            if ($cli) {
+                echo 'Processing: ' . $path . "\n";
+            }
+
             foreach ($input as $key => $val) {
-                if (preg_match($skip_prefixes_regexp, $key) != 0) {
-                    continue;
-                }
+                if (strpos($all_code, '\'' . $key . '\'') !== false) { // Most efficient check
+                    $contains = true;
+                } else { // Remaining check
+                    if (preg_match($skip_prefixes_regexp, $key) != 0) {
+                        continue;
+                    }
 
-                if (isset($skip[$key])) {
-                    continue;
-                }
+                    if (isset($skip[$key])) {
+                        continue;
+                    }
 
-                $contains = (preg_match('#(\{!' . preg_quote($key, '#') . '|:' . preg_quote($key, '#') . '|\'' . preg_quote($key, '#') . '\')#', $all_code) != 0);
+                    $_key = preg_quote($key, '#');
+                    $contains = (preg_match('#(\{!' . $key . '|:' . $key . ')#', $all_code) != 0);
+                }
                 $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '%%', $val) . ')');
             }
         }

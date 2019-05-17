@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -134,7 +134,7 @@ class Module_purchase
             require_code('currency');
             $cpf = array('currency' => array(3, 'list'));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, '', 'default=CURRENCY');
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', $l[1], 0, '', 'default=CURRENCY');
             }
 
             $cpf = array(
@@ -146,7 +146,7 @@ class Module_purchase
                 'payment_card_issue_number' => array(2, 'integer', ''),
             );
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', $l[1], 1, $l[2]);
             }
 
             $GLOBALS['SITE_DB']->create_table('ecom_transactions', array(

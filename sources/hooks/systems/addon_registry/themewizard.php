@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -237,12 +237,14 @@ class Hook_addon_registry_themewizard
     {
         require_lang('themes');
 
+        require_code('fonts');
+
         $preview = do_lorem_template('LOGOWIZARD_2', array(
             'NAME' => lorem_phrase(),
             'LOGO_THEME_IMAGE' => 'logo/default_logos/1',
             'BACKGROUND_THEME_IMAGE' => 'logo/default_backgrounds/1',
             'THEME' => lorem_phrase(),
-            'FONT' => 'Veranda',
+            'FONT' => find_default_font(),
         ));
 
         return array(

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -35,8 +35,10 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
             return;
         }
-        if (!in_array('testQuickInstallerBuildsAndDoesNotFullyCrash', $_SERVER['argv'])) {
-            return;
+        if (isset($_SERVER['argv'][2])) {
+            if (!in_array('testQuickInstallerBuildsAndDoesNotFullyCrash', $_SERVER['argv'])) {
+                return;
+            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -73,8 +75,10 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testDoesNotFullyCrash')) {
             return;
         }
-        if (!in_array('testDoesNotFullyCrash', $_SERVER['argv'])) {
-            return;
+        if (isset($_SERVER['argv'][2])) {
+            if (!in_array('testDoesNotFullyCrash', $_SERVER['argv'])) {
+                return;
+            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -100,8 +104,10 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testFullInstallSafeMode')) {
             return;
         }
-        if (!in_array('testFullInstallSafeMode', $_SERVER['argv'])) {
-            return;
+        if (isset($_SERVER['argv'][2])) {
+            if (!in_array('testFullInstallSafeMode', $_SERVER['argv'])) {
+                return;
+            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -121,8 +127,10 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
             return;
         }
-        if (!in_array('testFullInstallNormalMode', $_SERVER['argv'])) {
-            return;
+        if (isset($_SERVER['argv'][2])) {
+            if (!in_array('testFullInstallNormalMode', $_SERVER['argv'])) {
+                return;
+            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -179,8 +187,8 @@ class _installer_test_set extends cms_test_case
             );
             $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
-            if ((!isset($_GET['debug']) && !isset($_SERVER['argv'][1]))) {
-                $fail_message .= ' -- append &debug=1 to the URL to get debug output';
+            if (!isset($_GET['debug'])) {
+                $fail_message .= ' -- append &debug=1 to the URL to get debug output / pass debug CLI parameter';
             }
             $this->assertTrue($success, $fail_message);
 

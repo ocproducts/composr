@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -439,7 +439,7 @@ class Module_admin_addons
 
                 if ($do_caching) {
                     require_code('caches2');
-                    set_cache_entry('_addon_installed_tpl', 60 * 60 * 24, $cache_identifier, array($colour, $addon_tpl));
+                    set_cache_entry('_addon_installed_tpl', 60 * 24, $cache_identifier, array($colour, $addon_tpl));
                 }
             }
 
@@ -509,7 +509,7 @@ class Module_admin_addons
 
                     if ($do_caching) {
                         require_code('caches2');
-                        set_cache_entry('_addon_available_tpl', 60 * 60 * 24, $cache_identifier, array($colour, $addon_tpl));
+                        set_cache_entry('_addon_available_tpl', 60 * 24, $cache_identifier, array($colour, $addon_tpl));
                     }
                 }
 

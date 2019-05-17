@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -146,7 +146,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
     if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
             if ($tag == 'staff_note' || $tag == 'code' || $tag == 'codebox') {
-                return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
+                return WYSIWYG_COMCODE__XML_BLOCK;
             } else {
                 return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
             }
@@ -662,7 +662,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                     $tag_output->attach($close_list);
                                 }
                                 $status = CCP_STARTING_TAG;
-                                continue;
+                                continue 2;
                             }
                         }
                     } else {
@@ -670,7 +670,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             $ahc = strpos($ahead, ']');
                             if ($ahc !== false) {
                                 $pos += $ahc + 1;
-                                continue;
+                                continue 2;
                             }
                         }
                     }
@@ -725,7 +725,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 if ($close_pos !== false) {
                                     $pos = $close_pos + 1;
                                 }
-                                continue;
+                                continue 2;
                             }
                         }
                     }
@@ -834,7 +834,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                     $tag_output->attach($_temp_tpl);
                                     $pos = $scan_pos + 1;
                                     $just_ended = true;
-                                    continue;
+                                    continue 2;
                                 }
                             }
                         }

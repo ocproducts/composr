@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -286,7 +286,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
 
     log_it('EDIT_ZONE', $zone, $title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('zone', $zone);
     }
@@ -420,13 +420,15 @@ function actual_delete_zone_lite($zone)
     persistent_cache_delete(array('ZONE', $zone));
     persistent_cache_delete('ALL_ZONES');
 
+    delete_cache_entry('menu');
+
     global $ALL_ZONES_CACHE, $ALL_ZONES_TITLED_CACHE;
     $ALL_ZONES_CACHE = null;
     $ALL_ZONES_TITLED_CACHE = null;
 
     log_it('DELETE_ZONE', $zone, $_zone_title);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('zone', $zone);
     }
@@ -789,7 +791,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
     // Log
     log_it('COMCODE_PAGE_EDIT', $new_file, $zone);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
+    if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
         require_code('resource_fs');
         generate_resource_fs_moniker('comcode_page', $zone . ':' . $new_file);
     }

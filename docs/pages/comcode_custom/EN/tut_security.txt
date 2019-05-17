@@ -106,7 +106,7 @@ The main issue with shared hosting, is that, unless either:
 [/list]
 ...then every web-server-created/writable file, and your database, is fully [i]writable[/i] to by any other account holder.
 
-suEXEC means that PHP scripts load up under the user of your own hosting account, and are constrained as such too. [tt]open_basedir[/tt] restricts PHP to only operate within the directory of the hosting account. We recommend suEXEC with [tt]open_basedir[/tt] configured also (for extra protection).
+suEXEC means that PHP scripts load up under the user of your own hosting account, and are constrained as such too. [tt]open_basedir[/tt] restricts PHP to only operate within the directory of the hosting account, although it has [url="performance problems"]https://bugs.php.net/bug.php?id=52312[/url]. We recommend suEXEC with [tt]open_basedir[/tt] configured also (for extra protection).
 
 If webhosts allow shell access or non-PHP scripts then they should either deploy "jail shell" or ensure home directories are not world-readable because the [tt]open_basedir[/tt] protection would be bypassed. These are further mitigations against account-vs-account tampering. Without this you'd have to worry about [i]read[/i] permissions on files such as the [tt]_config.php[/tt] file. So actually ideally you would have suEXEC, [tt]open_basedir[/tt], jail shell, and well configured home directory security.
 

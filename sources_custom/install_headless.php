@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2018
+ Copyright (c) ocProducts, 2004-2019
 
  See text/EN/licence.txt for full licensing information.
 
@@ -15,6 +15,11 @@
 
 function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array(), $do_index_test = true, $db_type = null)
 {
+    // Most Composr MySQL drivers auto-create the DB if missing, if root, but mysql_pdo does not because of how the connection works
+    if (get_db_site_user() == 'root') {
+        $GLOBALS['SITE_DB']->query('CREATE DATABASE IF NOT EXISTS ' . $database, null, 0, true);
+    }
+
     copy(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
     fix_permissions(get_file_base() . '/_config.php.bak');
 
@@ -26,7 +31,7 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         $data = $http_result->data;
         $success = ($http_result->message == '200') && (strpos($data, '<!--ERROR-->') === false);
 
-        if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
+        if (/*(!$success) && */(isset($_GET['debug']))) {
             @var_dump($url);
             @var_dump($http_result->message);
             $error = $url . ' : ' . clean_installer_output_for_code_display($data);
@@ -179,7 +184,7 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         $data = $http_result->data;
         $success = ($http_result->message == '200') && (strpos($data, '<!--ERROR-->') === false);
 
-        if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
+        if (/*(!$success) && */(isset($_GET['debug']))) {
             @var_dump($url);
             @var_dump($http_result->message);
             $error = $url . ' : ' . clean_installer_output_for_code_display($data);
@@ -205,6 +210,6 @@ function clean_installer_output_for_code_display($data)
     $data = preg_replace('#^.*An error has occurred#s', 'An error has occurred', $data);
     $data = str_replace('>', ">\n", $data);
     $data = strip_tags($data);
-    $data = preg_replace('#(\s*\n\s*)+#', "\n", $data);
+    $data = cms_preg_replace_safe('#(\s*\n\s*)+#', "\n", $data);
     return $data;
 }
