@@ -16,7 +16,9 @@
 
 				<div class="right">
 					<span class="views">{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {VIEWS*} <span>{!VIEWS}</span></span>
-					<span class="comments">{+START,INCLUDE,ICON}NAME=feedback/comment{+END} {$COMMENT_COUNT,images,{ID}}</span>
+					{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
+					<span class="comments">{+START,INCLUDE,ICON}NAME=feedback/comment{+END} {$COMMENT_COUNT,videos,{ID}}</span>
+					{+END}
 				</div>
 			</div>
 

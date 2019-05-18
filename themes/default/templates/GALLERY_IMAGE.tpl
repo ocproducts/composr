@@ -25,7 +25,9 @@
 				<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a>
 			</li>
 			<li><a href="{VIEW_URL*}" title="{$DATE_TIME*,{ADD_DATE_RAW}}" class="subtle-link">{$FROM_TIMESTAMP,%e %b %Y,{ADD_DATE_RAW*}}</a></li>
+			{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
 			<li><a href="{VIEW_URL*}" class="subtle-link">{$COMMENT_COUNT,images,{ID}}</a></li>
+			{+END}
 		</ul>
 	</div>
 </div>

@@ -37,11 +37,13 @@
 					{+START,IF,{$INLINE_STATS}}
 						<li>{+START,INCLUDE,ICON}NAME=cns_topic_modifiers/hot{+END} {VIEWS*} {!COUNT_VIEWS}</li>
 					{+END}
-	
+
+					{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT}
 					<li>
 						{+START,INCLUDE,ICON}NAME=feedback/comment{+END}
-						<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+						<a href="{VIEW_URL*}">{$COMMENT_COUNT,videos,{ID}}</a>
 					</li>
+					{+END}
 	
 					{+START,IF_NON_EMPTY,{EDIT_URL}}
 					<li>

@@ -313,6 +313,7 @@ PHP;
                             'EDIT_DATE_RAW' => ($row_image['edit_date'] === null) ? '' : strval($row_image['edit_date']),
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
+                            'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row_image['allow_comments'] >= 1)),
                         );
                         $entries->attach(do_template('GALLERY_MOSAIC_IMAGE', $entry_map));
 
@@ -369,6 +370,7 @@ PHP;
                             'EDIT_DATE_RAW' => ($row_video['edit_date'] === null) ? '' : strval($row_video['edit_date']),
                             'START' => strval($start),
                             '_EDIT_URL' => $_edit_url,
+                            'COMMENT_COUNT' => ((get_option('is_on_comments') == '1') && (!has_no_forum()) && ($row_video['allow_comments'] >= 1)),
                         );
                         $entries->attach(do_template('GALLERY_MOSAIC_VIDEO', $entry_map));
                         break;
