@@ -34,7 +34,7 @@
 
                 {+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$OR,{$CONFIG_OPTION,block_top_notifications},{$CONFIG_OPTION,block_top_notifications},{$CONFIG_OPTION,block_top_personal_stats}}}
                 <div class="top-buttons">
-                    {+START,IF,{$CONFIG_OPTION,block_top_language}}{$BLOCK,block=top_language}{+END}
+                    {+START,IF,{$CONFIG_OPTION,block_top_language,1}}{$BLOCK,block=top_language}{+END}
 
                     {+START,IF,{$CONFIG_OPTION,block_top_notifications}}{$BLOCK,block=top_notifications}{+END}
 
