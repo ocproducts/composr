@@ -2735,6 +2735,10 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
             'dob' => 'birthday',
             'street_address' => 'address1',
             'post_code' => 'postalcode',
+            'shipping_street_address' => 'shipping_address1',
+            'shipping_post_code' => 'shipping_postalcode',
+            'billing_street_address' => 'billing_address1',
+            'billing_post_code' => 'billing_postalcode',
         );
 
         if (isset($discouraged_field_names[$name])) {
@@ -2807,12 +2811,25 @@ function _get_autocomplete_attribute_value($name, $provided_autocomplete)
         'lastname'   => 'family-name',
         'name'       => 'name',
         'birthday'   => 'bday',
-        'address1'   => 'address-line1',
+        'address1'   => 'street-address',
         'city'       => 'address-level2',
         'state'      => 'address-level1',
         'postalcode' => 'postal-code',
         'country'    => 'country',
         'phone'      => 'tel',
+        'shipping_address1'   => 'shipping street-address',
+        'shipping_city'       => 'shipping address-level2',
+        'shipping_state'      => 'shipping address-level1',
+        'shipping_postalcode' => 'shipping postal-code',
+        'shipping_country'    => 'shipping country',
+        'shipping_phone'      => 'shipping tel',
+        'billing_address1'    => 'billing street-address',
+        'billing_city'        => 'billing address-level2',
+        'billing_state'       => 'billing address-level1',
+        'billing_postalcode'  => 'billing postal-code',
+        'billing_country'     => 'billing country',
+        'billing_phone'       => 'billing tel',
+
     );
 
     $autocomplete = $provided_autocomplete;

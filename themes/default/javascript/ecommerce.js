@@ -2,7 +2,7 @@
     'use strict';
 
     $dom.ready.then(function () {
-        var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
+        var addressFields = ['address1', 'city', 'county', 'state', 'postalcode', 'country'];
         for (var i = 0; i < addressFields.length; i++) {
             var billing = document.getElementById('billing_' + addressFields[i]);
             var shipping = document.getElementById('shipping_' + addressFields[i]);
@@ -10,7 +10,7 @@
                 billing.onchange = (function (billing, shipping) {
                     return function () {
                         if (billing.nodeName.toLowerCase() === 'select') {
-                            if (shipping.selectedIndex === 0) {
+                            if ((shipping.selectedIndex === 0) && (billing.selectedIndex !== 0)) {
                                 shipping.selectedIndex = billing.selectedIndex;
                                 if (window.jQuery && (window.jQuery.fn.select2 !== undefined)) {
                                     window.jQuery(shipping).trigger('change');

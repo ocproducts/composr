@@ -344,6 +344,15 @@ function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_add
         foreach ($field_groups as $field_group) {
             foreach ($field_group as $field) {
                 $_field = substr($field, 2);
+                switch ($_field) { // Check and substitute for our autocomplete-friendly field names (see #0003470: Change our approach to autofill)
+                    case 'street_address':
+                        $_field = 'address1';
+                        break;
+
+                    case 'post_code':
+                        $_field = 'postalcode';
+                        break;
+                }
                 $shipping_address[$field] = post_param_string('shipping_' . $_field, '');
             }
         }

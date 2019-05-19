@@ -42,11 +42,11 @@ class ecommerce_tax_test_set extends cms_test_case
 
         // This test will break if tax rates change, so correct it if that happens...
 
-        $_POST['shipping_street_address'] = '1234 Scope';
+        $_POST['shipping_address1'] = '1234 Scope';
         $_POST['shipping_city'] = 'Hope';
         $_POST['shipping_county'] = '';
         $_POST['shipping_state'] = '';
-        $_POST['shipping_post_code'] = 'HO1 234';
+        $_POST['shipping_postalcode'] = 'HO1 234';
         $_POST['shipping_country'] = 'GB';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'EU', 100.00);
         $this->assertTrue($tax == 20.0);
@@ -77,20 +77,20 @@ class ecommerce_tax_test_set extends cms_test_case
 
         // This test will break if tax rates change, so correct it if that happens...
 
-        $_POST['shipping_street_address'] = '1444 S. Alameda Street';
+        $_POST['shipping_address1'] = '1444 S. Alameda Street';
         $_POST['shipping_city'] = 'Los Angeles';
         $_POST['shipping_county'] = '';
         $_POST['shipping_state'] = 'CA';
-        $_POST['shipping_post_code'] = '90021';
+        $_POST['shipping_postalcode'] = '90021';
         $_POST['shipping_country'] = 'US';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
         $this->assertTrue($tax == 9.50, 'Expected 9.50 but got ' . float_format($tax));
 
-        $_POST['shipping_street_address'] = '1234 Scope';
+        $_POST['shipping_address1'] = '1234 Scope';
         $_POST['shipping_city'] = 'Hope';
         $_POST['shipping_county'] = '';
         $_POST['shipping_state'] = '';
-        $_POST['shipping_post_code'] = 'HO1 234';
+        $_POST['shipping_postalcode'] = 'HO1 234';
         $_POST['shipping_country'] = 'GB';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
         $this->assertTrue($tax == 0.0);

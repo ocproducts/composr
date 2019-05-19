@@ -2,31 +2,29 @@
     'use strict';
 
     $dom.ready.then(function () {
-        var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
-
-        addressFields.forEach(function (field) {
-            var billing = $dom.$('#billing_' + field),
-                shipping = $dom.$('#shipping_' + field);
-
-            if (!billing || !shipping) {
-                return; // (continue)
-            }
-
-            $dom.on(billing, 'change', function () {
-                if (billing.localName === 'select') {
-                    if (shipping.selectedIndex === 0) {
-                        shipping.selectedIndex = billing.selectedIndex;
-                        if (window.jQuery && window.jQuery.fn.select2) {
-                            window.jQuery(shipping).trigger('change');
+        var addressFields = ['address1', 'city', 'county', 'state', 'postalcode', 'country'];
+        for (var i = 0; i < addressFields.length; i++) {
+            var billing = document.getElementById('billing_' + addressFields[i]);
+            var shipping = document.getElementById('shipping_' + addressFields[i]);
+            if (billing && shipping) {
+                billing.onchange = (function (billing, shipping) {
+                    return function () {
+                        if (billing.nodeName.toLowerCase() === 'select') {
+                            if ((shipping.selectedIndex === 0) && (billing.selectedIndex !== 0)) {
+                                shipping.selectedIndex = billing.selectedIndex;
+                                if (window.jQuery && (window.jQuery.fn.select2 !== undefined)) {
+                                    window.jQuery(shipping).trigger('change');
+                                }
+                            }
+                        } else {
+                            if (shipping.value === '') {
+                                shipping.value = billing.value;
+                            }
                         }
-                    }
-                } else {
-                    if (shipping.value === '') {
-                        shipping.value = billing.value;
-                    }
-                }
-            });
-        });
+                    };
+                }(billing, shipping));
+            }
+        }
     });
 
     $cms.templates.ecomShoppingCartScreen = function (params) {

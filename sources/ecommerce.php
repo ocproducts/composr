@@ -923,7 +923,7 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
 {
     $fields = new Tempcode();
 
-    $fields->attach(form_input_text(do_lang_cpf('street_address'), '', $prefix . 'street_address', $street_address, $require_all_details));
+    $fields->attach(form_input_text(do_lang_cpf('street_address'), '', $prefix . 'address1', $street_address, $require_all_details));
 
     $fields->attach(form_input_line(do_lang_cpf('city'), '', $prefix . 'city', $city, $require_all_details));
 
@@ -946,7 +946,7 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
     }
 
     if ((get_option('cpf_enable_post_code') == '1') || (get_option('business_country') == 'US')) {
-        $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, $definitely_usa, null, $definitely_usa ? 10 : 12, 'text', null, $definitely_usa ? '^[0-9]{5}(-[0-9]{4})?$' : null, null, $definitely_usa ? 5 : 8));
+        $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'postalcode', $post_code, $definitely_usa, null, $definitely_usa ? 10 : 12, 'text', null, $definitely_usa ? '^[0-9]{5}(-[0-9]{4})?$' : null, null, $definitely_usa ? 5 : 8));
     }
 
     if (get_option('cpf_enable_country') == '1') {
@@ -1087,11 +1087,11 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     $shipping_phone = post_param_string('shipping_phone', $shipping_phone);
     $shipping_firstname = post_param_string('shipping_firstname', $shipping_firstname);
     $shipping_lastname = post_param_string('shipping_lastname', $shipping_lastname);
-    $shipping_street_address = post_param_string('shipping_street_address', $shipping_street_address);
+    $shipping_street_address = post_param_string('shipping_address1', $shipping_street_address);
     $shipping_city = post_param_string('shipping_city', $shipping_city);
     $shipping_county = post_param_string('shipping_county', $shipping_county);
     $shipping_state = post_param_string('shipping_state', $shipping_state);
-    $shipping_post_code = post_param_string('shipping_post_code', $shipping_post_code);
+    $shipping_post_code = post_param_string('shipping_postalcode', $shipping_post_code);
     $shipping_country = post_param_string('shipping_country', $shipping_country);
     $cardholder_name = post_param_string('cardholder_name', $cardholder_name);
     $card_type = post_param_string('card_type', $card_type);
@@ -1103,11 +1103,11 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     $card_expiry_date_month = post_param_integer('card_expiry_date_month', $card_expiry_date_month);
     $card_issue_number = post_param_integer('card_issue_number', $card_issue_number);
     $card_cv2 = post_param_integer('card_cv2', $card_cv2);
-    $billing_street_address = post_param_string('billing_street_address', $billing_street_address);
+    $billing_street_address = post_param_string('billing_address1', $billing_street_address);
     $billing_city = post_param_string('billing_city', $billing_city);
     $billing_county = post_param_string('billing_county', $billing_county);
     $billing_state = post_param_string('billing_state', $billing_state);
-    $billing_post_code = post_param_string('billing_post_code', $billing_post_code);
+    $billing_post_code = post_param_string('billing_postalcode', $billing_post_code);
     $billing_country = post_param_string('billing_country', $billing_country);
 
     if ($default_to_store) {
