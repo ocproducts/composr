@@ -564,6 +564,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     foreach ($caches as $cache) {
         delete_lang($cache['string_index']);
     }
+    $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
 
     // Log
     log_it('COMCODE_PAGE_EDIT', $new_file, $zone);
@@ -705,6 +706,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
             require_code('attachments3');
             delete_comcode_attachments('comcode_page', $zone . ':' . $page);
             $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $page, 'the_zone' => $zone));
+            $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
             $GLOBALS['SITE_DB']->query_delete('comcode_pages', array('the_page' => $page, 'the_zone' => $zone));
             erase_persistent_cache();
             decache('main_comcode_page_children');
