@@ -3908,6 +3908,7 @@ function ecv_PREVIEW_URL($lang, $escaped, $param)
     $value = find_script('preview');
     $value .= '?page=' . urlencode(get_page_name());
     $value .= '&type=' . urlencode(get_param_string('type', '', INPUT_FILTER_GET_COMPLEX));
+    $value .= '&keep_lang=' . urlencode(get_param_string('lang', get_param_string('keep_lang', '')));
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

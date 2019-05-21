@@ -604,14 +604,14 @@ function get_template_contents($name)
         return '';
     }
 
-    $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
+    $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . get_param_string('lang', user_lang()) . '/';
     $template_path = $templates_dir . $name . '.txt';
     if (!is_file($template_path)) {
         $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/';
         $template_path = $templates_dir . $name . '.txt';
     }
     if (!is_file($template_path)) {
-        $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
+        $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . get_param_string('lang', user_lang()) . '/';
         $template_path = $templates_dir . $name . '.txt';
     }
     if (!is_file($template_path)) {

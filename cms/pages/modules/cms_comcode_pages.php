@@ -899,7 +899,7 @@ class Module_cms_comcode_pages
 
         // ---
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__edit'), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '__edit', 'lang' => $lang), '_SELF');
 
         if ((addon_installed('page_management')) && (has_actual_page_access(get_member(), 'admin_sitemap'))) {
             $delete_url = build_url(array('page' => 'admin_sitemap', 'type' => '_delete', 'page__' . $file => 1, 'zone' => $zone), get_module_zone('admin_sitemap'));
@@ -1027,7 +1027,6 @@ class Module_cms_comcode_pages
         $fields2->attach(get_page_permissions_for_environment($zone, $file));
 
         $hidden_fields->attach(form_input_hidden('file', $file));
-        $hidden_fields->attach(form_input_hidden('lang', $lang));
         $hidden_fields->attach(form_input_hidden('zone', $zone));
         $hidden_fields->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)))));
 
@@ -1123,7 +1122,7 @@ class Module_cms_comcode_pages
 
         // Load up settings from the environments
         $file = filter_naughty(post_param_string('file'));
-        $lang = filter_naughty(post_param_string('lang'));
+        $lang = filter_naughty(get_param_string('lang'));
         $zone = filter_naughty(post_param_string('zone'));
         if (addon_installed('page_management')) {
             $new_file = filter_naughty(has_actual_page_access(get_member(), 'admin_sitemap') ? post_param_string('title', $file) : $file);

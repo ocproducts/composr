@@ -1106,10 +1106,10 @@ class Module_admin_addons
         $hidden = build_keep_post_fields();
 
         $is_lang = (get_param_string('exp', 'custom') == 'lang');
-        $lang = either_param_string('lang', null);
+        $lang = post_param_string('lang', null);
 
         $is_theme = (get_param_string('exp', 'custom') == 'theme');
-        $theme = either_param_string('theme', null);
+        $theme = post_param_string('theme', null);
 
         require_code('files');
 

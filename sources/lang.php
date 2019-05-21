@@ -218,7 +218,7 @@ function user_lang()
         }
     }
     if ($lang == '') {
-        $lang = either_param_string('lang', get_param_string('keep_lang', ''));
+        $lang = get_param_string('keep_lang', '');
         if ($lang != '') {
             $lang = filter_naughty($lang);
         }
@@ -1117,7 +1117,7 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
     }
 
     if ($lang === null) {
-        $lang = user_lang();
+        $lang = get_param_string('lang', user_lang());
     }
 
     if (multi_lang_content()) {
@@ -1257,7 +1257,7 @@ function get_translated_text($entry, $db = null, $lang = null, $force = false)
     }
 
     if ($lang === null) {
-        $lang = user_lang();
+        $lang = get_param_string('lang', user_lang());
     }
 
     if ((isset($db->text_lookup_original_cache[$entry])) && ($lang === user_lang())) {

@@ -317,6 +317,8 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'nu
         $db = $GLOBALS['SITE_DB'];
     }
 
+    $lang = get_param_string('lang', user_lang());
+
     require_lang('comcode');
 
     _check_attachment_count();
@@ -351,7 +353,7 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'nu
     $lock = false;
     table_id_locking_start($db, $lang_id, $lock);
 
-    if (user_lang() == 'Gibb') { // Debug code to help us spot language layer bugs. We expect &keep_lang=EN to show EnglishEnglish content, but otherwise no EnglishEnglish content.
+    if ($lang == 'Gibb') { // Debug code to help us spot language layer bugs. We expect &keep_lang=EN to show EnglishEnglish content, but otherwise no EnglishEnglish content.
         $map = array(
             'source_user' => $source_user,
             'broken' => 0,
@@ -373,7 +375,7 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'nu
         'importance_level' => $level,
         'text_original' => $_info['comcode'],
         'text_parsed' => $text_parsed,
-        'language' => user_lang(),
+        'language' => $lang,
     );
     if ($lang_id === null) {
         $lang_id = $db->query_insert('translate', $map, true);
