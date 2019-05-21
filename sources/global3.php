@@ -1577,22 +1577,6 @@ function cms_tempnam($prefix = 'cms')
 }
 
 /**
- * Creates a PHP value from a stored representation.
- * Wraps the fact that new versions of PHP have better security, but old ones won't let you pass the extra parameter.
- *
- * @param  string $str Serialized string.
- * @param  ?array $options Extra options (null: none).
- * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized).
- */
-function cms_unserialize($data)
-{
-    if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-        return unserialize($data, array('allowed_classes' => false));
-    }
-    return unserialize($data);
-}
-
-/**
  * Peek at a stack element.
  *
  * @param  array $array The stack to peek in
@@ -3496,6 +3480,22 @@ function secure_serialized_data(&$data, $safe_replacement = null)
             }
         }
     }
+}
+
+/**
+ * Creates a PHP value from a stored representation.
+ * Wraps the fact that new versions of PHP have better security, but old ones won't let you pass the extra parameter.
+ *
+ * @param  string $str Serialized string.
+ * @param  ?array $options Extra options (null: none).
+ * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized).
+ */
+function cms_unserialize($data)
+{
+    if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+        return unserialize($data, array('allowed_classes' => false));
+    }
+    return unserialize($data);
 }
 
 /**
