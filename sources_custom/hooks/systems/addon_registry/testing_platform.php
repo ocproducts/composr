@@ -399,6 +399,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/versioning.php',
             '_tests/tests/unit_tests/dev_environment.php',
             '_tests/tests/unit_tests/filter_xml.php',
+            '_tests/tests/unit_tests/tempcode_mistakes.php',
             '_tests/tests/unit_tests/upload_directory.php',
             '_tests/tests/unit_tests/sitemap.php',
             '_tests/tests/unit_tests/cdn_config.php',
