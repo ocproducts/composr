@@ -43,7 +43,7 @@ class Hook_snippet_comments
         }
 
         secure_serialized_data($serialized_options);
-        list($topic_id, $num_to_show_limit, $allow_comments, $invisible_if_no_comments, $forum, $reverse, $may_reply, $highlight_by_user, $allow_reviews) = unserialize($serialized_options, array('allowed_classes' => false));
+        list($topic_id, $num_to_show_limit, $allow_comments, $invisible_if_no_comments, $forum, $reverse, $may_reply, $highlight_by_user, $allow_reviews) = cms_unserialize($serialized_options);
 
         $posts = array_map('intval', explode(',', get_param_string('ids', false, true)));
 

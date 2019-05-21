@@ -195,7 +195,7 @@ function post_comment_script()
     }
     $options = isset($_POST['options']) ? $_POST['options'] : (isset($_GET['options']) ? $_GET['options'] : '');
     secure_serialized_data($options);
-    $_options = @unserialize($options, array('allowed_classes' => false));
+    $_options = @cms_unserialize($options);
     if (!is_array($_options)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }

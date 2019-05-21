@@ -254,7 +254,7 @@ class phpVimeo
             }
 
             secure_serialized_data($response);
-            $response = unserialize($response, array('allowed_classes' => false));
+            $response = cms_unserialize($response);
 
             if ($response->stat == 'ok') {
                 return $response;
