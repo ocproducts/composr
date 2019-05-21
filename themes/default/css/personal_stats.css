@@ -29,27 +29,27 @@
 	height: 20px;
 }
 
-.global-button-ref-point .personal-stats-avatar {
+.top-button-popup .personal-stats-avatar {
 	float: right;
 }
-.global-button-ref-point .personal-stats-avatar img {
+.top-button-popup .personal-stats-avatar img {
 	max-width: 60px;
 }
 
-.global-button-ref-point .personal-stats-avatar + h3 {
+.top-button-popup .personal-stats-avatar + h3 {
 	margin-right: 100px;
 	margin-bottom: 0.5em;
 }
 
-.global-button-ref-point ul.compact-list {
+.top-button-popup ul.compact-list {
 	font-size: 0.95em;
 }
 
-.global-button-ref-point ul.compact-list li {
+.top-button-popup ul.compact-list li {
 	padding: 0.1em 0;
 }
 
-.global-button-ref-point ul.compact-list li .field-name {
+.top-button-popup ul.compact-list li .field-name {
 	font-weight: normal;
 }
 

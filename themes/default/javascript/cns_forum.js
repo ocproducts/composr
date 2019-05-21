@@ -17,7 +17,7 @@
                 'click .js-click-mark-all-topics': 'markAllTopics',
                 'change .js-moderator-action-submit-form': 'moderatorActionSubmitForm',
                 'change .js-max-change-submit-form': 'maxChangeSubmitForm',
-                'change .js-order-change-submit-form': 'maxChangeSubmitForm',
+                'change .js-order-change-submit-form': 'orderChangeSubmitForm',
             };
         },
 
@@ -28,8 +28,8 @@
         },
 
         moderatorActionSubmitForm: function (e, select) {
-            if (select.selectedIndex != 0) {
-                if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
+            if (select.selectedIndex !== 0) {
+                if ($cms.form.addFormMarkedPosts(select.form, 'mark_')) {
                     $dom.submit(select.form);
                 } else {
                     $cms.ui.alert('{!NOTHING_SELECTED;}');
@@ -180,15 +180,15 @@
             $cms.ui.disableButton(clicked);
         });
 
-        $dom.on(container, 'click', '.js-topic-moderator-action-submit-form', function (e, select) {
+        $dom.on(container, 'change', '.js-topic-moderator-action-submit-form', function (e, select) {
             if (select.selectedIndex !== -1) {
                 $dom.submit(select.form);
             }
         });
 
-        $dom.on(container, 'click', '.js-moderator-action-submit-form', function (e, select) {
+        $dom.on(container, 'change', '.js-moderator-action-submit-form', function (e, select) {
             if (select.selectedIndex !== -1) {
-                if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
+                if ($cms.form.addFormMarkedPosts(select.form, 'mark_')) {
                     $dom.submit(select.form);
                 } else {
                     $cms.ui.alert('{!NOTHING_SELECTED;}');
@@ -196,7 +196,7 @@
             }
         });
 
-        $dom.on(container, 'click', '.js-order-change-submit-form', function (e, select) {
+        $dom.on(container, 'change', '.js-order-change-submit-form', function (e, select) {
             $dom.submit(select.form);
         });
     };
