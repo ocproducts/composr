@@ -3486,8 +3486,7 @@ function secure_serialized_data(&$data, $safe_replacement = null)
  * Creates a PHP value from a stored representation.
  * Wraps the fact that new versions of PHP have better security, but old ones won't let you pass the extra parameter.
  *
- * @param  string $str Serialized string.
- * @param  ?array $options Extra options (null: none).
+ * @param  string $data Serialized string.
  * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized).
  */
 function cms_unserialize($data)
