@@ -40,6 +40,7 @@ class Hook_cron_cns_confirm_reminder
         $last_time = intval(get_value('last_confirm_reminder_time', null, true));
         if ($last_time == 0) {
             $last_time = time();
+            set_value('last_confirm_reminder_time', strval($time), true);
         }
         if ($last_time > time() - 24 * 60 * 60 * 2) {
             return;
