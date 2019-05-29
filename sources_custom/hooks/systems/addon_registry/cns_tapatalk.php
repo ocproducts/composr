@@ -207,10 +207,20 @@ Composr has been configured to generate any errors in Tapatalk\'s XML-RPC format
 If a [tt]mobiquo/logging.dat[/tt] file exists and is writable then full logging will be written to it.
 Never use this on a live site as it is not secure, unless you limit access via an [tt]data_custom/.htaccess[/tt] file:
 [code]
-<Files logging.dat>
-Order Allow,Deny
-Deny from all
-</Files>
+# < Apache 2.4
+<IfModule !mod_authz_core.c>
+    <Files logging.dat>
+        Order Allow,Deny
+        Deny from all
+    </Files>
+</IfModule>
+
+# >= Apache 2.4
+<IfModule mod_authz_core.c>
+    <Files logging.dat>
+        Require all denied
+    </Files>
+</IfModule>
 [/code]
 (don\'t blindingly trust this, test you cannot download the file by URL)
 

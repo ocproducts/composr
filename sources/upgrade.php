@@ -106,7 +106,7 @@ function upgrade_script()
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
                         secure_serialized_data($news);
-                        $details = unserialize($news, array('allowed_classes' => false));
+                        $details = cms_unserialize($news);
                         if ($details[0] != '') {
                             $l_refer_release_notes = $details[0];
                             if ($details[2] != '') {

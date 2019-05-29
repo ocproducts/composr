@@ -2234,10 +2234,10 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     global $SITE_INFO;
     if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (is_writable_wrap(get_file_base() . '/.htaccess')))) {
         $bans = array();
-        $ban_count = preg_match_all('#\ndeny from (.*)#', cms_file_get_contents_safe(get_file_base() . '/.htaccess'), $bans);
+        $ban_count = preg_match_all('#\n(deny from|require not ip) (.*)#i', cms_file_get_contents_safe(get_file_base() . '/.htaccess'), $bans);
         $ip_bans = array();
         for ($i = 0; $i < $ban_count; $i++) {
-            $ip_bans[] = array('ip' => $bans[1][$i]);
+            $ip_bans[$bans[1][$i]] = array('ip' => $bans[1][$i]);
         }
     } else {
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
@@ -3480,6 +3480,21 @@ function secure_serialized_data(&$data, $safe_replacement = null)
             }
         }
     }
+}
+
+/**
+ * Creates a PHP value from a stored representation.
+ * Wraps the fact that new versions of PHP have better security, but old ones won't let you pass the extra parameter.
+ *
+ * @param  string $data Serialized string.
+ * @return ~mixed What was originally serialised (false: bad data given, or actually false was serialized).
+ */
+function cms_unserialize($data)
+{
+    if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+        return unserialize($data, array('allowed_classes' => false));
+    }
+    return unserialize($data);
 }
 
 /**

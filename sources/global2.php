@@ -1097,8 +1097,9 @@ function get_domain()
         // Derive from base URL
         if (!empty($SITE_INFO['base_url'])) {
             $matches = array();
-            preg_match('#://([^/\#]+)#', $SITE_INFO['base_url'], $matches);
-            $ret = preg_replace('#^www\.#', '', $matches[1]);
+            if (preg_match('#://([^/\#:]+)#', $SITE_INFO['base_url'], $matches) != 0) {
+                return preg_replace('#^www\.#', '', $matches[1]);
+            }
         }
 
         // Derive from other possibilities. Note that we can't use cms_srv due to bootstrap order (it's in global3.php)
