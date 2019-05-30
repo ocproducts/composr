@@ -96,6 +96,7 @@ Composr recommends:
  - A PHP versions that hasn't reached end-of-life status
  - A PHP environment with the following PHP extensions/build-options and matching system software:
   - FTP &dagger;
+  - EXIF
   - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)
   - iconv or mbstring (Unicode support)
   - intl (Strong transliteration of non-European languages for quality URL moniker generation)
