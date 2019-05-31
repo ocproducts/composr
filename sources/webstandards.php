@@ -1043,7 +1043,7 @@ function init__webstandards()
         'label' => array('for'),
         'map' => array('id'),
         'area' => array('alt'),
-        'form' => array('action', 'title', 'autocomplete'/*not really required but for stability we should always set it*/),
+        'form' => array('action', 'title'),
         'textarea' => array('cols', 'rows'),
         //'input' => array('value'), // accessibility, checked somewhere else
         'optgroup' => array('label'),
