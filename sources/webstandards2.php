@@ -455,7 +455,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
         }
     } elseif ((isset($TAGS_INLINE[$tag])) || (isset($TAGS_INLINE_DEPRECATED[$tag]))) {
         //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTOR_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
-        if ($tag != 'label') {
+        if (($tag !== 'label') && ($tag !== 'a')) { // We don't count <a> as an inline ancestor as although it's an inline element, its Content model is defined as "Transparent" in HTML5 - which means it inherits the Content model of its parent.
             $ANCESTOR_INLINE += $dif;
         }
         if (isset($TAGS_INLINE_DEPRECATED[$tag])) {
