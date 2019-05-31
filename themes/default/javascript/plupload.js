@@ -12083,12 +12083,15 @@ plupload.Uploader = function(options) {
 
 				up.trigger('Error', {
 					code : plupload.HTTP_ERROR,
-					message : (contentType == 'text/plain') ? xhr.responseText : plupload.translate('HTTP Error.'),
+					message : (contentType == 'text/plain') ? xhr.responseText : (plupload.translate('HTTP Error.') + ' #' + xhr.status), // Altered by ChrisG
 					file : file,
 					response : xhr.responseText,
 					status : xhr.status,
 					responseHeaders: xhr.getAllResponseHeaders()
 				});
+				if (typeof window.console != 'undefined') { // Added by ChrisG
+					console.log(xhr.responseText);
+				}
 			}
 		}
 
