@@ -9,7 +9,7 @@
 			{+START,LOOP,NEWS_ITEMS}
 				<a class="news-item" href="{FULL_URL*}">
 					<div class="news-item-thumb">
-						<img src="{IMG_URL*}">
+						<img src="{IMG_URL*}" alt="{$STRIP_TAGS*,{NEWS_TITLE}}" />
 					</div>
 					<div class="news-item-details">
 						<h4 class="news-item-heading">{NEWS_TITLE*}</h4>
