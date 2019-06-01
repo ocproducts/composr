@@ -8,6 +8,10 @@
     $cms.behaviors.linkStartSlideshow = {
         attach: function (context) {
             $util.once($dom.$$$(context, '[data-link-start-slideshow]'), 'behavior.linkStartSlideshow').forEach(function (link) {
+                if (link.title === '{!LINK_NEW_WINDOW;}') {
+                    link.title = '';
+                }
+
                 $dom.on(link, 'click', function (e) {
                     e.preventDefault();
 
