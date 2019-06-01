@@ -342,7 +342,7 @@ class Hook_addon_registry_search
                 'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_title(),
                 'TAGS' => $tpl_tags,
-            ), null, false, null, '.xml', 'xml')
+            ))
         );
     }
 

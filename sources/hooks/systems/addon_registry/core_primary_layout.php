@@ -138,7 +138,7 @@ class Hook_addon_registry_core_primary_layout
             'templates/GLOBAL_HTML_WRAP.tpl' => 'global_html_wrap',
             'templates/GLOBAL_HELPER_PANEL.tpl' => 'global_html_wrap',
             'templates/SCREEN_TITLE.tpl' => 'screen_title',
-            'templates/HEADER_CLASSIC.tpl' => 'haeder_classic',
+            'templates/HEADER_CLASSIC.tpl' => 'header_classic',
             'templates/HEADER_MODERN.tpl' => 'header_modern',
             'templates/HEADER_SIDE.tpl' => 'header_side',
         );
