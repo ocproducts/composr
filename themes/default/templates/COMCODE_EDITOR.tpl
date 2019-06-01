@@ -18,7 +18,7 @@
 				<option value="/">[{!FONT}]</option>
 				{+START,LOOP,={$FONTS}}
 					{+START,IF_NON_EMPTY,{_loop_var}}
-						<option value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
+						<option value="{_loop_var*}" style="font-family: '{_loop_var;*}', sans-serif">{_loop_var*}</option>
 					{+END}
 				{+END}
 			</select>
