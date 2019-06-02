@@ -119,6 +119,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     $found_something = false;
 
     require_code('files');
+    require_code('upgrade');
 
     disable_php_memory_limit();
 
