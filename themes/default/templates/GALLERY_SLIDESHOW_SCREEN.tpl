@@ -7,7 +7,7 @@
 				<div class="slideshow-media-box-item cms-slider-item is-{CURRENT_TYPE*} active" data-vw-index="{CURRENT_INDEX*}">
 					<div class="slideshow-media-wrapper">
 					{+START,IF_NON_PASSED,CURRENT_VIDEO}
-						<img class="slideshow-img" src="{$ENSURE_PROTOCOL_SUITABILITY*,{CURRENT_URL}}" itemprop="contentURL" />
+						<img class="slideshow-img" src="{$ENSURE_PROTOCOL_SUITABILITY*,{CURRENT_URL}}" alt="" itemprop="contentURL" />
 					{+END}
 					{+START,IF_PASSED,CURRENT_VIDEO}
 						{CURRENT_VIDEO}
@@ -67,20 +67,20 @@
 	</div>
 
 	<div class="slideshow-tab slideshow-tab-settings" data-vw-tab="settings" style="display: none">
-		<div class="slideshow-tab-inner">
+		<form class="slideshow-tab-inner" action="#!" title="{!SETTINGS*}">
 			<h3>{!SETTINGS}</h3>
 			
 			<div class="setting">
-				<label>
+				<label for="input-slide-duration">
 					<span class="setting-label">{!SPEED_IN_SECS}</span>
-					<input type="number" class="form-control input-slide-duration" value="5" min="1" />
+					<input type="number" id="input-slide-duration" name="slide_duration" class="form-control input-slide-duration" value="5" min="1" />
 				</label>
 			</div>
 	
 			<div class="setting">
-				<label>
+				<label for="select-slide-transition-effect">
 					<span class="setting-label">{!SLIDE_TRANSITION_EFFECT}</span>
-					<select class="form-control select-slide-transition-effect">
+					<select name="slide_transition_effect" id="select-slide-transition-effect" class="form-control select-slide-transition-effect">
 						<option value="slide" selected="selected">{!SLIDE}</option>
 						<option value="fade">{!FADE}</option>
 					</select>
@@ -88,21 +88,21 @@
 			</div>
 	
 			<div class="setting">
-				<label>
+				<label for="checkbox-stretch-small-media">
 					<span class="setting-label">{!STRETCH_SMALL_MEDIA}</span>
-					<input type="checkbox" class="big-checkbox checkbox-stretch-small-media" checked="checked">
+					<input type="checkbox" name="stretch_small_media" id="checkbox-stretch-small-media" class="big-checkbox checkbox-stretch-small-media" checked="checked" />
 				</label>
 			</div>
 	
 			<div class="setting">
-				<label>
+				<label for="select-background-color">
 					<span class="setting-label">{!BACKGROUND_COLOR}</span>
-					<select class="form-control select-background-color">
+					<select name="background_color" id="select-background-color" class="form-control select-background-color">
 						<option value="dark" selected="selected">{!DARK}</option>
 						<option value="light">{!LIGHT}</option>
 					</select>
 				</label>
 			</div>
-		</div>
+		</form>
 	</div>
 </div>
