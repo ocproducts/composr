@@ -1883,12 +1883,12 @@ function form_input_multi_list($pretty_name, $description, $name, $content, $tab
  * @param  ID_TEXT $name The name which this input field is for
  * @param  string $default Current selection
  * @param  Tempcode $options The list entries for our list; you compose these via attaching together form_input_list_entry calls
- * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is required
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_combo($pretty_name, $description, $name, $default, $options, $autocomplete = null, $tabindex = null, $required = true)
+function form_input_combo($pretty_name, $description, $name, $default, $options, $tabindex = null, $required = true, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
