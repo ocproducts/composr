@@ -46,11 +46,11 @@
 		<button type="button" class="btn btn-secondary btn-exit-slideshow" style="display: none;">{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}</button>
 		
 		<div class="slideshow-menu-middle">
-			<button type="button" class="btn btn-primary btn-toggle-play" data-cms-tooltip="{!PLAY_OR_PAUSE}">{+START,INCLUDE,ICON}NAME=content_types/multimedia{+END}</button>
-			<button type="button" class="btn btn-secondary btn-toggle-details" data-cms-tooltip="{!SHOW_OR_HIDE_CAPTIONS}">{+START,INCLUDE,ICON}NAME=menu/pages/about_us{+END}</button>
-			<button type="button" class="btn btn-secondary btn-toggle-fullscreen" data-cms-tooltip="{!TOGGLE_FULLSCREEN}">{+START,INCLUDE,ICON}NAME=buttons/full_size{+END}</button>
-			<button type="button" class="desktop-only btn btn-secondary btn-toggle-tab btn-toggle-comments" data-cms-tooltip="{!SHOW_OR_HIDE_COMMENTS}" data-vw-tab="comments">{+START,INCLUDE,ICON}NAME=feedback/comment{+END}</button>
-			<button type="button" class="desktop-only btn btn-secondary btn-toggle-tab btn-toggle-settings" data-cms-tooltip="{!SHOW_OR_HIDE_SETTINGS}" data-vw-tab="settings">{+START,INCLUDE,ICON}NAME=buttons/settings{+END}</button>
+			<button type="button" class="btn btn-primary btn-toggle-play" data-cms-tooltip="{!PLAY_OR_PAUSE*}">{+START,INCLUDE,ICON}NAME=content_types/multimedia{+END}</button>
+			<button type="button" class="btn btn-secondary btn-toggle-details" data-cms-tooltip="{!SHOW_OR_HIDE_CAPTIONS*}">{+START,INCLUDE,ICON}NAME=menu/pages/about_us{+END}</button>
+			<button type="button" class="btn btn-secondary btn-toggle-fullscreen" data-cms-tooltip="{!TOGGLE_FULLSCREEN*}">{+START,INCLUDE,ICON}NAME=buttons/full_size{+END}</button>
+			<button type="button" class="desktop-only btn btn-secondary btn-toggle-tab btn-toggle-comments" data-cms-tooltip="{!SHOW_OR_HIDE_COMMENTS*}" data-vw-tab="comments">{+START,INCLUDE,ICON}NAME=feedback/comment{+END}</button>
+			<button type="button" class="desktop-only btn btn-secondary btn-toggle-tab btn-toggle-settings" data-cms-tooltip="{!SHOW_OR_HIDE_SETTINGS*}" data-vw-tab="settings">{+START,INCLUDE,ICON}NAME=buttons/settings{+END}</button>
 		</div>
 	</div>
 
