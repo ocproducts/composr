@@ -67,7 +67,7 @@
 	</div>
 
 	<div class="slideshow-tab slideshow-tab-settings" data-vw-tab="settings" style="display: none">
-		<form class="slideshow-tab-inner" action="#!" title="{!SETTINGS*}">
+		<form class="slideshow-tab-inner" action="#" title="{!SETTINGS*}">
 			<h3>{!SETTINGS}</h3>
 			
 			<div class="setting">
