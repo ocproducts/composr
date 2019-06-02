@@ -19,7 +19,7 @@
 
 			<div class="toggle-details mobile-only">
 				<label for="toggle-details-{BLOCK_ID*}">{!SHOW_DETAILS}</label>
-				<input type="checkbox" id="toggle-details-{BLOCK_ID*}" class="js-checkbox-toggle-details" />
+				<input type="checkbox" id="toggle-details-{BLOCK_ID*}" class="js-checkbox-toggle-details" name="toggle_details" />
 			</div>
 		</div>
 	{+END}
