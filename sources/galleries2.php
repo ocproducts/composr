@@ -1241,7 +1241,7 @@ function _watermark_corner($source, $watermark_url, $x, $y)
  * @param  BINARY $accept_images Whether images may be put in this gallery
  * @param  BINARY $accept_videos Whether videos may be put in this gallery
  * @param  BINARY $is_member_synched Whether the gallery serves as a container for automatically created member galleries
- * @param  ?ID_TEXT $layout_mode The layout mode this gallery uses
+ * @param  ?ID_TEXT $layout_mode The layout mode this gallery uses (null: use default mode)
  * @param  URLPATH $rep_image The representative image of the gallery (blank: none)
  * @param  URLPATH $watermark_top_left Watermark (blank: none)
  * @param  URLPATH $watermark_top_right Watermark (blank: none)
@@ -1355,7 +1355,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  * @param  BINARY $accept_images Whether images may be put in this gallery
  * @param  BINARY $accept_videos Whether videos may be put in this gallery
  * @param  BINARY $is_member_synched Whether the gallery serves as a container for automatically created member galleries
- * @param  ?ID_TEXT $layout_mode The layout mode this gallery uses
+ * @param  ?ID_TEXT $layout_mode The layout mode this gallery uses (null: preserve existing mode)
  * @param  URLPATH $rep_image The representative image of the gallery (blank: none)
  * @param  URLPATH $watermark_top_left Watermark (blank: none)
  * @param  URLPATH $watermark_top_right Watermark (blank: none)

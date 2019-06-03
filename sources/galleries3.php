@@ -59,6 +59,9 @@ function download_gallery_script()
     $echo->evaluate_echo(null);
 }
 
+/**
+ * Show a gallery media entry along with the CSS and JS resources.
+ */
 function show_gallery_video_script()
 {
     if (!addon_installed('galleries')) {

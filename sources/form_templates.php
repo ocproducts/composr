@@ -2795,9 +2795,9 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
 /**
  * Gets the autocomplete attribute value for a field.
  *
- * @param ID_TEXT $name
- * @param ~?mixed $provided_autocomplete
- * @return ?string
+ * @param  ID_TEXT $name The input field [name] attribute value
+ * @param  ~?mixed $provided_autocomplete The provided autocomplete value (false: explicitly disable autocomplete) (null: try to find a value for the provided $name, otherwise return null)
+ * @return ?string (null: don't use an autocomplete attribute)
  */
 function _get_autocomplete_attribute_value($name, $provided_autocomplete)
 {

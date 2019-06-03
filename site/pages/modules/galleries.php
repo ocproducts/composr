@@ -1114,7 +1114,6 @@ HTML;
      * @param  Tempcode $submit_video_url The URL to "submit a video to this gallery"
      * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  string $fullname The gallery title
-     * @param  Tempcode $sorting Sorting UI
      * @param  array $gallery_row The gallery row
      * @return Tempcode The UI
      */
