@@ -161,7 +161,7 @@
             validValue;
 
         form.addEventListener('submit', function submitCheck(e) {
-            var value = form.elements['name'].value;
+            var value = form.elements['usergroup_name'].value;
 
             if (value === validValue) {
                 return;

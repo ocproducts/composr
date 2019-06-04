@@ -969,8 +969,8 @@
         if (fn) {
             var form = fn.form;
             fn.addEventListener('change', function () {
-                if ((form.elements['name']) && (form.elements['name'].value === '')) {
-                    form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/_+$/, '').substr(0, 80);
+                if ((form.elements['gallery_name']) && (form.elements['gallery_name'].value === '')) {
+                    form.elements['gallery_name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/_+$/, '').substr(0, 80);
                 }
             });
         }
@@ -981,7 +981,7 @@
             submitBtn = document.getElementById('submit-button'),
             validValue;
         form.addEventListener('submit', function submitCheck(e) {
-            var value = form.elements['name'].value;
+            var value = form.elements['gallery_name'].value;
             if (value === validValue) {
                 return;
             }
