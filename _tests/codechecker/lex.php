@@ -133,7 +133,7 @@ $PTOKENS['null'] = 'null';
 // Loaded lexer tokens that change the lexing state
 // ================================================
 $PTOKENS['DOLLAR_OPEN_CURLY_BRACES'] = '${';
-$PTOKENS['START_HEREDOC'] = '<<<'; // Ending it with "END;" is implicit in the PLEXER_HEREDOC state
+$PTOKENS['START_HEREDOC_NOWDOC'] = '<<<'; // Ending it with "END;" is implicit in the PLEXER_HEREDOC state
 $PTOKENS['START_ML_COMMENT'] = '/*'; // Ending it with "* /" is implicit in the PLEXER_ML_COMMENT state
 $PTOKENS['COMMENT'] = '//'; // Ending it with a new-line is implicit in the PLEXER_COMMENT state
 $PTOKENS['VARIABLE'] = '$'; // Ending it with a non-variable-character is implicit in the PLEXER_VARIABLE state
@@ -144,12 +144,13 @@ $PTOKENS['SINGLE_QUOTE'] = '\''; // Ending it with non-escaped ' is implicit in 
 define('PLEXER_FREE', 1); // (grabs implicitly)
 define('PLEXER_VARIABLE', 2); // grab variable
 define('PLEXER_HEREDOC', 3); // grab string_literal
-define('PLEXER_ML_COMMENT', 4); // grab comment
-define('PLEXER_COMMENT', 5); // grab comment
-define('PLEXER_DOUBLE_QUOTE_STRING_LITERAL', 6); // grab string_literal
-define('PLEXER_SINGLE_QUOTE_STRING_LITERAL', 7); // grab string_literal
-define('PLEXER_NUMERIC_LITERAL', 8); // grab float_literal/integer_literal (supports decimal, octal, hexadecimal)
-define('PLEXER_EMBEDDED_VARIABLE', 9); // grab variable (and return to previous state)
+define('PLEXER_NOWDOC', 4); // grab string_literal
+define('PLEXER_ML_COMMENT', 5); // grab comment
+define('PLEXER_COMMENT', 6); // grab comment
+define('PLEXER_DOUBLE_QUOTE_STRING_LITERAL', 7); // grab string_literal
+define('PLEXER_SINGLE_QUOTE_STRING_LITERAL', 8); // grab string_literal
+define('PLEXER_NUMERIC_LITERAL', 9); // grab float_literal/integer_literal (supports decimal, octal, hexadecimal)
+define('PLEXER_EMBEDDED_VARIABLE', 10); // grab variable (and return to previous state)
 
 // These are characters that can be used to continue an identifier lexer token (any other character starts a new token).
 global $PCONTINUATIONS;
@@ -256,7 +257,7 @@ function lex($text = null)
     $escape_flag = false; // Used for string_literal escaping
     $heredoc_simple = false;
     $heredoc_buildup = array();
-    $heredoc_symbol = '';
+    $heredoc_nowdoc_symbol = '';
 
     $tokens_since_comment = 0;
 
@@ -378,12 +379,17 @@ function lex($text = null)
                     if ($token_found == 'VARIABLE') {
                         $lex_state = PLEXER_VARIABLE;
                         break;
-                    } elseif ($token_found == 'START_HEREDOC') {
-                        $lex_state = PLEXER_HEREDOC;
+                    } elseif ($token_found == 'START_HEREDOC_NOWDOC') {
                         $matches = array();
-                        preg_match('#[A-Za-z0-9\_]*#', $TEXT, $matches, 0, $i);
-                        $heredoc_symbol = $matches[0];
-                        $i += strlen($heredoc_symbol);
+                        if (preg_match('#\'([A-Za-z0-9\_]+)\'#A', $TEXT, $matches, 0, $i) != 0) {
+                            $lex_state = PLEXER_NOWDOC;
+                            $heredoc_nowdoc_symbol = $matches[1];
+                        } else {
+                            preg_match('#([A-Za-z0-9\_]*)#A', $TEXT, $matches, 0, $i);
+                            $lex_state = PLEXER_HEREDOC;
+                            $heredoc_nowdoc_symbol = $matches[1];
+                        }
+                        $i += strlen($heredoc_nowdoc_symbol);
                         break;
                     } elseif ($token_found == 'START_ML_COMMENT') {
                         $lex_state = PLEXER_ML_COMMENT;
@@ -528,11 +534,12 @@ function lex($text = null)
 
                 break;
 
+            case PLEXER_NOWDOC:
             case PLEXER_HEREDOC:
-                list($reached_end, $i, $char) = plex__get_next_chars($i, strlen($heredoc_symbol) + 2);
+                list($reached_end, $i, $char) = plex__get_next_chars($i, strlen($heredoc_nowdoc_symbol) + 2);
 
                 // Exit case
-                if ($char == "\n" . $heredoc_symbol . ';') {
+                if ($char == "\n" . $heredoc_nowdoc_symbol . ';') {
                     $lex_state = PLEXER_FREE;
                     if ((isset($GLOBALS['CHECKS'])) && (preg_match('#\<[^\<\>]*\>#', $special_token_value) != 0)) {
                         log_warning('It looks like HTML used outside of templates', $i, true);
@@ -545,46 +552,47 @@ function lex($text = null)
                     $special_token_value = '';
                     break;
                 }
-                $i -= strlen($heredoc_symbol) + 1;
+                $i -= strlen($heredoc_nowdoc_symbol) + 1;
                 if (!isset($char[0])) {
                     break 2;
                 }
                 $char = $char[0];
 
-                // Escape flag based filtering
-                $actual_char = $char;
-                if ($escape_flag) {
-                    if ($char == '$') {
-                        $actual_char = '$';
-                    } elseif ($char == '{') {
-                        $actual_char = '{';
-                    } elseif ($char == '}') {
-                        $actual_char = '}';
-                    } else {
-                        $actual_char = '\\' . $char;
-                    }
-                } else {
-                    $heredoc_simple = !((($char == '{') && ($TEXT[$i] == '$')) || (($char == '$') && ($TEXT[$i] == '{')));
-                    if (($char == '$') || (!$heredoc_simple)) {
-                        if (!$heredoc_simple) {
-                            $i++;
+                if ($lex_state == PLEXER_HEREDOC) {
+                    // Escape flag based filtering
+                    $actual_char = $char;
+                    if ($escape_flag) {
+                        if ($char == '$') {
+                            $actual_char = '$';
+                        } elseif ($char == '{') {
+                            $actual_char = '{';
+                        } elseif ($char == '}') {
+                            $actual_char = '}';
+                        } else {
+                            $actual_char = '\\' . $char;
                         }
-                        $tokens[] = array('string_literal', $special_token_value, $i);
-                        $tokens[] = array('CONC', $i);
-                        $special_token_value = '';
-                        $lex_state = PLEXER_EMBEDDED_VARIABLE;
-                        $previous_state = PLEXER_HEREDOC;
-                        $heredoc_buildup = array();
-                        break;
-                    } elseif (($char == '\\') || ($char == '{')) {
-                        $actual_char = '';// Technically we should only allow "$whatever" if whatever exists, but this future proofs checked code
+                    } else {
+                        $heredoc_simple = !((($char == '{') && ($TEXT[$i] == '$')) || (($char == '$') && ($TEXT[$i] == '{')));
+                        if (($char == '$') || (!$heredoc_simple)) {
+                            if (!$heredoc_simple) {
+                                $i++;
+                            }
+                            $tokens[] = array('string_literal', $special_token_value, $i);
+                            $tokens[] = array('CONC', $i);
+                            $special_token_value = '';
+                            $lex_state = PLEXER_EMBEDDED_VARIABLE;
+                            $previous_state = PLEXER_HEREDOC;
+                            $heredoc_buildup = array();
+                            break;
+                        } elseif (($char == '\\') || ($char == '{')) {
+                            $actual_char = '';// Technically we should only allow "$whatever" if whatever exists, but this future proofs checked code
+                        }
                     }
+
+                    $escape_flag = ((!$escape_flag) && ($char == '\\'));
                 }
 
-                // Normal case
                 $special_token_value .= $actual_char;
-
-                $escape_flag = ((!$escape_flag) && ($char == '\\'));
 
                 break;
 
