@@ -110,7 +110,7 @@ The fastest way to configure PHP is usually as FPM (FastCGI), on top of a thread
  - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
  - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
  - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
- - Configure your SSL options appropriately; basically there is a trade-off between perfect privacy ("Perfect Forward Secrecy") and speed.
+ - Configure your TLS options appropriately; basically there is a trade-off between perfect privacy ("Perfect Forward Secrecy") and speed -- and TLS 1.3 offers good speed improvements.
  - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit).
  - You may want to use only systemd's journald, rather than rsyslogd; on some Linux system rsyslogd is configured to mirror entries written to journald, which can be very intensive due to the frequent reading in and out. journald is higher performance as it is an efficient binary format with a cursor feature.
  - Consider whether you want journaling or not -- it has a significant I/O overhead.
@@ -623,7 +623,7 @@ In the HTML [tt]<head>[/tt] you can define [tt]<link>[/tt] tags for (increasing 
  - [tt]dns-prefetch[/tt] -- pre-resolve a domain name you are going to need to use somewhere in your HTML/CSS/JS
  - [tt]preconnect[/tt] -- pre-connect to a web server you are going to take resources from somewhere in your HTML/CSS/JS, including TLS resolution
  - [tt]prefetch[/tt] -- pre-fetch a URL
- - [tt]prerender[/tt] -- pre-fetch and pre-render a URL
+ - [tt]prerender[/tt] -- pre-fetch and pre-render a URL (if the browser supports it, Google Chrome dropped support)
 
 If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links with [tt]rel="preload"[/tt].
 
