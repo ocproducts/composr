@@ -533,7 +533,7 @@ Some people with very ambitious goals want to have multiple servers dotted aroun
 
 [title="3"]Content Delivery Networks (CDNs)[/title]
 
-There are a number of approaches you can take if you want to serve media from third party servers. Doing this reduces latency, and your own hosting costs, as well as some other potential side benefits such as automatic transcoding.
+There are a number of approaches you can take if you want to serve media from third party servers. Doing this reduces latency, and your own hosting costs, as well as some other potential side benefits such as automatic transcoding, and making the web requests requests cookieless.
 
 [title="4"]Theme/content files[/title]
 
