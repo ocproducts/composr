@@ -619,9 +619,16 @@ The work on HTTP/2 is also interesting (previously Google SPDY), and SDCH is [i]
 
 The Cloudflare service provides some of the same optimisations that [tt]mod_pagespeed[/tt] does, as well as a CDN. However personally I'd opt to use [tt]mod_pagespeed[/tt] and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, Cloudflare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. Cloudflare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
 
-[title="2"]Preloaded links[/title]
+[title="2"]Preloaded content[/title]
 
-Web browsers are starting to support link preloading. If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links.
+In the HTML [tt]<head>[/tt] you can define [tt]<link>[/tt] tags for (increasing cost):
+ - [tt]dns-prefetch[/tt] -- pre-resolve a domain name you are going to need to use somewhere in your HTML/CSS/JS
+ - [tt]preconnect[/tt] -- pre-connect to a web server you are going to take resources from somewhere in your HTML/CSS/JS, including TLS resolution
+ - [tt]prefetch[/tt] -- pre-fetch a URL
+ - [tt]prerender[/tt] -- pre-fetch and pre-render a URL
+
+If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links with [tt]rel="preload"[/tt].
+
 Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[/url] are discussed in a blog post I wrote.
 
 [title="2"]Profiling[/title]
