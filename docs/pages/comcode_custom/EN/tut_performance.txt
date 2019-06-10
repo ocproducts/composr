@@ -615,11 +615,9 @@ Interesting optimisations include:
  - https://www.modpagespeed.com/doc/filter-image-optimize ([tt]mod_pagespeed[/tt] may do a better job that your manual optimisation, and its support of WebP is very interesting)
  - (this list used to be longer, but now most of the optimisations can be achieved in Composr using the [tt]HTML_COMPRESS[/tt] directive)
 
-The work on HTTP/2 is also interesting (previously Google SPDY), and SDCH is [i]extremely interesting[/i]. At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr.
-
 The Cloudflare service provides some of the same optimisations that [tt]mod_pagespeed[/tt] does, as well as a CDN. However personally I'd opt to use [tt]mod_pagespeed[/tt] and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, Cloudflare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. Cloudflare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
 
-[title="2"]Preloaded content[/title]
+[title="2"]Improved HTTP piping[/title]
 
 In the HTML [tt]<head>[/tt] you can define [tt]<link>[/tt] tags for (increasing cost):
  - [tt]dns-prefetch[/tt] -- pre-resolve a domain name you are going to need to use somewhere in your HTML/CSS/JS
@@ -630,6 +628,10 @@ In the HTML [tt]<head>[/tt] you can define [tt]<link>[/tt] tags for (increasing 
 If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links with [tt]rel="preload"[/tt].
 
 Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[/url] are discussed in a blog post I wrote.
+
+HTTP/2 is great, enable it on your server if you can. You can use [tt]preload[/tt] [tt]<link>[/tt] tags to define what the HTTP/2 implementation should automatically push. Just be aware that this will waste bandwidth for users who already have those resources cached.
+
+The work on HTTP/3 is also interesting (previously Google QUIC). Google SDCH was [i]extremely interesting[/i] (but Google dropped support due to lack of interest). At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr if implemented.
 
 [title="2"]Profiling[/title]
 
