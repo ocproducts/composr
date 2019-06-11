@@ -58,7 +58,7 @@ class tutorial_quality_test_set extends cms_test_case
 
             if (substr($file, -4) == '.txt') {
                 $c = file_get_contents($path . '/' . $file);
-                check_comcode($c);
+                check_comcode($c); // This is quite slow
             }
         }
         closedir($dh);
