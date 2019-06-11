@@ -63,10 +63,10 @@ this is the attachment text
 
         require_code('mail');
         require_code('mail2');
-        list($spam_report, $spam_score, $raw) = email_spam_check($mime_email);
+        list($spam_report, $spam_score, $raw, $http_response) = email_spam_check($mime_email);
 
-        $this->assertTrue($spam_report !== null, 'Failed to retrieve spam report [' . serialize($raw) . ']');
-        $this->assertTrue($spam_score !== null, 'Failed to retrieve spam score [' . serialize($raw) . ']');
+        $this->assertTrue($spam_report !== null, 'Failed to retrieve spam report [' . serialize($raw) . ', ' . serialize($http_response) . ']');
+        $this->assertTrue($spam_score !== null, 'Failed to retrieve spam score [' . serialize($raw) . ', ' . serialize($http_response) . ']');
     }
 
     public function tearDown()

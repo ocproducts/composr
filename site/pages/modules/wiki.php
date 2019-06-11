@@ -504,6 +504,10 @@ class Module_wiki
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
 
+                if ($myrow['description'] === null) {
+                    continue; // Broken database reference
+                }
+
                 if (!has_category_access(get_member(), 'wiki_page', strval($child_id))) {
                     continue;
                 }

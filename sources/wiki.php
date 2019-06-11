@@ -858,6 +858,11 @@ function _create_selection_list_wiki_page_tree(&$wiki_seen, $select, $id, $bread
 
             if ($myrow['title'] === null) {
                 $temp_rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $myrow['child_id']), '', 1);
+
+                if (!array_key_exists(0, $temp_rows)) {
+                    continue; // Broken database reference
+                }
+
                 $myrow['title'] = get_translated_text($temp_rows[0]['title']);
                 $rows[$i]['title'] = $myrow['title'];
                 $GLOBALS['SITE_DB']->query_update('wiki_children', array('title' => $myrow['title']), array('parent_id' => $id, 'child_id' => $myrow['child_id']));
@@ -949,6 +954,11 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
                 // Fix child title
                 if ($child['title'] === null) {
                     $temp_rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $child['child_id']), '', 1);
+
+                    if (!array_key_exists(0, $temp_rows)) {
+                        continue; // Broken database reference
+                    }
+
                     $child['title'] = get_translated_text($temp_rows[0]['title']);
 
                     $GLOBALS['SITE_DB']->query_update('wiki_children', array('title' => $child['title']), array('parent_id' => $page_id, 'child_id' => $child['child_id']));

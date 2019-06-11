@@ -279,6 +279,10 @@ class Module_filedump
 
         $place = $this->place;
 
+        if (!file_exists(get_custom_file_base() . '/uploads/filedump' . $place)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         $type_filter = get_param_string('type_filter', '');
 
         $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
@@ -387,6 +391,8 @@ class Module_filedump
         }
         $files = array_merge($directories, $files);
 
+        $something_editable = false;
+
         // Pagination
         $max_rows = count($files);
         $start = get_param_integer('start', 0);
@@ -425,6 +431,9 @@ class Module_filedump
                 }
 
                 $choosable = (($db_row !== null) && ($db_row['the_member'] == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'));
+                if ($choosable) {
+                    $something_editable = true;
+                }
 
                 $width = null;
                 $height = null;
@@ -672,6 +681,7 @@ class Module_filedump
             'OTHER_DIRECTORIES' => $other_directories,
             'FILTERED_DIRECTORIES' => $filtered_directories,
             'FILTERED_DIRECTORIES_MISSES' => $filtered_directories_misses,
+            'SOMETHING_EDITABLE' => $something_editable,
         ));
     }
 
