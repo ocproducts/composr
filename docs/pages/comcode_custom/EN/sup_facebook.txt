@@ -101,7 +101,7 @@ Installing the addon to Composr will override some key templates to [tt]themes/d
 [media width="150" description="Configuration options" float="right"]data_custom/images/docs/sup_facebook/facebook_config.png[/media]
 1) Go to Admin Zone > Setup > Configuration > Composr API options > Facebook syndication / login.
 2) Configure the "Facebook app ID" configuration option and "Facebook app secret" configuration option. You noted down the values earlier.
-3) Also configure the "Facebook page ID" configuration option. This is a useful helper tool: http://findmyfbid.com/.
+3) Also configure the "Facebook page ID" configuration option. This is a useful helper tool: https://lookup-id.com/.
 
 Make sure your site is not closed (you can change the settings in Admin Zone > Setup > Configuration > Site options > Closed site). Facebook integration cannot work if Facebook is denied from connecting back to your website.
 [/surround]

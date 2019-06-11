@@ -19,6 +19,8 @@
 These tests test all var hooks. Some general Resource-fs tests are in the commandr_fs test set.
 */
 
+// If a test is failing, try emptying out the alternative_ids table, and test content from content tables.
+
 /**
  * Composr test case class (unit testing).
  */
@@ -53,6 +55,9 @@ class _resource_fs_test_set extends cms_test_case
         }
 
         $limit_to = get_param_string('limit_to', null); // Useful for breaking down testing into more manageable isolated pieces
+        if (($limit_to === null) && (isset($_SERVER['argv'][2]))) {
+            $limit_to = $_SERVER['argv'][2];
+        }
 
         $this->resource_fs_obs = array();
         $commandr_fs_hooks = find_all_hooks('systems', 'commandr_fs');

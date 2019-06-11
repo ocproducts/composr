@@ -210,7 +210,7 @@ If in doubt, you could survey what is important, but chances are you won't get a
  - http://www.smashingmagazine.com/2008/05/applying-divine-proportion-to-web-design/
  - http://www.creativebloq.com/web-design/10-design-concepts-developers-9134391
  - https://web.archive.org/web/20090604122807/http://wefunction.com/2009/04/quality-within-web-design
- - http://webdesignfromscratch.com/
+ - https://web.archive.org/web/20190124193026/https://webdesignfromscratch.com/
  - http://www.thedesignedtree.com/
  - http://findicons.com/
  - http://www.freeimages.com/
@@ -226,7 +226,6 @@ If in doubt, you could survey what is important, but chances are you won't get a
  - http://www.uxaxioms.com/
  - http://thedesignblitz.com/web-design-mistakes-to-avoid/
  - https://pixabay.com/
- - http://www.kompozer.net/
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]

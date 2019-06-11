@@ -407,7 +407,7 @@ class Hook_addon_registry_language_block
                     'DE' => array('FULL_NAME' => 'German', 'COUNTRY_FLAG' => 'de'),
                 ),
                 'CURRENT_LANG_FULL_NAME' => 'English',
-                'CURRENT_LANG_COUNTRY_FLAG' => 'en',
+                'CURRENT_LANG_COUNTRY_FLAG' => 'gb',
                 'CURRENT_LANG' => 'EN',
             )), null, '', true)
         );

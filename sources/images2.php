@@ -328,7 +328,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     }
     imagepalettetotruecolor($source);
 
-    // We need to do some pipeline cleanup. Most of the pipeline cleanup will automatically happen during the thumbnailing process (and probably have already run for the source image anyway)
+    // We need to do some specific cleanup. Most of the other pipeline cleanup will automatically happen during the thumbnailing process (and probably have already run for the source image anyway)
     require_code('images_cleanup_pipeline');
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
 

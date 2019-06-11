@@ -104,8 +104,16 @@ Additionally you can upload and run the first two steps of Composr's installer a
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | Create [tt]<webroot>/<codename>/_temp[/tt] and put a [tt].htaccess[/tt] file in it
 | [code="htaccess"]
-order deny,allow
-deny from all
+# < Apache 2.4
+<IfModule !mod_authz_core.c>
+	Order Allow,Deny
+	Deny from all
+</IfModule>
+
+# >= Apache 2.4
+<IfModule mod_authz_core.c>
+	Require all denied
+</IfModule>
 [/code]
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}

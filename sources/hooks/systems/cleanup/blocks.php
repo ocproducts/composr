@@ -46,7 +46,6 @@ class Hook_cleanup_blocks
     public function run()
     {
         erase_block_cache(true);
-        erase_persistent_cache();
 
         return new Tempcode();
     }

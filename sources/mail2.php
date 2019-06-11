@@ -24,7 +24,7 @@
  * Spam check an e-mail.
  *
  * @param  string $mime_email The e-mail
- * @return array A pair: The spam report, and the spam score
+ * @return array A triple: The spam report, and the spam score, raw response
  */
 function email_spam_check($mime_email)
 {
@@ -42,7 +42,7 @@ function email_spam_check($mime_email)
         }
     }
 
-    return array($spam_report, $spam_score);
+    return array($spam_report, $spam_score, $_spam_test);
 }
 
 

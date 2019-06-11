@@ -31,6 +31,10 @@ class Hook_spam_heuristics_header_absence
      */
     public function assess_confidence($post_data)
     {
+        if (is_cli()) {
+            return 0;
+        }
+
         $score = intval(get_option('spam_heuristic_confidence_header_absence'));
         if ($score == 0) {
             return 0;

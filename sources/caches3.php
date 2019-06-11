@@ -556,6 +556,8 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
  */
 function erase_comcode_page_cache()
 {
+    $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
+
     if (!multi_lang_content()) {
         $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages');
         return;

@@ -110,7 +110,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
         require_code('database_repair');
         $repair_ob = new DatabaseRepair();
         list($phase, $sql) = $repair_ob->search_for_database_issues();
-        $this->assertTrue($sql == '', 'There seem to be some inconsistencies in the database, run the "Correct MySQL schema issues (advanced)" Website Cleanup Tool');
+        $this->assertTrue($sql == '', 'There seem to be some inconsistencies in the database, run the "Correct MySQL schema issues (advanced)" upgrader tool');
     }
 
     /**

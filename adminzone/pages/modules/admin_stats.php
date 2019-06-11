@@ -154,8 +154,6 @@ class Module_admin_stats
             return null;
         }
 
-        require_lang('stats');
-
         $ret = array(
             'browse' => array('SITE_STATISTICS', 'menu/adminzone/audit/statistics/statistics'),
             'overview' => array('OVERVIEW_STATISTICS', 'menu/adminzone/audit/statistics/statistics'),

@@ -144,7 +144,7 @@ class Module_join
         }
 
         // Show rules
-        $rules = request_page('_rules', true, get_comcode_zone('rules'), null, true);
+        $rules = request_page('_rules', true, get_comcode_zone('_rules'), null, true);
         $map = array('page' => '_SELF', 'type' => 'step2');
         $email_address = trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX));
         if ($email_address != '') {

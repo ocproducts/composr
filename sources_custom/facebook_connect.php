@@ -39,6 +39,9 @@ function handle_facebook_connection_login($current_logged_in_member, $quick_only
     if (!class_exists('Tempcode')) {
         return null;
     }
+    if (!function_exists('require_lang')) {
+        return null;
+    }
 
     if (is_guest($current_logged_in_member)) {
         $current_logged_in_member = null;

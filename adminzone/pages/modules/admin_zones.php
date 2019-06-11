@@ -557,6 +557,7 @@ class Module_admin_zones
                     delete_lang($cache['string_index']);
                 }
                 $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_zone' => ($redirect === null) ? $id : $redirect, 'the_page' => $for));
+                $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
             }
         }
 

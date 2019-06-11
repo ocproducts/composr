@@ -230,6 +230,7 @@ class Hook_addon_registry_core_comcode_pages
 
         return array(
             lorem_globalise(do_lorem_template('COMCODE_PAGE_EDIT_ACTIONS', array(
+                'VIEW_URL' => placeholder_url(),
                 'EDIT_URL' => placeholder_url(),
                 'CLONE_URL' => placeholder_url(),
             )), null, '', true)

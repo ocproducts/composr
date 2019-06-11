@@ -19,7 +19,7 @@ To install the addons:
 
 To be able to set up the Twitter feed block on your site you will need to first set up an application on the Twitter developers' site. This is a fairly simple step by step process:
 [list="1"]
-[*] Go to [url="https://dev.twitter.com/apps"]https://dev.twitter.com/apps[/url]
+[*] Go to [url="https://developer.twitter.com/en/apps"]https://developer.twitter.com/en/apps[/url]
 [*] Click create a new application
 [*] Fill in all of the top 4 application details including the call back URL which should be the root of your website
 [*] Read the terms and conditions and click you agree if you do

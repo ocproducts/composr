@@ -467,7 +467,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
             $ok = true;
             $done = false;
-            $ps_cmd = 'ps -ocomm,etime';
+            $ps_cmd = 'ps -opid,etime,comm';
             if ($use_test_data_for_pass !== null) {
                 $ps_cmd .= ' -A';
             }
@@ -475,7 +475,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             $result = explode("\n", $_result);
             foreach ($result as $r) {
                 $matches = array();
-                if (preg_match('#^(' . $commands_regexp . ')\s+(\d+(:(\d+))*)\s*$#', $r, $matches) != 0) {
+                if (preg_match('#^(\d+)\s+(\d+(:(\d+))*)\s+(' . $commands_regexp . ')\s*$#', $r, $matches) != 0) {
                     $seconds = 0;
                     $time_parts = array_reverse(explode(':', $matches[2]));
                     foreach ($time_parts as $i => $_time_part) {
@@ -501,10 +501,11 @@ class Hook_health_check_performance_server extends Hook_Health_Check
                         }
                     }
 
-                    $cmd = $matches[1];
+                    $cmd = $matches[5];
+                    $pid = $matches[1];
 
                     $ok = $ok && ($seconds < 60 * $threshold_minutes);
-                    $this->assertTrue($ok, 'Process [tt]' . $cmd . '[/tt] has been running a long time @ ' . display_time_period($seconds));
+                    $this->assertTrue($ok, 'Process [tt]' . $cmd . '[/tt] (' . $pid . ') has been running a long time @ ' . display_time_period($seconds));
                 }
             }
 
