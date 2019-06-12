@@ -121,8 +121,8 @@ class Module_admin_setupwizard
 
         $type = get_param_string('type', 'browse');
 
-        if (($type != 'browse') && ($type != 'step11')) {
-            if ((count($_POST) == 0) && ($_POST['REQUEST_METHOD'] != 'POST')) {
+        if (($type != 'browse') && ($type != 'step11') && ($type != 'install_test_content') && ($type != 'uninstall_test_content')) {
+            if ((count($_POST) == 0) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
             }
         }

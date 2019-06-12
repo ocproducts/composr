@@ -299,7 +299,7 @@ END;
     </fieldset>
 END;
 }
-$proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
+$proceed_icon = static_evaluate_tempcode(do_template('ICON', array('NAME' => 'buttons/proceed')));
 echo <<<END
     <fieldset>
         <legend>Submission</legend>

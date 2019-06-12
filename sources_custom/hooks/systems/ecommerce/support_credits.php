@@ -106,7 +106,7 @@ class Hook_ecommerce_support_credits
             return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
 

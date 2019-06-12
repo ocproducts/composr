@@ -37,7 +37,7 @@ if (get_forum_type() != 'cns') {
     warn_exit(do_lang_tempcode('NO_CNS'));
 }
 
-if (strpos(get_db_type(), 'mysql') !== false) {
+if (strpos(get_db_type(), 'mysql') === false) {
     warn_exit('This works with MySQL only');
 }
 

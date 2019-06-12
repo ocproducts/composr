@@ -443,7 +443,7 @@ class Module_sites
      */
     public function demonstratr()
     {
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             warn_exit('This requires MySQL');
         }
 
@@ -475,7 +475,7 @@ class Module_sites
      */
     public function _demonstratr()
     {
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             warn_exit('This requires MySQL');
         }
 

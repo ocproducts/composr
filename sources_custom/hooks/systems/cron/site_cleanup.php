@@ -31,7 +31,7 @@ class Hook_cron_site_cleanup
             return null;
         }
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return null;
         }
 

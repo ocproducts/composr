@@ -41,7 +41,7 @@ class Hook_symbol_MANTIS_TOTAL
             return '';
         }
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return '';
         }
 

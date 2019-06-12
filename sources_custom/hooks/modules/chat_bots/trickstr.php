@@ -63,7 +63,7 @@ class Hook_chat_bot_trickstr
             return null;
         }
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return null;
         }
 
