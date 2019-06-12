@@ -193,7 +193,7 @@ foreach (array_reverse($releases) as $version => $release_details) {
 echo '</select>';
 echo '</div>';
 
-$proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
+$proceed_icon = do_template('ICON', array('_GUID' => '6ab410da5e85d43d82ca34af8ce0b44f','NAME' => 'buttons/proceed'));
 echo '<button style="margin-left: 8px; margin-top: 15px" type="submit" class="button-screen buttons--proceed">' . $proceed_icon->evaluate() . ' Filter</button>';
 echo '</form>';
 echo '</div>';

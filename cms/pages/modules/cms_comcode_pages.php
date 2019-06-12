@@ -330,16 +330,19 @@ class Module_cms_comcode_pages
             escape_html($sitemap_url->evaluate()),
             array(
                 static_evaluate_tempcode(do_template('ICON', array(
+                    '_GUID' => '6b23e82e1007bb4e6539db717b6327dd',
                     'NAME' => 'buttons/search',
                     'ICON_SIZE' => '18',
                     'ICON_CLASS' => 'vertical-alignment',
                 ))),
                 static_evaluate_tempcode(do_template('ICON', array(
+                    '_GUID' => '4ebc80701426935b4d828599f5133e9f',
                     'NAME' => 'tool_buttons/sitemap',
                     'ICON_SIZE' => '18',
                     'ICON_CLASS' => 'vertical-alignment',
                 ))),
                 static_evaluate_tempcode(do_template('ICON', array(
+                    '_GUID' => 'bbbdabc07f399b9b704fe47a994b1298',
                     'NAME' => 'admin/add',
                     'ICON_SIZE' => '18',
                     'ICON_CLASS' => 'vertical-alignment',

@@ -551,6 +551,7 @@ class Hook_addon_registry_core_themeing
 
         $symbol_id = 'admin__add';
         $icons = do_template('PREVIEW_SVG_SPRITE_ICON', array(
+            '_GUID' => '3904c5dbac05f8bb385eeb359e420154',
             'SPRITE_URL' => find_theme_image('icons_sprite'),
             'SYMBOL_ID' => $symbol_id,
             'ICON_NAME' => str_replace('__', '/', $symbol_id),

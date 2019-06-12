@@ -152,6 +152,7 @@ class Block_twitter_feed
         if (!addon_installed('twitter_support', true)) {
             $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.<br />';
             return do_template('BLOCK_TWITTER_FEED', array(
+                '_GUID' => 'f57e5a534a789819c5121271b935d2f3',
                 'TWITTER_TITLE' => $twitter_title,
                 'TWITTER_ERROR' => $twitter_error,
                 'CONTENT' => $content,
@@ -179,6 +180,7 @@ class Block_twitter_feed
             $twitter_error = $e->getMessage();
             $twitter_error .= '<br />';
             return do_template('BLOCK_TWITTER_FEED', array(
+                '_GUID' => 'e798148572372d4d110c257890afff25',
                 'TWITTER_TITLE' => $twitter_title,
                 'TWITTER_ERROR' => $twitter_error,
                 'CONTENT' => $content,
@@ -270,6 +272,7 @@ class Block_twitter_feed
             }
 
             $content->attach(do_template('BLOCK_TWITTER_FEED_TWEET', array(
+                '_GUID' => 'f29c29a3ac4459ae3d98f25b5e3e9716',
                 'TWEET_TIME_AGO' => $time_ago,
                 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
                 'FOLLOW_BUTTON_SIZE' => strval($twitter_followbuttonsize),
@@ -304,6 +307,7 @@ class Block_twitter_feed
 
         // Pass all the Styled statuses to the main template container
         return do_template('BLOCK_TWITTER_FEED', array(
+            '_GUID' => '723c444852d359bb49e53e771bce4d94',
             'BLOCK_ID' => $block_id,
             'TWITTER_ERROR' => $twitter_error,
             'TWITTER_TITLE' => $twitter_title,

@@ -104,6 +104,7 @@ function pins_on_map($data, $color_pool = null, $api_key = null, $width = null, 
     }
 
     return do_template('PINS_ON_MAP', array(
+        '_GUID' => 'f3392d43ffeca05bbd6a896769a11b69',
         'ID' => $id,
         'API_KEY' => $api_key,
         'WIDTH' => $width,
@@ -143,6 +144,7 @@ function countries_on_map($data, $intensity_label = 'Intensity', $color_pool = n
     load_csp(array('csp_allow_eval_js' => '1')); // Needed for its JSON implementation to work
 
     return do_template('COUNTRIES_ON_MAP', array(
+        '_GUID' => 'a21f3f25d345b36fec9e2a856627eb2a',
         'ID' => $id,
         'INTENSITY_LABEL' => $intensity_label,
         'SHOW_LABELS' => $show_labels,

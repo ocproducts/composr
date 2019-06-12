@@ -51,8 +51,8 @@ if ($subdownloads->is_empty()) {
 } else {
     $carousel_id = strval(mt_rand(0, mt_getrandmax()));
 
-    $icon_button_left = do_template('ICON', array('NAME' => 'carousel/button_left'));
-    $icon_button_right = do_template('ICON', array('NAME' => 'carousel/button_right'));
+    $icon_button_left = do_template('ICON', array('_GUID' => 'dbce29b0f4acba4a91bacdb3e91467e9','NAME' => 'carousel/button_left'));
+    $icon_button_right = do_template('ICON', array('_GUID' => '299320806e10587593d26119286bd95a','NAME' => 'carousel/button_right'));
     $content = make_string_tempcode(/** @lang HTML */'
         <div id="carousel-' . $carousel_id . '" class="carousel" style="display: none" data-view="Carousel" data-view-params=\'{"carouselId":"' . $carousel_id . '"}\'>
             <div class="move-left js-btn-car-move" data-move-amount="-100">' . $icon_button_left->evaluate() . '</div>

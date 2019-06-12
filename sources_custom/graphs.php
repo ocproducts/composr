@@ -71,6 +71,7 @@ function graph_scatter_diagram($datapoints, $x_axis_label = '', $y_axis_label = 
     }
 
     return do_template('GRAPH_SCATTER_DIAGRAM', array(
+        '_GUID' => 'a3fc255270253893b7550f18f9f94fca',
         'ID' => $id,
         'WIDTH' => $width,
         'HEIGHT' => $height,
@@ -132,6 +133,7 @@ function graph_line_chart($datasets, $x_labels = null, $x_axis_label = '', $y_ax
     }
 
     return do_template('GRAPH_LINE_CHART', array(
+        '_GUID' => '4a45757f02c5356c6b87a1c8d6366d49',
         'ID' => $id,
         'WIDTH' => $width,
         'HEIGHT' => $height,
@@ -179,6 +181,7 @@ function graph_pie_chart($datapoints, $show_data_labels = true, $color_pool = ar
     }
 
     return do_template('GRAPH_PIE_CHART', array(
+        '_GUID' => '24a351a8cc04f0777b2016ab2ede35cc',
         'ID' => $id,
         'WIDTH' => $width,
         'HEIGHT' => $height,
@@ -222,6 +225,7 @@ function graph_bar_chart($datapoints, $x_axis_label = '', $y_axis_label = '', $b
     }
 
     return do_template('GRAPH_BAR_CHART', array(
+        '_GUID' => '173df546b9bcb31ca064910e1952e484',
         'ID' => $id,
         'WIDTH' => $width,
         'HEIGHT' => $height,

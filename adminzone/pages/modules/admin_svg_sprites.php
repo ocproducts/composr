@@ -224,6 +224,7 @@ class Module_admin_svg_sprites
             }
             $symbol_id = (string)$symbol[1]['id'];
             $icons->attach(do_template('PREVIEW_SVG_SPRITE_ICON', array(
+                '_GUID' => 'c1e00e30fa5d4d77bee4b974dc66c926',
                 'SPRITE_URL' => $sprite_url,
                 'SYMBOL_ID' => $symbol_id,
             )));

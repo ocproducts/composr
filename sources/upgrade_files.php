@@ -48,7 +48,7 @@ function upgrader_file_upgrade_screen()
         $out .= '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
         $out .= '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
     }
-    $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
+    $proceed_icon = do_template('ICON', array('_GUID' => '7a84502d5457fd3960d8e5056ee1cb49','NAME' => 'buttons/proceed'));
     $out .= '<p><button class="buttons--proceed button-screen" type="submit">' . $proceed_icon->evaluate() . ' ' . do_lang('PROCEED') . '</button></p>';
     $out .= '</form>';
 

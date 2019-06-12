@@ -24,7 +24,7 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Export static site (TAR file)';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => '517159d4bde58ca67392922f3a53c0d7','TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 disable_php_memory_limit();
