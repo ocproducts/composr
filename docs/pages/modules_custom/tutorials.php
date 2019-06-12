@@ -59,7 +59,7 @@ class Module_tutorials
             't_url' => 'URLPATH',
             't_title' => 'SHORT_TEXT',
             't_summary' => 'LONG_TEXT',
-            't_icon' => 'URLPATH',
+            't_icon' => 'ID_TEXT',
             't_media_type' => 'ID_TEXT', // document|video|audio|slideshow|book
             't_difficulty_level' => 'ID_TEXT', // novice|regular|expert
             't_pinned' => 'BINARY',

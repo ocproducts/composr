@@ -62,6 +62,7 @@ class Hook_addon_registry_all_icons
     public function get_applicable_tutorials()
     {
         return array(
+            'tut_themes',
         );
     }
 
