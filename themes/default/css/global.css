@@ -1625,6 +1625,7 @@ div.red-alert, p.red-alert {
 	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
 	background-size: 24px 24px;
 	color: {$GET,slightly_seeded_text};
+	padding-left: 38px;
 }
 
 .field-name {
