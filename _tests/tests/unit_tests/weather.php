@@ -25,13 +25,13 @@ class weather_test_set extends cms_test_case
         require_code('weather');
 
         $errormsg = '';
-        $result = weather_lookup(null, 24.466667, 39.6, 'metric', $errormsg, 'openweathermap');
-        $this->assertTrue(($result !== null) && (array_key_exists('list', $result[0])) && (array_key_exists(0, $result[0]['list'])) && ($result[0]['city']['name'] == 'Medina'), 'Failed to lookup weather forecast by GPS; ' . $errormsg);
-        $this->assertTrue(($result !== null) && (array_key_exists('weather', $result[1])) && ($result[1]['name'] == 'Medina'), 'Failed to lookup weather conditions by GPS; ' . $errormsg);
+        $result = weather_lookup(null, 24.466667, 39.6, 'metric', null, $errormsg, 'openweathermap');
+        $this->assertTrue(($result !== null) && (array_key_exists(0, $result[0])) && ($result[0][0]['city_name'] == 'Medina'), 'Failed to lookup weather forecast by GPS; ' . $errormsg);
+        $this->assertTrue(($result !== null) && ($result[1]['city_name'] == 'Medina'), 'Failed to lookup weather conditions by GPS; ' . $errormsg);
 
         $errormsg = '';
-        $result = weather_lookup('Medina', null, null, 'metric', $errormsg, 'openweathermap');
-        $this->assertTrue(($result !== null) && (array_key_exists('list', $result[0])) && (array_key_exists(0, $result[0]['list'])) && ($result[0]['city']['name'] == 'Medina'), 'Failed to lookup weather forecast by location string; ' . $errormsg);
-        $this->assertTrue(($result !== null) && (array_key_exists('weather', $result[1])) && ($result[1]['name'] == 'Medina'), 'Failed to lookup weather conditions by location string; ' . $errormsg);
+        $result = weather_lookup('Medina', null, null, 'metric', null, $errormsg, 'openweathermap');
+        $this->assertTrue(($result !== null) && (array_key_exists(0, $result[0])) && ($result[0][0]['city_name'] == 'Medina'), 'Failed to lookup weather forecast by location string; ' . $errormsg);
+        $this->assertTrue(($result !== null) && ($result[1]['city_name'] == 'Medina'), 'Failed to lookup weather conditions by location string; ' . $errormsg);
     }
 }

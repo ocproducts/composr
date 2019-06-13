@@ -44,6 +44,7 @@ class Hook_weather_openweathermap
         $lang = strtolower(user_lang());
 
         require_code('http');
+        require_code('locations');
 
         $wind_directions = array('N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW');
 
@@ -54,29 +55,32 @@ class Hook_weather_openweathermap
             return null;
         }
         $forecast = array();
-        foreach ($_forecast['list'] as &$_forecast) {
+        foreach ($_forecast['list'] as &$__forecast) {
             $conditions = array();
-            foreach ($_forecast['weather'] as &$_condition) {
+            foreach ($__forecast['weather'] as &$_condition) {
                 $conditions[] = array(
                     'condition' => $_condition['description'],
                     'icon_url' => 'https://openweathermap.org/img/w/' . $_condition['icon'] . '.png',
                 );
             }
 
-            $rain = (isset($_forecast['rain']['3h']) ? $_forecast['rain']['3h'] : 0);
+            $rain = (isset($__forecast['rain']['3h']) ? $__forecast['rain']['3h'] : 0);
             if ($units == 'imperial') {
                 $rain = $rain * 0.03937008; // Convert to inches
             }
 
-            $snow = (isset($_forecast['snow']['3h']) ? $_forecast['snow']['3h'] : 0);
+            $snow = (isset($__forecast['snow']['3h']) ? $__forecast['snow']['3h'] : 0);
             if ($units == 'imperial') {
                 $snow = $snow * self::INCHES_PER_MM; // Convert to inches
             }
 
             $forecast[] = array(
-                'timestamp' => $_forecast['dt'],
+                'timestamp' => $__forecast['dt'],
 
-                'temperature' => $_forecast['main']['temp'],
+                'city_name' => $_forecast['city']['name'],
+                'country_name' => find_country_name_from_iso($_forecast['city']['country']),
+
+                'temperature' => $__forecast['main']['temp'],
                 'temperature_high' => null, // TODO
                 'temperature_low' => null, // TODO
 
@@ -84,12 +88,12 @@ class Hook_weather_openweathermap
                 'rain' => $rain,
                 'snow' => $snow,
 
-                'humidity' => $_forecast['main']['humidity'],
+                'humidity' => $__forecast['main']['humidity'],
                 'visibility' => null,
-                'cloudiness' => $_forecast['clouds']['all'],
+                'cloudiness' => $__forecast['clouds']['all'],
 
-                'wind_speed' => $_forecast['wind']['speed'],
-                'wind_direction' => $wind_directions[intval(round(8.0 * $_forecast['wind']['deg'] / 360.0))],
+                'wind_speed' => $__forecast['wind']['speed'],
+                'wind_direction' => $wind_directions[intval(round(8.0 * $__forecast['wind']['deg'] / 360.0))],
                 'wind_chill' => null,
 
                 'conditions' => $conditions,
@@ -110,8 +114,6 @@ class Hook_weather_openweathermap
                 'icon_url' => 'https://openweathermap.org/img/w/' . $_condition['icon'] . '.png',
             );
         }
-
-        require_code('locations');
 
         $current_conditions = array(
             'city_name' => $_current_conditions['name'],
