@@ -120,16 +120,16 @@ class Block_side_weather
             return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '046c437a5c3799838155b5c5fbe3be26', 'MESSAGE' => htmlentities($errormsg)));
         }
 
-        list($forecast, $current_conditions) = $result;
+        list($current_conditions, $forecast) = $result;
 
         $weather_days = array();
         foreach ($forecast as $weather_day) {
             $conditions = array();
-            if (isset($weather_day['weather'])) {
-                foreach ($weather_day['weather'] as $condition) {
+            if (isset($weather_day['conditions'])) {
+                foreach ($weather_day['conditions'] as $condition) {
                     $conditions[] = array(
                         'CONDITION' => $condition['description'],
-                        'ICON_URL' => $condition['icon_url'],
+                        'ICON_URL' => isset($condition['icon_url']) ? $condition['icon_url'] : null,
                     );
                 }
             }
@@ -137,7 +137,7 @@ class Block_side_weather
             $weather_days[] = array(
                 'TIMESTAMP' => strval($weather_day['timestamp']), // Unix timestamp
 
-                'TEMPERATURE_AVERAGE' => isset($weather_day['temperature']) ? strval(intval(round($weather_day['temperature']))) : null,
+                'TEMPERATURE_AVERAGE' => isset($weather_day['temperature_average']) ? strval(intval(round($weather_day['temperature_average']))) : null,
                 'TEMPERATURE_HIGH' => isset($weather_day['temperature_high']) ? strval(intval(round($weather_day['temperature_high']))) : null,
                 'TEMPERATURE_LOW' => isset($weather_day['temperature_low']) ? strval(intval(round($weather_day['temperature_low']))) : null,
 
@@ -162,11 +162,11 @@ class Block_side_weather
         }
 
         $conditions = array();
-        if (isset($current_conditions['weather'])) {
-            foreach ($current_conditions['weather'] as $condition) {
+        if (isset($current_conditions['conditions'])) {
+            foreach ($current_conditions['conditions'] as $condition) {
                 $conditions[] = array(
                     'CONDITION' => $condition['description'],
-                    'ICON_URL' => $condition['icon_url'],
+                    'ICON_URL' => isset($condition['icon_url']) ? $condition['icon_url'] : null,
                 );
             }
         }

@@ -7,7 +7,9 @@
 		{+START,IF_NON_EMPTY,CURRENT_CONDITIONS}
 			{+START,LOOP,CURRENT_CONDITIONS}
 				{+START,IF_PASSED,ICON_URL}
-					<img class="right" src="{$ENSURE_PROTOCOL_SUITABILITY*,{ICON_URL}}" alt="{CONDITION*}" title="{CONDITION*}" />
+					{+START,IF,{$EQ,{_loop_key},0}}
+						<img class="right" src="{$ENSURE_PROTOCOL_SUITABILITY*,{ICON_URL}}" alt="{CONDITION*}" title="{CONDITION*}" />
+					{+END}
 				{+END}
 			{+END}
 		{+END}
@@ -41,7 +43,9 @@
 			{+START,IF_NON_EMPTY,CONDITIONS}
 				{+START,LOOP,CONDITIONS}
 					{+START,IF_PASSED,ICON_URL}
-						<img class="right" src="{$ENSURE_PROTOCOL_SUITABILITY*,{ICON_URL}}" alt="{CONDITION*}" title="{CONDITION*}" />
+						{+START,IF,{$EQ,{_loop_key},0}}
+							<img class="right" src="{$ENSURE_PROTOCOL_SUITABILITY*,{ICON_URL}}" alt="{CONDITION*}" title="{CONDITION*}" />
+						{+END}
 					{+END}
 				{+END}
 			{+END}
