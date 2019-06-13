@@ -20,16 +20,18 @@ class weather_test_set extends cms_test_case
 {
     public function testWeatherAPI()
     {
-        require_code('blocks/side_weather');
-        $block = new Block_side_weather();
+        set_option('openweathermap_api_key', 'def011d7920f3a719b6e6154ec42271d'); // Do not use this on a live site!
 
-        $woeid = $block->_get_woeid('Medina, Saudi Arabia');
-        $this->assertTrue(is_integer($woeid));
+        require_code('weather');
 
-        list(, , $result) = $block->_get_weather_data($woeid);
-        $this->assertTrue($result !== null);
+        $errormsg = '';
+        $result = weather_lookup(null, 24.466667, 39.6, 'metric', $errormsg);
+        $this->assertTrue(($result !== null) && (array_key_exists('list', $result[0])) && (array_key_exists(0, $result[0]['list'])) && ($result[0]['city']['name'] == 'Medina'), 'Failed to lookup weather forecast by GPS; ' . $errormsg);
+        $this->assertTrue(($result !== null) && (array_key_exists('weather', $result[1])) && ($result[1]['name'] == 'Medina'), 'Failed to lookup weather conditions by GPS; ' . $errormsg);
 
-        $woeid = $block->_get_woeid('Foobarxxx');
-        $this->assertTrue($woeid === null);
+        $errormsg = '';
+        $result = weather_lookup('Medina', null, null, 'metric', $errormsg);
+        $this->assertTrue(($result !== null) && (array_key_exists('list', $result[0])) && (array_key_exists(0, $result[0]['list'])) && ($result[0]['city']['name'] == 'Medina'), 'Failed to lookup weather forecast by location string; ' . $errormsg);
+        $this->assertTrue(($result !== null) && (array_key_exists('weather', $result[1])) && ($result[1]['name'] == 'Medina'), 'Failed to lookup weather conditions by location string; ' . $errormsg);
     }
 }
