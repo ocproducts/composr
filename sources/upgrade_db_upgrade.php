@@ -56,6 +56,8 @@ function upgrader_db_upgrade_screen()
         $version_database_cns = floatval($_version_database_cns);
     }
 
+    $something_done = false;
+
     if (version_specific()) {
         $out .= do_lang('UPGRADER_UPGRADED_CORE_TABLES');
         $something_done = true;
@@ -362,7 +364,7 @@ function version_specific()
 }
 
 /**
- * Upgrade all modules.
+ * Upgrade all modules and blocks.
  *
  * @return string List of upgraded/installed modules/blocks
  */

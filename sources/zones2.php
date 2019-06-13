@@ -388,8 +388,8 @@ function upgrade_module($zone, $module)
     }
 
     $ret = 0;
-    if (($functions[1] !== null) && (!empty($info['update_require_upgrade']))) {
-        if ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade']))) || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade'])))) {
+    if (($upgrade_from < $info['version']) || ($upgrade_from_hack < $info['hack_version'])) {
+        if (($functions[1] !== null) && ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade']))) || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade']))))) {
             require_all_core_cms_code();
             require_code('files2');
 
@@ -628,9 +628,10 @@ function upgrade_block($block)
         return 0;
     }
 
+    $ret = 0;
     $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $block_path);
-    if (($functions[1] !== null) && (array_key_exists('update_require_upgrade', $info))) {
-        if ((($upgrade_from < $info['version']) && (array_key_exists('update_require_upgrade', $info))) || (($upgrade_from_hack < $info['hack_version']) && (array_key_exists('hack_require_upgrade', $info)))) {
+    if (($upgrade_from < $info['version']) || ($upgrade_from_hack < $info['hack_version'])) {
+        if (($functions[1] !== null) && ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade']))) || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade']))))) {
             require_all_core_cms_code();
             require_code('files2');
 
@@ -639,14 +640,15 @@ function upgrade_block($block)
             } else {
                 cms_eval($functions[1], $block_path);
             }
-            if ($info['hacked_by'] === null) {
-                $info['installed_hacked_by'] = '';
-            }
-            $GLOBALS['SITE_DB']->query_update('blocks', array('block_version' => $info['version'], 'block_hack_version' => $info['hack_version'], 'block_hacked_by' => ($info['hacked_by'] === null) ? '' : $info['hacked_by']), array('block_name' => $block), '', 1);
-            return 1;
         }
+
+        if ($info['hacked_by'] === null) {
+            $info['installed_hacked_by'] = '';
+        }
+        $GLOBALS['SITE_DB']->query_update('blocks', array('block_version' => $info['version'], 'block_hack_version' => $info['hack_version'], 'block_hacked_by' => ($info['hacked_by'] === null) ? '' : $info['hacked_by']), array('block_name' => $block), '', 1);
+        $ret = 1;
     }
-    return 0;
+    return $ret;
 }
 
 /**
