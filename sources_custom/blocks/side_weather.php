@@ -93,13 +93,13 @@ class Block_side_weather
                 $speed_units = 'mph';
                 break;
 
-            case 'celsius':
+            case 'metric':
             default:
                 $temperature_units = '&#186;C';
                 $precipitation_units = 'mm';
                 $speed_units = 'kph';
                 $visibility_units = 'm';
-                $units = 'celsius';
+                $units = 'metric';
                 break;
         }
 
@@ -123,7 +123,7 @@ class Block_side_weather
         list($forecast, $current_conditions) = $result;
 
         $weather_days = array();
-        foreach ($forecast['list'] as $weather_day) {
+        foreach ($forecast as $weather_day) {
             $conditions = array();
             if (isset($weather_day['weather'])) {
                 foreach ($weather_day['weather'] as $condition) {
@@ -135,22 +135,23 @@ class Block_side_weather
             }
 
             $weather_days[] = array(
-                'TIMESTAMP' => strval($weather_day['dt']), // Unix timestamp
+                'TIMESTAMP' => strval($weather_day['timestamp']), // Unix timestamp
 
-                'TEMPERATURE_AVERAGE' => isset($weather_day['main']['temp']) ? strval(intval(round($weather_day['main']['temp']))) : null,
-                'TEMPERATURE_HIGH' => isset($weather_day['main']['high']) ? strval(intval(round($weather_day['main']['high']))) : null,
-                'TEMPERATURE_LOW' => isset($weather_day['main']['low']) ? strval(intval(round($weather_day['main']['low']))) : null,
+                'TEMPERATURE_AVERAGE' => isset($weather_day['temperature']) ? strval(intval(round($weather_day['temperature']))) : null,
+                'TEMPERATURE_HIGH' => isset($weather_day['temperature_high']) ? strval(intval(round($weather_day['temperature_high']))) : null,
+                'TEMPERATURE_LOW' => isset($weather_day['temperature_low']) ? strval(intval(round($weather_day['temperature_low']))) : null,
 
                 'PRECIPITATION' => isset($weather_day['precipitation']) ? strval(intval(round($weather_day['precipitation']))) : null,
                 'RAIN' => isset($weather_day['rain']) ? strval(intval(round($weather_day['rain']))) : null,
                 'SNOW' => isset($weather_day['snow']) ? strval(intval(round($weather_day['snow']))) : null,
 
-                'HUMIDITY' => isset($weather_day['main']['humidity']) ? strval(intval(round($weather_day['main']['humidity']))) : null,
-                'VISIBILITY' => isset($weather_day['clouds']['all']) ? strval(intval(round($weather_day['clouds']['all']))) : null,
+                'HUMIDITY' => isset($weather_day['humidity']) ? strval(intval(round($weather_day['humidity']))) : null,
+                'VISIBILITY' => isset($weather_day['visibility']) ? strval(intval(round($weather_day['visibility']))) : null,
+                'CLOUDINESS' => isset($weather_day['cloudiness']) ? strval(intval(round($weather_day['cloudiness']))) : null,
 
-                'WIND_SPEED' => isset($weather_day['wind']['speed']) ? strval(intval(round($weather_day['wind']['speed']))) : null,
-                'WIND_DIRECTION' => isset($weather_day['wind']['direction']) ? $weather_day['wind']['direction'] : null,
-                'WIND_CHILL' => isset($weather_day['wind']['windchill']) ? strval(intval(round($weather_day['wind']['windchill']))) : null,
+                'WIND_SPEED' => isset($weather_day['wind_speed']) ? strval(intval(round($weather_day['wind_speed']))) : null,
+                'WIND_DIRECTION' => isset($weather_day['wind_direction']) ? $weather_day['wind_direction'] : null,
+                'WIND_CHILL' => isset($weather_day['wind_chill']) ? strval(intval(round($weather_day['wind_chill']))) : null,
 
                 'CONDITIONS' => $conditions,
             );
@@ -184,17 +185,18 @@ class Block_side_weather
             'VISIBILITY_UNITS' => $visibility_units,
             'SPEED_UNITS' => $speed_units,
 
-            'CITY_NAME' => isset($current_conditions['city']['name']) ? $current_conditions['city']['name'] : null,
-            'COUNTRY_NAME' => isset($current_conditions['country']) ? find_country_name_from_iso($current_conditions['country']) : null,
+            'CITY_NAME' => isset($current_conditions['city_name']) ? $current_conditions['city_name'] : null,
+            'COUNTRY_NAME' => isset($current_conditions['country_name']) ? $current_conditions['country_name'] : null,
 
-            'CURRENT_TEMPERATURE' => isset($current_conditions['main']['temp']) ? strval(intval(round($current_conditions['main']['temp']))) : null,
+            'CURRENT_TEMPERATURE' => isset($current_conditions['temperature']) ? strval(intval(round($current_conditions['temperature']))) : null,
 
-            'CURRENT_HUMIDITY' => isset($current_conditions['main']['humidity']) ? strval(intval(round($current_conditions['main']['humidity']))) : null,
-            'CURRENT_VISIBILITY' => isset($current_conditions['clouds']['all']) ? strval(intval(round($current_conditions['clouds']['all']))) : null,
+            'CURRENT_HUMIDITY' => isset($current_conditions['humidity']) ? strval(intval(round($current_conditions['humidity']))) : null,
+            'CURRENT_VISIBILITY' => isset($current_conditions['visibility']) ? strval(intval(round($current_conditions['visibility']))) : null,
+            'CURRENT_CLOUDINESS' => isset($current_conditions['cloudiness']) ? strval(intval(round($current_conditions['cloudiness']))) : null,
 
-            'CURRENT_WIND_SPEED' => isset($current_conditions['wind']['speed']) ? strval(intval(round($current_conditions['wind']['speed']))) : null,
-            'CURRENT_WIND_DIRECTION' => isset($current_conditions['wind']['direction']) ? $current_conditions['wind']['direction'] : null,
-            'CURRENT_WIND_CHILL' => isset($current_conditions['wind']['windchill']) ? strval(intval(round($current_conditions['wind']['windchill']))) : null,
+            'CURRENT_WIND_SPEED' => isset($current_conditions['wind_speed']) ? strval(intval(round($current_conditions['wind_speed']))) : null,
+            'CURRENT_WIND_DIRECTION' => isset($current_conditions['wind_direction']) ? $current_conditions['wind_direction'] : null,
+            'CURRENT_WIND_CHILL' => isset($current_conditions['wind_chill']) ? strval(intval(round($current_conditions['wind_chill']))) : null,
 
             'CURRENT_CONDITIONS' => $conditions,
 
