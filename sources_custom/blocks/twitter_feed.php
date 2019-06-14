@@ -79,12 +79,12 @@ class Block_twitter_feed
         $api_key = get_option('twitter_api_key');
         $api_secret = get_option('twitter_api_secret');
         if ($api_key == '' || $api_secret == '') {
-            return do_template('RED_ALERT', array('_GUID' => 'l7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED')));
+            return do_template('RED_ALERT', array('_GUID' => 'l7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED', 'Twitter')));
         }
         $token = get_value('twitter_oauth_token', null, true);
         $token_secret = get_value('twitter_oauth_token_secret', null, true);
         if ($token === null || $token_secret === null) {
-            return do_template('RED_ALERT', array('_GUID' => 'm7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED_OAUTH')));
+            return do_template('RED_ALERT', array('_GUID' => 'm7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED_OAUTH', 'Twitter')));
         }
         if (($api_key == '') || ($api_secret == '')) {
             return paragraph('API options are not configured.', '', 'red_alert');
