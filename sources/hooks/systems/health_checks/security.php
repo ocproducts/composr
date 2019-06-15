@@ -43,6 +43,8 @@ class Hook_health_check_security extends Hook_Health_Check
         $this->process_checks_section('testDirectorySecuring', 'Directory securing', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testSiteOrphaned', 'Site orphaning', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testAdminScriptAccess', 'Admin Script Access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testIPBackdoor', 'IP backdoor left active', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testWebShells', 'WebShells in likely directories (backdoor scripts)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -263,5 +265,107 @@ class Hook_health_check_security extends Hook_Health_Check
             $ok = (http_get_contents(get_base_url() . '/config_editor.php', array('trigger_error' => false)) === null);
         }
         $this->assertTrue($ok, 'Should not have a master password defined, or should control access to config scripts');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testIPBackdoor($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        global $SITE_INFO;
+        $this->assertTrue(empty($SITE_INFO['backdoor_ip']), 'You have a [tt]backdoor_ip[/tt] setting left defined in _config.php');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testWebShells($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('files2');
+
+        $fb = get_file_base();
+
+        $files = array();
+        $base_url_path = parse_url(get_base_url(), PHP_URL_PATH);
+        if ($base_url_path != '/') {
+            if (substr($fb, -strlen($base_url_path)) == $base_url_path) {
+                $webroot_path = substr($fb, 0, strlen($fb) - strlen($base_url_path));
+                $files = array_merge($files, get_directory_contents($webroot_path, '', 0, false, true, array('php'))); // webroot directory
+            }
+        }
+        $files = array_merge($files, get_directory_contents($fb, '', 0, false, true, array('php'))); // base directory
+        $files = array_merge($files, get_directory_contents($fb . '/uploads', 'uploads', 0, true, true, array('php'))); // common uploads location
+        $files = array_merge($files, get_directory_contents($fb . '/themes', 'themes', 0, true, true, array('php'))); // common uploads location
+
+        foreach ($files as $file) {
+            $c = @file_get_contents($fb . '/' . $file);
+            if ($c !== false) {
+                $trigger = $this->isLikelyWebShell($file, $c);
+                if ($trigger !== null) {
+                    $this->assertTrue(false, 'Likely webshell: ' . $file . '; triggered by [tt]' . $trigger . '[/tt]');
+                }
+            }
+        }
+    }
+
+    /**
+     * Find if a file is a likely webshell.
+     *
+     * @param  PATH $file Relative file path
+     * @param  string $c File contents
+     * @return ?string Trigger that found it (null: nothing)
+     */
+    protected function isLikelyWebShell($file, $c)
+    {
+        $triggers = array(
+            '[^\w]system\(',
+            '[^\w]exec\(',
+            '[^\w]shell_exec\(',
+            '[^\w]passthru\(',
+            '[^\w]popen\(',
+            '[^\w]proc_open\(',
+            '[^\w]eval\(',
+            '[^\w]move_uploaded_file\(',
+            '\$\w+\(',
+            '\$_FILES',
+            '/etc/passwd',
+            '(require|include)(_once)?\([\'"]https?://',
+        );
+
+        foreach ($triggers as $trigger) {
+            if (preg_match('#' . $trigger . '#i', $c) != 0) {
+                return $trigger;
+            }
+        }
+
+        return null;
     }
 }
