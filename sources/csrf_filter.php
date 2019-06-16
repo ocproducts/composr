@@ -29,6 +29,11 @@ function csrf_filter_active()
         return false;
     }
 
+    global $SITE_INFO;
+    if ((is_guest()) && ($SITE_INFO['any_guest_cached_too'] == '1')) {
+        return false;
+    }
+
     $security_token_exceptions = get_option('security_token_exceptions');
     $_security_token_exceptions = ($security_token_exceptions == '') ? array() : explode("\n", $security_token_exceptions);
     return !in_array(get_page_name(), $_security_token_exceptions) && !in_array(get_zone_name(), $_security_token_exceptions);
