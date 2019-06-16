@@ -108,6 +108,8 @@ class Block_main_members
         require_css('cns_member_directory');
         require_lang('cns_member_directory');
 
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
         $block_id = get_block_id($map);
 
         $guid = array_key_exists('guid', $map) ? $map['guid'] : '';

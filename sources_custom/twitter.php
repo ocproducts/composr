@@ -458,7 +458,7 @@ class Twitter
         // return the headers
         if($returnHeaders) return $headers;
 
-        // we don't expext JSON, return the response
+        // we don't expect JSON, return the response
         if(!$expectJSON) return $response;
 
         // replace ids with their string values, added because of some
