@@ -49,6 +49,7 @@ class Hook_health_check_security extends Hook_Health_Check
         $this->process_checks_section('testExposedBigDumpScript', 'Exposed BigDump tool', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testExposedPhpInfoScript', 'Exposed PHP-Info script', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testExposedBackups', 'Exposed backups', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testExposedExecuteTemp', 'Exposed execute_temp.php', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -521,5 +522,39 @@ class Hook_health_check_security extends Hook_Health_Check
         }
 
         return $files;
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testExposedExecuteTemp($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        $et_path = get_file_base() . '/data_custom/execute_temp.php';
+        $et_orig_path = get_file_base() . '/data_custom/execute_temp.php.bundle';
+
+        $ok = !file_exists($et_path);
+        if (!$ok) {
+            $c = file_get_contents($et_path);
+            $ok = (is_file($et_orig_path)) && (unixify_line_format($c) == unixify_line_format(file_get_contents($et_orig_path)));
+            if (!$ok) {
+                $ok = (preg_match('#function execute_temp\(\)\s*\{\s*\}#', $c) != 0);
+            }
+        }
+
+        $this->assertTrue($ok, 'Exposed non-empty [tt]data_custom/execute_temp.php[/tt]');
     }
 }
