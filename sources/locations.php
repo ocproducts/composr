@@ -369,7 +369,7 @@ function init__locations()
                 }
             }
 
-            $_continent_text = do_lang('CONTINENT_' . fix_id($continent_text), null, null, null, null, false);
+            $_continent_text = do_lang('CONTINENT_' . str_replace(' ', '_', strtoupper($continent_text)), null, null, null, null, false);
             if (($_continent_text !== null) && ($_continent_text != $continent_text)) {
                 $COUNTRY_LIST[$_continent_text] = $countries;
                 unset($COUNTRY_LIST[$continent_text]);
