@@ -832,7 +832,7 @@ function attach_to_screen_footer($data)
 function set_extra_request_metadata($metadata, $row = null, $content_type = null, $content_id = null)
 {
     global $METADATA;
-    $METADATA += $metadata;
+    $METADATA += $metadata; // First-set gets precedence. E.g. picture custom fields will only set 'image' if no valid image was found yet
 
     if ($content_type !== null) {
         require_code('content');
@@ -946,33 +946,41 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
         // Add in image...
 
-        $image_url = '';
-        if ($cma_info['thumb_field'] !== null) {
-            if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
-                $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
-            } else {
-                if ($content_type === 'image') {
-                    $image_url = $row['url'];
-                    // FUDGE
+        if (!isset($METADATA['image'])) {
+            $image_url = '';
+            if ($cma_info['thumb_field'] !== null) {
+                if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
+                    $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
                 } else {
-                    $image_url = $row[$cma_info['thumb_field']];
-                }
-            }
-            if ($image_url != '') {
-                if ($cma_info['thumb_field_is_theme_image']) {
-                    $image_url = find_theme_image($image_url, true);
-                } else {
-                    if (url_is_local($image_url)) {
-                        $image_url = get_custom_base_url() . '/' . $image_url;
+                    if ($content_type === 'image') {
+                        $image_url = $row['url'];
+                        // FUDGE
+                    } else {
+                        $image_url = $row[$cma_info['thumb_field']];
                     }
                 }
+                if ($image_url != '') {
+                    if ($cma_info['thumb_field_is_theme_image']) {
+                        $image_url = find_theme_image($image_url, true);
+                    } else {
+                        if (url_is_local($image_url)) {
+                            $image_url = get_custom_base_url() . '/' . $image_url;
+                        }
+                    }
+                }
+                if (substr($image_url, -4) == '.svg') {
+                    $image_url = ''; // Cannot use it
+                }
             }
-        }
-        if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '') && ($content_id !== ':' . DEFAULT_ZONE_PAGE_NAME)) {
-            $METADATA['image'] = find_theme_image($cma_info['alternate_icon_theme_image'], true);
-        }
-        if (!empty($image_url)) {
-            $METADATA['image'] = $image_url;
+            if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '') && ($content_id !== ':' . DEFAULT_ZONE_PAGE_NAME)) {
+                $image_url = find_theme_image($cma_info['alternate_icon_theme_image'], true);
+                if (substr($image_url, -4) == '.svg') {
+                    $image_url = ''; // Cannot use it
+                }
+            }
+            if (!empty($image_url)) {
+                $METADATA['image'] = $image_url;
+            }
         }
 
         // Add all $cma_info
