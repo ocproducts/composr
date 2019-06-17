@@ -78,10 +78,12 @@ class Hook_health_check_stability extends Hook_Health_Check
         $this->stateCheckManual('Check the web server error logs, e.g. for 404 errors you may want to serve via a redirect');
 
         if (strpos(PHP_OS, 'Linux') !== false) {
-            $this->stateCheckManual('Check the server logs (under [tt]/var/log[/tt])');
+            $this->stateCheckManual('Check the server logs (under [tt]/var/log[/tt] or [tt]journalctl[/tt] for systemd); common concerns are disk errors, RAID failures, and hackers');
         } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             $this->stateCheckManual('Check the server logs (using Event Viewer)');
         }
+        $this->stateCheckManual('Check disks for SMART error rates, if applicable (N/A for VPS)');
+        $this->stateCheckManual('Check CPU temperature, if applicable (N/A for VPS)');
     }
 
     /**
