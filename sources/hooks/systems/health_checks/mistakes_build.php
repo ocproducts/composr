@@ -73,11 +73,14 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         if ($check_context == CHECK_CONTEXT__INSTALL) {
             return;
         }
-        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+
+        if (!$manual_checks) {
             return;
         }
 
-        if (!$manual_checks) {
+        $this->stateCheckManual('Check [url="OpenGraph metadata"]https://developers.facebook.com/tools/debug/sharing/[/url] on any key pages you expect to be shared');
+
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
         }
 
@@ -88,7 +91,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         $this->stateCheckManual('Check [url="WCAG validation"]https://achecker.ca/checker/index.php[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
 
         $this->stateCheckManual('Check schema.org/microformats validation on either [url="Google"]https://search.google.com/structured-data/testing-tool/[/url] or [url="Bing"]https://www.bing.com/toolbox/markup-validator[/url] or [url="Yandex"]https://webmaster.yandex.com/tools/microtest/[/url], on any key pages you want to be semantic');
-        $this->stateCheckManual('Check [url="OpenGraph metadata"]https://developers.facebook.com/tools/debug/sharing/[/url] on any key pages you expect to be shared');
 
         $this->stateCheckManual('Do a [url="general check"]https://www.woorank.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->stateCheckManual('Do a [url="general check"]https://website.grader.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
