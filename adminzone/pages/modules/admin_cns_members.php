@@ -485,12 +485,13 @@ class Module_admin_cns_members
 
         url_default_parameters__enable();
 
-        $_max_posts = get_value('delurk__max_posts');
-        $_max_points = get_value('delurk__max_points');
-        $_max_logged_actions = get_value('delurk__max_logged_actions');
-        $_min_days_since_login = get_value('delurk__min_days_since_login');
-        $_min_days_since_join = get_value('delurk__min_days_since_join');
-        $_usergroups = get_value('delurk__usergroups');
+        $_max_posts = get_value('delurk__max_posts', null, true);
+        $_max_points = get_value('delurk__max_points', null, true);
+        $_max_logged_actions = get_value('delurk__max_logged_actions', null, true);
+        $_min_days_since_login = get_value('delurk__min_days_since_login', null, true);
+        $_min_days_since_join = get_value('delurk__min_days_since_join', null, true);
+        $_non_confirmed = get_value('delurk__non_confirmed', null, true);
+        $_usergroups = get_value('delurk__usergroups', null, true);
         if ($_max_posts === null) {
             $max_posts = 2;
         } else {
@@ -516,6 +517,11 @@ class Module_admin_cns_members
         } else {
             $min_days_since_join = intval($_min_days_since_join);
         }
+        if ($_non_confirmed === null) {
+            $non_confirmed = false;
+        } else {
+            $non_confirmed = ($_non_confirmed == '1');
+        }
         if ($_usergroups === null) {
             $usergroups = array();
         } else {
@@ -536,6 +542,7 @@ class Module_admin_cns_members
         $fields->attach(form_input_integer(do_lang_tempcode('DELURK_MAX_LOGGED_ACTIONS'), do_lang_tempcode('DELURK_MAX_LOGGED_ACTIONS_DESCRIPTION'), 'max_logged_actions', $max_logged_actions, true));
         $fields->attach(form_input_integer(do_lang_tempcode('DELURK_MIN_DAYS_SINCE_LOGIN'), do_lang_tempcode('DELURK_MIN_DAYS_SINCE_LOGIN_DESCRIPTION'), 'min_days_since_login', $min_days_since_login, true));
         $fields->attach(form_input_integer(do_lang_tempcode('DELURK_MIN_DAYS_SINCE_JOIN'), do_lang_tempcode('DELURK_MIN_DAYS_SINCE_JOIN_DESCRIPTION'), 'min_days_since_join', $min_days_since_join, true));
+        $fields->attach(form_input_tick(do_lang_tempcode('DELURK_NON_CONFIRMED'), do_lang_tempcode('DELURK_NON_CONFIRMED_DESCRIPTION'), 'non_confirmed', $non_confirmed));
         $groups = new Tempcode();
         $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), ($group_count > 200) ? array('g_is_private_club' => 0) : array());
@@ -572,14 +579,23 @@ class Module_admin_cns_members
      * @param  integer $max_logged_actions Maximum logged actions
      * @param  integer $min_days_since_login Minimum days since last login
      * @param  integer $min_days_since_join Minimum days since joining
+     * @param  boolean $non_confirmed Non-confirmed only
      * @param  array $usergroups List of usergroups
      * @return array Mapping of lurkers
      */
-    public function find_lurkers($max_posts, $max_points, $max_logged_actions, $min_days_since_login, $min_days_since_join, $usergroups)
+    public function find_lurkers($max_posts, $max_points, $max_logged_actions, $min_days_since_login, $min_days_since_join, $non_confirmed, $usergroups)
     {
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval(get_member()) . ' AND m_cache_num_posts<=' . strval($max_posts) . ' AND m_last_visit_time<' . strval(time() - $min_days_since_login * 60 * 60 * 24) . ' AND m_join_time<' . strval(time() - $min_days_since_join * 60 * 60 * 24), 500, $start);
+            $sql = 'SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE';
+            $sql .= ' id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $sql .= ' AND id<>' . strval(get_member()) . ' AND m_cache_num_posts<=' . strval($max_posts);
+            $sql .= ' AND m_last_visit_time<' . strval(time() - $min_days_since_login * 60 * 60 * 24);
+            $sql .= ' AND m_join_time<' . strval(time() - $min_days_since_join * 60 * 60 * 24);
+            if ($non_confirmed) {
+                $sql .= ' AND ' . db_string_not_equal_to('m_validated_email_confirm_code', '');
+            }
+            $rows = $GLOBALS['FORUM_DB']->query($sql, 500, $start);
             $out = array();
             if (addon_installed('points')) {
                 require_code('points');
@@ -635,13 +651,23 @@ class Module_admin_cns_members
         $max_logged_actions = post_param_integer('max_logged_actions');
         $min_days_since_login = post_param_integer('min_days_since_login');
         $min_days_since_join = post_param_integer('min_days_since_join');
+        $non_confirmed = (post_param_integer('non_confirmed', 0) == 1);
         $usergroups = array();
         if (array_key_exists('usergroups', $_POST)) {
             foreach ($_POST['usergroups'] as $g_id) {
                 $usergroups[] = intval($g_id);
             }
         }
-        $lurkers = $this->find_lurkers($max_posts, $max_points, $max_logged_actions, $min_days_since_login, $min_days_since_join, $usergroups);
+
+        set_value('delurk__max_posts', strval($max_posts), true);
+        set_value('delurk__max_points', strval($max_points), true);
+        set_value('delurk__max_logged_actions', strval($max_logged_actions), true);
+        set_value('delurk__min_days_since_login', strval($min_days_since_login), true);
+        set_value('delurk__min_days_since_join', strval($min_days_since_join), true);
+        set_value('delurk__non_confirmed', $non_confirmed ? '1' : '0', true);
+        set_value('delurk__usergroups', implode(',', array_map('strval', $usergroups)), true);
+
+        $lurkers = $this->find_lurkers($max_posts, $max_points, $max_logged_actions, $min_days_since_login, $min_days_since_join, $non_confirmed, $usergroups);
 
         if (count($lurkers) == 0) {
             inform_exit(do_lang_tempcode('NO_LURKERS_FOUND'));
