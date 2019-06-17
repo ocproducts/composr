@@ -418,7 +418,7 @@ abstract class Hook_Health_Check
     protected function process_urls_into_page_links($_urls_or_page_links = null)
     {
         if ($_urls_or_page_links === null) {
-            $__urls_or_page_links = get_option('hc_scan_page_links');
+            $__urls_or_page_links = trim(get_option('hc_scan_page_links'));
             if ($__urls_or_page_links == '') {
                 $_urls_or_page_links = array();
             } else {

@@ -109,7 +109,7 @@ class Hook_health_check_stability extends Hook_Health_Check
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
 
                 continue;
             }

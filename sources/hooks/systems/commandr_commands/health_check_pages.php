@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_commandr_command_health_check
+class Hook_commandr_command_health_check_pages
 {
     /**
      * Run function for Commandr hooks.
@@ -51,7 +51,7 @@ class Hook_commandr_command_health_check
             $verbose = array_key_exists('v', $options);
 
             $has_fails = false;
-            $_categories = run_health_check($has_fails, $parameters, $verbose, true, true);
+            $_categories = run_health_check($has_fails, null, $verbose, true, true, false, null, $parameters, null, CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             $result = '';
             foreach ($_categories as $_category_label => $_sections) {

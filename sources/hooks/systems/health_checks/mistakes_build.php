@@ -53,6 +53,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         $this->process_checks_section('testComcodePageHeadings', 'Comcode page headings', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testComcodePageFormFields', 'Comcode page form fields', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testWebStandards', 'Web standards', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testCommonMistakePatterns', 'Common mistake patterns (page_errors.xml)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -155,7 +156,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -239,7 +240,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -287,7 +288,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -350,7 +351,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -372,16 +373,16 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
                     $matches_action = array();
                     $has_action = (preg_match('#action=["\']([^"\']*)["\']#i', $match, $matches_action) != 0);
-                    $this->assertTrue($has_action, 'Has a form action defined for web POST form');
+                    $this->assertTrue($has_action, do_lang('FORM_ACTION_PROBLEM'));
 
                     if ($has_action) {
                         $url = html_entity_decode($matches_action[1], ENT_QUOTES);
                         $is_absolute_url = (strpos($url, '://') !== false);
-                        $this->assertTrue($is_absolute_url, 'Form action is absolute (i.e. robust)');
+                        $this->assertTrue($is_absolute_url, do_lang('FORM_ACTION_RELATIVE_PROBLEM'));
 
                         if ($is_absolute_url) {
                             $result = cms_http_request($url, array('trigger_error' => false));
-                            $this->assertTrue($result->message == '400', 'Gets 400 response, indicating only issue is missing POST parameter(s), ' . $url . ' (got ' . $result->message . ')');
+                            $this->assertTrue($result->message == '400', do_lang('FORM_ACTION_ERROR_HANDLING_PROBLEM', $url, $result->message));
                         }
                     }
                 }
@@ -498,7 +499,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -725,7 +726,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $page_content = $this->get_comcode_page_content($page_link);
 
             if ($page_content === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -777,7 +778,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $page_content = $this->get_comcode_page_content($page_link);
 
             if ($page_content === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -821,7 +822,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -862,6 +863,95 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             }
 
             $this->assertTrue(count($errors) == 0, do_lang('WEB_STANDARDS_PROBLEM', $field_title, '[html]' . implode('; ', $errors) . '[/html]'));
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testCommonMistakePatterns($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $patterns = array();
+
+        require_code('xml');
+
+        $pattern_path = get_file_base() . '/data_custom/xml_config/page_errors.xml';
+        if (!is_file($pattern_path)) {
+            $pattern_path = get_file_base() . '/data/xml_config/page_errors.xml';
+        }
+        $parsed = new CMS_simple_xml_reader(file_get_contents($pattern_path));
+
+        list($root_tag, $root_attributes, , $this_children) = $parsed->gleamed;
+        if ($root_tag == 'pageErrors') {
+            foreach ($this_children as $_child) {
+                if (!is_array($_child)) {
+                    continue;
+                }
+                list($row_tag, $row_attributes, $row_value, $row_children) = $_child;
+
+                $regexp = null;
+                $description = null;
+                if ($row_tag == 'pattern') {
+                    foreach ($row_children as $__child) {
+                        if (!is_array($__child)) {
+                            continue;
+                        }
+                        list($row_tag, $row_attributes, $row_value, $row_children) = $__child;
+                        switch ($row_tag) {
+                            case 'regexp':
+                                $regexp = $row_value;
+                                break;
+                            case 'description':
+                                $description = $row_value;
+                                break;
+                        }
+                    }
+                }
+
+                if ($regexp !== null) {
+                    if ($description === null) {
+                        $description = '[tt]' . $regexp . '[/tt]';
+                    }
+
+                    $patterns[$regexp] = $description;
+                }
+            }
+        }
+
+        $page_links = $this->process_urls_into_page_links($urls_or_page_links);
+
+        $html_segments = array();
+        foreach ($page_links as $page_link) {
+            $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
+
+            if ($html === null) {
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
+                continue;
+            }
+
+            foreach ($patterns as $regexp => $description) {
+                $matches = array();
+                $result = @preg_match($regexp, $html, $matches);
+                if ($result === false) {
+                    attach_message('Bad regexp: ' . $regexp, 'warn', false, true);
+                    continue;
+                }
+                /*if ($result != 0) { Debugging
+                    @header('Content-type: text/plain');@var_dump($matches);exit();
+                }*/
+                $this->assertTrue($result == 0, $description);
+            }
         }
     }
 }

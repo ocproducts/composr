@@ -680,6 +680,7 @@ function should_ignore_file($path, $bitmask = 0)
             'aggregate_types.xml' => 'data_custom/xml_config',
             'breadcrumbs.xml' => 'data_custom/xml_config',
             'fields.xml' => 'data_custom/xml_config',
+            'page_errors.xml' => 'data_custom/xml_config',
             'EN.pwl' => 'data_custom/spelling/personal_dicts',
             '_critical_error.html' => '',
 

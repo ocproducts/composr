@@ -1,0 +1,61 @@
+<pageErrors>
+	<!-- A multi-word proper noun needing nbsp entity rather than spaces (just an example) -->
+	<!--<pattern>
+		<regexp>#Acme Corp#</regexp>
+		<description>A multi-word proper noun needing nbsp entity rather than spaces</description>
+	</pattern>-->
+
+	<!-- Accidental double spacing using nbsp entity -->
+	<pattern>
+		<regexp><![CDATA[#&nbsp;\s|\s&nbsp;#]]></regexp>
+		<description>{!DOUBLE_SPACE_PROBLEM}</description>
+	</pattern>
+
+	<!-- Accidental white-space at end of a line or a page due to nbsp -->
+	<pattern>
+		<regexp><![CDATA[#&nbsp;\s*(<br(\s/)?>|</p>|</div>|</li>|$)#]]></regexp>
+		<description>{!TRAILING_SPACE_PROBLEM}</description>
+	</pattern>
+
+	<!-- Lines that are just white-space -->
+	<pattern>
+		<regexp><![CDATA[#<p>(\s|&nbsp;)*</p>|<div>(\s|&nbsp;)*</div>|<li>(\s|&nbsp;)*</li>|<br( /)?>(&nbsp;)*<br( /)?>#]]></regexp>
+		<description>{!DEAD_LINE_PROBLEM}</description>
+	</pattern>
+
+	<!-- Inconsistent use of full-stops at the end of list items -->
+	<pattern>
+		<regexp><![CDATA[#<li>((?!</?(li|ul)>).)*\.\s*</li>\s*<li>((?!</?(li|ul)>).)*[^\.]\s*</li>|<li>((?!</?(li|ul)>).)*[^\.]\s*</li>\s*<li>((?!</?(li|ul)>).)*\.\s*</li>#s]]></regexp>
+		<description>{!INCONSISTENT_PERIOD_PROBLEM}</description>
+	</pattern>
+
+	<!-- Sequential font size setting for the same size -->
+	<pattern>
+		<regexp><![CDATA[#<span style="font-size:\s*([\d\.]+(px|em));?\s*">((?!</span>).)*</span>(\s|&nbsp;)*<span style="font-size:\s*\1;?\s*">#]]></regexp>
+		<description>{!SEQUENTIAL_FONT_SIZE_PROBLEM}</description>
+	</pattern>
+
+	<!-- Nested font size setting for the same size -->
+	<pattern>
+		<regexp><![CDATA[#<span style="font-size:\s*([\d\.]+px);?\s*">((?!</span>).)*<span style="font-size:\s*\1;?\s*">#]]></regexp>
+		<description>{!NESTED_FONT_SIZE_PROBLEM}</description>
+	</pattern>
+
+	<!-- Fake headings -->
+	<pattern>
+		<regexp><![CDATA[#<p>\s*<(strong|b)>[^<>\.]+</(strong|b)>\s*</p>|<div>\s*<(strong|b)>[^<>\.]+</(strong|b)>\s*</div>|<br( /)?>\s*<(strong|b)>[^<>\.]+</(strong|b)>\s*<br( /)?>#]]></regexp>
+		<description>{!FAKE_HEADING_PROBLEM}</description>
+	</pattern>
+
+	<!-- Poorly-converted WYSIWYG markup -->
+	<pattern>
+		<regexp><![CDATA[#Apple-style-span|Apple-interchange-newline|OLE_LINK|msoNormal|</?[ovw]:[^>]*>|</?st1:[^>]*>#]]></regexp>
+		<description>{!POOR_WYSIWYG_PROBLEM}</description>
+	</pattern>
+
+	<!-- Non-semantic tables -->
+	<pattern>
+		<regexp><![CDATA[#<table[^<>]*>((?!</(table|th)>).)*</table>#s]]></regexp>
+		<description>{!FAKE_TABLES_PROBLEM}</description>
+	</pattern>
+</pageErrors>
