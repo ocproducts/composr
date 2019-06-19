@@ -101,12 +101,11 @@ function adjust_htaccess()
 
     $lines = array(
         '<FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>',
-        'Order deny,allow',
-        'Deny from all',
+        'Require all denied',
     );
     $ips = $GLOBALS['FORUM_DB']->query_select('f_member_known_login_ips', array('i_ip'), array('i_val_code' => ''));
     foreach ($ips as $ip) {
-        $lines[] = 'Allow from ' . $ip['i_ip'];
+        $lines[] = 'Require ip ' . $ip['i_ip'];
     }
     $lines = array_merge($lines, array(
         '</FilesMatch>',

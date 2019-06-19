@@ -92,6 +92,24 @@ class Hook_health_check_install_env extends Hook_Health_Check
         }
         $this->assertTrue($supported, do_lang('WARNING_SERVER_SOFTWARE', $server_software));
 
+        $matches = array();
+        if (preg_match('#^Apache/([\d\.]*)#', $server_software, $matches) != 0) {
+            $minimum_version = '2.4'; // LEGACY also maintain in tut_webhosting.txt
+
+            $version = $matches[1];
+            $apache_too_old = version_compare($version, $minimum_version, '<');
+            $this->assertTrue(!$apache_too_old, do_lang('APACHE_TOO_OLD', $minimum_version, $version));
+
+            $max_tested_apache_version = '2.4'; // LEGACY needs maintaining
+            if (!is_maintained('platform_apache')) {
+                $apache_too_new = version_compare($version, $max_tested_apache_version . '.1000', '>');
+                $this->assertTrue(
+                    !$apache_too_new,
+                    '[html]' . do_lang('WARNING_NON_MAINTAINED', do_lang('APACHE_TOO_NEW', escape_html($max_tested_apache_version)), escape_html(get_brand_base_url()), escape_html('apache')) . '[/html]'
+                );
+            }
+        }
+
         if (!is_maintained('platform_litespeed')) {
             $this->assertTrue(
                 (stripos($server_software, 'LiteSpeed') === false),

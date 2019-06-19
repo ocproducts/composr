@@ -911,14 +911,10 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
-        if ((stripos($contents, "\n" . 'deny from ' . $ip_cleaned) === false) && (stripos($contents, "\n" . 'require not ip ' . $ip_cleaned) === false)) {
+        if (stripos($contents, "\n" . 'Require not ip ' . $ip_cleaned) === false) {
             require_code('files');
 
-            // < Apache 2.4
-            $contents = str_ireplace('# deny from xxx.xx.x.x (leave this comment here!)', '# deny from xxx.xx.x.x (leave this comment here!)' . "\n" . 'deny from ' . $ip_cleaned, $contents);
-
-            // >= Apache 2.4
-            $contents = str_ireplace('# require not ip xxx.xx.x.x (leave this comment here!)', '# require not ip xxx.xx.x.x (leave this comment here!)' . "\n" . 'require not ip ' . $ip_cleaned, $contents);
+            $contents = str_ireplace('# Require not ip xxx.xx.x.x (leave this comment here!)', '# Require not ip xxx.xx.x.x (leave this comment here!)' . "\n" . 'Require not ip ' . $ip_cleaned, $contents);
 
             cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
@@ -948,11 +944,7 @@ function remove_ip_ban($ip)
         if (trim($ip_cleaned) != '') {
             require_code('files');
 
-            // < Apache 2.4
-            $contents = str_ireplace("\n" . 'deny from ' . $ip_cleaned . "\n", "\n", $contents);
-
-            // >= Apache 2.4
-            $contents = str_ireplace("\n" . 'require not ip ' . $ip_cleaned . "\n", "\n", $contents);
+            $contents = str_ireplace("\n" . 'Require not ip ' . $ip_cleaned . "\n", "\n", $contents);
 
             cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }

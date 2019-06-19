@@ -647,20 +647,9 @@ To provide additional protection beyond the master password you may want to set 
 
 Follows are sample access rules for an Apache [tt].htaccess[/tt] file to provide a temporary access block:
 [code="htaccess"]
-# < Apache 2.4
-<IfModule !mod_authz_core.c>
-	<FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>
-		Order Allow,Deny
-		Deny from all
-	</FilesMatch>
-</IfModule>
-
-# >= Apache 2.4
-<IfModule mod_authz_core.c>
-	<FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>
-		Require all denied
-	</FilesMatch>
-</IfModule>
+<FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>
+	Require all denied
+</FilesMatch>
 [/code]
 
 For IIS, the [tt]web.config[/tt] file's [tt]hiddenSegments[/tt] can be extended:

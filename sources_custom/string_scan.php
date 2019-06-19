@@ -5879,6 +5879,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MYSQL_QUERY_CHANGES_MAKE_2
         MYSQL_TOO_OLD
         MYSQL_TOO_NEW
+        APACHE_TOO_OLD
+        APACHE_TOO_NEW
         PHP_TOO_NEW
         MY_PROFILE_LINK
         M_INTEREST_MINUS
