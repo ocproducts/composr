@@ -105,7 +105,8 @@ class Hook_fields_short_trans
         }
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
-        return form_input_line_comcode($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1);
+        $autocomplete = ($new && $field['cf_autofill_type']) ? (($field['cf_autofill_hint'] ? $field['cf_autofill_hint'] . ' ' : '') . $field['cf_autofill_type']) : null;
+        return form_input_line_comcode($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null, $autocomplete);
     }
 
     /**

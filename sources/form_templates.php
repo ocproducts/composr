@@ -1780,9 +1780,10 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
  * @param  boolean $required Whether this is required
  * @param  ?array $images List of theme images that $content is allowing selection of (so that we can show the images within the list, if JS is enabled) (null: none)
  * @param  integer $size How much space the list takes up (inline lists only)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $images = null, $size = 5)
+function form_input_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $images = null, $size = 5, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -1791,6 +1792,9 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
     require_javascript('select2');
 
     $_required = ($required) ? '-required' : '';
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
+
     $input = do_template('FORM_SCREEN_INPUT_LIST', array(
         '_GUID' => '112dd79a8e0069aa21615594aec1e509',
         'TABINDEX' => strval($tabindex),
@@ -1800,6 +1804,7 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
         'INLINE_LIST' => $inline_list,
         'IMAGES' => $images,
         'SIZE' => strval($size),
+        'AUTOCOMPLETE' => $autocomplete,
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
@@ -1815,9 +1820,10 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
  * @param  boolean $inline_list Whether this is an inline displayed list as opposed to a dropdown
  * @param  boolean $required Whether this is required
  * @param  ?integer $size Size of list (null: default)
+ * @param  ~?mixed $autocomplete The autocomplete field name. (false: explicitly disable autocomplete) (null: no autocomplete attribute unless there's a default for this $name)
  * @return Tempcode The input field
  */
-function form_input_huge_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $size = null)
+function form_input_huge_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $size = null, $autocomplete = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -1826,6 +1832,8 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
     require_javascript('select2');
 
     $_required = ($required) ? '-required' : '';
+
+    $autocomplete = _get_autocomplete_attribute_value($name, $autocomplete);
 
     return do_template('FORM_SCREEN_INPUT_HUGE_LIST', array(
         '_GUID' => 'b29dbbaf09bb5c36410e22feafa2f968',
@@ -1837,6 +1845,7 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
         'NAME' => $name,
         'CONTENT' => $content,
         'INLINE_LIST' => $inline_list,
+        'AUTOCOMPLETE' => $autocomplete,
     ));
 }
 

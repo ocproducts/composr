@@ -212,8 +212,10 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         $icon = $this->_default_property_str($properties, 'options');
         $section = $this->_default_property_str($properties, 'options');
         $tempcode = $this->_default_property_str($properties, 'options');
+        $autofill_type = $this->_default_property_str($properties, 'autofill_type');
+        $autofill_hint = $this->_default_property_str($properties, 'autofill_hint');
 
-        cns_edit_custom_field(intval($resource_id), $label, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode);
+        cns_edit_custom_field(intval($resource_id), $label, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 

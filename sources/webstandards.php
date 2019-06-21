@@ -669,7 +669,7 @@ function init__webstandards()
 
     // Autofill spec: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 
-    $autofill_info_token_regex = '((home|work|mobile|fax|pager) )?';
+    $autofill_contact_info_type_regex = '((home|work|mobile|fax|pager) )?';
 
     $autofill_field_names = array(
         'name',
@@ -717,19 +717,19 @@ function init__webstandards()
         'url',
         'photo',
 
-        $autofill_info_token_regex . 'tel',
-        $autofill_info_token_regex . 'tel-country-code',
-        $autofill_info_token_regex . 'tel-national',
-        $autofill_info_token_regex . 'tel-area-code',
-        $autofill_info_token_regex . 'tel-local',
-        $autofill_info_token_regex . 'tel-local-prefix',
-        $autofill_info_token_regex . 'tel-local-suffix',
-        $autofill_info_token_regex . 'tel-extension',
-        $autofill_info_token_regex . 'email',
-        $autofill_info_token_regex . 'impp',
+        $autofill_contact_info_type_regex . 'tel',
+        $autofill_contact_info_type_regex . 'tel-country-code',
+        $autofill_contact_info_type_regex . 'tel-national',
+        $autofill_contact_info_type_regex . 'tel-area-code',
+        $autofill_contact_info_type_regex . 'tel-local',
+        $autofill_contact_info_type_regex . 'tel-local-prefix',
+        $autofill_contact_info_type_regex . 'tel-local-suffix',
+        $autofill_contact_info_type_regex . 'tel-extension',
+        $autofill_contact_info_type_regex . 'email',
+        $autofill_contact_info_type_regex . 'impp',
     );
 
-    $autocomplete_regex = '(on|off|autocomplete-disabled|((section-[\w\-]+ )?(shipping|billing )?(' . implode('|', $autofill_field_names) . ')))';
+    $autocomplete_regex = '(on|off|autocomplete-disabled|((section-[\w\-]+ )?(shipping |billing )?(' . implode('|', $autofill_field_names) . ')))'; // ("autocomplete-disabled" is an invalid value we use to disable autofill)
 
     global $TAG_ATTRIBUTES;
     $TAG_ATTRIBUTES = array(

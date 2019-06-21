@@ -38,11 +38,13 @@
  * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
  * @param  ID_TEXT $section Whether it is required that every member have this field filled in
  * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
+ * @param  ID_TEXT $autofill_type Autofill field name from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
+ * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
  * @return boolean Whether the custom field was created successfully
  *
  * @ignore
  */
-function _helper_install_create_custom_field($this_ref, $name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '', $icon = '', $section = '', $tempcode = '')
+function _helper_install_create_custom_field($this_ref, $name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '', $icon = '', $section = '', $tempcode = '', $autofill_type = '', $autofill_hint = '')
 {
     cns_require_all_forum_stuff();
     require_code('cns_members_action');
@@ -53,7 +55,7 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
         if ($default === null) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';
         }
-        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required, 0, 0, null, '', 0, $options, $icon, $section, $tempcode, true);
+        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required, 0, 0, null, '', 0, $options, $icon, $section, $tempcode, true, $autofill_type, $autofill_hint);
     }
     return $id !== null;
 }

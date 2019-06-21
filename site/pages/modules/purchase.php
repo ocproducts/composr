@@ -132,22 +132,14 @@ class Module_purchase
             ));
 
             require_code('currency');
-            $cpf = array('currency' => array(3, 'list'));
-            foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', $l[1], 0, '', 'default=CURRENCY');
-            }
 
-            $cpf = array(
-                'payment_cardholder_name' => array(100, 'short_text', ''),
-                'payment_card_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'),
-                'payment_card_number' => array(20, 'integer', ''),
-                'payment_card_start_date' => array(5, 'year_month', 'mm/yy'),
-                'payment_card_expiry_date' => array(5, 'year_month', 'mm/yy'),
-                'payment_card_issue_number' => array(2, 'integer', ''),
-            );
-            foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', $l[1], 1, $l[2]);
-            }
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('currency', 3, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'list', 0, '', 'default=CURRENCY', '', '', '', /*autofill_type=*/'transaction-currency');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('payment_cardholder_name', 100, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'short_text', 1, '', '', '', '', '', /*autofill_type=*/'cc-name');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('payment_card_type', 26, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'list', 1, 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa', '', '', '', '', /*autofill_type=*/'cc-type');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('payment_card_number', 20, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'integer', 1, '', '', '', '', '', /*autofill_type=*/'cc-number');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('payment_card_start_date', 5, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'year_month', 1, 'mm/yy');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('payment_card_expiry_date', 5, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'year_month', 1, 'mm/yy', '', '', '', '', /*autofill_type=*/'cc-exp');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('payment_card_issue_number', 2, /*locked=*/0, /*viewable=*/0, /*settable=*/1, /*required=*/0, '', 'integer', 1, '');
 
             $GLOBALS['SITE_DB']->create_table('ecom_transactions', array(
                 'id' => '*ID_TEXT', // Often referenced as txn_id in code

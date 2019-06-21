@@ -415,6 +415,8 @@ function install_cns($upgrade_from = null)
             'cf_icon' => 'ID_TEXT',
             'cf_section' => 'ID_TEXT',
             'cf_tempcode' => 'LONG_TEXT',
+            'cf_autofill_type' => 'ID_TEXT',
+            'cf_autofill_hint' => 'ID_TEXT',
         ));
 
         // These don't need to be filled in. We just use default from custom field if they aren't
@@ -1078,5 +1080,35 @@ function install_cns($upgrade_from = null)
         add_privilege('FORUMS_AND_MEMBERS', 'bypass_email_address_if_already_empty');
         add_privilege('FORUMS_AND_MEMBERS', 'bypass_dob');
         add_privilege('FORUMS_AND_MEMBERS', 'bypass_dob_if_already_empty');
+    }
+
+    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_autofill_type', 'ID_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_autofill_hint', 'ID_TEXT');
+
+        // Optionally provide autofill types for bundled CPFs (if any found)
+        $autofill_map = array(
+            'cms_currency' => array('transaction-currency'),
+            'cms_payment_cardholder_name' => array('cc-name'),
+            'cms_payment_card_type' => array('cc-type'),
+            'cms_payment_card_number' => array('cc-number'),
+            'cms_payment_card_expiry_date' => array('cc-exp'),
+            'cms_firstname' => array('given-name'),
+            'cms_lastname' => array('family-name'),
+            'cms_billing_street_address' => array('street-address', 'billing'),
+            'cms_billing_city' => array('address-level2', 'billing'),
+            'cms_billing_state' => array('address-level1', 'billing'),
+            'cms_billing_post_code' => array('postal-code', 'billing'),
+            'cms_billing_country' => array('country', 'billing'),
+            'cms_street_address' => array('street-address'),
+            'cms_city' => array('address-level2'),
+            'cms_state' => array('address-level1'),
+            'cms_post_code' => array('postal-code'),
+            'cms_country' => array('country'),
+        );
+
+        foreach ($autofill_map as $cf_name => $arr) {
+            $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_autofill_type' => $arr[0], 'cf_autofill_hint' => isset($arr[1]) ? $arr[1] : ''), array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $cf_name));
+        }
     }
 }

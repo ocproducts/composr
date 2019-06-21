@@ -123,9 +123,10 @@ class Hook_fields_list extends ListFieldHook
      * @param  string $_cf_description The field description
      * @param  array $field The field details
      * @param  ?string $actual_value The actual current value of the field (null: none)
+     * @param  boolean $new Whether this is for a new entry
      * @return ?Tempcode The Tempcode for the input field (null: skip the field - it's not input)
      */
-    public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value)
+    public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         $default = $field['cf_default'];
 
@@ -179,6 +180,8 @@ class Hook_fields_list extends ListFieldHook
             case 'inline_huge':
             case 'dropdown_huge':
             default:
+                $autocomplete = ($new && $field['cf_autofill_type']) ? (($field['cf_autofill_hint'] ? $field['cf_autofill_hint'] . ' ' : '') . $field['cf_autofill_type']) : null;
+
                 if ($custom_values == 'on') {
                     $list_tpl = new Tempcode();
 
@@ -196,7 +199,7 @@ class Hook_fields_list extends ListFieldHook
 
                     $required = $field['cf_required'] == 1;
 
-                    return form_input_combo($_cf_name, $_cf_description, $input_name, $actual_value, $list_tpl, null, $required);
+                    return form_input_combo($_cf_name, $_cf_description, $input_name, $actual_value, $list_tpl, null, $required, $autocomplete);
                 } else {
                     $list_tpl = new Tempcode();
 
@@ -215,10 +218,10 @@ class Hook_fields_list extends ListFieldHook
                     }
 
                     if ($widget == 'dropdown_huge' || $widget == 'inline_huge') {
-                        return form_input_huge_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline_huge'), $field['cf_required'] == 1, $input_size);
+                        return form_input_huge_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline_huge'), $field['cf_required'] == 1, $input_size, $autocomplete);
                     }
 
-                    return form_input_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline'), $field['cf_required'] == 1, null, $input_size);
+                    return form_input_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, ($widget == 'inline'), $field['cf_required'] == 1, null, $input_size, $autocomplete);
                 }
         }
     }

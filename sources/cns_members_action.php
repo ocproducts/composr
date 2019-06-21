@@ -930,9 +930,11 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
  * @param  ID_TEXT $section Whether it is required that every member have this field filled in
  * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
  * @param  boolean $no_name_dupe Whether to check that no field has this name already
+ * @param  ID_TEXT $autofill_type Autofill field name from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
+ * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
  * @return AUTO_LINK The ID of the new Custom Profile Field
  */
-function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $icon = '', $section = '', $tempcode = '', $no_name_dupe = false)
+function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $icon = '', $section = '', $tempcode = '', $no_name_dupe = false, $autofill_type = '', $autofill_hint = '')
 {
     require_code('global4');
     prevent_double_submit('ADD_CUSTOM_PROFILE_FIELD', null, $name);
@@ -980,6 +982,8 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         'cf_icon' => $icon,
         'cf_section' => $section,
         'cf_tempcode' => $tempcode,
+        'cf_autofill_type' => $autofill_type,
+        'cf_autofill_hint' => $autofill_hint,
     );
 
     // LEGACY

@@ -1425,8 +1425,10 @@ function cns_unban_member($member_id)
  * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
  * @param  ID_TEXT $section Whether it is required that every member have this field filled in
  * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
+ * @param  ID_TEXT $autofill_type Autofill field name from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
+ * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
  */
-function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode)
+function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint)
 {
     if ($only_group == '-1') {
         $only_group = '';
@@ -1452,6 +1454,8 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
         'cf_icon' => $icon,
         'cf_section' => $section,
         'cf_tempcode' => $tempcode,
+        'cf_autofill_type' => $autofill_type,
+        'cf_autofill_hint' => $autofill_hint,
     );
     $map += lang_remap('cf_name', $_name, $name, $GLOBALS['FORUM_DB']);
     $map += lang_remap('cf_description', $_description, $description, $GLOBALS['FORUM_DB']);

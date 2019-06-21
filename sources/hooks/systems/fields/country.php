@@ -115,12 +115,13 @@ class Hook_fields_country
         }
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+        $autocomplete = ($new && $field['cf_autofill_type']) ? (($field['cf_autofill_hint'] ? $field['cf_autofill_hint'] . ' ' : '') . $field['cf_autofill_type']) : null;
 
         require_code('locations');
         $country_list = new Tempcode();
         $country_list->attach(form_input_list_entry('', '' == $actual_value, do_lang_tempcode('NA_EM')));
         $country_list->attach(create_country_selection_list(array($actual_value)));
-        return form_input_list($_cf_name, $_cf_description, $input_name, $country_list, null, false, $field['cf_required'] == 1);
+        return form_input_list($_cf_name, $_cf_description, $input_name, $country_list, null, false, $field['cf_required'] == 1, null, 5, $autocomplete);
     }
 
     /**

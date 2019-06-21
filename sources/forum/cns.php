@@ -177,12 +177,14 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
      * @param  ID_TEXT $section Whether it is required that every member have this field filled in
      * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
+     * @param  ID_TEXT $autofill_type Autofill field name from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
+     * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
      * @return boolean Whether the custom field was created successfully
      */
-    public function install_create_custom_field($name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '', $icon = '', $section = '', $tempcode = '')
+    public function install_create_custom_field($name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '', $icon = '', $section = '', $tempcode = '', $autofill_type = '', $autofill_hint = '')
     {
         require_code('cns_forum_driver_helper_install');
-        return _helper_install_create_custom_field($this, $name, $length, $locked, $viewable, $settable, $required, $description, $type, $encrypted, $default, $options, $icon, $section, $tempcode);
+        return _helper_install_create_custom_field($this, $name, $length, $locked, $viewable, $settable, $required, $description, $type, $encrypted, $default, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
     }
 
     /**

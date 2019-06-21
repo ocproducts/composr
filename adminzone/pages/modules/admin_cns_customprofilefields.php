@@ -212,9 +212,11 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
      * @param  ID_TEXT $section Whether it is required that every member have this field filled in
      * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
+     * @param  ID_TEXT $autofill_type Autofill field name from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
+     * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '', $icon = '', $section = '', $tempcode = '')
+    public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '', $icon = '', $section = '', $tempcode = '', $autofill_type = '', $autofill_hint = '')
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -248,6 +250,73 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         } else {
             $hidden->attach(form_input_hidden('type', $type));
         }
+
+        $possible_autofill_types = array(
+            'autocomplete-disabled',
+            'name',
+            'honorific-prefix',
+            'given-name',
+            'additional-name',
+            'family-name',
+            'honorific-suffix',
+            'nickname',
+            'username',
+            'email',
+            'sex',
+            'url',
+            'impp',
+            'bday',
+            'organization-title',
+            'organization',
+            'tel',
+            'tel-national',
+            'street-address',
+            'address-level4',
+            'address-level3',
+            'address-level2',
+            'address-level1',
+            'country',
+            'country-name',
+            'postal-code',
+            'language',
+            'transaction-currency',
+            'cc-name',
+            'cc-given-name',
+            'cc-additional-name',
+            'cc-family-name',
+            'cc-number',
+            'cc-exp',
+            'cc-exp-month',
+            'cc-exp-year',
+            'cc-csc',
+            'cc-type',
+        );
+
+        $autofill_types_option_list = new Tempcode();
+        $autofill_types_option_list->attach(form_input_list_entry('', empty($autofill_type), do_lang('NA')));
+
+        foreach ($possible_autofill_types as $value) {
+            $autofill_types_option_list->attach(form_input_list_entry($value, ($autofill_type === $value), do_lang_tempcode('AUTOFILL_TYPE_DESCRIPTION_' . str_replace('-', '_', $value))));
+        }
+
+        $fields->attach(form_input_list(do_lang('AUTOFILL_TYPE'), do_lang('DESCRIPTION_AUTOFILL_TYPE'), 'autofill_type', $autofill_types_option_list, null, false, false));
+
+        require_lang('ecommerce');
+
+        $possible_autofill_hints =  array(
+            '' => do_lang('NA'),
+            'shipping' => do_lang('SHIPPING'),
+            'billing' => do_lang('BILLING'),
+        );
+
+        $autofill_hints_option_list = new Tempcode();
+
+        foreach ($possible_autofill_hints as $hint => $label) {
+            $autofill_hints_option_list->attach(form_input_list_entry($hint, ($autofill_hint === $hint), $label));
+        }
+
+        $fields->attach(form_input_list(do_lang('AUTOFILL_HINT'), do_lang('DESCRIPTION_AUTOFILL_HINT'), 'autofill_hint', $autofill_hints_option_list, null, false, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS', escape_html(get_tutorial_url('tut_fields'))), 'options', $options, false));
 
         if ($locked == 0 || $allow_full_edit) {
@@ -522,8 +591,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $icon = $myrow['cf_icon'];
         $section = $myrow['cf_section'];
         $tempcode = $myrow['cf_tempcode'];
+        $autofill_type = $myrow['cf_autofill_type'];
+        $autofill_hint = $myrow['cf_autofill_hint'];
 
-        return $this->get_form_fields($name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_on_join_form, $show_in_posts, $show_in_post_previews, $order, $only_group, $locked, $options, $icon, $section, $tempcode);
+        return $this->get_form_fields($name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_on_join_form, $show_in_posts, $show_in_post_previews, $order, $only_group, $locked, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
     }
 
     /**
@@ -554,7 +625,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_string('icon'),
             post_param_string('section'),
             post_param_string('tempcode'),
-            false
+            false,
+            post_param_string('autofill_type'),
+            post_param_string('autofill_hint')
         );
         return strval($id);
     }
@@ -586,7 +659,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_string('options'),
             post_param_string('icon'),
             post_param_string('section'),
-            post_param_string('tempcode')
+            post_param_string('tempcode'),
+            post_param_string('autofill_type'),
+            post_param_string('autofill_hint')
         );
     }
 
