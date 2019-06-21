@@ -496,7 +496,7 @@ class Hook_health_check_security extends Hook_Health_Check
      *
      * @param  ?array $file_extensions File extensions to limit to (no dots), if $files_wanted set (null: no limit)
      * @param  boolean $files_wanted Whether to get files (if not, will return directories instead of files)
-     * @param  array List of file paths relative to real base directory
+     * @return array List of file paths relative to real base directory
      */
     protected function getBaseDirectoriesFiles($file_extensions = array('php'), $files_wanted = true)
     {
