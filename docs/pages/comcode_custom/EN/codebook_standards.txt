@@ -2052,6 +2052,36 @@ Guidance for tables...
 | Use the [tt]th[/tt] tag to define headers. If you have a case where there are top-level and secondary-level headers, put the top-level header in [tt]thead[/tt] and also make use of [tt]tbody[/tt].
 |}
 
+Guidance for forms...
+{|
+! Standard
+! Reason
+! Scope
+! Test method
+! Notes
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Never use [tt][autocomplete="off"][/tt][/color]
+| Accessibility
+| Composr development +
+| Manually
+| Browsers don't respect [tt][autocomplete="off"][/tt] and it breaks auto-refill upon clicking back. Use the special/invalid value [tt][autocomplete="autocomplete-disabled"][/tt] instead, it prevents autofill in most cases.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use standardised field [tt][name][/tt]s when autofill is desired
+| Consistent UI
+| Composr development +
+| Manually
+| We standardise around these autofill-able field [tt][name][/tt]s: [tt]username[/tt], [tt]password[/tt], [tt]email[/tt], [tt]firstname[/tt], [tt]lastname[/tt], [tt]name[/tt], [tt]birthday[/tt], [tt]address1[/tt], [tt]city[/tt], [tt]state[/tt], [tt]postalcode[/tt], [tt]country[/tt], [tt]phone[/tt], and [tt]email[/tt]. These are the field names most reliably supported for autofill and the [tt]form_templates.php[/tt] API will provide the appropriate [tt]autocomplete[/tt] attribute value for them automatically.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Avoid standardised field names to prevent autofill[/color]
+| Consistent UI
+| Composr development +
+| Manually
+| Avoid the field names mentioned in the row above when autofill is undesireable. For example: avoid any field named [tt]'name'[/tt] unless it really is a human name; consider [tt]'title'[/tt].
+|}
+
 [title="4"][acronym="Cascading Style Sheets"]CSS[/acronym][/title]
 
 {|
