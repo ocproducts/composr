@@ -269,7 +269,7 @@ if ($type == 'go') {
     exit();
 }
 
-$proceed_icon = do_template('ICON', array('_GUID' => '1ca7b77e67c6ba866ca26b77edf36ed9','NAME' => 'buttons/proceed'));
+$proceed_icon = do_template('ICON', array('_GUID' => '1ca7b77e67c6ba866ca26b77edf36ed9', 'NAME' => 'buttons/proceed'));
 echo '
     <form action="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'type' => 'auto_probe'), '_SELF'))) . '" method="post">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
@@ -326,7 +326,7 @@ foreach (array_merge(array_keys($addons['bundled']), array_keys($addons['non_bun
     ';
 }
 
-$proceed_icon = do_template('ICON', array('_GUID' => '0447204919c9b24e76101619f4d54441','NAME' => 'buttons/proceed'));
+$proceed_icon = do_template('ICON', array('_GUID' => '0447204919c9b24e76101619f4d54441', 'NAME' => 'buttons/proceed'));
 echo '
         <p class="proceed-button">
             <button class="buttons--proceed button-screen" type="submit">' . $proceed_icon->evaluate() . ' Generate</button>

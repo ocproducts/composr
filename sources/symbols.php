@@ -7001,7 +7001,7 @@ function ecv_TRANSLATION_LINKS($lang, $escaped, $param)
         }
 
         if (count($alt_langs) > 0) {
-            $_value = do_template('TRANSLATION_LINKS', array('_GUID' => '44b1d8c3a82878f365cb1a0b750d935b','ALT_LANGS' => $alt_langs));
+            $_value = do_template('TRANSLATION_LINKS', array('_GUID' => '44b1d8c3a82878f365cb1a0b750d935b', 'ALT_LANGS' => $alt_langs));
             $value = $_value->evaluate();
         }
     }

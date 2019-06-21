@@ -24,7 +24,7 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Create files dump (TAR file)';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('_GUID' => '7b71bedd93d8605c349946fcfd7acf51','TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => '7b71bedd93d8605c349946fcfd7acf51', 'TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 disable_php_memory_limit();

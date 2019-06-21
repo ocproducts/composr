@@ -104,7 +104,7 @@ function unit_testing_run()
             echo '<option>' . escape_html($set) . '</option>' . "\n";
         }
     }
-    $proceed_icon = do_template('ICON', array('_GUID' => 'a68405d9206defe034d950fbaab1c336','NAME' => 'buttons/proceed'));
+    $proceed_icon = do_template('ICON', array('_GUID' => 'a68405d9206defe034d950fbaab1c336', 'NAME' => 'buttons/proceed'));
     echo "
         </select>
         <p><button class=\"button-screen buttons--proceed\" type=\"button\"id=\"select-button\" />{$proceed_icon} Call selection</button></p>

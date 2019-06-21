@@ -30,7 +30,7 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Generate database schema, by addon';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('_GUID' => '20abeb186755f6e74d755586dcea3c56','TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => '20abeb186755f6e74d755586dcea3c56', 'TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 cms_ini_set('ocproducts.xss_detect', '0');

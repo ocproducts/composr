@@ -94,7 +94,7 @@ function phase_0()
     </ul>';
 
 
-    $proceed_icon = do_template('ICON', array('_GUID' => '114667b8c304d0363000bdb3b0869471','NAME' => 'buttons/proceed'));
+    $proceed_icon = do_template('ICON', array('_GUID' => '114667b8c304d0363000bdb3b0869471', 'NAME' => 'buttons/proceed'));
     echo '
     <form method="post" action="' . escape_html($post_url) . '">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
@@ -213,7 +213,7 @@ function phase_1()
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '2')));
 
-    $proceed_icon = do_template('ICON', array('_GUID' => '11cce82f514c6707e2ad35926b81c6c6','NAME' => 'buttons/proceed'));
+    $proceed_icon = do_template('ICON', array('_GUID' => '11cce82f514c6707e2ad35926b81c6c6', 'NAME' => 'buttons/proceed'));
     echo '
         <form action="' . escape_html($post_url) . '" method="post">
             ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '

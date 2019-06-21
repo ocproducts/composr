@@ -203,7 +203,7 @@ class Module_admin_setupwizard
         $addons_url = build_url(array('page' => 'admin_addons'), get_module_zone('admin_addons'));
         $text->attach(paragraph(do_lang_tempcode($done_once ? 'SETUPWIZARD_1_DESCRIBE_ALT' : 'SETUPWIZARD_1_DESCRIBE', escape_html($addons_url->evaluate()))));
         $rescue_url = build_url(array('page' => '', 'keep_safe_mode' => '1'), '');
-        $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), do_template('ICON', array('_GUID' => '049d21a64c40a98fc06229bb3985c85a','NAME' => 'tool_buttons/software_chat')))));
+        $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), do_template('ICON', array('_GUID' => '049d21a64c40a98fc06229bb3985c85a', 'NAME' => 'tool_buttons/software_chat')))));
         $submit_name = do_lang_tempcode('START');
 
         $fields = new Tempcode();

@@ -34,7 +34,7 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Make addon tutorial index';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('_GUID' => '15320e95a4b92c021e7e9853c1585f7d','TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => '15320e95a4b92c021e7e9853c1585f7d', 'TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 // Prepare for synonyms

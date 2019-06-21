@@ -454,7 +454,7 @@ function _render_google_search_console_keywords($id, $days, $under_tab)
         $rows->attach(columned_table_row($values, true));
     }
 
-    $table = do_template('COLUMNED_TABLE', array('_GUID' => '00c9731002eea4822ca91d21a4d25fc0','HEADER_ROW' => $header_row, 'ROWS' => $rows));
+    $table = do_template('COLUMNED_TABLE', array('_GUID' => '00c9731002eea4822ca91d21a4d25fc0', 'HEADER_ROW' => $header_row, 'ROWS' => $rows));
 
     return do_template('GOOGLE_SEARCH_CONSOLE_KEYWORDS', array(
         '_GUID' => 'c7ff763455bd1fc31bab7a70c6859127',

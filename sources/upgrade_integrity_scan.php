@@ -327,7 +327,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                     };
                 </script>';
             $ret_str .= '<p class="associated-details"><a href="#!" onclick="return tick_all(this.parentNode.parentNode.parentNode);">' . do_lang('UPGRADER_CHECK_ALL') . '</a></p>';
-            $proceed_icon = do_template('ICON', array('_GUID' => 'be08f7c50a1407f152770aef6ab6ead7','NAME' => 'buttons/proceed'));
+            $proceed_icon = do_template('ICON', array('_GUID' => 'be08f7c50a1407f152770aef6ab6ead7', 'NAME' => 'buttons/proceed'));
             $ret_str .= '<button onclick="return solve_max_input_vars(this.form);" class="buttons--proceed button-screen" accesskey="c" type="submit">' . $proceed_icon->evaluate() . ' ' . do_lang('UPGRADER_AUTO_HANDLE') . '</button>';
             $ret_str .= '</div>';
 
@@ -685,7 +685,7 @@ function upgrader_addon_remove_screen()
     $out .= '</p>';
     $out .= '<form action="upgrader.php?type=_addon_remove" method="post">';
     $out .= '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide-field" rows="10"></textarea>';
-    $icon = do_template('ICON', array('_GUID' => 'badc7bcfa033db703fd501a97cb64314','NAME' => 'admin/delete3'));
+    $icon = do_template('ICON', array('_GUID' => 'badc7bcfa033db703fd501a97cb64314', 'NAME' => 'admin/delete3'));
     $out .= '<button class="admin--delete3 button-screen" type="submit">' . $icon->evaluate() . ' Remove addon files</button>';
     $out .= post_fields_relay();
     $out .= '</form>';
