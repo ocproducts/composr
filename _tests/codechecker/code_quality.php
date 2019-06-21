@@ -600,7 +600,9 @@ $ERROR_FUNCS = array(
     'passthru' => true,
 );
 
-@set_time_limit(10000);
+if (function_exists('set_time_limit')) {
+    @set_time_limit(10000);
+}
 
 global $COMPOSR_PATH;
 global $FUNCTION_SIGNATURES;
