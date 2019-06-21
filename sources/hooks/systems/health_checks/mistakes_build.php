@@ -674,6 +674,8 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $start = 0;
             $max = 100;
             do {
+                $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
+
                 push_db_scope_check(true);
                 $rows = $GLOBALS['SITE_DB']->query_select($table, array($name), array(), '', $max, $start);
                 pop_db_scope_check();
@@ -693,9 +695,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                     }
                 }
 
-                if (php_function_allowed('set_time_limit')) {
-                    set_time_limit(100);
-                }
+                cms_set_time_limit($old_limit);
 
                 $start += $max;
             }

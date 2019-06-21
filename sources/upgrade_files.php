@@ -74,9 +74,7 @@ function _upgrader_file_upgrade_screen()
     }
 
     // Turn off limits, this may be exhaustive
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
     disable_php_memory_limit();
 
     // Download file

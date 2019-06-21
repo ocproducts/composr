@@ -392,9 +392,7 @@ class Module_catalogues
             rebuild_catalogue_cat_treecache();
 
             // Move floats and integers into their own new tables
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $sql_integer = db_string_equal_to('cf_type', 'integer') . ' OR ' . db_string_equal_to('cf_type', 'member') . ' OR ' . db_string_equal_to('cf_type', 'tick');
             $sql_float = db_string_equal_to('cf_type', 'float');
             foreach (array($sql_float => 'float', $sql_integer => 'integer') as $where => $new_type) {

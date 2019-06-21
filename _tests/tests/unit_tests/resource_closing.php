@@ -24,9 +24,7 @@ class resource_closing_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(100);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
 
         require_code('files2');
 

@@ -43,10 +43,6 @@ abstract class CSSCleanup
         $this->theme = $theme;
         $this->do_as_overrides = $do_as_overrides;
         $this->carry_from_default = $carry_from_default;
-
-        if (php_function_allowed('set_time_limit')) {
-            set_time_limit(100);
-        }
     }
 
     /**

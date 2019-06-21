@@ -1138,9 +1138,7 @@ function step_5()
         $_POST['cns_table_prefix'] = preg_replace('#[^\w]#', '', $_POST['cns_table_prefix']);
     }
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     $url = prepare_installer_url('install.php?step=6');
 
@@ -2215,9 +2213,7 @@ function step_5_core_2()
  */
 function step_6()
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     if (count($_POST) == 0) {
         exit(do_lang('INST_POST_ERROR'));
@@ -2253,9 +2249,7 @@ function step_6()
  */
 function big_installation_common()
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     if (count($_POST) == 0) {
         exit(do_lang('INST_POST_ERROR'));
@@ -2316,6 +2310,8 @@ function step_7()
     $modules = find_all_modules('adminzone');
     foreach ($modules as $module => $type) {
         if (($module != 'admin_version') && ($module != 'admin_permissions')) {
+            send_http_output_ping();
+
             //echo '<!-- Installing ' . escape_html($module) . ' -->';
             if (reinstall_module('adminzone', $module)) {
                 $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ab3', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
@@ -2328,6 +2324,8 @@ function step_7()
     require_code('addons2');
     $addons = find_all_hooks('systems', 'addon_registry');
     foreach ($addons as $addon => $place) {
+        send_http_output_ping();
+
         //if ($place == 'sources_custom') continue;  Now we are actually installing custom addons too
 
         reinstall_addon_soft($addon);
@@ -2359,6 +2357,8 @@ function step_8()
 
     $modules = find_all_modules('site');
     foreach ($modules as $module => $type) {
+        send_http_output_ping();
+
         if (reinstall_module('site', $module)) {
             $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9b3c23369e8ca719256ae44b3d42fd4c', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
         }
@@ -2394,6 +2394,8 @@ function step_9()
 
         $modules = find_all_modules($zone);
         foreach ($modules as $module => $type) {
+            send_http_output_ping();
+
             if (reinstall_module($zone, $module)) {
                 $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c1d95b9713006acb491b44ff6c79099c', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
             }
@@ -2402,6 +2404,8 @@ function step_9()
 
     $blocks = find_all_blocks();
     foreach ($blocks as $block => $type) {
+        send_http_output_ping();
+
         echo '<!-- Installing block: ' . $block . ' -->' . "\n";
         if (reinstall_block($block)) {
             $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'dc9f833239d501f77729778b5c6681b6', 'SOMETHING' => do_lang_tempcode('INSTALLED_BLOCK', escape_html($block)))));
@@ -2479,6 +2483,8 @@ function step_10_populate_database()
         if (($zone != 'site') && ($zone != 'adminzone') && ($zone != 'forum') && ($zone != 'cms')) {
             $modules = find_all_modules($zone);
             foreach (array_keys($modules) as $module) {
+                send_http_output_ping();
+
                 if (reinstall_module($zone, $module)) {
                     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '25eb1c88fe122ec5a817f334d5f6bc5e', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
                 }

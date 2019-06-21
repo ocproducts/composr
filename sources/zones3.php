@@ -362,9 +362,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
     }
 
     if (!$force) {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        $old_limit = cms_disable_time_limit();
         disable_php_memory_limit();
 
         $pages = find_all_pages_wrap($zone, false, false, FIND_ALL_PAGES__ALL);
@@ -374,6 +372,9 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
                 $bad[] = $page;
             }
         }
+
+        cms_set_time_limit($old_limit);
+
         if ($bad != array()) {
             require_lang('zones');
             warn_exit(do_lang_tempcode('DELETE_ZONE_ERROR', '<kbd>' . implode('</kbd>, <kbd>', $bad) . '</kbd>'));

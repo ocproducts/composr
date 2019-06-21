@@ -592,9 +592,7 @@ function regenerate_event_reminder_jobs($id, $force = false)
                 'j_event_id' => $id,
             ));
         } else {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            $old_limit = cms_disable_time_limit();
 
             $start = 0;
             do {
@@ -610,6 +608,8 @@ function regenerate_event_reminder_jobs($id, $force = false)
                 }
                 $start += 500;
             } while (array_key_exists(0, $reminders));
+
+            cms_set_time_limit($old_limit);
         }
     }
 }

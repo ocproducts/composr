@@ -105,9 +105,7 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
  */
 function cleanup_member_timeouts()
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $db = get_db_for('f_group_member_timeouts');
 

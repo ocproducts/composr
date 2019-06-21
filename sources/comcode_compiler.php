@@ -377,9 +377,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
     $len = strlen($comcode);
 
-    if ((php_function_allowed('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
-        @set_time_limit(300);
-    }
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_modest);
 
     $allowed_html_seqs = array(
         // HTML tag may actually be used in very limited conditions: only the following HTML seqs will come out as HTML. This is, unless the blacklist filter is used instead.
@@ -2132,6 +2130,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     /*if ($html_element_stack !== array()) {    Not actually needed
         $html_errors = true;
     }*/
+
+    cms_set_time_limit($old_limit);
 
     if (strpos($comcode, '{$,page hint: make_mobile}') !== false) {
         return directive_tempcode('MAKE_MOBILE', $tag_output);

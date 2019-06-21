@@ -170,9 +170,7 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
     global $EXISTING_LANGUAGE_AUTHORS, $EXTRA_LANGUAGE_FILES;
 
     push_query_limiting(false);
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(3000);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     $project_slug = 'composr-cms-' . str_replace('.', '-', strval(cms_version()));
 
@@ -519,9 +517,7 @@ function pull_from_transifex($version, $tar_file, $lang, $core_only)
     $project_slug = 'composr-cms-' . str_replace('.', '-', $version);
 
     push_query_limiting(false);
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(3000);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     if ($lang === null) {
         $langs = array_keys(better_parse_ini_file(get_file_base() . '/lang/langs.ini'));

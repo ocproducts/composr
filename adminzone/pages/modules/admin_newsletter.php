@@ -583,10 +583,6 @@ class Module_admin_newsletter extends Standard_crud_module
             return $lang;
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(1000);
-        }
-
         $id = either_param_string('id', null);
 
         require_lang('cns');
@@ -648,6 +644,8 @@ class Module_admin_newsletter extends Standard_crud_module
         $csv = either_param_integer('csv', 0);
         if ($csv == 1) {
             $filename = 'subscribers_' . $id . '.csv';
+
+            cms_disable_time_limit();
 
             header('Content-type: text/csv; charset=' . get_charset());
             header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
@@ -889,10 +887,7 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function whatsnew_2()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(180);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
         disable_php_memory_limit();
 
         $cutoff_time = post_param_date('cutoff');

@@ -152,9 +152,7 @@ class Block_side_news
         if ($historic == '') {
             $news = $GLOBALS['SITE_DB']->query('SELECT p.* FROM ' . get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id' . $join . ' WHERE ' . $q_filter . ' AND validated=1' . ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY p.id' : '') . ' ORDER BY date_and_time DESC', $max, 0, false, true);
         } else {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(100);
-            }
+            $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
             $start = 0;
             do {
                 $_rows = $GLOBALS['SITE_DB']->query('SELECT p.* FROM ' . get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON p.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ' AND validated=1' . ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY p.id' : '') . ' ORDER BY p.date_and_time DESC', 200, $start, false, true);
@@ -191,6 +189,7 @@ class Block_side_news
                 $start += 200;
             } while ((count($_rows) == 200) && (count($news) < $max));
             unset($_rows);
+            cms_set_time_limit($old_limit);
         }
         $news = remove_duplicate_rows($news, 'id');
 

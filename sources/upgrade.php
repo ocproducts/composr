@@ -30,9 +30,7 @@ function upgrade_script()
     require_lang('upgrade');
     require_all_core_cms_code();
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     // Security...
 

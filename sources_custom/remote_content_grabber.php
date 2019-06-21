@@ -45,7 +45,9 @@ function grab_photobucket_content()
     }
 
     $ob = new RemoteContentGrabber($opts);
+    $old_limit = cms_disable_time_limit();
     $ob->run();
+    cms_set_time_limit($old_limit);
 }
 
 class RemoteContentGrabber
@@ -56,10 +58,6 @@ class RemoteContentGrabber
 
     public function __construct($opts)
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-
         $this->opts = array(
             'local_save_path' => 'uploads/website_specific',
             'has_subdirs' => true,

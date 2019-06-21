@@ -593,10 +593,7 @@ class Module_admin_import
         // Protection from if things take too long
         $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
         $refresh_time = either_param_integer('refresh_time', 0); // Shouldn't default, but reported on some systems to do so
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit($refresh_time);
-        }
-        send_http_output_ping();
+        cms_set_time_limit($refresh_time);
         global $I_REFRESH_URL;
         $I_REFRESH_URL = $refresh_url;
         $GLOBALS['NO_QUERY_LIMIT'] = true;

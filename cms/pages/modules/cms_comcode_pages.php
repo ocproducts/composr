@@ -1302,10 +1302,7 @@ class Module_cms_comcode_pages
         require_code('type_sanitisation');
 
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(600);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         $zone = get_param_string('filter', null);
 
@@ -1323,6 +1320,8 @@ class Module_cms_comcode_pages
             $files_list = $this->get_comcode_files_list_disk_search(user_lang(), null, false);
             $__pages = array();
             foreach ($files_list as $page_link => $path_bits) {
+                send_http_output_ping();
+
                 list($_zone, $_page) = explode(':', $page_link, 2);
                 if (!is_string($_page)) {
                     $_page = strval($_page);
@@ -1420,6 +1419,8 @@ class Module_cms_comcode_pages
      */
     public function organise_page_tree(&$pages, $under = '')
     {
+        send_http_output_ping();
+
         static $todo_checks = null;
         static $no_validation_support = null;
         static $menu_branches_by_url = null;

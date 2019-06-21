@@ -24,9 +24,7 @@ class _bash_parser_test_set extends cms_test_case
 {
     public function testValidCode()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         require_code('files2');
         $php_path = find_php_path();

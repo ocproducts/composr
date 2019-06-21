@@ -840,9 +840,8 @@ class Module_cms_calendar extends Standard_crud_module
 
         // Reminders
         if (has_privilege(get_member(), 'set_reminders')) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
+
             $rem_groups = array();
             if ((has_privilege(get_member(), 'add_public_events')) && (array_key_exists('sign_up_reminder_groups', $_POST))) {
                 $all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true);

@@ -376,9 +376,7 @@ function cron_bridge_script($caller)
             $time_after = time();
 
             // Reset time limit (hook may have overwritten / we provide same max time for each hook)
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(1000);
-            }
+            cms_set_time_limit(TIME_LIMIT_EXTEND_crawl);
 
             // Update cron_progression table
             if (isset($cron_progression[$hook])) {
@@ -712,9 +710,7 @@ function external_url_proxy_script()
     }
 
     // No time-limits wanted
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     // Can't add in compression
     cms_ini_set('zlib.output_compression', 'Off');

@@ -110,9 +110,7 @@ function cleanup()
 
     /* Actioning code follows... */
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $GLOBALS['SITE_INFO']['no_email_output'] = '1';
 

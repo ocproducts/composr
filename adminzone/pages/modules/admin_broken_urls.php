@@ -188,9 +188,7 @@ class Module_admin_broken_urls
     public function choose()
     {
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $url_scanner = new BrokenURLScanner();
 
@@ -212,6 +210,8 @@ class Module_admin_broken_urls
 
         $urls = array();
         foreach ($this->link_types as $type => $type_title) {
+            send_http_output_ping();
+
             if (!in_array($type, $chosen_link_types)) {
                 continue;
             }

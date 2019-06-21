@@ -587,6 +587,8 @@ class Module_admin_cns_members
     {
         $start = 0;
         do {
+            send_http_output_ping();
+
             $sql = 'SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE';
             $sql .= ' id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
             $sql .= ' AND id<>' . strval(get_member()) . ' AND m_cache_num_posts<=' . strval($max_posts);
@@ -637,10 +639,7 @@ class Module_admin_cns_members
      */
     public function _delurk()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(100);
-        }
-        send_http_output_ping();
+        cms_disable_time_limit();
 
         check_privilege('mass_import');
 

@@ -356,11 +356,6 @@ class Module_admin_themewizard
         $dark = post_param_integer('dark');
         $inherit_css = post_param_integer('inherit_css');
 
-        send_http_output_ping();
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-
         require_code('type_sanitisation');
         if ((!is_alphanumeric($themename)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));

@@ -80,13 +80,7 @@ class Hook_profiles_tabs_edit
             return array($title, null, $order, 'buttons/settings');
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(60); // Raise time limit, as can be slow
-        }
-
-        if (count($_POST) > 0) {
-            send_http_output_ping();
-        }
+        $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_modest); // Raise time limit, as can be slow
 
         $tabs = array();
 
@@ -96,6 +90,8 @@ class Hook_profiles_tabs_edit
         }
         foreach (array_keys($hooks) as $hook) {
             if (($only_tab === null) || (preg_match('#(^|,)' . preg_quote($hook, '#') . '(,|$)#', $only_tab) != 0)) {
+                send_http_output_ping();
+
                 require_code('hooks/systems/profiles_tabs_edit/' . filter_naughty_harsh($hook));
                 $ob = object_factory('Hook_profiles_tabs_edit_' . filter_naughty_harsh($hook));
                 if ($ob->is_active($member_id_of, $member_id_viewing)) {
@@ -119,6 +115,8 @@ class Hook_profiles_tabs_edit
                 }
             }
         }
+
+        cms_set_time_limit($old_limit);
 
         if ($leave_to_ajax_if_possible) {
             return array($title, null, $order, 'buttons/settings');

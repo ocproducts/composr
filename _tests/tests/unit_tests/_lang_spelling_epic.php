@@ -20,9 +20,7 @@ class _lang_spelling_epic_test_set extends cms_test_case
 {
     public function testSpelling()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(200);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         require_code('files2');
         require_code('spelling');

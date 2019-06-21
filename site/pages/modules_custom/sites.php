@@ -334,9 +334,7 @@ class Module_sites
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $hidden = build_keep_post_fields();
 
@@ -383,9 +381,7 @@ class Module_sites
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $conn_id = $this->_hostingcopy_ftp_connect();
         $path = post_param_string('path');

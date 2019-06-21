@@ -1130,9 +1130,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
     // Special case: LESS support
     if ((addon_installed('less')) && ($suffix === '.less')) {
         // Up our resources
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
-        }
+        $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
         disable_php_memory_limit();
 
         // Stop parallel compilation of the same file by a little hack; without this it could knock out a server
@@ -1194,6 +1192,8 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
                 fatal_exit('.less problem: ' . $ex->getMessage());
             }
         }
+
+        cms_set_time_limit($old_limit);
     }
 
 

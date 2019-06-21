@@ -104,9 +104,7 @@ function make_installers($skip_file_grab = false)
     $make_aps = false; // We don't use it right now and need to speed this all up (get_param_integer('skip_aps', 0) == 0);
     $make_omni_upgrader = (post_param_integer('make_omni_upgrader', 0) == 1);
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
     disable_php_memory_limit();
 
     // Build quick installer

@@ -22,9 +22,7 @@ class specsettings_documented_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
         disable_php_memory_limit();
 
         require_code('files2');

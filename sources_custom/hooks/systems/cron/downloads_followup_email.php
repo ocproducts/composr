@@ -76,9 +76,7 @@ class Hook_cron_downloads_followup_email
             echo 'downloads_followup_email: current-timestamp / last-timestamp / difference = ' . strval($time_now) . ' / ' . strval($last_run) . ' / ' . float_to_raw_string(round((($time_now - $last_run) / 60 / 60), 2)) . ' hours' . "\n";
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         // Set the templates names to use. Use CUSTOM template if it exists, else use the default template.
         $theme = 'default';

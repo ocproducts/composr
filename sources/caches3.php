@@ -73,13 +73,8 @@ function composr_cleanup($cleanup_tools = null)
 {
     require_lang('cleanup');
 
-    $max_time = intval(round(floatval(ini_get('max_execution_time')) / 1.5));
-    if ($max_time < 60 * 4) {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-    }
-    send_http_output_ping();
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_crawl);
+
     $messages = new Tempcode();
     $hooks = find_all_hooks('systems', 'cleanup');
     if ((array_key_exists('cns', $hooks)) && (array_key_exists('cns_topics', $hooks))) {
@@ -92,6 +87,8 @@ function composr_cleanup($cleanup_tools = null)
     if ($cleanup_tools !== null) {
         foreach ($cleanup_tools as $hook) {
             if (array_key_exists($hook, $hooks)) {
+                send_http_output_ping();
+
                 require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
                 $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
                 if ($object === null) {
@@ -106,6 +103,8 @@ function composr_cleanup($cleanup_tools = null)
         }
     } else {
         foreach (array_keys($hooks) as $hook) {
+            send_http_output_ping();
+
             require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
             $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
             if ($object === null) {
@@ -119,6 +118,8 @@ function composr_cleanup($cleanup_tools = null)
             }
         }
     }
+
+    cms_set_time_limit($old_limit);
 
     return $messages;
 }

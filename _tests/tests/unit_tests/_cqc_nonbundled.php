@@ -20,9 +20,7 @@ class _cqc_nonbundled_test_set extends cms_test_case
 {
     public function testNonBundled()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $to_scan = array();
 

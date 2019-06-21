@@ -55,9 +55,7 @@ class _broken_links_test_set extends cms_test_case
     {
         set_option('is_on_comcode_page_cache', '1');
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(10000);
-        }
+        cms_disable_time_limit();
         disable_php_memory_limit();
 
         $only_tutorial = get_param_string('only_tutorial', '');

@@ -1100,7 +1100,7 @@ function learnallfiles($curbot)
 function learnstring($xmlstring)
 {
 
-    if (php_function_allowed('set_time_limit')) @set_time_limit(600);
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
     $xml_parser = xml_parser_create();
     xml_parser_set_option($xml_parser,XML_OPTION_CASE_FOLDING,0);
     xml_set_element_handler($xml_parser, "startElement", "endElement");
@@ -1113,6 +1113,8 @@ function learnstring($xmlstring)
     }
 
     xml_parser_free($xml_parser);
+
+    cms_set_time_limit($old_limit);
 }
 
 
@@ -1132,7 +1134,7 @@ function learnstring($xmlstring)
 function learn($file)
 {
 
-    if (php_function_allowed('set_time_limit')) @set_time_limit(600);
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
     $xml_parser = xml_parser_create();
     xml_parser_set_option($xml_parser,XML_OPTION_CASE_FOLDING,0);
     xml_set_element_handler($xml_parser, "startElement", "endElement");
@@ -1160,6 +1162,8 @@ function learn($file)
     }
     fclose($fp);
     xml_parser_free($xml_parser);
+
+    cms_set_time_limit($old_limit);
 }
 
 /**

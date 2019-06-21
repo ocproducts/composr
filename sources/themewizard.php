@@ -459,6 +459,9 @@ function _generate_logo_get_image($image_codename, $theme)
  */
 function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark = false, $inherit_css = false)
 {
+    $old_limit = cms_disable_time_limit();
+    disable_php_memory_limit();
+
     push_query_limiting(false);
 
     require_code('themes3');
@@ -509,6 +512,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
             $_langs = find_all_langs(true);
 
             foreach ($full_img_set as $image_code) {
+                send_http_output_ping();
+
                 if (!in_array($image_code, $THEMEWIZARD_IMAGES_NO_WILD)) {
                     if (($extending_existing) && (array_key_exists($image_code, $temp_all_ids)) && (strpos($temp_all_ids[$image_code], $theme_name . '/images_custom/') !== false) && ((!url_is_local($temp_all_ids[$image_code])) || (file_exists(get_custom_file_base() . '/' . $temp_all_ids[$image_code])))) {
                         continue;
@@ -607,6 +612,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 
         erase_persistent_cache();
     }
+
+    cms_set_time_limit($old_limit);
 }
 
 /**

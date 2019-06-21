@@ -150,9 +150,7 @@ function destrictify($db_too = false)
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(200);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_modest);
     if (($db_too) && (is_object($GLOBALS['SITE_DB']->connection_read))) {
         $smq = $GLOBALS['SITE_DB']->strict_mode_query(false);
         if ($smq !== null) {
@@ -199,9 +197,6 @@ function restrictify()
 
     // Put back strictness
     error_reporting(E_ALL);
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
-    }
     if (is_object($GLOBALS['SITE_DB']->connection_read)) {
         $smq = $GLOBALS['SITE_DB']->strict_mode_query(true);
         if ($smq !== null) {

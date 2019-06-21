@@ -52,9 +52,7 @@ require_code('version2');
 require_code('tar');
 require_code('addon_publish');
 
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
+cms_extend_time_limit(TIME_LIMIT_EXTEND_crawl);
 
 $only = get_param_string('only', null);
 

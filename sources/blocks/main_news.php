@@ -184,9 +184,7 @@ class Block_main_news
                 $rows2 = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . ' AND date_and_time>=' . strval(time() - 60 * 60 * 24 * intval($days_full + $days_outline)) . ' AND date_and_time<' . strval(time() - 60 * 60 * 24 * intval($days_full)) . ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', max($fallback_full + $fallback_archive, 30)/*reasonable limit*/, 0, false, false, array('title' => 'SHORT_TRANS', 'news' => 'LONG_TRANS', 'news_article' => 'LONG_TRANS'));
             }
         } else {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(100);
-            }
+            $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
             $start = 0;
             do {
                 $_rows = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS p_id' . $extra_select_sql . ' FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news r LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news_category_entries d ON r.id=d.news_entry' . $join . ' WHERE ' . $q_filter . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND validated=1' : '') . ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY r.id' : '') . ' ORDER BY r.date_and_time DESC', 200, $start, false, true);
@@ -226,6 +224,7 @@ class Block_main_news
                 $start += 200;
             } while (count($_rows) == 200);
             unset($_rows);
+            cms_set_time_limit($old_limit);
         }
         $rows = remove_duplicate_rows($rows, 'p_id');
 

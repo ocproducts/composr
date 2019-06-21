@@ -103,9 +103,7 @@ function init__database__xml()
 
     require_code('xml');
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(100); // XML DB is *slow*
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish); // XML DB is *slow*
 }
 
 /**

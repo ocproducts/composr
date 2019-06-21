@@ -88,9 +88,7 @@ class Hook_cleanup_page_stats
             exit();
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_crawl);
 
         // Read in template file and find marker in it
         $template = get_custom_file_base() . '/data_custom/modules/admin_cleanup/page_stats.php.pre';
@@ -158,6 +156,8 @@ class Hook_cleanup_page_stats
         if ((addon_installed('search')) && (post_param_integer('search_stats', 0) == 1)) {
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'searches_logged WHERE s_time<' . strval(time() - 60 * 60 * 24 * $delete_older_than));
         }
+
+        cms_set_time_limit($old_limit);
 
         return do_template('CLEANUP_PAGE_STATS', array('_GUID' => '1df213eee7c5c6b97168e5a34e92d3b0', 'STATS_BACKUP_URL' => $stats_backup_url));
     }

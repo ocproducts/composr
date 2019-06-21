@@ -354,9 +354,7 @@ class Module_admin_addons
      */
     public function gui()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(180); // So it can scan inside addons
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow); // So it can scan inside addons
         send_http_output_ping();
 
         push_query_limiting(false);
@@ -693,10 +691,7 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_crawl);
 
         require_code('abstract_file_manager');
         force_have_afm_details();
@@ -705,11 +700,15 @@ class Module_admin_addons
 
         foreach ($_POST as $key => $passed) {
             if (substr($key, 0, 8) == 'install_') {
+                send_http_output_ping();
+
                 // Files pass
                 install_addon($passed, null, true, false);
             }
 
             if (substr($key, 0, 10) == 'uninstall_') {
+                send_http_output_ping();
+
                 $name = $passed;
 
                 if (
@@ -726,12 +725,16 @@ class Module_admin_addons
 
         foreach ($_POST as $key => $passed) {
             if (substr($key, 0, 8) == 'install_') {
+                send_http_output_ping();
+
                 // DB pass
                 install_addon($passed, null, false, true);
             }
         }
 
         foreach ($addons_to_remove as $i => $name) {
+            send_http_output_ping();
+
             $addon_info = read_addon_info($name);
 
             // Archive it off to exports/addons

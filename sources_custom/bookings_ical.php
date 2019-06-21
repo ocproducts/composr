@@ -38,9 +38,7 @@ function bookables_ical_script()
     //header('Content-Type: text/calendar');
     //header('Content-Disposition: inline; filename="bookables_export.ics"');
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return '';
@@ -197,9 +195,7 @@ function bookings_ical_script()
         return '';
     }
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $time = get_param_integer('from', time());
     if ($time < 0) {

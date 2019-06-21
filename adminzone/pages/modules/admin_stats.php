@@ -448,9 +448,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
         }
@@ -537,9 +535,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
         }
@@ -642,9 +638,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
             /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
@@ -766,9 +760,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 25);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
             /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
@@ -905,9 +897,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
             /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively

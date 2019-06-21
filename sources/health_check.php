@@ -171,9 +171,7 @@ function display_health_check_results_as_text($categories)
  */
 function run_health_check(&$has_fails, $sections_to_run = null, $passes = false, $skips = false, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null, $check_context = null)
 {
-    if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     if ($check_context === null) {
         if (running_script('install')) {

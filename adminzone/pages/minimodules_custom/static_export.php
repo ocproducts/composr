@@ -28,9 +28,7 @@ if (post_param_integer('confirm', 0) == 0) {
 }
 
 disable_php_memory_limit();
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
+cms_disable_time_limit();
 push_db_scope_check(false);
 
 $GLOBALS['STATIC_TEMPLATE_TEST_MODE'] = true;

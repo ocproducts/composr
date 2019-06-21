@@ -48,9 +48,7 @@ if (!addon_installed('stress_test')) {
 
 header('X-Robots-Tag: noindex');
 
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
+cms_disable_time_limit();
 cms_ini_set('ocproducts.xss_detect', '0');
 @header('Content-type: text/plain; charset=' . get_charset());
 disable_php_memory_limit();

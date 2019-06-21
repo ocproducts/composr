@@ -1062,13 +1062,6 @@ class Module_admin_setupwizard
         require_code('abstract_file_manager');
         force_have_afm_details();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(600);
-        }
-        send_http_output_ping();
-
-        disable_php_memory_limit();
-
         // Proceed...
 
         set_mass_import_mode(true);

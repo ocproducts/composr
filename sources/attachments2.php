@@ -40,10 +40,6 @@ function do_comcode_attachments($comcode, $type = 'null', $id = '', $previewing_
     require_lang('comcode');
     require_code('comcode_compiler');
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(600); // Thumbnail generation etc can take some time
-    }
-
     global $COMCODE_ATTACHMENTS;
     unset($COMCODE_ATTACHMENTS[$id]); // In case we have some kind of conflict
 

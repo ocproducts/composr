@@ -22,9 +22,7 @@ class _commandr_fs_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         push_query_limiting(false);
 

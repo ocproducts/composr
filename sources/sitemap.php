@@ -44,10 +44,6 @@ Node structure includes the following special data for menu rendering:
  */
 function init__sitemap()
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(100);
-    }
-
     if (!defined('SITEMAP_GATHER_DESCRIPTION')) {
         // Defining what should be gathered with the Sitemap
         define('SITEMAP_GATHER_DESCRIPTION', 1);
@@ -151,6 +147,8 @@ function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_ty
         return null;
     }
 
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_modest);
+
     if ($is_virtual) {
         $children = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, 0, $options, $zone, $meta_gather);
         if ($children === null) {
@@ -161,6 +159,8 @@ function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_ty
     $ret = $ob->get_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, 1, $options, $zone, $meta_gather);
 
     cms_profile_end_for('retrieve_sitemap_node', $page_link);
+
+    cms_set_time_limit($old_limit);
 
     return $ret;
 }

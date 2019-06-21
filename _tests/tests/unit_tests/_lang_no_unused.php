@@ -24,11 +24,7 @@ class _lang_no_unused_test_set extends cms_test_case
         require_code('lang_compile');
 
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            set_time_limit(300);
-        }
-
-        @set_time_limit(0);
+        cms_disable_time_limit();
 
         $all_code = '';
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));

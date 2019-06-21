@@ -16,9 +16,7 @@
 function init__locations_catalogues_install()
 {
     disable_php_memory_limit();
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 }
 
 function install_location_data()

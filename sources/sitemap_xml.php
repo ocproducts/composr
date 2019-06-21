@@ -266,9 +266,7 @@ function build_sitemap_cache_table()
 {
     push_query_limiting(false);
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $GLOBALS['RUNNING_BUILD_SITEMAP_CACHE_TABLE'] = true;
 

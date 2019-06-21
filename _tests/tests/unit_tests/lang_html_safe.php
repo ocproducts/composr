@@ -35,9 +35,7 @@ class lang_html_safe_test_set extends cms_test_case
     {
         require_code('files');
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         global $LANGUAGE_STRINGS, $LANGUAGE_HTML, $LANGUAGE_LITERAL, $LANGUAGE_CURRENT, $FILE, $FIND_NO_GO_HTML_SPOTS;
         $FIND_NO_GO_HTML_SPOTS = (@$_GET['find_html_no_go'] == '1');
