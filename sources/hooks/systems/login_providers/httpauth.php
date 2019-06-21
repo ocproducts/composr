@@ -41,8 +41,8 @@ class Hook_login_provider_httpauth
                 force_httpauth();
             }
 
-            if ((function_exists('apache_request_headers')) && (get_value('force_admin_auth') === '1') && ($GLOBALS['FORUM_DRIVER']->is_super_admin($GLOBALS['FORUM_DRIVER']->get_member_from_username(preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']))))) {
-                $headers = apache_request_headers();
+            if ((function_exists('getallheaders')) && (get_value('force_admin_auth') === '1') && ($GLOBALS['FORUM_DRIVER']->is_super_admin($GLOBALS['FORUM_DRIVER']->get_member_from_username(preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']))))) {
+                $headers = getallheaders();
                 if (!isset($headers['Authorization'])) {
                     require_code('site2');
                     redirect_exit(get_base_url() . 'admin_login/index.php');

@@ -2144,8 +2144,8 @@ function ecv2_TEMPCODE($lang, $escaped, $param)
 function ecv2_MATURITY_FILTER_REQUESTED($lang, $escaped, $param)
 {
     $safe = '';
-    if (function_exists('apache_request_headers')) {
-        $headers = apache_request_headers();
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
         if (array_key_exists('prefer', $headers)) {
             $safe = $headers['prefer'];
         }
