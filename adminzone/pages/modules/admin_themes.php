@@ -994,10 +994,7 @@ class Module_admin_themes
      */
     public function manage_images()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         $lang = choose_language($this->title, true, true);
         if (is_object($lang)) {
@@ -1218,12 +1215,8 @@ class Module_admin_themes
     {
         require_code('uploads');
 
-        $lang = choose_language($this->title, true, true);
-        if (is_object($lang)) {
-            return $lang;
-        }
-
         $theme = post_param_string('theme');
+        $lang = post_param_string('lang');
         $id = post_param_string('id');
         $old_id = post_param_string('old_id');
 
@@ -1278,10 +1271,7 @@ class Module_admin_themes
      */
     public function screen_previews()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(120);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         require_code('lorem');
 
@@ -1313,6 +1303,8 @@ class Module_admin_themes
             // If we have a preview for it
             if (array_key_exists($t, $all_previews)) {
                 if (!array_key_exists($all_previews[$t][1], $displayed_already)) {
+                    send_http_output_ping();
+
                     $func = $all_previews[$t][1];
 
                     $preview_url = build_url(array('page' => '_SELF', 'type' => 'screen_preview', 'id' => $t, 'hook' => $all_previews[$t][0], 'function' => $func), '_SELF');

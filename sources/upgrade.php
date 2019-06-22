@@ -30,9 +30,7 @@ function upgrade_script()
     require_lang('upgrade');
     require_all_core_cms_code();
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     // Security...
 
@@ -221,7 +219,7 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
-    $icon = do_template('ICON', array('NAME' => $_icon));
+    $icon = do_template('ICON', array('_GUID' => '7a9a0914fc785d0c748f5f3497c4eb2e', 'NAME' => $_icon));
     $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="btn btn-primary btn-scri" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;
@@ -328,7 +326,7 @@ function upgrader_output_login($message = null)
         ";
     }
 
-    $login_icon = do_template('ICON', array('NAME' => 'menu/site_meta/user_actions/login'));
+    $login_icon = do_template('ICON', array('_GUID' => 'f6b19594ec3a2fc6b1f26e67affc64b8', 'NAME' => 'menu/site_meta/user_actions/login'));
     $_login_icon = $login_icon->evaluate();
     echo "
     <p>

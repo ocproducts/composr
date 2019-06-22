@@ -110,7 +110,7 @@ The fastest way to configure PHP is usually as FPM (FastCGI), on top of a thread
  - If you are using Composr features where AJAX is involved, expect parallel PHP requests even when only a single user is on the website.
  - You'll likely want to carefully configure your FastCGI settings for each website, based on available RAM and anticipated load.
  - If you are configuring your websites via a hosting control panel such as ISPConfig, make sure the default [tt]www[/tt] site isn't reserving FastCGI instances when it's not even being used.
- - Configure your SSL options appropriately; basically there is a trade-off between perfect privacy ("Perfect Forward Secrecy") and speed.
+ - Configure your TLS options appropriately; basically there is a trade-off between perfect privacy ("Perfect Forward Secrecy") and speed -- and TLS 1.3 offers good speed improvements.
  - Set up [tt]fail2ban[/tt] so that you aren't constantly having to log failed login attempts by hackers to SSH etc (this can be a big I/O performance hit).
  - You may want to use only systemd's journald, rather than rsyslogd; on some Linux system rsyslogd is configured to mirror entries written to journald, which can be very intensive due to the frequent reading in and out. journald is higher performance as it is an efficient binary format with a cursor feature.
  - Consider whether you want journaling or not -- it has a significant I/O overhead.
@@ -533,7 +533,7 @@ Some people with very ambitious goals want to have multiple servers dotted aroun
 
 [title="3"]Content Delivery Networks (CDNs)[/title]
 
-There are a number of approaches you can take if you want to serve media from third party servers. Doing this reduces latency, and your own hosting costs, as well as some other potential side benefits such as automatic transcoding.
+There are a number of approaches you can take if you want to serve media from third party servers. Doing this reduces latency, and your own hosting costs, as well as some other potential side benefits such as automatic transcoding, and making the web requests requests cookieless.
 
 [title="4"]Theme/content files[/title]
 
@@ -615,14 +615,23 @@ Interesting optimisations include:
  - https://www.modpagespeed.com/doc/filter-image-optimize ([tt]mod_pagespeed[/tt] may do a better job that your manual optimisation, and its support of WebP is very interesting)
  - (this list used to be longer, but now most of the optimisations can be achieved in Composr using the [tt]HTML_COMPRESS[/tt] directive)
 
-The work on HTTP/2 is also interesting (previously Google SPDY), and SDCH is [i]extremely interesting[/i]. At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr.
-
 The Cloudflare service provides some of the same optimisations that [tt]mod_pagespeed[/tt] does, as well as a CDN. However personally I'd opt to use [tt]mod_pagespeed[/tt] and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, Cloudflare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. Cloudflare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
 
-[title="2"]Preloaded links[/title]
+[title="2"]Improved HTTP piping[/title]
 
-Web browsers are starting to support link preloading. If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links.
+In the HTML [tt]<head>[/tt] you can define [tt]<link>[/tt] tags for (increasing cost):
+ - [tt]dns-prefetch[/tt] -- pre-resolve a domain name you are going to need to use somewhere in your HTML/CSS/JS
+ - [tt]preconnect[/tt] -- pre-connect to a web server you are going to take resources from somewhere in your HTML/CSS/JS, including TLS resolution
+ - [tt]prefetch[/tt] -- pre-fetch a URL
+ - [tt]prerender[/tt] -- pre-fetch and pre-render a URL (if the browser supports it, Google Chrome dropped support)
+
+If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links with [tt]rel="preload"[/tt].
+
 Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[/url] are discussed in a blog post I wrote.
+
+HTTP/2 is great, enable it on your server if you can. You can use [tt]preload[/tt] [tt]<link>[/tt] tags to define what the HTTP/2 implementation should automatically push. Just be aware that this will waste bandwidth for users who already have those resources cached.
+
+The work on HTTP/3 is also interesting (previously Google QUIC). Google SDCH was [i]extremely interesting[/i] (but Google dropped support due to lack of interest). At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr if implemented.
 
 [title="2"]Profiling[/title]
 

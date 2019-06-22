@@ -75,9 +75,7 @@ function init__m_zip()
         {
             global $M_ZIP_DIR_HANDLES, $M_ZIP_DIR_OPEN_PATHS;
 
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(200);
-            }
+            $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
             list($usec, $sec) = explode(' ', microtime(false));
             $id = strval(intval($sec) - 1007700000) . str_pad(strval(intval($usec) * 1000000), 6, '0', STR_PAD_LEFT) . str_pad(strval(mt_rand(0, 999)), 3, '0', STR_PAD_LEFT);
@@ -130,6 +128,8 @@ function init__m_zip()
             unset($M_ZIP_DIR_HANDLES[$zip_file]);
             $M_ZIP_DIR_OPEN_PATHS[$zip_file] = false;
             unset($M_ZIP_DIR_OPEN_PATHS[$zip_file]);
+
+            cms_set_time_limit($old_limit);
 
             return array($zip_file, $m_zip_open_file, $m_zip_open_dirs, $m_zip_dir_paths);
         }

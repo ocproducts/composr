@@ -39,7 +39,7 @@
 			{+START,IF,{$DESKTOP}}
 				<div class="cns-post-details-grapple block-desktop">
 					{+START,IF_NON_EMPTY,{URL}}
-						{+START,IF_NON_EMPTY,{POST_ID*}}
+						{+START,IF_NON_EMPTY,{POST_ID}}
 							<a href="{URL*}" rel="nofollow">#{POST_ID*}</a>
 						{+END}
 					{+END}

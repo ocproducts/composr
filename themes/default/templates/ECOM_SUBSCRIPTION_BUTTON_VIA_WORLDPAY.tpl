@@ -14,8 +14,8 @@
 	<input type="hidden" name="signature" value="{DIGEST*}" />
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
 		{+START,LOOP,MEMBER_ADDRESS}
-			{+START,IF_NON_EMPTY,{_loop_key*}}
-				{+START,IF_NON_EMPTY,{_loop_var*}}
+			{+START,IF_NON_EMPTY,{_loop_key}}
+				{+START,IF_NON_EMPTY,{_loop_var}}
 					<input type="hidden" name="{_loop_key*}" value="{_loop_var*}" />
 				{+END}
 			{+END}

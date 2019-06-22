@@ -1981,12 +1981,12 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $send_view_reports = post_param_string('send_view_reports', STRING_MAGIC_NULL);
         if (!fractional_edit()) {
             if (post_param_integer('reset_category_permissions', 0) == 1) {
-                if (php_function_allowed('set_time_limit')) {
-                    @set_time_limit(0);
-                }
+                cms_disable_time_limit();
 
                 $start = 0;
                 do {
+                    send_http_output_ping();
+
                     $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array('c_name' => $name), '', 300, $start);
                     foreach ($rows as $row) {
                         $this->set_permissions(strval($row['id']));

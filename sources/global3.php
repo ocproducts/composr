@@ -152,6 +152,13 @@ function init__global3()
 
     global $DISABLE_SMART_DECACHING_TEMPORARILY;
     $DISABLE_SMART_DECACHING_TEMPORARILY = false;
+
+    // Time limits...
+
+    define('TIME_LIMIT_EXTEND_modest', '30');
+    define('TIME_LIMIT_EXTEND_sluggish', '100');
+    define('TIME_LIMIT_EXTEND_slow', '300');
+    define('TIME_LIMIT_EXTEND_crawl', '1000');
 }
 
 /**
@@ -832,7 +839,7 @@ function attach_to_screen_footer($data)
 function set_extra_request_metadata($metadata, $row = null, $content_type = null, $content_id = null)
 {
     global $METADATA;
-    $METADATA += $metadata;
+    $METADATA += $metadata; // First-set gets precedence. E.g. picture custom fields will only set 'image' if no valid image was found yet
 
     if ($content_type !== null) {
         require_code('content');
@@ -946,33 +953,41 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
         // Add in image...
 
-        $image_url = '';
-        if ($cma_info['thumb_field'] !== null) {
-            if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
-                $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
-            } else {
-                if ($content_type === 'image') {
-                    $image_url = $row['url'];
-                    // FUDGE
+        if (!isset($METADATA['image'])) {
+            $image_url = '';
+            if ($cma_info['thumb_field'] !== null) {
+                if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
+                    $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
                 } else {
-                    $image_url = $row[$cma_info['thumb_field']];
-                }
-            }
-            if ($image_url != '') {
-                if ($cma_info['thumb_field_is_theme_image']) {
-                    $image_url = find_theme_image($image_url, true);
-                } else {
-                    if (url_is_local($image_url)) {
-                        $image_url = get_custom_base_url() . '/' . $image_url;
+                    if ($content_type === 'image') {
+                        $image_url = $row['url'];
+                        // FUDGE
+                    } else {
+                        $image_url = $row[$cma_info['thumb_field']];
                     }
                 }
+                if ($image_url != '') {
+                    if ($cma_info['thumb_field_is_theme_image']) {
+                        $image_url = find_theme_image($image_url, true);
+                    } else {
+                        if (url_is_local($image_url)) {
+                            $image_url = get_custom_base_url() . '/' . $image_url;
+                        }
+                    }
+                }
+                if (substr($image_url, -4) == '.svg') {
+                    $image_url = ''; // Cannot use it
+                }
             }
-        }
-        if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '') && ($content_id !== ':' . DEFAULT_ZONE_PAGE_NAME)) {
-            $METADATA['image'] = find_theme_image($cma_info['alternate_icon_theme_image'], true);
-        }
-        if (!empty($image_url)) {
-            $METADATA['image'] = $image_url;
+            if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '') && ($content_id !== ':' . DEFAULT_ZONE_PAGE_NAME)) {
+                $image_url = find_theme_image($cma_info['alternate_icon_theme_image'], true);
+                if (substr($image_url, -4) == '.svg') {
+                    $image_url = ''; // Cannot use it
+                }
+            }
+            if (!empty($image_url)) {
+                $METADATA['image'] = $image_url;
+            }
         }
 
         // Add all $cma_info
@@ -2529,10 +2544,10 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     global $SITE_INFO;
     if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (cms_is_writable(get_file_base() . '/.htaccess')))) {
         $bans = array();
-        $ban_count = preg_match_all('#\ndeny from (.*)#', cms_file_get_contents_safe(get_file_base() . '/.htaccess'), $bans);
+        $ban_count = preg_match_all('#\n(Require not ip) (.*)#i', cms_file_get_contents_safe(get_file_base() . '/.htaccess'), $bans);
         $ip_bans = array();
         for ($i = 0; $i < $ban_count; $i++) {
-            $ip_bans[] = array('ip' => $bans[1][$i]);
+            $ip_bans[$bans[1][$i]] = array('ip' => $bans[1][$i]);
         }
     } else {
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
@@ -3699,26 +3714,6 @@ function cms_profile_end_for($identifier, $specifics = null)
 }
 
 /**
- * Put out some benign HTTP output.
- * FastCGI seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
- */
-function send_http_output_ping()
-{
-    global $DOING_OUTPUT_PINGS;
-    $DOING_OUTPUT_PINGS = true;
-
-    if ((running_script('index')) && (!is_cli())) {
-        if (!headers_sent()) {
-            cms_ini_set('zlib.output_compression', 'Off'); // Otherwise it can compress all the spaces to nothing
-            cms_ob_end_clean(); // Otherwise flushing won't help
-        }
-
-        echo ' ';
-        flush();
-    }
-}
-
-/**
  * Get the conventional name of a parameter for a particular file identifier.
  * HTTP POST parameters will have 'e_' prepended to this.
  *
@@ -4380,4 +4375,70 @@ function cms_preg_split_safe($pattern, $subject, $max_splits = null, $mode = nul
         }
     }
     return preg_split($pattern, $subject, $max_splits, $mode);
+}
+
+/**
+ * Put out some benign HTTP output.
+ * FastCGI seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+ */
+function send_http_output_ping()
+{
+    global $DOING_OUTPUT_PINGS;
+    $DOING_OUTPUT_PINGS = true;
+
+    if ((running_script('index')) && (!is_cli())) {
+        if (!headers_sent()) {
+            cms_ini_set('zlib.output_compression', 'Off'); // Otherwise it can compress all the spaces to nothing
+            cms_ob_end_clean(); // Otherwise flushing won't help
+        }
+
+        echo ' ';
+        flush();
+    }
+}
+
+/**
+ * Set the PHP time limit.
+ * You will rarely want to use this standalone, as cms_extend_time_limit is more appropriate.
+ * However, in computationally-expensive library code this is useful for restoring the execution time to what it was once your code has finished.
+ *
+ * @param  integer $secs Number of seconds to extend (likely a TIME_LIMIT_EXTEND_* constant)
+ * @return integer The old time limit
+ */
+function cms_set_time_limit($secs)
+{
+    $previous = ini_get('max_execution_time');
+
+    if (php_function_allowed('set_time_limit')) {
+        @set_time_limit($secs);
+    }
+
+    return $previous;
+}
+
+/**
+ * Disable the PHP time limit.
+ *
+ * @return integer The old time limit
+ */
+function cms_disable_time_limit()
+{
+    return cms_set_time_limit(0);
+}
+
+/**
+ * Extend the PHP time limit.
+ *
+ * @param  integer $secs Number of seconds to extend (likely a TIME_LIMIT_EXTEND_* constant)
+ * @return integer The old time limit
+ */
+function cms_extend_time_limit($secs)
+{
+    $previous = ini_get('max_execution_time');
+
+    if ($previous == 0) {
+        return 0;
+    }
+
+    return cms_set_time_limit($previous + $secs);
 }

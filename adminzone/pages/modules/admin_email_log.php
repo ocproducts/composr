@@ -143,10 +143,7 @@ class Module_admin_email_log
     {
         require_code('mail');
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(60);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
 
         // Put errors into table
         $start = get_param_integer('start', 0);
@@ -168,6 +165,8 @@ class Module_admin_email_log
         $result_entries = new Tempcode();
         $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array(), 'ORDER BY  ' . $sortable . ' ' . $sort_order, $max, $start);
         foreach ($rows as $row) {
+            send_http_output_ping();
+
             $queued = $row['m_queued'] == 1;
 
             $view_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');

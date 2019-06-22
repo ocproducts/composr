@@ -57,9 +57,7 @@ if (!addon_installed('news')) {
 
 header('X-Robots-Tag: noindex');
 
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
+cms_disable_time_limit();
 
 require_code('news');
 require_code('news2');

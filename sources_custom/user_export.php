@@ -40,9 +40,7 @@ function do_user_export($to_file = true)
 {
     @header('X-Robots-Tag: noindex');
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     if ($to_file) {
         $outdir = get_custom_file_base() . '/' . dirname(USER_EXPORT_PATH);

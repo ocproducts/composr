@@ -255,9 +255,7 @@ function install_cns($upgrade_from = null)
         delete_config_option('prevent_shouting');
 
         // Initialise f_password_history with current data (we'll assume m_last_submit_time represents last password change, which is not true - but ok enough for early initialisation, and will scatter things quite nicely to break in the new rules gradually)
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
         $max = 500;
         $start = 0;
         do {

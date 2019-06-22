@@ -104,8 +104,7 @@ Additionally you can upload and run the first two steps of Composr's installer a
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | Create [tt]<webroot>/<codename>/_temp[/tt] and put a [tt].htaccess[/tt] file in it
 | [code="htaccess"]
-order deny,allow
-deny from all
+Require all denied
 [/code]
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}

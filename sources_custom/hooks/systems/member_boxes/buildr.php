@@ -48,8 +48,8 @@ class Hook_member_boxes_buildr
             return array();
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('w_members m JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_realms r ON m.location_realm=r.id JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_rooms rm ON r.location_x=rm.location_x AND r.location_y=rm.location_y AND r.location_realm=rm.location_realm', array('m.*', 'r.*', 'rm.name AS room_name'), array('m.id' => $member_id), '', 1);
-        if (($rows === null) || (!array_key_exists(0, $rows))) {
+        $rows = $GLOBALS['SITE_DB']->query_select('w_members m JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_realms r ON m.location_realm=r.id JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_rooms rm ON m.location_x=rm.location_x AND m.location_y=rm.location_y AND m.location_realm=rm.location_realm', array('m.*', 'r.*', 'rm.name AS room_name'), array('m.id' => $member_id), '', 1);
+        if (!array_key_exists(0, $rows)) {
             return array();
         }
 

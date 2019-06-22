@@ -154,8 +154,6 @@ class Module_admin_stats
             return null;
         }
 
-        require_lang('stats');
-
         $ret = array(
             'browse' => array('SITE_STATISTICS', 'menu/adminzone/audit/statistics/statistics'),
             'overview' => array('OVERVIEW_STATISTICS', 'menu/adminzone/audit/statistics/statistics'),
@@ -450,9 +448,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
         }
@@ -539,9 +535,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 50); // Intentionally the browse is disabled, as the graph will show all - we fudge $max_rows to $i
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
         }
@@ -644,9 +638,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
             /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
@@ -768,9 +760,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 25);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
             /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
@@ -907,9 +897,7 @@ class Module_admin_stats
         $max = get_param_integer('max', 30);
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
             $start = 0;
             $max = 10000;
             /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
@@ -1366,7 +1354,7 @@ class Module_admin_stats
         if (post_param_integer('confirm', 0) == 0) {
             $preview = do_lang_tempcode('INSTALL_GEOLOCATION_DATA');
             $url = get_self_url(false, false);
-            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+            return do_template('CONFIRM_SCREEN', array('_GUID' => '153e04d683281ead45497b424307aabf', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
         }
 
         require_code('tasks');
@@ -1407,7 +1395,7 @@ class Module_admin_stats
         $query = 'SELECT id,date_and_time FROM ' . get_table_prefix() . 'stats WHERE (' . $where . ')' . $ip_filter . ' AND date_and_time>' . strval(time() - ($total * 60 * 60)) . ' AND date_and_time<=' . strval(time()) . ' ORDER BY ' . $sortable . ' ' . $sort_order;
         $rows = $GLOBALS['SITE_DB']->query($query, 10000/*reasonable limit*/);
         if ((count($rows) < 1) || (count($rows) == 10000)) {
-            $list = do_template('RED_ALERT', array('TEXT' => do_lang_tempcode('TOO_MUCH_DATA')));
+            $list = do_template('RED_ALERT', array('_GUID' => '22c0062afd78fbb36321e3f5f36c00ae', 'TEXT' => do_lang_tempcode('TOO_MUCH_DATA')));
             $graph = new Tempcode();
             return array($graph, $list);
         }

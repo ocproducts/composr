@@ -30,7 +30,7 @@ if (!function_exists('mu_ui')) {
     function mu_ui()
     {
         $spammer_blackhole = static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));
-        $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
+        $proceed_icon = do_template('ICON', array('_GUID' => '79e1ec738649822eaf1a8c25e7ffbfc8', 'NAME' => 'buttons/proceed'));
         echo <<<END
 <p>
     You can generate an upgrader from any version of Composr to any other version. If you access this upgrade post via the version information box on your Admin Zone dashboard then we'll automatically know what version you're running.

@@ -25,9 +25,7 @@ class _find_broken_screen_links_test_set extends cms_test_case
     // This test is not necessarily required to pass, but it may hint at issues; best just to make it pass anyway (it does at the time at writing)
     public function testScreenLinks()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $found = array();
         require_code('files2');

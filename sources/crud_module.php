@@ -1198,11 +1198,13 @@ abstract class Standard_crud_module
                     escape_html($_fields[2]->evaluate()),
                     array(
                         static_evaluate_tempcode(do_template('ICON', array(
+                            '_GUID' => '173b2aead2d7f373906c62d4eeacde4a',
                             'NAME' => 'admin/view_archive',
                             'ICON_SIZE' => '18',
                             'ICON_CLASS' => 'vertical-alignment',
                         ))),
                         static_evaluate_tempcode(do_template('ICON', array(
+                            '_GUID' => 'aa6bbe96a000e9913168f18eb422809c',
                             'NAME' => 'buttons/search',
                             'ICON_SIZE' => '18',
                             'ICON_CLASS' => 'vertical-alignment',
@@ -1230,11 +1232,13 @@ abstract class Standard_crud_module
                     escape_html($table_result[3]->evaluate()),
                     array(
                         static_evaluate_tempcode(do_template('ICON', array(
+                            '_GUID' => 'bdcba703a75e4a206ad8d0aa5261c1de',
                             'NAME' => 'buttons/search',
                             'ICON_SIZE' => '18',
                             'ICON_CLASS' => 'vertical-alignment',
                         ))),
                         static_evaluate_tempcode(do_template('ICON', array(
+                            '_GUID' => 'af69d7ca4572f8618decadeaf9729182',
                             'NAME' => 'admin/view_archive',
                             'ICON_SIZE' => '18',
                             'ICON_CLASS' => 'vertical-alignment',
@@ -1245,6 +1249,7 @@ abstract class Standard_crud_module
                 $text = paragraph(do_lang_tempcode('_CHOOSE_EDIT_TABLE_EXTRA',
                     escape_html($table_result[3]->evaluate()),
                     static_evaluate_tempcode(do_template('ICON', array(
+                        '_GUID' => '1b354455b62ec898fcde5b287d3609cf',
                         'NAME' => 'admin/view_archive',
                         'ICON_SIZE' => '18',
                         'ICON_CLASS' => 'vertical-alignment',
@@ -1278,11 +1283,13 @@ abstract class Standard_crud_module
                         escape_html($_entries[2]->evaluate()),
                         array(
                             static_evaluate_tempcode(do_template('ICON', array(
+                                '_GUID' => 'd8a307b6bea2155fc3ca0b5c1a9e05fe',
                                 'NAME' => 'buttons/search',
                                 'ICON_SIZE' => '18',
                                 'ICON_CLASS' => 'vertical-alignment',
                             ))),
                             static_evaluate_tempcode(do_template('ICON', array(
+                                '_GUID' => 'd533c97f02cc8030fb3c7602deb2870b',
                                 'NAME' => 'admin/view_archive',
                                 'ICON_SIZE' => '18',
                                 'ICON_CLASS' => 'vertical-alignment',
@@ -1293,6 +1300,7 @@ abstract class Standard_crud_module
                     $text = paragraph(do_lang_tempcode('_CHOOSE_EDIT_LIST_EXTRA',
                         escape_html($_entries[2]->evaluate()),
                         static_evaluate_tempcode(do_template('ICON', array(
+                            '_GUID' => '8347dd2a738978fe0473c32fe90ef291',
                             'NAME' => 'admin/view_archive',
                             'ICON_SIZE' => '18',
                             'ICON_CLASS' => 'vertical-alignment',

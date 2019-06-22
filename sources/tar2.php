@@ -27,9 +27,7 @@
  */
 function convert_zip_to_tar($in_path, $out_path = null)
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(200);
-    }
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     require_code('tar');
     require_code('files');
@@ -82,6 +80,8 @@ function convert_zip_to_tar($in_path, $out_path = null)
 
     zip_close($in_file);
     tar_close($out_file);
+
+    cms_set_time_limit($old_limit);
 
     return $out_path;
 }

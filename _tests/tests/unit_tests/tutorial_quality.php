@@ -29,9 +29,7 @@ class tutorial_quality_test_set extends cms_test_case
             return;
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         require_code('tutorials');
 
@@ -58,7 +56,7 @@ class tutorial_quality_test_set extends cms_test_case
 
             if (substr($file, -4) == '.txt') {
                 $c = file_get_contents($path . '/' . $file);
-                check_comcode($c);
+                check_comcode($c); // This is quite slow
             }
         }
         closedir($dh);

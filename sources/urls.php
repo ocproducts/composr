@@ -1485,6 +1485,19 @@ function ensure_protocol_suitability($url)
  */
 function check_url_exists($url, $test_freq_secs)
 {
+    if (preg_match('#^https://www\.linkedin\.com/shareArticle\?url=#', $url) != 0) {
+        return true;
+    }
+    if (preg_match('#^http://tumblr\.com/widgets/share/tool\?canonicalUrl=#', $url) != 0) {
+        return true;
+    }
+    if (preg_match('#^https://vk\.com/share\.php\?url=#', $url) != 0) {
+        return true;
+    }
+    if (preg_match('#^http://v\.t\.qq\.com/share/share\.php\?url=#', $url) != 0) {
+        return true;
+    }
+
     $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url), 'ORDER BY url_check_time DESC', 1);
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {

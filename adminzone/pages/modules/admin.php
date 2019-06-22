@@ -288,10 +288,7 @@ class Module_admin
 
         push_query_limiting(false);
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(100);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
 
         $n = null;
 
@@ -409,6 +406,7 @@ class Module_admin
         $content = array();
 
         // Targeted tips
+        send_http_output_ping();
         $current_results_type = do_lang('TIPS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
@@ -425,6 +423,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Admin/CMS menu icons
+        send_http_output_ping();
         $current_results_type = do_lang('ADMIN_MODULES');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
@@ -451,6 +450,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Cleanup tools
+        send_http_output_ping();
         $current_results_type = do_lang('CLEANUP_TOOLS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_cleanup'))) {
@@ -470,6 +470,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Module entry points
+        send_http_output_ping();
         $current_results_type = do_lang('SCREENS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
@@ -575,6 +576,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Importers
+        send_http_output_ping();
         $current_results_type = do_lang('IMPORT');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_import'))) {
@@ -594,6 +596,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Config options- names, descriptions, groups, categories
+        send_http_output_ping();
         $current_results_type = do_lang('CONFIGURATION');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ((($this->_section_match($section_limitations, $current_results_type)) || ($this->_section_match($section_limitations, do_lang('OPTION_CATEGORIES'))) || ($this->_section_match($section_limitations, do_lang('OPTION_GROUPS')))) && (has_actual_page_access(get_member(), 'admin_config'))) {
@@ -714,6 +717,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Usergroups
+        send_http_output_ping();
         $current_results_type = do_lang('USERGROUPS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_cns_groups')) && (get_forum_type() == 'cns')) {
@@ -739,6 +743,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Themes
+        send_http_output_ping();
         $current_results_type = do_lang('THEMES');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && has_actual_page_access(get_member(), 'admin_themes')) {
@@ -762,6 +767,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Zones
+        send_http_output_ping();
         $current_results_type = do_lang('ZONES');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && has_actual_page_access(get_member(), 'admin_zones')) {
@@ -789,6 +795,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Blocks
+        send_http_output_ping();
         $current_results_type = do_lang('_BLOCKS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
@@ -807,6 +814,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Non-installed addons
+        send_http_output_ping();
         $current_results_type = do_lang('ADDONS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
@@ -844,6 +852,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Privileges- sections/names/descriptions
+        send_http_output_ping();
         $current_results_type = do_lang('PRIVILEGES');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_permissions'))) {
@@ -889,6 +898,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Usergroup settings
+        send_http_output_ping();
         $current_results_type = do_lang('USERGROUP_SETTINGS_SEARCH_GROUP');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'admin_cns_groups'))) {
@@ -931,6 +941,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Member settings
+        send_http_output_ping();
         $current_results_type = do_lang('MEMBER_SETTINGS_SEARCH_GROUP');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (get_forum_type() == 'cns') && (has_actual_page_access(get_member(), 'members'))) {
@@ -959,6 +970,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Zone options
+        send_http_output_ping();
         $current_results_type = do_lang('ZONE_OPTIONS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_zones', get_module_zone('admin_zones')))) {
@@ -991,6 +1003,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Install options
+        send_http_output_ping();
         $current_results_type = do_lang('BASE_CONFIGURATION');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
@@ -1011,6 +1024,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Language string codenames and contents
+        send_http_output_ping();
         $current_results_type = do_lang('LANGUAGE');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_lang', get_module_zone('admin_lang')))) {
@@ -1067,6 +1081,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Theme images
+        send_http_output_ping();
         $current_results_type = do_lang('EDIT_THEME_IMAGES');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes'))) {
@@ -1102,6 +1117,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // Template names
+        send_http_output_ping();
         $current_results_type = do_lang('TEMPLATES');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes', get_module_zone('admin_themes')))) {
@@ -1130,6 +1146,7 @@ class Module_admin
         cms_profile_end_for('admin search: ' . $current_results_type);
 
         // CSS file contents
+        send_http_output_ping();
         $current_results_type = 'CSS';
         cms_profile_start_for('admin search: ' . $current_results_type);
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_themes'))) {

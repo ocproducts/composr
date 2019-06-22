@@ -34,7 +34,7 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Generate bookmarks';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => '482f08734460fc2a48ce19d19127f40f', 'TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 if (get_param_integer('debug', 0) != 1) {

@@ -455,16 +455,17 @@ function delete_chatroom($id)
  */
 function delete_chat_messages($where)
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    $old_limit = cms_disable_time_limit();
     do {
+        send_http_output_ping();
+
         $messages = $GLOBALS['SITE_DB']->query_select('chat_messages', array('id', 'the_message'), $where, '', 400);
         foreach ($messages as $message) {
             delete_lang($message['the_message']);
             $GLOBALS['SITE_DB']->query_delete('chat_messages', array('id' => $message['id']), '', 1);
         }
     } while ($messages != array());
+    cms_set_time_limit($old_limit);
 }
 
 /**
@@ -472,10 +473,10 @@ function delete_chat_messages($where)
  */
 function delete_all_chatrooms()
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    $old_limit = cms_disable_time_limit();
     do {
+        send_http_output_ping();
+
         $c_welcomes = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'c_welcome'), array('is_im' => 0), '', 400);
         foreach ($c_welcomes as $c_welcome) {
             delete_lang($c_welcome['c_welcome']);
@@ -483,6 +484,7 @@ function delete_all_chatrooms()
             delete_chat_messages(array('room_id' => $c_welcome['id']));
         }
     } while ($c_welcomes != array());
+    cms_set_time_limit($old_limit);
 
     delete_cache_entry('side_shoutbox');
 

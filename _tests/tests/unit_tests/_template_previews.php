@@ -37,9 +37,7 @@ class _template_previews_test_set extends cms_test_case
             exit('Already running');
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $_GET['keep_has_js'] = '0';
         push_query_limiting(false);
@@ -133,9 +131,7 @@ class _template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
 
             init__lorem();
             push_output_state();
@@ -253,9 +249,7 @@ class _template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
 
             init__lorem();
             push_output_state();
@@ -331,9 +325,7 @@ class _template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
+            cms_disable_time_limit();
 
             $ATTACHED_MESSAGES = new Tempcode();
             $ATTACHED_MESSAGES_RAW = array();

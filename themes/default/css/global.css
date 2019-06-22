@@ -2488,6 +2488,7 @@ p.red-alert {
 .inline-wip-message {
 	border: 1px solid {$GET,dark_border};
 	color: {$GET,slightly_seeded_text};
+	padding-left: 38px;
 }
 
 .field-name {

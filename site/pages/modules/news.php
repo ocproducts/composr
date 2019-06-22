@@ -403,19 +403,9 @@ class Module_news
                 $news_summary_comcode = $news_full_comcode;
             }
 
-            $og_img = $img;
-            if ($og_img == '') {
-                $news_full_eval = $news_full->evaluate();
-                $matches = array();
-                if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $news_full_eval, $matches) != 0) {
-                    $og_img = html_entity_decode($matches[1], ENT_QUOTES);
-                }
-            }
-
             // Metadata
             set_extra_request_metadata(array(
                 'identifier' => '_SEARCH:news:view:' . strval($id),
-                'image' => $og_img,
                 'category' => $category,
                 'description' => $news_summary_comcode,
             ), $myrow, 'news', strval($id));

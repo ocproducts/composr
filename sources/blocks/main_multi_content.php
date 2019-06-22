@@ -354,10 +354,6 @@ class Block_main_multi_content
             }
         }
 
-        if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) {
-            $query .= ' GROUP BY r.' . $info['id_field'];
-        }
-
         if ((($sort == 'average_rating') || ($sort == 'compound_rating')) && (array_key_exists('feedback_type_code', $info)) && ($info['feedback_type_code'] === null)) {
             $sort = 'title';
         }
@@ -380,6 +376,10 @@ class Block_main_multi_content
             if ($max_rows == 0) {
                 $rows = array();
             } else {
+                if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) {
+                    $query .= ' GROUP BY r.' . $info['id_field'];
+                }
+
                 switch ($sort) {
                     case 'random':
                     case 'fixed_random':

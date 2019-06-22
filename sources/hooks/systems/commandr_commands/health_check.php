@@ -48,14 +48,16 @@ class Hook_commandr_command_health_check
 
             require_code('health_check');
 
+            $verbose = array_key_exists('v', $options);
+
             $has_fails = false;
-            $_categories = run_health_check($has_fails, $parameters, true, true, true);
+            $_categories = run_health_check($has_fails, $parameters, $verbose, true, true);
 
             $result = '';
             foreach ($_categories as $_category_label => $_sections) {
                 foreach ($_sections['SECTIONS'] as $_section_label => $_section) {
                     foreach ($_section['RESULTS'] as $_result) {
-                        $result .= $_result['RESULT'] . ': ' . strip_html($_result['MESSAGE']->evaluate()) . ' (' . $_category_label . ' \\ ' . $_section_label . ')' . "\n";
+                        $result .= $_result['RESULT'] . ': ' . $_result['MESSAGE']->evaluate() . ' (' . $_category_label . ' \\ ' . $_section_label . ')<br />';
                     }
                 }
             }

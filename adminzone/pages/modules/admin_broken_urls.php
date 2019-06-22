@@ -158,7 +158,7 @@ class Module_admin_broken_urls
         $fields->attach(form_input_multi_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_LINK_TYPES'), 'chosen_link_types', $list));
 
         $_live_base_urls = get_value('live_base_urls', get_base_url(), true);
-        $fields->attach(form_input_line_multi(do_lang_tempcode('LIVE_BASE_URLS'), do_lang_tempcode('DESCRIPTION_LIVE_BASE_URLS'), 'live_base_urls[]', ($_live_base_urls === null) ? array() : explode('|', $_live_base_urls), 1));
+        $fields->attach(form_input_line_multi(do_lang_tempcode('LIVE_BASE_URLS'), do_lang_tempcode('DESCRIPTION_LIVE_BASE_URLS'), 'live_base_urls[]', ($_live_base_urls === null) ? array() : explode('|', $_live_base_urls), 0));
 
         $fields->attach(form_input_integer(do_lang_tempcode('MAXIMUM_API_RESULTS'), do_lang_tempcode('DESCRIPTION_MAXIMUM_API_RESULTS'), 'maximum_api_results', 50, true));
 
@@ -188,9 +188,7 @@ class Module_admin_broken_urls
     public function choose()
     {
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $url_scanner = new BrokenURLScanner();
 
@@ -212,6 +210,8 @@ class Module_admin_broken_urls
 
         $urls = array();
         foreach ($this->link_types as $type => $type_title) {
+            send_http_output_ping();
+
             if (!in_array($type, $chosen_link_types)) {
                 continue;
             }

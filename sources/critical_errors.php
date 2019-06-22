@@ -24,7 +24,7 @@ if ((isset($_SERVER['argv'][0])) && (strpos($_SERVER['argv'][0], 'critical_error
         // Critical error monitoring mode
         chdir(dirname(__DIR__));
         if (is_dir('critical_errors')) {
-            if (php_function_allowed('set_time_limit')) {
+            if (function_exists('set_time_limit')) {
                 @set_time_limit(0);
             }
             require_once('_config.php');

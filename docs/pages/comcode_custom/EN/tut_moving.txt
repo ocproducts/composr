@@ -65,6 +65,8 @@ Download the [tt].sql[/tt] file to your machine. This file is called an "SQL dum
 Reasonable webhosts allow you to directly download an SQL dump via phpMyAdmin. [tt]mysqldump[/tt] is preferable as it is more reliable, but phpMyAdmin usually works. Be aware though that bad webhosts pretend to but it ends up timing-out with an error message and/or a truncated file.
 [/box]
 
+If you have changed your URL, do a search and replace in a text editor of the old URL to the new URL.
+
 Upload the SQL dump to your new server using SFTP/FTP.
 
 Restoration is then best done via the [tt]mysql[/tt] command:

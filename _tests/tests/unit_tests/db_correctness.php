@@ -24,9 +24,7 @@ class db_correctness_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (php_function_allowed('set_time_limit')) {
-            set_time_limit(200);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
 
         require_code('files2');
         $this->files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | (in_safe_mode() ? IGNORE_NONBUNDLED : 0), true, true, array('php'));

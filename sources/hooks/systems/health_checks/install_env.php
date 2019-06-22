@@ -73,6 +73,11 @@ class Hook_health_check_install_env extends Hook_Health_Check
 
         $server_software = $_SERVER['SERVER_SOFTWARE'];
 
+        if ($server_software == '') {
+            $this->stateCheckSkipped('Could not detect web server software');
+            return;
+        }
+
         /*$unsupported_server_software = array('lighttpd', 'Tengine', 'nginx', 'IdeaWebServer');
         foreach ($unsupported_server_software as $_server_software) {
             $this->assertTrue((stripos($server_software, $_server_software) === false), do_lang('WARNING_SERVER_SOFTWARE', $_server_software));
@@ -86,6 +91,24 @@ class Hook_health_check_install_env extends Hook_Health_Check
             }
         }
         $this->assertTrue($supported, do_lang('WARNING_SERVER_SOFTWARE', $server_software));
+
+        $matches = array();
+        if (preg_match('#^Apache/([\d\.]*)#', $server_software, $matches) != 0) {
+            $minimum_version = '2.4'; // LEGACY also maintain in tut_webhosting.txt
+
+            $version = $matches[1];
+            $apache_too_old = version_compare($version, $minimum_version, '<');
+            $this->assertTrue(!$apache_too_old, do_lang('APACHE_TOO_OLD', $minimum_version, $version));
+
+            $max_tested_apache_version = '2.4'; // LEGACY needs maintaining
+            if (!is_maintained('platform_apache')) {
+                $apache_too_new = version_compare($version, $max_tested_apache_version . '.1000', '>');
+                $this->assertTrue(
+                    !$apache_too_new,
+                    '[html]' . do_lang('WARNING_NON_MAINTAINED', do_lang('APACHE_TOO_NEW', escape_html($max_tested_apache_version)), escape_html(get_brand_base_url()), escape_html('apache')) . '[/html]'
+                );
+            }
+        }
 
         if (!is_maintained('platform_litespeed')) {
             $this->assertTrue(
@@ -285,7 +308,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
 
         $version = null;
 
-        if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
+        if (isset($GLOBALS['SITE_DB']->connection_write)) {
             $GLOBALS['SITE_DB']->ensure_connected();
 
             if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
@@ -312,7 +335,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
             $mysql_too_old = version_compare($version, $minimum_version, '<');
             $this->assertTrue(!$mysql_too_old, do_lang('MYSQL_TOO_OLD', $minimum_version, $version));
 
-            $max_tested_mysql_version = '5.7'; // LEGACY needs maintaining
+            $max_tested_mysql_version = '8.0'; // LEGACY needs maintaining
             if (!is_maintained('mysql')) {
                 $mysql_too_new = version_compare($version, $max_tested_mysql_version . '.1000', '>');
                 $this->assertTrue(

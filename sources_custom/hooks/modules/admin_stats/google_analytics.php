@@ -59,6 +59,7 @@ class Hook_admin_stats_google_analytics
 
         $ga = render_google_analytics(get_param_string('id', '*'));
         return do_template('PAGINATION_SCREEN', array(
+            '_GUID' => '48dedd8da83a0ebbf1a9e050d5cf6ac5',
             'TITLE' => get_screen_title('_GOOGLE_ANALYTICS'),
             'CONTENT' => $ga,
         ));

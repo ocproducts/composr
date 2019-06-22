@@ -129,6 +129,8 @@ function newsletter_get_category_choices($cutoff_time, $lang)
     foreach ($_hooks as $hook => $object) {
         $done = false;
         if (method_exists($object, 'choose_categories')) {
+            send_http_output_ping();
+
             list($cats, $_title) = $object->choose_categories($cutoff_time);
             if (is_object($cats)) {
                 $cats = $cats->evaluate($lang);

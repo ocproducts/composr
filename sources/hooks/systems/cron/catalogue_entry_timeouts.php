@@ -63,9 +63,7 @@ class Hook_cron_catalogue_entry_timeouts
     {
         $time_now = time();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $catalogue_categories = $GLOBALS['SITE_DB']->query('SELECT id,cc_move_target,cc_move_days_lower,cc_move_days_higher FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_categories WHERE cc_move_target IS NOT NULL');
         foreach ($catalogue_categories as $row) {

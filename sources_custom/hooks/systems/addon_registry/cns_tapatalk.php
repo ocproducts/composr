@@ -208,8 +208,7 @@ If a [tt]mobiquo/logging.dat[/tt] file exists and is writable then full logging 
 Never use this on a live site as it is not secure, unless you limit access via an [tt]data_custom/.htaccess[/tt] file:
 [code]
 <Files logging.dat>
-Order Allow,Deny
-Deny from all
+    Require all denied
 </Files>
 [/code]
 (don\'t blindingly trust this, test you cannot download the file by URL)

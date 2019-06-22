@@ -81,9 +81,7 @@ function execute_task_background($task_row)
     create_session($requester, 1);
 
     disable_php_memory_limit();
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    $old_limit = cms_disable_time_limit();
 
     $hook = $task_row['t_hook'];
     $args = @unserialize($task_row['t_args']);
@@ -178,6 +176,8 @@ function execute_task_background($task_row)
     }
 
     $RUNNING_TASK = false;
+
+    cms_set_time_limit($old_limit);
 }
 
 /**
@@ -217,9 +217,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
 
         // Disable limits, as tasks can be resource-intensive
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        $old_limit = cms_disable_time_limit();
 
         // Run task
         require_code('hooks/systems/tasks/' . filter_naughty_harsh($hook));
@@ -233,6 +231,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         }
         task_log(null, 'Finished task ' . $hook);
         task_log_close();
+        cms_set_time_limit($old_limit);
         if ($result === null) {
             if ($title === null) {
                 return new Tempcode();

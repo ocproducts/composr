@@ -24,13 +24,11 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Create files dump (TAR file)';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => '7b71bedd93d8605c349946fcfd7acf51', 'TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 disable_php_memory_limit();
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
+cms_disable_time_limit();
 push_db_scope_check(false);
 
 cms_ini_set('ocproducts.xss_detect', '0');

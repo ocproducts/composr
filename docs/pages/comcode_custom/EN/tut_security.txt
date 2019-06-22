@@ -648,8 +648,7 @@ To provide additional protection beyond the master password you may want to set 
 Follows are sample access rules for an Apache [tt].htaccess[/tt] file to provide a temporary access block:
 [code="htaccess"]
 <FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>
-Order deny,allow
-Deny from all
+	Require all denied
 </FilesMatch>
 [/code]
 

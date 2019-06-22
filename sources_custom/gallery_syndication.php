@@ -296,10 +296,6 @@ function _sync_onlylocal_video($ob, $local_video)
  */
 function store_transcoding_success($transcoder_id, $new_url)
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
-
     // Stuff about the transcoding
     $descript_rows = $GLOBALS['SITE_DB']->query_select('video_transcoding', array('*'), array(
         't_id' => $transcoder_id,

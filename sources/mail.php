@@ -483,6 +483,7 @@ abstract class Mail_dispatcher_base
     public $extra_cc_addresses = array();
     public $extra_bcc_addresses = array();
     public $require_recipient_valid_since = null;
+    public $is_bulk = false;
     public $sender_email = null;
     public $plain_subject = false;
 
@@ -553,6 +554,7 @@ abstract class Mail_dispatcher_base
         $this->coming_out_of_queue = isset($advanced_parameters['coming_out_of_queue']) ? $advanced_parameters['coming_out_of_queue'] : false; // Whether to bypass queueing, because this code is running as a part of the queue management tools (null: auto-decide)
         $this->mail_template = isset($advanced_parameters['mail_template']) ? $advanced_parameters['mail_template'] : 'MAIL'; // The template used to show the e-mail
         $this->require_recipient_valid_since = isset($advanced_parameters['require_recipient_valid_since']) ? $advanced_parameters['require_recipient_valid_since'] : null; // Implement the Require-Recipient-Valid-Since header (null: no restriction)
+        $this->is_bulk = isset($advanced_parameters['is_bulk']) ? $advanced_parameters['is_bulk'] : false;
         $this->sender_email = isset($advanced_parameters['sender_email']) ? $advanced_parameters['sender_email'] : null; // E-mail address to use as a sender address (null: default)
         $this->plain_subject = isset($advanced_parameters['plain_subject']) ? $advanced_parameters['plain_subject'] : false; // Avoid templating the subject to have an additional prefix/suffix
 
@@ -859,6 +861,9 @@ abstract class Mail_dispatcher_base
         if ((count($to_emails) == 1) && ($this->require_recipient_valid_since !== null)) {
             $_require_recipient_valid_since = date('r', $this->require_recipient_valid_since);
             $headers .= 'Require-Recipient-Valid-Since: ' . $to_emails[0] . '; ' . $_require_recipient_valid_since . $this->line_term;
+        }
+        if ($this->is_bulk) {
+            $headers .= 'Precedence: bulk' . $this->line_term;
         }
         $headers .= 'MIME-Version: 1.0' . $this->line_term;
         if (!empty($this->attachments)) {

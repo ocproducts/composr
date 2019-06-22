@@ -47,6 +47,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             if ($details !== false) {
                 $path = end($details);
                 if ($details[0] == 'MODULES' || $details[0] == 'MODULES_CUSTOM') {
+                    require_all_lang();
+
                     $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                         false, // $check_perms
                         $this->get_member($options), // $member_id

@@ -161,15 +161,15 @@ function perform_search_replace($reps)
  */
 function rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     require_code('zones2');
     require_code('zones3');
     actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row);
     $pages = find_all_pages_wrap($zone, true, false, FIND_ALL_PAGES__ALL);
     foreach ($pages as $page => $type) {
+        send_http_output_ping();
+
         $path = get_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/' . $type . '/' . $page;
         $new_path = get_file_base() . '/' . $new_zone . '/pages/' . $type . '/' . $page;
         if ((cms_is_writable($path)) && (cms_is_writable($new_path))) {

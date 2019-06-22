@@ -33,7 +33,7 @@
 
 	{+START,IF_NON_EMPTY,{HEALTH_CHECK}}
 		<div class="box box---preview-script"><div class="box-inner">
-			<h2>{!HEALTH_CHECK}</h2>
+			<h2>{!health_check:HEALTH_CHECK}</h2>
 
 			<div>
 				{+START,LOOP,HEALTH_CHECK}

@@ -170,10 +170,6 @@ class Hook_search_filedump extends FieldsSearchHook
                         'RESOURCE_TYPE' => '_filedump_file',
                     ));
                 } else {
-                    if (php_function_allowed('set_time_limit')) {
-                        @set_time_limit(5);
-                    }
-
                     $tpl = do_image_thumb($url, $caption, true, false, null, null, true);
 
                     $out[$i]['template'] = do_template('SIMPLE_PREVIEW_BOX', array(

@@ -342,6 +342,7 @@ class database_misc_test_set extends cms_test_case
 
             list($content, $boolean_search, $expected, $fields, $raw_fields) = $bits;
             list($content_where) = build_content_where($content, $boolean_search, $boolean_operator);
+            $order = '';
             $rows = get_search_rows(
                 'test',
                 'id',
@@ -357,7 +358,7 @@ class database_misc_test_set extends cms_test_case
                 $fields,
                 '',
                 $content_where,
-                '',
+                $order,
                 'r.id',
                 $raw_fields
             );

@@ -33,7 +33,7 @@ if (get_forum_type() != 'cns') {
     return do_template('RED_ALERT', array('_GUID' => '3c5pw1foncj4v8j2zwbqp0dg6jjezppx', 'TEXT' => do_lang_tempcode('NO_CNS')));
 }
 
-if (strpos(get_db_type(), 'mysql') !== false) {
+if (strpos(get_db_type(), 'mysql') === false) {
     return do_template('RED_ALERT', array('_GUID' => '9qjvy42zmboz6uhe4khpgk71yjt4g11e', 'TEXT' => 'This works with MySQL only'));
 }
 

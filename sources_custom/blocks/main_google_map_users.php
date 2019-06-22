@@ -114,7 +114,7 @@ class Block_main_google_map_users
         }
 
         // Data query
-        $query = 'SELECT m_username,mf_member_id,m_primary_group,field_' . strval($latitude_cpf_id) . ',field_' . strval($longitude_cpf_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m ON m.id=f.mf_member_id WHERE field_' . strval($longitude_cpf_id) . ' IS NOT NULL AND field_' . strval($latitude_cpf_id) . ' IS NOT NULL';
+        $query = 'SELECT m_username,mf_member_id,m_primary_group,field_' . strval($latitude_cpf_id) . ',field_' . strval($longitude_cpf_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f ON m.id=f.mf_member_id WHERE field_' . strval($longitude_cpf_id) . ' IS NOT NULL AND field_' . strval($latitude_cpf_id) . ' IS NOT NULL';
 
         // Filtering
         if (!array_key_exists('filter_usergroup', $map)) {

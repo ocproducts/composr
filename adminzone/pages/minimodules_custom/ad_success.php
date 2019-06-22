@@ -37,7 +37,7 @@ $success = array();
 $joining = array();
 $failure = array();
 $query = 'SELECT member_id,s_get,ip,date_and_time FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * get_param_integer('days', 1)) . ' AND s_get LIKE \'' . db_encode_like('%<param>_t=%') . '\'';
-if (can_arbitrary_groupby()) {
+if ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) {
     $query .= ' GROUP BY member_id';
 }
 $advertiser_sessions = $GLOBALS['SITE_DB']->query($query);

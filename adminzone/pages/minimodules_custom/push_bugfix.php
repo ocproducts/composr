@@ -299,7 +299,7 @@ END;
     </fieldset>
 END;
 }
-$proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
+$proceed_icon = static_evaluate_tempcode(do_template('ICON', array('_GUID' => '3806e63e8f1e854871afe200b9c0dabe', 'NAME' => 'buttons/proceed')));
 echo <<<END
     <fieldset>
         <legend>Submission</legend>
@@ -483,7 +483,7 @@ function make_call($call, $params, $file = null)
                 }
             }
         }
-        $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
+        $proceed_icon = do_template('ICON', array('_GUID' => '1f57a0313bcccc08f6322c2ba8244cd7', 'NAME' => 'buttons/proceed'));
         echo '
                     <button class="btn btn-primary btn-scr buttons--proceed" type="submit">' . $proceed_icon->evaluate() . ' Action failed: Try manually</button>
             </form>

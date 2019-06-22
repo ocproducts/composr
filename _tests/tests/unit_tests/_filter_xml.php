@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class filter_xml_test_set extends cms_test_case
+class _filter_xml_test_set extends cms_test_case
 {
     public function setUp()
     {

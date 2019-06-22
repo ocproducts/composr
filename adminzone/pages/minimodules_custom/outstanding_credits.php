@@ -37,7 +37,7 @@ if (get_forum_type() != 'cns') {
     warn_exit(do_lang_tempcode('NO_CNS'));
 }
 
-if (strpos(get_db_type(), 'mysql') !== false) {
+if (strpos(get_db_type(), 'mysql') === false) {
     warn_exit('This works with MySQL only');
 }
 
@@ -49,9 +49,7 @@ if ($start == $max) {
 $csv = get_param_integer('csv', 0) == 1;
 if ($csv) {
     require_code('files2');
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
     $start = 0;
     $max = 10000;
 }

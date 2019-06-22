@@ -33,7 +33,7 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
         return user_lang();
     }
 
-    $lang = either_param_string('lang', /*get_param_string('keep_lang', null)*/null);
+    $lang = get_param_string('lang', /*get_param_string('keep_lang', null)*/null);
     if ($lang !== null) {
         return filter_naughty($lang);
     }
@@ -69,13 +69,14 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
     $fields = form_input_huge_list(do_lang_tempcode('LANGUAGE'), do_lang_tempcode('DESCRIPTION_LANGUAGE'), 'lang', $langs, null, true);
 
     $hidden = build_keep_post_fields();
-    $url = get_self_url();
+    $url = get_self_url(false, false, array('lang' => null));
 
     breadcrumb_set_self(do_lang_tempcode('LANGUAGE'));
 
     return do_template('FORM_SCREEN', array(
         '_GUID' => '1a2823d450237aa299c095bf9c689a2a',
         'SKIP_WEBSTANDARDS' => true,
+        'GET' => true,
         'HIDDEN' => $hidden,
         'SUBMIT_ICON' => 'buttons/proceed',
         'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
@@ -93,6 +94,10 @@ function attach_translation_notice()
 {
     if (!multi_lang_content()) {
         return;
+    }
+
+    if (get_param_string('lang', '') != '') {
+        return; // Explicitly translating
     }
 
     $user_lang = user_lang();
@@ -327,7 +332,7 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
     }
 
     if ($lang === null) {
-        $lang = user_lang();
+        $lang = get_param_string('lang', user_lang());
     }
     $_text_parsed = null;
 
@@ -433,7 +438,7 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
         $db = $GLOBALS['SITE_DB'];
     }
 
-    $lang = user_lang();
+    $lang = get_param_string('lang', user_lang());
 
     $member_id = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id(); // This updates the Comcode reference to match the current user, which may not be the owner of the content this is for. This is for a reason - we need to parse with the security token of the current user, not the original content submitter.
     if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member, false, USERNAME_DEFAULT_NULL) === null)) {
@@ -671,6 +676,7 @@ function _comcode_lang_string($lang_code)
         } elseif (array_key_exists(0, $comcode_page)) {
             $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $lang_code, 'the_zone' => '!'));
             delete_lang($comcode_page[0]['string_index']);
+            $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
         }
     } else {
         $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_page' => $lang_code, 'the_zone' => '!'), '', 1);
@@ -680,6 +686,7 @@ function _comcode_lang_string($lang_code)
             return $ret;
         } elseif (array_key_exists(0, $comcode_page)) {
             $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $lang_code, 'the_zone' => '!'));
+            $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
         }
     }
 

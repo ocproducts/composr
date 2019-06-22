@@ -24,9 +24,7 @@ class _bash_parser_test_set extends cms_test_case
 {
     public function testValidCode()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         require_code('files2');
         $php_path = find_php_path();
@@ -39,6 +37,11 @@ class _bash_parser_test_set extends cms_test_case
 
             // NB: php-no-ext bit works around bug in Windows version of PHP with slow startup. Make a ../php-no-ext/php.ini file with no extensions listed for loading
             $message = shell_exec($php_path . ' -l ' . cms_escapeshellarg(get_file_base() . '/' . $path) . ' -c ' . cms_escapeshellarg(get_file_base() . '/../php-no-ext'));
+
+            if (is_cli()) {
+                echo $message;
+            }
+
             $this->assertTrue(strpos($message, 'No syntax errors detected') !== false, $message . ' (' . $path . ')');
         }
     }

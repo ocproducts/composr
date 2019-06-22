@@ -31,7 +31,7 @@ if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Public non-bundled addons';
     $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
-    return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
+    return do_template('CONFIRM_SCREEN', array('_GUID' => 'e68a3b48474d9c8ad4d7107009fb3e83', 'TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
 restrictify();
@@ -52,9 +52,7 @@ require_code('version2');
 require_code('tar');
 require_code('addon_publish');
 
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
+cms_extend_time_limit(TIME_LIMIT_EXTEND_crawl);
 
 $only = get_param_string('only', null);
 

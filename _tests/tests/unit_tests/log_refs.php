@@ -23,9 +23,7 @@ class log_refs_test_set extends cms_test_case
         require_code('files2');
 
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            set_time_limit(100);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
 
         $all_code = '';
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));

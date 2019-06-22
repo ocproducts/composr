@@ -330,16 +330,19 @@ class Module_cms_comcode_pages
             escape_html($sitemap_url->evaluate()),
             array(
                 static_evaluate_tempcode(do_template('ICON', array(
+                    '_GUID' => '6b23e82e1007bb4e6539db717b6327dd',
                     'NAME' => 'buttons/search',
                     'ICON_SIZE' => '18',
                     'ICON_CLASS' => 'vertical-alignment',
                 ))),
                 static_evaluate_tempcode(do_template('ICON', array(
+                    '_GUID' => '4ebc80701426935b4d828599f5133e9f',
                     'NAME' => 'tool_buttons/sitemap',
                     'ICON_SIZE' => '18',
                     'ICON_CLASS' => 'vertical-alignment',
                 ))),
                 static_evaluate_tempcode(do_template('ICON', array(
+                    '_GUID' => 'bbbdabc07f399b9b704fe47a994b1298',
                     'NAME' => 'admin/add',
                     'ICON_SIZE' => '18',
                     'ICON_CLASS' => 'vertical-alignment',
@@ -899,7 +902,7 @@ class Module_cms_comcode_pages
 
         // ---
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__edit'), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '__edit', 'lang' => $lang), '_SELF');
 
         if ((addon_installed('page_management')) && (has_actual_page_access(get_member(), 'admin_sitemap'))) {
             $delete_url = build_url(array('page' => 'admin_sitemap', 'type' => '_delete', 'page__' . $file => 1, 'zone' => $zone), get_module_zone('admin_sitemap'));
@@ -1027,7 +1030,6 @@ class Module_cms_comcode_pages
         $fields2->attach(get_page_permissions_for_environment($zone, $file));
 
         $hidden_fields->attach(form_input_hidden('file', $file));
-        $hidden_fields->attach(form_input_hidden('lang', $lang));
         $hidden_fields->attach(form_input_hidden('zone', $zone));
         $hidden_fields->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)))));
 
@@ -1123,7 +1125,7 @@ class Module_cms_comcode_pages
 
         // Load up settings from the environments
         $file = filter_naughty(post_param_string('file'));
-        $lang = filter_naughty(post_param_string('lang'));
+        $lang = filter_naughty(get_param_string('lang'));
         $zone = filter_naughty(post_param_string('zone'));
         if (addon_installed('page_management')) {
             $new_file = filter_naughty(has_actual_page_access(get_member(), 'admin_sitemap') ? post_param_string('title', $file) : $file);
@@ -1300,10 +1302,7 @@ class Module_cms_comcode_pages
         require_code('type_sanitisation');
 
         disable_php_memory_limit();
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(600);
-        }
-        send_http_output_ping();
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
         $zone = get_param_string('filter', null);
 
@@ -1321,6 +1320,8 @@ class Module_cms_comcode_pages
             $files_list = $this->get_comcode_files_list_disk_search(user_lang(), null, false);
             $__pages = array();
             foreach ($files_list as $page_link => $path_bits) {
+                send_http_output_ping();
+
                 list($_zone, $_page) = explode(':', $page_link, 2);
                 if (!is_string($_page)) {
                     $_page = strval($_page);
@@ -1418,6 +1419,8 @@ class Module_cms_comcode_pages
      */
     public function organise_page_tree(&$pages, $under = '')
     {
+        send_http_output_ping();
+
         static $todo_checks = null;
         static $no_validation_support = null;
         static $menu_branches_by_url = null;

@@ -560,16 +560,15 @@ class Module_admin_cns_groups extends Standard_crud_module
      */
     public function copy_members_into($g)
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-        send_http_output_ping();
+        cms_disable_time_limit();
 
         if (!array_key_exists('copy_members_into', $_POST)) {
             return;
         }
         $start = 0;
         do {
+            send_http_output_ping();
+
             $members = $GLOBALS['FORUM_DRIVER']->member_group_query(array_map('intval', $_POST['copy_members_into']), 300, $start);
             foreach (array_keys($members) as $member_id) {
                 cns_add_member_to_group($member_id, $g, 1);

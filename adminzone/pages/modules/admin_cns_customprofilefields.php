@@ -332,7 +332,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => $tempcode == '' && $section == '' && $icon == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '7648f571ac21b86c2dbe82d3e8378a52', 'SECTION_HIDDEN' => $tempcode == '' && $section == '' && $icon == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
         if ($locked == 0 || $allow_full_edit) {
@@ -725,6 +725,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $type = do_lang_tempcode('FIELD_TYPE_' . $details['type']);
 
             $choose_action = do_template('COLUMNED_TABLE_ROW_CELL_TICK', array(
+                '_GUID' => 'c355b82d286c3f10180b8a0ecddf070f',
                 'LABEL' => do_lang_tempcode('CHOOSE'),
                 'NAME' => 'select__' . $field_code,
                 'VALUE' => '1',
@@ -741,9 +742,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             ), false));
         }
 
-        $table = do_template('COLUMNED_TABLE', array('HEADER_ROW' => $header_row, 'ROWS' => $rows));
+        $table = do_template('COLUMNED_TABLE', array('_GUID' => 'b5765aca9ffe84242ca2c9d17f5ec0a6', 'HEADER_ROW' => $header_row, 'ROWS' => $rows));
 
         return do_template('COLUMNED_TABLE_SCREEN', array(
+            '_GUID' => 'ddfa0fb6ea396d3b57cb447bc228a885',
             'TITLE' => $this->title,
             'TEXT' => do_lang_tempcode('PREDEFINED_FIELDS_DESCRIPTION'),
             'TABLE' => $table,

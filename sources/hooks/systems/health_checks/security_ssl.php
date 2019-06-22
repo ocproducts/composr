@@ -128,7 +128,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 
@@ -188,7 +188,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
             $html = $this->get_page_content($page_link, $check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS);
 
             if ($html === null) {
-                $this->stateCheckSkipped('Could not download page from website');
+                $this->stateCheckSkipped(do_lang('HC_PAGE_DOWNLOAD_ERROR', $page_link));
                 continue;
             }
 

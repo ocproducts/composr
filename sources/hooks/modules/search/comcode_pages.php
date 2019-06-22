@@ -285,9 +285,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
     {
         global $SEARCH__CONTENT_BITS;
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(30); // This can be slow.
-        }
+        $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow); // This can be slow.
 
         require_code('xhtml');
 
@@ -299,6 +297,8 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         if ($summary == '') {
             $page_request = _request_page($page, $zone);
             if (strpos($page_request[0], 'COMCODE') === false) {
+                cms_set_time_limit($old_limit);
+
                 return new Tempcode();
             }
             $_zone = $page_request[count($page_request) - 1];
@@ -354,6 +354,8 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         }
 
         $breadcrumbs = breadcrumb_segments_to_tempcode(comcode_breadcrumbs($page, $zone));
+
+        cms_set_time_limit($old_limit);
 
         return do_template('COMCODE_PAGE_BOX', array(
             '_GUID' => '79cd9e7d0b63ee916c4cd74b26c2f652',

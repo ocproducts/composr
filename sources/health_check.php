@@ -171,9 +171,7 @@ function display_health_check_results_as_text($categories)
  */
 function run_health_check(&$has_fails, $sections_to_run = null, $passes = false, $skips = false, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null, $check_context = null)
 {
-    if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
-    }
+    cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     if ($check_context === null) {
         if (running_script('install')) {
@@ -418,7 +416,7 @@ abstract class Hook_Health_Check
     protected function process_urls_into_page_links($_urls_or_page_links = null)
     {
         if ($_urls_or_page_links === null) {
-            $__urls_or_page_links = get_option('hc_scan_page_links');
+            $__urls_or_page_links = trim(get_option('hc_scan_page_links'));
             if ($__urls_or_page_links == '') {
                 $_urls_or_page_links = array();
             } else {

@@ -286,11 +286,11 @@ class Hook_health_check_performance extends Hook_Health_Check
                 case 'css':
                 case 'js':
                     $this->assertTrue($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files (the software will automatically make sure edited versions cache under different URLs via automatic timestamp parameters). Full headers: ' . serialize($headers));
-                    $this->assertTrue($is_gzip, 'Gzip compression is not enabled/working for [tt].' . $type . '[/tt] files, significantly wasting bandwidth for page loads. Full headers: ' . serialize($headers));
+                    $this->assertTrue($is_gzip, 'Gzip compression is not enabled/working for [tt].' . $type . '[/tt] files, significantly wasting bandwidth for page loads. Uncomment from [tt]themes/default/templates_cached/.htaccess[/tt]? Full headers: ' . serialize($headers));
                     break;
 
                 case 'png':
-                    $this->assertTrue($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files. Full headers: ' . serialize($headers));
+                    $this->assertTrue($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files. Uncomment from [tt]themes/default/templates_cached/.htaccess[/tt]? Full headers: ' . serialize($headers));
                     $this->assertTrue(!$is_gzip, 'Gzip compression should not be given for [tt].' . $type . '[/tt] files, they are already compressed so it is a waste of CPU power. Full headers: ' . serialize($headers));
                     break;
             }

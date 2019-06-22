@@ -160,13 +160,12 @@ class Module_admin_cns_ldap
             }
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-        send_http_output_ping();
+        cms_disable_time_limit();
 
         $start = 0;
         do {
+            send_http_output_ping();
+
             $all_ldap_members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username'), array('m_password_compat_scheme' => 'ldap'), '', 400, $start);
             foreach ($all_ldap_members as $row) {
                 $id = $row['id'];

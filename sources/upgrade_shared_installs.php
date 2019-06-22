@@ -73,11 +73,11 @@ function upgrade_sharedinstall_sites($from = 0)
 
     $total = count($sites);
 
-    foreach ($sites as $i => $site) {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+    if (count($sites) > 0) {
+        cms_disable_time_limit();
+    }
 
+    foreach ($sites as $i => $site) {
         if (($i < $from) && ($site != 'shareddemo')) {
             continue;
         }

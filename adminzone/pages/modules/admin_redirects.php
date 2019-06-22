@@ -472,6 +472,7 @@ class Module_admin_redirects
             }
 
             $existing->attach(do_template('URL_REDIRECT_ROW', array(
+                '_GUID' => 'fd4354115895533a465f99680edc64ad',
                 'I' => strval($i),
                 'FROM' => $from,
                 'TO' => $to,
@@ -480,6 +481,7 @@ class Module_admin_redirects
             )));
         }
         $new = do_template('URL_REDIRECT_ROW', array(
+            '_GUID' => '1930de7a52cade24a50ea80b8b97cee2',
             'I' => 'new',
             'FROM' => '',
             'TO' => '',
@@ -491,6 +493,7 @@ class Module_admin_redirects
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
         return do_template('URL_REDIRECT_SCREEN', array(
+            '_GUID' => '6529031253fcc3aceb66e38d79905cd4',
             'PING_URL' => $ping_url,
             'WARNING_DETAILS' => $warning_details,
             'TITLE' => $this->title,

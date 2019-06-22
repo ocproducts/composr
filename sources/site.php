@@ -179,6 +179,9 @@ function init__site()
             }
         }
     }
+
+    global $COMCODE_PAGE_RUNTIME_CACHE;
+    $COMCODE_PAGE_RUNTIME_CACHE = array();
 }
 
 /**
@@ -1820,7 +1823,7 @@ function load_comcode_page_from_cache($codename, $zone, $theme)
  */
 function _load_comcodes_page_from_cache($pages)
 {
-    static $cache = array();
+    global $COMCODE_PAGE_RUNTIME_CACHE;
 
     $ret = array();
 
@@ -1830,8 +1833,8 @@ function _load_comcodes_page_from_cache($pages)
     $sql .= ' WHERE 1=0';
     foreach ($pages as $page) {
         $sz = serialize($page);
-        if (isset($cache[$sz])) {
-            $ret[] = $cache[$sz];
+        if (isset($COMCODE_PAGE_RUNTIME_CACHE[$sz])) {
+            $ret[] = $COMCODE_PAGE_RUNTIME_CACHE[$sz];
         } else {
             list($codename, $zone, $theme) = $page;
 
@@ -1845,7 +1848,7 @@ function _load_comcodes_page_from_cache($pages)
         $_ret = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
         foreach ($_ret as $_page) {
             $sz = serialize(array($_page['the_page'], $_page['the_zone'], $_page['the_theme']));
-            $cache[$sz] = $_page;
+            $COMCODE_PAGE_RUNTIME_CACHE[$sz] = $_page;
             $ret[] = $_page;
         }
     }
@@ -1930,6 +1933,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                     delete_lang($comcode_page[0]['string_index']);
                 }
                 $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $codename, 'the_zone' => $zone));
+                $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
             }
         }
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
@@ -1971,6 +1975,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                     $GLOBALS['SITE_DB']->query_update('comcode_pages', array('p_edit_date' => $mtime), array('the_page' => $codename, 'the_zone' => $zone), '', 1);
                     $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_zone' => $zone, 'the_page' => $codename));
                     delete_lang($comcode_page_row['string_index']);
+                    $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
 
                     $db_set = null;
                     $comcode_page_row = null;

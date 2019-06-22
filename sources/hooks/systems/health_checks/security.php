@@ -43,6 +43,13 @@ class Hook_health_check_security extends Hook_Health_Check
         $this->process_checks_section('testDirectorySecuring', 'Directory securing', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testSiteOrphaned', 'Site orphaning', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testAdminScriptAccess', 'Admin Script Access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testIPBackdoor', 'IP backdoor left active', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testWebShells', 'WebShells in likely directories (backdoor scripts)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testExposedPhpMyAdminScript', 'Exposed PhpMyAdmin utility', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testExposedBigDumpScript', 'Exposed BigDump tool', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testExposedPhpInfoScript', 'Exposed PHP-Info script', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testExposedBackups', 'Exposed backups', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testExposedExecuteTemp', 'Exposed execute_temp.php', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
 
         return array($this->category_label, $this->results);
     }
@@ -263,5 +270,291 @@ class Hook_health_check_security extends Hook_Health_Check
             $ok = (http_get_contents(get_base_url() . '/config_editor.php', array('trigger_error' => false)) === null);
         }
         $this->assertTrue($ok, 'Should not have a master password defined, or should control access to config scripts');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testIPBackdoor($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        global $SITE_INFO;
+        $this->assertTrue(empty($SITE_INFO['backdoor_ip']), 'You have a [tt]backdoor_ip[/tt] setting left defined in _config.php');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testWebShells($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('files2');
+
+        $fb = get_file_base();
+
+        $files = $this->getBaseDirectoriesFiles();
+        $files = array_merge($files, get_directory_contents($fb, '', 0, false, true, array('php'))); // base directory
+        $files = array_merge($files, get_directory_contents($fb . '/uploads', 'uploads', 0, true, true, array('php'))); // common uploads location
+        $files = array_merge($files, get_directory_contents($fb . '/themes', 'themes', 0, true, true, array('php'))); // common uploads location
+
+        foreach ($files as $file) {
+            $c = @file_get_contents($fb . '/' . $file);
+            if ($c !== false) {
+                $trigger = $this->isLikelyWebShell($file, $c);
+                if ($trigger !== null) {
+                    $this->assertTrue(false, 'Likely webshell: [tt]' . $file . '[/tt]; triggered by [tt]' . $trigger . '[/tt]');
+                }
+            }
+        }
+    }
+
+    /**
+     * Find if a file is a likely webshell.
+     *
+     * @param  PATH $file Relative file path
+     * @param  string $c File contents
+     * @return ?string Trigger that found it (null: nothing)
+     */
+    protected function isLikelyWebShell($file, $c)
+    {
+        $triggers = array(
+            '[^\w]system\(',
+            '[^\w]exec\(',
+            '[^\w]shell_exec\(',
+            '[^\w]passthru\(',
+            '[^\w]popen\(',
+            '[^\w]proc_open\(',
+            '[^\w]eval\(',
+            '[^\w]move_uploaded_file\(',
+            '\$\w+\(',
+            '\$_FILES',
+            '/etc/passwd',
+            '(require|include)(_once)?\([\'"]https?://',
+        );
+
+        foreach ($triggers as $trigger) {
+            if (preg_match('#' . $trigger . '#i', $c) != 0) {
+                return $trigger;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testExposedPhpMyAdminScript($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('http');
+
+        $files = $this->getBaseDirectoriesFiles(null, false);
+
+        foreach ($files as $file) {
+            if (stripos($file, 'phpMyAdmin') !== false) {
+                $http_result = cms_http_request(get_base_url() . '/' . $file, array('trigger_error' => false));
+                $this->assertTrue($http_result->message != '200', 'Likely exposed phpMyAdmin script: [tt]' . $file . '[/tt]');
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testExposedBigDumpScript($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('http');
+
+        $files = $this->getBaseDirectoriesFiles();
+
+        foreach ($files as $file) {
+            if (stripos($file, 'bigdump') !== false) {
+                $http_result = cms_http_request(get_base_url() . '/' . $file, array('trigger_error' => false));
+                $this->assertTrue($http_result->message != '200', 'Likely exposed BigDump script: [tt]' . $file . '[/tt]');
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testExposedPhpInfoScript($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('http');
+
+        $files = $this->getBaseDirectoriesFiles();
+
+        foreach ($files as $file) {
+            if (stripos($file, 'phpinfo.php') !== false) {
+                $http_result = cms_http_request(get_base_url() . '/' . $file, array('trigger_error' => false));
+                $this->assertTrue($http_result->message != '200', 'Likely exposed PHP-Info script: [tt]' . $file . '[/tt]');
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testExposedBackups($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        require_code('http');
+
+        $files = $this->getBaseDirectoriesFiles(array('tar', 'gz', 'zip', 'sql'));
+
+        foreach ($files as $file) {
+            if (preg_match('#back.*\.(tar|gz|zip)$|\.(sql)$#i', basename($file)) != 0) {
+                $http_result = cms_http_request(get_base_url() . '/' . $file, array('trigger_error' => false));
+                $this->assertTrue($http_result->message != '200', 'Likely exposed backup: [tt]' . $file . '[/tt]');
+            }
+        }
+    }
+
+    /**
+     * Find files in base-like directories.
+     *
+     * @param  ?array $file_extensions File extensions to limit to (no dots), if $files_wanted set (null: no limit)
+     * @param  boolean $files_wanted Whether to get files (if not, will return directories instead of files)
+     * @return array List of file paths relative to real base directory
+     */
+    protected function getBaseDirectoriesFiles($file_extensions = array('php'), $files_wanted = true)
+    {
+        require_code('files2');
+
+        $fb = get_file_base();
+
+        $files = array();
+
+        $base_url_path = parse_url(get_base_url(), PHP_URL_PATH);
+        if ($base_url_path != '/') {
+            if (substr($fb, -strlen($base_url_path)) == $base_url_path) {
+                $webroot_path = substr($fb, 0, strlen($fb) - strlen($base_url_path));
+                $files = array_merge($files, get_directory_contents($webroot_path, '..', 0, false, $files_wanted, $file_extensions)); // webroot directory
+            }
+        }
+
+        $files = array_merge($files, get_directory_contents($fb, '', 0, false, $files_wanted, $file_extensions)); // base directory
+
+        // Common backup directories, if they exist
+        foreach (array('_old', 'old', '_backup', 'backup', '_backups', 'backups', '_temp', 'temp') as $old_dir) {
+            $files = array_merge($files, get_directory_contents($fb . '/' . $old_dir, '', 0, false, $files_wanted, $file_extensions));
+        }
+
+        return $files;
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testExposedExecuteTemp($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        $et_path = get_file_base() . '/data_custom/execute_temp.php';
+        $et_orig_path = get_file_base() . '/data_custom/execute_temp.php.bundle';
+
+        $ok = !file_exists($et_path);
+        if (!$ok) {
+            $c = file_get_contents($et_path);
+            $ok = (is_file($et_orig_path)) && (unixify_line_format($c) == unixify_line_format(file_get_contents($et_orig_path)));
+            if (!$ok) {
+                $ok = (preg_match('#function execute_temp\(\)\s*\{\s*\}#', $c) != 0);
+            }
+        }
+
+        $this->assertTrue($ok, 'Exposed non-empty [tt]data_custom/execute_temp.php[/tt]');
     }
 }

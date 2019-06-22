@@ -38,10 +38,6 @@ function sitemap_script()
         exit();
     }
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(30);
-    }
-
     disable_php_memory_limit(); // Needed for loading large amount of permissions (potentially)
 
     if (get_param_integer('set_perms', 0) == 1) {

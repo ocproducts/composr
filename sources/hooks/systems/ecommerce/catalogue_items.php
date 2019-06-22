@@ -78,9 +78,7 @@ class Hook_ecommerce_catalogue_items
             $where['id'] = intval($search);
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $start = 0;
         do {

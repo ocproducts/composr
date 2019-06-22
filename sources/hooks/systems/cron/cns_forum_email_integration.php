@@ -24,18 +24,40 @@
 class Hook_cron_cns_forum_email_integration
 {
     /**
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
+     */
+    public function info($last_run, $calculate_num_queued)
+    {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
+        require_code('cns_forums2');
+        $test = cns_has_mailing_list_style();
+        if ($test[0] == 0) {
+            return null; // Possibly due to not being fully configured yet
+        }
+
+        return array(
+            'label' => 'Forum email integration',
+            'num_queued' => null,
+            'minutes_between_runs' => 0,
+        );
+    }
+
+    /**
      * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {
-        if (get_forum_type() != 'cns') {
-            return;
-        }
-
-        if (!addon_installed('cns_forum')) {
-            return;
-        }
-
         require_code('mail_integration');
         require_code('cns_forum_email_integration');
         $email_ob = new ForumEmailIntegration();

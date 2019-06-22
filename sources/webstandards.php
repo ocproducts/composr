@@ -1152,9 +1152,7 @@ function init__webstandards()
  */
 function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false, $webstandards_csp = false)
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(100);
-    }
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
 
     if (function_exists('disable_php_memory_limit')) {
         disable_php_memory_limit();
@@ -1473,6 +1471,8 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
     }
 
     unset($OUT);
+
+    cms_set_time_limit($old_limit);
 
     return array('level_ranges' => $level_ranges, 'tag_ranges' => $TAG_RANGES, 'value_ranges' => $VALUE_RANGES, 'errors' => $errors);
 }

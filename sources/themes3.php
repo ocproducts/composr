@@ -26,9 +26,7 @@ function compile_all_templates()
     require_code('web_resources2');
     require_code('web_resources');
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $themes = array(
         'admin',

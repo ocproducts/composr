@@ -24,16 +24,16 @@
  * Spam check an e-mail.
  *
  * @param  string $mime_email The e-mail
- * @return array A pair: The spam report, and the spam score
+ * @return array A tuple: The spam report, and the spam score, raw response, HTTP message
  */
 function email_spam_check($mime_email)
 {
     $spam_report = null;
     $spam_score = null;
 
-    $_spam_test = http_get_contents('http://spamcheck.postmarkapp.com/filter', array('trigger_error' => false, 'raw_post' => true, 'post_params' => array(json_encode(array('email' => $mime_email, 'options' => 'long'))), 'raw_content_type' => 'application/json'));
-    if ($_spam_test != '') {
-        $spam_test = @json_decode($_spam_test, true);
+    $_spam_test = cms_http_request('http://spamcheck.postmarkapp.com/filter', array('trigger_error' => false, 'raw_post' => true, 'post_params' => array(json_encode(array('email' => $mime_email, 'options' => 'long'))), 'raw_content_type' => 'application/json'));
+    if ($_spam_test->data != '') {
+        $spam_test = @json_decode($_spam_test->data, true);
         if (($spam_test !== null) && (isset($spam_test['success'])) && (isset($spam_test['report'])) && (isset($spam_test['score']))) {
             if ($spam_test['success']) {
                 $spam_report = $spam_test['report'];
@@ -42,7 +42,7 @@ function email_spam_check($mime_email)
         }
     }
 
-    return array($spam_report, $spam_score);
+    return array($spam_report, $spam_score, $_spam_test->data, $_spam_test->message);
 }
 
 

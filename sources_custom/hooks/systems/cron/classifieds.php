@@ -61,9 +61,7 @@ class Hook_cron_classifieds
     {
         $time_now = time();
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         $start = 0;
         do {

@@ -227,7 +227,6 @@ class Module_wiki
             'random' => array('RANDOM_PAGE', 'menu/rich_content/wiki/random_page'),
         );
         if (addon_installed('actionlog')) {
-            require_lang('actionlog');
             $ret['revisions'] = array('REVISIONS', 'admin/revisions');
         }
         return $ret;
@@ -504,6 +503,10 @@ class Module_wiki
             $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'show_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
+
+                if ($myrow['description'] === null) {
+                    continue; // Broken database reference
+                }
 
                 if (!has_category_access(get_member(), 'wiki_page', strval($child_id))) {
                     continue;

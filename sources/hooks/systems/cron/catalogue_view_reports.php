@@ -102,9 +102,7 @@ class Hook_cron_catalogue_view_reports
             require_lang('catalogues');
         }
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        cms_disable_time_limit();
 
         // Now for the intensive part
         foreach ($this->doing as $catalogue) {

@@ -19,26 +19,35 @@
 class Hook_cron_sugarcrm_sync_contact_metadata
 {
     /**
+     * Get info from this hook.
+     *
+     * @param  ?TIME $last_run Last time run (null: never)
+     * @param  boolean $calculate_num_queued Calculate the number of items queued, if possible
+     * @return ?array Return a map of info about the hook (null: disabled)
+     */
+    public function info($last_run, $calculate_num_queued)
+    {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
+        if (get_option('sugarcrm_contact_metadata_field') == '') {
+            // Not configured
+            return null;
+        }
+
+        return array(
+            'label' => 'Send SugarCRM contact metadata',
+            'num_queued' => null,
+            'minutes_between_runs' => 60 * 24,
+        );
+    }
+
+    /**
      * Run function for Cron hooks. Searches for tasks to perform.
      */
     public function run()
     {
-        if (!addon_installed('sugarcrm')) {
-            return;
-        }
-
-        $last = get_value('last_contact_metadata_sync', null, true);
-        $time = time();
-        if (($last !== null) && (intval($last) > $time - 60 * 60 * 24)) {
-            return;
-        }
-        set_value('last_contact_metadata_sync', strval($time), true);
-
-        if (get_option('sugarcrm_contact_metadata_field') == '') {
-            // Not configured
-            return;
-        }
-
         require_lang('sugarcrm');
         require_code('tasks');
         $_title = do_lang('SUGARCRM_MEMBER_SYNC');

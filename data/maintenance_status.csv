@@ -22,6 +22,7 @@ platform_phalanger,Phalanger platform support,,,Not regularly tested due to need
 platform_chmod,Non-suEXEC platform support,ocProducts,,"Not regularly tested. Likely to be very un-friendly to the admin, so should be discouraged.",No,
 platform_iis,IIS,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_litespeed,LiteSpeed,ocProducts,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
+platform_apache,Apache,ocProducts,ocProducts,,No,
 import_cms_merge,"""Composr site merger"" importer",ocProducts,,"Not regularly tested. WebDAV is the preferred merge mechanism, and site merging is not a substitute for upgrading.",No,
 import_html_site,HTML website importer,,,Not regularly tested and has the potential for instability.,No,
 import_ipb,Invision Board importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,

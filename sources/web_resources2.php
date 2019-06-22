@@ -116,11 +116,7 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
  */
 function js_compile($j, $js_cache_path, $minify = true, $theme = null)
 {
-    if (php_function_allowed('set_time_limit')) {
-        if (ini_get('max_execution_time') != '600') { // TODO: Improve in #3634
-            @set_time_limit(30);
-        }
-    }
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_slow);
 
     cms_profile_start_for('js_compile');
 
@@ -157,6 +153,8 @@ function js_compile($j, $js_cache_path, $minify = true, $theme = null)
     }
 
     cms_profile_end_for('js_compile', $j);
+
+    cms_set_time_limit($old_limit);
 }
 
 /**

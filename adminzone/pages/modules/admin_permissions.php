@@ -291,11 +291,6 @@ class Module_admin_permissions
      */
     public function run()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(60);
-        }
-        send_http_output_ping();
-
         require_css('permissions_editor');
         require_css('forms');
 

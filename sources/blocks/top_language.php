@@ -71,7 +71,7 @@ class Block_top_language
             return new Tempcode();
         }
 
-        if (either_param_string('lang', '') != '') {
+        if (get_param_string('lang', '') != '') {
             return new Tempcode(); // Content UI has an active language, so don't provide a selector
         }
 

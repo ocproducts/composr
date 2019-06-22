@@ -121,8 +121,8 @@ class Module_admin_setupwizard
 
         $type = get_param_string('type', 'browse');
 
-        if (($type != 'browse') && ($type != 'step11')) {
-            if ((count($_POST) == 0) && ($_POST['REQUEST_METHOD'] != 'POST')) {
+        if (($type != 'browse') && ($type != 'step11') && ($type != 'install_test_content') && ($type != 'uninstall_test_content')) {
+            if ((count($_POST) == 0) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
             }
         }
@@ -203,7 +203,7 @@ class Module_admin_setupwizard
         $addons_url = build_url(array('page' => 'admin_addons'), get_module_zone('admin_addons'));
         $text->attach(paragraph(do_lang_tempcode($done_once ? 'SETUPWIZARD_1_DESCRIBE_ALT' : 'SETUPWIZARD_1_DESCRIBE', escape_html($addons_url->evaluate()))));
         $rescue_url = build_url(array('page' => '', 'keep_safe_mode' => '1'), '');
-        $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), do_template('ICON', array('NAME' => 'tool_buttons/software_chat')))));
+        $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), do_template('ICON', array('_GUID' => '049d21a64c40a98fc06229bb3985c85a', 'NAME' => 'tool_buttons/software_chat')))));
         $submit_name = do_lang_tempcode('START');
 
         $fields = new Tempcode();
@@ -1061,13 +1061,6 @@ class Module_admin_setupwizard
 
         require_code('abstract_file_manager');
         force_have_afm_details();
-
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(600);
-        }
-        send_http_output_ping();
-
-        disable_php_memory_limit();
 
         // Proceed...
 

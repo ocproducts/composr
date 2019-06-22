@@ -158,6 +158,7 @@ class Hook_cron_newsletter_drip_send
                         'enveloper_override' => (get_option('newsletter_enveloper_override') == '1'),
                         'allow_ext_images' => (get_option('newsletter_allow_ext_images') == '1'),
                         'website_email' => get_option('newsletter_website_email'),
+                        'is_bulk' => true,
                     )
                 );
             }

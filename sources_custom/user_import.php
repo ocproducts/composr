@@ -40,9 +40,7 @@ function do_user_import()
 {
     header('X-Robots-Tag: noindex');
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     if (!USER_IMPORT_TEST_MODE) {
         require_code('files');

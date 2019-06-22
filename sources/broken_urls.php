@@ -549,8 +549,8 @@ class BrokenURLScanner
             $undesirable_redirects = array(
                 get_base_url(),
                 get_base_url() . '/',
-                build_url(array('page' => ''), '', array(), false, false, true),
-                build_url(array('page' => ''), '', array(), false, true, true),
+                static_evaluate_tempcode(build_url(array('page' => ''), '', array(), false, false, true)),
+                static_evaluate_tempcode(build_url(array('page' => ''), '', array(), false, true, true)),
             );
         }
 

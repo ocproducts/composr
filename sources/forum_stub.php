@@ -432,12 +432,11 @@ class Forum_driver_base
     {
         global $SITE_INFO, $ZONE, $USER_THEME_CACHE, $IN_MINIKERNEL_VERSION;
 
-        if (($member_id === null) || ($IN_MINIKERNEL_VERSION)) {
-            $member_id = $IN_MINIKERNEL_VERSION ? $this->get_guest_id() : get_member();
-            $is_current_member = true;
-        } else {
-            $is_current_member = (get_member() == $member_id);
+        if ($IN_MINIKERNEL_VERSION) {
+            return 'default';
         }
+
+        $is_current_member = (($member_id === null) || (get_member() == $member_id));
 
         if ($zone_for === null) {
             if (($USER_THEME_CACHE !== null) && ($is_current_member)) {
@@ -450,7 +449,7 @@ class Forum_driver_base
             $current_zone_requested = (get_zone_name() == $zone_for);
         }
 
-        if (($IN_MINIKERNEL_VERSION) || (in_safe_mode())) {
+        if (in_safe_mode()) {
             return ($zone_for === 'adminzone' || $zone_for === 'cms') ? 'admin' : 'default';
         }
 
@@ -464,6 +463,9 @@ class Forum_driver_base
                 $zone_theme = ($ZONE === null || !$current_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
 
                 require_code('permissions');
+                if ($member_id === null) {
+                    $member_id = get_member();
+                }
                 if (($theme == 'default') || ($theme == $zone_theme) || (has_category_access($member_id, 'theme', $theme))) { // Permissions check (but only if it's not what the zone setting says it should be anyway)
                     if (($current_zone_requested) && ($is_current_member)) {
                         $USER_THEME_CACHE = $theme;
@@ -501,6 +503,9 @@ class Forum_driver_base
 
         // Get from member setting
         require_code('permissions');
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
         $theme = filter_naughty($this->_get_theme(false, $member_id));
         if (empty($theme)) { // Cleanup bad data
             $theme = '-1';

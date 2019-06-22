@@ -86,7 +86,9 @@ class Hook_addon_registry_weather
      */
     public function get_description()
     {
-        return 'A weather block powered by Yahoo.';
+        return 'A weather block. Different backends are supported, with a default implementation of OpenWeatherMap provided.
+
+You will need to set up an OpenWeatherMap API key at Admin Zone > Setup > Configuration > Composr API options > Weather report.';
     }
 
     /**
@@ -136,6 +138,32 @@ class Hook_addon_registry_weather
             'themes/default/templates_custom/BLOCK_SIDE_WEATHER.tpl',
             'sources_custom/blocks/side_weather.php',
             'lang_custom/EN/weather.ini',
+            'sources_custom/hooks/systems/config/openweathermap_api_key.php',
+            'sources_custom/hooks/systems/weather/openweathermap.php',
+            'sources_custom/weather.php',
         );
     }
+
+    /**
+     * Uninstall the addon.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('cached_weather_codes');
+    }
+
+    /**
+     * Install the addon.
+     *
+     * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
+     */
+    public function install($upgrade_from = null)
+    {
+        $GLOBALS['SITE_DB']->create_table('cached_weather_codes', array(
+            'id' => '*AUTO',
+            'w_string' => 'SHORT_TEXT',
+            'w_code' => 'INTEGER',
+        ));
+    }
+
 }

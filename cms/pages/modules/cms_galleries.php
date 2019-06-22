@@ -462,9 +462,7 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function __import()
     {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(1000);
-        }
+        cms_disable_time_limit();
 
         $cat = get_param_string('cat');
 
@@ -488,6 +486,8 @@ class Module_cms_galleries extends Standard_crud_module
             }
 
             if ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
+                send_http_output_ping();
+
                 $tmp_name_2 = cms_tempnam();
 
                 if ($__file['type'] != 'plupload') {

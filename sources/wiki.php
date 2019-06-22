@@ -554,9 +554,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $show_posts, $me
  */
 function wiki_delete_page($page_id)
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    $old_limit = cms_disable_time_limit();
 
     // Get page details
     $pages = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => $page_id), '', 1);
@@ -570,12 +568,16 @@ function wiki_delete_page($page_id)
     // Delete posts
     $start = 0;
     do {
+        send_http_output_ping();
+
         $posts = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('id'), array('page_id' => $page_id), '', 500, $start);
         foreach ($posts as $post) {
             wiki_delete_post($post['id']);
         }
         //$start += 500;    No, we just deleted, so offsets would have changed
     } while (array_key_exists(0, $posts));
+
+    cms_set_time_limit($old_limit);
 
     // Log revision
     $log_id = log_it('WIKI_DELETE_PAGE', strval($page_id), $_title);
@@ -858,6 +860,11 @@ function _create_selection_list_wiki_page_tree(&$wiki_seen, $select, $id, $bread
 
             if ($myrow['title'] === null) {
                 $temp_rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $myrow['child_id']), '', 1);
+
+                if (!array_key_exists(0, $temp_rows)) {
+                    continue; // Broken database reference
+                }
+
                 $myrow['title'] = get_translated_text($temp_rows[0]['title']);
                 $rows[$i]['title'] = $myrow['title'];
                 $GLOBALS['SITE_DB']->query_update('wiki_children', array('title' => $myrow['title']), array('parent_id' => $id, 'child_id' => $myrow['child_id']));
@@ -949,6 +956,11 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
                 // Fix child title
                 if ($child['title'] === null) {
                     $temp_rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $child['child_id']), '', 1);
+
+                    if (!array_key_exists(0, $temp_rows)) {
+                        continue; // Broken database reference
+                    }
+
                     $child['title'] = get_translated_text($temp_rows[0]['title']);
 
                     $GLOBALS['SITE_DB']->query_update('wiki_children', array('title' => $child['title']), array('parent_id' => $page_id, 'child_id' => $child['child_id']));

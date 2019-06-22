@@ -360,9 +360,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     }
 
     if (php_function_allowed('fsockopen')) {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        $old_limit = cms_disable_time_limit();
 
         // Send out on RSS cloud
         if (!$GLOBALS['SITE_DB']->table_is_locked('news_rss_cloud')) {
@@ -370,6 +368,8 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         }
         $start = 0;
         do {
+            send_http_output_ping();
+
             $listeners = $GLOBALS['SITE_DB']->query_select('news_rss_cloud', array('*'), array(), '', 100, $start);
             foreach ($listeners as $listener) {
                 $data = $listener['watching_channel'];
@@ -380,6 +380,8 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
             }
             $start += 100;
         } while (array_key_exists(0, $listeners));
+
+        cms_set_time_limit($old_limit);
     }
 
     require_code('content2');

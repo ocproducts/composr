@@ -92,63 +92,65 @@ foreach (array_keys($themes) as $theme) {
             get_file_base() . '/site/pages/comcode_custom/EN' => true,
             get_file_base() . '/pages/comcode_custom/EN' => true,
         ) as $dir => $do_checks) {
-            $dh = opendir($dir);
-            while (($f = readdir($dh)) !== false) {
-                if (
-                    (substr($f, -4) == '.css') ||
-                    (substr($f, -4) == '.tpl') ||
-                    ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')))
-                ) {
-                    $contents = file_get_contents($dir . '/' . $f);
+            $dh = @opendir($dir);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    if (
+                        (substr($f, -4) == '.css') ||
+                        (substr($f, -4) == '.tpl') ||
+                        ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')))
+                    ) {
+                        $contents = file_get_contents($dir . '/' . $f);
 
-                    if (substr($f, -4) != '.css' || !$do_checks) {
-                        $non_css_contents .= $contents;
-                    }
-
-                    if (!$do_checks) {
-                        continue;
-                    }
-
-                    // Let's do a few simple CSS checks, less than a proper validator would do
-                    if ((substr($f, -4) == '.css') && (strpos($contents, '{$,parser hint: external}') === false)) {
-                        // Test comment/brace balancing
-                        if (substr_count($contents, '{') != substr_count($contents, '}')) {
-                            echo '<br />Mismatched braces in ' . escape_html($f);
-                        }
-                        if (substr_count($contents, '/*') != substr_count($contents, '*/')) {
-                            echo '<br />Mismatched comments in ' . escape_html($f);
+                        if (substr($f, -4) != '.css' || !$do_checks) {
+                            $non_css_contents .= $contents;
                         }
 
-                        // Test selectors
+                        if (!$do_checks) {
+                            continue;
+                        }
+
+                        // Let's do a few simple CSS checks, less than a proper validator would do
+                        if ((substr($f, -4) == '.css') && (strpos($contents, '{$,parser hint: external}') === false)) {
+                            // Test comment/brace balancing
+                            if (substr_count($contents, '{') != substr_count($contents, '}')) {
+                                echo '<br />Mismatched braces in ' . escape_html($f);
+                            }
+                            if (substr_count($contents, '/*') != substr_count($contents, '*/')) {
+                                echo '<br />Mismatched comments in ' . escape_html($f);
+                            }
+
+                            // Test selectors
+                            $matches = array();
+                            $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // @ is media rules, % is keyframe rules. Neither wanted.
+                            for ($i = 0; $i < $num_matches; $i++) {
+                                $matches2 = array();
+                                $num_matches2 = preg_match_all('#[\w\-]+#', preg_replace('#"[^"]*"#', '', preg_replace('#[:@][\w\-]+#', '', $matches[0][$i])), $matches2);
+                                for ($j = 0; $j < $num_matches2; $j++) {
+                                    $selectors[$matches2[0][$j]] = true;
+                                }
+                            }
+                        }
+
+                        // Find missing images
                         $matches = array();
-                        $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // @ is media rules, % is keyframe rules. Neither wanted.
+                        $num_matches = preg_match_all('#\{\$IMG.?,([^{}]+)\}#', $contents, $matches);
                         for ($i = 0; $i < $num_matches; $i++) {
-                            $matches2 = array();
-                            $num_matches2 = preg_match_all('#[\w\-]+#', preg_replace('#"[^"]*"#', '', preg_replace('#[:@][\w\-]+#', '', $matches[0][$i])), $matches2);
-                            for ($j = 0; $j < $num_matches2; $j++) {
-                                $selectors[$matches2[0][$j]] = true;
+                            if ((!isset($images_copy[$matches[1][$i]])) && (strpos($matches[1][$i], '/') === false/*we assume subdir images are fine, as non-default ones won't usually be in subdirs and we have not written recursive search code*/)) {
+                                $missing_images[$matches[1][$i]] = true;
+                            }
+                        }
+
+                        // See if any of the theme images were used
+                        foreach (array_keys($images) as $image) {
+                            if (strpos($contents, ',' . $image . '}') !== false) {
+                                unset($images[$image]);
                             }
                         }
                     }
-
-                    // Find missing images
-                    $matches = array();
-                    $num_matches = preg_match_all('#\{\$IMG.?,([^{}]+)\}#', $contents, $matches);
-                    for ($i = 0; $i < $num_matches; $i++) {
-                        if ((!isset($images_copy[$matches[1][$i]])) && (strpos($matches[1][$i], '/') === false/*we assume subdir images are fine, as non-default ones won't usually be in subdirs and we have not written recursive search code*/)) {
-                            $missing_images[$matches[1][$i]] = true;
-                        }
-                    }
-
-                    // See if any of the theme images were used
-                    foreach (array_keys($images) as $image) {
-                        if (strpos($contents, ',' . $image . '}') !== false) {
-                            unset($images[$image]);
-                        }
-                    }
                 }
+                closedir($dh);
             }
-            closedir($dh);
         }
 
         foreach (array_keys($images) as $image) {

@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class feeds_and_podcasts_test_set extends cms_test_case
+class _feeds_and_podcasts_test_set extends cms_test_case
 {
     public function setUp()
     {

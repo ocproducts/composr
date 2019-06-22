@@ -29,7 +29,7 @@ if (!addon_installed__messaged('theme_debug', $error_msg)) {
     return $error_msg;
 }
 
-$title = get_screen_title('Themewizard theme repair', false);
+$title = get_screen_title('Theme Wizard theme repair', false);
 $title->evaluate_echo();
 
 require_code('themewizard');

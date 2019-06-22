@@ -859,9 +859,9 @@ abstract class HttpDownloader
     {
         if (($this->charset === null) && ($this->data !== null)) {
             $matches = array();
-            if (preg_match('#<' . '?xml[^<>]*\s+encoding="([^"]+)"#', $this->data, $matches) != 0) {
+            if (preg_match('#^\s*<' . '?xml[^<>]*\s+encoding="([^"]+)"#', $this->data, $matches) != 0) {
                 $this->charset = trim($matches[1]);
-            } elseif (preg_match('#<meta\s+http-equiv="Content-Type"\s+content="[^"]*;\s*charset=([^"]+)"#i', $this->data, $matches) != 0) {
+            } elseif (preg_match('#<meta\s+http-equiv="Content-Type"\s+content="[^"]*;\s*charset=([^"]+)"#i', substr($this->data, 0, 2048), $matches) != 0) {
                 $this->charset = trim($matches[1]);
             }
         }

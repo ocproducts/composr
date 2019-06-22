@@ -95,8 +95,6 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 {
     cms_profile_start_for('convert_image_plus');
 
-    disable_php_memory_limit();
-
     if (url_is_local($orig_url)) {
         $orig_url = get_custom_base_url() . '/' . $orig_url;
     }
@@ -153,6 +151,9 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
         return $fallback_image;
     }
 
+    disable_php_memory_limit();
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_modest);
+
     // Branch based on the type of thumbnail we're making
     switch ($algorithm) {
         case 'crop':
@@ -167,6 +168,8 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
             $sizes = cms_getimagesize_url($orig_url);
             if ($sizes === false) {
                 cms_profile_end_for('convert_image_plus', $orig_url);
+
+                cms_set_time_limit($old_limit);
 
                 if (($fallback_image != '') && ($fallback_image != $orig_url)) {
                     return convert_image_plus($fallback_image, $dimensions, $output_dir, $filename, '', $algorithm, $where, $background, $only_make_smaller);
@@ -240,6 +243,8 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 
     cms_profile_end_for('convert_image_plus', $orig_url);
 
+    cms_set_time_limit($old_limit);
+
     return $thumbnail_url;
 }
 
@@ -263,6 +268,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
     disable_php_memory_limit();
+    $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_modest);
 
     if (!file_exists(dirname($to))) {
         require_code('files2');
@@ -273,9 +279,11 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     $ext = get_file_extension($from);
     if ($using_path) {
         if (!check_memory_limit_for($from, $exit_on_error)) {
+            cms_set_time_limit($old_limit);
             return $from;
         }
         if ($ext == 'svg') { // SVG is pass-through
+            cms_set_time_limit($old_limit);
             return $from;
         }
         $from_file = @cms_file_get_contents_safe($from);
@@ -284,9 +292,11 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         $file_path_stub = convert_url_to_path($from);
         if ($file_path_stub !== null) {
             if (!check_memory_limit_for($file_path_stub, $exit_on_error)) {
+                cms_set_time_limit($old_limit);
                 return $from;
             }
             if ($ext == 'svg') { // SVG is pass-through
+                cms_set_time_limit($old_limit);
                 return $from;
             }
             $from_file = @cms_file_get_contents_safe($file_path_stub);
@@ -301,6 +311,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
                 cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
                 if ($ext == 'svg') { // SVG is pass-through
+                    cms_set_time_limit($old_limit);
                     return $from;
                 }
             }
@@ -314,6 +325,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         if (get_value('disable_cannot_access_url_messages') !== '1') {
             attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn', false, true);
         }
+        cms_set_time_limit($old_limit);
         return $from;
     }
 
@@ -324,11 +336,12 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         }
         require_code('site');
         attach_message(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), 'warn', false, true);
+        cms_set_time_limit($old_limit);
         return $from;
     }
     imagepalettetotruecolor($source);
 
-    // We need to do some pipeline cleanup. Most of the pipeline cleanup will automatically happen during the thumbnailing process (and probably have already run for the source image anyway)
+    // We need to do some specific cleanup. Most of the other pipeline cleanup will automatically happen during the thumbnailing process (and probably have already run for the source image anyway)
     require_code('images_cleanup_pipeline');
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
 
@@ -385,6 +398,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
                 imagedestroy($source);
 
                 if (($using_path) && ($from == $to)) {
+                    cms_set_time_limit($old_limit);
                     return $from;
                 }
 
@@ -396,6 +410,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
                     require_code('files');
                     cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
+                cms_set_time_limit($old_limit);
                 return _image_path_to_url($to);
             }
         }
@@ -577,6 +592,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         imagedestroy($source);
 
         if (($using_path) && ($from == $to)) {
+            cms_set_time_limit($old_limit);
             return $from;
         }
 
@@ -588,6 +604,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
             require_code('files');
             cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
+        cms_set_time_limit($old_limit);
         return $to;
     }
 
@@ -632,6 +649,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
             require_code('site');
             attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), 'warn', false, true);
         }
+        cms_set_time_limit($old_limit);
         return $from;
     }
 
@@ -641,6 +659,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     fix_permissions($to);
     sync_file($to);
 
+    cms_set_time_limit($old_limit);
     return _image_path_to_url($to);
 }
 

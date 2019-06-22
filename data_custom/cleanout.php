@@ -85,7 +85,7 @@ function cleanup()
 
     $password = post_param_string('password', null, INPUT_FILTER_NONE);
     if ($password === null) {
-        @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><button class="btn btn-danger btn-scr" type="submit">' . do_template('ICON', array('NAME' => 'admin/delete3'))->evaluate() . ' Delete programmed data</button></form>');
+        @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><button class="btn btn-danger btn-scr" type="submit">' . do_template('ICON', array('_GUID' => '57a3cb1a0e4ea819fdc934eb2f123c82', 'NAME' => 'admin/delete3'))->evaluate() . ' Delete programmed data</button></form>');
     }
     require_code('crypt_master');
     if (!check_master_password($password)) {
@@ -110,9 +110,7 @@ function cleanup()
 
     /* Actioning code follows... */
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $GLOBALS['SITE_INFO']['no_email_output'] = '1';
 

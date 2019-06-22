@@ -149,6 +149,7 @@ function git_status__browse($include_ignored = null)
     }
 
     $tpl = do_template('GIT_STATUS_SCREEN', array(
+        '_GUID' => 'e9908ded88ba2fc0c75945449fc49b99',
         'TITLE' => $title,
         'BRANCH' => $branch,
         'NUM_UNSYNCHED_LOCAL_COMMITS' => integer_format($num_unsynched_local_commits),
@@ -273,6 +274,7 @@ function _git_status__diff($diff)
     }
 
     $tpl = do_template('GIT_STATUS_DIFF_SCREEN', array(
+        '_GUID' => '1ed30738a878cd637c6273c6bd817948',
         'TITLE' => $title,
         'DIFF' => $diff_nice,
     ));

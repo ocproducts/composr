@@ -1138,9 +1138,9 @@ function do_block($codename, $map = array(), $ttl = null)
                         global $MEMORY_OVER_SPEED;
                         $MEMORY_OVER_SPEED = true; // Let this eat up some CPU in order to let it save RAM,
                         disable_php_memory_limit();
-                        if (php_function_allowed('set_time_limit')) {
-                            @set_time_limit(200);
-                        }
+                        $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
+                    } else {
+                        $old_limit = null;
                     }
                     if ($new_security_scope) {
                         _solemnly_enter();
@@ -1166,6 +1166,9 @@ function do_block($codename, $map = array(), $ttl = null)
                     $cache->evaluate(); // To force lang files to load, etc
                     if (isset($SMART_CACHE)) {
                         $SMART_CACHE->paused = false;
+                    }
+                    if ($old_limit !== null) {
+                        cms_set_time_limit($old_limit);
                     }
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');

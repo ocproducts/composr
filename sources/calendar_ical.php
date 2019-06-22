@@ -51,9 +51,7 @@ function output_ical($headers_and_exit = true)
         return;
     }
 
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     $filter = get_param_integer('type_filter', null);
     if ($filter === 0) {

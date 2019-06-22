@@ -1553,21 +1553,24 @@ function delete_gallery($name)
     delete_lang($rows[0]['description']);
 
     // Images and videos are deleted, because we are deleting the _gallery_, not just a category (nobody is going to be deleting galleries with the expectation of moving the image to a different one in bulk - unlike download categories, for example).
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    $old_limit = cms_disable_time_limit();
     do {
+        send_http_output_ping();
+
         $images = $GLOBALS['SITE_DB']->query_select('images', array('id'), array('cat' => $name), '', 200);
         foreach ($images as $image) {
             delete_image($image['id'], false);
         }
     } while ($images != array());
     do {
+        send_http_output_ping();
+
         $videos = $GLOBALS['SITE_DB']->query_select('videos', array('id'), array('cat' => $name), '', 200);
         foreach ($videos as $video) {
             delete_video($video['id'], false);
         }
     } while ($videos != array());
+    cms_set_time_limit($old_limit);
     //... but the subgalleries remain
     $GLOBALS['SITE_DB']->query_update('galleries', array('parent_id' => $rows[0]['parent_id']), array('parent_id' => $name));
 

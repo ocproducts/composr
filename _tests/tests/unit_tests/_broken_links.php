@@ -55,9 +55,7 @@ class _broken_links_test_set extends cms_test_case
     {
         set_option('is_on_comcode_page_cache', '1');
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(10000);
-        }
+        cms_disable_time_limit();
         disable_php_memory_limit();
 
         $only_tutorial = get_param_string('only_tutorial', '');
@@ -66,6 +64,10 @@ class _broken_links_test_set extends cms_test_case
         $files = get_directory_contents($path, $path, 0, true, true, array('txt'));
         foreach ($files as $file) {
             $tutorial = basename($file, '.txt');
+
+            if ($tutorial == 'tut_addon_index') {
+                continue; // May be outdated
+            }
 
             if (($only_tutorial != '') && ($only_tutorial != $tutorial)) {
                 continue;
@@ -171,19 +173,6 @@ class _broken_links_test_set extends cms_test_case
             return;
         }
 
-        if (preg_match('#^https://www\.linkedin\.com/shareArticle\?url=', $url) != 0) {
-            return;
-        }
-        if (preg_match('#^http://tumblr\.com/widgets/share/tool\?canonicalUrl=', $url) != 0) {
-            return;
-        }
-        if (preg_match('#^https://vk\.com/share\.php\?url=', $url) != 0) {
-            return;
-        }
-        if (preg_match('#^http://v\.t\.qq\.com/share/share\.php\?url=', $url) != 0) {
-            return;
-        }
-
         if (preg_match('#^http://december\.com/html/4/element/#', $url) != 0) {
             return;
         }
@@ -194,11 +183,16 @@ class _broken_links_test_set extends cms_test_case
             return;
         }
         if (in_array($url, array( // These just won't check from a bot guest user
+            'https://www.optimizely.com/',
             'https://cloud.google.com/console',
             'https://www.google.com/webmasters/tools/home',
             'https://console.developers.google.com/project',
             'https://itouchmap.com/latlong.html',
             'https://www.techsmith.com/jing-tool.html',
+            'https://developer.twitter.com/en/apps',
+            'http://dev.twitter.com/apps/new',
+            'http://purl.org/dc/elements/1.1/',
+            'http://purl.org/dc/terms/',
         ))) {
             return;
         }

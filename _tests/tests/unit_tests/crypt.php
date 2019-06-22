@@ -24,9 +24,7 @@ class crypt_test_set extends cms_test_case
 
         require_code('crypt');
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(60);
-        }
+        cms_extend_time_limit(TIME_LIMIT_EXTEND_sluggish);
     }
 
     public function testRandomNumber()

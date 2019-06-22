@@ -36,7 +36,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testProfiler()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testProfiler')) {
             return;
         }
@@ -70,7 +70,7 @@ class extra_logging_test_set extends cms_test_case
             return;
         }
 
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testMemoryMonitorSlowURLs')) {
             return;
         }
@@ -88,7 +88,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testMemoryTracking()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testMemoryTracking')) {
             return;
         }
@@ -106,7 +106,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeMemory()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeMemory')) {
             return;
         }
@@ -118,7 +118,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeIDELinkage()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeIDELinkage')) {
             return;
         }
@@ -130,7 +130,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeQuery()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeQuery')) {
             return;
         }
@@ -142,7 +142,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeTranslateContent()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeTranslateContent')) {
             return;
         }
@@ -154,7 +154,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeValidate()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeValidate')) {
             return;
         }
@@ -166,7 +166,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeThemeImages()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeThemeImages')) {
             return;
         }
@@ -178,7 +178,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeTemplates()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeTemplates')) {
             return;
         }
@@ -190,7 +190,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeTree()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeTree')) {
             return;
         }
@@ -202,7 +202,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeShowMarkers()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeShowMarkers')) {
             return;
         }
@@ -214,7 +214,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeShowEditLinks()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeShowEditLinks')) {
             return;
         }
@@ -226,7 +226,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testErrorLog()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testErrorLog')) {
             return;
         }
@@ -243,7 +243,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testPermissionChecksLog()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testPermissionChecksLog')) {
             return;
         }
@@ -264,7 +264,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testQueryLog()
     {
-        $limit_to = get_param_String('limit_to', null);
+        $limit_to = get_param_string('limit_to', null);
         if (($limit_to !== null) && ($limit_to != 'testQueryLog')) {
             return;
         }

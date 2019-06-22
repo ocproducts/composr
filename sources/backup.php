@@ -133,9 +133,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
  */
 function make_backup($file, $b_type = 'full', $max_size = 100, $callback = null) // This is called as a shutdown function and thus cannot script-timeout
 {
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
+    cms_disable_time_limit();
 
     // Ensure directory is there...
 

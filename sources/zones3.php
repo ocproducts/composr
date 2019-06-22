@@ -362,9 +362,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
     }
 
     if (!$force) {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
+        $old_limit = cms_disable_time_limit();
         disable_php_memory_limit();
 
         $pages = find_all_pages_wrap($zone, false, false, FIND_ALL_PAGES__ALL);
@@ -374,6 +372,9 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
                 $bad[] = $page;
             }
         }
+
+        cms_set_time_limit($old_limit);
+
         if ($bad != array()) {
             require_lang('zones');
             warn_exit(do_lang_tempcode('DELETE_ZONE_ERROR', '<kbd>' . implode('</kbd>, <kbd>', $bad) . '</kbd>'));
@@ -604,14 +605,14 @@ function get_template_contents($name)
         return '';
     }
 
-    $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
+    $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . get_param_string('lang', user_lang()) . '/';
     $template_path = $templates_dir . $name . '.txt';
     if (!is_file($template_path)) {
         $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/';
         $template_path = $templates_dir . $name . '.txt';
     }
     if (!is_file($template_path)) {
-        $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
+        $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . get_param_string('lang', user_lang()) . '/';
         $template_path = $templates_dir . $name . '.txt';
     }
     if (!is_file($template_path)) {
@@ -787,6 +788,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
     foreach ($caches as $cache) {
         delete_lang($cache['string_index']);
     }
+    $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
 
     // Log
     log_it('COMCODE_PAGE_EDIT', $new_file, $zone);
@@ -920,6 +922,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
             require_code('attachments3');
             delete_comcode_attachments('comcode_page', $zone . ':' . $page);
             $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $page, 'the_zone' => $zone));
+            $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
             $GLOBALS['SITE_DB']->query_delete('comcode_pages', array('the_page' => $page, 'the_zone' => $zone));
             erase_persistent_cache();
             delete_cache_entry('main_comcode_page_children');

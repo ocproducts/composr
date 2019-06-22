@@ -117,13 +117,11 @@ class Hook_health_check_marketing extends Hook_Health_Check
 
         $ga = get_option('google_analytics');
         if (trim($ga) != '') {
-            $data = $this->get_page_content();
-            if ($data === null) {
-                $this->stateCheckSkipped('Could not download page from website');
-                return;
-            }
+            require_code('caches3');
+            erase_cached_templates(false, array('global', 'CMS'));
 
-            $this->assertTrue(strpos($data, $ga) !== false, 'Google Analytics enabled but not in page output (themeing issue?)');
+            $data = file_get_contents(javascript_enforce('global'));
+            $this->assertTrue(strpos($data, $ga) !== false, 'Google Analytics enabled (' . $ga . ') but not in page output (themeing issue?)');
         }
 
         // IDEA: Call Google Analytics API and see if data still being gathered (this is complex, needs working oAuth) #974
