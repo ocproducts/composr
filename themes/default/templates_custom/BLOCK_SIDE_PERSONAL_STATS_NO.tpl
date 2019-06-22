@@ -6,6 +6,8 @@
 		<form title="{!_LOGIN}" class="js-submit-check-username-for-blankness" action="{LOGIN_URL*}" method="post" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
+			<input type="hidden" name="_active_login" value="1" />
+
 			<div>
 				<div>
 					<div class="accessibility-hidden"><label for="ps-login-username">{$LOGIN_LABEL}</label></div>

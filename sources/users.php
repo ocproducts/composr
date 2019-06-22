@@ -96,10 +96,13 @@ function handle_logins()
         require_code('users_inactive_occasionals');
         force_httpauth();
     }
-    $username = trim(post_param_string('username', '', INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES));
-    if (($username != '') && ($username != do_lang('GUEST'))) {
-        require_code('users_active_actions');
-        handle_active_login($username);
+
+    if (post_param_integer('_active_login', 0) === 1) {
+        $username = trim(post_param_string('username', '', INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES));
+        if (($username != '') && ($username != do_lang('GUEST'))) {
+            require_code('users_active_actions');
+            handle_active_login($username);
+        }
     }
 
     // If it was a log out

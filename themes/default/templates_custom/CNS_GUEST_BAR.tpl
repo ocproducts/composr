@@ -19,6 +19,8 @@
 					<form title="{!_LOGIN}" class="inline js-submit-check-username-for-blankness" action="{LOGIN_URL*}" method="post" autocomplete="on">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
+						<input type="hidden" name="_active_login" value="1" />
+
 						<div>
 							<div class="accessibility-hidden"><label for="member-bar-login-username">{$LOGIN_LABEL}</label></div>
 							<div class="accessibility-hidden"><label for="member-bar-s-password">{!PASSWORD}</label></div>

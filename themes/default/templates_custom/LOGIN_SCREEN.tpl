@@ -28,6 +28,8 @@
 			<div>
 				{$INSERT_SPAMMER_BLACKHOLE}
 
+				<input type="hidden" name="_active_login" value="1" />
+
 				{PASSION}
 
 				<div class="clearfix">
