@@ -143,7 +143,7 @@ class Database_Static_mysqli extends Database_super_mysql
             $version = mysqli_get_server_version($db_link);
         }
         if ($version >= 80000) {
-            $query = $this->fix_mysql8_query($query);
+            $query = $this->fix_mysql8_query($query); // LEGACY: This can be removed once all user DBs are upgraded to MySQL 8 (as ALTER TABLE calls themselves are now MySQL 8 compatible by default
         }
 
         $this->apply_sql_limit_clause($query, $max, $start);
