@@ -408,7 +408,7 @@ class Module_admin_version
                 'identifier' => 'MINIID_TEXT',
                 'staff_status' => '?BINARY', // May be null
                 'the_member' => '?MEMBER', // May be null
-                'groups' => 'SHORT_TEXT', // May be blank
+                'the_groups' => 'SHORT_TEXT', // May be blank
                 'is_bot' => '?BINARY', // May be null
                 'timezone' => 'MINIID_TEXT', // May be blank
                 'is_ssl' => '?BINARY', // May be null
@@ -762,7 +762,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->alter_table_field('cache', 'langs_required', 'LONG_TEXT', 'dependencies');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'staff_status', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'the_member', '?MEMBER');
-            $GLOBALS['SITE_DB']->add_table_field('cache', 'groups', 'SHORT_TEXT');
+            $GLOBALS['SITE_DB']->add_table_field('cache', 'the_groups', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'is_bot', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'timezone', 'MINIID_TEXT');
             $GLOBALS['SITE_DB']->add_auto_key('cache');
@@ -984,7 +984,7 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->create_index('comcode_pages', 'p_order', array('p_order'));
 
-            $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
+            $GLOBALS['SITE_DB']->create_index('cache', 'cached_forf', array('cached_for', 'identifier', 'the_theme', 'lang', 'staff_status', 'the_member'/*, 'the_groups'So key is not too long*/, 'is_bot'/*, 'timezone'So key is not too long*/));
 
             $GLOBALS['SITE_DB']->create_index('link_tracker', 'c_url', array('c_url'));
 
@@ -1110,6 +1110,8 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'actionlogs SET param_a=param_b,param_b=param_a WHERE ' . db_string_equal_to('the_type', 'UNSILENCE_TOPIC') . ' OR ' . db_string_equal_to('the_type', 'UNSILENCE_FORUM'));
 
             $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'SET_PAGE_REDIRECTS'), array('the_type' => 'SET_REDIRECTS'));
+
+            $GLOBALS['SITE_DB']->alter_table_field('cache', 'groups', 'SHORT_TEXT', 'the_groups');
         }
     }
 

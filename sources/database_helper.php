@@ -1104,6 +1104,9 @@ function get_db_keywords()
         'PARSE_GCOL_EXPR', 'PRECEDES', 'REPLICATE_DO_DB', 'REPLICATE_DO_TABLE', 'REPLICATE_IGNORE_DB', 'REPLICATE_IGNORE_TABLE',
         'REPLICATE_REWRITE_DB', 'REPLICATE_WILD_DO_TABLE', 'REPLICATE_WILD_IGNORE_TABLE', 'ROTATE', 'STORED', 'VALIDATION',
         'VIRTUAL', 'WITHOUT', 'XID',
+
+        // Added in MySQL 8.0
+        'GROUPS',
     );
     return $words;
 }

@@ -762,9 +762,9 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             $sql .= ' AND the_member=' . strval($member_id);
         }
         if ($groups === null) {
-            $sql .= ' AND ' . db_string_equal_to('groups', '');
+            $sql .= ' AND ' . db_string_equal_to('the_groups', '');
         } else {
-            $sql .= ' AND ' . db_string_equal_to('groups', $groups);
+            $sql .= ' AND ' . db_string_equal_to('the_groups', $groups);
         }
         if ($is_bot === null) {
             $sql .= ' AND is_bot IS NULL';
