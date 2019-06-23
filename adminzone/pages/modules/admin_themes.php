@@ -72,7 +72,7 @@ class Module_admin_themes
             $GLOBALS['SITE_DB']->create_table('theme_images', array(
                 'id' => '*SHORT_TEXT',
                 'theme' => '*MINIID_TEXT',
-                'path' => 'URLPATH',
+                'url' => 'URLPATH',
                 'lang' => '*LANGUAGE_NAME',
             ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
@@ -90,6 +90,10 @@ class Module_admin_themes
                 'json_tree' => 'LONG_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('theme_screen_tree', 'page_link', array('page_link'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('theme_images', 'path', 'URLPATH', 'url');
         }
     }
 
@@ -203,8 +207,8 @@ class Module_admin_themes
                 if ($pos === false) {
                     warn_exit(do_lang_tempcode('NOT_THEME_IMAGE'));
                 }
-                $path = substr($url, $pos);
-                $id = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('path' => $path, 'theme' => $theme));
+                $url = substr($url, $pos);
+                $id = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('url' => $url, 'theme' => $theme));
                 if ($id === null) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
@@ -950,10 +954,10 @@ class Module_admin_themes
      * @param  ID_TEXT $theme The theme the theme image is in
      * @param  LANGUAGE_NAME $lang The language the theme image is for
      * @param  SHORT_TEXT $id The theme image ID
-     * @param  URLPATH $path The URL to the theme image
+     * @param  URLPATH $url The URL to the theme image
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_image_form_fields($theme, $lang, $id = '', $path = '')
+    public function get_image_form_fields($theme, $lang, $id = '', $url = '')
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -962,11 +966,11 @@ class Module_admin_themes
         $fields->attach(form_input_line(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_THEME_IMAGE_NAME'), 'id', $id, true, null, null, 'text', 'some/path/name'));
 
         /* Actually we don't want to allow selection from existing -- too weird, creating these cross-links
-        $list = combo_get_image_paths($path, get_base_url() . '/themes/' . rawurlencode($theme) . '/images/', get_file_base() . '/themes/' . filter_naughty($theme) . '/images/');
-        $list->attach(combo_get_image_paths($path, get_base_url() . '/themes/' . rawurlencode($theme) . '/images_custom/', get_file_base() . '/themes/' . filter_naughty($theme) . '/images_custom/'));
+        $list = combo_get_image_paths($url, get_base_url() . '/themes/' . rawurlencode($theme) . '/images/', get_file_base() . '/themes/' . filter_naughty($theme) . '/images/');
+        $list->attach(combo_get_image_paths($url, get_base_url() . '/themes/' . rawurlencode($theme) . '/images_custom/', get_file_base() . '/themes/' . filter_naughty($theme) . '/images_custom/'));
         if ($theme != 'default') {
-            $list->attach(combo_get_image_paths($path, get_base_url() . '/themes/default/images/', get_file_base() . '/themes/default/images/'));
-            $list->attach(combo_get_image_paths($path, get_base_url() . '/themes/default/images_custom/', get_file_base() . '/themes/default/images_custom/'));
+            $list->attach(combo_get_image_paths($url, get_base_url() . '/themes/default/images/', get_file_base() . '/themes/default/images/'));
+            $list->attach(combo_get_image_paths($url, get_base_url() . '/themes/default/images_custom/', get_file_base() . '/themes/default/images_custom/'));
         }
         */
         handle_max_file_size($hidden, 'image');
@@ -980,7 +984,7 @@ class Module_admin_themes
         $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', false, null, null, true, get_allowed_image_file_types()));
         //$fields->attach(form_input_radio(do_lang_tempcode('CHOOSE'), '', $list));
 
-        $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'path', $path, false));
+        $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'url', $url, false));
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
 
@@ -1097,8 +1101,8 @@ class Module_admin_themes
         $use_all_langs = post_param_integer('use_all_langs', 0);
 
         $target_dir = 'themes/' . (($use_all_themes == 1) ? 'default' : $theme) . '/images_custom/' . dirname($id);
-        $path = get_url('path', 'file', $target_dir);
-        if ($path[0] == '') {
+        $url = get_url('url', 'file', $target_dir);
+        if ($url[0] == '') {
             return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
@@ -1109,21 +1113,21 @@ class Module_admin_themes
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id));
             foreach ($theme_list as $theme) {
                 foreach (array_keys($lang_list) as $lang) {
-                    actual_add_theme_image($theme, $lang, $id, $path[0], true);
+                    actual_add_theme_image($theme, $lang, $id, $url[0], true);
                 }
             }
         } elseif ($use_all_themes == 1) {
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'lang' => $lang));
             foreach ($theme_list as $theme) {
-                actual_add_theme_image($theme, $lang, $id, $path[0], true);
+                actual_add_theme_image($theme, $lang, $id, $url[0], true);
             }
         } elseif ($use_all_langs == 1) {
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'theme' => $theme));
             foreach (array_keys($lang_list) as $lang) {
-                actual_add_theme_image($theme, $lang, $id, $path[0], true);
+                actual_add_theme_image($theme, $lang, $id, $url[0], true);
             }
         } else {
-            actual_add_theme_image($theme, $lang, $id, $path[0]);
+            actual_add_theme_image($theme, $lang, $id, $url[0]);
         }
 
         require_code('caches3');
@@ -1152,20 +1156,20 @@ class Module_admin_themes
         if ($lang != '') {
             $where_map['lang'] = $lang;
         }
-        $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
-        if ($path === null) {
-            $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', array('theme' => $theme, 'lang' => get_site_default_lang(), 'id' => $id));
+        $url = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'url', $where_map);
+        if ($url === null) {
+            $url = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'url', array('theme' => $theme, 'lang' => get_site_default_lang(), 'id' => $id));
         }
-        if ($path === null) {
+        if ($url === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
         set_short_title($id);
 
-        $unmodified = (strpos($path, 'themes/default/images/') !== false);
+        $unmodified = (strpos($url, 'themes/default/images/') !== false);
 
         disable_php_memory_limit();
-        $full_path = ($unmodified ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($path);
+        $full_path = ($unmodified ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($url);
         $width = do_lang_tempcode('UNKNOWN_EM');
         $height = do_lang_tempcode('UNKNOWN_EM');
         $image_size = cms_getimagesize($full_path);
@@ -1174,12 +1178,12 @@ class Module_admin_themes
             $height = make_string_tempcode(strval($image_size[1]));
         }
 
-        $url = ($unmodified ? get_base_url() : get_custom_base_url()) . '/' . $path;
-        $text = do_template('THEME_IMAGE_PREVIEW', array('_GUID' => 'c71817851526064e738d5076dcd1bce1', 'WIDTH' => $width, 'HEIGHT' => $height, 'URL' => $url, 'UNMODIFIED' => $unmodified));
+        $full_url = ($unmodified ? get_base_url() : get_custom_base_url()) . '/' . $url;
+        $text = do_template('THEME_IMAGE_PREVIEW', array('_GUID' => 'c71817851526064e738d5076dcd1bce1', 'WIDTH' => $width, 'HEIGHT' => $height, 'URL' => $full_url, 'UNMODIFIED' => $unmodified));
 
-        list($fields, $hidden) = $this->get_image_form_fields($theme, $lang, $id, $path);
+        list($fields, $hidden) = $this->get_image_form_fields($theme, $lang, $id, $url);
         $hidden->attach(form_input_hidden('old_id', $id));
-        if (strpos($path, 'images_custom') !== false) {
+        if (strpos($url, 'images_custom') !== false) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '9468297854009243da7b47c9bb3992bb', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_THEME_IMAGE'), 'delete', false));
         }
@@ -1225,9 +1229,9 @@ class Module_admin_themes
         } else {
             // Remove old file first so we can re-use the filepath
             is_plupload(true);
-            if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name'])))) || (post_param_string('path', '') != '')) {
+            if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name'])))) || (post_param_string('url', '') != '')) {
                 $old_url = find_theme_image($old_id, true, true, $theme, ($lang == '') ? null : $lang);
-                if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('path', ''))) {
+                if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('url', ''))) {
                     if (($theme == 'default' || $theme == 'admin') || (strpos($old_url, 'themes/default/') === false)) {
                         $where_map = array('theme' => $theme, 'id' => $old_id);
                         if (($lang != '') && ($lang !== null)) {
@@ -1244,16 +1248,16 @@ class Module_admin_themes
             if (strpos($id, '/') !== false) {
                 $target_dir .= '/' . dirname($id);
             }
-            $path = get_url('path', 'file', $target_dir);
+            $url = get_url('url', 'file', $target_dir);
 
-            if ((url_is_local($path[0])) && (!file_exists(((substr($path[0], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($path[0])))) {
+            if ((url_is_local($url[0])) && (!file_exists(((substr($url[0], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($url[0])))) {
                 warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
 
-            if ($path[0] == '') {
+            if ($url[0] == '') {
                 return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
-            actual_edit_theme_image($old_id, $theme, $lang, $id, $path[0]);
+            actual_edit_theme_image($old_id, $theme, $lang, $id, $url[0]);
         }
 
         require_code('caches3');

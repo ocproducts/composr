@@ -497,7 +497,7 @@ function check_outdated__handle_overrides($dir, $rela, &$manifest, &$hook_files,
 function check_alien($dir, $rela = '', $raw = false, $addon_files = null, $old_files = null, $files = null)
 {
     if ($addon_files === null) {
-        $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
+        $addon_files = collapse_2d_complexity('filepath', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filepath', 'addon_name')));
     }
     if ($old_files === null) {
         $old_files = load_integrity_manifest(true);

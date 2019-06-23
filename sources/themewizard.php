@@ -504,7 +504,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
             }
 
             if ($extending_existing) {
-                $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme_name)));
+                $temp_all_ids = collapse_2d_complexity('id', 'url', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), array('theme' => $theme_name)));
             } else {
                 $temp_all_ids = array();
             }
@@ -520,16 +520,16 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                     }
 
                     foreach (array_keys($_langs) as $lang) {
-                        $orig_path = find_theme_image($image_code, true, true, $source_theme, $lang);
-                        if ($orig_path == '') {
+                        $orig_url = find_theme_image($image_code, true, true, $source_theme, $lang);
+                        if ($orig_url == '') {
                             continue; // Theme has specified non-existent image as themewizard-compatible
                         }
 
-                        if ((strpos($orig_path, '/' . $lang . '/') === false) && ($lang != fallback_lang())) {
+                        if ((strpos($orig_url, '/' . $lang . '/') === false) && ($lang != fallback_lang())) {
                             continue;
                         }
 
-                        if (strpos($orig_path, '/' . fallback_lang() . '/') !== false) {
+                        if (strpos($orig_url, '/' . fallback_lang() . '/') !== false) {
                             $composite = 'themes/' . filter_naughty($theme_name) . '/images/' . $lang . '/';
                         } else {
                             $composite = 'themes/' . filter_naughty($theme_name) . '/images/';
@@ -538,7 +538,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                         $saveat_url = $composite . $image_code . '.png';
 
                         // Wipe out ones that might have been copied from source theme
-                        if (($source_theme != 'default') && (strpos($orig_path, 'images_custom') !== false)) {
+                        if (($source_theme != 'default') && (strpos($orig_url, 'images_custom') !== false)) {
                             foreach (array('png', 'jpg', 'gif', 'jpeg') as $ext) {
                                 $old_delete_path = str_replace('/images/', '/images_custom/', basename($saveat, '.png')) . '.' . $ext;
                                 @unlink($old_delete_path);
@@ -550,7 +550,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                             $image = calculate_theme($seed, $source_theme, $algorithm, $image_code, $dark, $colours, $landscape, $lang);
                             if ($image !== null) {
                                 $pos = strrpos($image_code, '/');
-                                if (($pos !== false) || (strpos($orig_path, '/' . fallback_lang() . '/') !== false)) {
+                                if (($pos !== false) || (strpos($orig_url, '/' . fallback_lang() . '/') !== false)) {
                                     afm_make_directory($composite . substr($image_code, 0, $pos), true, true);
                                 }
                                 cms_imagesave($image, $saveat) or intelligent_write_error($saveat);

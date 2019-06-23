@@ -161,7 +161,7 @@ function actual_add_theme($name)
         foreach ($theme_images as $theme_image) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('theme' => $name, 'id' => $theme_image['id'], 'lang' => $theme_image['lang']));
             if ($test === null) {
-                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, 'path' => $theme_image['path'], 'lang' => $theme_image['lang']));
+                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, 'url' => $theme_image['url'], 'lang' => $theme_image['lang']));
             }
         }
         $start += 100;
@@ -198,10 +198,10 @@ function actual_rename_theme($theme, $to)
     afm_move('themes/' . $theme, 'themes/' . $to);
 
     $GLOBALS['SITE_DB']->query_update('theme_images', array('theme' => $to), array('theme' => $theme));
-    $theme_images = $GLOBALS['SITE_DB']->query('SELECT path FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'theme_images WHERE path LIKE \'themes/' . db_encode_like($theme) . '/%\'');
+    $theme_images = $GLOBALS['SITE_DB']->query('SELECT url FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'theme_images WHERE url LIKE \'themes/' . db_encode_like($theme) . '/%\'');
     foreach ($theme_images as $image) {
-        $new_path = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $image['path']);
-        $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $new_path), array('path' => $image['path']), '', 1);
+        $new_url = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $image['url']);
+        $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $new_url), array('url' => $image['url']), '', 1);
     }
     if (get_forum_type() == 'cns') {
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_theme' => $to), array('m_theme' => $theme));
@@ -253,7 +253,7 @@ function actual_copy_theme($theme, $to)
     $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));
     foreach ($images as $i) {
         $i['theme'] = $to;
-        $i['path'] = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $i['path']);
+        $i['url'] = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $i['url']);
         $GLOBALS['SITE_DB']->query_insert('theme_images', $i, false, true); // errors suppressed in case already there
     }
 
@@ -333,10 +333,10 @@ function tempcode_tester_script()
  * @param  ID_TEXT $theme The theme the theme image is in
  * @param  LANGUAGE_NAME $lang The language the theme image is for
  * @param  SHORT_TEXT $id The theme image ID
- * @param  URLPATH $path The URL to the theme image
+ * @param  URLPATH $url The URL to the theme image
  * @param  boolean $fail_ok Whether to allow failure without bombing out
  */
-function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
+function actual_add_theme_image($theme, $lang, $id, $url, $fail_ok = false)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('id' => $id, 'theme' => $theme, 'lang' => $lang));
     if ($test !== null) {
@@ -346,7 +346,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
     }
 
-    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang));
+    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'url' => $url, 'lang' => $lang));
 
     log_it('ADD_THEME_IMAGE', $id, $theme);
 
@@ -365,10 +365,10 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
  * @param  ID_TEXT $theme The theme the theme image is in
  * @param  LANGUAGE_NAME $lang The language the theme image is for (blank: all languages)
  * @param  SHORT_TEXT $id The new theme image ID
- * @param  URLPATH $path The URL to the theme image
+ * @param  URLPATH $url The URL to the theme image
  * @param  boolean $quick Whether to avoid cleanup, etc
  */
-function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = false)
+function actual_edit_theme_image($old_id, $theme, $lang, $id, $url, $quick = false)
 {
     if ($old_id != $id) {
         $where_map = array('theme' => $theme, 'id' => $id);
@@ -384,7 +384,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     if (!$quick) {
         $old_url = find_theme_image($id, true, true, $theme, ($lang == '') ? null : $lang);
 
-        if (($old_url != $path) && ($old_url != '')) {
+        if (($old_url != $url) && ($old_url != '')) {
             if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
                 $where_map = array('theme' => $theme, 'id' => $id);
                 if ($lang != '') {
@@ -410,7 +410,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
 
     foreach ($langs as $lang) {
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true); // errors suppressed in case already there
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'url' => $url, 'lang' => $lang), false, true); // errors suppressed in case already there
     }
 
     if (!$quick) {
@@ -439,9 +439,9 @@ function actual_delete_theme_image($id, $theme = null, $lang = null)
         if (($lang != '') && ($lang !== null)) {
             $where_map['lang'] = $lang;
         }
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'url', $where_map);
         if ($test !== null) {
-            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'path' => $test));
+            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'url' => $test));
         }
     } else {
         $old_url = find_theme_image($id, true, true);
@@ -478,7 +478,7 @@ function export_theme_images()
 }
 
 /**
- * Regenerate all the theme image paths in the database.
+ * Regenerate all the theme image URLs in the database.
  *
  * @param  ID_TEXT $theme The theme we're searching in
  * @param  ?array $langs A map of languages (lang=>true) (null: find it in-function)
@@ -499,20 +499,20 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
 
     foreach (array_keys($langs) as $lang) {
         $where = array('lang' => $lang, 'theme' => $target_theme);
-        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), $where);
+        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), $where);
 
         // Cleanup broken references
         foreach ($existing as $e) {
-            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($e['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($e['path'])))) {
+            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($e['url']))) && (!file_exists(get_file_base() . '/' . rawurldecode($e['url'])))) {
                 $GLOBALS['SITE_DB']->query_delete('theme_images', $e + $where, '', 1);
             }
         }
 
         // Add theme images for anything on disk but not currently having a reference
-        foreach ($images as $id => $path) {
+        foreach ($images as $id => $url) {
             $found = false;
             foreach ($existing as $e) {
-                if (($e['path'] == $path) || ($e['id'] == $id)) {
+                if (($e['url'] == $url) || ($e['id'] == $id)) {
                     $found = true;
                     break;
                 }
@@ -520,8 +520,8 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
 
             if (!$found) {
                 push_query_limiting(false);
-                $correct_path = find_theme_image($id, false, true, $theme, $lang);
-                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'path' => $correct_path), false, true); // race conditions
+                $correct_url = find_theme_image($id, false, true, $theme, $lang);
+                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'url' => $correct_url), false, true); // race conditions
                 pop_query_limiting();
 
                 $made_change = false;
@@ -546,7 +546,7 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
  */
 function cleanup_theme_images($old_url)
 {
-    $files_referenced = collapse_1d_complexity('path', $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT path')));
+    $files_referenced = collapse_1d_complexity('url', $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT url')));
 
     $themes = find_all_themes();
     foreach (array_keys($themes) as $theme) {
@@ -554,8 +554,8 @@ function cleanup_theme_images($old_url)
 
         foreach (array_keys($files_existing) as $path) {
             $path = str_replace(get_custom_file_base() . '/', '', filter_naughty($path));
-            $encoded_path = cms_rawurlrecode(substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1)));
-            if ((!in_array($path, $files_referenced)) && (!in_array($encoded_path, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_path))) {
+            $encoded_url = cms_rawurlrecode(substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1)));
+            if ((!in_array($path, $files_referenced)) && (!in_array($encoded_url, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_url))) {
                 @unlink(get_custom_file_base() . '/' . $path);
                 sync_file(get_custom_file_base() . '/' . $path);
             }

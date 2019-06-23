@@ -189,7 +189,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
             }
 
             if ($avatar_url === null) {
-                $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', 'path' => '')); // In case failure cached, gets very confusing
+                $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', 'url' => '')); // In case failure cached, gets very confusing
                 $avatar_url = find_theme_image('cns_default_avatars/default', true, true);
                 if ($avatar_url === null) {
                     $avatar_url = '';

@@ -257,29 +257,29 @@ class Module_admin_debrand
 
             $test = find_theme_image('logo/adminzone-logo', true);
             if ($test != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
             }
 
             $test = find_theme_image('logo/cms-logo', true);
             if ($test != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
             }
         }
 
         // Various other icons
         require_code('uploads');
-        $path = get_url('', 'favicon', 'themes/default/images_custom');
-        if ($path[0] != '') {
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'favicon'));
+        $url = get_url('', 'favicon', 'themes/default/images_custom');
+        if ($url[0] != '') {
+            $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $url[0]), array('id' => 'favicon'));
         }
-        $path = get_url('', 'webclipicon', 'themes/default/images_custom');
-        if ($path[0] != '') {
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'webclipicon'));
+        $url = get_url('', 'webclipicon', 'themes/default/images_custom');
+        if ($url[0] != '') {
+            $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $url[0]), array('id' => 'webclipicon'));
         }
         if (addon_installed('cns_avatars')) {
-            $path = get_url('', 'system_avatar', 'themes/default/images_custom');
-            if ($path[0] != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'cns_default_avatars/system'));
+            $url = get_url('', 'system_avatar', 'themes/default/images_custom');
+            if ($url[0] != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $url[0]), array('id' => 'cns_default_avatars/system'));
             }
         }
 

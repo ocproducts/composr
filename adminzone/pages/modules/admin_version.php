@@ -1095,7 +1095,7 @@ class Module_admin_version
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) { // LEGACY
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('smart_topic_notification');
 
             rename_config_option('imap_folder', 'mail_folder');

@@ -118,8 +118,8 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));
             $data = '<' . '?php' . "\n";
             foreach ($images as $image) {
-                if (($image['path'] != '') && ($image['path'] != find_theme_image($image['id'], true, true, 'default'))) {
-                    $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\', array(\'id\' => \'' . db_escape_string($image['id']) . '\', \'theme\' => \'' . db_escape_string($image['theme']) . '\', \'path\' => \'' . db_escape_string($image['path']) . '\', \'lang\' => \'' . db_escape_string($image['lang']) . '\'), false, true);' . "\n";
+                if (($image['url'] != '') && ($image['url'] != find_theme_image($image['id'], true, true, 'default'))) {
+                    $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\', array(\'id\' => \'' . db_escape_string($image['id']) . '\', \'theme\' => \'' . db_escape_string($image['theme']) . '\', \'url\' => \'' . db_escape_string($image['url']) . '\', \'lang\' => \'' . db_escape_string($image['lang']) . '\'), false, true);' . "\n";
                 }
             }
             tar_add_file($tar, 'addon_install_code.php', $data, 0444, time());
@@ -915,10 +915,10 @@ function reinstall_addon_soft($addon, $ini_info = null)
         ));
     }
 
-    foreach ($addon_info['files'] as $addon_file) {
+    foreach ($addon_info['files'] as $filepath) {
         $GLOBALS['SITE_DB']->query_insert('addons_files', array(
             'addon_name' => $addon,
-            'filename' => $addon_file,
+            'filepath' => $filepath,
         ));
     }
 }
@@ -1003,9 +1003,9 @@ function find_addon_effective_mtime($addon_name)
     $addon_info = read_addon_info($addon_name);
 
     $mtime = null;
-    foreach ($addon_info['files'] as $filename) {
-        if (@file_exists(get_file_base() . '/' . $filename)) { //@d due to possible bad file paths
-            $_mtime = filemtime(get_file_base() . '/' . $filename);
+    foreach ($addon_info['files'] as $filepath) {
+        if (@file_exists(get_file_base() . '/' . $filepath)) { //@d due to possible bad file paths
+            $_mtime = filemtime(get_file_base() . '/' . $filepath);
             $mtime = ($mtime === null) ? $_mtime : max($mtime, $_mtime);
         }
     }
@@ -1081,8 +1081,8 @@ function inform_about_addon_uninstall($addon, $also_uninstalling = array(), $add
     } else {
         $loopable = explode("\n", $addon_info['files']);
     }
-    foreach ($loopable as $i => $filename) {
-        $files->attach(do_template('ADDON_INSTALL_FILES', array('_GUID' => '235d09a3cc041cea03f5421f639e8edf', 'I' => strval($i), 'DISABLED' => true, 'PATH' => $filename)));
+    foreach ($loopable as $i => $filepath) {
+        $files->attach(do_template('ADDON_INSTALL_FILES', array('_GUID' => '235d09a3cc041cea03f5421f639e8edf', 'I' => strval($i), 'DISABLED' => true, 'PATH' => $filepath)));
     }
 
     // Check dependencies
@@ -1144,12 +1144,12 @@ function find_addons_for_files($paths)
         if ($or_list != '') {
             $or_list .= ' OR ';
         }
-        $or_list .= db_string_equal_to('filename', $path);
+        $or_list .= db_string_equal_to('filepath', $path);
     }
-    $addon_files = $GLOBALS['SITE_DB']->query_select('addons_files', array('addon_name', 'filename'), array(), 'WHERE ' . $or_list);
+    $addon_files = $GLOBALS['SITE_DB']->query_select('addons_files', array('addon_name', 'filepath'), array(), 'WHERE ' . $or_list);
     foreach ($addon_files as $_path) {
-        if (in_array($_path['filename'], $paths)) {
-            $addons[$_path['filename']][] = $_path['addon_name'];
+        if (in_array($_path['filepath'], $paths)) {
+            $addons[$_path['filepath']][] = $_path['addon_name'];
         }
     }
 
@@ -1193,17 +1193,17 @@ function uninstall_addon($addon, $clear_caches = true)
     $last = array();
     $zones_gone = array();
     $addons_for_files = find_addons_for_files($addon_info['files']);
-    foreach ($addon_info['files'] as $filename) {
-        if (file_exists(get_file_base() . '/' . $filename)) {
-            if (count($addons_for_files[$filename]) <= 1) { // Make sure it's not shared with other addons
-                if (substr($filename, 0, 37) == 'sources/hooks/systems/addon_registry/') {
-                    $last[] = $filename;
+    foreach ($addon_info['files'] as $filepath) {
+        if (file_exists(get_file_base() . '/' . $filepath)) {
+            if (count($addons_for_files[$filepath]) <= 1) { // Make sure it's not shared with other addons
+                if (substr($filepath, 0, 37) == 'sources/hooks/systems/addon_registry/') {
+                    $last[] = $filepath;
                     continue;
                 }
 
                 $matches = array();
-                if (preg_match('#([^/]*)/?pages/modules(_custom)?/(.*)\.php#', $filename, $matches) != 0) {
-                    if ($matches[2] != '_custom' || ($matches[2] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filename)))) {
+                if (preg_match('#([^/]*)/?pages/modules(_custom)?/(.*)\.php#', $filepath, $matches) != 0) {
+                    if ($matches[2] != '_custom' || ($matches[2] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filepath)))) {
                         $zone = $matches[1];
                         $module = $matches[3];
                         uninstall_module($zone, $module);
@@ -1227,29 +1227,29 @@ function uninstall_addon($addon, $clear_caches = true)
                         }
                     }
                 }
-                if (preg_match('#sources(_custom)?/blocks/(.*)\.php#', $filename, $matches) != 0) {
-                    if ($matches[1] != '_custom' || ($matches[1] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filename)))) {
+                if (preg_match('#sources(_custom)?/blocks/(.*)\.php#', $filepath, $matches) != 0) {
+                    if ($matches[1] != '_custom' || ($matches[1] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filepath)))) {
                         uninstall_block($matches[2]);
                     }
                 }
-                if (preg_match('#^([^/]*)/index\.php#', $filename, $matches) != 0) {
+                if (preg_match('#^([^/]*)/index\.php#', $filepath, $matches) != 0) {
                     $zone = $matches[1];
                     actual_delete_zone_lite($zone);
                     $zones_gone[] = $zone;
                 }
-                if (preg_match('#^sources(_custom)?/hooks/systems/config/([^/]*)\.php#', $filename, $matches) != 0) {
+                if (preg_match('#^sources(_custom)?/hooks/systems/config/([^/]*)\.php#', $filepath, $matches) != 0) {
                     delete_config_option($matches[2]);
                 }
-                if (($filename != 'addon.inf') && ($filename != 'addon_install_code.php') && ($filename != '') && (substr($filename, -1) != '/')) {
-                    $last[] = $filename;
+                if (($filepath != 'addon.inf') && ($filepath != 'addon_install_code.php') && ($filepath != '') && (substr($filepath, -1) != '/')) {
+                    $last[] = $filepath;
                 }
             }
         }
     }
     $dirs = array();
-    foreach ($last as $filename) {
-        afm_delete_file($filename);
-        $dirs[dirname($filename)] = true;
+    foreach ($last as $filepath) {
+        afm_delete_file($filepath);
+        $dirs[dirname($filepath)] = true;
     }
 
     // Try and cleanup some empty/unneeded dirs

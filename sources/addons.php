@@ -243,7 +243,7 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
             'default_icon' => null,
         );
 
-        $addon_info['files'] = array_unique(collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'), array('addon_name' => $addon_name))));
+        $addon_info['files'] = array_unique(collapse_1d_complexity('filepath', $GLOBALS['SITE_DB']->query_select('addons_files', array('filepath'), array('addon_name' => $addon_name))));
         $addon_info['dependencies'] = collapse_1d_complexity('addon_name_dependant_upon', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name_dependant_upon'), array('addon_name' => $addon_name, 'addon_name_incompatibility' => 0)));
         $addon_info['incompatibilities'] = collapse_1d_complexity('addon_name_dependant_upon', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name_dependant_upon'), array('addon_name' => $addon_name, 'addon_name_incompatibility' => 1)));
         if ($get_dependencies_on_this) {

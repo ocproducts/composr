@@ -157,7 +157,7 @@ class Hook_addon_registry_filedump
         $thumbnails = array();
         $thumbnails[] = array(
             'FILENAME' => lorem_word(),
-            'PLACE' => placeholder_id(),
+            'SUBPATH' => placeholder_id(),
             'THUMBNAIL' => placeholder_image(),
             'IS_IMAGE' => true,
             'URL' => placeholder_url(),
@@ -177,7 +177,7 @@ class Hook_addon_registry_filedump
         return array(
             lorem_globalise(do_lorem_template('FILEDUMP_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'PLACE' => placeholder_id(),
+                'SUBPATH' => placeholder_id(),
                 'THUMBNAILS' => $thumbnails,
                 'LISTING' => placeholder_table(),
                 'UPLOAD_FORM' => placeholder_form(),

@@ -140,7 +140,7 @@ if (function_exists('imagecolorallocatealpha')) {
         }
     }
 
-    $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme)));
+    $temp_all_ids = collapse_2d_complexity('id', 'url', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), array('theme' => $theme)));
 
     foreach ($full_img_set as $image_code) {
         if (!in_array($image_code, $THEMEWIZARD_IMAGES_NO_WILD)) {
@@ -148,12 +148,12 @@ if (function_exists('imagecolorallocatealpha')) {
                 continue;
             }
 
-            $orig_path = find_theme_image($image_code, true, true, 'default', 'EN');
-            if ($orig_path == '') {
+            $orig_url = find_theme_image($image_code, true, true, 'default', 'EN');
+            if ($orig_url == '') {
                 continue; // Theme has specified non-existent image as themewizard-compatible
             }
 
-            if (strpos($orig_path, '/' . fallback_lang() . '/') !== false) {
+            if (strpos($orig_url, '/' . fallback_lang() . '/') !== false) {
                 $composite = 'themes/' . filter_naughty($theme) . '/images/EN/';
             } else {
                 $composite = 'themes/' . filter_naughty($theme) . '/images/';
@@ -165,7 +165,7 @@ if (function_exists('imagecolorallocatealpha')) {
                 $image = calculate_theme($seed, 'default', 'equations', $image_code, $dark, $theme_map, $theme_landscape, 'EN');
                 if ($image !== null) {
                     $pos = strpos($image_code, '/');
-                    if (($pos !== false) || (strpos($orig_path, '/EN/') !== false)) {
+                    if (($pos !== false) || (strpos($orig_url, '/EN/') !== false)) {
                         afm_make_directory($composite . substr($image_code, 0, $pos), true, true);
                     }
                     require_code('images');

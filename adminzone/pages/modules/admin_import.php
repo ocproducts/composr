@@ -83,7 +83,7 @@ class Module_admin_import
             $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_old', 'ID_TEXT');
         }
 
-        if (($upgrade_from === null) || ($upgrade_from < 4)) { // LEGACY
+        if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_table('import_parts_done', array(
                 'id' => '*AUTO',
                 'imp_id' => 'SHORT_TEXT',

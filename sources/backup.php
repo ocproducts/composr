@@ -359,10 +359,10 @@ function directories_to_backup()
     ));
 
     // Also directories from addons, e.g. mobiquo from cns_tapatalk
-    $addon_files = $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'));
+    $addon_files = $GLOBALS['SITE_DB']->query_select('addons_files', array('filepath'));
     foreach ($addon_files as $addon_file) {
-        if (strpos($addon_file['filename'], '/') !== false) {
-            $root_only_dirs[preg_replace('#/.*#', '', $addon_file['filename'])] = true;
+        if (strpos($addon_file['filepath'], '/') !== false) {
+            $root_only_dirs[preg_replace('#/.*#', '', $addon_file['filepath'])] = true;
         }
     }
     $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');

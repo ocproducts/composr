@@ -656,35 +656,35 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     if (!$dirs_only) {
         $expected_slashes = substr_count($type, '/') + 1;
 
-        $query = 'SELECT DISTINCT id,path,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
+        $query = 'SELECT DISTINCT id,url,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
         if (!$db_only) {
-            $query .= 'path NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('path', 'themes/default/images/blank.gif') . ' AND ';
+            $query .= 'url NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('url', 'themes/default/images/blank.gif') . ' AND ';
         }
-        $query .= '(' . db_string_equal_to('theme', $theme) . ' OR ' . db_string_equal_to('theme', 'default') . ') AND id LIKE \'' . db_encode_like($type . '%') . '\' ORDER BY path';
+        $query .= '(' . db_string_equal_to('theme', $theme) . ' OR ' . db_string_equal_to('theme', 'default') . ') AND id LIKE \'' . db_encode_like($type . '%') . '\' ORDER BY url';
         $rows = $db->query($query);
         foreach ($rows as $row) {
-            if ($row['path'] == '') {
+            if ($row['url'] == '') {
                 continue;
             }
 
             foreach ($skip as $s) {
-                if (preg_match('#(^|/)' . preg_quote($s, '#') . '(/|$)#', $row['path']) != 0) {
+                if (preg_match('#(^|/)' . preg_quote($s, '#') . '(/|$)#', $row['url']) != 0) {
                     continue 2;
                 }
             }
 
-            if ((!$recurse) && (substr_count($row['path'], '/') > $expected_slashes)) {
+            if ((!$recurse) && (substr_count($row['url'], '/') > $expected_slashes)) {
                 continue;
             }
 
-            if ((url_is_local($row['path'])) && (!$include_missing) && (!file_exists(((substr($row['path'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['path'])))) {
+            if ((url_is_local($row['url'])) && (!$include_missing) && (!file_exists(((substr($row['url'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['url'])))) {
                 continue;
             }
-            if ($row['path'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again
+            if ($row['url'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again
                 // Optimisation to avoid having to build the full theme image table for a new theme in one step (huge numbers of queries)
                 if (!multi_lang()) {
                     if (($theme == $row['theme']) || (($row['theme'] == 'default') && (!isset($THEME_IMAGES_CACHE['site'][$row['id']])))) {
-                        $THEME_IMAGES_CACHE['site'][$row['id']] = $row['path'];
+                        $THEME_IMAGES_CACHE['site'][$row['id']] = $row['url'];
                     }
                 }
 
@@ -875,16 +875,16 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
  *
  * @param  ?ID_TEXT $it The currently selected image ID (null: none selected)
  * @param  ?string $filter An SQL where clause (including the WHERE), that filters the query somehow (null: none)
- * @param  boolean $do_id Whether to show IDs as the list entry captions, rather than paths
+ * @param  boolean $do_id Whether to show IDs as the list entry captions, rather than URLs
  * @param  boolean $include_all Whether to include images not yet used (i.e not in theme_images map yet)
+ * @param  string $under Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as URLs (blank: no limitation)
  * @return Tempcode Tempcode for a list selection of theme images
- * @param  string $under Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as paths (blank: no limitation)
  */
 function create_selection_list_theme_images($it = null, $filter = null, $do_id = false, $include_all = false, $under = '')
 {
     $out = new Tempcode();
     if (!$include_all) {
-        $rows = $GLOBALS['SITE_DB']->query('SELECT id,path FROM ' . get_table_prefix() . 'theme_images WHERE ' . db_string_equal_to('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . ' ' . $filter . ' ORDER BY path');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT id,url FROM ' . get_table_prefix() . 'theme_images WHERE ' . db_string_equal_to('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . ' ' . $filter . ' ORDER BY url');
         foreach ($rows as $myrow) {
             $id = $myrow['id'];
 
@@ -894,7 +894,7 @@ function create_selection_list_theme_images($it = null, $filter = null, $do_id =
 
             $selected = ($id == $it);
 
-            $out->attach(form_input_list_entry($id, $selected, ($do_id) ? $id : $myrow['path']));
+            $out->attach(form_input_list_entry($id, $selected, ($do_id) ? $id : $myrow['url']));
         }
     } else {
         $rows = get_all_image_ids_type($under, true);
@@ -927,19 +927,19 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
         return; // Still being used
     }
 
-    $path = ($old == '') ? null : find_theme_image($old, true, true);
-    if (($path === null) || ($path == '')) {
+    $url = ($old == '') ? null : find_theme_image($old, true, true);
+    if (($url === null) || ($url == '')) {
         return;
     }
 
-    if ((strpos($path, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array('path' => $path)) == 1)) {
+    if ((strpos($url, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array('url' => $url)) == 1)) {
         if ($db === null) {
             $db = $GLOBALS['SITE_DB'];
         }
         $count = $db->query_select_value($table, 'COUNT(*)', array($field => $old));
         if ($count == 0) {
-            @unlink(get_custom_file_base() . '/' . $path);
-            sync_file(get_custom_file_base() . '/' . $path);
+            @unlink(get_custom_file_base() . '/' . urldecode($url));
+            sync_file(get_custom_file_base() . '/' . urldecode($url));
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $old));
         }
     }

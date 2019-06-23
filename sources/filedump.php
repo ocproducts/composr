@@ -259,7 +259,7 @@ function check_filedump_uploaded($file)
 /**
  * Add a filedump file to the system, moving in the file and adding a description to the database.
  *
- * @param  string $place Whether it is being stored under uploads/filedump
+ * @param  string $subpath Whether it is being stored under uploads/filedump
  * @param  string $filename The filename
  * @param  string $tmp_path The temporary file path
  * @param  string $description The description
@@ -267,7 +267,7 @@ function check_filedump_uploaded($file)
  * @param  boolean $check_permissions Check access permissions
  * @return ?Tempcode Error message (null: no error)
  */
-function add_filedump_file($place, &$filename, $tmp_path, $description = '', $plupload_based = null, $check_permissions = true)
+function add_filedump_file($subpath, &$filename, $tmp_path, $description = '', $plupload_based = null, $check_permissions = true)
 {
     require_lang('filedump');
 
@@ -281,12 +281,12 @@ function add_filedump_file($place, &$filename, $tmp_path, $description = '', $pl
         }
     }
 
-    _check_filedump_filename($place, $filename, $check_permissions);
+    _check_filedump_filename($subpath, $filename, $check_permissions);
 
-    $full = get_custom_file_base() . '/uploads/filedump' . $place . $filename;
+    $full = get_custom_file_base() . '/uploads/filedump' . $subpath . $filename;
 
     // Conflict?
-    $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+    $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($filename, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
     if ((!$check_permissions) || (($owner !== null) && ($owner == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'))) {
         @unlink($full);
     }
@@ -298,26 +298,26 @@ function add_filedump_file($place, &$filename, $tmp_path, $description = '', $pl
     if ($plupload_based) {
         $test = @rename($tmp_path, $full);
         if (!$test) {
-            return do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $place));
+            return do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $subpath));
         }
     } else {
         $test = @move_uploaded_file($tmp_path, $full);
         if (!$test) {
-            return do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $place));
+            return do_lang_tempcode('FILE_MOVE_ERROR', escape_html($filename), escape_html('uploads/filedump' . $subpath));
         }
     }
     fix_permissions($full);
     sync_file($full);
 
     // Add description
-    $description_l = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+    $description_l = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
     if ($description_l !== null) {
         delete_lang($description_l);
-        $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+        $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), '', 1);
     }
     $map = array(
         'name' => cms_mb_substr($filename, 0, 80),
-        'path' => cms_mb_substr($place, 0, 80),
+        'subpath' => cms_mb_substr($subpath, 0, 80),
         'the_member' => get_member(),
     );
     $map += insert_lang('description', $description, 3);
@@ -325,14 +325,14 @@ function add_filedump_file($place, &$filename, $tmp_path, $description = '', $pl
 
     // Logging etc
     require_code('notifications');
-    $subject = do_lang('FILEDUMP_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $filename, $place);
-    $mail = do_notification_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($place), comcode_escape($description)));
-    dispatch_notification('filedump', $place, $subject, $mail);
-    log_it('FILEDUMP_UPLOAD', $filename, $place);
+    $subject = do_lang('FILEDUMP_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $filename, $subpath);
+    $mail = do_notification_lang('FILEDUMP_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($filename), array(comcode_escape($subpath), comcode_escape($description)));
+    dispatch_notification('filedump', $subpath, $subject, $mail);
+    log_it('FILEDUMP_UPLOAD', $filename, $subpath);
     require_code('users2');
     if (has_actual_page_access(get_modal_user(), 'filedump', get_module_zone('filedump'))) {
         require_code('activities');
-        syndicate_described_activity('filedump:ACTIVITY_FILEDUMP_UPLOAD', $place . '/' . $filename, '', '', '', '', '', 'filedump');
+        syndicate_described_activity('filedump:ACTIVITY_FILEDUMP_UPLOAD', $subpath . '/' . $filename, '', '', '', '', '', 'filedump');
     }
 
     return null;
@@ -341,15 +341,15 @@ function add_filedump_file($place, &$filename, $tmp_path, $description = '', $pl
 /**
  * Check a filedump filename is going to be valid / repair it if possible.
  *
- * @param  string $place Whether it is being stored under uploads/filedump
+ * @param  string $subpath Whether it is being stored under uploads/filedump
  * @param  string $filename The filename
  * @param  boolean $check_permissions Check access permissions
  *
  * @ignore
  */
-function _check_filedump_filename(&$place, &$filename, $check_permissions = true)
+function _check_filedump_filename(&$subpath, &$filename, $check_permissions = true)
 {
-    $place = filter_naughty($place);
+    $subpath = filter_naughty($subpath);
 
     // Security
     if ($check_permissions) {

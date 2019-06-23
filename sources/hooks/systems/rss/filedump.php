@@ -60,7 +60,7 @@ class Hook_rss_filedump
         }
         $rows = array();
         foreach ($_rows as $row) {
-            $rows[$row['path']] = $row;
+            $rows[$row['subpath']] = $row;
         }
         foreach ($files as $i => $file) {
             if ($i == $max) {

@@ -1115,7 +1115,7 @@ class Module_admin_setupwizard
                 $new_theme_name = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
 
                 global $THEME_IMAGES_CACHE;
-                $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
+                $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
                 if (!file_exists(get_custom_file_base() . '/themes/' . $new_theme_name)) {
                     make_theme($new_theme_name, 'default', 'equations', post_param_string('seed_hex'), /*$use=*/true, post_param_integer('dark', 0) == 1);
                 }
