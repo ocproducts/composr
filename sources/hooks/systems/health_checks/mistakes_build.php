@@ -578,6 +578,8 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             'dropbox',
             'flattr',
             'github',
+            'tiktok',
+            'gitlab',
             'instagram',
             'linkedin',
             'patreon',

@@ -485,11 +485,23 @@ function _cns_predefined_custom_field_details()
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://github.com/{RAW*}" rel="me">{NAME*}</a>',
         ),
+        'gitlab' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/gitlab',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://gitlab.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
         'sn_instagram' => array(
             'type' => 'codename',
             'icon' => 'icons/links/instagram',
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://www.instagram.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_tiktok' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/tiktok',
+            'section' => '',
+            'tempcode' => '{NAME*}: {RAW*}',
         ),
         'sn_minds' => array(
             'type' => 'codename',

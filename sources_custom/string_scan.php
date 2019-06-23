@@ -8500,6 +8500,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_hacker_news_DESCRIPTION
         DEFAULT_CPF_sn_instagram_NAME
         DEFAULT_CPF_sn_instagram_DESCRIPTION
+        DEFAULT_CPF_sn_gitlab_NAME
+        DEFAULT_CPF_sn_gitlab_DESCRIPTION
+        DEFAULT_CPF_sn_tiktok_NAME
+        DEFAULT_CPF_sn_tiktok_DESCRIPTION
         DEFAULT_CPF_sn_linkedin_NAME
         DEFAULT_CPF_sn_linkedin_DESCRIPTION
         DEFAULT_CPF_sn_minds_NAME
