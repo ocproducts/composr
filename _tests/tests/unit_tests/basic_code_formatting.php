@@ -254,6 +254,11 @@ class basic_code_formatting_test_set extends cms_test_case
                     $c = preg_replace('#//.*#', '', $c);
                 }
 
+                if ($ext == 'ini') {
+                    // We will allow utf-8 data in language files as a special exception
+                    continue;
+                }
+
                 $ok = (preg_match('#[^\x00-\x7f]#', $c) == 0);
                 $this->assertTrue($ok, 'Has non-ASCII data in ' . $path . '; find in your editor with this regexp [^\x00-\x7F]');
             }
