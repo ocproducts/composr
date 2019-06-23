@@ -155,10 +155,10 @@ function init__global3()
 
     // Time limits...
 
-    define('TIME_LIMIT_EXTEND_modest', '30');
-    define('TIME_LIMIT_EXTEND_sluggish', '100');
-    define('TIME_LIMIT_EXTEND_slow', '300');
-    define('TIME_LIMIT_EXTEND_crawl', '1000');
+    define('TIME_LIMIT_EXTEND_modest', 30);
+    define('TIME_LIMIT_EXTEND_sluggish', 100);
+    define('TIME_LIMIT_EXTEND_slow', 300);
+    define('TIME_LIMIT_EXTEND_crawl', 1000);
 }
 
 /**
@@ -4408,7 +4408,7 @@ function send_http_output_ping()
  */
 function cms_set_time_limit($secs)
 {
-    $previous = ini_get('max_execution_time');
+    $previous = intval(ini_get('max_execution_time'));
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit($secs);
@@ -4435,7 +4435,7 @@ function cms_disable_time_limit()
  */
 function cms_extend_time_limit($secs)
 {
-    $previous = ini_get('max_execution_time');
+    $previous = intval(ini_get('max_execution_time'));
 
     if ($previous == 0) {
         return 0;
