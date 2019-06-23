@@ -420,6 +420,25 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HERE_SURVEY_RESULTS
         HERE_TEST_RESULTS
         METADATA
+        CMD_HEALTH_CHECK_HELP_V
+        CMD_HEALTH_CHECK_PAGES_HELP
+        CMD_HEALTH_CHECK_PAGES_HELP_PARAM_0
+        CMD_HEALTH_CHECK_PAGES_HELP_V
+        DEAD_LINE_PROBLEM
+        DELURK_NON_CONFIRMED
+        DELURK_NON_CONFIRMED_DESCRIPTION
+        DOUBLE_SPACE_PROBLEM
+        FAKE_HEADING_PROBLEM
+        FAKE_TABLES_PROBLEM
+        FORM_ACTION_ERROR_HANDLING_PROBLEM
+        FORM_ACTION_PROBLEM
+        FORM_ACTION_RELATIVE_PROBLEM
+        HC_PAGE_DOWNLOAD_ERROR
+        INCONSISTENT_PERIOD_PROBLEM
+        NESTED_FONT_SIZE_PROBLEM
+        POOR_WYSIWYG_PROBLEM
+        SEQUENTIAL_FONT_SIZE_PROBLEM
+        TRAILING_SPACE_PROBLEM
         ABOUT_DELETE_MENU
         ABOUT_REVISIONS
         ABRUPTED_DIRECTIVE_OR_BRACE
@@ -8500,8 +8519,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_hacker_news_DESCRIPTION
         DEFAULT_CPF_sn_instagram_NAME
         DEFAULT_CPF_sn_instagram_DESCRIPTION
-        DEFAULT_CPF_sn_gitlab_NAME
-        DEFAULT_CPF_sn_gitlab_DESCRIPTION
+        DEFAULT_CPF_gitlab_NAME
+        DEFAULT_CPF_gitlab_DESCRIPTION
         DEFAULT_CPF_sn_tiktok_NAME
         DEFAULT_CPF_sn_tiktok_DESCRIPTION
         DEFAULT_CPF_sn_linkedin_NAME
@@ -10726,7 +10745,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNTRY_BN
         COUNTRY_KH
         COUNTRY_CN
-        COUNTRY_CY
         COUNTRY_GE
         COUNTRY_HK
         COUNTRY_IN

@@ -18,6 +18,8 @@
  */
 class _filter_xml_test_set extends cms_test_case
 {
+    protected $only = null;
+
     public function setUp()
     {
         parent::setUp();
@@ -26,12 +28,18 @@ class _filter_xml_test_set extends cms_test_case
 
         require_code('files');
         require_code('csrf_filter');
+
+        $this->only = get_param_string('only', null);
+        if ($this->only === null) {
+            if (isset($_SERVER['argv'][2])) {
+                $this->only = $_SERVER['argv'][2];
+            }
+        }
     }
 
     public function testNonFilter()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNonFilter')) {
+        if (($this->only !== null) && ($this->only != 'testNonFilter')) {
             return;
         }
 
@@ -67,8 +75,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testFilter()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testFilter')) {
+        if (($this->only !== null) && ($this->only != 'testFilter')) {
             return;
         }
 
@@ -107,8 +114,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testNonQualify()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNonQualify')) {
+        if (($this->only !== null) && ($this->only != 'testNonQualify')) {
             return;
         }
 
@@ -142,8 +148,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testQualify()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testQualify')) {
+        if (($this->only !== null) && ($this->only != 'testQualify')) {
             return;
         }
 
@@ -177,8 +182,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testRemoveShout()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRemoveShout')) {
+        if (($this->only !== null) && ($this->only != 'testRemoveShout')) {
             return;
         }
 
@@ -220,8 +224,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testSentenceCase()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testSentenceCase')) {
+        if (($this->only !== null) && ($this->only != 'testSentenceCase')) {
             return;
         }
 
@@ -262,8 +265,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testTitleCase()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testTitleCase')) {
+        if (($this->only !== null) && ($this->only != 'testTitleCase')) {
             return;
         }
 
@@ -304,8 +306,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testAppend()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testAppend')) {
+        if (($this->only !== null) && ($this->only != 'testAppend')) {
             return;
         }
 
@@ -347,8 +348,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testReplace()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testReplace')) {
+        if (($this->only !== null) && ($this->only != 'testReplace')) {
             return;
         }
 
@@ -389,8 +389,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testDeepClean()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDeepClean')) {
+        if (($this->only !== null) && ($this->only != 'testDeepClean')) {
             return;
         }
 
@@ -431,8 +430,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testDefaultFields()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDefaultFields')) {
+        if (($this->only !== null) && ($this->only != 'testDefaultFields')) {
             return;
         }
 
@@ -471,8 +469,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testMinLength()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testMinLength')) {
+        if (($this->only !== null) && ($this->only != 'testMinLength')) {
             return;
         }
 
@@ -518,8 +515,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testPossibilitySet()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testPossibilitySet')) {
+        if (($this->only !== null) && ($this->only != 'testPossibilitySet')) {
             return;
         }
 
@@ -562,8 +558,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testDisallowedWord()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDisallowedWord')) {
+        if (($this->only !== null) && ($this->only != 'testDisallowedWord')) {
             return;
         }
 
@@ -606,8 +601,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testDisallowedSubstring()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDisallowedSubstring')) {
+        if (($this->only !== null) && ($this->only != 'testDisallowedSubstring')) {
             return;
         }
 
@@ -651,8 +645,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testShun()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testShun')) {
+        if (($this->only !== null) && ($this->only != 'testShun')) {
             return;
         }
 
@@ -695,8 +688,7 @@ class _filter_xml_test_set extends cms_test_case
 
     public function testPattern()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testPattern')) {
+        if (($this->only !== null) && ($this->only != 'testPattern')) {
             return;
         }
 

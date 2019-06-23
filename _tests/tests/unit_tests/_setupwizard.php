@@ -93,11 +93,12 @@ class _setupwizard_test_set extends cms_test_case
             'pre_f_closed' => '1',
             'require__closed' => '0',
             'security_level' => 'low',
+            'timezone' => 'Europe/London',
         );
         require_code('csrf_filter');
         $post_params['csrf_token'] = generate_csrf_token();
 
-        $url = build_url(array('page' => 'admin_setupwizard', 'type' => 'step10'), 'adminzone');
+        $url = build_url(array('page' => 'admin_setupwizard', 'type' => 'step10', 'keep_fatalistic' => 1), 'adminzone');
 
         $http = cms_http_request($url->evaluate(), array('ignore_http_status' => true, 'timeout' => 300.0, 'trigger_error' => false, 'post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id())));
 

@@ -108,6 +108,8 @@ class _lang_no_unused_test_set extends cms_test_case
             'CONFIG_GROUP_',
             'faqs__',
             'links__',
+            'COUNTRY_',
+            'CONTINENT_',
             'ECOM_CAT_',
             'ECOM_CATD_',
             'ARITHMETICAL_SYMBOL__',
@@ -221,8 +223,19 @@ class _lang_no_unused_test_set extends cms_test_case
 
         $cli = is_cli();
 
+        $only = get_param_string('only', null);
+        if ($only === null) {
+            if (isset($_SERVER['argv'][2])) {
+                $only = $_SERVER['argv'][2];
+            }
+        }
+
         $files = get_directory_contents(get_file_base() . '/lang/EN', get_file_base() . '/lang/EN', null, false, true, array('ini'));
         foreach ($files as $path) {
+            if (($only !== null) && ($only != basename($path))) {
+                continue;
+            }
+
             $input = array();
             _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
 

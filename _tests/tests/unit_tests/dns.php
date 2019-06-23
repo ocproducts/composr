@@ -21,18 +21,22 @@ class dns_test_set extends cms_test_case
     public function testGetHostByAddr()
     {
         set_value('slow_php_dns', '1');
-        $this->assertTrue(cms_gethostbyaddr('8.8.8.8') == 'google-public-dns-a.google.com');
+        $host = cms_gethostbyaddr('8.8.8.8');
+        $this->assertTrue($host == 'dns.google', 'Got ' . $host);
 
         set_value('slow_php_dns', '0');
-        $this->assertTrue(cms_gethostbyaddr('8.8.8.8') == 'google-public-dns-a.google.com');
+        $host = cms_gethostbyaddr('8.8.8.8');
+        $this->assertTrue($host == 'dns.google', 'Got ' . $host);
     }
 
     public function testGetHostByName()
     {
         set_value('slow_php_dns', '1');
-        $this->assertTrue(cms_gethostbyname('google-public-dns-a.google.com') == '8.8.8.8');
+        $host = cms_gethostbyname('dns.google');
+        $this->assertTrue(substr($host, 0, 4) == '8.8.', 'Got ' . $host);
 
         set_value('slow_php_dns', '0');
-        $this->assertTrue(cms_gethostbyname('google-public-dns-a.google.com') == '8.8.8.8');
+        $host = cms_gethostbyname('dns.google');
+        $this->assertTrue(substr($host, 0, 4) == '8.8.', 'Got ' . $host);
     }
 }

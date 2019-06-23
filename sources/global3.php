@@ -155,10 +155,12 @@ function init__global3()
 
     // Time limits...
 
-    define('TIME_LIMIT_EXTEND_modest', 30);
-    define('TIME_LIMIT_EXTEND_sluggish', 100);
-    define('TIME_LIMIT_EXTEND_slow', 300);
-    define('TIME_LIMIT_EXTEND_crawl', 1000);
+    if (!defined('TIME_LIMIT_EXTEND_modest')) {
+        define('TIME_LIMIT_EXTEND_modest', 30);
+        define('TIME_LIMIT_EXTEND_sluggish', 100);
+        define('TIME_LIMIT_EXTEND_slow', 300);
+        define('TIME_LIMIT_EXTEND_crawl', 1000);
+    }
 }
 
 /**

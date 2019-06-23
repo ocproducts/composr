@@ -123,6 +123,7 @@ class lang_spelling_test_set extends cms_test_case
                     'CANNOT_CONNECT_HOME',
                     'NO_GD_ON_SERVER',
                     'MYSQL_TOO_OLD',
+                    'APACHE_TOO_OLD',
                     'LOW_MEMORY_LIMIT',
                     'NO_ZIP_ON_SERVER',
                     'CONFIG_OPTION_network_links',

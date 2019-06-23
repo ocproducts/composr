@@ -153,7 +153,6 @@ function init__locations()
             'BN' => 'Brunei',
             'KH' => 'Cambodia',
             'CN' => 'China',
-            'CY' => 'Cyprus',
             'GE' => 'Georgia',
             'HK' => 'Hong Kong SAR China',
             'IN' => 'India',

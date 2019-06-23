@@ -1101,8 +1101,8 @@ class Module_admin_themes
         $use_all_langs = post_param_integer('use_all_langs', 0);
 
         $target_dir = 'themes/' . (($use_all_themes == 1) ? 'default' : $theme) . '/images_custom/' . dirname($id);
-        $url = get_url('url', 'file', $target_dir);
-        if ($url[0] == '') {
+        $urls = get_url('url', 'file', $target_dir);
+        if ($urls[0] == '') {
             return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
@@ -1113,21 +1113,21 @@ class Module_admin_themes
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id));
             foreach ($theme_list as $theme) {
                 foreach (array_keys($lang_list) as $lang) {
-                    actual_add_theme_image($theme, $lang, $id, $url[0], true);
+                    actual_add_theme_image($theme, $lang, $id, $urls[0], true);
                 }
             }
         } elseif ($use_all_themes == 1) {
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'lang' => $lang));
             foreach ($theme_list as $theme) {
-                actual_add_theme_image($theme, $lang, $id, $url[0], true);
+                actual_add_theme_image($theme, $lang, $id, $urls[0], true);
             }
         } elseif ($use_all_langs == 1) {
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'theme' => $theme));
             foreach (array_keys($lang_list) as $lang) {
-                actual_add_theme_image($theme, $lang, $id, $url[0], true);
+                actual_add_theme_image($theme, $lang, $id, $urls[0], true);
             }
         } else {
-            actual_add_theme_image($theme, $lang, $id, $url[0]);
+            actual_add_theme_image($theme, $lang, $id, $urls[0]);
         }
 
         require_code('caches3');
@@ -1248,16 +1248,16 @@ class Module_admin_themes
             if (strpos($id, '/') !== false) {
                 $target_dir .= '/' . dirname($id);
             }
-            $url = get_url('url', 'file', $target_dir);
+            $urls = get_url('url', 'file', $target_dir);
 
-            if ((url_is_local($url[0])) && (!file_exists(((substr($url[0], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($url[0])))) {
+            if ((url_is_local($urls[0])) && (!file_exists(((substr($urls[0], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($urls[0])))) {
                 warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
 
-            if ($url[0] == '') {
+            if ($urls[0] == '') {
                 return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
-            actual_edit_theme_image($old_id, $theme, $lang, $id, $url[0]);
+            actual_edit_theme_image($old_id, $theme, $lang, $id, $urls[0]);
         }
 
         require_code('caches3');

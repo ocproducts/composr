@@ -528,7 +528,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/missing_colour_equations.php',
             '_tests/tests/unit_tests/permissions.php',
             '_tests/tests/unit_tests/tutorial_image_consistency.php',
-            '_tests/tests/unit_tests/tutorial_quality.php',
+            '_tests/tests/unit_tests/_tutorial_quality.php',
             '_tests/tests/unit_tests/tutorials_broken_links.php',
             '_tests/tests/unit_tests/cloudflare_ip_range_sync.php',
             '_tests/tests/unit_tests/multi_moderations.php',

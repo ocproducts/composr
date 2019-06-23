@@ -34,6 +34,10 @@ class Hook_weather_openweathermap
      */
     public function lookup($location_search = null, $latitude = null, $longitude = null, $units = 'metric', $max_days = null, &$errormsg)
     {
+        if (!addon_installed('weather')) {
+            return null;
+        }
+
         $api_key = get_option('openweathermap_api_key');
 
         if ($api_key == '') {
@@ -127,7 +131,7 @@ class Hook_weather_openweathermap
             $forecast_hourly[] = $forecast_arr;
         }
         if (count($forecast_hourly) == 0) {
-            $errormsg = do_lang('NOTHING_HERE');
+            $errormsg = do_lang('NO_ENTRIES');
             return null;
         }
 

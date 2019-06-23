@@ -37,7 +37,7 @@ google_translate,Google Translate integration,,,Not regularly tested. Could pote
 ldap,LDAP,,,Not regularly tested due to the complexity of having multiple working LDAP test environments.,No,
 httpauth,HTTP authentication,,,Not regularly tested.,No,Partly tested by httpauth automated test.
 cpf_encryption,CPF encryption,ocProducts,,Not regularly tested.,No,
-itunes,iTunes podcasts,,,Not regularly tested in iTunes.,No,Partially tested by feeds_and_podcasts automated test.
+itunes,iTunes podcasts,,,Not regularly tested in iTunes.,No,Partially tested by _feeds_and_podcasts automated test.
 theme_rtl,Right-to-left support in default theme,,,Too burdensome to routinely maintain and test.,No,
 theme_print,Custom print layout support in default theme,ocProducts,,Not regularly tested.,No,
 standard_schema_org,schema.org compliance,ocProducts,,Not regularly tested across all appropriate templates.,No,

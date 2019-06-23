@@ -777,7 +777,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
 {
     $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
 
-    if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name)) {
+    if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name) && (!multi_lang_content())) {
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
             $sub_name = $name . '__' . $sub_name;
             $sub_new_name = $new_name . '__' . $sub_name;

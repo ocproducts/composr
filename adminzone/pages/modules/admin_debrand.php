@@ -268,18 +268,18 @@ class Module_admin_debrand
 
         // Various other icons
         require_code('uploads');
-        $url = get_url('', 'favicon', 'themes/default/images_custom');
-        if ($url[0] != '') {
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $url[0]), array('id' => 'favicon'));
+        $urls = get_url('', 'favicon', 'themes/default/images_custom');
+        if ($urls[0] != '') {
+            $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $urls[0]), array('id' => 'favicon'));
         }
-        $url = get_url('', 'webclipicon', 'themes/default/images_custom');
-        if ($url[0] != '') {
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $url[0]), array('id' => 'webclipicon'));
+        $urls = get_url('', 'webclipicon', 'themes/default/images_custom');
+        if ($urls[0] != '') {
+            $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $urls[0]), array('id' => 'webclipicon'));
         }
         if (addon_installed('cns_avatars')) {
-            $url = get_url('', 'system_avatar', 'themes/default/images_custom');
-            if ($url[0] != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $url[0]), array('id' => 'cns_default_avatars/system'));
+            $urls = get_url('', 'system_avatar', 'themes/default/images_custom');
+            if ($urls[0] != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('url' => $urls[0]), array('id' => 'cns_default_avatars/system'));
             }
         }
 

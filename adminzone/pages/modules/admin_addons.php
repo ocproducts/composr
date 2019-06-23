@@ -117,7 +117,7 @@ class Module_admin_addons
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
-            $GLOBALS['SITE_DB']->alter_table_field('addons', 'filename', 'SHORT_TEXT', 'filepath');
+            $GLOBALS['SITE_DB']->alter_table_field('addons_files', 'filename', 'SHORT_TEXT', 'filepath');
         }
     }
 
