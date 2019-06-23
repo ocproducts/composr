@@ -227,6 +227,9 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
 
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_include_in_main_search', 'BINARY');
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_allow_template_search', 'BINARY');
+
         $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_icon', 'ID_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_section', 'ID_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_tempcode', 'LONG_TEXT');
@@ -438,6 +441,8 @@ function install_cns($upgrade_from = null)
             'cf_encrypted' => 'BINARY',
             'cf_show_on_join_form' => 'BINARY',
             'cf_options' => 'SHORT_TEXT',
+            'cf_include_in_main_search' => 'BINARY',
+            'cf_allow_template_search' => 'BINARY',
             'cf_icon' => 'ID_TEXT',
             'cf_section' => 'ID_TEXT',
             'cf_tempcode' => 'LONG_TEXT',

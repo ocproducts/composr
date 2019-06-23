@@ -815,6 +815,8 @@ function cns_make_predefined_content_field($type)
     $required = 0;
     $show_in_posts = 0;
     $show_in_post_previews = 0;
+    $include_in_main_search = 0;
+    $allow_template_search = 0;
 
     if ($type == 'staff_notes') {
         $public_view = 0;
@@ -837,7 +839,7 @@ function cns_make_predefined_content_field($type)
         $description = do_lang('DEFAULT_CPF_' . $type . '_DESCRIPTION');
     }
 
-    return cns_make_custom_field($title, 0, $description, '', $public_view, $owner_view, $owner_set, 0, $_type, $required, $show_in_posts, $show_in_post_previews, null, '', 0, '', $icon, $section, $tempcode, true);
+    return cns_make_custom_field($title, 0, $description, '', $public_view, $owner_view, $owner_set, 0, $_type, $required, $show_in_posts, $show_in_post_previews, null, '', 0, '', $include_in_main_search, $allow_template_search, $icon, $section, $tempcode, true);
 }
 
 /**
@@ -926,6 +928,8 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
  * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
  * @param  BINARY $show_on_join_form Whether the field is to be shown on the join form
  * @param  SHORT_TEXT $options Field options
+ * @param  BINARY $include_in_main_search Whether to include in main keyword search
+ * @param  BINARY $allow_template_search Whether to allow template search
  * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
  * @param  ID_TEXT $section Whether it is required that every member have this field filled in
  * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
@@ -934,7 +938,7 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
  * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
  * @return AUTO_LINK The ID of the new Custom Profile Field
  */
-function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $icon = '', $section = '', $tempcode = '', $no_name_dupe = false, $autofill_type = '', $autofill_hint = '')
+function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $include_in_main_search = 0, $allow_template_search = 0, $icon = '', $section = '', $tempcode = '', $no_name_dupe = false, $autofill_type = '', $autofill_hint = '')
 {
     require_code('global4');
     prevent_double_submit('ADD_CUSTOM_PROFILE_FIELD', null, $name);
@@ -979,6 +983,8 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         'cf_order' => $order,
         'cf_only_group' => $only_group,
         'cf_show_on_join_form' => $show_on_join_form,
+        'cf_include_in_main_search' => $include_in_main_search,
+        'cf_allow_template_search' => $allow_template_search,
         'cf_icon' => $icon,
         'cf_section' => $section,
         'cf_tempcode' => $tempcode,

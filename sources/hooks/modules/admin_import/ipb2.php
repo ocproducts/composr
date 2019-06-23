@@ -865,7 +865,7 @@ class Hook_import_ipb2
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $row['ftitle']));
             if ($id_new === null) {
-                $id_new = cns_make_custom_field($row['ftitle'], 0, $row['fdesc'], '', 1 - $row['fhide'], 1 - $row['fhide'], $row['fedit'], 0, $type, $row['freq'], 0, 0, $row['forder'], '', 0, '', '', '', '', true);
+                $id_new = cns_make_custom_field($row['ftitle'], 0, $row['fdesc'], '', 1 - $row['fhide'], 1 - $row['fhide'], $row['fedit'], 0, $type, $row['freq'], 0, 0, $row['forder'], '', 0, '', 0, 0, '', '', '', true);
             }
 
             foreach ($members as $member) {

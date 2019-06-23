@@ -114,11 +114,13 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         $only_group = $this->_default_property_str($properties, 'only_group');
         $show_on_join_form = $this->_default_property_int($properties, 'show_on_join_form');
         $options = $this->_default_property_str($properties, 'options');
+        $include_in_main_search = $this->_default_property_int($properties, 'include_in_main_search');
+        $allow_template_search = $this->_default_property_int($properties, 'allow_template_search');
         $icon = $this->_default_property_str($properties, 'options');
         $section = $this->_default_property_str($properties, 'options');
         $tempcode = $this->_default_property_str($properties, 'options');
 
-        $id = cns_make_custom_field($label, $locked, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $show_on_join_form, $options, $icon, $section, $tempcode, false);
+        $id = cns_make_custom_field($label, $locked, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $show_on_join_form, $options, $include_in_main_search, $allow_template_search, $icon, $section, $tempcode, false);
 
         $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
@@ -209,13 +211,15 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         $only_group = $this->_default_property_str($properties, 'only_group');
         $show_on_join_form = $this->_default_property_int($properties, 'show_on_join_form');
         $options = $this->_default_property_str($properties, 'options');
+        $include_in_main_search = $this->_default_property_int($properties, 'include_in_main_search');
+        $allow_template_search = $this->_default_property_int($properties, 'allow_template_search');
         $icon = $this->_default_property_str($properties, 'options');
         $section = $this->_default_property_str($properties, 'options');
         $tempcode = $this->_default_property_str($properties, 'options');
         $autofill_type = $this->_default_property_str($properties, 'autofill_type');
         $autofill_hint = $this->_default_property_str($properties, 'autofill_hint');
 
-        cns_edit_custom_field(intval($resource_id), $label, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
+        cns_edit_custom_field(intval($resource_id), $label, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $include_in_main_search, $allow_template_search, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 

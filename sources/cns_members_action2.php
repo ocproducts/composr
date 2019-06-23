@@ -1422,13 +1422,15 @@ function cns_unban_member($member_id)
  * @set short_text long_text short_trans long_trans integer upload picture url list tick float
  * @param  BINARY $show_on_join_form Whether it is required that every member have this field filled in
  * @param  SHORT_TEXT $options Field options
+ * @param  BINARY $include_in_main_search Whether to include in main keyword search
+ * @param  BINARY $allow_template_search Whether to allow template search
  * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
  * @param  ID_TEXT $section Whether it is required that every member have this field filled in
  * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
  * @param  ID_TEXT $autofill_type Autofill field name from https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-field
  * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
  */
-function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint)
+function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $include_in_main_search, $allow_template_search, $icon, $section, $tempcode, $autofill_type, $autofill_hint)
 {
     if ($only_group == '-1') {
         $only_group = '';
@@ -1451,6 +1453,8 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
         'cf_type' => $type,
         'cf_show_on_join_form' => $show_on_join_form,
         'cf_options' => $options,
+        'cf_include_in_main_search' => $include_in_main_search,
+        'cf_allow_template_search' => $allow_template_search,
         'cf_icon' => $icon,
         'cf_section' => $section,
         'cf_tempcode' => $tempcode,

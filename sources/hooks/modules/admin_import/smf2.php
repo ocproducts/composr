@@ -580,7 +580,7 @@ class Hook_import_smf2
                     $def = $this->cpf_options_string($def, $options);
                 }
 
-                $id_new = cns_make_custom_field($name, 0, $desc, $def, $pub_view, $own_view, $own_set, 0, $type, $req, $show_in_posts, 0, null, '', $on_join, $options, '', '', '', false);
+                $id_new = cns_make_custom_field($name, 0, $desc, $def, $pub_view, $own_view, $own_set, 0, $type, $req, $show_in_posts, 0, null, '', $on_join, $options, 0, 0, '', '', '', false);
             }
 
             import_id_remap_put('cpf', strval($row['id_field']), $id_new);

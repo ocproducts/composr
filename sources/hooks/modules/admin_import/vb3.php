@@ -532,7 +532,7 @@ class Hook_import_vb3
             }
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $row['title']));
             if ($id_new === null) {
-                $id_new = cns_make_custom_field($row['title'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], $row['memberlist'], $row['memberlist'], $row['displayorder'], '', 0, '', '', '', '', true);
+                $id_new = cns_make_custom_field($row['title'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], $row['memberlist'], $row['memberlist'], $row['displayorder'], '', 0, '', 0, 0, '', '', '', true);
             }
 
             foreach ($members as $member) {

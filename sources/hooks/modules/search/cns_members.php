@@ -98,6 +98,10 @@ class Hook_search_cns_members extends FieldsSearchHook
             );
             require_code('fields');
             foreach ($rows as $row) {
+                if ($row['cf_allow_template_search'] == 0) {
+                    continue;
+                }
+
                 $ob = get_fields_hook($row['cf_type']);
                 $temp = $ob->get_search_inputter($row);
                 if ($temp === null) {
@@ -237,44 +241,48 @@ class Hook_search_cns_members extends FieldsSearchHook
             $ob = get_fields_hook($row['cf_type']);
             list(, , $storage_type) = $ob->get_field_value_row_bits($row);
 
-            // Filter form
-            $param = get_param_string('option_' . strval($row['id']), '', INPUT_FILTER_GET_COMPLEX);
-            if ($param != '') {
-                $where_clause .= ' AND ';
+            if ($row['cf_allow_template_search'] == 1) {
+                // Filter form
+                $param = get_param_string('option_' . strval($row['id']), '', INPUT_FILTER_GET_COMPLEX);
+                if ($param != '') {
+                    $where_clause .= ' AND ';
 
-                if ($storage_type == 'integer') {
-                    $temp = '?=' . strval(intval($param));
-                } elseif ($storage_type == 'float') {
-                    $temp = '?=' . float_to_raw_string(floatval($param));
-                } elseif ($storage_type == 'list') {
-                    $temp = db_string_equal_to('?', $param);
-                } elseif (
-                    (array_key_exists('field_' . strval($row['id']), $indexes)) && ($indexes['field_' . strval($row['id'])][0] == '#') &&
-                    (($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) || (!$boolean_search)) &&
-                    (!is_under_radar($param))
-                ) {
-                    $temp = $GLOBALS['SITE_DB']->full_text_assemble('"' . $param . '"', true);
-                } else {
-                    list($temp,) = db_like_assemble($param);
-                }
-                if ((($row['cf_type'] == 'short_trans') || ($row['cf_type'] == 'long_trans') || ($row['cf_type'] == 'posting_field') || ($row['cf_type'] == 'short_trans_multi')) && (multi_lang_content())) {
-                    // Goes through translate table
-                    $where_clause .= preg_replace('#\?#', 't' . strval(count($trans_fields) + 2/*for the 2 fields prepended to $trans_fields in the get_search_rows call*/) . '.text_original', $temp);
-                } else {
-                    // Direct field access
-                    $where_clause .= preg_replace('#\?#', 'field_' . strval($row['id']), $temp);
+                    if ($storage_type == 'integer') {
+                        $temp = '?=' . strval(intval($param));
+                    } elseif ($storage_type == 'float') {
+                        $temp = '?=' . float_to_raw_string(floatval($param));
+                    } elseif ($storage_type == 'list') {
+                        $temp = db_string_equal_to('?', $param);
+                    } elseif (
+                        (array_key_exists('field_' . strval($row['id']), $indexes)) && ($indexes['field_' . strval($row['id'])][0] == '#') &&
+                        (($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) || (!$boolean_search)) &&
+                        (!is_under_radar($param))
+                    ) {
+                        $temp = $GLOBALS['SITE_DB']->full_text_assemble('"' . $param . '"', true);
+                    } else {
+                        list($temp,) = db_like_assemble($param);
+                    }
+                    if ((($row['cf_type'] == 'short_trans') || ($row['cf_type'] == 'long_trans') || ($row['cf_type'] == 'posting_field') || ($row['cf_type'] == 'short_trans_multi')) && (multi_lang_content())) {
+                        // Goes through translate table
+                        $where_clause .= preg_replace('#\?#', 't' . strval(count($trans_fields) + 2/*for the 2 fields prepended to $trans_fields in the get_search_rows call*/) . '.text_original', $temp);
+                    } else {
+                        // Direct field access
+                        $where_clause .= preg_replace('#\?#', 'field_' . strval($row['id']), $temp);
+                    }
                 }
             }
 
             // Standard search
-            if (((array_key_exists('field_' . strval($row['id']), $indexes)) && ($indexes['field_' . strval($row['id'])][0] == '#')) || ($boolean_search)) {
-                if (strpos($storage_type, '_trans') === false) {
-                    if ((!$index_issue) || ($boolean_search)) {
-                        $raw_fields[] = 'field_' . strval($row['id']);
-                    }
-                } else {
-                    if ((!$index_issue) || ($boolean_search) || (multi_lang_content())) { // MySQL limit for fulltext index querying
-                        $trans_fields['field_' . strval($row['id'])] = 'LONG_TRANS__COMCODE';
+            if ($row['cf_include_in_main_search'] == 1) {
+                if (((array_key_exists('field_' . strval($row['id']), $indexes)) && ($indexes['field_' . strval($row['id'])][0] == '#')) || ($boolean_search)) {
+                    if (strpos($storage_type, '_trans') === false) {
+                        if ((!$index_issue) || ($boolean_search)) {
+                            $raw_fields[] = 'field_' . strval($row['id']);
+                        }
+                    } else {
+                        if ((!$index_issue) || ($boolean_search) || (multi_lang_content())) { // MySQL limit for fulltext index querying
+                            $trans_fields['field_' . strval($row['id'])] = 'LONG_TRANS__COMCODE';
+                        }
                     }
                 }
             }

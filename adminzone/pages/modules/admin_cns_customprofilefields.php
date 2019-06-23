@@ -209,6 +209,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
      * @param  BINARY $locked Whether the field is locked
      * @param  SHORT_TEXT $options Field options
+     * @param  BINARY $include_in_main_search Whether to include in main keyword search
+     * @param  BINARY $allow_template_search Whether to allow template search
      * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
      * @param  ID_TEXT $section Whether it is required that every member have this field filled in
      * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
@@ -216,7 +218,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  ID_TEXT $autofill_hint Autofill hint: '' or 'shipping' or 'billing'
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '', $icon = '', $section = '', $tempcode = '', $autofill_type = '', $autofill_hint = '')
+    public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '', $include_in_main_search = 0, $allow_template_search = 0, $icon = '', $section = '', $tempcode = '', $autofill_type = '', $autofill_hint = '')
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -331,6 +333,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
+
+        $fields->attach(form_input_tick(do_lang_tempcode('INCLUDE_IN_MAIN_SEARCH'), do_lang_tempcode('DESCRIPTION_INCLUDE_IN_MAIN_SEARCH'), 'include_in_main_search', $include_in_main_search == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_TEMPLATE_SEARCH'), do_lang_tempcode('DESCRIPTION_ALLOW_TEMPLATE_SEARCH'), 'allow_template_search', $allow_template_search == 1));
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '7648f571ac21b86c2dbe82d3e8378a52', 'SECTION_HIDDEN' => $tempcode == '' && $section == '' && $icon == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
@@ -588,13 +593,15 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $show_on_join_form = $myrow['cf_show_on_join_form'];
         $locked = $myrow['cf_locked'];
         $options = $myrow['cf_options'];
+        $include_in_main_search = $myrow['cf_include_in_main_search'];
+        $allow_template_search = $myrow['cf_allow_template_search'];
         $icon = $myrow['cf_icon'];
         $section = $myrow['cf_section'];
         $tempcode = $myrow['cf_tempcode'];
         $autofill_type = $myrow['cf_autofill_type'];
         $autofill_hint = $myrow['cf_autofill_hint'];
 
-        return $this->get_form_fields($name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_on_join_form, $show_in_posts, $show_in_post_previews, $order, $only_group, $locked, $options, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
+        return $this->get_form_fields($name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_on_join_form, $show_in_posts, $show_in_post_previews, $order, $only_group, $locked, $options, $include_in_main_search, $allow_template_search, $icon, $section, $tempcode, $autofill_type, $autofill_hint);
     }
 
     /**
@@ -622,6 +629,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $only_group,
             post_param_integer('show_on_join_form', 0),
             post_param_string('options'),
+            post_param_integer('include_in_main_search', 0),
+            post_param_integer('allow_template_search', 0),
             post_param_string('icon'),
             post_param_string('section'),
             post_param_string('tempcode'),
@@ -657,6 +666,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_string('type'),
             post_param_integer('show_on_join_form', 0),
             post_param_string('options'),
+            post_param_integer('include_in_main_search', 0),
+            post_param_integer('allow_template_search', 0),
             post_param_string('icon'),
             post_param_string('section'),
             post_param_string('tempcode'),

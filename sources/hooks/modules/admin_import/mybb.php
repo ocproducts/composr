@@ -1249,7 +1249,7 @@ class Hook_import_mybb
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $row['name']));
             if ($id_new === null) {
-                $id_new = cns_make_custom_field($row['name'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], 0, 0, $row['disporder'], '', 0, '', '', '', '', true);
+                $id_new = cns_make_custom_field($row['name'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], 0, 0, $row['disporder'], '', 0, '', 0, 0, '', '', '', true);
             }
 
             foreach ($members as $member) {
