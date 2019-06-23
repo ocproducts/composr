@@ -115,7 +115,7 @@ class Hook_commandr_fs_newsletters extends Resource_fs_base
 
         $properties = array(
             'label' => get_translated_text($row['title']),
-            'description' => get_translated_text($row['description']),
+            'description' => get_translated_text($row['the_description']),
             'archive' => table_to_portable_rows('newsletter_archive', /*skip*/array('id'), array('newsletter' => intval($resource_id))),
             'subscribers' => table_to_portable_rows('newsletter_subscribe', /*skip*/array(), array('newsletter_id' => intval($resource_id))),
         );

@@ -71,7 +71,7 @@ class Module_filedump
                 'id' => '*AUTO',
                 'name' => 'ID_TEXT',
                 'subpath' => 'SHORT_TEXT',
-                'description' => 'SHORT_TRANS',
+                'the_description' => 'SHORT_TRANS',
                 'the_member' => 'MEMBER',
             ));
 
@@ -95,6 +95,7 @@ class Module_filedump
 
         if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('filedump', 'path', 'SHORT_TEXT', 'subpath');
+            $GLOBALS['SITE_DB']->alter_table_field('filedump', 'description', 'SHORT_TRANS', 'the_description');
         }
     }
 
@@ -336,7 +337,7 @@ class Module_filedump
 
                 $db_row = isset($db_rows[$_subpath][$filename]) ? $db_rows[$_subpath][$filename] : null;
 
-                $_description = isset($db_row) ? get_translated_text($db_row['description']) : '';
+                $_description = isset($db_row) ? get_translated_text($db_row['the_description']) : '';
 
                 if ($is_directory) {
                     if (!$this->_folder_search($_subpath . $filename . '/', $_description, $search, $type_filter)) {
@@ -722,7 +723,7 @@ class Module_filedump
 
                 $db_row = isset($db_rows[$filename]) ? $db_rows[$filename] : null;
 
-                $_description = isset($db_row) ? get_translated_text($db_row['description']) : '';
+                $_description = isset($db_row) ? get_translated_text($db_row['the_description']) : '';
 
                 if (($is_directory) && ($recursive)) {
                     if ($this->_folder_search($subpath . $filename . '/', $_description, $search, $type_filter, $recursive)) {
@@ -857,7 +858,7 @@ class Module_filedump
             $rendered = comcode_to_tempcode($generated);
         }
 
-        $_description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
+        $_description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => cms_mb_substr($file, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
         if ($_description === null) {
             $description = post_param_string('description', '');
         } else {
@@ -1164,9 +1165,9 @@ class Module_filedump
 
                     case 'edit':
                         $description = $descriptions[$subpath . $file];
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', $where);
                         if ($test !== null) {
-                            $map = lang_remap('description', $test, $description);
+                            $map = lang_remap('the_description', $test, $description);
                             $GLOBALS['SITE_DB']->query_update('filedump', $map, $where);
                         } else {
                             $map = array(
@@ -1174,13 +1175,13 @@ class Module_filedump
                                 'subpath' => cms_mb_substr($subpath, 0, 80),
                                 'the_member' => get_member(),
                             );
-                            $map += insert_lang('description', $description, 3);
+                            $map += insert_lang('the_description', $description, 3);
                             $GLOBALS['SITE_DB']->query_insert('filedump', $map);
                         }
                         break;
 
                     case 'delete':
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', $where);
                         if ($test !== null) {
                             delete_lang($test);
                         }
@@ -1261,7 +1262,7 @@ class Module_filedump
         $redirect_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'subpath' => $subpath), '_SELF');
 
         // Add description
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => cms_mb_substr($name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
         if ($test !== null) {
             delete_lang($test);
             $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), '', 1);
@@ -1272,7 +1273,7 @@ class Module_filedump
             'subpath' => cms_mb_substr($subpath, 0, 80),
             'the_member' => get_member(),
         );
-        $map += insert_lang('description', $description, 3);
+        $map += insert_lang('the_description', $description, 3);
         $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
         log_it('FILEDUMP_CREATE_FOLDER', $name, $subpath);

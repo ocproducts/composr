@@ -310,7 +310,7 @@ function add_filedump_file($subpath, &$filename, $tmp_path, $description = '', $
     sync_file($full);
 
     // Add description
-    $description_l = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
+    $description_l = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => cms_mb_substr($filename, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
     if ($description_l !== null) {
         delete_lang($description_l);
         $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), '', 1);
@@ -320,7 +320,7 @@ function add_filedump_file($subpath, &$filename, $tmp_path, $description = '', $
         'subpath' => cms_mb_substr($subpath, 0, 80),
         'the_member' => get_member(),
     );
-    $map += insert_lang('description', $description, 3);
+    $map += insert_lang('the_description', $description, 3);
     $GLOBALS['SITE_DB']->query_insert('filedump', $map);
 
     // Logging etc

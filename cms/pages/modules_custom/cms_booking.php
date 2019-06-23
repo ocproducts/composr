@@ -250,7 +250,7 @@ class Module_cms_booking extends Standard_crud_module
 
             $details = array(
                 'title' => null,
-                'description' => null,
+                'the_description' => null,
                 'price' => 0.00,
                 'categorisation' => null,
                 'cycle_type' => '',
@@ -279,7 +279,7 @@ class Module_cms_booking extends Standard_crud_module
 
         $fields = new Tempcode();
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', ($details['title'] === null) ? '' : get_translated_text($details['title']), true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['description'] === null) ? '' : get_translated_text($details['description']), false));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['the_description'] === null) ? '' : get_translated_text($details['the_description']), false));
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_BOOKABLE_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $categorisation = ($details['categorisation'] === null) ? '' : get_translated_text($details['categorisation']);
         if ($categorisation == '') {

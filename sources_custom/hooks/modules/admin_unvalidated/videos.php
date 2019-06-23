@@ -39,7 +39,7 @@ class Hook_unvalidated_videos
         $info['db_table'] = 'videos';
         $info['db_identifier'] = 'id';
         $info['db_validated'] = 'validated';
-        $info['db_title'] = 'description';
+        $info['db_title'] = 'the_description';
         $info['db_title_dereference'] = true;
         $info['db_add_date'] = 'add_date';
         $info['db_edit_date'] = 'edit_date';

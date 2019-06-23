@@ -395,7 +395,7 @@ class Hook_video_syndication_youtube
             <entry xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
                     <media:group>
                             <media:title type="plain">' . xmlentities($video['title']) . '</media:title>
-                            <media:description type="plain">' . xmlentities($video['description']) . '</media:description>';
+                            <media:description type="plain">' . xmlentities($video['the_description']) . '</media:description>';
         if ($category !== null) {
             $xml .= '
                             <media:category scheme="http://gdata.youtube.com/schemas/2007/categories.cat">' . xmlentities($category) . '</media:category>';

@@ -102,13 +102,13 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->create_table('newsletters', array(
                 'id' => '*AUTO',
                 'title' => 'SHORT_TRANS',
-                'description' => 'LONG_TRANS',
+                'the_description' => 'LONG_TRANS',
             ));
 
             $map = array();
             require_code('lang3');
             $map += lang_code_to_default_content('title', 'GENERAL');
-            $map += lang_code_to_default_content('description', 'NEWSLETTER_GENERAL');
+            $map += lang_code_to_default_content('the_description', 'NEWSLETTER_GENERAL');
             $GLOBALS['SITE_DB']->query_insert('newsletters', $map);
 
             $GLOBALS['SITE_DB']->create_table('newsletter_subscribe', array(
@@ -197,6 +197,10 @@ class Module_newsletter
 
         if (($upgrade_from === null) || ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->create_index('newsletter_subscribers', 'email', array('email'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 13)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('newsletters', 'description', 'LONG_TRANS', 'the_description');
         }
     }
 
@@ -366,7 +370,7 @@ class Module_newsletter
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a87e4be6cbc070e66e25ad4ece429cc4', 'TITLE' => do_lang_tempcode('NEWSLETTER_SUBSCRIPTIONS'))));
         foreach ($newsletters as $newsletter) {
             $newsletter_title = get_translated_text($newsletter['title']);
-            $newsletter_description = get_translated_text($newsletter['description']);
+            $newsletter_description = get_translated_text($newsletter['the_description']);
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
             $fields->attach(form_input_tick(do_lang_tempcode('SUBSCRIBE_TO', make_string_tempcode(escape_html($newsletter_title))), make_string_tempcode(escape_html($newsletter_description)), 'subscribe' . strval($newsletter['id']), true));
         }

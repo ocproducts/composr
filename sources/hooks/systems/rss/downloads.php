@@ -65,7 +65,7 @@ class Hook_rss_downloads
                 $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
 
                 $news_title = xmlentities(escape_html(get_translated_text($row['name'])));
-                $_summary = get_translated_tempcode('download_downloads', $row, 'description');
+                $_summary = get_translated_tempcode('download_downloads', $row, 'the_description');
                 $summary = xmlentities($_summary->evaluate());
                 $news = '';
 

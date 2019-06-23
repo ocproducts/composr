@@ -106,15 +106,15 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     }
 
     if (array_key_exists('id', $row)) {
-        $just_download_row = db_map_restrict($row, array('id', 'description'));
+        $just_download_row = db_map_restrict($row, array('id', 'the_description'));
     } else {
-        $just_download_row = db_map_restrict($row, array('description'));
+        $just_download_row = db_map_restrict($row, array('the_description'));
     }
 
     // Details
     $file_size = $row['file_size'];
     $file_size = ($file_size > 0) ? clean_file_size($file_size) : do_lang('UNKNOWN');
-    $description = (is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
+    $description = (is_string($row['the_description']) && !isset($row['the_description__text_parsed'])) ? comcode_to_tempcode($row['the_description']) : get_translated_tempcode('download_downloads', $just_download_row, 'the_description');
     if (array_key_exists('id', $row)) {
         $map = array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']);
         if ($root !== null) {
@@ -261,9 +261,9 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
         $breadcrumbs = breadcrumb_segments_to_tempcode(download_breadcrumbs($row['parent_id'], ($root === null) ? get_param_integer('keep_download_root', null) : $root, true, $zone, $attach_to_url_filter));
     }
 
-    $just_download_category_row = db_map_restrict($row, array('id', 'description'));
+    $just_download_category_row = db_map_restrict($row, array('id', 'the_description'));
 
-    $summary = get_translated_tempcode('download_downloads', $just_download_category_row, 'description');
+    $summary = get_translated_tempcode('download_downloads', $just_download_category_row, 'the_description');
 
     $child_counts = count_download_category_children($row['id']);
     $num_children = $child_counts['num_children_children'];

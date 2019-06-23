@@ -90,7 +90,7 @@ class Module_wiki
                 'id' => '*AUTO',
                 'title' => 'SHORT_TRANS',
                 'notes' => 'LONG_TEXT',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'add_date' => 'TIME',
                 'edit_date' => '?TIME',
                 'wiki_views' => 'INTEGER',
@@ -109,7 +109,7 @@ class Module_wiki
                 'add_date' => time(),
                 'notes' => '',
             );
-            $map += insert_lang_comcode('description', '', 2);
+            $map += insert_lang_comcode('the_description', '', 2);
             $map += lang_code_to_default_content('title', 'WIKI_HOME', false, 1);
             $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map);
             require_code('permissions2');
@@ -136,7 +136,7 @@ class Module_wiki
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'ftjoin_spm', array('the_message'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spt', array('title'));
-            $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array('description'));
+            $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array('the_description'));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
@@ -190,7 +190,7 @@ class Module_wiki
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 9)) {
-            $GLOBALS['SITE_DB']->create_index('wiki_pages', '#wiki_search__combined', array('title', 'description'));
+            $GLOBALS['SITE_DB']->create_index('wiki_pages', '#wiki_search__combined', array('title', 'the_description'));
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'wiki_views', array('wiki_views'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'wiki_views', array('wiki_views'));
@@ -204,6 +204,7 @@ class Module_wiki
         if (($upgrade_from !== null) && ($upgrade_from < 10)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('wiki_pages', 'hide_posts', 'BINARY', 'show_posts');
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'wiki_pages SET show_posts=1-show_posts');
+            $GLOBALS['SITE_DB']->alter_table_field('wiki_pages', 'description', 'LONG_TRANS__COMCODE', 'the_description');
         }
     }
 
@@ -311,7 +312,7 @@ class Module_wiki
             $db_posts = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), $where_map, 'ORDER BY date_and_time', intval(get_option('general_safety_listing_limit')));
             $num_posts = count($db_posts);
 
-            $description_comcode = get_translated_text($page['description']);
+            $description_comcode = get_translated_text($page['the_description']);
 
             set_extra_request_metadata(array(
                 'identifier' => '_SEARCH:wiki:browse:' . strval($page['id']),
@@ -493,18 +494,18 @@ class Module_wiki
         }
 
         // Description
-        $description = get_translated_tempcode('wiki_pages', $page, 'description');
-        $description_comcode = get_translated_text($page['description']);
+        $description = get_translated_tempcode('wiki_pages', $page, 'the_description');
+        $description_comcode = get_translated_text($page['the_description']);
 
         // Child Links
         $num_children = 0;
         $children = array();
         if (get_option('wiki_enable_children') == '1') {
-            $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'show_posts', 'description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
+            $children_rows = $GLOBALS['SITE_DB']->query_select('wiki_children c LEFT JOIN ' . get_table_prefix() . 'wiki_pages p ON c.child_id=p.id', array('child_id', 'c.title', 'show_posts', 'the_description'), array('c.parent_id' => $id), 'ORDER BY c.the_order');
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
 
-                if ($myrow['description'] === null) {
+                if ($myrow['the_description'] === null) {
                     continue; // Broken database reference
                 }
 
@@ -518,7 +519,7 @@ class Module_wiki
 
                 $child_title = $myrow['title'];
 
-                $child_description = get_translated_text($myrow['description']);
+                $child_description = get_translated_text($myrow['the_description']);
 
                 $my_child_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $child_id));
                 $my_child_children = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'COUNT(*)', array('parent_id' => $child_id));

@@ -108,7 +108,7 @@ function add_item($name, $bribable, $healthy, $picture_url, $owner, $max_per_pla
         'owner' => $owner,
         'replicateable' => $replicateable,
         'max_per_player' => $max_per_player,
-        'description' => $description,
+        'the_description' => $description,
     ));
 }
 
@@ -1030,7 +1030,7 @@ function edit_item($name, $original_name, $bribable, $healthy, $picture_url, $ne
     }
 
     // General editing of template
-    $GLOBALS['SITE_DB']->query_update('w_itemdef', array('owner' => $new_owner, 'description' => $description, 'max_per_player' => $max_per_player, 'replicateable' => $replicateable, 'bribable' => $bribable, 'healthy' => $healthy), array('name' => $name), '', 1);
+    $GLOBALS['SITE_DB']->query_update('w_itemdef', array('owner' => $new_owner, 'the_description' => $description, 'max_per_player' => $max_per_player, 'replicateable' => $replicateable, 'bribable' => $bribable, 'healthy' => $healthy), array('name' => $name), '', 1);
 }
 
 /**

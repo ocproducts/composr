@@ -331,7 +331,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
         'parent_id' => $parent_id,
     );
     $map += insert_lang('category', $category, 2);
-    $map += insert_lang_comcode('description', $description, 2);
+    $map += insert_lang_comcode('the_description', $description, 2);
     if ($id !== null) {
         $map['id'] = $id;
     }
@@ -398,19 +398,19 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     require_code('urls2');
     suggest_new_idmoniker_for('downloads', 'browse', strval($category_id), '', $category);
 
-    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'description'), array('id' => $category_id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'the_description'), array('id' => $category_id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
     }
     $_category = $rows[0]['category'];
-    $_description = $rows[0]['description'];
+    $_description = $rows[0]['the_description'];
 
     $update_map = array(
         'notes' => $notes,
         'parent_id' => $parent_id,
     );
     $update_map += lang_remap('category', $_category, $category);
-    $update_map += lang_remap_comcode('description', $_description, $description);
+    $update_map += lang_remap_comcode('the_description', $_description, $description);
     if ($rep_image !== null) {
         $update_map['rep_image'] = $rep_image;
         require_code('files2');
@@ -450,12 +450,12 @@ function delete_download_category($category_id)
         warn_exit(do_lang_tempcode('NO_DELETE_ROOT', 'download_category'));
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'description', 'parent_id'), array('id' => $category_id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'the_description', 'parent_id'), array('id' => $category_id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
     }
     $category = $rows[0]['category'];
-    $description = $rows[0]['description'];
+    $description = $rows[0]['the_description'];
 
     require_code('files2');
     delete_upload('uploads/repimages', 'download_categories', 'rep_image', 'id', $category_id);
@@ -936,7 +936,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         'file_size' => $file_size,
     );
     $map += insert_lang('name', $name, 2);
-    $map += insert_lang_comcode('description', $description, 3);
+    $map += insert_lang_comcode('the_description', $description, 3);
     $map += insert_lang_comcode('additional_details', $additional_details, 3);
 
     if ($id !== null) {
@@ -1085,7 +1085,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'the_description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
     }
@@ -1156,7 +1156,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         'out_mode_id' => $out_mode_id,
     );
     $update_map += lang_remap('name', $myrow['name'], $name);
-    $update_map += lang_remap_comcode('description', $myrow['description'], $description);
+    $update_map += lang_remap_comcode('the_description', $myrow['the_description'], $description);
     $update_map += lang_remap_comcode('additional_details', $myrow['additional_details'], $additional_details);
 
     $update_map['edit_date'] = $edit_time;
@@ -1238,7 +1238,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
  */
 function delete_download($id, $leave = false)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details'), array('id' => $id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'the_description', 'additional_details'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
     }
@@ -1249,7 +1249,7 @@ function delete_download($id, $leave = false)
     }
 
     delete_lang($myrow['name']);
-    delete_lang($myrow['description']);
+    delete_lang($myrow['the_description']);
     delete_lang($myrow['additional_details']);
 
     require_code('content2');

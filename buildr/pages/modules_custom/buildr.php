@@ -118,7 +118,7 @@ class Module_buildr
                 'owner' => 'MEMBER',
                 'replicateable' => 'BINARY',
                 'max_per_player' => 'INTEGER',
-                'description' => 'SHORT_TEXT',
+                'the_description' => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('w_items', array(
@@ -269,6 +269,10 @@ class Module_buildr
         if (($upgrade_from === null) || ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->create_index('w_messages', 'destination', array('destination'));
             $GLOBALS['SITE_DB']->create_index('w_messages', 'originator_id', array('originator_id'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('w_itemdef', 'description', 'SHORT_TEXT', 'the_description');
         }
     }
 
@@ -890,7 +894,7 @@ class Module_buildr
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'edititem',
                     'ITEM' => either_param_string('item'),
-                    'DESCRIPTION' => $row['description'],
+                    'DESCRIPTION' => $row['the_description'],
                     'BRIBABLE' => strval($row['bribable']),
                     'HEALTHY' => strval($row['healthy']),
                     'PICTURE_URL' => $row['picture_url'],

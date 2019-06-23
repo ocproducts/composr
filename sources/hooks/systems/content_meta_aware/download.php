@@ -59,7 +59,7 @@ class Hook_content_meta_aware_download
 
             'title_field' => 'name',
             'title_field_dereference' => true,
-            'description_field' => 'description',
+            'description_field' => 'the_description',
             'description_field_dereference' => true,
             'thumb_field' => 'rep_image',
             'thumb_field_is_theme_image' => false,
@@ -109,7 +109,7 @@ class Hook_content_meta_aware_download
 
             'support_content_reviews' => true,
 
-            'support_spam_heuristics' => 'description',
+            'support_spam_heuristics' => 'the_description',
 
             'actionlog_regexp' => '\w+_DOWNLOAD',
         );

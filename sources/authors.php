@@ -43,7 +43,7 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         '_GUID' => ($guid != '') ? $guid : 'e597aef1818f5610402d6e5f478735a1',
         'ID' => $row['author'],
         'TITLE' => $title,
-        'SUMMARY' => get_translated_tempcode('authors', $row, 'description'),
+        'SUMMARY' => get_translated_tempcode('authors', $row, 'the_description'),
         'URL' => $url,
         'RESOURCE_TYPE' => 'author',
     ));
@@ -141,9 +141,9 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
 {
     log_it('DEFINE_AUTHOR', $author, ($member_id === null) ? '' : strval($member_id));
 
-    $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('authors', array('the_description', 'skills'), array('author' => $author), '', 1);
     if (array_key_exists(0, $rows)) {
-        $_description = $rows[0]['description'];
+        $_description = $rows[0]['the_description'];
         $_skills = $rows[0]['skills'];
 
         require_code('attachments2');
@@ -154,7 +154,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
             'member_id' => $member_id,
         );
         $map += lang_remap('skills', $_skills, $skills);
-        $map += update_lang_comcode_attachments('description', $_description, $description, 'author', $author, null, $member_id);
+        $map += update_lang_comcode_attachments('the_description', $_description, $description, 'author', $author, null, $member_id);
 
         $GLOBALS['SITE_DB']->query_update('authors', $map, array('author' => $author), '', 1);
     } else {
@@ -165,7 +165,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
             'url' => $url,
             'member_id' => $member_id,
         );
-        $map += insert_lang_comcode_attachments('description', 3, $description, 'author', $author, null, false, $member_id);
+        $map += insert_lang_comcode_attachments('the_description', 3, $description, 'author', $author, null, false, $member_id);
         $map += insert_lang_comcode('skills', $skills, 3);
         $GLOBALS['SITE_DB']->query_insert('authors', $map);
 
@@ -193,14 +193,14 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
  */
 function delete_author($author)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('authors', array('the_description', 'skills'), array('author' => $author), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
     }
 
     require_code('attachments2');
     require_code('attachments3');
-    delete_lang_comcode_attachments($rows[0]['description'], 'author', $author);
+    delete_lang_comcode_attachments($rows[0]['the_description'], 'author', $author);
 
     delete_lang($rows[0]['skills']);
 

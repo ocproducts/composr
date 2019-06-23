@@ -35,7 +35,7 @@ class Module_downloads
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 8;
+        $info['version'] = 9;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -90,7 +90,7 @@ class Module_downloads
                 'parent_id' => '?AUTO_LINK',
                 'add_date' => 'TIME',
                 'notes' => 'LONG_TEXT',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'rep_image' => 'URLPATH',
             ));
 
@@ -101,7 +101,7 @@ class Module_downloads
                 'notes' => '',
             );
             require_code('lang3');
-            $map += insert_lang_comcode('description', '', 3);
+            $map += insert_lang_comcode('the_description', '', 3);
             $map += lang_code_to_default_content('category', 'DOWNLOADS_HOME');
             $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);
             require_code('permissions2');
@@ -114,7 +114,7 @@ class Module_downloads
                 'category_id' => 'AUTO_LINK',
                 'name' => 'SHORT_TRANS',
                 'url' => 'URLPATH',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'author' => 'ID_TEXT',
                 'additional_details' => 'LONG_TRANS__COMCODE',
                 'num_downloads' => 'INTEGER',
@@ -148,9 +148,9 @@ class Module_downloads
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'dvalidated', array('validated'));
 
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_dname', array('name'));
-            $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_ddescrip', array('description'));
+            $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_ddescrip', array('the_description'));
             $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dccat', array('category'));
-            $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dcdescrip', array('description'));
+            $GLOBALS['SITE_DB']->create_index('download_categories', 'ftjoin_dcdescrip', array('the_description'));
 
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#download_data_mash', array('download_data_mash'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#original_filename', array('original_filename'));
@@ -183,7 +183,7 @@ class Module_downloads
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'description'));
+            $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'the_description'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#dl_search__combined', array('original_filename', 'download_data_mash'));
 
             add_privilege('_SECTION_DOWNLOADS', 'download', true);
@@ -194,6 +194,11 @@ class Module_downloads
             add_privilege('SEARCH', 'autocomplete_title_download', false);
 
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'ftjoin_dadditional', array('additional_details'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('download_categories', 'description', 'LONG_TRANS__COMCODE', 'the_description');
+            $GLOBALS['SITE_DB']->alter_table_field('download_downloads', 'description', 'LONG_TRANS__COMCODE', 'the_description');
         }
     }
 
@@ -372,7 +377,7 @@ class Module_downloads
                         $view_url = get_custom_base_url() . '/' . $view_url;
                     }
                     $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
-                    $image_description = get_translated_tempcode('images', $row, 'description');
+                    $image_description = get_translated_tempcode('images', $row, 'the_description');
                     $thumb = do_image_thumb($thumb_url, '');
                     if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('galleries', 'download_' . strval($id))))) {
                         $iedit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => $row['id']), get_module_zone('cms_galleries'));
@@ -462,7 +467,7 @@ class Module_downloads
         $root = $this->root;
         $category = $this->category;
 
-        $description = get_translated_tempcode('download_categories', $category, 'description');
+        $description = get_translated_tempcode('download_categories', $category, 'the_description');
 
         // Sorting
         $sort = get_param_string('sort', get_option('downloads_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
@@ -819,7 +824,7 @@ class Module_downloads
             'WARNING_DETAILS' => $warning_details,
             'EDIT_URL' => $edit_url,
             'ADD_IMG_URL' => $add_img_url,
-            'DESCRIPTION' => get_translated_tempcode('download_downloads', $myrow, 'description'),
+            'DESCRIPTION' => get_translated_tempcode('download_downloads', $myrow, 'the_description'),
             'ADDITIONAL_DETAILS' => $additional_details,
             'IMAGES_DETAILS' => $images_details,
             'ID' => strval($id),

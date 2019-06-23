@@ -95,7 +95,7 @@ class Hook_rss_filedump
             $news = '';
             $author = '';
             if (array_key_exists($file, $rows)) {
-                $summary = get_translated_text($rows[$file]['description']);
+                $summary = get_translated_text($rows[$file]['the_description']);
                 $author = $GLOBALS['FORUM_DRIVER']->get_username($rows['the_member'], false, USERNAME_DEFAULT_BLANK);
             }
 

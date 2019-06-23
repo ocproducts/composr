@@ -59,7 +59,7 @@ class Hook_content_meta_aware_author
 
             'title_field' => 'author',
             'title_field_dereference' => false,
-            'description_field' => 'description',
+            'description_field' => 'the_description',
             'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,

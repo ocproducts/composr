@@ -154,7 +154,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         $properties = array(
             'label' => get_translated_text($row['category']),
-            'description' => get_translated_text($row['description']),
+            'description' => get_translated_text($row['the_description']),
             'notes' => $row['notes'],
             'rep_image' => remap_urlpath_as_portable($row['rep_image']),
             'meta_keywords' => $meta_keywords,
@@ -313,7 +313,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $properties = array(
             'label' => get_translated_text($row['name']),
             'url' => remap_urlpath_as_portable($row['url']),
-            'description' => get_translated_text($row['description']),
+            'description' => get_translated_text($row['the_description']),
             'author' => $row['author'],
             'additional_details' => $row['additional_details'],
             'out_mode_id' => $row['out_mode_id'],

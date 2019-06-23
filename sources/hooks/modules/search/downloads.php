@@ -203,7 +203,7 @@ class Hook_search_downloads extends FieldsSearchHook
             $_text_summary = trim(cms_preg_replace_safe('#\s+#', ' ', $mash_portion));
             $text_summary = generate_text_summary($_text_summary, $highlight_bits);
         } else {
-            $_text_summary = get_translated_text($row['description']);
+            $_text_summary = get_translated_text($row['the_description']);
             push_lax_comcode(true);
             $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, COMCODE_NORMAL, $highlight_bits);
             pop_lax_comcode();

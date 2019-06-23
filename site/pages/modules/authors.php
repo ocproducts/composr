@@ -35,7 +35,7 @@ class Module_authors
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
@@ -64,7 +64,7 @@ class Module_authors
                 'author' => '*ID_TEXT',
                 'url' => 'URLPATH',
                 'member_id' => '?MEMBER',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'skills' => 'LONG_TRANS__COMCODE',
             ));
 
@@ -83,6 +83,10 @@ class Module_authors
 
         if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('authors', 'description', 'LONG_TRANS__COMCODE', 'the_description');
         }
     }
 
@@ -166,7 +170,7 @@ class Module_authors
             } else {
                 $message = do_lang_tempcode('NO_SUCH_AUTHOR', escape_html($author));
             }
-            $details = array('author' => $author, 'url' => '', 'member_id' => get_author_id_from_name($author), 'description' => null, 'skills' => null,);
+            $details = array('author' => $author, 'url' => '', 'member_id' => get_author_id_from_name($author), 'the_description' => null, 'skills' => null,);
         } else {
             $details = $rows[0];
         }
@@ -244,7 +248,7 @@ class Module_authors
         }
 
         // (Self?) description
-        $description = empty($details['description']) ? new Tempcode() : get_translated_tempcode('authors', $details, 'description');
+        $description = empty($details['the_description']) ? new Tempcode() : get_translated_tempcode('authors', $details, 'the_description');
 
         // Skills
         $skills = empty($details['skills']) ? new Tempcode() : get_translated_tempcode('authors', $details, 'skills');

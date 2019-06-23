@@ -59,7 +59,7 @@ class Hook_content_meta_aware_wiki_page
 
             'title_field' => 'title',
             'title_field_dereference' => true,
-            'description_field' => 'description',
+            'description_field' => 'the_description',
             'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,

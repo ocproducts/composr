@@ -89,7 +89,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
 
         $url = $this->_default_property_str($properties, 'url');
         $member_id = $this->_default_property_member_null($properties, 'member_id');
-        $description = $this->_default_property_str($properties, 'description');
+        $description = $this->_default_property_str($properties, 'the_description');
         $skills = $this->_default_property_str($properties, 'skills');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
@@ -124,7 +124,7 @@ class Hook_commandr_fs_authors extends Resource_fs_base
             'label' => $row['author'],
             'url' => $row['url'],
             'member_id' => remap_resource_id_as_portable('member', $row['member_id']),
-            'description' => $row['description'],
+            'description' => $row['the_description'],
             'skills' => $row['skills'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,

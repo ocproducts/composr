@@ -208,10 +208,10 @@ class Module_cms_authors
             access_denied('PRIVILEGE', 'edit_midrange_content');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'url', 'skills', 'member_id'), array('author' => $author), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('the_description', 'url', 'skills', 'member_id'), array('author' => $author), '', 1);
         if (array_key_exists(0, $rows)) {
             $myrow = $rows[0];
-            $description = get_translated_text($myrow['description']);
+            $description = get_translated_text($myrow['the_description']);
             $url = $myrow['url'];
             $skills = get_translated_text($myrow['skills']);
             $handle = $myrow['member_id'];

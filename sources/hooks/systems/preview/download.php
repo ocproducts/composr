@@ -113,7 +113,7 @@ class Hook_preview_download
             'category_id' => $category_id,
             'name' => $name,
             'url' => '',
-            'description' => post_param_string('description'),
+            'the_description' => post_param_string('description'),
             'author' => $author,
             'comments' => $comments,
             'validated' => $validated,

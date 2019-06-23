@@ -100,7 +100,7 @@ function output_inventory_screen($member_id)
         if ((url_is_local($pic_url)) && ($pic_url != '')) {
             $pic_url = get_custom_base_url() . '/' . str_replace(' ', '%20', $pic_url);
         }
-        $description = $item_row['description'];
+        $description = $item_row['the_description'];
         $bribable = $item_row['bribable'];
         $healthy = $item_row['healthy'];
 
@@ -254,7 +254,7 @@ function output_room_screen($member_id)
             'ACTION' => do_lang_tempcode('W_TAKE'),
             'EDIT_ACCESS' => $edit_item_copy_access,
             'MEMBER' => strval($myrow['copy_owner']),
-            'DESCRIPTION' => $myrow2['description'],
+            'DESCRIPTION' => $myrow2['the_description'],
             'PICTURE_URL' => $picture_url,
             'AUX' => $aux,
             'NAME' => $myrow['name'],
@@ -288,7 +288,7 @@ function output_room_screen($member_id)
             'SELLER' => $seller,
             'EDIT_ACCESS' => $edit_item_copy_access,
             'MEMBER' => strval($myrow['copy_owner']),
-            'DESCRIPTION' => $myrow2['description'],
+            'DESCRIPTION' => $myrow2['the_description'],
             'PICTURE_URL' => $myrow2['picture_url'],
             'AUX' => $aux,
             'NAME' => $myrow['name'],

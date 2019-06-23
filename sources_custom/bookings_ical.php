@@ -65,7 +65,7 @@ function bookables_ical_script()
         }
 
         echo "SUMMARY:" . ical_escape(get_translated_text($event['title'])) . "\n";
-        $description = get_translated_text($event['description']);
+        $description = get_translated_text($event['the_description']);
         echo "DESCRIPTION:" . ical_escape($description) . "\n";
 
         if (!is_guest($event['submitter'])) {

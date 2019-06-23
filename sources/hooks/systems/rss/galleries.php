@@ -97,8 +97,8 @@ class Hook_rss_galleries
                 } else {
                     $news_title = xmlentities(do_lang('THIS_WITH_SIMPLE', (($row['type'] == 'video') ? do_lang('VIDEO') : do_lang('IMAGE')), $id));
                 }
-                $just_row = db_map_restrict($row, array('id', 'description'));
-                $_summary = get_translated_tempcode($row['type'] . 's', $just_row, 'description');
+                $just_row = db_map_restrict($row, array('id', 'the_description'));
+                $_summary = get_translated_tempcode($row['type'] . 's', $just_row, 'the_description');
                 $summary = xmlentities($_summary->evaluate());
                 $news = '';
 

@@ -407,7 +407,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         'validated' => $validated,
     );
     $map += insert_lang('title', $title, 2);
-    $map += insert_lang_comcode('description', $description, 3);
+    $map += insert_lang_comcode('the_description', $description, 3);
     if ($id !== null) {
         $map['id'] = $id;
     }
@@ -493,13 +493,13 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'the_description', 'cat'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
     }
 
     $_title = $rows[0]['title'];
-    $_description = $rows[0]['description'];
+    $_description = $rows[0]['the_description'];
     $old_cat = $rows[0]['cat'];
 
     require_code('urls2');
@@ -532,7 +532,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         'thumb_url' => $thumb_url,
     );
     $update_map += lang_remap('title', $_title, $title);
-    $update_map += lang_remap_comcode('description', $_description, $description);
+    $update_map += lang_remap_comcode('the_description', $_description, $description);
 
     $update_map['edit_date'] = $edit_time;
     if ($add_time !== null) {
@@ -607,13 +607,13 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
  */
 function delete_image($id, $delete_full = true)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'the_description', 'cat'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
     }
 
     $title = $rows[0]['title'];
-    $description = $rows[0]['description'];
+    $description = $rows[0]['the_description'];
     $cat = $rows[0]['cat'];
 
     delete_lang($title);
@@ -886,7 +886,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         'video_height' => $video_height,
     );
     $map += insert_lang('title', $title, 2);
-    $map += insert_lang_comcode('description', $description, 3);
+    $map += insert_lang_comcode('the_description', $description, 3);
     if ($id !== null) {
         $map['id'] = $id;
     }
@@ -981,13 +981,13 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'the_description', 'cat'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
     }
 
     $_title = $rows[0]['title'];
-    $_description = $rows[0]['description'];
+    $_description = $rows[0]['the_description'];
     $old_cat = $rows[0]['cat'];
     $orig_url = $rows[0]['url'];
 
@@ -1022,7 +1022,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         'video_height' => $video_height,
     );
     $update_map += lang_remap('title', $_title, $title);
-    $update_map += lang_remap_comcode('description', $_description, $description);
+    $update_map += lang_remap_comcode('the_description', $_description, $description);
 
     $update_map['edit_date'] = $edit_time;
     if ($add_time !== null) {
@@ -1104,12 +1104,12 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
  */
 function delete_video($id, $delete_full = true)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'the_description', 'cat'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
     }
     $title = $rows[0]['title'];
-    $description = $rows[0]['description'];
+    $description = $rows[0]['the_description'];
     $cat = $rows[0]['cat'];
 
     delete_lang($title);
@@ -1297,7 +1297,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
         'g_owner' => $g_owner,
         'gallery_views' => 0,
     );
-    $map += insert_lang_comcode('description', $description, 2);
+    $map += insert_lang_comcode('the_description', $description, 2);
     $map += insert_lang_comcode('fullname', $fullname, 1);
     $GLOBALS['SITE_DB']->query_insert('galleries', $map);
 
@@ -1432,7 +1432,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         seo_meta_set_for_explicit('gallery', $name, $meta_keywords, $meta_description);
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'description'), array('name' => $old_name), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'the_description'), array('name' => $old_name), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }
@@ -1450,7 +1450,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         'allow_comments' => $allow_comments,
     );
     $update_map += lang_remap_comcode('fullname', $myrow['fullname'], $fullname);
-    $update_map += lang_remap_comcode('description', $myrow['description'], $description);
+    $update_map += lang_remap_comcode('the_description', $myrow['the_description'], $description);
 
     require_code('files2');
 
@@ -1542,7 +1542,7 @@ function delete_gallery($name)
     }
 
     delete_lang($rows[0]['fullname']);
-    delete_lang($rows[0]['description']);
+    delete_lang($rows[0]['the_description']);
 
     // Images and videos are deleted, because we are deleting the _gallery_, not just a category (nobody is going to be deleting galleries with the expectation of moving the image to a different one in bulk - unlike download categories, for example).
     $old_limit = cms_disable_time_limit();

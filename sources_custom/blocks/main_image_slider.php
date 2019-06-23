@@ -125,8 +125,8 @@ class Block_main_image_slider
             $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
-        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,url,title,description,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,thumb_url AS url,title,description,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,url,title,description,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS__COMCODE'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,thumb_url AS url,title,description,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS__COMCODE'));
         $all_rows = array();
         if ($order != '') {
             foreach (explode(',', $order) as $o) {
@@ -173,10 +173,10 @@ class Block_main_image_slider
 
             $view_url = build_url(array('page' => 'galleries', 'type' => $row['content_type'], 'id' => $row['id']), $zone);
 
-            $just_media_row = db_map_restrict($row, array('id', 'description'));
+            $just_media_row = db_map_restrict($row, array('id', 'the_description'));
 
             $title = get_translated_text($row['title']);
-            $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
+            $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'the_description');
 
             $images[] = array(
                 'URL' => $url,

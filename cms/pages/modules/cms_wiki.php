@@ -427,8 +427,8 @@ class Module_cms_wiki
         $page = $pages[0];
 
         $page_title = get_translated_text($page['title']);
-        $description = get_translated_text($page['description']);
-        $_description = get_translated_tempcode('wiki_pages', $page, 'description');
+        $description = get_translated_text($page['the_description']);
+        $_description = get_translated_tempcode('wiki_pages', $page, 'the_description');
 
         $redir_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redir_url == '') {

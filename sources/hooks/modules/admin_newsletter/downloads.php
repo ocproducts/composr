@@ -84,7 +84,7 @@ class Hook_whatsnew_downloads
             $_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']), get_module_zone('downloads'), array(), false, false, true);
             $url = $_url->evaluate();
             $name = get_translated_text($row['name'], null, $lang);
-            $description = get_translated_text($row['description'], null, $lang);
+            $description = get_translated_text($row['the_description'], null, $lang);
             $member_id = (is_guest($row['submitter'])) ? null : strval($row['submitter']);
             $thumb_url = null;
             if (addon_installed('galleries')) {

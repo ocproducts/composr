@@ -61,7 +61,7 @@ class Hook_rss_authors
             $edit_date = '';
 
             $news_title = xmlentities(escape_html($row['author']));
-            $_summary = get_translated_tempcode('authors', $row, 'description');
+            $_summary = get_translated_tempcode('authors', $row, 'the_description');
             $summary = xmlentities($_summary->evaluate());
             $news = '';
 

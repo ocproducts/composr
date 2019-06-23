@@ -541,7 +541,7 @@ function make_booking_request_printable($request)
             'BOOKABLE_TITLE' => get_translated_tempcode('bookable', $bookable_row[0], 'title'),
             'PRICE' => float_format($bookable_row[0]['price']),
             'CATEGORISATION' => get_translated_text($bookable_row[0]['categorisation']),
-            'DESCRIPTION' => get_translated_tempcode('bookable', $bookable_row[0], 'description'),
+            'DESCRIPTION' => get_translated_tempcode('bookable', $bookable_row[0], 'the_description'),
             'QUANTITY' => integer_format($_part['quantity']),
             '_QUANTITY' => strval($_part['quantity']),
             'START' => get_timezoned_date($start, false),

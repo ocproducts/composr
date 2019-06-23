@@ -35,7 +35,7 @@ class Module_galleries
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 10;
+        $info['version'] = 11;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -88,7 +88,7 @@ class Module_galleries
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('galleries', array(
                 'name' => '*ID_TEXT',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'fullname' => 'SHORT_TRANS__COMCODE',
                 'add_date' => 'TIME',
                 'rep_image' => 'URLPATH',
@@ -114,14 +114,14 @@ class Module_galleries
             $GLOBALS['SITE_DB']->create_index('galleries', 'gadd_date', array('add_date'));
             $GLOBALS['SITE_DB']->create_index('galleries', 'parent_id', array('parent_id'));
             $GLOBALS['SITE_DB']->create_index('galleries', 'ftjoin_gfullname', array('fullname'));
-            $GLOBALS['SITE_DB']->create_index('galleries', 'ftjoin_gdescrip', array('description'));
+            $GLOBALS['SITE_DB']->create_index('galleries', 'ftjoin_gdescrip', array('the_description'));
 
             $GLOBALS['SITE_DB']->create_table('images', array(
                 'id' => '*AUTO',
                 'cat' => 'ID_TEXT',
                 'url' => 'URLPATH',
                 'thumb_url' => 'URLPATH',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'allow_rating' => 'BINARY',
                 'allow_comments' => 'SHORT_INTEGER',
                 'allow_trackbacks' => 'BINARY',
@@ -145,7 +145,7 @@ class Module_galleries
                 'cat' => 'ID_TEXT',
                 'url' => 'URLPATH',
                 'thumb_url' => 'URLPATH',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'allow_rating' => 'BINARY',
                 'allow_comments' => 'SHORT_INTEGER',
                 'allow_trackbacks' => 'BINARY',
@@ -205,8 +205,8 @@ class Module_galleries
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
-            $GLOBALS['SITE_DB']->alter_table_field('images', 'comments', 'LONG_TRANS', 'description');
-            $GLOBALS['SITE_DB']->alter_table_field('videos', 'comments', 'LONG_TRANS', 'description');
+            $GLOBALS['SITE_DB']->alter_table_field('images', 'comments', 'LONG_TRANS', 'the_description');
+            $GLOBALS['SITE_DB']->alter_table_field('videos', 'comments', 'LONG_TRANS', 'the_description');
             $GLOBALS['SITE_DB']->delete_table_field('galleries', 'teaser');
         }
 
@@ -221,9 +221,9 @@ class Module_galleries
         if (($upgrade_from === null) || ($upgrade_from < 10)) {
             $GLOBALS['SITE_DB']->create_index('video_transcoding', 't_local_id', array('t_local_id'));
 
-            $GLOBALS['SITE_DB']->create_index('galleries', '#gallery_search__combined', array('fullname', 'description'));
-            $GLOBALS['SITE_DB']->create_index('images', '#image_search__combined', array('description', 'title'));
-            $GLOBALS['SITE_DB']->create_index('videos', '#video_search__combined', array('description', 'title'));
+            $GLOBALS['SITE_DB']->create_index('galleries', '#gallery_search__combined', array('fullname', 'the_description'));
+            $GLOBALS['SITE_DB']->create_index('images', '#image_search__combined', array('the_description', 'title'));
+            $GLOBALS['SITE_DB']->create_index('videos', '#video_search__combined', array('the_description', 'title'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_gallery', false);
             add_privilege('SEARCH', 'autocomplete_title_gallery', false);
@@ -232,8 +232,14 @@ class Module_galleries
             add_privilege('SEARCH', 'autocomplete_keyword_videos', false);
             add_privilege('SEARCH', 'autocomplete_title_videos', false);
 
-            $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_idescription', array('description'));
-            $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_vdescription', array('description'));
+            $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_idescription', array('the_description'));
+            $GLOBALS['SITE_DB']->create_index('videos', 'ftjoin_vdescription', array('the_description'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 11)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('galleries', 'description', 'LONG_TRANS__COMCODE', 'the_description');
+            $GLOBALS['SITE_DB']->alter_table_field('images', 'description', 'LONG_TRANS__COMCODE', 'the_description');
+            $GLOBALS['SITE_DB']->alter_table_field('videos', 'description', 'LONG_TRANS__COMCODE', 'the_description');
         }
     }
 
@@ -518,8 +524,8 @@ class Module_galleries
 
         require_code('images');
 
-        $just_gallery_row = db_map_restrict($myrow, array('name', 'description'));
-        $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
+        $just_gallery_row = db_map_restrict($myrow, array('name', 'the_description'));
+        $description = get_translated_tempcode('galleries', $just_gallery_row, 'the_description');
         $may_download_gallery = has_privilege(get_member(), 'may_download_gallery', 'galleries', array('galleries', $cat));
 
         // Management links
@@ -760,7 +766,7 @@ class Module_galleries
                     $row = $rows[0];
                 }
 
-                $just_row = db_map_restrict($row, array('id', 'description'));
+                $just_row = db_map_restrict($row, array('id', 'the_description'));
 
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('galleries', $cat)))) {
                     $entry_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit_other', 'id' => $row['id']), get_module_zone('cms_galleries'));
@@ -786,7 +792,7 @@ class Module_galleries
                     'EDIT_URL' => $entry_edit_url,
                     'MAIN' => true,
                     'RATING_DETAILS' => $entry_rating_details,
-                    'DESCRIPTION' => get_translated_tempcode('videos', $just_row, 'description'),
+                    'DESCRIPTION' => get_translated_tempcode('videos', $just_row, 'the_description'),
                     'CAT' => $cat,
                     'THUMB_URL' => $url,
                     'FULL_URL' => $full_url,
@@ -822,7 +828,7 @@ class Module_galleries
                     $row = $rows[0];
                 }
 
-                $just_row = db_map_restrict($row, array('id', 'description'));
+                $just_row = db_map_restrict($row, array('id', 'the_description'));
 
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('galleries', $cat)))) {
                     $entry_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => $row['id']), get_module_zone('cms_galleries'));
@@ -853,7 +859,7 @@ class Module_galleries
                     'EDIT_URL' => $entry_edit_url,
                     'MAIN' => true,
                     'RATING_DETAILS' => $entry_rating_details,
-                    'DESCRIPTION' => get_translated_tempcode('images', $just_row, 'description'),
+                    'DESCRIPTION' => get_translated_tempcode('images', $just_row, 'the_description'),
                     'FILE_SIZE' => $file_size,
                     'CAT' => $cat,
                     'THUMB_URL' => $thumb_url,
@@ -884,8 +890,8 @@ class Module_galleries
             $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
         }
         $max_entries = intval(get_option('gallery_entries_flow_per_page'));
-        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS__COMCODE'));
 
         // See if there is a numbering system to sort by
         $all_are = null;
@@ -912,10 +918,10 @@ class Module_galleries
                 continue;
             }
 
-            $just_row = db_map_restrict($row, array('id', 'description'), array('id' => 'r_id'));
+            $just_row = db_map_restrict($row, array('id', 'the_description'), array('id' => 'r_id'));
 
             $entry_title = get_translated_text($row['title']);
-            $entry_description = get_translated_tempcode($type . 's', $just_row, 'description');
+            $entry_description = get_translated_tempcode($type . 's', $just_row, 'the_description');
 
             $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'flow_mode_interface' => get_param_integer('flow_mode_interface', null), 'probe_type' => $type, 'probe_id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
             $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
@@ -1140,8 +1146,8 @@ class Module_galleries
         );
 
         // Description
-        $just_row = db_map_restrict($myrow, array('cat', 'description'));
-        $description = get_translated_tempcode('images', $just_row, 'description');
+        $just_row = db_map_restrict($myrow, array('cat', 'the_description'));
+        $description = get_translated_tempcode('images', $just_row, 'the_description');
 
         // Validation
         if (($myrow['validated'] == 0) && (addon_installed('unvalidated'))) {
@@ -1257,8 +1263,8 @@ class Module_galleries
         );
 
         // Description
-        $just_row = db_map_restrict($myrow, array('cat', 'description'));
-        $description = get_translated_tempcode('videos', $just_row, 'description');
+        $just_row = db_map_restrict($myrow, array('cat', 'the_description'));
+        $description = get_translated_tempcode('videos', $just_row, 'the_description');
 
         // Validation
         if (($myrow['validated'] == 0) && (addon_installed('unvalidated'))) {

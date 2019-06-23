@@ -87,8 +87,8 @@ class Hook_ajax_tree_choose_download
                         }
                     }
 
-                    $description = get_translated_text($download_rows[0]['description']);
-                    $description_html = get_translated_tempcode('download_downloads', $download_rows[0], 'description');
+                    $description = get_translated_text($download_rows[0]['the_description']);
+                    $description_html = get_translated_tempcode('download_downloads', $download_rows[0], 'the_description');
 
                     if (addon_installed('galleries')) {
                         // Images
@@ -114,7 +114,7 @@ class Hook_ajax_tree_choose_download
                                 $view_url = get_custom_base_url() . '/' . $view_url;
                             }
                             $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
-                            $description_image = get_translated_tempcode('images', $row, 'description');
+                            $description_image = get_translated_tempcode('images', $row, 'the_description');
                             $thumb = do_image_thumb($thumb_url, '');
                             $iedit_url = new Tempcode();
                             $_content = do_template('DOWNLOAD_SCREEN_IMAGE', array(

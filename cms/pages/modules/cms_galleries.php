@@ -1041,7 +1041,7 @@ class Module_cms_galleries extends Standard_crud_module
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
         }
         $myrow = $rows[0];
-        $description = get_translated_text($myrow['description']);
+        $description = get_translated_text($myrow['the_description']);
         $cat = $myrow['cat'];
         $validated = $myrow['validated'];
 
@@ -1673,7 +1673,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
         }
         $myrow = $rows[0];
-        $description = get_translated_text($myrow['description']);
+        $description = get_translated_text($myrow['the_description']);
         $url = $myrow['url'];
         $cat = $myrow['cat'];
         $validated = $myrow['validated'];
@@ -2132,7 +2132,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        return $this->get_form_fields($id, get_translated_text($myrow['fullname']), get_translated_text($myrow['description']), $myrow['notes'], $myrow['parent_id'], $myrow['accept_images'], $myrow['accept_videos'], $myrow['is_member_synched'], $myrow['flow_mode_interface'], $myrow['rep_image'], $myrow['watermark_top_left'], $myrow['watermark_top_right'], $myrow['watermark_bottom_left'], $myrow['watermark_bottom_right'], $myrow['allow_rating'], $myrow['allow_comments']);
+        return $this->get_form_fields($id, get_translated_text($myrow['fullname']), get_translated_text($myrow['the_description']), $myrow['notes'], $myrow['parent_id'], $myrow['accept_images'], $myrow['accept_videos'], $myrow['is_member_synched'], $myrow['flow_mode_interface'], $myrow['rep_image'], $myrow['watermark_top_left'], $myrow['watermark_top_right'], $myrow['watermark_bottom_left'], $myrow['watermark_bottom_right'], $myrow['allow_rating'], $myrow['allow_comments']);
     }
 
     /**

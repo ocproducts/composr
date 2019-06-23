@@ -462,7 +462,7 @@ class Database_super_mysql extends DatabaseDriver
             $type = isset($type_remap[$type]) ? $type_remap[$type] : $type;
 
             $_fields .= '    ' . $name . ' ' . $type;
-            /*if (substr($name, -13) == '__text_parsed') {    BLOB/TEXT column 'description__text_parsed' can't have a default value
+            /*if (substr($name, -13) == '__text_parsed') {    BLOB/TEXT column 'the_description__text_parsed' can't have a default value
                 $_fields .= ' DEFAULT \'\'';
             } else*/
             if (substr($name, -13) == '__source_user') {
