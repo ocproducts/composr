@@ -857,7 +857,7 @@ Some further tips:
  - Don't forget that Cron scripts may have a performance impact, especially because by default Opcode caches are not enabled for them.
  - Be wary that web requests may be slowed down by things external to that request -- for example if requests have been backlogged, resulting in saturated processing -- or if intensive background tasks (such as Cron) are running in parallel.
  - If you are seeing swap space used even when you have plenty of free RAM and a low [tt]swappiness[/tt] setting, you can do [tt]swapoff -a; swapon -a[/tt] to force it to clear.
- - Check your [tt]robots.txt[/tt] file actually can be called by URL (it's easy to accidentally set the wrong file permissions on it and not notice, for example).
+ - Check your [tt]robots.txt[/tt] file (if you have one) actually can be called by URL (it's easy to accidentally set the wrong file permissions on it and not notice, for example).
 
 [title="3"]Improving Apache access logs[/title]
 
