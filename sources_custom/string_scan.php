@@ -1145,6 +1145,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMD_CSS_CLEANUP_HELP
         CMD_CSS_CLEANUP_HELP_PARAM_0
         CMD_CSS_CLEANUP_HELP_PARAM_1
+        CMD_TEST_MAIL_HELP
+        CMD_TEST_MAIL_HELP_PARAM_0
         DESCRIPTION__THEME__OPTION_OVERRIDES
         IS_ALSO_THEME_SETTING
         NAG_UNINSTALL_TEST_CONTENT

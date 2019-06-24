@@ -338,6 +338,7 @@ class Hook_addon_registry_better_mail
             'sources_custom/swift_mailer/LICENSE',
             'sources_custom/swift_mailer/README',
             'sources_custom/swift_mailer/VERSION',
+            'sources_custom/hooks/systems/health_checks/email.php',
         );
     }
 }

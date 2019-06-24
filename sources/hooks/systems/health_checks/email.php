@@ -18,7 +18,7 @@
  * @package    health_check
  */
 
-/*EXTRA FUNCTIONS: dns_get_record|imap_.+*/
+/*EXTRA FUNCTIONS: dns_get_record|imap_.+|error_log*/
 
 /**
  * Hook class.
@@ -47,6 +47,8 @@ class Hook_health_check_email extends Hook_Health_Check
         $this->process_checks_section('testDKIMConfiguration', 'DKIM configuration', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testDMARCConfiguration', 'DMARC configuration', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testSPF', 'SPF', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testSMTPLogin', 'SMTP login', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
+        $this->process_checks_section('testIMAPLogin', 'IMAP login', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testEmailOperation', 'E-mail operation (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testSMTPBlacklisting', 'SMTP blacklisting', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
         $this->process_checks_section('testEmailTemplates', 'E-mail templates', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
@@ -448,6 +450,138 @@ class Hook_health_check_email extends Hook_Health_Check
         }
 
         return false;
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testSMTPLogin($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        if ((get_option('smtp_sockets_use') == '0') || (!php_function_allowed('fsockopen'))) {
+            $this->stateCheckSkipped('SMTP mailer not enabled');
+
+            return;
+        }
+
+        $host = get_option('smtp_sockets_host');
+        $port = intval(get_option('smtp_sockets_port'));
+        $username = get_option('smtp_sockets_username');
+        $password = get_option('smtp_sockets_password');
+
+        require_lang('mail');
+
+        $error = null;
+
+        if (php_function_allowed('fsockopen')) {
+            $errno = 0;
+            $errstr = '';
+
+            $socket = @fsockopen($host, $port, $errno, $errstr, 30.0);
+            if ($socket !== false) {
+                $rcv = fread($socket, 1024);
+                $base_url = parse_url(get_base_url());
+                $domain = $base_url['host'];
+
+                // Log in if necessary
+                if ($username != '') {
+                    fwrite($socket, 'EHLO ' . $domain . "\r\n");
+                    $rcv = fread($socket, 1024);
+
+                    fwrite($socket, "AUTH LOGIN\r\n");
+                    $rcv = fread($socket, 1024);
+                    if (strtolower(substr($rcv, 0, 3)) == '334') {
+                        fwrite($socket, base64_encode($username) . "\r\n");
+                        $rcv = fread($socket, 1024);
+                        if ((strtolower(substr($rcv, 0, 3)) == '235') || (strtolower(substr($rcv, 0, 3)) == '334')) {
+                            fwrite($socket, base64_encode($password) . "\r\n");
+                            $rcv = fread($socket, 1024);
+                            if (strtolower(substr($rcv, 0, 3)) == '235') {
+                            } else {
+                                $error = do_lang('MAIL_ERROR_CONNECT_PASSWORD') . ' (' . str_replace($password, '*', $rcv) . ')';
+                            }
+                        } else {
+                            $error = do_lang('MAIL_ERROR_CONNECT_USERNAME') . ' (' . $rcv . ')';
+                        }
+                    } else {
+                        $error = do_lang('MAIL_ERROR_CONNECT_AUTH') . ' (' . $rcv . ')';
+                    }
+                } else {
+                    fwrite($socket, 'HELO ' . $domain . "\r\n");
+                    $rcv = fread($socket, 1024);
+                }
+            }
+        } else {
+            $this->stateCheckSkipped('fsockopen is not available');
+
+            return;
+        }
+
+        $this->assertTrue($error === null, 'SMTP login failed with ' . (($error === null) ? 'N/A' : $error));
+
+        if ($error !== null) {
+            if (running_script('cron_bridge')) {
+                @error_log('Mailer error: ' . $error); // We log this, as Health Check is not going to be able to send an e-mail
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @param  ?array $urls_or_page_links List of URLs and/or page-links to operate on, if applicable (null: those configured)
+     * @param  ?array $comcode_segments Map of field names to Comcode segments to operate on, if applicable (null: N/A)
+     */
+    public function testIMAPLogin($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null, $urls_or_page_links = null, $comcode_segments = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+        if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
+            return;
+        }
+
+        if (!php_function_allowed('imap_open')) {
+            $this->stateCheckSkipped('IMAP functionality not available');
+            return;
+        }
+
+        $type = get_option('mail_server_type');
+        $host = get_option('mail_server_host');
+        $port = intval(get_option('mail_server_port'));
+        $folder = get_option('mail_folder');
+
+        $username = get_option('mail_username');
+        $password = get_option('mail_password');
+
+        if (($host == '') || ($username == '') || ($password == '')) {
+            $this->stateCheckSkipped('IMAP not fully configured');
+            return;
+        }
+
+        require_code('mail');
+        require_code('mail2');
+        $server_spec = _imap_server_spec($host, $port, $type);
+
+        $mbox = @imap_open($server_spec . $folder, $username, $password);
+        $this->assertTrue($mbox !== false, 'Cannot connect to IMAP server');
     }
 
     /**

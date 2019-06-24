@@ -946,7 +946,8 @@ function find_all_hook_obs($type, $subtype, $classname_prefix)
     ksort($hooks);
     foreach ($hooks as $hook => $hook_dir) {
         require_code('hooks/' . $type . '/' . $subtype . '/' . $hook, false, $hook_dir == 'sources_custom');
-        $ob = object_factory($classname_prefix . $hook, true);
+
+        $ob = object_factory(class_exists(str_replace('Hook_', 'Hx_', $classname_prefix) . $hook) ? (str_replace('Hook_', 'Hx_', $classname_prefix) . $hook) : ($classname_prefix . $hook), true);
         if ($ob !== null) {
             $hooks[$hook] = $ob;
         } else {
