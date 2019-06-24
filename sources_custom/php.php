@@ -185,6 +185,10 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
 
                 if ($ltrim[0] == '@') { // Some kind of code
                     if (substr($ltrim, 0, 6) == '@param') {
+                        if ($return !== null) {
+                            attach_message('Parameters should not be defined after a return value', 'inform');
+                        }
+
                         $arg_counter++;
                         if (!array_key_exists($arg_counter, $parameters)) {
                             attach_message(do_lang_tempcode('PARAMETER_MISMATCH', escape_html($function_name)), 'warn');

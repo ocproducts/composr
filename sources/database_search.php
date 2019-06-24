@@ -1732,9 +1732,9 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
  *
  * @param  array $hook_results Search results from the search hook, assumed already sorted
  * @param  array $results Existing array of results (originally starts blank)
- * @return array Sorted results
  * @param  string $direction Sort direction
  * @set ASC DESC
+ * @return array Sorted results
  */
 function sort_search_results($hook_results, $results, $direction)
 {
