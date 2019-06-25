@@ -123,41 +123,47 @@ function privilege_exists($name)
  *
  * @param  ID_TEXT $section The section the privilege is filled under
  * @param  ID_TEXT $name The codename for the privilege
- * @param  boolean $default Whether this permission is granted to all usergroups by default
- * @param  boolean $not_even_mods Whether this permission is not granted to supermoderators by default (something very sensitive)
+ * @param  boolean $default Whether this privilege is granted to all usergroups by default
+ * @param  boolean $not_even_mods Whether this privilege is not granted to supermoderators by default (something very sensitive); only applies if $default is true
+ * @param  boolean $not_for_probation An exception for if $default is true, don't assign the privilege to the probation group
  */
-function add_privilege($section, $name, $default = false, $not_even_mods = false)
+function add_privilege($section, $name, $default = false, $not_even_mods = false, $not_for_probation = false)
 {
-    if (!$not_even_mods) { // NB: Don't actually need to explicitly give admins privileges
-        $ins_privilege = array();
-        $ins_group_id = array();
-        $ins_the_page = array();
-        $ins_module_the_name = array();
-        $ins_category_name = array();
-        $ins_the_value = array();
-
-        $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        $admin_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
-        foreach (array_keys($usergroups) as $id) {
-            if (($default) || (in_array($id, $admin_groups))) {
-                $ins_privilege[] = $name;
-                $ins_group_id[] = $id;
-                $ins_the_page[] = '';
-                $ins_module_the_name[] = '';
-                $ins_category_name[] = '';
-                $ins_the_value[] = 1;
-            }
-        }
-
-        $GLOBALS['SITE_DB']->query_insert('group_privileges', array(
-            'privilege' => $ins_privilege,
-            'group_id' => $ins_group_id,
-            'the_page' => $ins_the_page,
-            'module_the_name' => $ins_module_the_name,
-            'category_name' => $ins_category_name,
-            'the_value' => $ins_the_value,
-        ));
+    if (get_forum_type() == 'cns') {
+        $probation_usergroup = intval(get_option('probation_usergroup'));
+    } else {
+        $probation_usergroup = null;
     }
+
+    // We do bulk inserts, for performance reasons
+    $ins_privilege = array();
+    $ins_group_id = array();
+    $ins_the_page = array();
+    $ins_module_the_name = array();
+    $ins_category_name = array();
+    $ins_the_value = array();
+
+    $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+    $admin_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
+    foreach (array_keys($usergroups) as $id) {
+        if ((($default) && ((!$not_for_probation) || ($id !== $probation_usergroup))) || ((in_array($id, $admin_groups)) && (!$not_even_mods))) {
+            $ins_privilege[] = $name;
+            $ins_group_id[] = $id;
+            $ins_the_page[] = '';
+            $ins_module_the_name[] = '';
+            $ins_category_name[] = '';
+            $ins_the_value[] = 1;
+        }
+    }
+
+    $GLOBALS['SITE_DB']->query_insert('group_privileges', array(
+        'privilege' => $ins_privilege,
+        'group_id' => $ins_group_id,
+        'the_page' => $ins_the_page,
+        'module_the_name' => $ins_module_the_name,
+        'category_name' => $ins_category_name,
+        'the_value' => $ins_the_value,
+    ));
 
     $GLOBALS['SITE_DB']->query_insert('privilege_list', array('p_section' => $section, 'the_name' => $name, 'the_default' => ($default ? 1 : 0)));
 }

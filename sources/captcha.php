@@ -289,6 +289,10 @@ function use_captcha()
         return true;
     }
 
+    if (has_privilege(get_member(), 'avoid_captcha')) {
+        return false;
+    }
+
     $days = get_option('captcha_member_days');
     if ((!empty($days)) && ($GLOBALS['FORUM_DRIVER']->get_member_join_timestamp(get_member()) > time() - 60 * 60 * 24 * intval($days))) {
         return true;
