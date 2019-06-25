@@ -114,6 +114,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        ROBOTS_TXT
+        ROBOTS_TXT_ALREADY_EXISTS
+        ROBOTS_TXT_CREATED
+        ROBOTS_TXT_NOT_MAPPED
+        ROBOTS_TXT_COULD_NOT_WRITE
+        DOC_ROBOTS_TXT
         BLOCK_TOP_LANGUAGE
         BLOCK_TRANS_NAME_top_language
         CONFIG_OPTION_block_top_language
