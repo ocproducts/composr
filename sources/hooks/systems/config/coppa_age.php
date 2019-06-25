@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_privacy_fax
+class Hook_config_coppa_age
 {
     /**
      * Gets the details relating to the config option.
@@ -31,18 +31,17 @@ class Hook_config_privacy_fax
     public function get_details()
     {
         return array(
-            'human_name' => 'FAX_NUMBER',
-            'type' => 'line',
+            'human_name' => 'COPPA_AGE',
+            'type' => 'integer',
             'category' => 'PRIVACY',
             'group' => 'COPPA',
-            'explanation' => 'CONFIG_OPTION_privacy_fax',
+            'explanation' => 'CONFIG_OPTION_coppa_age',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 4,
-            'required' => false,
+            'order_in_category_group' => 2,
 
+            'required' => true,
             'public' => false,
-
             'addon' => 'core_cns',
         );
     }
@@ -54,6 +53,6 @@ class Hook_config_privacy_fax
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '';
+        return (get_forum_type() != 'cns') ? null : '13';
     }
 }

@@ -175,6 +175,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/httpauth_is_enabled.php',
             'sources/hooks/systems/config/invites_per_day.php',
             'sources/hooks/systems/config/is_on_coppa.php',
+            'sources/hooks/systems/config/coppa_age.php',
             'sources/hooks/systems/config/is_on_invisibility.php',
             'sources/hooks/systems/config/is_on_invites.php',
             'sources/hooks/systems/config/is_on_timezone_detection.php',
@@ -463,6 +464,7 @@ class Hook_addon_registry_core_cns
             'sources/blocks/main_join.php',
             'themes/default/templates/BLOCK_MAIN_JOIN.tpl',
             'themes/default/templates/BLOCK_MAIN_JOIN_DONE.tpl',
+            'themes/default/text/COPPA_MAIL.txt',
             'sources/hooks/systems/actionlog/core_cns.php',
 
             // Files for post map functionality
@@ -514,6 +516,7 @@ class Hook_addon_registry_core_cns
             'templates/BLOCK_MAIN_JOIN_DONE.tpl' => 'block_main_join_done',
             'templates/BLOCK_MAIN_JOIN.tpl' => 'block_main_join',
             'templates/JOIN_FORM.tpl' => 'join_form',
+            'text/COPPA_MAIL.txt' => 'administrative__coppa_mail',
         );
     }
 
@@ -1386,6 +1389,29 @@ class Hook_addon_registry_core_cns
                 'ONE_PER_EMAIL_ADDRESS' => true,
                 'USE_CAPTCHA' => true,
             )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__validation_request_mail()
+    {
+        $fields_done = array();
+        $fields_done[] = array('LABEL' => lorem_phrase(), 'VALUE' => lorem_phrase());
+
+        return array(
+            lorem_globalise(do_lorem_template('COPPA_MAIL', array(
+                'FAX' => lorem_phrase(),
+                'POSTAL_ADDRESS' => lorem_phrase(),
+                'EMAIL_ADDRESS' => lorem_phrase(),
+                'FIELDS_DONE' => $fields_done,
+                'PRIVACY_POLICY_URL' => placeholder_url(),
+            ), null, false, null, '.txt', 'text'), null, '', true)
         );
     }
 }

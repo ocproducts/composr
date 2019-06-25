@@ -3139,7 +3139,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_is_on_coppa
         CNS_WAITING_CONFIRM_MAIL_COPPA
         COPPA_JOIN_SUBJECT
-        COPPA_MAIL
         PREPARE_EMAIL
         PREPARE_EMAIL_DESCRIPTION
         PREPARE_EMAIL_SUBJECT
@@ -10217,7 +10216,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         THEY_DOWNLOADED_THIS
         THIS
         THIS_IS_COMMENT_TOPIC
-        THIS_WITH_COMCODE
         THIS_WITH_SIMPLE
         THREADED_REPLY_NOTICE
         THUMBNAIL

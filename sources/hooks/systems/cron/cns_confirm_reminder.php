@@ -53,7 +53,7 @@ class Hook_cron_cns_confirm_reminder
             $this->rows = $GLOBALS['FORUM_DB']->query($query);
 
             foreach ($this->rows as $i => $row) {
-                $coppa = (get_option('is_on_coppa') == '1') && ($row['m_dob_year'] !== null) && (utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0 < 13.0);
+                $coppa = (get_option('is_on_coppa') == '1') && ($row['m_dob_year'] !== null) && (intval(floor(utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0)) < intval(get_option('coppa_age')));
                 if (!$coppa) {
                     unset($this->rows[$i]);
                 }
