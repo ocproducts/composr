@@ -163,14 +163,6 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
 
         $scripts = array( // Really bad if these get indexed on Google
             'adminzone/',
-            'code_editor.php',
-            'config_editor.php',
-            'data/cron_bridge.php',
-            'data/upgrader2.php',
-            'install.php',
-            'rootkit_detection.php',
-            'uninstall.php',
-            'upgrader.php',
         );
         foreach ($scripts as $script) {
             $url = get_base_url() . '/' . $script;

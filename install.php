@@ -2437,6 +2437,15 @@ function step_10()
     $log->attach(step_10_populate_database());
     $log->attach(step_10_forum_stuff());
 
+    if (addon_installed('robots_txt')) {
+        require_code('robots_txt');
+        $robots_txt_msg = null;
+        create_robots_txt(null, $robots_txt_msg);
+        if ($robots_txt_msg !== null) {
+            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'eddbb0cbc46520fe767e6292465751a1', 'SOMETHING' => protect_from_escaping($robots_txt_msg))));
+        }
+    }
+
     $final = do_lang_tempcode('FINAL_INSTRUCTIONS_A');
     global $FILE_ARRAY;
     if (!@is_array($FILE_ARRAY)) {
