@@ -18,6 +18,8 @@
  * @package    captcha
  */
 
+/*EXTRA FUNCTIONS: srand*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -241,7 +243,7 @@ function captcha_audio($code_needed)
 }
 
 /**
- * Get a captcha (aka security code) form field.
+ * Get a CAPTCHA (aka security code) form field.
  *
  * @param  Tempcode $hidden Hidden fields (will attach to here for non-visible CAPTCHA systems)
  * @return Tempcode The field
@@ -249,6 +251,31 @@ function captcha_audio($code_needed)
 function form_input_captcha($hidden)
 {
     $tabindex = get_form_field_tabindex(null);
+
+    if (uses_question_captcha()) {
+        $tpl = new Tempcode();
+
+        require_code('form_templates');
+
+        $questions = get_captcha_questions();
+        foreach ($questions as $i => $details) {
+            list($question, $answer, $wrong_answers) = $details;
+            if ($wrong_answers !== null) {
+                $answers = array_merge(array($answer), $wrong_answers);
+                sort($answers);
+                $_answers = new Tempcode();
+                $_answers->attach(form_input_list_entry(''));
+                foreach ($answers as $answer) {
+                    $_answers->attach(form_input_list_entry($answer));
+                }
+                $tpl->attach(form_input_list(comcode_to_tempcode($question, null, true), do_lang_tempcode('DESCRIPTION_CAPTCHA_QUESTION_LIST'), 'captcha_' . strval($i), $_answers, null, false, true));
+            } else {
+                $tpl->attach(form_input_line(comcode_to_tempcode($question, null, true), do_lang_tempcode('DESCRIPTION_CAPTCHA_QUESTION'), 'captcha_' . strval($i), '', true));
+            }
+        }
+
+        return $tpl;
+    }
 
     $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
     if ($code_needed === null) {
@@ -265,9 +292,9 @@ function form_input_captcha($hidden)
 }
 
 /**
- * Find whether captcha (the security image) should be used if preferred (making this call assumes it is preferred).
+ * Find whether CAPTCHA (the security image) should be used if preferred (making this call assumes it is preferred).
  *
- * @return boolean Whether captcha is used
+ * @return boolean Whether CAPTCHA is used
  */
 function use_captcha()
 {
@@ -307,6 +334,74 @@ function use_captcha()
 }
 
 /**
+ * Find whether the question-CAPTCHA will be used on the current page.
+ *
+ * @return boolean Whether question-CAPTCHA is used
+ */
+function uses_question_captcha()
+{
+    if (count(get_captcha_questions()) == 0) {
+        return false;
+    }
+
+    if (intval(get_option('captcha_question_total')) <= 0) {
+        return false;
+    }
+
+    $question_pages = trim(get_option('captcha_question_pages'));
+    if ($question_pages == '') {
+        return false;
+    }
+
+    if (!match_key_match($question_pages)) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Find question-CAPTCHA questions to use for the CAPTCHA.
+ * Applies randomisation as appropriate.
+ *
+ * @return array A list of tuples: question, answer, multi-choice answers (or null)
+ */
+function get_captcha_questions()
+{
+    $questions = array();
+    $_questions = trim(get_option('captcha_questions'));
+    foreach (explode("\n", $_questions) as $_question) {
+        $parts = explode('=', $_question);
+        if (count($parts) >= 2) {
+            $details = array(trim($parts[0]), trim($parts[1]), null);
+            if (count($parts) > 2) {
+                $details[2] = array_slice($parts, 2);
+            }
+            $questions[] = $details;
+        }
+    }
+
+    $question_total = intval(get_option('captcha_question_total'));
+    if ($question_total > count($questions)) {
+        $question_total = count($questions);
+    }
+
+    if ($question_total < count($questions)) {
+        srand(crc32(get_session_id())); // The session ID will seed which questions are picked; consistent across executions
+        $keys = array_rand($questions, $question_total);
+        srand();
+
+        $_questions = array();
+        foreach ($keys as $key) {
+            $_questions[$key] = $questions[$key];
+        }
+        $questions = $_questions;
+    }
+
+    return $questions;
+}
+
+/**
  * Generate a CAPTCHA image.
  */
 function generate_captcha()
@@ -342,7 +437,7 @@ function generate_captcha()
 }
 
 /**
- * Calling this assumes captcha was needed. Checks that it was done correctly.
+ * Calling this assumes CAPTCHA was needed. Checks that it was done correctly.
  *
  * @param  boolean $regenerate_on_error Whether to possibly regenerate upon error
  */
@@ -359,6 +454,19 @@ function enforce_captcha($regenerate_on_error = true)
 }
 
 /**
+ * Normalise a question-CAPTCHA answer, for better comparison.
+ *
+ * @param  string $answer Answer
+ * @return string Normalised answer
+ */
+function normalise_captcha_question_answer($answer)
+{
+    $ret = cms_mb_strtolower($answer);
+    $ret = trim($ret);
+    return $ret;
+}
+
+/**
  * Checks a CAPTCHA.
  *
  * @param  ?string $code_entered CAPTCHA entered (null: read from standard-named parameter)
@@ -368,76 +476,98 @@ function enforce_captcha($regenerate_on_error = true)
  */
 function check_captcha($code_entered = null, $regenerate_on_error = true, &$error_message = null)
 {
-    if (use_captcha()) {
-        if (get_option('recaptcha_site_key') != '') {
-            $url = 'https://www.google.com/recaptcha/api/siteverify';
-            $post_params = array(
-                'secret' => get_option('recaptcha_server_key'),
-                'response' => post_param_string('g-recaptcha-response'),
-            );
-            $_response = http_get_contents($url, array('post_params' => $post_params));
-            $response = json_decode($_response, true);
+    if (!use_captcha()) {
+        return true;
+    }
 
-            if (!$response['success']) {
-                foreach ($response['error-codes'] as $error_code) {
-                    switch ($error_code) {
-                        case 'timeout-or-duplicate':
-                            $error_message = do_lang_tempcode('RECAPTCHA_ERROR_' . str_replace('-', '_', $error_code));
-                            break;
+    // Question CAPTCHA...
 
-                        case 'missing-input-secret':
-                        case 'invalid-input-secret':
-                        case 'missing-input-response':
-                        case 'invalid-input-response':
-                        case 'bad-request':
-                            $error_message = do_lang_tempcode('RECAPTCHA_ERROR_' . str_replace('-', '_', $error_code));
-                            break;
-                    }
+    if (uses_question_captcha()) {
+        $questions = get_captcha_questions();
+        foreach ($questions as $i => $details) {
+            list($question, $answer) = $details;
+
+            if (normalise_captcha_question_answer(post_param_string('captcha_' . strval($i))) != normalise_captcha_question_answer($answer)) {
+                $error_message = do_lang_tempcode('INCORRECT_CAPTCHA_QUESTION_ANSWER', comcode_to_tempcode($question, null, true));
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Google CAPTCHA...
+
+    if (get_option('recaptcha_site_key') != '') {
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $post_params = array(
+            'secret' => get_option('recaptcha_server_key'),
+            'response' => post_param_string('g-recaptcha-response'),
+        );
+        $_response = http_get_contents($url, array('post_params' => $post_params));
+        $response = json_decode($_response, true);
+
+        if (!$response['success']) {
+            foreach ($response['error-codes'] as $error_code) {
+                switch ($error_code) {
+                    case 'timeout-or-duplicate':
+                        $error_message = do_lang_tempcode('RECAPTCHA_ERROR_' . str_replace('-', '_', $error_code));
+                        break;
+
+                    case 'missing-input-secret':
+                    case 'invalid-input-secret':
+                    case 'missing-input-response':
+                    case 'invalid-input-response':
+                    case 'bad-request':
+                        $error_message = do_lang_tempcode('RECAPTCHA_ERROR_' . str_replace('-', '_', $error_code));
+                        break;
                 }
             }
-
-            return $response['success'];
         }
 
-        if ($code_entered === null) {
-            $code_entered = post_param_string('captcha');
-        }
+        return $response['success'];
+    }
 
-        $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
-        if ($code_needed === null) {
-            if (get_option('captcha_single_guess') == '1') {
+    // Regular CAPTCHA...
+
+    if ($code_entered === null) {
+        $code_entered = post_param_string('captcha');
+    }
+
+    $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
+    if ($code_needed === null) {
+        if (get_option('captcha_single_guess') == '1') {
+            generate_captcha();
+        }
+        attach_message(do_lang_tempcode('NO_SESSION_SECURITY_CODE'), 'warn');
+        return false;
+    }
+    $passes = (strtolower($code_needed) == strtolower($code_entered));
+    if ($regenerate_on_error) {
+        if (get_option('captcha_single_guess') == '1') {
+            if ($passes) {
+                register_shutdown_function('_cleanout_captcha');
+            } else {
                 generate_captcha();
             }
-            attach_message(do_lang_tempcode('NO_SESSION_SECURITY_CODE'), 'warn');
-            return false;
         }
-        $passes = (strtolower($code_needed) == strtolower($code_entered));
-        if ($regenerate_on_error) {
-            if (get_option('captcha_single_guess') == '1') {
-                if ($passes) {
-                    register_shutdown_function('_cleanout_captcha');
-                } else {
-                    generate_captcha();
-                }
-            }
-        }
-        if (!$passes) {
-            $data = serialize($_POST);
-
-            // Log hack-attack
-            if (
-                (strpos($data, '[url=http://') !== false) ||
-                (strpos($data, '[link=') !== false) ||
-                ((strpos($data, ' href="') !== false) && (strpos($data, '[html') === false) && (strpos($data, '[semihtml') === false) && (strpos($data, '__is_wysiwyg') === false))
-            ) {
-                log_hack_attack_and_exit('CAPTCHAFAIL_HACK', '', '', true);
-            } else {
-                log_hack_attack_and_exit('CAPTCHAFAIL', '', '', true, false, 1); // Very low-scored, because it may well just be user-error
-            }
-        }
-        return $passes;
     }
-    return true;
+    if (!$passes) {
+        $data = serialize($_POST);
+
+        // Log hack-attack
+        if (
+            (strpos($data, '[url=http://') !== false) ||
+            (strpos($data, '[link=') !== false) ||
+            ((strpos($data, ' href="') !== false) && (strpos($data, '[html') === false) && (strpos($data, '[semihtml') === false) && (strpos($data, '__is_wysiwyg') === false))
+        ) {
+            log_hack_attack_and_exit('CAPTCHAFAIL_HACK', '', '', true);
+        } else {
+            log_hack_attack_and_exit('CAPTCHAFAIL', '', '', true, false, 1); // Very low-scored, because it may well just be user-error
+        }
+    }
+    return $passes;
 }
 
 /**

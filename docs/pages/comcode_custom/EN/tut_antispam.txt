@@ -18,7 +18,7 @@ Composr uses a unique method behind-the-scenes to generate the CAPTCHA (the 'CSS
 Generally-speaking, CAPTCHA will fully protect you from spam. The exception tends to be when real humans do set up accounts, then spam using them. Some spammers subcontract CAPTCHA solution to humans on low-salaries. Other spammers serve target site's CAPTCHAs out to video sites (for example) where viewers unwittingly are made to solve them in order to be allowed to watch a video.
 Therefore, we have additional controls.
 
-Alternative CAPTCHA systems, such as solving maths problems, or recognising cats, or answering domain-problems (i.e. something specific about the subject of the website the CAPTCHA is on), are very popular. However this is purely "security through obscurity". A spammer can easily target a specific site's collection of answers, then spam that site enormously -- because unlike the regular CAPTCHAs, these CAPTCHAs work on a much more limited set of problems and solutions.
+Alternative CAPTCHA systems, such as solving maths problems, or recognising cats, or answering domain-problems (i.e. something specific about the subject of the website the CAPTCHA is on), are very popular. However this is purely "security through obscurity". A spammer can easily target a specific site's collection of answers, then spam that site enormously -- because unlike the regular CAPTCHAs, these CAPTCHAs work on a much more limited set of problems and solutions. That said, they can work for smaller sites -- and we do offer this functionality.
 
 Other CAPTCHA systems use scanned text, or incredibly distorted text, that often even humans don't understand. We don't go with this approach, as it is a terrible user experience.
 

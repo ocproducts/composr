@@ -154,6 +154,9 @@ class Hook_addon_registry_captcha
             'sources/hooks/systems/config/recaptcha_site_key.php',
             'sources/hooks/systems/config/captcha_member_days.php',
             'sources/hooks/systems/config/captcha_member_posts.php',
+            'sources/hooks/systems/config/captcha_question_pages.php',
+            'sources/hooks/systems/config/captcha_question_total.php',
+            'sources/hooks/systems/config/captcha_questions.php',
         );
     }
 

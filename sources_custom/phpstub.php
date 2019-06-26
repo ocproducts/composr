@@ -2117,9 +2117,9 @@ function mt_rand($min, $max)
 /**
  * Seed the better random number generator.
  *
- * @param  integer $seed The seed
+ * @param  ?integer $seed The seed (null: random seed)
  */
-function mt_srand($seed)
+function mt_srand($seed = null)
 {
 }
 

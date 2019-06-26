@@ -3139,6 +3139,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_is_on_coppa
         CNS_WAITING_CONFIRM_MAIL_COPPA
         COPPA_JOIN_SUBJECT
+        INCORRECT_CAPTCHA_QUESTION_ANSWER
+        CONFIG_GROUP_DESCRIP_CAPTCHA_QUESTIONS
+        CAPTCHA_QUESTIONS
+        CONFIG_OPTION_captcha_questions
+        CAPTCHA_QUESTION_PAGES
+        CONFIG_OPTION_captcha_question_pages
+        CAPTCHA_QUESTION_TOTAL
+        CONFIG_OPTION_captcha_question_total
+        DESCRIPTION_CAPTCHA_QUESTION
+        DESCRIPTION_CAPTCHA_QUESTION_LIST
         PREPARE_EMAIL
         PREPARE_EMAIL_DESCRIPTION
         PREPARE_EMAIL_SUBJECT
