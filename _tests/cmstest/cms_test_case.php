@@ -53,7 +53,6 @@ class cms_test_case extends WebTestCase
             (substr($line, 0, 6) == 'FINAL ') ||
             ((strpos($line, 'comment found') !== false) && (strpos($line, '#') !== false)) ||
             ((strpos($line, 'TODO') !== false) && (strpos($line, 'v' . strval(intval(cms_version_number()) + 1)) !== false)) ||
-            (strpos($line, 'IDEA') !== false) ||
             (strpos($line, 'LEGACY') !== false) ||
             (strpos($line, 'FUDGE') !== false) ||
             (strpos($line, 'FRAGILE') !== false)

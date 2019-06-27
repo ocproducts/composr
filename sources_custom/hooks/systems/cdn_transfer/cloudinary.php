@@ -84,5 +84,5 @@ class Hook_cdn_transfer_cloudinary
         return cloudinary_transfer_upload($path, $upload_folder, $filename, $obfuscate, $accept_errors);
     }
 
-    // IDEA: Support deletion. This is hard though, as we would need to track upload ownership somewhere or uniqueness (else temporary URL "uploads" could be used as a vector to hijack other people's original uploads).
+    // IDEA: #3829 Support deletion. This is hard though, as we would need to track upload ownership somewhere or uniqueness (else temporary URL "uploads" could be used as a vector to hijack other people's original uploads).
 }

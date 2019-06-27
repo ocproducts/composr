@@ -79,7 +79,7 @@ class Hook_implicit_usergroups_under18s
         }
 
         if ($member_id == get_member()) {
-            // IDEA: Support timezones, decide age based on user's own timezone
+            // IDEA: #3830 Support timezones, decide age based on user's own timezone
 
             $eago = intval(date('Y')) - 18;
             $row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id);
