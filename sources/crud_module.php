@@ -222,8 +222,9 @@ abstract class Standard_crud_module
                 self::pre_run(false, $type);
             }
         } else {
+            global $BREADCRUMB_SET_PARENTS;
+
             if ((((method_exists($this, 'browse')) && ($type != 'browse')) || ((isset($this->is_chained_with_parent_browse)) && ($this->is_chained_with_parent_browse)))) {
-                global $BREADCRUMB_SET_PARENTS;
                 if (($this->special_edit_frontend) && (($type == '_edit') || ($type == '_edit_category'))) {
                     breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(($this->menu_label === null) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE')))));
                 } else {
