@@ -72,10 +72,6 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
     $stopforumspam_key = get_option('stopforumspam_api_key');
     $can_do_stopforumspam = ($stopforumspam_key != '') && ($username != '') && ($email != '');
 
-    if (strpos($ip_addr, ':') !== false) { // No ipv6 support
-        $can_do_stopforumspam = false; // TODO: #2585
-    }
-
     if ($can_do_stopforumspam) {
         require_code('files');
         require_code('character_sets');
