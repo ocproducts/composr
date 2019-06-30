@@ -19,16 +19,21 @@
  */
 
 /**
- * Open up a TAR archive, and return the resource.
+ * Open up a TAR archive (or tarball if the zlib extension is available), and return the resource.
  *
  * @param  ?PATH $path The path to the TAR archive (null: write out directly to stdout)
  * @param  string $mode The mode to open the TAR archive (rb=read, wb=write)
  * @set rb wb c+b
  * @param  boolean $known_exists Whether we know the file currently exists (performance optimisation)
+ * @param  ?string $real_filename The real filename of the TAR file (null: derive from $path)
  * @return array The TAR file handle
  */
-function tar_open($path, $mode, $known_exists = false)
+function tar_open($path, $mode, $known_exists = false, $real_filename = null)
 {
+    if ($real_filename === null) {
+        $real_filename = basename($path);
+    }
+
     if ($path === null) {
         $myfile = null;
         $exists = false;
@@ -36,7 +41,11 @@ function tar_open($path, $mode, $known_exists = false)
         cms_ob_end_clean();
     } else {
         $exists = ($known_exists ? true : file_exists($path)) && (strpos($mode, 'c+') !== false);
-        $myfile = @fopen($path, $mode);
+        if ((function_exists('gzopen')) && (substr(strtolower($real_filename), -3) == '.gz')) {
+            $myfile = @gzopen($path, $mode);
+        } else {
+            $myfile = @fopen($path, $mode);
+        }
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'), false, true);

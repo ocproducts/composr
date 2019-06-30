@@ -64,14 +64,22 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
 
     // Find out path/filenames for the upgrade file we're making
     if ($from_version_dotted !== null) {
-        $filename = 'upgrade-' . $from_version_dotted . '-' . $to_version_dotted . '.cms';
+        $filename = 'upgrade-' . $from_version_dotted . '-' . $to_version_dotted;
     } else {
-        $filename = 'omni-upgrade-' . $to_version_dotted . '.cms';
+        $filename = 'omni-upgrade-' . $to_version_dotted;
+    }
+    if ((get_param_integer('supports_gzip', 0) == 1) && (function_exists('gzopen'))) {
+        $filename .= '.cms.gz';
+    }
+    elseif ((get_param_integer('supports_zip', 0) == 1) && ((function_exists('zip_open')) || (get_option('unzip_cmd') == ''))) {
+        $filename .= '.zip';
+    } else {
+        $filename .= '.cms';
     }
     if ($addons_in_upgrader !== null) {
         $filename = md5(serialize($addons_in_upgrader)) . '-' . $filename;
     }
-    $tar_path = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/' . $filename;
+    $build_path = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/' . $filename;
     $_wip_path = 'uploads/website_specific/compo.sr/upgrades/tar_build/' . $filename;
     $wip_path = get_file_base() . '/' . $_wip_path;
 
@@ -103,13 +111,13 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     $force = (get_param_integer('force', 0) == 1) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
 
     // Exists already
-    if (file_exists($tar_path)) {
-        if ((filemtime($tar_path) > $mtime) && (!$force)) {
+    if (file_exists($build_path)) {
+        if ((filemtime($build_path) > $mtime) && (!$force)) {
             cms_set_time_limit($old_limit);
 
-            return array($tar_path, $err);
+            return array($build_path, $err);
         } else { // Outdated
-            unlink($tar_path);
+            unlink($build_path);
 
             @deldir_contents($new_base_path);
             @rmdir($new_base_path);
@@ -195,15 +203,29 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
         @copy($old_base_path . '/data/files.dat', $wip_path . '/data/files_previous.dat');
         fix_permissions($wip_path . '/data/files_previous.dat');
     }
-    $log_file = fopen(get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tarring.log', 'wb');
+    $log_file = fopen(get_file_base() . '/uploads/website_specific/compo.sr/upgrades/build.log', 'wb');
     flock($log_file, LOCK_EX);
-    $tar_handle = tar_open($tar_path . '.new', 'wb');
-    tar_add_folder($tar_handle, $log_file, $wip_path, null, '', array(), null, false, null);
-    tar_close($tar_handle);
+    if (substr($filename, -3) == '.zip') {
+        require_code('zip');
+        $_file_array = get_directory_contents($wip_path, $wip_path, null);
+        $file_array = array();
+        foreach ($_file_array as $file_path_to_add) {
+            $file_array[] = array(
+                'time' => filemtime($file_path_to_add),
+                'full_path' => $file_path_to_add,
+                'name' => basename($file_path_to_add),
+            );
+        }
+        create_zip_file($file_array, false, false, $build_path);
+    } else {
+        $tar_handle = tar_open($build_path . '.new', 'wb');
+        tar_add_folder($tar_handle, $log_file, $wip_path, null, '', array(), null, false, null);
+        tar_close($tar_handle);
+    }
     flock($log_file, LOCK_UN);
     fclose($log_file);
-    @rename($tar_path . '.new', $tar_path);
-    sync_file($tar_path);
+    @rename($build_path . '.new', $build_path);
+    sync_file($build_path);
 
     // Clean up
     @deldir_contents($wip_path);
@@ -211,7 +233,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
 
     cms_set_time_limit($old_limit);
 
-    return array($tar_path, $err);
+    return array($build_path, $err);
 }
 
 function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $addons_in_upgrader, $dir = '', $pretend_dir = '')

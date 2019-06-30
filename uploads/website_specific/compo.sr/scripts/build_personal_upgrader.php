@@ -103,7 +103,7 @@ if ($tar_path === null) {
 }
 
 header('Content-Type: application/octet-stream');
-header('Content-Disposition: inline; filename="' . escape_header(basename($tar_path), true) . '.tar"');
+header('Content-Disposition: inline; filename="' . escape_header(basename($tar_path), true) . '"');
 
 cms_ob_end_clean();
 readfile($tar_path);

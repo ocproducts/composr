@@ -30,6 +30,12 @@ function upgrader_file_upgrade_screen()
 
     require_code('version2');
     $personal_upgrader_generation_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+    if (function_exists('gzopen')) {
+        $personal_upgrader_generation_url .= '&supports_gzip=1';
+    }
+    if ((function_exists('zip_open')) || (get_option('unzip_cmd') == '')) {
+        $personal_upgrader_generation_url .= '&supports_zip=1';
+    }
     $hooks = find_all_hooks('systems', 'addon_registry');
     foreach (array_keys($hooks) as $hook) {
         if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {
@@ -40,9 +46,9 @@ function upgrader_file_upgrade_screen()
     require_code('files2');
     $found_upgraders = array();
     foreach (array('/data_custom', '') as $upgrader_place) {
-        $files = get_directory_contents(get_file_base() . $upgrader_place, get_file_base() . $upgrader_place, null, false, true, array('cms', 'gz'));
+        $files = get_directory_contents(get_file_base() . $upgrader_place, get_file_base() . $upgrader_place, null, false, true, array('cms', 'gz', 'zip'));
         foreach ($files as $file_path) {
-            if (preg_match('#^.*/(omni-)?upgrade-' . preg_quote(get_version_dotted(), '#') . '-[^/]*\.cms(\.gz)?$#', $file_path) != 0) {
+            if (preg_match('#^.*/(omni-)?upgrade-' . preg_quote(get_version_dotted(), '#') . '-[^/]*\.(cms(\.gz)?|zip)$#', $file_path) != 0) {
                 $found_upgraders[get_base_url() . $upgrader_place . '/' . basename($file_path)] = filemtime($file_path);
             }
         }
@@ -101,6 +107,7 @@ function _upgrader_file_upgrade_screen()
     $local_temp_path = false;
     if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
         $temp_path = $_FILES['upload']['tmp_name'];
+        $filename = $_FILES['upload']['name'];
     } else {
         if (post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
@@ -113,16 +120,18 @@ function _upgrader_file_upgrade_screen()
             if (!is_file($temp_path)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }
+            $filename = basename($temp_path);
         } else {
             $temp_path = cms_tempnam();
             $myfile = fopen($temp_path, 'wb');
-            http_get_contents($url, array('write_to_file' => $myfile));
+            $request = cms_http_request($url, array('write_to_file' => $myfile));
             fclose($myfile);
+            $filename = $request->filename;
         }
     }
 
     // We do support using a .zip (e.g. manual installer package), but we need to convert it
-    if (substr(strtolower($temp_path), -4) == '.zip') {
+    if (substr(strtolower($filename), -4) == '.zip') {
         require_code('tar2');
         $temp_path_new = convert_zip_to_tar($temp_path);
         @unlink($temp_path);
@@ -130,8 +139,8 @@ function _upgrader_file_upgrade_screen()
         fix_permissions($temp_path);
     }
 
-    // Open up TAR
-    $upgrade_resource = tar_open($temp_path, 'rb');
+    // Open up TAR (or tarball)
+    $upgrade_resource = tar_open($temp_path, 'rb', false, $filename);
     //tar_extract_to_folder($upgrade_resource, '', true);
     $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB of RAM
 
