@@ -64,9 +64,9 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
 
     // Find out path/filenames for the upgrade file we're making
     if ($from_version_dotted !== null) {
-        $filename = $from_version_dotted . '-' . $to_version_dotted . '.cms';
+        $filename = 'upgrade-' . $from_version_dotted . '-' . $to_version_dotted . '.cms';
     } else {
-        $filename = 'omni-' . $to_version_dotted . '.cms';
+        $filename = 'omni-upgrade-' . $to_version_dotted . '.cms';
     }
     if ($addons_in_upgrader !== null) {
         $filename = md5(serialize($addons_in_upgrader)) . '-' . $filename;

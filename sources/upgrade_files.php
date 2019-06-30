@@ -29,20 +29,42 @@ function upgrader_file_upgrade_screen()
     $out = '';
 
     require_code('version2');
-    $personal_upgrader_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+    $personal_upgrader_generation_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
     $hooks = find_all_hooks('systems', 'addon_registry');
     foreach (array_keys($hooks) as $hook) {
         if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {
-            $personal_upgrader_url .= '&addon_' . $hook . '=1';
+            $personal_upgrader_generation_url .= '&addon_' . $hook . '=1';
         }
     }
 
-    if (get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL) == '') {
+    require_code('files2');
+    $found_upgraders = array();
+    foreach (array('/data_custom', '') as $upgrader_place) {
+        $files = get_directory_contents(get_file_base() . $upgrader_place, get_file_base() . $upgrader_place, null, false, true, array('cms', 'gz'));
+        foreach ($files as $file_path) {
+            if (preg_match('#^.*/(omni-)?upgrade-' . preg_quote(get_version_dotted(), '#') . '-[^/]*\.cms(\.gz)?$#', $file_path) != 0) {
+                $found_upgraders[get_base_url() . $upgrader_place . '/' . basename($file_path)] = filemtime($file_path);
+            }
+        }
+    }
+    if (count($found_upgraders) == 0) {
+        $upgrader_tar_url = base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL));
+    } else {
+        arsort($found_upgraders);
+        $found_upgraders = array_keys($found_upgraders);
+        $upgrader_tar_url = $found_upgraders[0];
+    }
+
+    if (is_file(get_custom_file_base() . '/data_custom/')) {
+    }
+
+    if ($upgrader_tar_url == '') {
         $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO');
     }
-    $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_url));
+
+    $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_generation_url));
     $out .= '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-    $out .= '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html(base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL))) . '" /></p>';
+    $out .= '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html($upgrader_tar_url) . '" /></p>';
     $out .= '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('UPGRADER_DRY_RUN') . '</label></p>';
     if ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
         $out .= '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
@@ -90,7 +112,7 @@ function _upgrader_file_upgrade_screen()
         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
             //$local_temp_path = true;  We disabled this feature for security reasons (we don't want to have to pass a path of something to extract by URL)
-            $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
+            $temp_path = get_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
             if (!is_file($temp_path)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }

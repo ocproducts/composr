@@ -529,6 +529,7 @@ function find_php_path($cgi = false)
 
 /**
  * Get the contents of a directory, recursively. It is assumed that the directory exists.
+ * Always uses '/' as the directory separator.
  *
  * @param  PATH $path The path to search
  * @param  PATH $rel_path The path we prepend to everything we find (intended to be used inside the recursion)
