@@ -55,9 +55,6 @@ function upgrader_file_upgrade_screen()
         $upgrader_tar_url = $found_upgraders[0];
     }
 
-    if (is_file(get_custom_file_base() . '/data_custom/')) {
-    }
-
     if ($upgrader_tar_url == '') {
         $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO');
     }
