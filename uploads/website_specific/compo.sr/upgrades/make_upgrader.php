@@ -217,7 +217,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
                 'name' => $file_path_to_add,
             );
         }
-        create_zip_file($file_array, false, false, $build_path_tmp);
+        create_zip_file($file_array, false, $build_path_tmp);
     } else {
         $tar_handle = tar_open($build_path_tmp, 'wb');
         tar_add_folder($tar_handle, $log_file, $wip_path, null, '', array(), null, false, null);

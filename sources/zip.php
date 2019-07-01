@@ -94,11 +94,10 @@ function crc32_file($filename)
  *
  * @param  array $file_array A list of maps (time,data/full_path,name) covering everything to ZIP up
  * @param  boolean $stream Whether to stream the output direct to the browser
- * @param  boolean $get_offsets Whether to return the tuple
  * @param  ?PATH $outfile_path File to spool into (null: none). $stream will be forced to false
  * @return mixed The data for the ZIP file OR a tuple: data, offsets, sizes; will be blank if $stream is true or $outfile_path is not null
  */
-function create_zip_file($file_array, $stream = false, $get_offsets = false, $outfile_path = null)
+function create_zip_file($file_array, $stream = false, $outfile_path = null)
 {
     // Support compression via PHP
     if (class_exists('ZipArchive')) {
@@ -278,10 +277,6 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
 
     if ($outfile_path !== null) {
         flock($outfile, LOCK_UN);
-    }
-
-    if ($get_offsets) {
-        return array($out, $offsets, $sizes);
     }
 
     return $out;

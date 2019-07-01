@@ -235,7 +235,7 @@ function _upgrader_file_upgrade_screen()
 
             // Install if it's a file in an addon we have installed or for a core addon
             //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
-            $install_alien_files = true;//TODOfalse;
+            $install_alien_files = false;
             if ((($found !== null) || ($install_alien_files)) && (($found === null) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
                 if ($is_directory) {
                     if (!$dry_run) {
