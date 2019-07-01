@@ -80,6 +80,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
         $filename = md5(serialize($addons_in_upgrader)) . '-' . $filename;
     }
     $build_path = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/' . $filename;
+    $build_path_tmp = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/tmp-' . $filename;
     $_wip_path = 'uploads/website_specific/compo.sr/upgrades/tar_build/' . $filename;
     $wip_path = get_file_base() . '/' . $_wip_path;
 
@@ -207,24 +208,24 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     flock($log_file, LOCK_EX);
     if (substr($filename, -3) == '.zip') {
         require_code('zip');
-        $_file_array = get_directory_contents($wip_path, $wip_path, null);
+        $_file_array = get_directory_contents($wip_path, '', null);
         $file_array = array();
         foreach ($_file_array as $file_path_to_add) {
             $file_array[] = array(
-                'time' => filemtime($file_path_to_add),
-                'full_path' => $file_path_to_add,
-                'name' => basename($file_path_to_add),
+                'time' => filemtime($wip_path . '/' . $file_path_to_add),
+                'full_path' => $wip_path . '/' . $file_path_to_add,
+                'name' => $file_path_to_add,
             );
         }
-        create_zip_file($file_array, false, false, $build_path);
+        create_zip_file($file_array, false, false, $build_path_tmp);
     } else {
-        $tar_handle = tar_open($build_path . '.new', 'wb');
+        $tar_handle = tar_open($build_path_tmp, 'wb');
         tar_add_folder($tar_handle, $log_file, $wip_path, null, '', array(), null, false, null);
         tar_close($tar_handle);
     }
     flock($log_file, LOCK_UN);
     fclose($log_file);
-    @rename($build_path . '.new', $build_path);
+    @rename($build_path_tmp, $build_path);
     sync_file($build_path);
 
     // Clean up

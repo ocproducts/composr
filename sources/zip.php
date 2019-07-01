@@ -89,6 +89,8 @@ function crc32_file($filename)
 
 /**
  * Create a ZIP file.
+ * Does not require any PHP or server zip support.
+ * Compression is not supported, only archiving - unless you have the PHP zip extension.
  *
  * @param  array $file_array A list of maps (time,data/full_path,name) covering everything to ZIP up
  * @param  boolean $stream Whether to stream the output direct to the browser
@@ -98,6 +100,43 @@ function crc32_file($filename)
  */
 function create_zip_file($file_array, $stream = false, $get_offsets = false, $outfile_path = null)
 {
+    // Support compression via PHP
+    if (class_exists('ZipArchive')) {
+        if ($outfile_path === null) {
+            $tmp_path = cms_tempnam();
+        } else {
+            $tmp_path = $outfile_path;
+        }
+
+        $z = new ZipArchive();
+        $z->open($tmp_path, ZIPARCHIVE::CREATE);
+        foreach ($file_array as $i => $file) {
+            if ((!array_key_exists('data', $file)) || ($file['data'] === null)) {
+                $z->addFile($file['full_path'], $file['name']);
+            } else {
+                $z->addFromString($file['name'], $file['data']);
+            }
+            $z->setCompressionName($file['name'], ZipArchive::CM_DEFLATE);
+        }
+        $z->close();
+
+        if ($stream) {
+            readfile($tmp_path);
+            unlink($tmp_path);
+            return '';
+        } else {
+            if ($outfile_path !== null) {
+                return '';
+            } else {
+                $out = file_get_contents($tmp_path);
+                unlink($tmp_path);
+                return $out;
+            }
+        }
+    }
+
+    // Simple no-compression implementation...
+
     $outfile = null;
     if ($outfile_path !== null) {
         $stream = false;
@@ -119,9 +158,16 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
 
     // Write files
     foreach ($file_array as $i => $file) {
+        if ($offset >= pow(2, 32) - 1) {
+            if ($outfile_path !== null) {
+                @unlink($outfile_path);
+            }
+
+            fatal_exit('Zip file is too large');
+        }
+
         $file_array[$i]['offset'] = $offset;
 
-        $date = getdate($file['time']);
         if ((!array_key_exists('data', $file)) || ($file['data'] === null)) {
             $crc = crc32_file($file['full_path']);
             $uncompressed_size = filesize($file['full_path']);
@@ -132,17 +178,25 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
         $file_array[$i]['crc'] = $crc;
         $compressed_size = $uncompressed_size;
 
-        $now_date = (($date['year'] - 1980) << 25) | ($date['mon'] << 21) | ($date['mday'] << 16) | ($date['hours'] << 11) | ($date['minutes'] << 5) | ($date['seconds'] >> 1);
-        $file_array[$i]['date'] = $now_date;
+        $year = intval(date('Y', $file['time']));
+        $month = intval(date('m', $file['time']));
+        $day = intval(date('d', $file['time']));
+        $hour = intval(date('H', $file['time']));
+        $minute = intval(date('i', $file['time']));
+        $second = intval(date('s', $file['time']));
+        $date = (($year - 1980) << 25) | ($month << 21) | ($day << 16) | ($hour << 11) | ($minute << 5) | ($second >> 1);
+        $file_array[$i]['date'] = $date;
 
-        $offsets[$file['name']] = $offset + 30 + strlen($file['name']);
+        $header_offset = 30 + strlen($file['name']);
+        $offsets[$file['name']] = $offset + $header_offset;
 
-        $out .= pack('VvvvVVVVvv', 0x04034b50, 10, 0, 0, $now_date, $crc, $compressed_size, $uncompressed_size, strlen($file['name']), 0);
+        $out .= pack('VvvvVVVVvv', 0x04034b50, 10, 0, 0, $date, $crc, $compressed_size, $uncompressed_size, strlen($file['name']), 0);
         $out .= $file['name'];
+        $offset += $header_offset;
 
         if ($stream) {
             echo $out;
-            $offset += strlen($out) + $uncompressed_size;
+            $offset += $uncompressed_size;
             if ((!array_key_exists('data', $file)) || ($file['data'] === null)) {
                 readfile($file['full_path']);
             } else {
@@ -151,6 +205,9 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
             $out = '';
         } else {
             if ($outfile !== null) {
+                fwrite($outfile, $out);
+                $out = '';
+
                 if ((!array_key_exists('data', $file)) || ($file['data'] === null)) {
                     $tmp = fopen($file['full_path'], 'rb');
                     flock($tmp, LOCK_SH);
@@ -187,11 +244,7 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
     // Write directory
     $size = 0;
     foreach ($file_array as $file) {
-        if ((!array_key_exists('data', $file)) || ($file['data'] === null)) {
-            $uncompressed_size = filesize($file['full_path']);
-        } else {
-            $uncompressed_size = strlen($file['data']);
-        }
+        $uncompressed_size = $sizes[$file['name']];
 
         $compressed_size = $uncompressed_size;
 

@@ -141,7 +141,9 @@ function _upgrader_file_upgrade_screen()
     if (strtolower(substr($original_filename, -4)) == '.zip') {
         require_code('tar2');
         $upgrade_path_new = convert_zip_to_tar($upgrade_path);
-        @unlink($upgrade_path);
+        if ($may_delete_upgrade_path) {
+            @unlink($upgrade_path);
+        }
         $upgrade_path = $upgrade_path_new;
         fix_permissions($upgrade_path);
     }
@@ -154,7 +156,7 @@ function _upgrader_file_upgrade_screen()
     // Hopefully $popup_simple_extract will be true (i.e. suEXEC mode), as it is safer
     $popup_simple_extract = (_ftp_info() === false);
     if ($popup_simple_extract) {
-        $data = array('todo' => array());
+        $metadata = array('todo' => array());
     } else {
         $out .= '<p>' . do_lang('EXTRACTING_MESSAGE') . '</p>';
     }
@@ -188,9 +190,11 @@ function _upgrader_file_upgrade_screen()
             continue;
         }
 
+        $is_directory = (substr($upgrade_file['path'], -1) == '/');
+
         if (!$popup_simple_extract) {
             // See if we can skip the file, if the on-disk version is identical?
-            if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size'])) {
+            if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (($is_directory) || (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size']))) {
                 $tar_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                 if (file_get_contents(get_file_base() . '/' . $upgrade_file['path']) == $tar_data['data']) {
                     $out .= do_lang('UPGRADER_SKIPPING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
@@ -203,10 +207,10 @@ function _upgrader_file_upgrade_screen()
         if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) || (strpos($upgrade_file['path'], '/core_') !== false))) {
             // Addon registry file, for installed addon...
 
-            if (substr($upgrade_file['path'], -1) != '/') {
-                if ($popup_simple_extract) {
-                    $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                } else {
+            if (!$is_directory) {
+                $metadata['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
+
+                if (!$popup_simple_extract) {
                     $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                     if (!$dry_run) {
                         afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
@@ -218,7 +222,7 @@ function _upgrader_file_upgrade_screen()
             // Some other file...
 
             $found = null;
-            if (substr($upgrade_file['path'], -1) != '/') {
+            if (!$is_directory) {
                 foreach ($addon_contents as $addon_name => $addon_data) {
                     // See if this is the addon for the file
                     $addon_file_path = $upgrade_file['path'];
@@ -231,15 +235,16 @@ function _upgrader_file_upgrade_screen()
 
             // Install if it's a file in an addon we have installed or for a core addon
             //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
-            if (($found !== null) && ((file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
-                if (substr($upgrade_file['path'], -1) == '/') {
+            $install_alien_files = true;//TODOfalse;
+            if ((($found !== null) || ($install_alien_files)) && (($found === null) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
+                if ($is_directory) {
                     if (!$dry_run) {
                         afm_make_directory($upgrade_file['path'], false, true);
                     }
                 } else {
-                    if ($popup_simple_extract) {
-                        $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                    } else {
+                    $metadata['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
+
+                    if (!$popup_simple_extract) {
                         $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                         if (!$dry_run) {
                             if (!file_exists(get_file_base() . '/' . dirname($upgrade_file['path']))) {
@@ -254,7 +259,7 @@ function _upgrader_file_upgrade_screen()
             }
 
             // Record to copy it into our archived addon so that addon is kept up-to-date
-            if (substr($upgrade_file['path'], -1) != '/') {
+            if (!$is_directory) {
                 if (($found !== null) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
                     $files_for_tar_updating[$found][$upgrade_file['path']] = array($upgrade_file['mode'], $upgrade_file['mtime']);
                 }
@@ -333,7 +338,7 @@ function _upgrader_file_upgrade_screen()
 
         // Save our metadata
         require_code('files');
-        cms_file_put_contents_safe($tmp_metadata_path, serialize($data));
+        cms_file_put_contents_safe($tmp_metadata_path, serialize($metadata));
 
         // LEGACY: Copy by old password key if needed
         global $SITE_INFO;
@@ -350,14 +355,18 @@ function _upgrader_file_upgrade_screen()
             $extract_url .= '&done=' . urlencode(do_lang('DONE'));
             $extract_url .= '&original_filename=' . urlencode($original_filename);
             $extract_url .= '&may_delete_upgrade_path=' . strval($may_delete_upgrade_path ? 1 : 0);
-            $out .= '<p>' . do_lang('UPGRADER_EXTRACTING_WINDOW', integer_format(count($data['todo']))) . '</p>';
+            $out .= '<p>' . do_lang('UPGRADER_EXTRACTING_WINDOW', integer_format(count($metadata['todo']))) . '</p>';
             $out .= '<iframe frameBorder="0" style="width: 100%; height: 400px" src="' . escape_html($extract_url) . '"></iframe>';
         } else {
             // Show the dry-run results
             $out .= '<p>' . do_lang('FILES') . ':</p>';
             $out .= '<ul>';
-            foreach ($data['todo'] as $file) {
-                $out .= '<li>' . escape_html($file[0]) . '</li>';
+            if (count($metadata['todo']) == 0) {
+                $out .= '<li><em>' . do_lang('NONE') . '</em></li>';
+            } else {
+                foreach ($metadata['todo'] as $file) {
+                    $out .= '<li><kbd>' . escape_html($file[0]) . '</kbd></li>';
+                }
             }
             $out .= '</ul>';
         }

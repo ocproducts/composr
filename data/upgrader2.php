@@ -144,7 +144,7 @@ up2_do_header($next_offset_url);
 echo '<ol>';
 foreach ($todo as $i => $target_file) {
     echo '<li>';
-    echo '<input id="file_' . strval($i) . '" name="file_' . strval($i) . '" type="checkbox" value="1" disabled="disabled"' . (($i < $file_offset + $per_cycle) ? ' checked="checked"' : '') . ' /> <label for="file_' . strval($i) . '">' . htmlentities($target_file[0]) . '</label>';
+    echo '<input id="file_' . strval($i) . '" name="file_' . strval($i) . '" type="checkbox" value="1" disabled="disabled"' . (($i < $file_offset + $per_cycle) ? ' checked="checked"' : '') . ' /> <label for="file_' . strval($i) . '"><kbd>' . htmlentities($target_file[0]) . '</kbd></label>';
     if ($i == $file_offset) {
         echo '<a id="progress"></a>';
     }
