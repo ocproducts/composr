@@ -102,12 +102,17 @@ function _upgrader_file_upgrade_screen()
     cms_disable_time_limit();
     disable_php_memory_limit();
 
-    // Download file
+    // How we can get file
+    define('FILE_RETRIEVAL_UPLOAD', 0);
+    define('FILE_RETRIEVAL_HTTP', 1);
+    define('FILE_RETRIEVAL_LOCAL', 2);
+
+    // Get file
     require_code('tar');
-    $local_temp_path = false;
     if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
-        $temp_path = $_FILES['upload']['tmp_name'];
-        $filename = $_FILES['upload']['name'];
+        $upgrade_path = $_FILES['upload']['tmp_name'];
+        $original_filename = $_FILES['upload']['name'];
+        $retrieval_method = FILE_RETRIEVAL_UPLOAD;
     } else {
         if (post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
@@ -115,32 +120,34 @@ function _upgrader_file_upgrade_screen()
 
         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
-            //$local_temp_path = true;  We disabled this feature for security reasons (we don't want to have to pass a path of something to extract by URL)
-            $temp_path = get_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
-            if (!is_file($temp_path)) {
+            $upgrade_path = get_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
+            if (!is_file($upgrade_path)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }
-            $filename = basename($temp_path);
+            $original_filename = basename($upgrade_path);
+            $retrieval_method = FILE_RETRIEVAL_LOCAL;
         } else {
-            $temp_path = cms_tempnam();
-            $myfile = fopen($temp_path, 'wb');
-            $request = cms_http_request($url, array('write_to_file' => $myfile));
-            fclose($myfile);
-            $filename = $request->filename;
+            $upgrade_path = cms_tempnam();
+            $upgrade_path_handle = fopen($upgrade_path, 'wb');
+            $request = cms_http_request($url, array('write_to_file' => $upgrade_path_handle));
+            fclose($upgrade_path_handle);
+            $original_filename = $request->filename;
+            $retrieval_method = FILE_RETRIEVAL_HTTP;
         }
     }
+    $may_delete_upgrade_path = ($retrieval_method != FILE_RETRIEVAL_LOCAL);
 
     // We do support using a .zip (e.g. manual installer package), but we need to convert it
-    if (substr(strtolower($filename), -4) == '.zip') {
+    if (strtolower(substr($original_filename, -4)) == '.zip') {
         require_code('tar2');
-        $temp_path_new = convert_zip_to_tar($temp_path);
-        @unlink($temp_path);
-        rename($temp_path_new, $temp_path);
-        fix_permissions($temp_path);
+        $upgrade_path_new = convert_zip_to_tar($upgrade_path);
+        @unlink($upgrade_path);
+        $upgrade_path = $upgrade_path_new;
+        fix_permissions($upgrade_path);
     }
 
     // Open up TAR (or tarball)
-    $upgrade_resource = tar_open($temp_path, 'rb', false, $filename);
+    $upgrade_resource = tar_open($upgrade_path, 'rb', false, $original_filename);
     //tar_extract_to_folder($upgrade_resource, '', true);
     $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB of RAM
 
@@ -303,29 +310,50 @@ function _upgrader_file_upgrade_screen()
 
     // Do extraction within iframe, if possible
     if ($popup_simple_extract) {
-        @unlink(get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-        @unlink(get_custom_file_base() . '/data_custom/upgrader.tmp');
-        if (!$local_temp_path) {
-            $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-            if ($test === false) {
-                fatal_exit(do_lang_tempcode('UPGRADER_FTP_NEEDED'));
-            }
-            @unlink($temp_path);
-            $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+        // These are standardised temp files upgrader2.php will expect
+        $tmp_upgrade_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+        $tmp_metadata_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
+
+        // Remove standardised temp files
+        @unlink($tmp_upgrade_path);
+        @unlink($tmp_metadata_path);
+
+        // How do we get our $upgrade_path file into $tmp_upgrade_path?
+        switch ($retrieval_method) {
+            case FILE_RETRIEVAL_UPLOAD:
+                move_uploaded_file($upgrade_path, $tmp_upgrade_path);
+                break;
+            case FILE_RETRIEVAL_HTTP:
+                rename($upgrade_path, $tmp_upgrade_path);
+                break;
+            case FILE_RETRIEVAL_LOCAL:
+                copy($upgrade_path, $tmp_upgrade_path);
+                break;
         }
+
+        // Save our metadata
         require_code('files');
-        $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-        cms_file_put_contents_safe($tmp_data_path, serialize($data));
+        cms_file_put_contents_safe($tmp_metadata_path, serialize($data));
+
+        // LEGACY: Copy by old password key if needed
         global $SITE_INFO;
-        if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
+        if (isset($GLOBALS['SITE_INFO']['admin_password'])) {
             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
             unset($GLOBALS['SITE_INFO']['admin_password']);
         }
+
         if (!$dry_run) {
-            $extract_url = get_base_url() . '/data/upgrader2.php?hashed_password=' . urlencode($SITE_INFO['master_password']) . '&tmp_path=' . urlencode($temp_path) . '&file_offset=0&tmp_data_path=' . urlencode($tmp_data_path) . '&done=' . urlencode(do_lang('DONE'));
+            // Create the iframe
+            $extract_url = get_base_url() . '/data/upgrader2.php';
+            $extract_url .= '?hashed_password=' . urlencode($SITE_INFO['master_password']);
+            $extract_url .= '&file_offset=0';
+            $extract_url .= '&done=' . urlencode(do_lang('DONE'));
+            $extract_url .= '&original_filename=' . urlencode($original_filename);
+            $extract_url .= '&may_delete_upgrade_path=' . strval($may_delete_upgrade_path ? 1 : 0);
             $out .= '<p>' . do_lang('UPGRADER_EXTRACTING_WINDOW', integer_format(count($data['todo']))) . '</p>';
             $out .= '<iframe frameBorder="0" style="width: 100%; height: 400px" src="' . escape_html($extract_url) . '"></iframe>';
         } else {
+            // Show the dry-run results
             $out .= '<p>' . do_lang('FILES') . ':</p>';
             $out .= '<ul>';
             foreach ($data['todo'] as $file) {
@@ -334,9 +362,10 @@ function _upgrader_file_upgrade_screen()
             $out .= '</ul>';
         }
     } else {
+        // We extracted live, so just tidy up
         $out .= '<p>' . do_lang('SUCCESS') . '</p>';
-        if (!$local_temp_path) {
-            @unlink($temp_path);
+        if ($may_delete_upgrade_path) {
+            @unlink($upgrade_path);
         }
     }
 
