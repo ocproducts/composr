@@ -938,7 +938,7 @@ function looks_like_url($value, $lax = false)
          (substr($value, 0, 17) === '{$BRAND_BASE_URL') ||
          (substr($value, 0, 10) === '{$BASE_URL') ||
          (substr($value, 0, 3) === '../') ||
-         (substr(strtolower($value), 0, 11) === 'javascript:') ||
+         (strtolower(substr($value, 0, 11)) === 'javascript:') ||
          (substr($value, 0, 4) === 'tel:') ||
          (substr($value, 0, 7) === 'mailto:') ||
          (substr($value, 0, 7) === 'http://') ||

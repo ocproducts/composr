@@ -1437,7 +1437,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             }
 
             if ($filename !== null) {
-                if (substr(strtolower($filename), -4) == '.mp3') {
+                if (strtolower(substr($filename, -4)) == '.mp3') {
                     $_video_width = 300;
                     $_video_height = 60;
                 }

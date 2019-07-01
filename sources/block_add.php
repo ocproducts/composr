@@ -81,7 +81,7 @@ function block_helper_script()
             $zone = $_zone[0];
             $pages = find_all_pages_wrap($zone, true);
             foreach ($pages as $filename => $type) {
-                if (substr(strtolower($filename), -4) == '.txt') {
+                if (strtolower(substr($filename, -4)) == '.txt') {
                     $matches = array();
                     $contents = file_get_contents(zone_black_magic_filterer(((substr($type, 0, 15) == 'comcode_custom/') ? get_custom_file_base() : get_file_base()) . '/' . (($zone == '') ? '' : ($zone . '/')) . 'pages/' . $type . '/' . $filename));
                     $num_matches = preg_match_all('#\[block[^\]]*\](.*)\[/block\]#U', $contents, $matches);

@@ -889,7 +889,7 @@ abstract class ListFieldHook
                 break;
 
             default:
-                if ((addon_installed('nested_cpf_csv_lists')) && (substr(strtolower($default), -4) == '.csv')) {
+                if ((addon_installed('nested_cpf_csv_lists')) && (strtolower(substr($default, -4)) == '.csv')) {
                     $csv_heading = option_value_from_field_array($field, 'csv_heading', '');
 
                     require_code('nested_csv');

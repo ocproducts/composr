@@ -59,7 +59,7 @@ $filename = basename($file);
 if (strpos($file, '..') !== false) {
     log_hack_attack_and_exit('PATH_HACK');
 }
-if (substr(strtolower($file), -4) == '.php') {
+if (strtolower(substr($file, -4)) == '.php') {
     log_hack_attack_and_exit('TRY_TO_DOWNLOAD_SCRIPT');
 }
 

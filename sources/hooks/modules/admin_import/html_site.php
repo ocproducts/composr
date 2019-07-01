@@ -138,7 +138,7 @@ class Hook_import_html_site
         // Find all htm/html/php files
         $content_files = array();
         foreach ($files as $i => $file) {
-            if ((substr(strtolower($file), -4) == '.htm') || (substr(strtolower($file), -5) == '.html') || (substr(strtolower($file), -4) == '.php')) {
+            if ((strtolower(substr($file, -4)) == '.htm') || (strtolower(substr($file, -5)) == '.html') || (strtolower(substr($file, -4)) == '.php')) {
                 $content_files[] = $file;
                 unset($files[$i]);
             }

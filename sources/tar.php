@@ -41,7 +41,7 @@ function tar_open($path, $mode, $known_exists = false, $real_filename = null)
         cms_ob_end_clean();
     } else {
         $exists = ($known_exists ? true : file_exists($path)) && (strpos($mode, 'c+') !== false);
-        if ((function_exists('gzopen')) && (substr(strtolower($real_filename), -3) == '.gz')) {
+        if ((function_exists('gzopen')) && (strtolower(substr($real_filename, -3)) == '.gz')) {
             $myfile = @gzopen($path, $mode);
         } else {
             $myfile = @fopen($path, $mode);

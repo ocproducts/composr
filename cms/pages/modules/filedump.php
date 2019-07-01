@@ -767,7 +767,7 @@ class Module_filedump
                 break;
 
             case 'videos':
-                if ((substr(strtolower($filename), -4) == '.mp3') || (substr(strtolower($filename), -4) == '.wav') || (substr(strtolower($filename), -4) == '.ogg')) {
+                if ((strtolower(substr($filename, -4)) == '.mp3') || (strtolower(substr($filename, -4)) == '.wav') || (strtolower(substr($filename, -4)) == '.ogg')) {
                     return false;
                 }
                 if (!is_video($filename, true)) {
@@ -788,7 +788,7 @@ class Module_filedump
                 if (is_video($filename, true)) {
                     return false;
                 }
-                if ((substr(strtolower($filename), -4) == '.mp3') || (substr(strtolower($filename), -4) == '.wav') || (substr(strtolower($filename), -4) == '.ogg')) {
+                if ((strtolower(substr($filename, -4)) == '.mp3') || (strtolower(substr($filename, -4)) == '.wav') || (strtolower(substr($filename, -4)) == '.ogg')) {
                     return false;
                 }
                 break;

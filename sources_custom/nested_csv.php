@@ -111,7 +111,7 @@ function get_nested_csv_structure()
             $_value = explode('|', $custom_field['cf_default']); // $_value will come up as file|heading(optional)|order(optional)
             $csv_filename = $_value[0];
 
-            if (substr(strtolower($csv_filename), -4) == '.csv') {
+            if (strtolower(substr($csv_filename, -4)) == '.csv') {
                 if (!isset($_value[1])) {
                     $_value[1] = null;
                 }
