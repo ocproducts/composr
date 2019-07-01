@@ -226,15 +226,14 @@ class Hook_sitemap_page extends Hook_sitemap_base
         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth) || (!isset($row[1]))) {
             // Look for entry points to put under this
             if (($details[0] == 'MODULES' || $details[0] == 'MODULES_CUSTOM') && (!$require_permission_support)) {
-                $simplified = (strpos($extra, ':catalogue_name=') !== false);
-
-                $use_page_groupings = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS) != 0);
+                $use_page_groupings = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0);
+                $use_page_groupings_be_deferential = (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS) == 0);
 
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                     $check_perms, // $check_perms
                     $this->get_member($options), // $member_id
-                    $simplified || $use_page_groupings, // $support_crosslinks
-                    $simplified || $use_page_groupings // $be_deferential
+                    $use_page_groupings, // $support_crosslinks
+                    $use_page_groupings_be_deferential // $be_deferential
                 ));
 
                 $has_entry_points = false;
@@ -347,6 +346,10 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     }
                                 }
                                 if ($child_node !== null) {
+                                    if ($child_node['extra_meta']['image'] === null) {
+                                        $child_node['extra_meta']['image'] = find_theme_image('icons/' . $entry_point_details[1]);
+                                    }
+
                                     $children[$child_node['page_link']] = $child_node;
                                 }
                             }
@@ -356,6 +359,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                     if (!$has_entry_points) {
                         if (($options & SITEMAP_GEN_NO_EMPTY_PAGE_LINKS) == 0) {
                             $struct['page_link'] = ''; // get_entry_points is defined, but there are no entry points, meaning we can't link direct to the module
+                            $recurse_level--;
                         }
                     }
                 }
@@ -370,7 +374,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                         $struct['privilege_page'] = $ob->get_privilege_page($page_link);
                         $struct['has_possible_children'] = true;
 
-                        $virtual_child_nodes = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, true);
+                        $virtual_child_nodes = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options & ~SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS, $zone, $meta_gather, true);
                         if ($virtual_child_nodes === null) {
                             $virtual_child_nodes = array();
                         }
