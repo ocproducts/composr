@@ -376,7 +376,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     pop_lax_comcode();
 
     // Flatten for performance reasons?
-    if (strpos($comcode, '{$,Quick Cache}') !== false) {
+    if (strpos($comcode, '{$,page hint: Quick Cache}') !== false) {
         $_text_parsed = apply_quick_caching($_text_parsed);
     }
 
