@@ -1044,11 +1044,9 @@ function do_site()
         check_xhtml_webstandards($out_evaluated, ($special_page_type == 'code' && (get_param_integer('preview_mode', null) === null)), get_param_integer('preview_mode', 0));
     }
 
-    // Caching for spiders
-    if ($GLOBALS['STATIC_CACHE_ENABLED']) {
-        $out2 = clone $out; // This is needed to stop things messing up during output streaming
-        save_static_caching($out2);
-    }
+    // Static cache
+    $out2 = clone $out; // This is needed to stop things messing up during output streaming
+    save_static_caching($out2);
 
     // Save template tree
     if ($GLOBALS['RECORD_TEMPLATES_USED']) {

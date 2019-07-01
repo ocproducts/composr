@@ -255,6 +255,8 @@ function form_input_captcha($hidden)
     if (uses_question_captcha()) {
         $tpl = new Tempcode();
 
+        $GLOBALS['STATIC_CACHE_ENABLED'] = false;
+
         require_code('form_templates');
 
         $questions = get_captcha_questions();
