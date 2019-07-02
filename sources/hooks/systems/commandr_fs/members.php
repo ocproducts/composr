@@ -193,6 +193,10 @@ class Hook_commandr_fs_members
         }
 
         if (count($meta_dir) < 1) {
+            if ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $new_dir_name)) !== null) {
+                return false; // Directory exists
+            }
+
             // We're at the top level, and adding a new member
             require_code('cns_members_action');
             require_code('cns_members_action2');
