@@ -18,11 +18,24 @@
  * @package    wordfilter
  */
 
+require_code('crud_module');
+require_code('wordfilter');
+require_javascript('wordfilter');
+
 /**
  * Module page class.
  */
-class Module_admin_wordfilter
+class Module_admin_wordfilter extends Standard_crud_module
 {
+    protected $lang_type = 'WORDFILTER';
+    protected $select_name = 'NAME';
+    protected $menu_label = 'WORDFILTER';
+    protected $orderer = 'word';
+    protected $table = 'wordfilter';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'word';
+    protected $donext_category_content_type = null;
+
     /**
      * Find details of the module.
      *
@@ -35,7 +48,7 @@ class Module_admin_wordfilter
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -57,23 +70,24 @@ class Module_admin_wordfilter
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
+        $naughties = array(
+            'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'cunt', 'cum',
+            'blowjob', 'bollocks', 'bondage', 'bugger', 'buggery', 'dickhead', 'dildo', 'faggot', 'fuck', 'fucked', 'fucking',
+            'fucker', 'gayboy', 'jackoff', 'jerk-off', 'motherfucker', 'nigger', 'piss', 'pissed', 'puffter', 'pussy',
+            'queers', 'retard', 'shag', 'shagged',
+            'shat', 'shit', 'slut', 'twat', 'wank', 'wanker', 'whore',
+        );
+
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('wordfilter', array(
                 'id' => '*AUTO',
                 'word' => 'SHORT_TEXT',
                 'w_replacement' => 'SHORT_TEXT',
-                'w_substr' => 'BINARY',
+                'w_match_type' => 'ID_TEXT', // One of 'WORDFILTER_MATCH_TYPES'
             ));
 
-            $naughties = array(
-                'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'cunt', 'cum',
-                'blowjob', 'bollocks', 'bondage', 'bugger', 'buggery', 'dickhead', 'dildo', 'faggot', 'fuck', 'fucked', 'fucking',
-                'fucker', 'gayboy', 'jackoff', 'jerk-off', 'motherfucker', 'nigger', 'piss', 'pissed', 'puffter', 'pussy',
-                'queers', 'retard', 'shag', 'shagged',
-                'shat', 'shit', 'slut', 'twat', 'wank', 'wanker', 'whore',
-            );
             foreach ($naughties as $word) {
-                $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => '', 'w_substr' => 0));
+                $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => WORDFILTER_REPLACEMENT_GRAWLIXES, 'w_match_type' => WORDFILTER_MATCH_TYPE_FULL));
             }
         }
 
@@ -83,6 +97,17 @@ class Module_admin_wordfilter
             if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {
                 // Could not be made utf8mb4 in advance but can be now because 'id' fields was added as the key
                 $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
+            }
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
+            $GLOBALS['SITE_DB']->add_table_field('wordfilter', 'w_match_type', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->query_update('wordfilter', array('w_match_type' => WORDFILTER_MATCH_TYPE_FULL), array('w_substr' => 0));
+            $GLOBALS['SITE_DB']->query_update('wordfilter', array('w_match_type' => WORDFILTER_MATCH_TYPE_SUBSTRING), array('w_substr' => 1));
+            $GLOBALS['SITE_DB']->delete_table_field('wordfilter', 'w_substr');
+
+            foreach ($naughties as $word) {
+                $GLOBALS['SITE_DB']->query_update('wordfilter', array('w_replacement' => WORDFILTER_REPLACEMENT_GRAWLIXES), array('word' => $word, 'w_replacement' => '', 'w_match_type' => WORDFILTER_MATCH_TYPE_FULL));
             }
         }
     }
@@ -114,7 +139,7 @@ class Module_admin_wordfilter
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
-    public function pre_run()
+    public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
         if (!addon_installed__messaged('wordfilter', $error_msg)) {
@@ -133,15 +158,7 @@ class Module_admin_wordfilter
             $this->title = get_screen_title('MANAGE_WORDFILTER');
         }
 
-        if ($type == 'add') {
-            $this->title = get_screen_title('ADD_WORDFILTER');
-        }
-
-        if ($type == 'remove') {
-            $this->title = get_screen_title('DELETE_WORDFILTER');
-        }
-
-        return null;
+        return parent::pre_run($top_level, $type);
     }
 
     /**
@@ -149,138 +166,192 @@ class Module_admin_wordfilter
      *
      * @return Tempcode The result of execution
      */
-    public function run()
+    public function run_start()
     {
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
-            return $this->wordfilter_interface();
+            return $this->browse();
         }
-        if ($type == 'add') {
-            return $this->add_word();
-        }
-        if ($type == 'remove') {
-            return $this->remove_word();
+
+        if (($type === 'add') || ($type === '_edit')) {
+            $this->js_function_calls[] = 'adminWordfilterWordForm';
         }
 
         return new Tempcode();
     }
 
     /**
-     * The UI to choose a filtered-word to edit, or to add a filtered-word.
+     * The do-next manager for before content management.
      *
      * @return Tempcode The UI
      */
-    public function wordfilter_interface()
+    public function browse()
     {
-        $list = new Tempcode();
-        $words = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array(), 'ORDER BY word');
-        foreach ($words as $word) {
-            $word_text = (($word['w_substr'] == 1) ? '*' : '') . $word['word'] . (($word['w_substr'] == 1) ? '*' : '');
-            if ($word['w_replacement'] != '') {
-                $word_text .= ' -> ' . $word['w_replacement'];
-            }
-            $list->attach(form_input_list_entry($word['word'], false, $word_text));
-        }
-        if (!$list->is_empty()) {
-            $delete_url = build_url(array('page' => '_SELF', 'type' => 'remove'), '_SELF');
-            $submit_name = do_lang_tempcode('DELETE_WORDFILTER');
-            $fields = form_input_list(do_lang_tempcode('WORD'), '', 'word', $list);
+        require_code('templates_donext');
+        return do_next_manager(
+            get_screen_title('MANAGE_WORDFILTER'),
+            comcode_lang_string('OBSCENITY_WARNING'),
+            array(
+                array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_FILTERED_WORD')),
+                array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_FILTERED_WORD')),
+            ),
+            do_lang('MANAGE_WORDFILTER')
+        );
+    }
 
-            $tpl = do_template('FORM', array(
-                '_GUID' => 'a752cea5acab633e1cc0781f0e77e0be',
-                'TABINDEX' => strval(get_form_field_tabindex()),
-                'HIDDEN' => '',
-                'TEXT' => '',
-                'FIELDS' => $fields,
-                'URL' => $delete_url,
-                'SUBMIT_ICON' => 'admin/delete3',
-                'SUBMIT_NAME' => $submit_name,
-            ));
-        } else {
-            $tpl = new Tempcode();
+
+    /**
+     * Get Tempcode for adding/editing form.
+     *
+     * @param  SHORT_TEXT $word The word
+     * @param  SHORT_TEXT $replacement The replacement
+     * @param  ID_TEXT $match_type The match type
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
+     */
+    public function get_form_fields($word = '', $replacement = '', $match_type = '')
+    {
+        if ($match_type == '') {
+            $match_type = WORDFILTER_MATCH_TYPE_FULL;
         }
 
-        // Do a form so people can add
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'add'), '_SELF');
-        $submit_name = do_lang_tempcode('ADD');
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('WORD'), do_lang_tempcode('DESCRIPTION_WORD'), 'word_2', '', true));
-        $fields->attach(form_input_line(do_lang_tempcode('REPLACEMENT'), do_lang_tempcode('DESCRIPTION_REPLACEMENT'), 'replacement', '', false));
-        $fields->attach(form_input_tick(do_lang_tempcode('WORD_SUBSTR'), do_lang_tempcode('DESCRIPTION_WORD_SUBSTR'), 'substr', false));
-        $add_form = do_template('FORM', array(
-            '_GUID' => '5b1d45b374e15392b9f5496de8db2e1c',
-            'TABINDEX' => strval(get_form_field_tabindex()),
-            'SECONDARY_FORM' => true,
-            'SKIP_REQUIRED' => true,
-            'HIDDEN' => '',
-            'TEXT' => '',
-            'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin/add',
-            'SUBMIT_NAME' => $submit_name,
-            'URL' => $post_url,
-        ));
+        $hidden = new Tempcode();
 
-        return do_template('WORDFILTER_SCREEN', array('_GUID' => '4b355f5d2cecc0bc26e76a69716cc841', 'TITLE' => $this->title, 'TPL' => $tpl, 'ADD_FORM' => $add_form));
+        require_code('encryption');
+        require_lang('fields');
+
+        $fields->attach(form_input_line(do_lang_tempcode('WORD'), do_lang_tempcode('DESCRIPTION_WORD'), 'word', $word, true));
+
+        $fields->attach(form_input_line(do_lang_tempcode('REPLACEMENT'), do_lang_tempcode('DESCRIPTION_REPLACEMENT'), 'replacement', $replacement, false));
+
+        $fields->attach(form_input_tick(do_lang_tempcode('REPLACE_WITH_GRAWLIXES'), do_lang_tempcode('DESCRIPTION_REPLACE_WITH_GRAWLIXES'), 'replace_with_grawlixes', $replacement === WORDFILTER_REPLACEMENT_GRAWLIXES));
+
+        $radios = new Tempcode();
+        $radios->attach(form_input_radio_entry('match_type', WORDFILTER_MATCH_TYPE_FULL, $match_type === WORDFILTER_MATCH_TYPE_FULL, do_lang_tempcode('WORDFILTER_MATCH_TYPE_full')));
+        $radios->attach(form_input_radio_entry('match_type', WORDFILTER_MATCH_TYPE_SUBSTRING, $match_type === WORDFILTER_MATCH_TYPE_SUBSTRING, do_lang_tempcode('WORDFILTER_MATCH_TYPE_substring')));
+        $radios->attach(form_input_radio_entry('match_type', WORDFILTER_MATCH_TYPE_PREFIX, $match_type === WORDFILTER_MATCH_TYPE_PREFIX, do_lang_tempcode('WORDFILTER_MATCH_TYPE_prefix')));
+
+        $fields->attach(form_input_radio(do_lang_tempcode('MATCH_TYPE'), do_lang_tempcode('DESCRIPTION_MATCH_TYPE'), 'match_type', $radios, true));
+
+        return array($fields, $hidden);
     }
 
     /**
-     * The actualiser to add a filtered-word.
+     * Standard crud_module edit form filler.
      *
-     * @return Tempcode The UI
+     * @param  ID_TEXT $id The entry being edited
+     * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function add_word()
+    public function fill_in_edit_form($id)
     {
-        $word = post_param_string('word_2');
-        $this->_add_word($word, post_param_string('replacement'), post_param_integer('substr', 0));
+        $m = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $m)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'word'));
+        }
+        $w = $m[0];
 
-        // Show it worked / Refresh
-        $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+        list($fields, $hidden) = $this->get_form_fields($w['word'], $w['w_replacement'], $w['w_match_type']);
+
+        return array($fields, $hidden);
     }
 
     /**
-     * Add a filtered-word.
+     * Standard crud_module add actualiser.
      *
-     * @param  SHORT_TEXT $word The filtered-word
-     * @param  SHORT_TEXT $replacement Replacement (blank: block entirely)
-     * @param  BINARY $substr Whether to perform a substring match
+     * @return ID_TEXT The ID of the entry added
      */
-    public function _add_word($word, $replacement, $substr)
+    public function add_actualisation()
     {
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('wordfilter', 'word', array('word' => $word));
-        if ($test !== null) {
-            warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($word)));
+        $word = post_param_string('word');
+        $replacement = post_param_string('replacement');
+        $match_type = post_param_string('match_type');
+
+        if (!in_array($match_type, WORDFILTER_MATCH_TYPES)) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => $replacement, 'w_substr' => $substr));
+        $id = $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => $replacement, 'w_match_type' => $match_type), true);
 
-        log_it('ADD_WORDFILTER', $word);
+        return strval($id);
     }
 
     /**
-     * The actualiser to delete a filtered-word.
+     * Standard crud_module edit actualiser.
      *
-     * @return Tempcode The UI
+     * @param  ID_TEXT $_id The entry being edited
      */
-    public function remove_word()
+    public function edit_actualisation($_id)
     {
-        $this->_remove_word(post_param_string('word'));
+        $id = intval($_id);
+        $word = post_param_string('word');
+        $replacement = post_param_string('replacement');
+        $match_type = post_param_string('match_type');
 
-        // Show it worked / Refresh
-        $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+        if (!in_array($match_type, WORDFILTER_MATCH_TYPES)) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        $GLOBALS['SITE_DB']->query_update('wordfilter', array('word' => $word, 'w_replacement' => $replacement, 'w_match_type' => $match_type), array('id' => $id));
     }
 
     /**
-     * Delete a filtered-word.
+     * Standard crud_module delete actualiser.
      *
-     * @param  SHORT_TEXT $word The filtered-word
+     * @param  ID_TEXT $_id The entry being deleted
      */
-    public function _remove_word($word)
+    public function delete_actualisation($_id)
     {
-        $GLOBALS['SITE_DB']->query_delete('wordfilter', array('word' => $word), '', 1);
+        $id = intval($_id);
 
-        log_it('DELETE_WORDFILTER', $word);
+        $GLOBALS['FORUM_DB']->query_delete('wordfilter', array('id' => $id), '', 1);
+    }
+
+    /**
+     * Standard crud_module table function.
+     *
+     * @param  array $url_map Details to go to build_url for link to the next screen
+     * @return array A pair: The choose table, Whether re-ordering is supported from this screen
+     */
+    public function create_selection_list_choose_table($url_map)
+    {
+        require_code('templates_results_table');
+        require_code('wordfilter');
+
+        $current_ordering = get_param_string('sort', 'word ASC', INPUT_FILTER_GET_COMPLEX);
+        list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
+        $sortables = array(
+            'word' => do_lang_tempcode('WORD'),
+            'w_replacement' => do_lang_tempcode('REPLACEMENT'),
+            'w_match_type' => do_lang_tempcode('MATCH_TYPE'),
+        );
+        if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
+            log_hack_attack_and_exit('ORDERBY_HACK');
+        }
+
+        $columns = array();
+        $columns[] = do_lang_tempcode('WORD');
+        $columns[] = do_lang_tempcode('REPLACEMENT');
+        $columns[] = do_lang_tempcode('MATCH_TYPE');
+        $columns[] = do_lang_tempcode('ACTIONS');
+        $header_row = results_header_row($columns, $sortables, 'sort', $sortable . ' ' . $sort_order);
+
+        $fields = new Tempcode();
+
+        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
+
+        foreach ($rows as $row) {
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
+
+            $values = array();
+            $values[] = $row['word'];
+            $values[] = ($row['w_replacement'] === WORDFILTER_REPLACEMENT_GRAWLIXES) ? protect_from_escaping('<i>' . do_lang('REPLACED_WITH_GRAWLIXES') . '</i>') : $row['w_replacement'];
+            $values[] = do_lang_tempcode('WORDFILTER_MATCH_TYPE_' . $row['w_match_type']);
+            $values[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+
+            $fields->attach(results_entry($values, true));
+        }
+
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
     }
 }

@@ -25,6 +25,23 @@
  */
 function init__wordfilter()
 {
+    define('WORDFILTER_MATCH_TYPE_FULL', 'full');
+    define('WORDFILTER_MATCH_TYPE_SUBSTRING', 'substring');
+    define('WORDFILTER_MATCH_TYPE_PREFIX', 'prefix');
+
+    if (!defined('WORDFILTER_MATCH_TYPES')) {
+        define('WORDFILTER_MATCH_TYPES', array(
+            WORDFILTER_MATCH_TYPE_FULL,
+            WORDFILTER_MATCH_TYPE_SUBSTRING,
+            WORDFILTER_MATCH_TYPE_PREFIX,
+        ));
+    }
+    
+    if (!defined('WORDFILTER_REPLACEMENT_GRAWLIXES')) {
+        define('WORDFILTER_REPLACEMENT_GRAWLIXES', '%GRAWLIXES%');
+        // A special value for the `wordfilter.w_replacement` column to replace matching words with grawlixes
+    }
+
     global $WORDFILTERING_ALREADY;
     $WORDFILTERING_ALREADY = false;
 }
@@ -82,8 +99,9 @@ function check_wordfilter($a, $name = null, $exit = true, $try_patterns = false,
     // Apply filter for complete blocked words
     $changes = array();
     foreach ($words as $pos => $word) {
-        if ((array_key_exists(strtolower($word), $WORDS_TO_FILTER_CACHE)) && ($WORDS_TO_FILTER_CACHE[strtolower($word)]['w_substr'] == 0)) {
-            $w = $WORDS_TO_FILTER_CACHE[strtolower($word)];
+        $w = isset($WORDS_TO_FILTER_CACHE[strtolower($word)]) ? $WORDS_TO_FILTER_CACHE[strtolower($word)] : null;
+        
+        if (is_array($w) && ($w['w_match_type'] === WORDFILTER_MATCH_TYPE_FULL)) {
             if (($w['w_replacement'] == '') && ($exit)) {
                 warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
             } else {
@@ -91,15 +109,20 @@ function check_wordfilter($a, $name = null, $exit = true, $try_patterns = false,
             }
         }
 
-        if ($try_patterns) {
-            // Now try patterns
-            foreach ($WORDS_TO_FILTER_CACHE as $word2 => $w) {
-                if (($w['w_substr'] == 0) && (simulated_wildcard_match($word, $word2, true))) {
-                    if (($w['w_replacement'] == '') && ($exit)) {
+        foreach ($WORDS_TO_FILTER_CACHE as $word2 => $w2) {
+            if ($w2['w_match_type'] === WORDFILTER_MATCH_TYPE_PREFIX) {
+                if (stripos($word, $word2) === 0) { // if $word starts with $word2
+                    if (($w2['w_replacement'] == '') && ($exit)) {
                         warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
                     } else {
-                        $changes[] = array($pos, $word, $w['w_replacement']);
+                        $changes[] = array($pos, $word, $w2['w_replacement']);
                     }
+                }
+            } elseif ($try_patterns && ($w2['w_match_type'] === WORDFILTER_MATCH_TYPE_FULL) && (simulated_wildcard_match($word, $word2, true))) {
+                if (($w2['w_replacement'] == '') && ($exit)) {
+                    warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word))); // In soviet Russia, words filter you
+                } else {
+                    $changes[] = array($pos, $word, $w2['w_replacement']);
                 }
             }
         }
@@ -110,16 +133,23 @@ function check_wordfilter($a, $name = null, $exit = true, $try_patterns = false,
     foreach ($changes as $change) {
         $before = substr($a, 0, $change[0]);
         $after = substr($a, $change[0] + strlen($change[1]));
+        if ($change[2] === WORDFILTER_REPLACEMENT_GRAWLIXES) {
+            $change[2] = generate_grawlixes(strlen($change[1]));
+        }
         $a = $before . $change[2] . $after;
     }
 
     // Apply filter for disallowed substrings
     foreach ($WORDS_TO_FILTER_CACHE as $word => $w) {
-        if (($w['w_substr'] == 1) && (strpos($a, $word) !== false)) {
-            if (($w['w_replacement'] == '') && ($exit)) {
+        if (($w['w_match_type'] === WORDFILTER_MATCH_TYPE_SUBSTRING) && (stripos($a, $word) !== false)) {
+            $replacement = $w['w_replacement'];
+            if (($replacement == '') && ($exit)) {
                 warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($word)));
             } else {
-                $a = preg_replace('#' . preg_quote($word) . '#i', $w['w_replacement'], $a);
+                if ($replacement === WORDFILTER_REPLACEMENT_GRAWLIXES) {
+                    $replacement = generate_grawlixes(strlen($word));
+                }
+                $a = preg_replace('#' . preg_quote($word) . '#i', $replacement, $a);
             }
         }
     }
@@ -176,4 +206,27 @@ function warn_exit_wordfilter($name, $message)
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
     exit();
+}
+
+/**
+ * The term grawlix refers to the series of typographical symbols (such as @#$%&!) used to represent swear words.
+ *
+ * @param  integer $length Desired length of string.
+ * @return string Generated grawlixes.
+ */
+function generate_grawlixes($length)
+{
+    $symbols = array('!', '@', '#', '$', '%', '&', '*');
+
+    $str = '';
+
+    while (strlen($str) < $length) {
+        $symbol = $symbols[mt_rand(0, (count($symbols) - 1))];
+
+        if ($symbol !== substr($str, -1)) { // Make sure a symbol doesn't appear twice consecutively
+            $str .= $symbol;
+        }
+    }
+
+    return $str;
 }

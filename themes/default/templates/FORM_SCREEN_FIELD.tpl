@@ -3,7 +3,7 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$SET,randomised_id,{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}}
 
-<tr class="field-input">
+<tr id="form-table-field--{$GET*,randomised_id}" class="field-input">
 	<th id="form-table-field-name--{$GET,randomised_id}" class="form-table-field-name{+START,IF,{REQUIRED}} required{+END}">
 		<span class="form-field-name field-name">
 			{$SET,show_label,{$AND,{$IS_NON_EMPTY,{NAME}},{$NOT,{SKIP_LABEL}}}}
