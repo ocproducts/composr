@@ -1685,7 +1685,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
         if (is_null($test)) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username));
         }
-        if ((!is_null($test)) && ($test !== $member_id)) {
+        if ((!is_null($test)) && (($member_id === null) || ($test !== $member_id))) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_ALREADY_EXISTS');
             }
