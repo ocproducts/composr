@@ -387,7 +387,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
         if (get_option('is_on_rating') == '0') {
             $has_ratings = false;
         } else {
-            if (is_null($entries)) {
+            if (!is_null($entries)) {
                 $has_ratings = false;
                 foreach ($entries as $entry) {
                     if ($entry['allow_rating'] == 1) {
