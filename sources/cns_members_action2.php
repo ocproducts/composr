@@ -1685,29 +1685,29 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
         if (is_null($test)) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username));
         }
-        if ((!is_null($test)) && (($member_id === null) || ($test !== $member_id))) {
+        if ((!is_null($test)) && ($test !== $member_id)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_ALREADY_EXISTS');
             }
             warn_exit(do_lang_tempcode('USERNAME_ALREADY_EXISTS'));
         }
-        $username_changed = is_null($test);
+        $username_known_available = is_null($test);
     } else {
-        $username_changed = false;
+        $username_known_available = false;
     }
 
     if (!is_null($username)) {
         // Check for disallowed symbols in username
         $disallowed_characters = array(/*'<','>','&','"',"'",'$',','*/);
         foreach ($disallowed_characters as $disallowed_character) {
-            if ((strpos($username, $disallowed_character) !== false) && ($username_changed)) {
+            if ((strpos($username, $disallowed_character) !== false) && ($username_known_available)) {
                 if ($return_errors) {
                     return do_lang_tempcode('USERNAME_BAD_SYMBOLS');
                 }
                 warn_exit(do_lang_tempcode('USERNAME_BAD_SYMBOLS'));
             }
         }
-        if ((strpos($username, '@') !== false) && (strpos($username, '.') !== false) && ($username_changed)) {
+        if ((strpos($username, '@') !== false) && (strpos($username, '.') !== false) && ($username_known_available)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_BAD_SYMBOLS');
             }
@@ -1720,7 +1720,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
         if (!is_null($username)) {
             $_maximum_username_length = get_option('maximum_username_length');
             $maximum_username_length = intval($_maximum_username_length);
-            if ((cms_mb_strlen($username) > $maximum_username_length) && ($username_changed)) {
+            if ((cms_mb_strlen($username) > $maximum_username_length) && ($username_known_available)) {
                 if ($return_errors) {
                     return do_lang_tempcode('USERNAME_TOO_LONG', escape_html(integer_format($maximum_username_length)));
                 }
@@ -1728,7 +1728,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
             }
             $_minimum_username_length = get_option('minimum_username_length');
             $minimum_username_length = intval($_minimum_username_length);
-            if ((cms_mb_strlen($username) < $minimum_username_length) && ($username_changed)) {
+            if ((cms_mb_strlen($username) < $minimum_username_length) && ($username_known_available)) {
                 if ($return_errors) {
                     return do_lang_tempcode('USERNAME_TOO_SHORT', escape_html(integer_format($minimum_username_length)));
                 }
@@ -1747,7 +1747,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     // Check for whitespace
     if (!is_null($username)) {
         $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-        if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_changed)) {
+        if (($prohibit_username_whitespace === '1') && (preg_match('#\s#', $username) != 0) && ($username_known_available)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
@@ -1756,7 +1756,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     }
     if (!is_null($password)) {
         $prohibit_password_whitespace = get_option('prohibit_password_whitespace');
-        if (($prohibit_password_whitespace === '1') && (preg_match('#\s#', $password) != 0) && ($username_changed)) {
+        if (($prohibit_password_whitespace === '1') && (preg_match('#\s#', $password) != 0) && ($username_known_available)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
@@ -1765,7 +1765,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     }
 
     // Check against restricted usernames
-    if ((get_page_name() != 'admin_cns_members') && ($username_changed)) {
+    if ((get_page_name() != 'admin_cns_members') && ($username_known_available)) {
         $restricted_usernames = explode(',', get_option('restricted_usernames'));
         $restricted_usernames[] = do_lang('GUEST');
         $restricted_usernames[] = do_lang('UNKNOWN');
