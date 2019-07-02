@@ -632,7 +632,7 @@ abstract class Standard_crud_module
      * @param  ?ID_TEXT $id The ID of whatever we are working with (null: deleted)
      * @return Tempcode The UI
      */
-    public function do_next_manager($title, $description, $id)
+    public function do_next_manager($title, $description, $id = null)
     {
         $archive_url = null;
         if ($this->archive_entry_point !== null) {
