@@ -227,7 +227,11 @@ class Hook_commandr_fs_members
             // We're at the top level, and removing a member
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            cns_delete_member($GLOBALS['FORUM_DRIVER']->get_member_from_username($dir_name));
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($dir_name);
+            if ($member_id === null) {
+                return false; // Directory doesn't exist
+            }
+            cns_delete_member($member_id);
         } else {
             return false; // Directories aren't allowed to be removed anywhere else
         }
