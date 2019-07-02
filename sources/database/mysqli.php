@@ -56,7 +56,7 @@ class Database_Static_mysqli extends Database_super_mysql
         }
 
         // Potential caching
-        $x = serialize(array($db_name, $db_host));
+        $x = serialize(array($db_user, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
             if ($this->last_select_db[1] !== $db_name) {
                 mysqli_select_db($this->cache_db[$x], $db_name);
@@ -117,7 +117,10 @@ class Database_Static_mysqli extends Database_super_mysql
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
         } else {
-            @mysqli_query($db, 'SET sql_mode=\'MYSQL40\''); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
+            $test = @mysqli_query($db, 'SET sql_mode=\'MYSQL40\''); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
+            if ($test === false) { // Won't work on MySQL 8 for example
+                @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
+            }
         }
         // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
 
@@ -228,6 +231,14 @@ class Database_Static_mysqli extends Database_super_mysql
             $this->last_select_db = array($db, $db_name);
         }
 
+        static $version = null;
+        if ($version === null) {
+            $version = mysqli_get_server_version($db);
+        }
+        if ($version >= 80000) {
+            $query = $this->fix_mysql8_query($query);
+        }
+
         $this->apply_sql_limit_clause($query, $max, $start);
 
         $results = @mysqli_query($db, $query);
@@ -293,11 +304,10 @@ class Database_Static_mysqli extends Database_super_mysql
      */
     public function db_get_query_rows($results, $query, $start = null)
     {
-        $num_fields = mysqli_num_fields($results);
         $names = array();
         $types = array();
-        for ($x = 0; $x < $num_fields; $x++) {
-            $field = mysqli_fetch_field($results);
+        $fields = mysqli_fetch_fields($results);
+        foreach ($fields as $x => $field) {
             $names[$x] = $field->name;
             $types[$x] = $field->type;
         }
@@ -310,22 +320,23 @@ class Database_Static_mysqli extends Database_super_mysql
                 $name = $names[$j];
                 $type = $types[$j];
 
-                if (($type === 'int') || ($type === 'integer') || ($type === 'real') || ($type === 1) || ($type === 3) || ($type === 8)) {
-                    if ((($v === null)) || ($v === '')) { // Roadsend returns empty string instead of null
+                if (($type === 1) || ($type === 2) || ($type === 3) || ($type === 8) || ($type === 9)) { // Integer field of some kind
+                    if ($v === null) {
                         $newrow[$name] = null;
                     } else {
-                        $_v = intval($v);
-                        if (strval($_v) !== $v) {
-                            $newrow[$name] = floatval($v);
-                        } else {
-                            $newrow[$name] = $_v;
-                        }
-                    }
-                } elseif (($type === 16) || ($type === 'bit')) {
-                    if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {
-                        $newrow[$name] = ord($v); // 0/1 char for BIT field
-                    } else {
                         $newrow[$name] = intval($v);
+                    }
+                } elseif (($type === 4) || ($type === 5) || ($type === 246)) { // Decimal field of some kind
+                    if ($v === null) {
+                        $newrow[$name] = null;
+                    } else {
+                        $newrow[$name] = floatval($v);
+                    }
+                } elseif ($type === 16) { // Bit field
+                    if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {
+                        $newrow[$name] = ord($v); // 0/1 char format
+                    } else {
+                        $newrow[$name] = intval($v); // Int-as-string format
                     }
                 } else {
                     $newrow[$name] = $v;
