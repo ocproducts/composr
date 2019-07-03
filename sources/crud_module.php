@@ -141,26 +141,51 @@ abstract class Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $entry_points = array();
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        $ret = array();
         if (method_exists($this, 'add_actualisation')) {
-            $entry_points += array(
-                'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
-                'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
-            );
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
+                );
+            }
+
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
+                );
+            }
         }
         if (!is_null($this->cat_crud_module)) {
-            $entry_points += array(
-                'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
-                'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
-            );
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
+                );
+            }
+
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
+                );
+            }
         }
         if (!is_null($this->alt_crud_module)) {
-            $entry_points += array(
-                'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
-                'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
-            );
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
+                );
+            }
+
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
+                );
+            }
         }
-        return $entry_points;
+        return $ret;
     }
 
     public $doing;
