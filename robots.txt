@@ -21,6 +21,7 @@ User-Agent: *
 Disallow: /ClientFiles/
 Disallow: /temp
 Disallow: /crm
+Disallow: /themeing-changes
 
 # Version-specific docs
 Disallow: /docs4
