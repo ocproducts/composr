@@ -21,6 +21,7 @@
 /*
 Need to force sitemap regeneration due to some kind of bug? Run these commands via execute_temp.php...
 
+require_code('sitemap_xml');
 build_sitemap_cache_table();
 sitemap_xml_build(true);
 */
