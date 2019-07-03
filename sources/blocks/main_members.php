@@ -109,6 +109,12 @@ class Block_main_members
         require_lang('cns');
         require_lang('cns_member_directory');
 
+        if (strpos(serialize($_GET), 'filter_') !== false) {
+            if (has_privilege(get_member(), 'view_any_profile_field')) {
+                log_it('MEMBER_SEARCH');
+            }
+        }
+
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         $block_id = get_block_id($map);

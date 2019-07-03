@@ -104,5 +104,9 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
         $i++;
     }
 
+    if (($member_id_of != $member_id_viewing) && (has_privilege($member_id_viewing, 'view_any_profile_field'))) {
+        log_it('VIEW_PROFILE', strval($member_id_of), $username);
+    }
+
     return do_template('CNS_MEMBER_PROFILE_SCREEN', array('_GUID' => '2f33348714723492105c4717974c8f4c', 'TITLE' => $title, 'TABS' => $_tabs, 'MEMBER_ID' => strval($member_id_of)));
 }

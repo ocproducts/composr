@@ -187,6 +187,11 @@ class Module_warnings extends Standard_crud_module
         require_code('templates_results_table');
 
         $member_id = get_param_integer('id');
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+
+        if ($member_id != get_member()) {
+            log_it('PUNITIVE_HISTORY', strval($member_id), $username);
+        }
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id), 'ORDER BY w_time');
         if (count($rows) == 0) {

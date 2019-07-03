@@ -595,6 +595,13 @@ $feature_tree = array(
                 array('<abbr title="Search Engine Optimisation">SEO</abbr> via semantic and accessible markup (e.g. &lsquo;alt tags&rdquo;)'),
             ),
         ),
+        'legal' => array(
+            'Legal',
+            array(
+                array('Detailed GDPR auditing'),
+                array('COPPA'),
+            ),
+        ),
     ),
     'forums' => array(
         'cnsmembers' => array(
