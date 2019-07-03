@@ -21,7 +21,16 @@ safe_ini_set('ocproducts.xss_detect', '0');
 $_title = get_screen_title('Composr addon building tool', false);
 $_title->evaluate_echo();
 
-echo '<p>This has built all the addons into <kbd>exports/addons</kbd>. The make_release script you probably came from gives details on how to get these live on compo.sr.</p>';
+if (strpos(PHP_OS, 'Darwin') !== false) {
+    $command_to_try = 'open';
+} elseif (strpos(PHP_OS, 'WIN') !== false) {
+    $command_to_try = 'start';
+} else {
+    $command_to_try = 'gnome-open';
+}
+$command_to_try .= ' ' . get_custom_file_base() . '/exports/addons/';
+
+echo '<p>This has built all the addons into <kbd><a href="#" onclick="fauxmodal_alert(\'&lt;kbd&gt;' . escape_html($command_to_try) . '&lt;/kbd&gt;\',null,\'Command to open folder\',true);"><kbd>exports/addons</kbd></a></kbd>. The <kbd>make_release</kbd> script you probably came from gives details on how to get these live on compo.sr.</p>';
 
 echo '<p>What follows is details if you are republishing addons and want to easily put out "This is updated" messages into the comment topics. It\'s not necessary because just uploading the TARs will make the inbuilt Composr check script see the addon is updated compared to when a user installed it. However, it is nice to keep users updated if you have time.</p>';
 
@@ -123,7 +132,7 @@ foreach ($addons as $name => $place) {
     if ($old_time !== $new_time) {
         if ($old_time === false) {
             echo '<p>New addon with description:</p><div class="whitespace_visible">' . escape_html(generate_addon_description($addon_info)) . '</div>';
-            
+
         } else {
             echo nl2br(escape_html(update_addon_descriptions($file, $name, generate_addon_description($addon_info))));
         }

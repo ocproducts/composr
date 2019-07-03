@@ -30,7 +30,7 @@ function csrf_filter_active()
     }
 
     global $SITE_INFO;
-    if ((is_guest()) && ($SITE_INFO['any_guest_cached_too'] == '1')) {
+    if ((is_guest()) && (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1')) {
         return false;
     }
 

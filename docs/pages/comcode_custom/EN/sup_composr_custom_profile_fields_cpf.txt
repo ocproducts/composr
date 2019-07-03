@@ -105,9 +105,9 @@ Click &ldquo;Add a Custom Profile Field&rdquo;
 
 Give it a &ldquo;Name&rdquo; -- &ldquo;Dogs gender&rdquo; and a description -- &ldquo;What sex is your dog?&rdquo;
 
-There are only two options (Male/Female); so let's use radio buttons in our joining form. For &ldquo;Type&rdquo; select &ldquo;A value chosen from a list&rdquo; and set the Field options to &ldquo;widget=radio&rdquo;.
+Let's use radio buttons in our joining form. For &ldquo;Type&rdquo; select &ldquo;A value chosen from a list&rdquo; and set the Field options to &ldquo;widget=radio&rdquo;.
 
-In the &ldquo;Default value&rdquo; type our two options [tt]Male|Female[/tt]. Don't forget to use the pipe separator.
+In the &ldquo;Default value&rdquo; type our two options [tt]Male|Female|Other[/tt]. Don't forget to use the pipe separator.
 
 Make sure you check the &ldquo;Required field&rdquo; and &ldquo;Show on join form&rdquo; checkboxes.
 

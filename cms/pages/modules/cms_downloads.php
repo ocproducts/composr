@@ -52,6 +52,10 @@ class Module_cms_downloads extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MANAGE_DOWNLOADS', 'menu/rich_content/downloads'),
         );
@@ -61,12 +65,19 @@ class Module_cms_downloads extends Standard_crud_module
 
         $ret += parent::get_entry_points();
 
-        $ret += array(
-            'add_other' => array('ADD_DOWNLOAD_LICENCE', 'menu/cms/downloads/add_one_licence'),
-            'edit_other' => array('EDIT_DOWNLOAD_LICENCE', 'menu/cms/downloads/edit_one_licence'),
-        );
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_downloads')) {
+            $ret += array(
+                'add_other' => array('ADD_DOWNLOAD_LICENCE', 'menu/cms/downloads/add_one_licence'),
+            );
+        }
 
-        if (has_privilege(get_member(), 'mass_import', 'cms_downloads')) {
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_downloads')) {
+            $ret += array(
+                'edit_other' => array('EDIT_DOWNLOAD_LICENCE', 'menu/cms/downloads/edit_one_licence'),
+            );
+        }
+
+        if (has_privilege($member_id, 'mass_import', 'cms_downloads')) {
             if (function_exists('ftp_connect')) {
                 $ret['import'] = array('FTP_DOWNLOADS', 'menu/_generic_admin/import');
             }
