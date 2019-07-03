@@ -343,7 +343,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
 
                     list($sx, $sy) = $test;
 
-                    if ((get_option('banner_autosize') != '1') && (($sx != $banner_type_row['t_image_width']) || ($sy != $banner_type_row['t_image_height']))) {
+                    if ((get_option('banner_autosize') != '1') && ((($sx !== null) && ($sx != $banner_type_row['t_image_width'])) || (($sy !== null) && ($sy != $banner_type_row['t_image_height'])))) {
                         if (url_is_local($test_url)) {
                             @unlink(get_custom_file_base() . '/' . rawurldecode($test_url));
                             sync_file(rawurldecode($test_url));

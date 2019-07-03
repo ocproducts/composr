@@ -1458,7 +1458,7 @@ function _symbol_image_dims($param)
 
         $details = cms_getimagesize_url($url);
 
-        if ($details !== false) {
+        if (($details !== false) && ($details[0] !== null) && ($details[1] !== null)) {
             $value = array(strval($details[0]), strval($details[1]));
         }
 

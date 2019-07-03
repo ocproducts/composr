@@ -951,7 +951,7 @@ class Module_filedump
         $image_sizes = null;
         if (is_image($file, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_WEBSAFE, true)) {
             $size = cms_getimagesize($path);
-            if ($size !== false) {
+            if (($size !== false) && ($size[0] !== null) && ($size[1] !== null)) {
                 $ratio = floatval($size[1]) / floatval($size[0]);
 
                 $_image_sizes = array();

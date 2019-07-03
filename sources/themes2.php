@@ -460,7 +460,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
         $filename = $urls[2];
 
-        return cms_rawurlrecode($urls[0]);
+        return check_form_field_image($field_file, cms_rawurlrecode($urls[0]), get_custom_file_base() . '/' . rawurldecode($urls[0]));
     }
 
     // URL
@@ -477,7 +477,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return cms_rawurlrecode($url);
+        return check_form_field_image($field_url, cms_rawurlrecode($url));
     }
 
     // Filedump
@@ -495,7 +495,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
                 $thumb_url = $urls[1];
             }
 
-            return cms_rawurlrecode($url);
+            return check_form_field_image($field_filedump, cms_rawurlrecode($url));
         }
     }
 
@@ -516,7 +516,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return cms_rawurlrecode($url);
+        return check_form_field_image($field_choose, cms_rawurlrecode($url));
     }
 
     // ---
@@ -530,6 +530,181 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     }
 
     warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
+}
+
+/**
+ * Check form images based on fields.xml. Usually a no-op.
+ *
+ * @param  string $name The name of the parameter
+ * @param  URLPATH $val The current value of the parameter (if blank, no-op)
+ * @param  ?PATH $delete_on_error File path to delete if there's an error (null: none)
+ */
+function check_form_field_image($name, $val, $delete_on_error = null)
+{
+    if ($val == '') {
+        return;
+    }
+
+    require_code('input_filter');
+    require_code('images');
+
+    global $FIELD_RESTRICTIONS;
+    if ($FIELD_RESTRICTIONS === null) {
+        $restrictions = load_field_restrictions();
+    } else {
+        $restrictions = $FIELD_RESTRICTIONS;
+    }
+
+    static $image_size_cache = array();
+
+    foreach ($restrictions as $_r => $_restrictions) {
+        $_r_exp = explode(',', $_r);
+        foreach ($_r_exp as $__r) {
+            if ((trim($__r) == '') || (simulated_wildcard_match($name, trim($__r), true))) {
+                foreach ($_restrictions as $bits) {
+                    list($restriction, $attributes) = $bits;
+
+                    if ((isset($attributes['error'])) && (substr($attributes['error'], 0, 1) == '!')) {
+                        $attributes['error'] = do_lang(substr($attributes['error'], 1));
+                    }
+
+                    // Pre-work
+                    if (!isset($image_size_cache[$val])) {
+                        $image_size = cms_getimagesize_url($val);
+                        $image_size_cache[$val] = $image_size;
+                        if ($image_size === false) {
+                            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($val)));
+                        }
+                    } else {
+                        $image_size = $image_size_cache[$val];
+                    }
+                    if (in_array(strtolower($restriction), array('minaspectratio', 'maxaspectratio'))) {
+                        $matches = array();
+                        if (preg_match('#^([\d\.]+):([\d\.]+)$#', $attributes['embed'], $matches) != 0) {
+                            $_embed = float_to_raw_string(floatval($matches[1]) / floatval($matches[2]), 10, true);
+                        } else {
+                            $_embed = $attributes['embed'];
+                        }
+                    }
+                    if (in_array(strtolower($restriction), array('maxfilesize'))) {
+                        $matches = array();
+                        if (preg_match('#^([\d\.]+)\s*B?$#i', $attributes['embed'], $matches) != 0) {
+                            $_embed = strval(intval(round(floatval($matches[1]))));
+                        } elseif (preg_match('#^([\d\.]+)\s*KB?$#i', $attributes['embed'], $matches) != 0) {
+                            $_embed = strval(intval(round(floatval($matches[1]) * 1024.0)));
+                        } elseif (preg_match('#^([\d\.]+)\s*MB?$#i', $attributes['embed'], $matches) != 0) {
+                            $_embed = strval(intval(round(floatval($matches[1]) * 1024.0 * 1024.0)));
+                        } else {
+                            $_embed = $attributes['embed'];
+                        }
+                    }
+
+                    switch (strtolower($restriction)) {
+                        case 'minwidth':
+                            if (($image_size[0] !== null) && ($image_size[0] < intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_NARROW', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'maxwidth':
+                            if (($image_size[0] !== null) && ($image_size[0] > intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_WIDE', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'minheight':
+                            if (($image_size[1] !== null) && ($image_size[1] < intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_SHORT', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'maxheight':
+                            if (($image_size[1] !== null) && ($image_size[1] > intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_TALL', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'minaspectratio':
+                            if (($image_size[0] !== null) && ($image_size[1] !== null) && ($image_size[0] / $image_size[1] < floatval($_embed))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_ASPECT_RATIO_TOO_LOW', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+
+                        case 'maxaspectratio':
+                            if (($image_size[0] !== null) && ($image_size[1] !== null) && ($image_size[0] / $image_size[1] > floatval($_embed))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_ASPECT_RATIO_TOO_HIGH', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+
+                        case 'maxfilesize':
+                            if ($image_size[2] > intval($_embed)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_FILESIZE_TOO_HIGH', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+
+                        case 'forcelossless':
+                            if (!is_image('unknown.' . $image_size[3], IMAGE_CRITERIA_LOSSLESS, true)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_NOT_LOSSLESS', escape_html($val)));
+                            }
+                            break;
+
+                        case 'forceraster':
+                            if (!is_image('unknown.' . $image_size[3], IMAGE_CRITERIA_RASTER, true)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_NOT_RASTER', escape_html($val)));
+                            }
+                            break;
+
+                        case 'forcevector':
+                            if (!is_image('unknown.' . $image_size[3], IMAGE_CRITERIA_VECTOR, true)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_NOT_VECTOR', escape_html($val)));
+                            }
+                            break;
+
+                        case 'forcefileextension':
+                            if (!in_array($image_size[3], array_map('strtolower', array_map('trim', explode(',', str_replace('.', '', $attributes['embed'])))))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_INVALID_FILE_EXTENSION', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    return $val;
 }
 
 /**

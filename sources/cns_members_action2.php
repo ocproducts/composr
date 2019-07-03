@@ -1907,7 +1907,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             $from_file = http_get_contents($stub . $avatar_url, array('byte_limit' => 1024 * 1024 * 4/*reasonable limit*/, 'triger_error' => false));
         }
         $test = cms_getimagesizefromstring($from_file, get_file_extension($avatar_url));
-        if ($test !== null) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
+        if (($test !== null) && ($test[0] !== null) && ($test[1] !== null)) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
             list($sx, $sy) = $test;
 
             require_code('cns_groups');

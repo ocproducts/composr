@@ -48,6 +48,20 @@ The following restriction tags are for manipulating form results:
  - [tt]shun[/tt], provide an error if the field value equals the contained wildcard expression. This is different from [tt]disallowedsubstring[/tt] simply because it shuns complete matches against the field value rather than substrings.
  - [tt]pattern[/tt], provide an error if the given regular expression does not pass
 
+We also have some designed just for image fields:
+ - [tt]minwidth[/tt], give an error if the width is too narrow.
+ - [tt]maxwidth[/tt], give an error if the width is too wide.
+ - [tt]minheight[/tt], give an error if the height is too short.
+ - [tt]maxheight[/tt], give an error if the height is too tall.
+ - [tt]minaspectratio[/tt], give an error if the image is too tall for its width. Aspect ratio can be given as a decimal number (e.g. [tt]1.3333333[/tt]), or as a ratio (e.g. [tt]4:3[/tt]).
+ - [tt]maxaspectratio[/tt], give an error if the image is too wide for its height. Aspect ratio can be given as a decimal number (e.g. [tt]1.3333333[/tt]), or as a ratio (e.g. [tt]4:3[/tt]).
+ - [tt]maxfilesize[/tt], give an error if the file is too big. You can use a number in bytes, or use the [tt]KB[/tt] or [tt]MB[/tt] suffixes (e.g. [tt]10MB[/tt]).
+ - [tt]forcelossless[/tt], give an error if a lossy file format (JPEG) is used. We cannot detect if a WebP image is lossy or not, so we'll assume it is lossless.
+ - [tt]forceraster[/tt], give an error is a vector file format (SVG) is used.
+ - [tt]forcevector[/tt], give an error if a non-vector file format is used.
+ - [tt]forcefileextension[/tt], give an error if one of the comma-separated file extensions is not used (e.g. [tt]png,jpg,jpeg,jpe[/tt]).
+There is a commented example showing how these can be used to meet Facebook OpenGraph image restrictions for representative images in the news addon.
+
 You may give each of these restriction tags an [tt]error[/tt] attribute, which will be used for the case when they trigger. If you do not provide a message a default will be used based upon the restriction involved.
 
 The following restriction tags are for both manipulating form results and also default form field values:

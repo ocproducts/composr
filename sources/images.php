@@ -34,15 +34,16 @@ function init__images()
         define('IMAGE_CRITERIA_RASTER', 4);
         define('IMAGE_CRITERIA_VECTOR', 8); // Opposite of raster
         define('IMAGE_CRITERIA_WEBSAFE', 16); // NB: We will make a basic assumption that we are not going to try to use IMAGE_CRITERIA_GD_READ to make something IMAGE_CRITERIA_WEBSAFE
+        define('IMAGE_CRITERIA_LOSSLESS', 32);
     }
 }
 
 /**
  * Find image dimensions of a URL. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
- * @param  URLPATH $url The URL to the image file
+ * @param  URLPATH $url The URL to the image file, may be a local URL
  * @param  boolean $only_if_local Whether only to accept local URLs (usually for performance reasons)
- * @return ~array The width and height (false: error)
+ * @return ~array The width (null for vector image), height (null for vector image), file size, and file extension (false: error)
  */
 function cms_getimagesize_url($url, $only_if_local = false)
 {
@@ -55,15 +56,27 @@ function cms_getimagesize_url($url, $only_if_local = false)
 
     if ((strpos($url, '.php') === false) && (substr($url, 0, strlen($base_url)) == $base_url)) {
         $details = cms_getimagesize(get_file_base() . '/' . urldecode(substr($url, strlen($base_url) + 1)));
-    } elseif ((strpos($url, '.php') === false) && (substr($url, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($url, IMAGE_CRITERIA_GD_READ))) {
+    } elseif ((strpos($url, '.php') === false) && (substr($url, 0, strlen($custom_base_url)) == $custom_base_url) && (is_image($url, IMAGE_CRITERIA_NONE, true))) {
         $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($url, strlen($custom_base_url) + 1)));
     } else {
         if ($only_if_local) {
             return false;
         }
 
-        $from_file = http_get_contents($url, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
-        $details = cms_getimagesizefromstring($from_file, get_file_extension($url));
+        $http_result = cms_http_request($url, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
+
+        $ext = get_file_extension(($http_result->filename === null) ? $url : $http_result->filename, $http_result->download_mime_type);
+        if ($ext == '') {
+            $ext = null;
+        }
+
+        $details = array_merge(
+            cms_getimagesizefromstring($http_result->data, $ext),
+            array(
+                $http_result->download_size,
+                $ext
+            )
+        );
     }
 
     return $details;
@@ -74,7 +87,7 @@ function cms_getimagesize_url($url, $only_if_local = false)
  *
  * @param  string $path The path to the image file
  * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
- * @return ~array The width and height (false: error)
+ * @return ~array The width (null for vector image), height (null for vector image), file size, and file extension (false: error)
  */
 function cms_getimagesize($path, $ext = null)
 {
@@ -82,18 +95,42 @@ function cms_getimagesize($path, $ext = null)
         $ext = get_file_extension($path);
     }
 
+    if (is_image($path, IMAGE_CRITERIA_VECTOR, true)) {
+        if (!is_file($path)) {
+            return false;
+        }
+
+        return array(
+            null,
+            null,
+            filesize($path),
+            $ext
+        );
+    }
+
     if ($ext == 'gif') {
         $data = @cms_file_get_contents_safe($path);
         if ($data === false) {
             return false;
         }
-        return cms_getimagesizefromstring($data, $ext);
+        return array_merge(
+            cms_getimagesizefromstring($data, $ext),
+            array(
+                filesize($path),
+                $ext
+            )
+        );
     }
 
     if (function_exists('getimagesize')) {
         $details = @getimagesize($path);
         if ($details !== false) {
-            return array(max(1, $details[0]), max(1, $details[1]));
+            return array(
+                max(1, $details[0]),
+                max(1, $details[1]),
+                filesize($path),
+                $ext
+            );
         }
     }
 
@@ -105,11 +142,24 @@ function cms_getimagesize($path, $ext = null)
  *
  * @param  string $data The image file data
  * @param  ?string $ext File extension (null: unknown)
- * @return ~array The width and height (false: error)
+ * @return ~array The width (null for vector image) and height (null for vector image) (false: error)
  */
 function cms_getimagesizefromstring($data, $ext = null)
 {
-    if ($ext === 'gif') { // Workaround problem with animated gifs
+    if ($ext === null) {
+        // Try and auto-detect some important cases that we cannot rely on being correctly-handled/detected by GD
+        if (substr($data, 0, 6) == 'GIF89a') {
+            $ext = 'gif';
+        } elseif (stripos(substr($data, 500), '<svg') !== false) {
+            $ext = 'svg';
+        }
+    }
+
+    if (($ext !== null) && (is_image('unknown.' . $ext, IMAGE_CRITERIA_VECTOR, true))) {
+        return array(null, null);
+    }
+
+    if ($ext === 'gif') { // Workaround problem with animated gifs TODO
         $header = @unpack('@6/' . 'vwidth/' . 'vheight', $data);
         if ($header !== false) {
             $sx = $header['width'];
@@ -200,7 +250,7 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         $height = intval(get_option('thumb_width'));
     }
 
-    if (is_image($url, IMAGE_CRITERIA_VECTOR)) {
+    if (is_image($url, IMAGE_CRITERIA_VECTOR, true)) {
         $is_thumbnail_already = true;
     }
 
@@ -349,6 +399,13 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
     }
     if (($criteria & IMAGE_CRITERIA_VECTOR) != 0) {
         if (!$is_vector) {
+            return false;
+        }
+    }
+
+    // Lossless check
+    if (($criteria & IMAGE_CRITERIA_LOSSLESS) != 0) {
+        if (($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'jpe')) { // webp may or may not be, we can't easily check
             return false;
         }
     }
@@ -605,7 +662,7 @@ function cms_imagecreatefromstring($data, $ext = null)
         imagepalettetotruecolor($image);
     }
 
-    if ($ext === 'png') {
+    if ($ext === 'png') { // TODO
         if ($image !== false) {
             if (_will_fix_corrupt_png_alpha($image)) {
                 $path = cms_tempnam();

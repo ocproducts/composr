@@ -220,13 +220,22 @@ function brand_name()
 }
 
 /**
- * Get the file extension of the specified file. It returns without a dot.
+ * Get the file extension of the specified file. It returns without a dot. File extensions are considered never to themselves contain a dot.
  *
- * @param  string $name The filename
+ * @param  ?string $name The filename (null: unknown)
+ * @param  ?string $mime_type The mime-type (null: unknown)
  * @return string The filename extension (no dot)
  */
-function get_file_extension($name)
+function get_file_extension($name, $mime_type = null)
 {
+    if ($mime_type !== null) {
+        require_code('mime_types');
+        $ext = get_ext_from_mime_type($mime_type);
+        if ($ext !== null) {
+            return $ext;
+        }
+    }
+
     $dot_pos = strrpos($name, '.');
     if ($dot_pos === false) {
         return '';

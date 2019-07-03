@@ -451,7 +451,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             }
             if ($filename === null) {
                 if (($obfuscate != 0) && ($obfuscate != 3)) {
-                    $ext = (($obfuscate == 2) && (!is_image($http_result->filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($http_result->filename);
+                    $ext = (($obfuscate == 2) && (!is_image($http_result->filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($http_result->filename, $http_result->download_mime_type);
                     list($place, , $filename) = find_unique_path($upload_folder, $filename);
                 } else {
                     $filename = shorten_urlencoded_filename($http_result->filename);

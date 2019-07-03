@@ -28,6 +28,18 @@
 		</qualify>
 	</filter>
 
+	<!-- Example for Facebook OpenGraph validation -->
+	<!--
+	<qualify pages="cms_news" types="_add,__edit" fields="image*">
+		<forceRaster error="Facebook OpenGraph requires raster images only" />
+		<forceFileExtension error="Facebook OpenGraph requires a common websafe image file">png,jpg,jpeg,jpe,gif</forceFileExtension>
+		<maxAspectRatio error="Facebook OpenGraph requires your image to have a maximum aspect ratio of 3:1">3:1</maxAspectRatio>
+		<minAspectRatio error="Facebook OpenGraph requires your image to have a minimum aspect ratio of 4:3">4:3</minAspectRatio>
+		<minWidth error="Facebook OpenGraph requires your image to be at least 200x200">200</minWidth>
+		<minHeight error="Facebook OpenGraph requires your image to be at least 200x200">200</minHeight>
+	</qualify>
+	-->
+
 	<!-- Example as might be used for a custom module -->
 	<qualify pages="property" types="add,_add,_edit,__edit" fields="descrip_features,descrip_accomodation,descrip_exterior">
 		<maxLength error="!property:P_DESCRIPT_TOO_LONG">1500</maxLength>

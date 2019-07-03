@@ -1173,7 +1173,7 @@ class Module_admin_themes
         $width = do_lang_tempcode('UNKNOWN_EM');
         $height = do_lang_tempcode('UNKNOWN_EM');
         $image_size = cms_getimagesize($full_path);
-        if ($image_size !== false) {
+        if (($image_size !== false) && ($image_size[0] !== null) && ($image_size[1] !== null)) {
             $width = make_string_tempcode(strval($image_size[0]));
             $height = make_string_tempcode(strval($image_size[1]));
         }

@@ -108,6 +108,12 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
             return;
         }
         list($width, $height) = $image_size;
+        if ($width === null) {
+            return;
+        }
+        if ($height === null) {
+            return;
+        }
 
         if (($width > $maximum_dimension) || ($height > $maximum_dimension)) {
             $ops = $ops | IMG_OP__CONSTRAIN_DIMENSIONS;
@@ -144,7 +150,7 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
         $result = adjust_pic_orientation($image, $exif);
         $image = $result[0];
         $reorientated = $result[1];
-        $made_change |= $result[1];
+        $made_change = $made_change || $result[1];
     } else {
         $reorientated = false;
     }
@@ -166,13 +172,13 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
     if (($ops & IMG_OP__CONSTRAIN_DIMENSIONS) != 0) {
         $result = adjust_pic_size($image, $maximum_dimension);
         $image = $result[0];
-        $made_change |= $result[1];
+        $made_change = $made_change || $result[1];
     }
 
     if (($ops & IMG_OP__WATERMARK) != 0) {
         $result = add_pic_watermarking($image, $watermarks);
         $image = $result[0];
-        $made_change |= $result[1];
+        $made_change = $made_change || $result[1];
     }
 
     // Save

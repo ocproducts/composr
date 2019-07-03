@@ -37,7 +37,7 @@ class image_compression_test_set extends cms_test_case
                 require_code('files2');
                 $files = get_directory_contents($base, '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES);
                 foreach ($files as $path) {
-                    if ((!is_image($path, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_READ)) || (substr($path, -8) == '.gif.png')) {
+                    if ((!is_image($path, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_READ | IMAGE_RASTER)) || (substr($path, -8) == '.gif.png')) {
                         continue;
                     }
 

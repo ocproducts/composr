@@ -584,7 +584,7 @@ function emoticons_script()
     require_code('images');
     foreach ($_rows as $myrow) {
         $test = cms_getimagesize_url(find_theme_image($myrow['e_theme_img_code'], true));
-        if ($test !== false) {
+        if (($test !== false) && ($test[0] !== null)) {
             list($_width,) = $test;
             $max_emoticon_width = max($max_emoticon_width, $_width);
         }

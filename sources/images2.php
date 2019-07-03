@@ -166,7 +166,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 
             // Find dimensions of the source
             $sizes = cms_getimagesize_url($orig_url);
-            if ($sizes === false) {
+            if (($sizes === false) || ($sizes[0] === null) || ($sizes[1] === null)) {
                 cms_profile_end_for('convert_image_plus', $orig_url);
 
                 cms_set_time_limit($old_limit);
