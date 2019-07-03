@@ -72,7 +72,6 @@ Disallow: /rootkit_detection.php
 Disallow: /temp/
 Disallow: /text/
 Disallow: /text_custom/
-Disallow: /themes/default/
 Disallow: /themes/*/text
 Disallow: /themes/*/xml
 Disallow: /uninstall.php
