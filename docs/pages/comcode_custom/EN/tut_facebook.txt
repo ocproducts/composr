@@ -237,7 +237,7 @@ To:
 		<meta property="og:image" content="{$METADATA*,image}" />
 	{+END}
 {+END}
-{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/trimmed_logo}" />{+END}
+{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
 [/code]
 [/list]
 
