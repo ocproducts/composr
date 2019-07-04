@@ -170,7 +170,7 @@ class DebugFsStreamWrapper
     {
         global $DEBUG_FS__LOG_FILE;
         if ($DEBUG_FS__LOG_FILE !== null) {
-            $line = date('Y-m-d H:i:s') . ' ' . $_SERVER['REQUEST_URI'];
+            $line = loggable_date() . ' -- ' . $_SERVER['REQUEST_URI'];
             $line .= ' - ' . $function;
             if ($path !== null) {
                 $line .= ' - ' . $path;
@@ -178,7 +178,10 @@ class DebugFsStreamWrapper
             if ($slowdown) {
                 $line .= ' - ADDS LATENCY';
             }
+            flock($DEBUG_FS__LOG_FILE, LOCK_EX);
+            fseek($DEBUG_FS__LOG_FILE, 0, SEEK_END);
             fwrite($DEBUG_FS__LOG_FILE, $line . "\n");
+            flock($DEBUG_FS__LOG_FILE, LOCK_UN);
         }
 
         if ($slowdown) {

@@ -109,6 +109,16 @@ class Hook_addon_registry_core
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/logs/index.html',
+            'sources/hooks/systems/logs/core.php',
+            'sources/hooks/systems/cron/log_purging.php',
+            'sources/hooks/systems/config/days_to_keep__cron_log.php',
+            'sources/hooks/systems/config/days_to_keep__debug_fs_log.php',
+            'sources/hooks/systems/config/days_to_keep__error_log.php',
+            'sources/hooks/systems/config/days_to_keep__mail_integration_log.php',
+            'sources/hooks/systems/config/days_to_keep__permission_checks_log.php',
+            'sources/hooks/systems/config/days_to_keep__queries_log.php',
+            'sources/hooks/systems/config/days_to_keep__tasks_log.php',
             'data/maintenance_status.csv',
             'data/empty.php',
             'themes/default/images/icons_sprite.svg',

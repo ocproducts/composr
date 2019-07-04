@@ -139,6 +139,8 @@ class Hook_addon_registry_health_check
     {
         return array(
             'sources/hooks/systems/addon_registry/health_check.php',
+            'sources/hooks/systems/logs/health_check.php',
+            'sources/hooks/systems/config/days_to_keep__health_check_log.php',
             'lang/EN/health_check.ini',
             'sources/hooks/systems/config_categories/health_check.php',
             'sources/hooks/systems/health_checks/.htaccess',

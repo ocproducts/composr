@@ -99,6 +99,8 @@ class Hook_addon_registry_ecommerce
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/logs/ecommerce.php',
+            'sources/hooks/systems/config/days_to_keep__ecommerce_log.php',
             'themes/default/images/icons/menu/adminzone/audit/ecommerce/ecommerce.svg',
             'themes/default/images/icons/menu/adminzone/audit/ecommerce/subscriptions.svg',
             'themes/default/images/icons/menu/rich_content/ecommerce/purchase.svg',

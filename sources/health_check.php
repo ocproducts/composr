@@ -190,7 +190,7 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
     if (is_file($_log_file)) {
         $HEALTH_CHECK_LOG_FILE = fopen($_log_file, 'at');
 
-        fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  (HEALTH CHECK STARTING)' . "\n");
+        fwrite($HEALTH_CHECK_LOG_FILE, loggable_date() . '  (HEALTH CHECK STARTING)' . "\n");
     }
 
     $categories = array();
@@ -272,7 +272,7 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
     ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
     if ($HEALTH_CHECK_LOG_FILE !== null) {
-        fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  (HEALTH CHECK ENDING)' . "\n");
+        fwrite($HEALTH_CHECK_LOG_FILE, loggable_date() . '  (HEALTH CHECK ENDING)' . "\n");
 
         fclose($HEALTH_CHECK_LOG_FILE);
     }
@@ -319,11 +319,11 @@ abstract class Hook_Health_Check
         if ($check_context != CHECK_CONTEXT__PROBING_FOR_SECTIONS) {
             global $HEALTH_CHECK_LOG_FILE;
             if ($HEALTH_CHECK_LOG_FILE !== null) {
-                fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  STARTING ' . $this->category_label . ' \\ ' . $section_label . "\n");
+                fwrite($HEALTH_CHECK_LOG_FILE, loggable_date() . '  STARTING ' . $this->category_label . ' \\ ' . $section_label . "\n");
             }
             call_user_func(array($this, $method), $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass, $urls_or_page_links, $comcode_segments);
             if ($HEALTH_CHECK_LOG_FILE !== null) {
-                fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  FINISHED ' . $this->category_label . ' \\ ' . $section_label . "\n");
+                fwrite($HEALTH_CHECK_LOG_FILE, loggable_date() . '  FINISHED ' . $this->category_label . ' \\ ' . $section_label . "\n");
             }
         } else {
             if (strpos($section_label, ',') !== false) {

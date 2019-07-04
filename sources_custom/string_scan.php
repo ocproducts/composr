@@ -114,6 +114,26 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        DAYS_TO_KEEP__CRON_LOG
+        CONFIG_OPTION_days_to_keep__cron_log
+        DAYS_TO_KEEP__DEBUG_FS_LOG
+        CONFIG_OPTION_days_to_keep__debug_fs_log
+        DAYS_TO_KEEP__ERROR_LOG
+        CONFIG_OPTION_days_to_keep__error_log
+        DAYS_TO_KEEP__MAIL_INTEGRATION_LOG
+        CONFIG_OPTION_days_to_keep__mail_integration_log
+        DAYS_TO_KEEP__PERMISSION_CHECKS_LOG
+        CONFIG_OPTION_days_to_keep__permission_checks_log
+        DAYS_TO_KEEP__QUERIES_LOG
+        CONFIG_OPTION_days_to_keep__queries_log
+        DAYS_TO_KEEP__TASKS_LOG
+        CONFIG_OPTION_days_to_keep__tasks_log
+        DAYS_TO_KEEP__RESOURCE_FS_LOG
+        CONFIG_OPTION_days_to_keep__resource_fs_log
+        DAYS_TO_KEEP__ECOMMERCE_LOG
+        CONFIG_OPTION_days_to_keep__ecommerce_log
+        DAYS_TO_KEEP__HEALTH_CHECK_LOG
+        CONFIG_OPTION_days_to_keep__health_check_log
         ROBOTS_TXT
         ROBOTS_TXT_ALREADY_EXISTS
         ROBOTS_TXT_CREATED

@@ -2122,3 +2122,13 @@ function ends_with($haystack, $needle)
     $length = strlen($needle);
     return ($length === 0) || (substr($haystack, -$length) === $needle);
 }
+
+/**
+ * Get the date/time string as we log it. Designed to be consistent with how PHP puts dates into the error-log.
+ *
+ * @return string Date/time string
+ */
+function loggable_date()
+{
+    return gmdate('[d-M-Y H:i:s \U\T\C]');
+}

@@ -93,7 +93,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
 
     $myfile = $resource['myfile'];
     $finished = false;
-    fseek($myfile, 0, SEEK_SET);
+    rewind($myfile);
     $resource['already_at_end'] = false;
     $directory = array();
     $next_name = null;

@@ -798,6 +798,58 @@ Run the [tt]sync_file[/tt] function after making any file changes
 | Files are never locked automatically, and it can cause big problems if you don't manually do locking -- writes can mess up each other, or partial files can read in and cache. The [tt]cms_file_put_contents_safe[/tt] will handle locking well.
 |}
 
+[title="4"]Log files[/title]
+
+{|
+! Standard
+! Reason
+! Scope
+! Test method
+! Notes
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Define log file in a hook
+| GDPR, Administration
+| Composr development
+| Manually
+| A [tt]systems/logs[/tt] hook needs to define that your log exists. This allows the log purger to clear out old records, and the administrative error-log interface to find your log.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use correct date format
+| GDPR
+| Composr development
+| Manually
+| Start your log entries using the output of [tt]loggable_date()[/tt]. This consistent date formatting will allow the log purger to read the log. Multiple lines per entry and lead-in text at the top of the log are allowed; these special lines should not include the date/time. Other than this function there's no explicit log-writing API, because it's pretty standard PHP file I/O.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Lock your file when writing
+| Stability
+| Composr development
+| Manually
+| Multiple processes may want to write to the log at the same time. Look how other logging code handles locking. In rare situations it may be guaranteed an operation is not going to happen concurrently, in which case you can forget about locking.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Store log as [tt]data_custom/whatever.log[/tt]
+| Security
+| Composr development
+| Manually
+| This allows the default Apache [tt].htaccess[/tt] to deny web acces to the log. The only exception should be logs which are created by default, which must be [tt].php[/tt] files with some lead-in code to prevent PHP command execution (using [tt].php[/tt] is the only 100%-reliable way to prevent unintended file download by URL access).
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Do not create log by default
+| Security
+| Composr development
+| Manually
+| Logs should usually only be used if the standard file has been pre-created by hand. This avoids bloated unneeded logs that may not be properly secured against unwanted access. See the note above for stipulations around the exception to this rule.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Reference in [tt]web.config[/tt] file
+| Security
+| Composr development
+| Manually
+| We support IIS, which does not support wild-card blocking of file access. So we must manually block access to each individual log file.
+}
+
 [title="4"]URLs and file paths[/title]
 
 {|

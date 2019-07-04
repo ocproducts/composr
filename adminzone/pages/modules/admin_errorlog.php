@@ -338,39 +338,31 @@ class Module_admin_errorlog
         closedir($dh);
 
         // Other logs that may be create-able...
-        $logs_available = array( // FUDGE Ideally we'd use hooks, but it is so trivial (and non-bundled addons can document how to create their log, no problem)
-            'cron.log' => null,
-            'health_check.log' => 'health_check',
-            'tasks.log' => null,
-            'permission_checks.log' => null,
-            'queries.log' => null,
-            'big_query_screens.log' => null,
-            'mail_integration.log' => null,
-            'resource_fs.log' => 'commandr',
-            'debug_fs.log' => null,
-            'ecommerce.log' => null,
-        );
-        foreach ($logs_available as $filename => $addon_needed) {
-            if ((!isset($logs[$filename])) && (($addon_needed === null) || (addon_installed($addon_needed)))) {
-                // Action URLs
-                $add_url = build_url(array('page' => '_SELF', 'type' => 'init_log', 'id' => basename($filename, '.log')), '_SELF');
+        $hook_obs = find_all_hook_obs('systems', 'logs', 'Hook_logs_');
+        foreach ($hook_obs as $hook_ob) {
+            $logs_available = $hook_ob->enumerate_logs();
+            foreach (array_keys($logs_available) as $filename) {
+                if ((!isset($logs[$filename])) && ($filename != 'errorlog.php')) { // if not already handled
+                    // Action URLs
+                    $add_url = build_url(array('page' => '_SELF', 'type' => 'init_log', 'id' => basename($filename, '.log')), '_SELF');
 
-                // Prepare any additional details
-                if ($filename == 'cron.log') {
-                    $additional = $this->generate_cron_progression_table();
-                } else {
-                    $additional = new Tempcode();
+                    // Prepare any additional details
+                    if ($filename == 'cron.log') {
+                        $additional = $this->generate_cron_progression_table();
+                    } else {
+                        $additional = new Tempcode();
+                    }
+
+                    // Template-ready
+                    $logs[$filename] = array(
+                        'LOG' => null,
+                        'DOWNLOAD_URL' => new Tempcode(),
+                        'CLEAR_URL' => new Tempcode(),
+                        'DELETE_URL' => new Tempcode(),
+                        'ADD_URL' => $add_url,
+                        'ADDITIONAL' => $additional,
+                    );
                 }
-
-                // Template-ready
-                $logs[$filename] = array(
-                    'LOG' => null,
-                    'DOWNLOAD_URL' => new Tempcode(),
-                    'CLEAR_URL' => new Tempcode(),
-                    'DELETE_URL' => new Tempcode(),
-                    'ADD_URL' => $add_url,
-                    'ADDITIONAL' => $additional,
-                );
             }
         }
 

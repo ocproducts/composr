@@ -101,6 +101,8 @@ class Hook_addon_registry_commandr
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/logs/commandr.php',
+            'sources/hooks/systems/config/days_to_keep__resource_fs_log.php',
             'themes/default/images/icons/menu/adminzone/tools/commandr.svg',
             'themes/default/images/icons/tool_buttons/commandr_off.svg',
             'themes/default/images/icons/tool_buttons/commandr_on.svg',

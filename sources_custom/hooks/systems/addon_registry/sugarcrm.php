@@ -195,6 +195,10 @@ CRM software supported:
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_contact_metadata.php',
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_lead_metadata.php',
 
+            'sources_custom/hooks/systems/config/days_to_keep__sugarcrm_log.php',
+            'sources_custom/hooks/systems/logs/index.html',
+            'sources_custom/hooks/systems/logs/sugarcrm.php',
+
             'data_custom/user_metadata_display.php',
             'sources_custom/user_metadata_display.php',
             'sources_custom/hooks/systems/cron/sugarcrm_sync_contact_metadata.php',
