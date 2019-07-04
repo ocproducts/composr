@@ -57,6 +57,6 @@ class Hook_config_captcha_member_posts
             return null;
         }
 
-        return '0';
+        return '5';
     }
 }

@@ -142,6 +142,10 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
 
     if (!get_mass_import_mode()) {
         set_value('cns_topic_count', strval(intval(get_value('cns_topic_count')) + 1));
+
+        if ($pt_to !== null) {
+            log_it('PRIVATE_TOPIC', strval($pt_to), $GLOBALS['FORUM_DRIVER']->get_username($pt_to));
+        }
     }
 
     return $topic_id;

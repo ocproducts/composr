@@ -173,6 +173,16 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                     'MEMBERS' => '_SEARCH:admin_cns_members',
                 ),
             ),
+            'PRIVATE_TOPIC' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
+                    'MEMBERS' => '_SEARCH:admin_cns_members',
+                ),
+            ),
             'PRIVATE_TOPICS_INBOX' => array(
                 'flags' => ACTIONLOG_FLAG__GDPR,
                 'cma_hook' => 'member',

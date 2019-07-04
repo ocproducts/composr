@@ -106,6 +106,7 @@ class Hook_addon_registry_recommend
             'lang/EN/recommend.ini',
             'pages/modules/recommend.php',
             'pages/comcode/EN/recommend_help.txt',
+            'sources/hooks/systems/actionlog/recommend.php',
             'sources/recommend.php',
             'sources/blocks/main_screen_actions.php',
             'themes/default/css/screen_actions.css',
