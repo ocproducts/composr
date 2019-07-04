@@ -295,11 +295,13 @@ class Module_admin_config
                 attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html($category), 'OPTION_CATEGORY'), 'warn');
 
                 $category_name = make_string_tempcode($category);
+
+                $description = new Tempcode();
             } else {
                 $category_name = do_lang_tempcode('CONFIG_CATEGORY_' . $category);
-            }
 
-            $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
+                $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
+            }
 
             $count = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($option_count)));
 
