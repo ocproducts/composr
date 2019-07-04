@@ -160,26 +160,26 @@ abstract class Standard_crud_module
             }
         }
         if (!is_null($this->cat_crud_module)) {
-            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+            if (($this->cat_crud_module->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->cat_crud_module->permissions_require . 'range_content', $this->cat_crud_module->privilege_page_name))) {
                 $ret += array(
                     'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
                 );
             }
 
-            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+            if (($this->cat_crud_module->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->cat_crud_module->permissions_require . 'range_content', $this->cat_crud_module->privilege_page_name))) {
                 $ret += array(
                     'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
                 );
             }
         }
         if (!is_null($this->alt_crud_module)) {
-            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+            if (($this->alt_crud_module->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->alt_crud_module->permissions_require . 'range_content', $this->alt_crud_module->privilege_page_name))) {
                 $ret += array(
                     'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
                 );
             }
 
-            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+            if (($this->alt_crud_module->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->alt_crud_module->permissions_require . 'range_content', $this->alt_crud_module->privilege_page_name))) {
                 $ret += array(
                     'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
                 );
