@@ -35,7 +35,7 @@ Composr (out of the box) can hold the following personal data:
 
 It is not necessary to state that submitted-for-publication content will be visible as the user will know this is not personal data at the point of submitting it.
 
-Depending on your jurisdiction and situation, you may need to register with a 'data commissioner' for holding personal data.
+Depending on your jurisdiction and situation, you may need to register with a 'data commissioner' for holding personal data and comply with the extensive [concept]GDPR[/concept] regulation.
 
 You may also wish to include your policy with respect to deletion of publicly submitted content upon request by the submitter or another party.
 
@@ -43,6 +43,14 @@ To meet Californian law a privacy policy must state:
  - What you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
  - The date the privacy policy was written on
  - A dated list of amendments
+
+To meet GDPR Composr has many special provisions, including:
+ - Logging of access to personal data in the action log
+ - Automatic log purging, configuration per-log
+
+To meet GDPR you may also want to consider:
+ - Web server logs also need to be purge. On Linux you can configure [tt]logrotate[/tt] to do this.
+ - You must have a policy for how long you keep backups.
 
 [title="2"]Accessibility[/title]
 
