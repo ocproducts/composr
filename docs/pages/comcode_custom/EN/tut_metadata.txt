@@ -69,7 +69,7 @@ The Open Graph Image is either contextual (the main image of whatever content is
 
 Note that [tt]logo/trimmed_logo[/tt] is used for a number of things, including the e-mail header, and in RSS feeds. It is intended to be a simple standalone logo (i.e. not tied into the overall web design).
 
-In your HTML the Open Graph tags look similar to:
+In your HTML the Open Graph tags come out similar to:
 [code="HTML"]
 <meta property="og:title" content="Example page" />
 <meta property="og:type" content="comcode_page" />
@@ -77,6 +77,8 @@ In your HTML the Open Graph tags look similar to:
 <meta property="og:image" content="http://yourbaseurl/themes/default/images/EN/logo/standalone_logo.png" />
 <meta property="og:locale" content="en_GB" />
 [/code]
+
+If you want to add validation rules to make sure the chosen metadata image meets Open Graph requirements, there are samples defined in the [tt]fields.xml[/tt] system (see the [page="_SEARCH:tut_fields_filter"]The form field filter system[/page] tutorial).
 
 [title="2"]Icons[/title]
 

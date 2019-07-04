@@ -202,6 +202,8 @@ You may want to just simplify everything and make your own theme image for Open 
 a) recommends a 1.91:1 aspect ratio on your image (to avoid cropping) which is unlikely to be close to true for automatically chosen images
 b) there is a bare minimum of 200x200 (more information is included on https://developers.facebook.com/docs/sharing/best-practices#images)
 
+If you want to add validation rules to make sure the chosen metadata image meets Open Graph requirements, there are samples defined in the [tt]fields.xml[/tt] system (see the [page="_SEARCH:tut_fields_filter"]The form field filter system[/page] tutorial).
+
 [title="4"]Special case: If you use huge thumbnails[/title]
 
 Note that Facebook does have minimum/maximum sizes and file-sizes for images. If you use enormous thumbnails on your site, your [tt]HTML_HEAD.tpl[/tt] template could need customising to re-thumbnail the files.
