@@ -79,12 +79,18 @@ class lang_spelling_test_set extends cms_test_case
 
         // Particular files...
 
-        $path = get_file_base() . '/';
+        $path = get_file_base();
         $files = array(
             'uploads/website_specific/compo.sr/errorservice.csv',
+            'data/maintenance_status.csv',
         );
         foreach ($files as $_path) {
             $c = file_get_contents($path . '/' . $_path);
+
+            if ($_path == 'data/maintenance_status.csv') {
+                $c = preg_replace('#^.*,#mU', '', $c);
+            }
+
             $this->check($this, $path . '/' . $_path, null, $c, $verbose);
         }
     }

@@ -28,15 +28,15 @@
 		</qualify>
 	</filter>
 
-	<!-- Example for Facebook OpenGraph validation -->
+	<!-- Example for Facebook Open Graph validation -->
 	<!--
 	<qualify pages="cms_news" types="_add,__edit" fields="image*">
-		<forceRaster error="Facebook OpenGraph requires raster images only" />
-		<forceFileExtension error="Facebook OpenGraph requires a common websafe image file">png,jpg,jpeg,jpe,gif</forceFileExtension>
-		<maxAspectRatio error="Facebook OpenGraph requires your image to have a maximum aspect ratio of 3:1">3:1</maxAspectRatio>
-		<minAspectRatio error="Facebook OpenGraph requires your image to have a minimum aspect ratio of 4:3">4:3</minAspectRatio>
-		<minWidth error="Facebook OpenGraph requires your image to be at least 200x200">200</minWidth>
-		<minHeight error="Facebook OpenGraph requires your image to be at least 200x200">200</minHeight>
+		<forceRaster error="Facebook Open Graph requires raster images only" />
+		<forceFileExtension error="Facebook Open Graph requires a common websafe image file">png,jpg,jpeg,jpe,gif</forceFileExtension>
+		<maxAspectRatio error="Facebook Open Graph requires your image to have a maximum aspect ratio of 3:1">3:1</maxAspectRatio>
+		<minAspectRatio error="Facebook Open Graph requires your image to have a minimum aspect ratio of 4:3">4:3</minAspectRatio>
+		<minWidth error="Facebook Open Graph requires your image to be at least 200x200">200</minWidth>
+		<minHeight error="Facebook Open Graph requires your image to be at least 200x200">200</minHeight>
 	</qualify>
 	-->
 

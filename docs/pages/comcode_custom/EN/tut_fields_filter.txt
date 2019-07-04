@@ -60,7 +60,7 @@ We also have some designed just for image fields:
  - [tt]forceraster[/tt], give an error is a vector file format (SVG) is used.
  - [tt]forcevector[/tt], give an error if a non-vector file format is used.
  - [tt]forcefileextension[/tt], give an error if one of the comma-separated file extensions is not used (e.g. [tt]png,jpg,jpeg,jpe[/tt]).
-There is a commented example showing how these can be used to meet Facebook OpenGraph image restrictions for representative images in the news addon.
+There is a commented example showing how these can be used to meet Facebook Open Graph image restrictions for representative images in the news addon.
 
 You may give each of these restriction tags an [tt]error[/tt] attribute, which will be used for the case when they trigger. If you do not provide a message a default will be used based upon the restriction involved.
 

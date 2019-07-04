@@ -78,7 +78,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        $this->stateCheckManual('Check [url="OpenGraph metadata"]https://developers.facebook.com/tools/debug/sharing/[/url] on any key pages you expect to be shared');
+        $this->stateCheckManual('Check [url="Open Graph metadata"]https://developers.facebook.com/tools/debug/sharing/[/url] on any key pages you expect to be shared');
 
         if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
