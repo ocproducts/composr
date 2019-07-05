@@ -238,6 +238,10 @@ class Hook_search_cns_members extends FieldsSearchHook
             list($content_where) = build_content_where($content, $boolean_search, $boolean_operator); // Rebuilding $content_where from what was passed to this function
         }
         foreach ($rows as $i => $row) {
+            if (($row['cf_allow_template_search'] == 0) && ($row['cf_include_in_main_search'] == 0)) {
+                continue; // Nothing to do
+            }
+
             $ob = get_fields_hook($row['cf_type']);
             list(, , $storage_type) = $ob->get_field_value_row_bits($row);
 
