@@ -44,6 +44,8 @@ To meet Californian law a privacy policy must state:
  - The date the privacy policy was written on
  - A dated list of amendments
 
+If you want to support the "Do Not Track" header, then you can do so using the [tt]{$DO_NOT_TRACK_REQUESTED}[/tt] symbol.
+
 To meet GDPR Composr has many special provisions, including:
  - Logging of access to personal data in the action log
  - Automatic log purging, configuration per-log
