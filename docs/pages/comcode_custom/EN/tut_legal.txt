@@ -33,7 +33,7 @@ Composr (out of the box) can hold the following personal data:
  - Private Topics. These are only visible between sender and receiver, and staff (when intentionally viewed).
  - Personal posts. These are only visible between sender and receiver, and staff (may be viewed unintentionally).
 
-It is not necessary to state that submitted-for-publication content will be visible as the user will know this is not personal data at the point of submitting it.
+It is likely not necessary to state that submitted-for-publication content will be visible as the user will know this is not personal data at the point of submitting it.
 
 Depending on your jurisdiction and situation, you may need to register with a 'data commissioner' for holding personal data and comply with the extensive [concept]GDPR[/concept] regulation.
 
@@ -47,10 +47,18 @@ To meet Californian law a privacy policy must state:
 To meet GDPR Composr has many special provisions, including:
  - Logging of access to personal data in the action log
  - Automatic log purging, configuration per-log
+ - Ability to configure customised legal declarations for new users
 
-To meet GDPR you may also want to consider:
- - Web server logs also need to be purge. On Linux you can configure [tt]logrotate[/tt] to do this.
- - You must have a policy for how long you keep backups.
+To meet GDPR you also need to consider:
+ - Web server logs also need to be purged. On Linux you can configure [tt]logrotate[/tt] to do this.
+ - Backups:
+  - You must have a policy for how long you keep backups.
+  - Backup access must be restricted, and encryption may be a good idea.
+ - You may want to consider filesystem-level encryption, including of the database files, to prevent access to data if hardware is stolen.
+ - You should use SSL for your website, and any web services you rely on.
+ - You may need a webhost compliant with the 'EU-US privacy shield'.
+
+The extent of your precautions will likely depend on the nature of personal data you hold (GDPR says: "shall implement appropriate technical and organisational measures to ensure a level of security appropriate to the risk"). However, basic provisions are required for any website due to the storage of user IP addresses.
 
 [title="2"]Accessibility[/title]
 

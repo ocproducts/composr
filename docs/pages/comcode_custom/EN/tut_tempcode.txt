@@ -897,7 +897,11 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MATURITY_FILTER_REQUESTED}</td>
-			<td>Do a header check, to see if family-friendly browsing experience was requested by the user's safe header preference. This symbol only works when Composr is installed on a server with the PHP Apache module, unless a new <kbd>HTTP_PREFER</kbd> server variable is added (see <a href="http://php.net/manual/en/function.apache-request-headers.php">apache-request-headers</a> &ndash; read <strong>callum85's</strong> comment for details).</td>
+			<td>Do a header check, to see if family-friendly browsing experience was requested by the user's safe header preference.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DO_NOT_TRACK_REQUESTED}</td>
+			<td>Do a header check, to see if do-not-track was requested by the user's browser preferences.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$TAPATALK}</td>

@@ -2354,6 +2354,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CODE_EDITOR
         CAPTCHA_MEMBER_DAYS
         CAPTCHA_MEMBER_POSTS
+        JOIN_DECLARATIONS
+        CONFIG_OPTION_join_declarations
         CONFIG_OPTION_captcha_member_days
         CONFIG_OPTION_captcha_member_posts
         CONFIG_OPTION_gallery_media_title_required_VALUE_0
@@ -7888,6 +7890,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
+        I_AGREE_RULES
+        I_AGREE_PRIVACY
+        I_AGREE_UPDATES
         takes_lots_of_space
         JAVASCRIPT_REQUIRED
         DESCRIPTION_AWARD_OVERVIEW

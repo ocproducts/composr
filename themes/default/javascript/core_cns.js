@@ -280,7 +280,14 @@
 
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
         $dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
-            document.getElementById('proceed-button').disabled = !checkbox.checked;
+            var checkBoxes = $('.js-chb-click-toggle-proceed-btn');
+            var allChecked = true;
+            for (var i = 0; i < checkBoxes.length; i++) {
+                if (!checkBoxes[i].checked) {
+                    allChecked = false;
+                }
+            }
+            document.getElementById('proceed-button').disabled = !allChecked;
         });
 
         $dom.on(container, 'click', '.js-click-set-top-location', function (e, target) {

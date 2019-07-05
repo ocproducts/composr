@@ -10,13 +10,24 @@ This website:
  - logs basic information pertaining to your computer including your IP address, web browser name, and operating system;
  - stores other information that you explicitly enter, such as your account information, or forum posts;
  - if you are logged in, your member profile will update the publicly displayed time that you last visited (which will also be stored in a cookie), and you will show as online (unless you login as invisible).
+ - embeds share code from social networks such as Facebook and Twitter, which may result in tracking by these websites
+ - probes IP addresses for geographical location, and for Internet Service Provider names, for us to learn more about users for marketing, security, and relationship purposes; this may allow third-party IP-data companies to see what websites you have been active on
+ - embeds web code from third-party companies for various purposes, which could result in tracking by these third-party companies
 [/surround]
+{+START,IF,{$ADDON_INSTALLED,ecommerce}}
+When performing eCommerce transactions:{+START,IF_NON_EMPTY,{$CONFIG_OPTION,shipping_shippo_api_live}}
+ - Address and order data will be sent to our shipping partner, Shippo, for calculation of shipping costs{+END}{+START,IF_NON_EMPTY,{$CONFIG_OPTION,taxcloud_api_key}}
+ - Address and order data will be sent to our tax partner, TaxCloud, for calculation of taxes{+END}
+ - Address and order data will be sent to our payments partner at checkout, for them to correctly take you through the payment process
+{+END}
 
 If you wish to see what exact cookies are saved, or delete cookies, you may do so using [url="standard tools built into your web browser"]http://www.wikihow.com/View-Cookies[/url].
 
 We may occasionally send bulk e-mails about {$SITE_NAME*}, or matters relating to {$SITE_SCOPE*} to our members. We will not send bulk e-mails or allow others to send bulk e-mails, which we believe would be considered spam.
 
 We will not share private details other than what can be seen in the forum profile and public postings unless legally required to do so.
+
+We do not have any special handling of the "Do Not Track" header.
 
 The staff reserve the right to read any Private Topics and posts placed on this website. Any form of conversation made through this website should be considered viewable by staff. All private-posts and posts, whether 'deleted' or not, are stored on the server and may be reviewed if we feel we have cause for an investigation. If you do want to keep something private, do not use our services for transmitting it. Situations involving investigations can be anything at our discretion, for example, to investigate specific incidents of our services being used for racism or harassment.
 {+START,IF,{$ADDON_INSTALLED,shopping}}
@@ -28,7 +39,7 @@ Logged in members may [page="_SEARCH:members:view#tab--edit--privacy"]choose whi
 {+END}{+END}{+START,IF,{$COPPA_ON}}
 [title="2"]Children's Online Privacy Protection Act[/title]
 
-In order for children under the age of thirteen to join this website, a parent or guardian must approve it. This is in accordance with U.S. law, but is applied internationally as a civil standard.
+In order for children under the age of {$CONFIG_OPTION,coppa_age} to join this website, a parent or guardian must approve it. This is in accordance with U.S. law, but is applied internationally as a civil standard.
 A notice will be sent, by e-mail, to the e-mail address given when a child joins, which will provide notice on how to approve the membership.
 
 The parent or guardian has the option to agree to the collection and use of the child's information without consenting to the disclosure of the information to third parties.
@@ -43,3 +54,5 @@ For the purpose of reducing spam:
 1) Your IP address, e-mail address, and username, may be checked against the [url="http://www.stopforumspam.com/"]Stop Forum Spam[/url] web service, which involves these details being transmitted within a service request.
 1) Your IP address may be checked against multiple block lists, which involves these details being transmitted within a service request.
 {+END}
+
+[staff_note]To meet Californian law a privacy policy must state the date the privacy policy was written on.[/staff_note]

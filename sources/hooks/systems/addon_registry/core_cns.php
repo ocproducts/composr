@@ -163,6 +163,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/snippets/exists_emoticon.php',
             'sources/hooks/systems/sitemap/group.php',
             'sources/hooks/systems/sitemap/member.php',
+            'sources/hooks/systems/config/join_declarations.php',
             'sources/hooks/systems/config/page_after_join.php',
             'sources/hooks/systems/config/allow_alpha_search.php',
             'sources/hooks/systems/config/member_email_receipt_configurability.php',
@@ -571,6 +572,7 @@ class Hook_addon_registry_core_cns
                 'URL' => placeholder_url(),
                 'HIDDEN' => '',
                 'GROUP_SELECT' => $group_select,
+                'DECLARATIONS' => array(do_lang('I_AGREE')),
             )), null, '', true)
         );
     }
