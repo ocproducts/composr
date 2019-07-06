@@ -109,8 +109,12 @@ class Hook_addon_registry_core
     public function get_file_list()
     {
         return array(
+            'sources/blocks/main_privacy_policy_auto.php',
             'sources/hooks/systems/logs/index.html',
             'sources/hooks/systems/logs/core.php',
+            'sources/hooks/systems/config/website_activity_store_time.php',
+            'sources/hooks/systems/privacy/core.php',
+            'sources/privacy.php',
             'sources/hooks/systems/cron/log_purging.php',
             'sources/hooks/systems/config/days_to_keep__cron_log.php',
             'sources/hooks/systems/config/days_to_keep__debug_fs_log.php',

@@ -101,6 +101,7 @@ class Hook_addon_registry_shopping
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/shopping.php',
             'themes/default/images/icons/menu/rich_content/ecommerce/orders.svg',
             'themes/default/images/icons/menu/adminzone/audit/ecommerce/undispatched_orders.svg',
             'themes/default/images/icons/menu/rich_content/ecommerce/shopping_cart.svg',

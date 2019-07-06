@@ -3520,8 +3520,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_use_true_from_VALUE_0
         CONFIG_OPTION_use_true_from_VALUE_1
         CONFIG_OPTION_use_true_from_VALUE_2
-        EMAIL_LOG_DAYS
-        CONFIG_OPTION_email_log_days
+        EMAIL_LOG_STORE_TIME
+        CONFIG_OPTION_email_log_store_time
         CONFIG_OPTION_user_postsize_errors
         CONFIG_OPTION_username_profile_links
         CONFIG_OPTION_users_online_time

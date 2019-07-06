@@ -407,6 +407,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/bump_member_group_timeout.php',
             '_tests/tests/unit_tests/tutorial_nav_paths.php',
             '_tests/tests/unit_tests/env_vars.php',
+            '_tests/tests/unit_tests/privacy_hooks.php',
             '_tests/tests/unit_tests/_health_check.php',
             '_tests/tests/unit_tests/catalogues.php',
             '_tests/tests/unit_tests/catalogues_categories.php',

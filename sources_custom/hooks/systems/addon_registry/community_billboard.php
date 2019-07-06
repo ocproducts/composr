@@ -135,6 +135,7 @@ class Hook_addon_registry_community_billboard
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/community_billboard.php',
             'themes/default/images_custom/icons/menu/adminzone/audit/community_billboard.svg',
             'themes/default/images_custom/icons/menu/adminzone/audit/index.html',
             'themes/default/images_custom/icons/menu/adminzone/index.html',

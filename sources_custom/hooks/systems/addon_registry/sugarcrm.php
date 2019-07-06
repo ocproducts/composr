@@ -163,6 +163,7 @@ CRM software supported:
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/sugarcrm.php',
+            'sources_custom/hooks/systems/privacy/sugarcrm.php',
             'sources_custom/hooks/systems/health_checks/sugarcrm.php',
             'sources_custom/sugarcrm.php',
             'sources_custom/hooks/systems/contact_forms/sugarcrm.php',

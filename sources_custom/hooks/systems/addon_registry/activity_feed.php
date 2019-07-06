@@ -151,6 +151,7 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/activity_feed.php',
             'sources_custom/hooks/systems/addon_registry/activity_feed.php',
             'sources_custom/hooks/systems/notifications/activity.php',
             'sources_custom/hooks/systems/rss/activities.php',

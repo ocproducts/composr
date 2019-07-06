@@ -99,6 +99,7 @@ class Hook_addon_registry_galleries
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/galleries.php',
             'themes/default/images/icons/menu/rich_content/galleries.svg',
             'themes/default/images/icons/menu/cms/galleries/add_one_image.svg',
             'themes/default/images/icons/menu/cms/galleries/add_one_video.svg',

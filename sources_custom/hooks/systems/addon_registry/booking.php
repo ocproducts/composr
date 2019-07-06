@@ -137,6 +137,7 @@ You may wish to deny access to the usergroup and member directories when using t
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/booking.php',
             'sources_custom/hooks/systems/addon_registry/booking.php',
             'sources_custom/hooks/systems/notifications/booking_customer.php',
             'sources_custom/hooks/systems/notifications/booking_inform_staff.php',

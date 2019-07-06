@@ -149,6 +149,7 @@ When creating new gifts please only use images which are free to use, we suggest
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/giftr.php',
+            'sources_custom/hooks/systems/privacy/giftr.php',
             'sources_custom/hooks/systems/notifications/gift.php',
             'adminzone/pages/modules_custom/admin_giftr.php',
             'lang_custom/EN/giftr.ini',

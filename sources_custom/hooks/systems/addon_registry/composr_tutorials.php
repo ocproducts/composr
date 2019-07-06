@@ -145,6 +145,7 @@ The documentation is primarily maintained on our website, and this archive is on
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/composr_tutorials.php',
             'sources_custom/hooks/systems/addon_registry/composr_tutorials.php',
             'sources_custom/tutorials.php',
             'sources_custom/blocks/main_tutorial_rating.php',

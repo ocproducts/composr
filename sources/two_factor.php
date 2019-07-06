@@ -58,7 +58,7 @@ function approve_ip_script()
     if ($test === null) {
         warn_exit(do_lang_tempcode('ALREADY_APPROVED_IP'));
     }
-    $GLOBALS['FORUM_DB']->query_update('f_member_known_login_ips', array('i_val_code' => ''), array('i_val_code' => $code), '', 1);
+    $GLOBALS['FORUM_DB']->query_update('f_member_known_login_ips', array('i_val_code' => '', 'i_time' => time()), array('i_val_code' => $code), '', 1);
     if ((get_option('maintenance_script_htaccess') == '1') && (maintenance_script_htaccess_option_available())) {
         adjust_htaccess();
     }

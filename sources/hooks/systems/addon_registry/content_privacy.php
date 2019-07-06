@@ -99,6 +99,7 @@ class Hook_addon_registry_content_privacy
     {
         return array(
             'sources/hooks/systems/addon_registry/content_privacy.php',
+            'sources/hooks/systems/privacy/content_privacy.php',
             'sources/content_privacy2.php',
             'sources/content_privacy.php',
             'sources/hooks/systems/notifications/invited_content.php',

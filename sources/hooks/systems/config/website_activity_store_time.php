@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_configuration
+ * @package    core
  */
 
 /**
  * Hook class.
  */
-class Hook_config_email_log_days
+class Hook_config_website_activity_store_time
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,18 @@ class Hook_config_email_log_days
     public function get_details()
     {
         return array(
-            'human_name' => 'EMAIL_LOG_DAYS',
+            'human_name' => 'WEBSITE_ACTIVITY_STORE_TIME',
             'type' => 'integer',
-            'category' => 'MESSAGES',
-            'group' => 'EMAIL_GENERAL',
-            'explanation' => 'CONFIG_OPTION_email_log_days',
-            'shared_hosting_restricted' => '0',
+            'category' => 'PRIVACY',
+            'group' => 'LOGS',
+            'explanation' => 'CONFIG_OPTION_website_activity_store_time',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 2,
             'required' => true,
 
             'public' => false,
 
-            'addon' => 'core_configuration',
+            'addon' => 'core',
         );
     }
 
@@ -54,6 +53,6 @@ class Hook_config_email_log_days
      */
     public function get_default()
     {
-        return '14';
+        return '365';
     }
 }

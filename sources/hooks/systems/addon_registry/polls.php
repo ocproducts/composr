@@ -98,6 +98,7 @@ class Hook_addon_registry_polls
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/polls.php',
             'themes/default/images/icons/menu/social/polls.svg',
             'themes/default/images/icons_monochrome/menu/social/polls.svg',
             'sources/polls2.php',

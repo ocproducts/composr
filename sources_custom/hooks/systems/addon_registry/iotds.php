@@ -136,6 +136,7 @@ class Hook_addon_registry_iotds
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/iotds.php',
             'themes/default/images_custom/icons/menu/rich_content/iotds.svg',
             'sources_custom/iotds2.php',
             'sources_custom/hooks/systems/notifications/iotd_chosen.php',

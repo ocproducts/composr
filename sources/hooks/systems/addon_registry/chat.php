@@ -98,6 +98,7 @@ class Hook_addon_registry_chat
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/chat.php',
             'themes/default/images/icons/buttons/sound_effects.svg',
             'themes/default/images/icons/menu/social/chat/chat.svg',
             'themes/default/images/icons/menu/social/chat/chatroom_add.svg',

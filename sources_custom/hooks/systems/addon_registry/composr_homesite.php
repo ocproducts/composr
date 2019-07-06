@@ -151,6 +151,7 @@ This addon does not contain the compo.sr install code and the overall site and t
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/composr_homesite.php',
             'sources_custom/hooks/systems/addon_registry/composr_homesite.php',
             'adminzone/pages/minimodules_custom/_make_release.php',
             'adminzone/pages/modules_custom/admin_cmsusers.php',

@@ -102,6 +102,7 @@ class Hook_addon_registry_core_cns
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/core_cns.php',
             'themes/default/images/cns_default_avatars/default.png',
             'themes/default/images/icons/tool_buttons/inbox.svg',
             'themes/default/images/icons/tool_buttons/inbox2.svg',

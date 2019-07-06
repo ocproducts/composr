@@ -102,6 +102,7 @@ class Hook_addon_registry_news
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/news.php',
             'themes/default/images/icons/menu/rich_content/news.svg',
             'themes/default/images/icons/menu/cms/blog.svg',
             'themes/default/images/icons_monochrome/menu/rich_content/news.svg',
