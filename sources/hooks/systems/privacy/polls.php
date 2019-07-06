@@ -74,20 +74,23 @@ class Hook_privacy_polls extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
             case 'poll_votes':
-                $ret += array(
-                    'v_poll_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('poll', 'question', array('id' => $row['v_poll_id']))),
-                    'v_vote_for__dereferenced' => ($row['v_vote_for'] === null) ? null : get_translated_text($GLOBALS['SITE_DB']->query_select_value('poll', 'option' . strval($row['v_vote_for']), array('id' => $row['v_poll_id']))),
-                );
+                $poll_rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $row['v_poll_id']), '', 1);
+                if (array_key_exists(0, $poll_rows)) {
+                    $ret += array(
+                        'v_poll_id__dereferenced' => get_translated_text($poll_rows[0]['question']),
+                        'v_vote_for__dereferenced' => ($row['v_vote_for'] === null) ? null : get_translated_text($poll_rows[0]['option' . strval($row['v_vote_for'])]),
+                    );
+                }
                 break;
         }
 
@@ -97,8 +100,8 @@ class Hook_privacy_polls extends Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {

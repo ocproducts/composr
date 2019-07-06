@@ -107,7 +107,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'member_id_fields' => array(),
                     'ip_address_fields' => array(),
                     'email_fields' => array('a_email'),
-                    'additional_anonymise_fields' => array('a_firstname', 'a_lastname', 'a_street_address', 'a_city', 'a_state', 'a_post_code', 'a_country', 'a_email', 'a_phone'),
+                    'additional_anonymise_fields' => array('a_firstname', 'a_lastname', 'a_street_address', 'a_city', 'a_state', 'a_post_code', 'a_country', 'a_phone'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
                 ),
@@ -118,19 +118,66 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
-                $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
-                );
+            case 'ecom_sales':
+                require_code('ecommerce');
+                $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_transactions', 't_type_code', array('id' => $row['txn_id']));
+                if ($type_code !== null) {
+                    list($product_info) = find_product_details($type_code);
+                    if ($product_info !== null) {
+                        $ret += array(
+                            'txn_type_code__dereferenced' => $product_info['item_name'],
+                        );
+                    }
+                }
+                break;
+
+            case 'ecom_subscriptions':
+                require_code('ecommerce');
+                list($product_info) = find_product_details($row['s_type_code']);
+                if ($product_info !== null) {
+                    $ret += array(
+                        's_type_code__dereferenced' => $product_info['item_name'],
+                    );
+                }
+                break;
+
+            case 'ecom_invoices':
+                require_code('ecommerce');
+                list($product_info) = find_product_details($row['i_type_code']);
+                if ($product_info !== null) {
+                    $ret += array(
+                        'i_type_code__dereferenced' => $product_info['item_name'],
+                    );
+                }
+                break;
+
+            case 'ecom_transactions':
+                require_code('ecommerce');
+                list($product_info) = find_product_details($row['t_type_code']);
+                if ($product_info !== null) {
+                    $ret += array(
+                        't_type_code__dereferenced' => $product_info['item_name'],
+                    );
+                }
+                break;
+
+            case 'ecom_trans_expecting':
+                require_code('ecommerce');
+                list($product_info) = find_product_details($row['e_type_code']);
+                if ($product_info !== null) {
+                    $ret += array(
+                        'e_type_code__dereferenced' => $product_info['item_name'],
+                    );
+                }
                 break;
         }
 
@@ -140,15 +187,15 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {
         switch ($table_name) {
-            case 'TODO':
-                require_code('TODO');
-                delete_TODO($row['id']);
+            case 'ecom_transactions':
+                $GLOBALS['SITE_DB']->query_delete('ecom_trans_addresses', array('a_txn_id' => $row['id']));
+                $GLOBALS['SITE_DB']->query_delete('ecom_transactions', array('id' => $row['id']), '', 1);
                 break;
 
             default:

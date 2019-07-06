@@ -90,21 +90,19 @@ class Hook_privacy_shopping extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        // TODO: Badly wrong now
-
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
             case 'shopping_orders':
                 $ret += array(
                     'details' => $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $row['id'])),
-                    'addresses' => $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('order_id' => $row['id'])),
+                    'addresses' => $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_txn_id' => $row['txn_id'])),
                 );
                 break;
         }
@@ -115,18 +113,15 @@ class Hook_privacy_shopping extends Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {
-        // TODO: Badly wrong now
-
         switch ($table_name) {
             case 'shopping_orders':
-                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $row['id']));
-                $GLOBALS['SITE_DB']->query_delete('shopping_order_addresses', array('order_id' => $row['id']));
-                $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $row['id']), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_order_id' => $row['id']));
+                $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $row['id']), '', 1);
                 break;
 
             default:

@@ -112,6 +112,8 @@ class Hook_addon_registry_core
             'sources/blocks/main_privacy_policy_auto.php',
             'sources/hooks/systems/logs/index.html',
             'sources/hooks/systems/logs/core.php',
+            'sources/hooks/systems/privacy/index.html',
+            'sources_custom/hooks/systems/privacy/index.html',
             'sources/hooks/systems/config/website_activity_store_time.php',
             'sources/hooks/systems/privacy/core.php',
             'sources/privacy.php',

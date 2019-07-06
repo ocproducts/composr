@@ -1113,6 +1113,13 @@ No null strings
 | Product development only
 | 
 | It is up to the database layer whether database string comparisons are case sensitive or not. Usually you don't need to think about it because the sensitivity just maps straight to the application behaviour you'd expect, but there may be occasional issues to consider. The default supported MySQL driver is case insensitive as the default collation used is [tt]utf8mb4_general_ci[/tt].
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Define [tt]privacy[/tt] hooks, Manually
+| GDPR
+| Composr development +
+| Automated test ([tt]privacy_hooks.php[/tt])
+| Any member-ID, IP address, e-mail address, or human-name fields need to be managed for GDPR purposes. This includes support for downloading (serialising), deleting, and anonymising. Serialised content should be understandable without further context, so things like category titles may need to be included (if important) rather than IDs. Database records often should not be deleted without further consideration, so proper deletion API calls should be codified.
 |}
 
 [title="4"]Templates and Interfaces[/title]

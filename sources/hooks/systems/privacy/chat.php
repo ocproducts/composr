@@ -126,53 +126,48 @@ class Hook_privacy_chat extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'chat_friends':
                 $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                    'member_likes__dereferenced' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes']),
+                    'member_liked__dereferenced' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked']),
+                );
+                break;
+
+            case 'chat_events':
+                $ret += array(
+                    'e_room_id__dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'room_name', array('id' => $row['e_room_id'])),
+                );
+                break;
+
+            case 'chat_active':
+                $ret += array(
+                    'room_id__dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'room_name', array('id' => $row['room_id'])),
+                );
+                break;
+
+            case 'chat_messages':
+                $ret += array(
+                    'room_id__dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'room_name', array('id' => $row['room_id'])),
+                );
+                break;
+
+            case 'chat_blocking':
+                $ret += array(
+                    'member_blocker__dereferenced' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_blocker']),
+                    'member_blocked__dereferenced' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_blocked']),
                 );
                 break;
         }
 
         return $ret;
-    }
-
-    /**
-     * Anonymise a row.
-     *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
-     */
-    public function anonymise($table_name, $row)
-    {
-        return new TODO;
-    }
-
-    /**
-     * Delete a row.
-     *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
-     */
-    public function delete($table_name, $row)
-    {
-        switch ($table_name) {
-            case 'TODO':
-                require_code('TODO');
-                delete_TODO($row['id']);
-                break;
-
-            default:
-                $this->delete($table_name, $row);
-                break;
-        }
     }
 }

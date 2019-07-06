@@ -42,7 +42,7 @@ abstract class Hook_privacy_base
     /**
      * Get field metadata for a table.
      *
-     * @param ID_TEXT Table name
+     * @param  ID_TEXT $table_name Table name
      * @return array Field metadata
      */
     protected function get_field_metadata($table_name)
@@ -55,8 +55,8 @@ abstract class Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
@@ -79,8 +79,8 @@ abstract class Hook_privacy_base
     /**
      * Anonymise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function anonymise($table_name, $row)
     {
@@ -116,8 +116,8 @@ abstract class Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {

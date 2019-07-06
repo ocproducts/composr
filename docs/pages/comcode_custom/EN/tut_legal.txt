@@ -49,7 +49,11 @@ If you want to support the "Do Not Track" header, then you can do so using the [
 To meet GDPR Composr has many special provisions, including:
  - Logging of access to personal data in the action log
  - Automatic log purging, configuration per-log
- - Ability to configure customised legal declarations for new users
+ - Automatic purging/anonymisation of old database records that contain personal data
+ - Ability to download a user's data in a serialised format (*)
+ - Ability to mass-delete and/or mass-anonymise all a user's data (*)
+ - Ability to configure customised legal declarations for new users (*)
+* As far as Composr can discern from its database structure. You may hold other data outside Composr, or not directly associated via database structure.
 
 To meet GDPR you also need to consider:
  - Web server logs also need to be purged. On Linux you can configure [tt]logrotate[/tt] to do this.

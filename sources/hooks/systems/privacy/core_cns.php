@@ -294,18 +294,117 @@ class Hook_privacy_core_cns extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'f_group_join_log':
+                if ($row['usergroup_id'] !== null) {
+                    $g_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => $row['usergroup_id']));
+                    if ($g_name !== null) {
+                        $ret += array(
+                            'usergroup_id__dereferenced' => get_translated_text($g_name, $GLOBALS['FORUM_DB']),
+                        );
+                    }
+                }
+                break;
+
+            case 'f_warnings':
                 $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                    'w_member_id__dereferenced' => $GLOBALS['FORUM_DRIVER']->get_username($row['w_member_id']),
+                    'w_by__dereferenced' => $GLOBALS['FORUM_DRIVER']->get_username($row['w_by']),
+                );
+                if ($row['p_silence_from_topic'] !== null) {
+                    $ret += array(
+                        'p_silence_from_topic' => '?AUTO_LINK',
+                    );
+                }
+                if ($row['p_silence_from_topic'] !== null) {
+                    $ret += array(
+                        'p_silence_from_forum' => '?AUTO_LINK',
+                    );
+                }
+                break;
+
+            case 'f_members':
+                $name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => $row['m_primary_group']));
+                if ($name !== null) {
+                    $ret += array(
+                        'm_primary_group__dereferenced' => get_translated_text($name, $GLOBALS['FORUM_DB']),
+                    );
+                }
+                break;
+
+            case 'f_posts':
+                $ret += array(
+                    'p_topic_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => $row['p_topic_id'])),
+                    'p_cache_forum_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['p_cache_forum_id'])),
+                );
+                break;
+
+            case 'f_member_cpf_perms':
+                $ret += array(
+                    'field_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'cf_name', array('id' => $row['field_id'])),
+                );
+                break;
+
+            case 'f_group_members':
+                $ret += array(
+                    'gm_group_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => $row['gm_group_id'])),
+                );
+                break;
+
+            case 'f_forums':
+                $ret = null; // We do not need to include this
+                break;
+
+            case 'f_topics':
+                $ret += array(
+                    'f_name__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['t_forum_id'])),
+                    't_pt_from__dereferenced' => ($row['t_pt_from'] === null) ? null : $GLOBALS['FORUM_DRIVER']->get_username($row['t_pt_from']),
+                    't_pt_to__dereferenced' => ($row['t_pt_to'] === null) ? null : $GLOBALS['FORUM_DRIVER']->get_username($row['t_pt_to']),
+                    't_poll_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_polls', 'po_question', array('id' => $row['t_poll_id'])),
+                );
+                break;
+
+            case 'f_special_pt_access':
+                $ret += array(
+                    's_topic_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => $row['s_topic_id'])),
+                );
+                break;
+
+            case 'f_poll_votes':
+                $ret += array(
+                    'pv_poll_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_polls', 'po_question', array('id' => $row['pv_poll_id'])),
+                );
+                break;
+
+            case 'f_read_logs':
+                $ret += array(
+                    'l_topic_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => $row['l_topic_id'])),
+                );
+                break;
+
+            case 'f_group_member_timeouts':
+                $ret += array(
+                    'group_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => $row['group_id'])),
+                );
+                break;
+
+            case 'f_forum_intro_ip':
+                $ret += array(
+                    'i_forum_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['i_forum_id'])),
+                );
+                break;
+
+            case 'f_forum_intro_member':
+                $ret += array(
+                    'i_forum_id__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['i_forum_id'])),
                 );
                 break;
         }
@@ -314,28 +413,40 @@ class Hook_privacy_core_cns extends Hook_privacy_base
     }
 
     /**
-     * Anonymise a row.
-     *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
-     */
-    public function anonymise($table_name, $row)
-    {
-        return new TODO;
-    }
-
-    /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {
         switch ($table_name) {
-            case 'TODO':
-                require_code('TODO');
-                delete_TODO($row['id']);
+            case 'f_members':
+                require_code('cns_members_action2');
+                cns_delete_member($row['id']);
+                break;
+
+            case 'f_posts':
+                require_code('cns_posts_action3');
+                $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $row['id']));
+                if ($topic_id !== null) {
+                    cns_delete_posts_topic($topic_id, array($row['id']), '', false, true);
+                }
+                break;
+
+            case 'f_groups':
+                require_code('cns_groups_action2');
+                cns_delete_group($row['id']);
+                break;
+
+            case 'f_forums':
+                // Deleting not acceptable!
+                $this->anonymise($table_name, $row);
+                break;
+
+            case 'f_topics':
+                require_code('cns_topics_action2');
+                cns_delete_topic($row['id'], '', null, false);
                 break;
 
             default:

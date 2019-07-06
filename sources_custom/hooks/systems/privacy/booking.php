@@ -74,19 +74,22 @@ class Hook_privacy_booking extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
             case 'booking':
-                $ret += array(
-                    'bookable_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('bookable', 'title', array('id' => $row['bookable_id']))),
-                );
+                $title = $GLOBALS['SITE_DB']->query_select_value_if_there('bookable', 'title', array('id' => $row['bookable_id']));
+                if ($title !== null) {
+                    $ret += array(
+                        'bookable_id__dereferenced' => get_translated_text($title),
+                    );
+                }
                 break;
         }
 
@@ -96,8 +99,8 @@ class Hook_privacy_booking extends Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {

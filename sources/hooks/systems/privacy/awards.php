@@ -63,18 +63,20 @@ class Hook_privacy_awards extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'award_archive':
+                require_code('content');
+                list($title) = content_get_details($row['a_type_id'], $row['a_content_id']);
                 $ret += array(
-                    TODO
+                    'content_title__dereferenced' => $title,
                 );
                 break;
         }

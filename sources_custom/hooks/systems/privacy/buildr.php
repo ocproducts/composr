@@ -151,18 +151,41 @@ class Hook_privacy_buildr extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'w_messages':
                 $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                    'location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['location_realm'], 'location_x' => $row['location_x'], 'location_y' => $row['location_y'])),
+                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['location_realm'])),
+                );
+                break;
+
+            case 'w_portals':
+                $ret += array(
+                    'start_location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['start_location_realm'], 'location_x' => $row['start_location_x'], 'location_y' => $row['start_location_y'])),
+                    'start_location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['start_location_realm'])),
+                    'end_location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['end_location_realm'], 'location_x' => $row['end_location_x'], 'location_y' => $row['end_location_y'])),
+                    'end_location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['end_location_realm'])),
+                );
+                break;
+
+            case 'w_rooms':
+                $ret += array(
+                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['location_realm'])),
+                );
+                break;
+
+            case 'w_travelhistory':
+                $ret += array(
+                    'location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['realm'], 'location_x' => $row['x'], 'location_y' => $row['y'])),
+                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['realm'])),
                 );
                 break;
         }
@@ -171,28 +194,33 @@ class Hook_privacy_buildr extends Hook_privacy_base
     }
 
     /**
-     * Anonymise a row.
-     *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
-     */
-    public function anonymise($table_name, $row)
-    {
-        return new TODO;
-    }
-
-    /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {
         switch ($table_name) {
-            case 'TODO':
-                require_code('TODO');
-                delete_TODO($row['id']);
+            case 'w_itemdef':
+                require_code('buildr_action');
+                delete_item_wrap($row['name']);
+                break;
+
+            case 'w_members':
+                $GLOBALS['SITE_DB']->query_delete('w_inventory', array('item_owner' => $row['id']));
+                $GLOBALS['SITE_DB']->query_delete('w_items', array('copy_owner' => $row['id']));
+                $GLOBALS['SITE_DB']->query_delete('w_travelhistory', array('member_id' => $row['id']));
+                break;
+
+            case 'w_rooms':
+                require_code('buildr_action');
+                delete_room_wrap($row['id']);
+                break;
+
+            case 'w_realms':
+                require_code('buildr_action');
+                delete_realm_wrap($row['id']);
                 break;
 
             default:

@@ -63,18 +63,20 @@ class Hook_privacy_actionlog extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'revisions':
+                require_code('content');
+                list($title) = content_get_details($row['r_resource_type'], $row['r_resource_id']);
                 $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                    'content_title__dereferenced' => $title,
                 );
                 break;
         }

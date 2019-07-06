@@ -74,23 +74,29 @@ class Hook_privacy_workflows extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
             case 'workflow_content':
                 require_code('content');
                 list($content_title) = content_get_details($row['content_type'], $row['content_id']);
                 $ret += array(
-                    'workflow_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('workflows', 'workflow_name', array('id' => $row['workflow_id']))),
                     'content_id__dereferenced' => $content_title,
                 );
+                $workflow_name = $GLOBALS['SITE_DB']->query_select_value_if_there('workflows', 'workflow_name', array('id' => $row['workflow_id']));
+                if ($workflow_name !== null) {
+                    $ret += array(
+                        'workflow_id__dereferenced' => get_translated_text($workflow_name),
+                    );
+                }
                 break;
+
             case 'workflow_content_status':
                 $content_title = null;
                 $workflow_content_rows = $GLOBALS['SITE_DB']->query_select('workflow_content', array('*'), array('id' => $row['workflow_content_id']), '', 1);
@@ -100,8 +106,13 @@ class Hook_privacy_workflows extends Hook_privacy_base
                 }
                 $ret += array(
                     'workflow_content_id_dereferenced' => $content_title,
-                    'workflow_approval_point_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('workflow_approval_points', 'workflow_approval_name', array('id' => $row['id']))),
                 );
+                $workflow_approval_name = $GLOBALS['SITE_DB']->query_select_value_if_there('workflow_approval_points', 'workflow_approval_name', array('id' => $row['id']));
+                if ($workflow_approval_name !== null) {
+                    $ret += array(
+                        'workflow_approval_point_id__dereferenced' => get_translated_text($workflow_approval_name),
+                    );
+                }
                 break;
         }
 

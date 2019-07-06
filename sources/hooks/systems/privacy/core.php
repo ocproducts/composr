@@ -429,18 +429,28 @@ Exceptions:
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'rating':
+                require_code('content');
+                list($title) = content_get_details($row['rating_for_type'], $row['rating_for_id']);
                 $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                    'content_title__dereferenced' => $title,
+                );
+                break;
+
+            case 'trackbacks':
+                require_code('content');
+                list($title) = content_get_details($row['trackback_for_type'], $row['trackback_for_id']);
+                $ret += array(
+                    'content_title__dereferenced' => $title,
                 );
                 break;
         }
@@ -449,28 +459,27 @@ Exceptions:
     }
 
     /**
-     * Anonymise a row.
-     *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
-     */
-    public function anonymise($table_name, $row)
-    {
-        return new TODO;
-    }
-
-    /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {
         switch ($table_name) {
-            case 'TODO':
-                require_code('TODO');
-                delete_TODO($row['id']);
+            case 'attachments':
+                require_code('attachments3');
+                _delete_attachment($row['id'], $GLOBALS['SITE_DB']);
+                break;
+
+            case 'comcode_pages':
+                require_code('zones3');
+                delete_cms_page($row['the_zone'], $row['the_page'], 'comcode_custom', false);
+                break;
+
+            case 'translate':
+                // Deleting not acceptable!
+                $this->anonymise($table_name, $row);
                 break;
 
             default:

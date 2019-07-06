@@ -85,27 +85,33 @@ class Hook_privacy_quizzes extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
             case 'quiz_member_last_visit':
-                $ret += array(
-                    'v_quiz_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('quizzes', 'q_name', array('id' => $row['v_quiz_id']))),
-                );
+                $name = $GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_name', array('id' => $row['v_quiz_id']));
+                if ($name !== null) {
+                    $ret += array(
+                        'v_quiz_id__dereferenced' => get_translated_text($name),
+                    );
+                }
                 break;
             case 'quiz_entries':
-                require_code('quiz');
-                $scoring = score_quiz($row['id']);
-                $ret += array(
-                    'q_quiz__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('quizzes', 'q_name', array('id' => $row['q_quiz']))),
-                    'given_answers' => $scoring[3],
-                );
+                $name = $GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_name', array('id' => $row['v_quiz_id']));
+                if ($name !== null) {
+                    require_code('quiz');
+                    $scoring = score_quiz($row['id']);
+                    $ret += array(
+                        'q_quiz__dereferenced' => get_translated_text($name),
+                        'given_answers' => $scoring[3],
+                    );
+                }
                 break;
         }
 
@@ -115,8 +121,8 @@ class Hook_privacy_quizzes extends Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {

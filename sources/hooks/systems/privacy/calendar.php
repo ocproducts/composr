@@ -99,31 +99,40 @@ class Hook_privacy_calendar extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
             case 'calendar_reminders':
-                $ret += array(
-                    'e_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $row['e_id']))),
-                );
+                $title = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_title', array('id' => $row['e_id']));
+                if ($title !== null) {
+                    $ret += array(
+                        'e_id__dereferenced' => get_translated_text($title),
+                    );
+                }
                 break;
 
             case 'calendar_interests':
-                $ret += array(
-                    't_type__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_types', 't_title', array('id' => $row['t_type']))),
-                );
+                $title = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 't_title', array('id' => $row['t_type']));
+                if ($title !== null) {
+                    $ret += array(
+                        't_type__dereferenced' => get_translated_text($title),
+                    );
+                }
                 break;
 
             case 'calendar_jobs':
-                $ret += array(
-                    'j_event_id__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $row['j_event_id']))),
-                );
+                $title = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_title', array('id' => $row['j_event_id']));
+                if ($title !== null) {
+                    $ret += array(
+                        'j_event_id__dereferenced' => get_translated_text($title),
+                    );
+                }
                 break;
         }
 
@@ -133,8 +142,8 @@ class Hook_privacy_calendar extends Hook_privacy_base
     /**
      * Delete a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      */
     public function delete($table_name, $row)
     {

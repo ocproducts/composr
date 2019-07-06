@@ -63,16 +63,22 @@ class Hook_privacy_content_read_tracking extends Hook_privacy_base
     /**
      * Serialise a row.
      *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
      * @return array Row in a cleanly serialised format
      */
     public function serialise($table_name, $row)
     {
-        $ret = serialise($table_name, $row);
+        $ret = $this->serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'TODO':
+            case 'content_read':
+                require_code('content');
+                list($title) = content_get_details($row['r_content_type'], $row['r_content_id']);
+                $ret += array(
+                    'content_title__dereferenced' => $title,
+                );
+                break;
         }
 
         return $ret;
