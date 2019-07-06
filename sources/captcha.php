@@ -403,11 +403,11 @@ function get_captcha_questions()
         $keys = array_rand($questions, $question_total);
         srand();
 
-        $_questions = array();
+        $__questions = array();
         foreach ($keys as $key) {
-            $_questions[$key] = $questions[$key];
+            $__questions[$key] = $questions[$key];
         }
-        $questions = $_questions;
+        $questions = $__questions;
     }
 
     return $questions;
