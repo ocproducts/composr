@@ -173,6 +173,7 @@ The documentation for this addon is covered in a [url="' . get_brand_base_url() 
             'sources_custom/composr_mobile_sdk/android/index.html',
             'sources_custom/composr_mobile_sdk/ios/index.html',
             'lang_custom/EN/composr_mobile_sdk.ini',
+            'sources_custom/hooks/systems/privacy/composr_mobile_sdk.php',
 
             // Toolkit
             'data_custom/composr_mobile_sdk_build.php',

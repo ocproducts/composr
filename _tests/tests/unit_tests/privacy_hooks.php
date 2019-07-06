@@ -22,8 +22,6 @@ class privacy_hooks_test_set extends cms_test_case
     {
         require_code('privacy');
 
-        $debug = (get_param_integer('debug', 0) == 1);
-
         $all_tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table')));
         $found_tables = array();
 
@@ -44,10 +42,9 @@ class privacy_hooks_test_set extends cms_test_case
             }
 
             foreach ($info['database_records'] as $table => $details) {
-                $this->assertTrue(!isset($all_tables[$table]), 'Table unknown: ' . $table);
+                $this->assertTrue(in_array($table, $all_tables), 'Table unknown: ' . $table);
 
                 $this->assertTrue(!isset($found_tables[$table]), 'Table defined more than once: ' . $table);
-                $found_tables[$table] = $details;
 
                 $this->assertTrue($details['timestamp_field'] === null || is_string($details['timestamp_field']), 'Invalid timestamp field in ' . $table);
                 $this->assertTrue($details['retention_days'] === null || is_integer($details['retention_days']), 'Invalid retention_days field in ' . $table);
@@ -67,16 +64,25 @@ class privacy_hooks_test_set extends cms_test_case
                 }
 
                 $this->assertTrue(count($details['member_id_fields']) + count($details['ip_address_fields']) + count($details['email_fields']) + count($details['additional_anonymise_fields']) > 0, 'No personal data in ' . $table . ', so should not be defined');
+
+                // Make comparison to what we want easier
+                sort($details['member_id_fields']);
+                sort($details['ip_address_fields']);
+                sort($details['email_fields']);
+                sort($details['additional_anonymise_fields']);
+                $info['database_records'][$table] = $details;
+                $found_tables[$table] = $details;
             }
 
             $this->assertTrue(strpos(serialize($info), 'TODO') === false);
         }
 
         foreach ($all_tables as $table) {
-            $all_fields = collapse_2d_complexity('m_name', 'm_type', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
+            $all_fields = collapse_2d_complexity('m_name', 'm_type', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table), 'ORDER BY m_name'));
             $relevant_fields_member_id = array();
             $relevant_fields_ip_address = array();
             $relevant_fields_email = array();
+            $relevant_fields_time = array();
             foreach ($all_fields as $name => $type) {
                 if (preg_match('#^[\*\?]*(MEMBER)$#', $type) != 0) {
                     $relevant_fields_member_id[$name] = $type;
@@ -86,6 +92,9 @@ class privacy_hooks_test_set extends cms_test_case
                 }
                 if ((strpos($name, 'email') !== false) && (preg_match('#^[\*\?]*(SHORT_TEXT)$#', $type) != 0)) {
                     $relevant_fields_email[$name] = $type;
+                }
+                if (preg_match('#^[\*\?]*(TIME)$#', $type) != 0) {
+                    $relevant_fields_time[$name] = $type;
                 }
             }
             if ($table == 'f_members') {
@@ -97,10 +106,34 @@ class privacy_hooks_test_set extends cms_test_case
             $total_fields = count($relevant_fields_member_id) + count($relevant_fields_ip_address) + count($relevant_fields_email);
 
             if (isset($found_tables[$table])) {
-                if ($debug) {
-//TODO                    $this->assertTrue(array_keys($relevant_fields_member_id) == $found_tables[$table]['member_id_fields'], 'Member field mismatch for: ' . $table);
-//TODO                    $this->assertTrue(array_keys($relevant_fields_ip_address) == $found_tables[$table]['ip_address_fields'], 'IP address field mismatch for: ' . $table);
-//TODO                    $this->assertTrue(array_keys($relevant_fields_email) == $found_tables[$table]['email_fields'], 'E-mail field mismatch for: ' . $table);
+                $this->assertTrue($found_tables[$table]['timestamp_field'] === null || isset($all_fields[$found_tables[$table]['timestamp_field']]), 'Could not find ' . $found_tables[$table]['timestamp_field'] . ' field in ' . $table);
+
+                $exceptions = array(
+                    'banned_ip',
+                    'f_forums',
+                    'f_group_member_timeouts',
+                    'member_category_access',
+                    'member_page_access',
+                    'member_zone_access',
+                    'newsletter_drip_send',
+                    'newsletter_periodic',
+                    'revisions',
+                    'w_members',
+                );
+                if (!in_array($table, $exceptions)) {
+                    $this->assertTrue($found_tables[$table]['timestamp_field'] !== null || count($relevant_fields_time) == 0, 'Could have set a timestamp field for ' . $table);
+                }
+
+                $this->assertTrue(array_keys($relevant_fields_member_id) == $found_tables[$table]['member_id_fields'], 'Member field mismatch for: ' . $table . ' (' . serialize($relevant_fields_member_id) . ')');
+
+                $this->assertTrue(array_keys($relevant_fields_ip_address) == $found_tables[$table]['ip_address_fields'], 'IP address field mismatch for: ' . $table . ' (' . serialize($relevant_fields_ip_address) . ')');
+
+                $exceptions = array(
+                    'f_forums',
+                    'f_members',
+                );
+                if (!in_array($table, $exceptions)) {
+                    $this->assertTrue(array_keys($relevant_fields_email) == $found_tables[$table]['email_fields'], 'E-mail field mismatch for: ' . $table . ' (' . serialize($relevant_fields_email) . ')');
                 }
 
                 foreach ($found_tables[$table]['member_id_fields'] as $name) {
@@ -116,7 +149,12 @@ class privacy_hooks_test_set extends cms_test_case
                     $this->assertTrue(isset($all_fields[$name]), 'Could not find ' . $name . ' field in ' . $table);
                 }
             } else {
-//TODO                $this->assertTrue($total_fields == 0, 'Should be defined in a privacy hook: ' . $table); // TODO: Likely have to define some exceptions
+                $exceptions = array(
+                    'news_rss_cloud',
+                );
+                if (!in_array($table, $exceptions)) {
+                    $this->assertTrue($total_fields == 0, 'Should be defined in a privacy hook: ' . $table);
+                }
             }
         }
     }

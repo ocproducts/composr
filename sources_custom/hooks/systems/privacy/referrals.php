@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    content_privacy
+ * @package    referrals
  */
 
 /**
  * Hook class.
  */
-class Hook_privacy_content_privacy extends Hook_privacy_base
+class Hook_privacy_referrals extends Hook_privacy_base
 {
     /**
      * Find privacy details.
@@ -30,7 +30,7 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
      */
     public function info()
     {
-        if (!addon_installed('content_privacy')) {
+        if (!addon_installed('referrals')) {
             return null;
         }
 
@@ -39,26 +39,33 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
             ),
 
             'positive' => array(
-                array(
-                    'heading' => 'Privacy settings',
-                    'explanation' => 'Logged in members may [page="_SEARCH:members:view#tab__edit__privacy"]choose which fields display publicly[/page].',
-                ),
             ),
 
             'general' => array(
             ),
 
             'database_records' => array(
-                'content_privacy__members' => array(
+                'referees_qualified_for' => array(
+                    'timestamp_field' => 'q_time',
+                    'retention_days' => null,
+                    'retention_handle_method' => PRIVACY_METHOD_leave,
+                    'member_id_fields' => array('q_referee', 'q_referrer'),
+                    'ip_address_fields' => array(),
+                    'email_fields' => array('q_email_address'),
+                    'additional_anonymise_fields' => array(),
+                    'extra_where' => null,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                ),
+                'referrer_override' => array(
                     'timestamp_field' => null,
                     'retention_days' => null,
                     'retention_handle_method' => PRIVACY_METHOD_leave,
-                    'member_id_fields' => array('member_id'),
+                    'member_id_fields' => array('o_referrer'),
                     'ip_address_fields' => array(),
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
                 ),
             ),
         );
@@ -75,13 +82,7 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
     {
         $ret = serialise($table_name, $row);
 
-        switch ($table_name) {
-            case 'TODO':
-                $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
-                );
-                break;
-        }
+        // TODO: Show usernames
 
         return $ret;
     }

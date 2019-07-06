@@ -45,10 +45,21 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
             ),
 
             'database_records' => array(
-                'ecom_subscriptions' => array(
-                    'timestamp_field' => 's_time',
+                'ecom_sales' => array(
+                    'timestamp_field' => 'date_and_time',
                     'retention_days' => null,
                     'retention_handle_method' => PRIVACY_METHOD_leave,
+                    'member_id_fields' => array('member_id'),
+                    'ip_address_fields' => array(),
+                    'email_fields' => array(),
+                    'additional_anonymise_fields' => array(),
+                    'extra_where' => null,
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                ),
+                'ecom_subscriptions' => array(
+                    'timestamp_field' => 's_time',
+                    'retention_days' => intval(get_option('website_activity_store_time')),
+                    'retention_handle_method' => PRIVACY_METHOD_delete,
                     'member_id_fields' => array('s_member_id'),
                     'ip_address_fields' => array(),
                     'email_fields' => array(),
@@ -58,8 +69,8 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                 ),
                 'ecom_invoices' => array(
                     'timestamp_field' => 'i_time',
-                    'retention_days' => null,
-                    'retention_handle_method' => PRIVACY_METHOD_leave,
+                    'retention_days' => intval(get_option('website_activity_store_time')),
+                    'retention_handle_method' => PRIVACY_METHOD_delete,
                     'member_id_fields' => array('i_member_id'),
                     'ip_address_fields' => array(),
                     'email_fields' => array(),
@@ -90,7 +101,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
                 ),
                 'ecom_trans_addresses' => array(
-                    'timestamp_field' => '',
+                    'timestamp_field' => null,
                     'retention_days' => null,
                     'retention_handle_method' => PRIVACY_METHOD_leave, // Handled with shopping_order, can't query by date
                     'member_id_fields' => array(),
@@ -102,5 +113,47 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                 ),
             ),
         );
+    }
+
+    /**
+     * Serialise a row.
+     *
+     * @param ID_TEXT Table name
+     * @param array Row raw from the database
+     * @return array Row in a cleanly serialised format
+     */
+    public function serialise($table_name, $row)
+    {
+        $ret = serialise($table_name, $row);
+
+        switch ($table_name) {
+            case 'TODO':
+                $ret += array(
+                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                );
+                break;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Delete a row.
+     *
+     * @param ID_TEXT Table name
+     * @param array Row raw from the database
+     */
+    public function delete($table_name, $row)
+    {
+        switch ($table_name) {
+            case 'TODO':
+                require_code('TODO');
+                delete_TODO($row['id']);
+                break;
+
+            default:
+                $this->delete($table_name, $row);
+                break;
+        }
     }
 }

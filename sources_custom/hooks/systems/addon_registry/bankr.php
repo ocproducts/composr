@@ -136,6 +136,7 @@ class Hook_addon_registry_bankr
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/bankr.php',
+            'sources_custom/hooks/systems/privacy/bankr.php',
             'sources_custom/hooks/systems/ecommerce/bank.php',
             'lang_custom/EN/bank.ini',
             'sources_custom/hooks/systems/cron/bank.php',

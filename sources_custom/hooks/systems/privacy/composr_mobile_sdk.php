@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    content_privacy
+ * @package    composr_mobile_sdk
  */
 
 /**
  * Hook class.
  */
-class Hook_privacy_content_privacy extends Hook_privacy_base
+class Hook_privacy_composr_mobile_sdk extends Hook_privacy_base
 {
     /**
      * Find privacy details.
@@ -30,7 +30,7 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
      */
     public function info()
     {
-        if (!addon_installed('content_privacy')) {
+        if (!addon_installed('composr_mobile_sdk')) {
             return null;
         }
 
@@ -39,17 +39,13 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
             ),
 
             'positive' => array(
-                array(
-                    'heading' => 'Privacy settings',
-                    'explanation' => 'Logged in members may [page="_SEARCH:members:view#tab__edit__privacy"]choose which fields display publicly[/page].',
-                ),
             ),
 
             'general' => array(
             ),
 
             'database_records' => array(
-                'content_privacy__members' => array(
+                'device_token_details' => array(
                     'timestamp_field' => null,
                     'retention_days' => null,
                     'retention_handle_method' => PRIVACY_METHOD_leave,
@@ -62,27 +58,5 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
                 ),
             ),
         );
-    }
-
-    /**
-     * Serialise a row.
-     *
-     * @param ID_TEXT Table name
-     * @param array Row raw from the database
-     * @return array Row in a cleanly serialised format
-     */
-    public function serialise($table_name, $row)
-    {
-        $ret = serialise($table_name, $row);
-
-        switch ($table_name) {
-            case 'TODO':
-                $ret += array(
-                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
-                );
-                break;
-        }
-
-        return $ret;
     }
 }

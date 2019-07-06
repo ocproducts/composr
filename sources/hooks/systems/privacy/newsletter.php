@@ -68,7 +68,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
                 ),
                 'newsletter_drip_send' => array(
-                    'timestamp_field' => null,
+                    'timestamp_field' => 'd_inject_time',
                     'retention_days' => null,
                     'retention_handle_method' => PRIVACY_METHOD_leave,
                     'member_id_fields' => array(),
@@ -77,6 +77,28 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'additional_anonymise_fields' => array('d_to_name'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                ),
+                'newsletter_archive' => array(
+                    'timestamp_field' => 'date_and_time',
+                    'retention_days' => null,
+                    'retention_handle_method' => PRIVACY_METHOD_leave,
+                    'member_id_fields' => array(),
+                    'ip_address_fields' => array(),
+                    'email_fields' => array('from_email'),
+                    'additional_anonymise_fields' => array('from_name'),
+                    'extra_where' => null,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                ),
+                'newsletter_periodic' => array(
+                    'timestamp_field' => null,
+                    'retention_days' => null,
+                    'retention_handle_method' => PRIVACY_METHOD_leave,
+                    'member_id_fields' => array(),
+                    'ip_address_fields' => array(),
+                    'email_fields' => array('np_from_email'),
+                    'additional_anonymise_fields' => array('np_from_name'),
+                    'extra_where' => null,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
                 ),
             ),
         );
@@ -113,7 +135,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
     public function delete($table_name, $row)
     {
         switch ($table_name) {
-            case 'newsletter_subscriber':
+            case 'newsletter_subscribers':
                 $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('email' => $row['email']));
                 $this->delete($table_name, $row);
                 break;

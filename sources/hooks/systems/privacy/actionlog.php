@@ -59,4 +59,26 @@ class Hook_privacy_actionlog extends Hook_privacy_base
             ),
         );
     }
+
+    /**
+     * Serialise a row.
+     *
+     * @param ID_TEXT Table name
+     * @param array Row raw from the database
+     * @return array Row in a cleanly serialised format
+     */
+    public function serialise($table_name, $row)
+    {
+        $ret = serialise($table_name, $row);
+
+        switch ($table_name) {
+            case 'TODO':
+                $ret += array(
+                    'TODO__dereferenced' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('TODO', 'TODO', array('id' => $row['TODO']))),
+                );
+                break;
+        }
+
+        return $ret;
+    }
 }

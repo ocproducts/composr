@@ -72,11 +72,11 @@ class Hook_privacy_shopping extends Hook_privacy_base
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
                 ),
-                'shopping_order' => array(
+                'shopping_orders' => array(
                     'timestamp_field' => 'add_date',
                     'retention_days' => null,
                     'retention_handle_method' => PRIVACY_METHOD_leave,
-                    'member_id_fields' => array('c_member'),
+                    'member_id_fields' => array('member_id'),
                     'ip_address_fields' => array(),
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
@@ -96,10 +96,12 @@ class Hook_privacy_shopping extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
+        // TODO: Badly wrong now
+
         $ret = serialise($table_name, $row);
 
         switch ($table_name) {
-            case 'shopping_order':
+            case 'shopping_orders':
                 $ret += array(
                     'details' => $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $row['id'])),
                     'addresses' => $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('order_id' => $row['id'])),
@@ -118,8 +120,10 @@ class Hook_privacy_shopping extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        // TODO: Badly wrong now
+
         switch ($table_name) {
-            case 'shopping_order':
+            case 'shopping_orders':
                 $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $row['id']));
                 $GLOBALS['SITE_DB']->query_delete('shopping_order_addresses', array('order_id' => $row['id']));
                 $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $row['id']), '', 1);
