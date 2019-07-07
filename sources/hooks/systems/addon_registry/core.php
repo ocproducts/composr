@@ -109,6 +109,7 @@ class Hook_addon_registry_core
     public function get_file_list()
     {
         return array(
+            'lang/EN/privacy.ini',
             'sources/blocks/main_privacy_policy_auto.php',
             'sources/hooks/systems/logs/index.html',
             'sources/hooks/systems/logs/core.php',

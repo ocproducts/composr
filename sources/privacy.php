@@ -28,7 +28,10 @@ function init__privacy()
     define('PRIVACY_METHOD_leave', 0);
     define('PRIVACY_METHOD_anonymise', 1);
     define('PRIVACY_METHOD_delete', 2);
+
+    require_lang('privacy');
 }
+
 
 // TODO
 

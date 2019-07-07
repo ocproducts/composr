@@ -34,6 +34,8 @@ class Hook_privacy_shopping extends Hook_privacy_base
             return null;
         }
 
+        require_lang('shopping');
+
         return array(
             'cookies' => array(
             ),
@@ -43,9 +45,9 @@ class Hook_privacy_shopping extends Hook_privacy_base
 
             'general' => array(
                 array(
-                    'heading' => 'Information storage',
-                    'action' => 'Use of the shopping cart may cause non-logged-in-user\'s sessions to stick around for a longer than normal period of time.',
-                    'reason' => 'To keep the contents of the shopping cart from being lost.',
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'action' => 'PRIVACY_ACTION_shopping_sessions',
+                    'reason' => 'PRIVACY_REASON_shopping_sessions',
                 ),
             ),
 

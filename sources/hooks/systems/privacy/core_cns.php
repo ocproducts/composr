@@ -36,33 +36,29 @@ class Hook_privacy_core_cns extends Hook_privacy_base
 
             'positive' => array(
                 ((get_option('is_on_coppa') == '0') || (get_option('dobs') == '0')) ? null : array(
-                    'heading' => 'Child protection',
-                    'explanation' => 'In order for children under the age of thirteen to join this website, a parent or guardian must approve it. A notice will be sent, by e-mail, to the e-mail address given when a child joins, which will provide notice on how to approve the membership. This is done for compliance with law across various juridictions.
-
-    The parent or guardian has the option to agree to the collection and use of the child\'s information without consenting to the disclosure of the information to third parties.
-
-    The parent or guardian can review the child\'s personal information, ask to have it deleted and refuse to allow any further collection or use of the child\'s information. This may be done by contacting the staff in the same way as was done to approve the membership originally.',
+                    'heading' => do_lang('CHILD_PROTECTION'),
+                    'explanation' => do_lang('PRIVACY_EXPLANATION_COPPA', get_option('coppa_age')),
                 ),
                 array(
-                    'heading' => 'Cookies',
-                    'explanation' => 'If you wish to see what exact cookies are saved, or delete cookies, you may do so using [url="standard tools built into your web browser"]http://www.wikihow.com/View-Cookies[/url].',
+                    'heading' => do_lang('COOKIES'),
+                    'explanation' => do_lang('PRIVACY_EXPLANATION_COOKIES'),
                 ),
                 array(
-                    'heading' => 'General',
-                    'explanation' => 'We will not share private details other than what can be seen in your forum profile and content submission, unless for a reason covered in this policy, or legally required to do so.',
+                    'heading' => do_lang('GENERAL'),
+                    'explanation' => do_lang('PRIVACY_EXPLANATION_NON_DISCLOSURE'),
                 ),
             ),
 
             'general' => array(
                 array(
-                    'heading' => 'Information disclosure',
-                    'action' => 'Some of the information you submitted with your account profile will be displayed publicly. This will not include information that many would consider confidential, but rather basic details such as your Username. Additionally, your last activity time will be shown publicly.',
-                    'reason' => 'This is fundamental to the social networking capability of this website.',
+                    'heading' => do_lang('INFORMATION_DISCLOSURE'),
+                    'action' => do_lang('PRIVACY_ACTION_PROFILE_DISCLOSURE'),
+                    'reason' => do_lang('PRIVACY_REASON_PROFILE_DISCLOSURE'),
                 ),
                 array(
-                    'heading' => 'Information disclosure',
-                    'action' => 'The staff reserve the right to read any Private Topics and posts placed on this website. Any form of conversation made through this website should be considered viewable by staff. All private-posts and posts, unless deleted by specific request, are stored on the server.',
-                    'reason' => 'Information may be reviewed if we feel we have cause for an investigation. Situations involving investigations can be anything at our discretion, for example, to investigate specific incidents of our services being used for racism or harassment.',
+                    'heading' => do_lang('INFORMATION_DISCLOSURE'),
+                    'action' => do_lang('PRIVACY_ACTION_PRIVATE_TOPICS'),
+                    'reason' => 'PRIVACY_REASON_PRIVATE_TOPICS',
                 ),
             ),
 

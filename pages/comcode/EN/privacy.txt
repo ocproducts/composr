@@ -1,3 +1,5 @@
 [title]Privacy policy[/title]
 
 [block]main_privacy_policy_auto[/block]
+
+This policy was last revised on TODO.

@@ -114,6 +114,7 @@ class Hook_addon_registry_recommend
             'sources/hooks/systems/config/enable_csv_recommend.php',
             'sources/hooks/systems/page_groupings/recommend.php',
             'themes/default/css/recommend.css',
+            'sources/hooks/systems/privacy/recommend.php',
         );
     }
 

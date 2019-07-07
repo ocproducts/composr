@@ -34,6 +34,15 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
             return null;
         }
 
+        require_lang('ecommerce');
+
+        $payment_gateway = get_option('payment_gateway');
+        if ($payment_gateway != '') {
+            $payment_gateway_label = do_lang('PAYMENT_GATEWAY_' . $payment_gateway);
+        } else {
+            $payment_gateway_label = do_lang('NA');
+        }
+
         return array(
             'cookies' => array(
             ),
@@ -42,6 +51,21 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
             ),
 
             'general' => array(
+                (get_option('shipping_shippo_api_live') == '') ? null : array(
+                    'heading' => do_lang('INFORMATION_TRANSFER_ECOMMERCE'),
+                    'action' => do_lang('PRIVACY_ACTION_shippo'),
+                    'reason' => do_lang('PRIVACY_REASON_shippo'),
+                ),
+                (get_option('taxcloud_api_key') == '') ? null : array(
+                    'heading' => do_lang('INFORMATION_TRANSFER_ECOMMERCE'),
+                    'action' => do_lang('PRIVACY_ACTION_taxcloud'),
+                    'reason' => do_lang('PRIVACY_REASON_taxcloud'),
+                ),
+                ($payment_gateway == '') ? null : array(
+                    'heading' => do_lang('INFORMATION_TRANSFER_ECOMMERCE'),
+                    'action' => do_lang('PRIVACY_ACTION_payments', $payment_gateway_label, get_site_name()),
+                    'reason' => do_lang('PRIVACY_REASON_payments', $payment_gateway_label, get_site_name()),
+                ),
             ),
 
             'database_records' => array(

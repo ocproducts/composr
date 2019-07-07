@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    sugarcrm
+ * @package    recommend
  */
 
 /**
  * Hook class.
  */
-class Hook_privacy_sugarcrm extends Hook_privacy_base
+class Hook_privacy_recommend extends Hook_privacy_base
 {
     /**
      * Find privacy details.
@@ -30,11 +30,11 @@ class Hook_privacy_sugarcrm extends Hook_privacy_base
      */
     public function info()
     {
-        if (!addon_installed('sugarcrm')) {
+        if (!addon_installed('recommend')) {
             return null;
         }
 
-        require_lang('sugarcrm');
+        require_lang('recommend');
 
         return array(
             'cookies' => array(
@@ -46,8 +46,8 @@ class Hook_privacy_sugarcrm extends Hook_privacy_base
             'general' => array(
                 array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_sugarcrm'),
-                    'reason' => do_lang('PRIVACY_REASON_sugarcrm'),
+                    'action' => do_lang('PRIVACY_ACTION_share_code'),
+                    'reason' => do_lang('PRIVACY_REASON_share_code'),
                 ),
             ),
 

@@ -114,7 +114,7 @@
 	</div>
 </div>
 
-{$, Commented out... bloat
+{$, Commented out... bloat TODO #3846
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
 	<div class="box box---calendar-main-screen-feeds-to-overlay" data-toggleable-tray="{}">
 		<h2 class="toggleable-tray-title js-tray-header">

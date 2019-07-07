@@ -35,14 +35,15 @@ class Hook_privacy_chat extends Hook_privacy_base
         }
 
         require_code('chat');
+        require_lang('chat');
 
         return array(
             'cookies' => array(
                 'software_chat_prefs' => array(
-                    'purpose' => 'Chat room display preferences',
+                    'purpose' => do_lang('COOKIE_software_chat_prefs'),
                 ),
                 'last_chat_msg_*' => array(
-                    'purpose' => 'Your most recent unposted message in a chatroom, so we can prevent data loss if you accidentally reload the page',
+                    'purpose' => do_lang('COOKIE_last_chat_msg'),
                 ),
             ),
 

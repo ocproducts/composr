@@ -33,6 +33,11 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
         if (!addon_installed('content_privacy')) {
             return null;
         }
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
+        require_lang('content_privacy');
 
         return array(
             'cookies' => array(
@@ -40,8 +45,8 @@ class Hook_privacy_content_privacy extends Hook_privacy_base
 
             'positive' => array(
                 array(
-                    'heading' => 'Privacy settings',
-                    'explanation' => 'Logged in members may [page="_SEARCH:members:view#tab__edit__privacy"]choose which fields display publicly[/page].',
+                    'heading' => do_lang('PRIVACY_SETTINGS'),
+                    'explanation' => do_lang('PRIVACY_SETTINGS_EXPLANATION', build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), array(), false, false, false, 'tab__edit__privacy')),
                 ),
             ),
 

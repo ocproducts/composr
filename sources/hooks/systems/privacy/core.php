@@ -33,105 +33,113 @@ class Hook_privacy_core extends Hook_privacy_base
         return array(
             'cookies' => array(
                 'cms_autosave_*' => array(
-                    'purpose' => 'References to auto-saved incomplete content',
+                    'purpose' => do_lang('COOKIE_autosave'),
                 ),
                 'has_cookies' => array(
-                    'purpose' => 'To detect whether cookies are enabled, so we know whether to enable/disable features that need it',
+                    'purpose' => do_lang('COOKIE_has_cookies'),
                 ),
                 'has_js' => (get_option('detect_javascript') == '0') ? null : array(
-                    'purpose' => 'To detect whether JavaScript is enabled, so we know whether to enable/disable features that need it',
+                    'purpose' => do_lang('COOKIE_has_js'),
                 ),
                 'last_visit' => array(
-                    'purpose' => 'When you visited the website last, used for tracking what content is new',
+                    'purpose' => do_lang('COOKIE_last_visit'),
                 ),
                 get_member_cookie() . ' & ' . get_pass_cookie() => array(
-                    'purpose' => 'The "remember me" feature for passwords',
+                    'purpose' => do_lang('COOKIE_automatic_login'),
                 ),
                 get_member_cookie() . '_invisible' => array(
-                    'purpose' => 'Whether you have logged in in invisible mode',
+                    'purpose' => do_lang('COOKIE_invisible'),
                 ),
                 get_session_cookie() => array(
-                    'purpose' => 'Identifies your session so that we temporarily can uniquely link your requests together',
+                    'purpose' => do_lang('COOKIE_session'),
                 ),
                 'tray_*, hide*, og_*' => array(
-                    'purpose' => 'Values (yes/no) for remembering what things have been turned off/closed',
+                    'purpose' => do_lang('COOKIE_trays'),
                 ),
                 'use_wysiwyg' => array(
-                    'purpose' => 'Whether the WYSIWYG text editor is enabled',
+                    'purpose' => do_lang('COOKIE_use_wysiwyg'),
                 ),
-                'client_time*' => array(
-                    'purpose' => 'To detect your time-zone',
+                'client_time*' => (get_option('is_on_timezone_detection') == '0') ? null : array(
+                    'purpose' => do_lang('COOKIE_client_time'),
                 ),
                 'font_size' => array(
-                    'purpose' => 'To remember your font size choice',
+                    'purpose' => do_lang('COOKIE_font_size'),
                 ),
                 '__ut*, _ga, _gid' => (get_option('google_analytics') == '') ? null : array(
-                    'purpose' => 'Analysing visitor trends and tracking the effectiveness of our advertisements',
+                    'purpose' => do_lang('COOKIE_ga'),
                 ),
             ),
 
             'positive' => array(
                 array(
-                    'heading' => 'Personal data deletion',
-                    'explanation' => 'Contact us if you wish to have personal data deleted/anonymised from our database. We can delete/anonymise data by username, e-mail address, IP address, or member ID -- specify all that you have so we can maximise deletion.
-
-Exceptions:
- - Some raw log data, or data in backups, will remain with us until it is automatically deleted.
- - Editorial data, such as content you\'ve submitted, will not be deleted as standard -- but you may request that we delete/alter particular content if you specifically identify it.
- - Logged security incidents, or bans, from/on your personal data, will generally not be cleared unless there is what we consider a good reason.
-' . (addon_installed('ecommerce') ? ' - Pending transactions with you, such as outstanding invoices or non-delivered orders, or records of your ongoing earned benefits, will generally not be cleared unless there is what we consider a good reason.
-' : ''),
+                    'heading' => do_lang('PERSONAL_DATA_DELETION'),
+                    'explanation' => do_lang('PERSONAL_DATA_DELETION_EXPLANATION', " - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_logged') . "\n - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_editorial') . "\n - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_security') . (addon_installed('ecommerce') ? ("\n - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_transactions')) : '')),
                 ),
                 array(
-                    'heading' => 'Personal data download',
-                    'explanation' => 'Contact us if you want a copy of all the personal data we have stored on you. We can locate your data by username, e-mail address, IP address, or member ID -- specify all that you have so we can maximise deletion. Raw server logs will generally not be included, unless you specifically request it.',
+                    'heading' => do_lang('PERSONAL_DATA_DOWNLOAD'),
+                    'explanation' => do_lang('PERSONAL_DATA_DOWNLOAD_EXPLANATION'),
                 ),
                 array(
-                    'heading' => 'Corrections',
-                    'explanation' => 'If you believe data we hold is incorrect and you cannot amend this yourself, you can contact us to request that we make corrections.',
+                    'heading' => do_lang('CORRECTIONS'),
+                    'explanation' => do_lang('CORRECTIONS_EXPLANATION'),
                 ),
             ),
 
             'general' => array(
                 (get_option('spam_check_level') == 'NEVER') ? null : array(
-                    'heading' => 'Information transfer',
-                    'action' => 'IP addresses, e-mail address, and usernames, may be checked against the [url="http://www.stopforumspam.com/"]Stop Forum Spam[/url] web service, which involves these details being transmitted within a service request. If spam activity is detected then the same details may be reported to the service.',
-                    'reason' => 'To reduce spam.',
+                    'heading' => do_lang('INFORMATION_TRANSFER'),
+                    'action' => do_lang('PRIVACY_ACTION_stopforumspam'),
+                    'reason' => do_lang('PRIVACY_REASON_stopforumspam'),
                 ),
                 ((get_option('spam_check_level') == 'NEVER') || (get_option('stopforumspam_api_key') == '')) ? null : array(
-                    'heading' => 'Information transfer',
-                    'action' => 'IP addresses may be checked against multiple block lists, which involves these details being transmitted within a service request.',
-                    'reason' => 'To reduce spam.',
+                    'heading' => do_lang('INFORMATION_TRANSFER'),
+                    'action' => do_lang('PRIVACY_ACTION_dnsbl'),
+                    'reason' => do_lang('PRIVACY_REASON_dnsbl'),
                 ),
                 (get_option('recaptcha_site_key') == '') ? null : array(
-                    'heading' => 'Information transfer',
-                    'action' => 'When submitting forms metadata is sent to Google to verify you are a human.',
-                    'reason' => 'Google reCAPTCHA reduces spam because Google is able to use its tracking data to do pattern analysis.',
+                    'heading' => do_lang('INFORMATION_TRANSFER'),
+                    'action' => do_lang('PRIVACY_ACTION_recaptcha'),
+                    'reason' => do_lang('PRIVACY_REASON_recaptcha'),
                 ),
                 array(
-                    'heading' => 'Information storage',
-                    'action' => 'User metadata is logged when website activity happens. Metadata may include dates/time, IP address, web browser name, operating system, and account IDs. Log data is automatically deleted on a schedule. Your most recent IP address and visit time will remain a part of your member account.',
-                    'reason' => 'So we can track success and failure, and audit user behaviour for security and integrity.',
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'action' => do_lang('PRIVACY_ACTION_metadata'),
+                    'reason' => do_lang('PRIVACY_REASON_metadata'),
                 ),
                 array(
-                    'heading' => 'Information storage',
-                    'action' => 'Information entered manually into the system, or explicitly authorised, will typically be retained -- although you may request removal.',
-                    'reason' => 'This information is key to either material published on the website, or the integrity of user accounts.',
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'action' => do_lang('PRIVACY_ACTION_editorial'),
+                    'reason' => do_lang('PRIVACY_REASON_editorial'),
                 ),
                 array(
-                    'heading' => 'Information storage',
-                    'action' => 'IP addresses that have been banned will be permanently stored, as will data about suspicious activity.',
-                    'reason' => 'We need to be able to permanently ban IP addresses which appear to be abusing our systems.',
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'action' => do_lang('PRIVACY_ACTION_bans'),
+                    'reason' => do_lang('PRIVACY_REASON_bans'),
+                ),
+                array( // We define this here, not in newsletters hook, as webmasters are likely to use newsletters using external software
+                    'heading' => do_lang('GENERAL'),
+                    'action' => do_lang('PRIVACY_ACTION_newsletter', get_site_name(), get_option('site_scope')),
+                    'reason' => do_lang('PRIVACY_REASON_newsletter'),
                 ),
                 array(
-                    'heading' => 'General',
-                    'action' => 'We may occasionally send bulk e-mails about {$SITE_NAME*}, or matters relating to {$SITE_SCOPE*} to our members. We will not send bulk e-mails or allow others to send bulk e-mails, which we believe would be considered spam.',
-                    'reason' => 'To keep you informed, and for sales/marketing activity.',
+                    'heading' => do_lang('INFORMATION_DISCLOSURE'),
+                    'action' => do_lang((get_option('is_on_invisibility') == '1') ? 'PRIVACY_ACTION_online_status_invisible' : 'PRIVACY_ACTION_online_status'),
+                    'reason' => do_lang('PRIVACY_REASON_online_status'),
                 ),
                 array(
-                    'heading' => 'Information disclosure',
-                    'action' => 'Your online status may be shown publicly' . ((get_option('is_on_invisibility') == '1') ? ', unless you log in in invisibility mode' : '') . '.',
-                    'reason' => 'Online status helps foster community communication.',
+                    'heading' => do_lang('GENERAL'),
+                    'action' => do_lang('PRIVACY_ACTION_no_dnt'),
+                    'reason' => do_lang('PRIVACY_REASON_no_dnt'),
+                ),
+                array(
+                    'heading' => do_lang('INFORMATION_TRANSFER'),
+                    'action' => do_lang('PRIVACY_ACTION_ip_lookup'),
+                    'reason' => do_lang('PRIVACY_REASON_ip_lookup'),
+                ),
+                array(
+                    'heading' => do_lang('INFORMATION_TRANSFER'),
+                    'action' => do_lang('PRIVACY_ACTION_web_code'),
+                    'reason' => do_lang('PRIVACY_REASON_web_code'),
                 ),
             ),
 

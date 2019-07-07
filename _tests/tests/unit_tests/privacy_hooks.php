@@ -29,6 +29,10 @@ class privacy_hooks_test_set extends cms_test_case
         foreach ($hook_obs as $hook => $hook_ob) {
             $info = $hook_ob->info();
 
+            if ($info === null) {
+                continue;
+            }
+
             foreach ($info['cookies'] as $x) {
                 $this->assertTrue($x === null || is_array($x) && array_key_exists('purpose', $x), 'Invalid cookie name in ' . $hook . ' (' . serialize($x) . ')');
             }
