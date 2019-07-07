@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    core_privacy
  */
 
 /**
@@ -33,40 +33,40 @@ class Hook_privacy_core extends Hook_privacy_base
         return array(
             'cookies' => array(
                 'cms_autosave_*' => array(
-                    'purpose' => do_lang('COOKIE_autosave'),
+                    'reason' => do_lang('COOKIE_autosave'),
                 ),
                 'has_cookies' => array(
-                    'purpose' => do_lang('COOKIE_has_cookies'),
+                    'reason' => do_lang('COOKIE_has_cookies'),
                 ),
                 'has_js' => (get_option('detect_javascript') == '0') ? null : array(
-                    'purpose' => do_lang('COOKIE_has_js'),
+                    'reason' => do_lang('COOKIE_has_js'),
                 ),
                 'last_visit' => array(
-                    'purpose' => do_lang('COOKIE_last_visit'),
+                    'reason' => do_lang('COOKIE_last_visit'),
                 ),
                 get_member_cookie() . ' & ' . get_pass_cookie() => array(
-                    'purpose' => do_lang('COOKIE_automatic_login'),
+                    'reason' => do_lang('COOKIE_automatic_login'),
                 ),
                 get_member_cookie() . '_invisible' => array(
-                    'purpose' => do_lang('COOKIE_invisible'),
+                    'reason' => do_lang('COOKIE_invisible'),
                 ),
                 get_session_cookie() => array(
-                    'purpose' => do_lang('COOKIE_session'),
+                    'reason' => do_lang('COOKIE_session'),
                 ),
                 'tray_*, hide*, og_*' => array(
-                    'purpose' => do_lang('COOKIE_trays'),
+                    'reason' => do_lang('COOKIE_trays'),
                 ),
                 'use_wysiwyg' => array(
-                    'purpose' => do_lang('COOKIE_use_wysiwyg'),
+                    'reason' => do_lang('COOKIE_use_wysiwyg'),
                 ),
                 'client_time*' => (get_option('is_on_timezone_detection') == '0') ? null : array(
-                    'purpose' => do_lang('COOKIE_client_time'),
+                    'reason' => do_lang('COOKIE_client_time'),
                 ),
                 'font_size' => array(
-                    'purpose' => do_lang('COOKIE_font_size'),
+                    'reason' => do_lang('COOKIE_font_size'),
                 ),
                 '__ut*, _ga, _gid' => (get_option('google_analytics') == '') ? null : array(
-                    'purpose' => do_lang('COOKIE_ga'),
+                    'reason' => do_lang('COOKIE_ga'),
                 ),
             ),
 
@@ -95,11 +95,6 @@ class Hook_privacy_core extends Hook_privacy_base
                     'heading' => do_lang('INFORMATION_TRANSFER'),
                     'action' => do_lang('PRIVACY_ACTION_dnsbl'),
                     'reason' => do_lang('PRIVACY_REASON_dnsbl'),
-                ),
-                (get_option('recaptcha_site_key') == '') ? null : array(
-                    'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_recaptcha'),
-                    'reason' => do_lang('PRIVACY_REASON_recaptcha'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_STORAGE'),

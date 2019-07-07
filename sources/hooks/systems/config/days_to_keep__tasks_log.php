@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    core_privacy
  */
 
 /**
@@ -42,7 +42,7 @@ class Hook_config_days_to_keep__tasks_log
 
             'public' => false,
 
-            'addon' => 'core',
+            'addon' => 'core_privacy',
         );
     }
 

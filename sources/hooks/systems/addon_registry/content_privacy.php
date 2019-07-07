@@ -75,7 +75,7 @@ class Hook_addon_registry_content_privacy
     {
         return array(
             'requires' => array(),
-            'recommends' => array(),
+            'recommends' => array('cns_cpfs'),
             'conflicts_with' => array(),
         );
     }

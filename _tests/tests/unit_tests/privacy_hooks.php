@@ -34,7 +34,7 @@ class privacy_hooks_test_set extends cms_test_case
             }
 
             foreach ($info['cookies'] as $x) {
-                $this->assertTrue($x === null || is_array($x) && array_key_exists('purpose', $x), 'Invalid cookie name in ' . $hook . ' (' . serialize($x) . ')');
+                $this->assertTrue($x === null || is_array($x) && array_key_exists('reason', $x), 'Invalid cookie name in ' . $hook . ' (' . serialize($x) . ')');
             }
 
             foreach ($info['positive'] as $x) {

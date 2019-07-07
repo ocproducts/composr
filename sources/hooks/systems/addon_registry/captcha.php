@@ -99,6 +99,7 @@ class Hook_addon_registry_captcha
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/captcha.php',
             'sources/hooks/systems/snippets/captcha_wrong.php',
             'sources/hooks/systems/addon_registry/captcha.php',
             'themes/default/templates/FORM_SCREEN_INPUT_CAPTCHA.tpl',

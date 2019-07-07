@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    commandr
+ * @package    captcha
  */
 
 /**
  * Hook class.
  */
-class Hook_privacy_commandr extends Hook_privacy_base
+class Hook_privacy_captcha extends Hook_privacy_base
 {
     /**
      * Find privacy details.
@@ -30,21 +30,23 @@ class Hook_privacy_commandr extends Hook_privacy_base
      */
     public function info()
     {
-        if (!addon_installed('commandr')) {
+        if (!addon_installed('banners')) {
             return null;
         }
 
         return array(
             'cookies' => array(
-                /*'commandr_*' => $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? null : array(    Silly to include this
-                    'reason' => 'Your current Commandr system environment',
-                ),*/
             ),
 
             'positive' => array(
             ),
 
             'general' => array(
+                (get_option('recaptcha_site_key') == '') ? null : array(
+                    'heading' => do_lang('INFORMATION_TRANSFER'),
+                    'action' => do_lang('PRIVACY_ACTION_recaptcha'),
+                    'reason' => do_lang('PRIVACY_REASON_recaptcha'),
+                ),
             ),
 
             'database_records' => array(

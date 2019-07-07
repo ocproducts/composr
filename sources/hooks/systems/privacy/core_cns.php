@@ -30,6 +30,8 @@ class Hook_privacy_core_cns extends Hook_privacy_base
      */
     public function info()
     {
+        require_lang('cns_privacy');
+
         return array(
             'cookies' => array(
             ),
@@ -58,7 +60,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                 array(
                     'heading' => do_lang('INFORMATION_DISCLOSURE'),
                     'action' => do_lang('PRIVACY_ACTION_PRIVATE_TOPICS'),
-                    'reason' => 'PRIVACY_REASON_PRIVATE_TOPICS',
+                    'reason' => do_lang('PRIVACY_REASON_PRIVATE_TOPICS'),
                 ),
             ),
 
