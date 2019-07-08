@@ -53,7 +53,7 @@ class Hook_config_days_to_keep__tapatalk_log
      */
     public function get_default()
     {
-        if (!addon_installed('tapatalk')) {
+        if (!addon_installed('cns_tapatalk')) {
             return null;
         }
 

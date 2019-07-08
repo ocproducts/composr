@@ -53,6 +53,10 @@ class Hook_config_days_to_keep__ecommerce_log
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (!is_file(get_custom_file_base() . '/data_custom/ecommerce.log')) {
             return null;
         }

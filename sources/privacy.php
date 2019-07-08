@@ -25,10 +25,12 @@
  */
 function init__privacy()
 {
-    define('PRIVACY_METHOD_leave', 0);
-    define('PRIVACY_METHOD_anonymise', 1);
-    define('PRIVACY_METHOD_anonymise_only', 2); // Used only for removal_default_handle_method, if we will not allow a user to override with PRIVACY_METHOD_delete
-    define('PRIVACY_METHOD_delete', 3);
+    if (!defined('PRIVACY_METHOD_leave')) {
+        define('PRIVACY_METHOD_leave', 0);
+        define('PRIVACY_METHOD_anonymise', 1);
+        define('PRIVACY_METHOD_anonymise_only', 2); // Used only for removal_default_handle_method, if we will not allow a user to override with PRIVACY_METHOD_delete
+        define('PRIVACY_METHOD_delete', 3);
+    }
 
     require_lang('privacy');
 }

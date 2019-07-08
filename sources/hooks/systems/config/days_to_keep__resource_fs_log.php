@@ -53,6 +53,10 @@ class Hook_config_days_to_keep__resource_fs_log
      */
     public function get_default()
     {
+        if (!addon_installed('commandr')) {
+            return null;
+        }
+
         if (!is_file(get_custom_file_base() . '/data_custom/resource_fs.log')) {
             return null;
         }

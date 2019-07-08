@@ -2100,6 +2100,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHANGED_USERGROUP
         CHANGE_BLOCK_BACKGROUND
         EDIT_TIME
+        MODULE_TRANS_NAME_admin_robots_txt
+        MODULE_TRANS_NAME_admin_privacy
         CHANGE_FIXED_WIDTH
         CHANGE_FONT
         CHANGE_HEADER_IMAGE
@@ -2987,6 +2989,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_complex_privacy_options
         CONFIG_OPTION_complex_uploader
         CONFIG_OPTION_cookie_notice
+        CONFIG_OPTION_coppa_age
+        CONFIG_OPTION_website_activity_store_time
+        COPPA_AGE
+        PRIVILEGE_avoid_captcha
+        WEBSITE_ACTIVITY_STORE_TIME
+        MEMBER_SEARCH
         CONFIG_OPTION_copyright
         CONFIG_OPTION_cpf_enable_city
         CONFIG_OPTION_cpf_enable_country
@@ -10449,6 +10457,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         VIEW_VIDEO
         VIEW_VIDEO_IN
         VIRTUAL_FORUM
+        VIRTUAL_FORUMS
         VIRTUAL_ROOT
         VISIBLE
         VISIBLE_TO
@@ -10537,8 +10546,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVACY_REASON_share_code
         PRIVACY_ACTION_shopping_sessions
         PRIVACY_REASON_shopping_sessions
-        PRIVACY_ACTION_sugarcrm
-        PRIVACY_REASON_sugarcrm
+        FOLLOWING_COOKIES
+        POLICY_REVISED_ON
         WELCOME
         WELCOME_BACK
         WELCOME_CHAT_LOBBY

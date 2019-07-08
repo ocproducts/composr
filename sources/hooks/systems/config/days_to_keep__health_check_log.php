@@ -53,6 +53,10 @@ class Hook_config_days_to_keep__health_check_log
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         if (!is_file(get_custom_file_base() . '/data_custom/health_check.log')) {
             return null;
         }

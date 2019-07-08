@@ -159,7 +159,7 @@ function cms_getimagesizefromstring($data, $ext = null)
         return array(null, null);
     }
 
-    if ($ext === 'gif') { // Workaround problem with animated gifs TODO
+    if ($ext === 'gif') { // Workaround problem with animated gifs
         $header = @unpack('@6/' . 'vwidth/' . 'vheight', $data);
         if ($header !== false) {
             $sx = $header['width'];
@@ -662,7 +662,7 @@ function cms_imagecreatefromstring($data, $ext = null)
         imagepalettetotruecolor($image);
     }
 
-    if ($ext === 'png') { // TODO
+    if (substr($data, 1, 3) === 'png') {
         if ($image !== false) {
             if (_will_fix_corrupt_png_alpha($image)) {
                 $path = cms_tempnam();

@@ -30,7 +30,7 @@ class Hook_privacy_captcha extends Hook_privacy_base
      */
     public function info()
     {
-        if (!addon_installed('banners')) {
+        if (!addon_installed('captcha')) {
             return null;
         }
 

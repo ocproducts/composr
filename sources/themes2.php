@@ -538,11 +538,12 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
  * @param  string $name The name of the parameter
  * @param  URLPATH $val The current value of the parameter (if blank, no-op)
  * @param  ?PATH $delete_on_error File path to delete if there's an error (null: none)
+ * @return string Altered $val
  */
 function check_form_field_image($name, $val, $delete_on_error = null)
 {
     if ($val == '') {
-        return;
+        return '';
     }
 
     require_code('input_filter');

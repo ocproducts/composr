@@ -570,6 +570,7 @@ class Module_admin_setupwizard
             'news_shared',
             'filedump',
             'filebased_persistent_caching',
+            'robots_txt',
             'getid3', // this will be downloaded as it is not bundled, for licensing reasons
         ));
         // ... unless the install profile really is shunning them

@@ -53,6 +53,10 @@ class Hook_config_days_to_keep__sugarcrm_log
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         if (!is_file(get_custom_file_base() . '/data_custom/sugarcrm.log')) {
             return null;
         }
