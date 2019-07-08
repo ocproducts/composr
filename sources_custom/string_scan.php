@@ -7792,6 +7792,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _DELETE_MEMBER_ADMIN
         _DELETE_MEMBER_MERGE
         _DELETE_MEMBER_SEARCH
+        _DELETE_MEMBER_PRIVACY_PURGE
+        _DELETE_MEMBER_WARNING
+        ALTERNATE_ACTIONS
         _DESCRIPTION_ANSWER
         _DESCRIPTION_BANNER_TYPE
         _DESCRIPTION_MAIL_PRICE

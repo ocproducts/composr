@@ -88,7 +88,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'ip_address_fields' => array(),
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
-                    'extra_where' => db_string_not_equal_to('m_state', 'active'),
+                    'extra_where' => db_string_not_equal_to('s_state', 'active'),
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
                 ),
                 'ecom_invoices' => array(

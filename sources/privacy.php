@@ -60,35 +60,49 @@ abstract class Hook_privacy_base
      *
      * @param  ID_TEXT $table_name Table name
      * @param  array $table_details Details from the info function for the given table
-     * @param  ?MEMBER $member_id Member ID to search for (null: none)
+     * @param  ?MEMBER $member_id_username Member ID to search for, based on username (null: none)
      * @param  array $ip_addresses List of IP addresses to search for
+     * @param  ?MEMBER $member_id Member ID to search for (null: none)
      * @param  string $email_address E-mail address to search for (blank: none)
      * @param  array $others List of other strings to search for, via additional-anonymise-fields
      * @return string The stem of the SQL query
      */
-    protected function get_selection_sql($table_name, $table_details, $member_id = null, $ip_addresses = array(), $email_address = '', $others = array())
+    public function get_selection_sql($table_name, $table_details, $member_id_username = null, $ip_addresses = array(), $member_id = null, $email_address = '', $others = array())
     {
         $db = get_db_for($table_name);
 
         $sql = '';
 
         $conditions = array();
-        if ($member_id !== null) {
+        if ($member_id_username !== null) {
             foreach ($table_details['member_id_fields'] as $member_id_field) {
-                $conditions[] = $member_id_field . '=' . strval($member_id);
+                $conditions[] = $member_id_field . '=' . strval($member_id_username);
             }
         }
         foreach ($ip_addresses as $ip_address) {
+            if ($ip_address == '') {
+                continue;
+            }
+
             foreach ($table_details['ip_address_fields'] as $ip_address_field) {
                 $conditions[] = db_string_equal_to($ip_address_field, $ip_address);
             }
         }
+        if (($member_id !== null) && ($member_id_username !== $member_id)) {
+            foreach ($table_details['member_id_fields'] as $member_id_field) {
+                $conditions[] = $member_id_field . '=' . strval($member_id);
+            }
+        }
         if ($email_address != '') {
-            foreach ($table_details['email_address_fields'] as $email_address_field) {
+            foreach ($table_details['email_fields'] as $email_address_field) {
                 $conditions[] = db_string_equal_to($email_address_field, $email_address);
             }
         }
         foreach ($others as $other) {
+            if ($other == '') {
+                continue;
+            }
+
             foreach ($table_details['additional_anonymise_fields'] as $other_field) {
                 $conditions[] = db_string_equal_to($other_field, $other);
             }

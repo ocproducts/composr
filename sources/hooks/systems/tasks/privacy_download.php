@@ -27,19 +27,26 @@ class Hook_task_privacy_download
      * Run the task hook.
      *
      * @param  array $table_actions Map between table names and PRIVACY_METHOD_* constants
-     * @param  ?MEMBER $member_id Member ID to search for (null: none)
+     * @param  ?MEMBER $member_id_username Member ID to search for, based on username (null: none)
      * @param  array $ip_addresses List of IP addresses to search for
+     * @param  ?MEMBER $member_id Member ID to search for (null: none)
      * @param  string $email_address E-mail address to search for (blank: none)
      * @param  array $others List of other strings to search for, via additional-anonymise-fields
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run($table_actions, $member_id, $ip_addresses, $email_address, $others)
+    public function run($table_actions, $member_id_username, $ip_addresses, $member_id, $email_address, $others)
     {
         require_code('privacy');
 
         disable_php_memory_limit();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        if ($member_id_username !== null) {
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_username);
+        } elseif ($member_id !== null) {
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        } else {
+            $username = do_lang('UNKNOWN');
+        }
 
         $data = array();
 
@@ -52,7 +59,7 @@ class Hook_task_privacy_download
                         $data[$table_name] = array();
 
                         $db = get_db_for($table_name);
-                        $selection_sql = $hook_ob->get_selection_sql($table_name, $table_details, $member_id, $ip_addresses, $email_address, $others);
+                        $selection_sql = $hook_ob->get_selection_sql($table_name, $table_details, $member_id_username, $ip_addresses, $member_id, $email_address, $others);
                         $rows = $db->query('SELECT * FROM ' . $db->get_table_prefix() . $table_name . $selection_sql);
                         foreach ($rows as $row) {
                             $data[$table_name][] = $hook_ob->serialise($table_name, $row);

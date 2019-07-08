@@ -113,15 +113,16 @@ class Module_admin_privacy
 
         // Choose search: username / IP / e-mail / other-fields
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), '', 'username', '', false));
-        $fields->attach(form_input_line_multi(do_lang_tempcode('IP_ADDRESS'), '', 'ip_addresses', array(), 0));
+        $fields->attach(form_input_line_multi(do_lang_tempcode('IP_ADDRESS'), '', 'ip_addresses[]', array(), 0));
+        $fields->attach(form_input_integer(do_lang_tempcode('MEMBER_ID'), '', 'member_id', get_param_integer('member_id', null), false));
         $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'email_address', '', false));
-        $fields->attach(form_input_line_multi(do_lang_tempcode('OTHER'), do_lang_tempcode('DESCRIPTION_PRIVACY_OTHER'), 'others', array(), 0));
+        $fields->attach(form_input_line_multi(do_lang_tempcode('OTHER'), do_lang_tempcode('DESCRIPTION_PRIVACY_OTHER'), 'others[]', array(), 0));
 
         // Choose whether to download or purge (delete/anonymise)
         $radios = new Tempcode();
         $radios->attach(form_input_radio_entry('action', 'download', true, do_lang_tempcode('DOWNLOAD')));
         $radios->attach(form_input_radio_entry('action', 'purge', false, do_lang_tempcode('PURGE')));
-        $radios->attach(form_input_radio_entry('action', 'sql', true, 'SQL'));
+        $radios->attach(form_input_radio_entry('action', 'sql', false, 'SQL'));
         $fields->attach(form_input_radio(do_lang_tempcode('ACTION'), '', 'action', $radios));
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_search'), '_SELF');
@@ -147,26 +148,27 @@ class Module_admin_privacy
      */
     public function _search()
     {
-        $username = post_param_string('username');
-        $ip_addresses = isset($_POST['ip_address']) ? $_POST['ip_addresses'] : array();
-        $email_address = post_param_string('email_address');
-        $others = isset($_POST['other']) ? $_POST['others'] : array();
+        $username = post_param_string('username', '');
+        $ip_addresses = isset($_POST['ip_addresses']) ? $_POST['ip_addresses'] : array();
+        $member_id = either_param_integer('member_id', null);
+        $email_address = post_param_string('email_address', '');
+        $others = isset($_POST['others']) ? $_POST['others'] : array();
 
         // Error if no search parameters given
-        if ((empty($username)) && (empty($ip_addresses)) && (empty($email_address)) && (empty($others))) {
+        if ((empty($username)) && (empty($ip_addresses)) && (empty($member_id)) && (empty($email_address)) && (empty($others))) {
             warn_exit(do_lang_tempcode('NO_RESULTS')); // Obviously
         }
 
         if ($username != '') {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if ($member_id === null) {
+            $member_id_username = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
+            if ($member_id_username === null) {
                 warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
             }
         } else {
-            $member_id = null;
+            $member_id_username = null;
         }
 
-        $action = post_param_string('action');
+        $action = post_param_string('action', 'purge');
 
         $database_records = array();
         $hook_obs = find_all_hook_obs('systems', 'privacy', 'Hook_privacy_');
@@ -240,8 +242,11 @@ class Module_admin_privacy
                 foreach ($hook_obs as $hook_ob) {
                     $details = $hook_ob->info();
                     if ($details !== null) {
-                        foreach ($details['database_records'] as $table => $table_details) {
-                            $sql->attach(paragraph(escape_html($hook_ob->get_selection_sql($table_name, $table_details, $member_id, $ip_addresses, $email_address, $others))));
+                        foreach ($details['database_records'] as $table_name => $table_details) {
+                            $db = get_db_for($table_name);
+                            $_sql = 'SELECT * FROM ' . $db->get_table_prefix() . $table_name;
+                            $_sql .= $hook_ob->get_selection_sql($table_name, $table_details, $member_id_username, $ip_addresses, $member_id, $email_address, $others) . ';';
+                            $sql->attach(paragraph(escape_html($_sql)));
                         }
                     }
                 }
@@ -249,7 +254,7 @@ class Module_admin_privacy
                 $out = do_template('FULL_MESSAGE_SCREEN', array(
                     '_GUID' => '2cc407037ec01a9f3483746a22889471',
                     'TITLE' => $this->title,
-                    'TEXT' => $sql,
+                    'TEXT' => protect_from_escaping($sql),
                 ));
 
                 break;
@@ -265,11 +270,12 @@ class Module_admin_privacy
      */
     public function __search()
     {
-        $username = post_param_string('username');
-        $ip_addresses = isset($_POST['ip_address']) ? $_POST['ip_addresses'] : array();
-        $email_address = post_param_string('email_address');
-        $others = isset($_POST['other']) ? $_POST['others'] : array();
-        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
+        $username = post_param_string('username', '');
+        $ip_addresses = isset($_POST['ip_addresses']) ? $_POST['ip_addresses'] : array();
+        $member_id = post_param_integer('member_id', null);
+        $email_address = post_param_string('email_address', '');
+        $others = isset($_POST['others']) ? $_POST['others'] : array();
+        $member_id_username = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
 
         $table_actions = array();
         $hook_obs = find_all_hook_obs('systems', 'privacy', 'Hook_privacy_');
@@ -282,20 +288,20 @@ class Module_admin_privacy
             }
         }
 
-        $action = post_param_string('action');
+        $action = post_param_string('action', 'purge');
 
         switch ($action) {
             case 'download':
-                log_it('PERSONAL_DATA_DOWNLOAD', ($member_id === null) ? '' : strval($member_id), json_encode(array($ip_addresses, $email_address, $others)));
+                log_it('PERSONAL_DATA_DOWNLOAD', ($member_id === null) ? '' : strval($member_id), json_encode(array($member_id_username, $ip_addresses, $email_address, $others)));
 
                 require_code('tasks');
-                return call_user_func_array__long_task(do_lang('PERSONAL_DATA_DOWNLOAD'), $this->title, 'privacy_download', array($table_actions, $member_id, $ip_addresses, $email_address, $others));
+                return call_user_func_array__long_task(do_lang('PERSONAL_DATA_DOWNLOAD'), $this->title, 'privacy_download', array($table_actions, $member_id, $ip_addresses, $member_id, $email_address, $others));
 
             case 'purge':
-                log_it('PERSONAL_DATA_PURGING', ($member_id === null) ? '' : strval($member_id), json_encode(array($ip_addresses, $email_address, $others)));
+                log_it('PERSONAL_DATA_PURGING', ($member_id === null) ? '' : strval($member_id), json_encode(array($member_id_username, $ip_addresses, $email_address, $others)));
 
                 require_code('tasks');
-                return call_user_func_array__long_task(do_lang('PERSONAL_DATA_PURGING'), $this->title, 'privacy_purge', array($table_actions, $member_id, $ip_addresses, $email_address, $others));
+                return call_user_func_array__long_task(do_lang('PERSONAL_DATA_PURGING'), $this->title, 'privacy_purge', array($table_actions, $member_id, $ip_addresses, $member_id, $email_address, $others));
         }
 
         return new Tempcode();
