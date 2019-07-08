@@ -30,111 +30,121 @@ class Hook_privacy_core extends Hook_privacy_base
      */
     public function info()
     {
+        $deletion_exemptions = '';
+        $deletion_exemptions .= '<ul>';
+        $deletion_exemptions .= '<li>' . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_logged') . '</li>';
+        $deletion_exemptions .= '<li>' . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_editorial') . '</li>';
+        $deletion_exemptions .= '<li>' . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_security') . '</li>';
+        if (addon_installed('ecommerce')) {
+            $deletion_exemptions .= '<li>' . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_transactions') . '</li>';
+        }
+        $deletion_exemptions .= '</ul>';
+
         return array(
             'cookies' => array(
                 'cms_autosave_*' => array(
-                    'reason' => do_lang('COOKIE_autosave'),
+                    'reason' => do_lang_tempcode('COOKIE_autosave'),
                 ),
                 'has_cookies' => array(
-                    'reason' => do_lang('COOKIE_has_cookies'),
+                    'reason' => do_lang_tempcode('COOKIE_has_cookies'),
                 ),
                 'has_js' => (get_option('detect_javascript') == '0') ? null : array(
-                    'reason' => do_lang('COOKIE_has_js'),
+                    'reason' => do_lang_tempcode('COOKIE_has_js'),
                 ),
                 'last_visit' => array(
-                    'reason' => do_lang('COOKIE_last_visit'),
+                    'reason' => do_lang_tempcode('COOKIE_last_visit'),
                 ),
                 get_member_cookie() . ' & ' . get_pass_cookie() => array(
-                    'reason' => do_lang('COOKIE_automatic_login'),
+                    'reason' => do_lang_tempcode('COOKIE_automatic_login'),
                 ),
                 get_member_cookie() . '_invisible' => array(
-                    'reason' => do_lang('COOKIE_invisible'),
+                    'reason' => do_lang_tempcode('COOKIE_invisible'),
                 ),
                 get_session_cookie() => array(
-                    'reason' => do_lang('COOKIE_session'),
+                    'reason' => do_lang_tempcode('COOKIE_session'),
                 ),
                 'tray_*, hide*, og_*' => array(
-                    'reason' => do_lang('COOKIE_trays'),
+                    'reason' => do_lang_tempcode('COOKIE_trays'),
                 ),
                 'use_wysiwyg' => array(
-                    'reason' => do_lang('COOKIE_use_wysiwyg'),
+                    'reason' => do_lang_tempcode('COOKIE_use_wysiwyg'),
                 ),
                 'client_time*' => (get_option('is_on_timezone_detection') == '0') ? null : array(
-                    'reason' => do_lang('COOKIE_client_time'),
+                    'reason' => do_lang_tempcode('COOKIE_client_time'),
                 ),
                 'font_size' => array(
-                    'reason' => do_lang('COOKIE_font_size'),
+                    'reason' => do_lang_tempcode('COOKIE_font_size'),
                 ),
                 '__ut*, _ga, _gid' => (get_option('google_analytics') == '') ? null : array(
-                    'reason' => do_lang('COOKIE_ga'),
+                    'reason' => do_lang_tempcode('COOKIE_ga'),
                 ),
             ),
 
             'positive' => array(
                 array(
-                    'heading' => do_lang('PERSONAL_DATA_DELETION'),
-                    'explanation' => do_lang('PERSONAL_DATA_DELETION_EXPLANATION', " - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_logged') . "\n - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_editorial') . "\n - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_security') . (addon_installed('ecommerce') ? ("\n - " . do_lang('PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_transactions')) : '')),
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'explanation' => do_lang_tempcode('CORRECTIONS_EXPLANATION'),
                 ),
                 array(
-                    'heading' => do_lang('PERSONAL_DATA_DOWNLOAD'),
-                    'explanation' => do_lang('PERSONAL_DATA_DOWNLOAD_EXPLANATION'),
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'explanation' => do_lang_tempcode('PERSONAL_DATA_DOWNLOAD_EXPLANATION'),
                 ),
                 array(
-                    'heading' => do_lang('CORRECTIONS'),
-                    'explanation' => do_lang('CORRECTIONS_EXPLANATION'),
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'explanation' => do_lang_tempcode('PERSONAL_DATA_DELETION_EXPLANATION', protect_from_escaping($deletion_exemptions)),
                 ),
             ),
 
             'general' => array(
                 (get_option('spam_check_level') == 'NEVER') ? null : array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_stopforumspam'),
-                    'reason' => do_lang('PRIVACY_REASON_stopforumspam'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_stopforumspam'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_stopforumspam'),
                 ),
                 ((get_option('spam_check_level') == 'NEVER') || (get_option('stopforumspam_api_key') == '')) ? null : array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_dnsbl'),
-                    'reason' => do_lang('PRIVACY_REASON_dnsbl'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_dnsbl'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_dnsbl'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_STORAGE'),
-                    'action' => do_lang('PRIVACY_ACTION_metadata'),
-                    'reason' => do_lang('PRIVACY_REASON_metadata'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_metadata'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_metadata'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_STORAGE'),
-                    'action' => do_lang('PRIVACY_ACTION_editorial'),
-                    'reason' => do_lang('PRIVACY_REASON_editorial'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_editorial'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_editorial'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_STORAGE'),
-                    'action' => do_lang('PRIVACY_ACTION_bans'),
-                    'reason' => do_lang('PRIVACY_REASON_bans'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_bans'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_bans'),
                 ),
                 array( // We define this here, not in newsletters hook, as webmasters are likely to use newsletters using external software
                     'heading' => do_lang('GENERAL'),
-                    'action' => do_lang('PRIVACY_ACTION_newsletter', get_site_name(), get_option('site_scope')),
-                    'reason' => do_lang('PRIVACY_REASON_newsletter'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_newsletter', escape_html(get_site_name()), escape_html(get_option('site_scope'))),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_newsletter'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_DISCLOSURE'),
-                    'action' => do_lang((get_option('is_on_invisibility') == '1') ? 'PRIVACY_ACTION_online_status_invisible' : 'PRIVACY_ACTION_online_status'),
-                    'reason' => do_lang('PRIVACY_REASON_online_status'),
+                    'action' => do_lang_tempcode((get_option('is_on_invisibility') == '1') ? 'PRIVACY_ACTION_online_status_invisible' : 'PRIVACY_ACTION_online_status'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_online_status'),
                 ),
                 array(
                     'heading' => do_lang('GENERAL'),
-                    'action' => do_lang('PRIVACY_ACTION_no_dnt'),
-                    'reason' => do_lang('PRIVACY_REASON_no_dnt'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_no_dnt'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_no_dnt'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_ip_lookup'),
-                    'reason' => do_lang('PRIVACY_REASON_ip_lookup'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_ip_lookup'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_ip_lookup'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_web_code'),
-                    'reason' => do_lang('PRIVACY_REASON_web_code'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_web_code'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_web_code'),
                 ),
             ),
 

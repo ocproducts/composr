@@ -43,28 +43,28 @@ class Hook_privacy_core_cns extends Hook_privacy_base
             'positive' => array(
                 ((get_option('is_on_coppa') == '0') || (get_option('dobs') == '0')) ? null : array(
                     'heading' => do_lang('CHILD_PROTECTION'),
-                    'explanation' => do_lang('PRIVACY_EXPLANATION_COPPA', get_option('coppa_age')),
+                    'explanation' => do_lang_tempcode('PRIVACY_EXPLANATION_COPPA', escape_html(get_option('coppa_age'))),
                 ),
                 array(
                     'heading' => do_lang('COOKIES'),
-                    'explanation' => do_lang('PRIVACY_EXPLANATION_COOKIES'),
+                    'explanation' => do_lang_tempcode('PRIVACY_EXPLANATION_COOKIES'),
                 ),
                 array(
-                    'heading' => do_lang('GENERAL'),
-                    'explanation' => do_lang('PRIVACY_EXPLANATION_NON_DISCLOSURE'),
+                    'heading' => do_lang('INFORMATION_DISCLOSURE'),
+                    'explanation' => do_lang_tempcode('PRIVACY_EXPLANATION_NON_DISCLOSURE'),
                 ),
             ),
 
             'general' => array(
                 array(
                     'heading' => do_lang('INFORMATION_DISCLOSURE'),
-                    'action' => do_lang('PRIVACY_ACTION_PROFILE_DISCLOSURE'),
-                    'reason' => do_lang('PRIVACY_REASON_PROFILE_DISCLOSURE'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_PROFILE_DISCLOSURE'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_PROFILE_DISCLOSURE'),
                 ),
                 array(
                     'heading' => do_lang('INFORMATION_DISCLOSURE'),
-                    'action' => do_lang('PRIVACY_ACTION_PRIVATE_TOPICS'),
-                    'reason' => do_lang('PRIVACY_REASON_PRIVATE_TOPICS'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_PRIVATE_TOPICS'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_PRIVATE_TOPICS'),
                 ),
             ),
 

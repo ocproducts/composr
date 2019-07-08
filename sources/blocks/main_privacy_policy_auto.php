@@ -75,45 +75,63 @@ class Block_main_privacy_policy_auto
         );
 
         $hook_obs = find_all_hook_obs('systems', 'privacy', 'Hook_privacy_');
-        foreach ($hook_obs as $hook_ob) {
+        foreach ($hook_obs as $hook => $hook_ob) {
             $info = $hook_ob->info();
 
             foreach ($info['cookies'] as $name => $details) {
+                if ($details === null) {
+                    continue;
+                }
+
                 $cookies[] = array(
                     'NAME' => $name,
                     'REASON' => $details['reason'],
                 );
             }
 
-            foreach ($info['positive'] as $name => $details) {
-                if (!array_key_exists($name, $sections)) {
-                    $sections[$name] = array(
-                        'HEADING' => $name,
+            foreach ($info['positive'] as $details) {
+                if ($details === null) {
+                    continue;
+                }
+
+                $heading = $details['heading'];
+
+                if (!array_key_exists($heading, $sections)) {
+                    $sections[$heading] = array(
+                        'HEADING' => $heading,
                         'POSITIVE' => array(),
                         'GENERAL' => array(),
                     );
                 }
 
-                $sections[$name]['POSITIVE'] = array(
+                $sections[$heading]['POSITIVE'][] = array(
                     'EXPLANATION' => $details['explanation'],
                 );
             }
 
-            foreach ($info['general'] as $name => $details) {
-                if (!array_key_exists($name, $sections)) {
-                    $sections[$name] = array(
-                        'HEADING' => $name,
+            foreach ($info['general'] as $details) {
+                if ($details === null) {
+                    continue;
+                }
+
+                $heading = $details['heading'];
+
+                if (!array_key_exists($heading, $sections)) {
+                    $sections[$heading] = array(
+                        'HEADING' => $heading,
                         'POSITIVE' => array(),
                         'GENERAL' => array(),
                     );
                 }
 
-                $sections[$name]['GENERAL'] = array(
+                $sections[$heading]['GENERAL'][] = array(
                     'ACTION' => $details['action'],
                     'REASON' => $details['reason'],
                 );
             }
         }
+
+        ksort($sections, SORT_NATURAL | SORT_FLAG_CASE);
 
         return do_template('BLOCK_MAIN_PRIVACY_POLICY_AUTO', array(
             '_GUID' => '0abf65878c508bf244836589a8cc45da',

@@ -40,10 +40,10 @@ class Hook_privacy_chat extends Hook_privacy_base
         return array(
             'cookies' => array(
                 'software_chat_prefs' => array(
-                    'reason' => do_lang('COOKIE_software_chat_prefs'),
+                    'reason' => do_lang_tempcode('COOKIE_software_chat_prefs'),
                 ),
                 'last_chat_msg_*' => array(
-                    'reason' => do_lang('COOKIE_last_chat_msg'),
+                    'reason' => do_lang_tempcode('COOKIE_last_chat_msg'),
                 ),
             ),
 

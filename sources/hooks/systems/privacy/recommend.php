@@ -46,8 +46,8 @@ class Hook_privacy_recommend extends Hook_privacy_base
             'general' => array(
                 array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_share_code'),
-                    'reason' => do_lang('PRIVACY_REASON_share_code'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_share_code'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_share_code'),
                 ),
             ),
 

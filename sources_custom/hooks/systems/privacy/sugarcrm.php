@@ -40,9 +40,9 @@ class Hook_privacy_sugarcrm extends Hook_privacy_base
 
             'general' => array(
                 array(
-                    'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_sugarcrm'),
-                    'reason' => do_lang('PRIVACY_REASON_sugarcrm'),
+                    'heading' => do_lang('INFORMATION_STORAGE'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_sugarcrm'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_sugarcrm'),
                 ),
             ),
 

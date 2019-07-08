@@ -2,4 +2,4 @@
 
 [block]main_privacy_policy_auto[/block]
 
-This policy was last revised on TODO.
+[i]This policy was last revised on {$METADATA*,modified}.[/i]

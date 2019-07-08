@@ -44,8 +44,8 @@ class Hook_privacy_captcha extends Hook_privacy_base
             'general' => array(
                 (get_option('recaptcha_site_key') == '') ? null : array(
                     'heading' => do_lang('INFORMATION_TRANSFER'),
-                    'action' => do_lang('PRIVACY_ACTION_recaptcha'),
-                    'reason' => do_lang('PRIVACY_REASON_recaptcha'),
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_recaptcha'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_recaptcha'),
                 ),
             ),
 

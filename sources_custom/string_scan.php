@@ -10496,7 +10496,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_transactions
         PERSONAL_DATA_DOWNLOAD
         PERSONAL_DATA_DOWNLOAD_EXPLANATION
-        CORRECTIONS
         CORRECTIONS_EXPLANATION
         COOKIES
         COOKIE_autosave
@@ -10546,7 +10545,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVACY_ACTION_shopping_sessions
         PRIVACY_REASON_shopping_sessions
         FOLLOWING_COOKIES
-        POLICY_REVISED_ON
         WELCOME
         WELCOME_BACK
         WELCOME_CHAT_LOBBY

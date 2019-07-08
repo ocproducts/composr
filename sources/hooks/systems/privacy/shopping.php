@@ -46,8 +46,8 @@ class Hook_privacy_shopping extends Hook_privacy_base
             'general' => array(
                 array(
                     'heading' => do_lang('INFORMATION_STORAGE'),
-                    'action' => 'PRIVACY_ACTION_shopping_sessions',
-                    'reason' => 'PRIVACY_REASON_shopping_sessions',
+                    'action' => do_lang_tempcode('PRIVACY_ACTION_shopping_sessions'),
+                    'reason' => do_lang_tempcode('PRIVACY_REASON_shopping_sessions'),
                 ),
             ),
 
