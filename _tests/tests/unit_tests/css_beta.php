@@ -22,8 +22,6 @@ class css_beta_test_set extends cms_test_case
 {
     public function testCorrectSetAsBeta()
     {
-        $only_theme = get_param_string('only_theme', null);
-
         require_code('themes2');
 
         $themes = find_all_themes();
@@ -32,7 +30,7 @@ class css_beta_test_set extends cms_test_case
                 continue;
             }
 
-            if (($only_theme !== null) && ($theme != $only_theme)) {
+            if (($this->only !== null) && ($this->only != $theme)) {
                 continue;
             }
 

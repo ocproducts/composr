@@ -333,10 +333,8 @@ class database_misc_test_set extends cms_test_case
             ),
         );
 
-        $limit_to = get_param_string('limit_to', null);
-
         foreach ($searches as $test_codename => $bits) {
-            if (($limit_to !== null) && ($limit_to != $test_codename)) {
+            if (($this->only !== null) && ($this->only != $test_codename)) {
                 continue;
             }
 
@@ -365,7 +363,7 @@ class database_misc_test_set extends cms_test_case
             $this->assertTrue(count($rows) == $expected, $test_codename . ' failed, got ' . integer_format(count($rows)) . ' rows but expected ' . integer_format($expected) . ' rows');
         }
 
-        if ($limit_to === null) {
+        if ($this->only === null) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test');
         } // Otherwise we're probably testing via manual queries too, so need the table
     }

@@ -22,8 +22,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
 {
     public function testPhpBBInstall()
     {
-        $limit_to = get_param_string('limit_to', '');
-        if (($limit_to != '') && ($limit_to != 'testPhpBBInstall')) {
+        if (($this->only !== null) && ($this->only != 'testPhpBBInstall')) {
             return;
         }
 
@@ -60,8 +59,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
 
     public function testNoneInstall()
     {
-        $limit_to = get_param_string('limit_to', '');
-        if (($limit_to != '') && ($limit_to != 'testNoneInstall')) {
+        if (($this->only !== null) && ($this->only != 'testNoneInstall')) {
             return;
         }
 

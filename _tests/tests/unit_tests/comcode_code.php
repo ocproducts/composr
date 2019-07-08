@@ -133,9 +133,8 @@ class comcode_code_test_set extends cms_test_case
             $cases[14] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
         }
 
-        $only = get_param_integer('only', null);
         foreach ($cases as $i => $_bits) {
-            if (($only !== null) && ($only != $i)) {
+            if (($this->only !== null) && ($this->only != $i)) {
                 continue;
             }
 

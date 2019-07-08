@@ -833,7 +833,7 @@ Store log as [tt]data_custom/whatever.log[/tt]
 | Security
 | Composr development
 | Manually
-| This allows the default Apache [tt].htaccess[/tt] to deny web acces to the log. The only exception should be logs which are created by default, which must be [tt].php[/tt] files with some lead-in code to prevent PHP command execution (using [tt].php[/tt] is the only 100%-reliable way to prevent unintended file download by URL access).
+| This allows the default Apache [tt].htaccess[/tt] to deny web access to the log. The only exception should be logs which are created by default, which must be [tt].php[/tt] files with some lead-in code to prevent PHP command execution (using [tt].php[/tt] is the only 100%-reliable way to prevent unintended file download by URL access).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Do not create log by default

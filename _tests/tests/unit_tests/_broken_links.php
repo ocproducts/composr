@@ -31,7 +31,7 @@ class _broken_links_test_set extends cms_test_case
 
     public function testStaffLinks()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -43,7 +43,7 @@ class _broken_links_test_set extends cms_test_case
 
     public function testStaffChecklist()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -58,8 +58,6 @@ class _broken_links_test_set extends cms_test_case
         cms_disable_time_limit();
         disable_php_memory_limit();
 
-        $only_tutorial = get_param_string('only_tutorial', '');
-
         $path = get_file_base() . '/docs/pages/comcode_custom/' . fallback_lang();
         $files = get_directory_contents($path, $path, 0, true, true, array('txt'));
         foreach ($files as $file) {
@@ -69,7 +67,7 @@ class _broken_links_test_set extends cms_test_case
                 continue; // May be outdated
             }
 
-            if (($only_tutorial != '') && ($only_tutorial != $tutorial)) {
+            if (($this->only !== null) && ($this->only != $tutorial)) {
                 continue;
             }
 
@@ -80,7 +78,7 @@ class _broken_links_test_set extends cms_test_case
 
     public function testTutorialDatabase()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -97,7 +95,7 @@ class _broken_links_test_set extends cms_test_case
 
     public function testFeatureTray()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -112,7 +110,7 @@ class _broken_links_test_set extends cms_test_case
 
     public function testLangFiles()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -135,7 +133,7 @@ class _broken_links_test_set extends cms_test_case
 
     public function testTemplates()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 

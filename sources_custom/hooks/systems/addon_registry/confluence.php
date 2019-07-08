@@ -145,8 +145,6 @@ class Hook_addon_registry_confluence
             'themes/default/css_custom/confluence.css',
             'themes/default/templates_custom/CONFLUENCE_SCREEN.tpl',
             'site/pages/minimodules_custom/docs.php',
-            'sources_custom/hooks/systems/health_checks/.htaccess',
-            'sources_custom/hooks/systems/health_checks/index.html',
             'sources_custom/hooks/systems/health_checks/confluence.php',
         );
     }

@@ -5194,7 +5194,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UPGRADER_FILE_UPGRADE_INFO_MANUAL
         UPGRADER_FIX_PERMISSIONS
         UPGRADER_FTP_INFO
-        UPGRADER_FTP_NEEDED
         UPGRADER_INSTALLED_ADDON
         UPGRADER_INSTALLED_BLOCK
         UPGRADER_INSTALLED_MODULE

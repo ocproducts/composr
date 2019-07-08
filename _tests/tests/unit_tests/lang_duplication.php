@@ -61,7 +61,7 @@ class lang_duplication_test_set extends cms_test_case
                 }
 
                 if (isset($vals[$val])) {
-                    if (get_param_integer('debug', 0) == 1) {
+                    if ($this->debug) {
                         @print('<p><strong>' . escape_html($val) . '</strong>:<br />' . escape_html($file . ':' . $key . ' = ' . implode(' = ', $vals[$val])) . '</p>');
                     }
                 } else {

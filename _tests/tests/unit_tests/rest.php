@@ -53,12 +53,11 @@ class rest_test_set extends cms_test_case
         $raw_post = true;
         $http_verb = 'POST';
         $raw_content_type = 'application/json';
-        $debug = (get_param_integer('debug', 0) == 1);
-        $result = http_get_contents($url, array('ignore_http_status' => $debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
+        $result = http_get_contents($url, array('ignore_http_status' => $this->debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
         $_result = @json_decode($result, true);
         $this->assertTrue(is_array($_result));
         if (is_array($_result)) {
-            if ($debug) {
+            if ($this->debug) {
                 @var_dump($_result);
                 if (!$_result['success']) {
                     exit();
@@ -67,7 +66,7 @@ class rest_test_set extends cms_test_case
 
             $this->assertTrue($_result['success']);
         } else {
-            if ($debug) {
+            if ($this->debug) {
                 @exit($result);
             }
         }
@@ -85,18 +84,17 @@ class rest_test_set extends cms_test_case
         $raw_post = true;
         $http_verb = 'PUT';
         $raw_content_type = 'application/json';
-        $debug = (get_param_integer('debug', 0) == 1);
-        $result = http_get_contents($url, array('ignore_http_status' => $debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
+        $result = http_get_contents($url, array('ignore_http_status' => $this->debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
         $_result = @json_decode($result, true);
         $this->assertTrue(is_array($_result));
         if (is_array($_result)) {
-            if ($debug) {
+            if ($this->debug) {
                 @var_dump($_result);
             }
 
             $this->assertTrue($_result['success']);
         } else {
-            if ($debug) {
+            if ($this->debug) {
                 @exit($result);
             }
         }
@@ -114,18 +112,17 @@ class rest_test_set extends cms_test_case
         $raw_post = true;
         $http_verb = 'DELETE';
         $raw_content_type = 'application/json';
-        $debug = (get_param_integer('debug', 0) == 1);
-        $result = http_get_contents($url, array('ignore_http_status' => $debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
+        $result = http_get_contents($url, array('ignore_http_status' => $this->debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
         $_result = @json_decode($result, true);
         $this->assertTrue(is_array($_result));
         if (is_array($_result)) {
-            if ($debug) {
+            if ($this->debug) {
                 @var_dump($_result);
             }
 
             $this->assertTrue($_result['success']);
         } else {
-            if ($debug) {
+            if ($this->debug) {
                 @exit($result);
             }
         }

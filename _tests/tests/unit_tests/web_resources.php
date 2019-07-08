@@ -91,9 +91,8 @@ class web_resources_test_set extends cms_test_case
             'ATTACHMENT_UI_DEFAULTS.js',
         );
 
-        $only = get_param_string('only', null);
-        if (($only !== null) && (in_array($only, $exceptions))) {
-            unset($exceptions[array_search($only, $exceptions)]);
+        if (($this->only !== null) && (in_array($this->only, $exceptions))) {
+            unset($exceptions[array_search($this->only, $exceptions)]);
         }
 
         $files = get_directory_contents(get_file_base() . '/themes/' . $theme . '/' . $dir, get_file_base() . '/themes/' . $theme . '/' . $dir, null, false, true, array('js'));
@@ -102,8 +101,8 @@ class web_resources_test_set extends cms_test_case
                 continue;
             }
 
-            if ($only !== null) {
-                if (basename($path) != $only) {
+            if ($this->only !== null) {
+                if (basename($path) != $this->only) {
                     continue;
                 }
             }
@@ -126,7 +125,7 @@ class web_resources_test_set extends cms_test_case
             }
             $this->assertTrue(($errors === null), 'Bad JS in ' . $path);
             if ($errors !== null) {
-                if (get_param_integer('debug', 0) == 1) {
+                if ($this->debug) {
                     unset($errors['tag_ranges']);
                     unset($errors['value_ranges']);
                     unset($errors['level_ranges']);
@@ -169,9 +168,8 @@ class web_resources_test_set extends cms_test_case
             'confluence.css',
         );
 
-        $only = get_param_string('only', null);
-        if (($only !== null) && (in_array($only, $exceptions))) {
-            unset($exceptions[array_search($only, $exceptions)]);
+        if (($this->only !== null) && (in_array($this->only, $exceptions))) {
+            unset($exceptions[array_search($this->only, $exceptions)]);
         }
 
         $files = get_directory_contents(get_file_base() . '/themes/' . $theme . '/' . $dir, get_file_base() . '/themes/' . $theme . '/' . $dir, null, false, true, array('css'));
@@ -185,8 +183,8 @@ class web_resources_test_set extends cms_test_case
                 continue; // Nothing in file after minimisation
             }
 
-            if ($only !== null) {
-                if (basename($path) != $only) {
+            if ($this->only !== null) {
+                if (basename($path) != $this->only) {
                     continue;
                 }
             }
@@ -196,9 +194,9 @@ class web_resources_test_set extends cms_test_case
             if (($errors !== null) && ($errors['errors'] == array())) {
                 $errors = null; // Normalise
             }
-            $this->assertTrue(($errors === null), 'Bad CSS in ' . $path . (($only === null) ? (' (run with &only=' . basename($path) . '&debug=1 to see errors)') : ''));
+            $this->assertTrue(($errors === null), 'Bad CSS in ' . $path . (($this->only === null) ? (' (run with &only=' . basename($path) . '&debug=1 to see errors)') : ''));
             if ($errors !== null) {
-                if (get_param_integer('debug', 0) == 1) {
+                if ($this->debug) {
                     echo '<pre>';
                     var_dump($errors['errors']);
                     echo '</pre>';

@@ -43,9 +43,8 @@ class downloads_http_cycle_test_set extends cms_test_case
         $files = array(
             'file__upload' => get_file_base() . '/data/images/donate.png',
         );
-        $debug = (get_param_integer('debug', 0) == 1);
-        $data = http_get_contents($url->evaluate(), array('ignore_http_status' => $debug, 'trigger_error' => false, 'post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id()), 'files' => $files, 'timeout' => 100.0));
-        if ($debug) {
+        $data = http_get_contents($url->evaluate(), array('ignore_http_status' => $this->debug, 'trigger_error' => false, 'post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id()), 'files' => $files, 'timeout' => 100.0));
+        if ($this->debug) {
             @var_dump($data);
             exit();
         }

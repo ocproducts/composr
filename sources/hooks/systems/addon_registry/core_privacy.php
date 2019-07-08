@@ -129,6 +129,10 @@ class Hook_addon_registry_core_privacy
             'sources/hooks/systems/config/send_error_emails_ocproducts.php',
             'sources/hooks/systems/tasks/privacy_download.php',
             'sources/hooks/systems/tasks/privacy_purge.php',
+            'sources/hooks/systems/logs/.htaccess',
+            'sources/hooks/systems/privacy/.htaccess',
+            'sources_custom/hooks/systems/logs/.htaccess',
+            'sources_custom/hooks/systems/privacy/.htaccess',
         );
     }
 

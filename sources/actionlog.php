@@ -236,7 +236,7 @@ abstract class Hook_actionlog
 }
 
 /**
- * Try and make an action log entry into a proper link.
+ * Get handler flags for a particular action log type.
  *
  * @param  ID_TEXT $the_type Action log type
  * @return integer Flags

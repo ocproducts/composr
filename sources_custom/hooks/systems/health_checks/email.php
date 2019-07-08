@@ -57,7 +57,7 @@ class Hx_health_check_email extends Hook_health_check_email
 
         $error = null;
 
-        require_code('Swift-4.1.1/lib/swift_required');
+        require_code('swift_mailer/lib/swift_required');
         $transport = (new Swift_SmtpTransport($host, $port))
             ->setUsername($username)
             ->setPassword($password);

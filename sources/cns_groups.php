@@ -276,8 +276,18 @@ function cns_get_group_name($group, $hide_hidden = true)
  */
 function cns_get_group_property($group, $property, $hide_hidden = true)
 {
-    cns_ensure_groups_cached(array($group));
+    cns_ensure_groups_cached(array($group), true);
     global $USER_GROUPS_CACHED;
+
+    if (!array_key_exists($group, $USER_GROUPS_CACHED)) { // DB corruption
+        switch ($property) {
+            case 'group_leader':
+                return null;
+
+            default:
+                return '';
+        }
+    }
 
     if ($hide_hidden) {
         $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());

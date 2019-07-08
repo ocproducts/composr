@@ -37,7 +37,7 @@ class Hook_actionlog_recommend extends Hook_actionlog
         require_lang('recommend');
 
         return array(
-            'RECOMMEND' => array(
+            'RECOMMENDED' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => null,
                 'identifier_index' => null,

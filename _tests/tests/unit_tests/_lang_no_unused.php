@@ -223,16 +223,9 @@ class _lang_no_unused_test_set extends cms_test_case
 
         $cli = is_cli();
 
-        $only = get_param_string('only', null);
-        if ($only === null) {
-            if (isset($_SERVER['argv'][2])) {
-                $only = $_SERVER['argv'][2];
-            }
-        }
-
         $files = get_directory_contents(get_file_base() . '/lang/EN', get_file_base() . '/lang/EN', null, false, true, array('ini'));
         foreach ($files as $path) {
-            if (($only !== null) && ($only != basename($path))) {
+            if (($this->only !== null) && ($this->only != basename($path))) {
                 continue;
             }
 

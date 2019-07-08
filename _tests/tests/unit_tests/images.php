@@ -86,7 +86,7 @@ class images_test_set extends cms_test_case
         // Should not get larger
         $temp = $temp_bak;
         $test = convert_image('themes/default/images/button1.png', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, 'png', /*$using_path*/false, /*$only_make_smaller*/true);
-        $this->assertTrue(cms_getimagesize($temp) == array(100, 22));
+        $this->assertTrue(array_slice(cms_getimagesize($temp), 0, 2) == array(100, 22));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -94,7 +94,7 @@ class images_test_set extends cms_test_case
         // Should get to exact size
         $temp = $temp_bak;
         $test = convert_image('themes/default/images/button1.png', $temp, /*$width*/100, /*$height*/150, /*$box_width*/null, false, 'png', /*$using_path*/false, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(100, 22)); // not 100x150 because we don't add padding in convert_image
+        $this->assertTrue(array_slice(cms_getimagesize($temp), 0, 2) == array(100, 22)); // not 100x150 because we don't add padding in convert_image
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -102,7 +102,7 @@ class images_test_set extends cms_test_case
         // Should get to exact size
         $temp = $temp_bak;
         $test = convert_image('themes/default/images/button1.png', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, 'png', /*$using_path*/false, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(120, 26));
+        $this->assertTrue(array_slice(cms_getimagesize($temp), 0, 2) == array(120, 26));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -110,7 +110,7 @@ class images_test_set extends cms_test_case
         // With a path
         $temp = $temp_bak;
         $test = convert_image(get_file_base() . '/themes/default/images/button1.png', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, 'png', /*$using_path*/true, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(120, 26));
+        $this->assertTrue(array_slice(cms_getimagesize($temp), 0, 2) == array(120, 26));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }
@@ -118,7 +118,7 @@ class images_test_set extends cms_test_case
         // With an absolute URL
         $temp = $temp_bak;
         $test = convert_image(get_base_url() . '/themes/default/images/button1.png', $temp, /*$width*/null, /*$height*/null, /*$box_width*/120, false, 'png', /*$using_path*/false, /*$only_make_smaller*/false);
-        $this->assertTrue(cms_getimagesize($temp) == array(120, 26));
+        $this->assertTrue(array_slice(cms_getimagesize($temp), 0, 2) == array(120, 26));
         if ($temp_bak != $temp) {
             @unlink($temp);
         }

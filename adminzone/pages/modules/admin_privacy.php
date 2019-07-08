@@ -111,7 +111,7 @@ class Module_admin_privacy
 
         $fields = new Tempcode();
 
-        // Choose search: username / IP / email / other-fields
+        // Choose search: username / IP / e-mail / other-fields
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), '', 'username', '', false));
         $fields->attach(form_input_line_multi(do_lang_tempcode('IP_ADDRESS'), '', 'ip_addresses', array(), 0));
         $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'email_address', '', false));

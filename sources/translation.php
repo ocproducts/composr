@@ -230,10 +230,12 @@ function _google_translate_api_request($url, $request = null)
         $_request = json_encode($request);
     }
 
-    $_result = http_get_contents($url, array('trigger_error' => false, 'post_params' => ($_request === null) ? null : array($_request), 'timeout' => 0.5, 'raw_post' => ($request !== null), 'http_verb' => ($request === null) ? 'GET' : 'POST', 'raw_content_type' => 'application/json'));
+    $_result = http_get_contents($url, array('ignore_http_status' => true, 'trigger_error' => false, 'post_params' => ($_request === null) ? null : array($_request), 'timeout' => 0.5, 'raw_post' => ($request !== null), 'http_verb' => ($request === null) ? 'GET' : 'POST', 'raw_content_type' => 'application/json'));
 
     $result = @json_decode($_result, true);
-    if ($result === false) {
+    if (($result === false) || (array_key_exists('error', $result))) {
+        error_log('Google Translate issue: ' . $_result, 0);
+
         return null;
     }
     return $result;

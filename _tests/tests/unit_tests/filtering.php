@@ -25,8 +25,7 @@ class filtering_test_set extends cms_test_case
 
     public function testFiltercode()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only !== 'testFiltercode')) {
+        if (($this->only !== null) && ($this->only !== 'testFiltercode')) {
             return;
         }
 
@@ -477,8 +476,7 @@ class filtering_test_set extends cms_test_case
 
     public function testSelectcode()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only !== 'testSelectcode')) {
+        if (($this->only !== null) && ($this->only !== 'testSelectcode')) {
             return;
         }
 
@@ -678,7 +676,7 @@ class filtering_test_set extends cms_test_case
 
     public function tearDown()
     {
-        if (get_param_integer('debug', 0) == 0) {
+        if (!$debug) {
             $this->cleanup_db();
         }
 

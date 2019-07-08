@@ -25,12 +25,9 @@ class _health_check_test_set extends cms_test_case
         require_code('health_check');
 
         $sections_to_run = null;
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to === null) && (isset($_SERVER['argv'][2]))) {
-            $limit_to = $_SERVER['argv'][2];
-        }
-        if ($limit_to !== null) {
-            $sections_to_run = array($limit_to);
+
+        if ($this->only !== null) {
+            $sections_to_run = array($this->only);
         }
 
         $has_fails = false;

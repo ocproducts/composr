@@ -46,8 +46,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testNoBomMarkers()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNoBomMarkers')) {
+        if (($this->only !== null) && ($this->only != 'testNoBomMarkers')) {
             return;
         }
 
@@ -71,8 +70,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testTabbing()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testTabbing')) {
+        if (($this->only !== null) && ($this->only != 'testTabbing')) {
             return;
         }
 
@@ -149,8 +147,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testNoTrailingWhitespace()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNoTrailingWhitespace')) {
+        if (($this->only !== null) && ($this->only != 'testNoTrailingWhitespace')) {
             return;
         }
 
@@ -206,8 +203,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testNoNonAscii()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNoNonAscii')) {
+        if (($this->only !== null) && ($this->only != 'testNoNonAscii')) {
             return;
         }
 
@@ -267,8 +263,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testCorrectLineTerminationAndLineFormat()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testCorrectLineTerminationAndLineFormat')) {
+        if (($this->only !== null) && ($this->only != 'testCorrectLineTerminationAndLineFormat')) {
             return;
         }
 

@@ -19,7 +19,6 @@
 class _tutorial_quality_test_set extends cms_test_case
 {
     protected $tutorials;
-    protected $only = null;
 
     public function setUp()
     {
@@ -37,13 +36,6 @@ class _tutorial_quality_test_set extends cms_test_case
         $_GET['keep_tutorial_test'] = '1';
 
         $this->tutorials = list_tutorials();
-
-        $this->only = get_param_string('only', null);
-        if ($this->only === null) {
-            if (isset($_SERVER['argv'][2])) {
-                $this->only = $_SERVER['argv'][2];
-            }
-        }
     }
 
     public function testValidComcode()

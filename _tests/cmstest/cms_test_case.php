@@ -19,6 +19,8 @@
 class cms_test_case extends WebTestCase
 {
     public $site_closed;
+    protected $only = null;
+    protected $debug = false;
 
     public function setUp()
     {
@@ -30,6 +32,19 @@ class cms_test_case extends WebTestCase
             set_option('site_closed', '0', 0);
             $done_once = true;
             register_shutdown_function(array($this, 'reopen_site'));
+        }
+
+        $args = array_slice($_SERVER['argv'], 2);
+
+        if (in_array('debug', $args)) {
+            $this->debug = true;
+            unset($args[array_search('debug', $args)]);
+            $_GET['debug'] = '1'; // For code that doesn't look at $this->debug
+        }
+
+        $this->only = get_param_string('only', null);
+        if (($this->only === null) && (array_key_exists(0, $args))) {
+            $this->only = $args[0];
         }
     }
 

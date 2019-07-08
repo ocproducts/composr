@@ -18,8 +18,6 @@
  */
 class _filter_xml_test_set extends cms_test_case
 {
-    protected $only = null;
-
     public function setUp()
     {
         parent::setUp();
@@ -28,13 +26,6 @@ class _filter_xml_test_set extends cms_test_case
 
         require_code('files');
         require_code('csrf_filter');
-
-        $this->only = get_param_string('only', null);
-        if ($this->only === null) {
-            if (isset($_SERVER['argv'][2])) {
-                $this->only = $_SERVER['argv'][2];
-            }
-        }
     }
 
     public function testNonFilter()

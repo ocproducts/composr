@@ -35,6 +35,14 @@ class _lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'srand',
+            'robotstxtscreen',
+            'prefs',
+            'msg',
+            'anonymised',
+            'dnt',
+            'serialising',
+            'anonymising',
             'afghanistan',
             'africa',
             'african',
@@ -3224,15 +3232,6 @@ class _lang_spelling_epic_test_set extends cms_test_case
         $spell_link = spellcheck_initialise('en_GB');
         add_spellchecker_words_temp($spell_link, $okay_words);
 
-        $only = get_param_string('only', null);
-        if ($only === null) {
-            if (isset($_SERVER['argv'][2])) {
-                $only = $_SERVER['argv'][2];
-            }
-        }
-
-        $debug = (get_param_integer('debug', 0) == 1);
-
         // Check disk files...
 
         $paths = array(
@@ -3293,7 +3292,7 @@ class _lang_spelling_epic_test_set extends cms_test_case
                     continue;
                 }
 
-                if (($only !== null) && ($only != $path)) {
+                if (($this->only !== null) && ($this->only != $path)) {
                     continue;
                 }
 
@@ -3387,7 +3386,7 @@ class _lang_spelling_epic_test_set extends cms_test_case
                             }
                         }
 
-                        $num_matches = preg_match_all('#/\*(.*)\*/#U' . ($debug ? 's' : '') . 'm', $c, $matches);
+                        $num_matches = preg_match_all('#/\*(.*)\*/#U' . ($this->debug ? 's' : '') . 'm', $c, $matches);
                         for ($i = 0; $i < $num_matches; $i++) {
                             $_c .= ' ' . $matches[1][$i];
                         }
@@ -3415,7 +3414,7 @@ class _lang_spelling_epic_test_set extends cms_test_case
 
         $addons = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
         foreach ($addons as $addon => $ob) {
-            if (($only !== null) && ($only != $addon) && ($only != '(addons)')) {
+            if (($this->only !== null) && ($this->only != $addon) && ($this->only != '(addons)')) {
                 continue;
             }
 

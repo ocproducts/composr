@@ -41,7 +41,7 @@ class firephp_test_set extends cms_test_case
 
         $this->assertTrue($headers !== false, 'HTTP request failed');
 
-        if (get_param_integer('debug', 0) == 1) {
+        if ($this->debug) {
             @var_dump($url->evaluate());
             @var_dump($header);
             @var_dump($headers);

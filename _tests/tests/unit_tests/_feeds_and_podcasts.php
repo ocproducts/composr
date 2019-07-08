@@ -37,7 +37,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
     public function testXML()
     {
-        if (get_param_string('only_feed', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -64,8 +64,6 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
     public function testFeeds()
     {
-        $only_feed = get_param_string('only_feed', '');
-
         $_feeds = find_all_hooks('systems', 'rss');
         $feeds = array();
         foreach (array_keys($_feeds) as $feed) {
@@ -76,7 +74,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
                 continue; // Maybe forum has
             }
 
-            if (($only_feed != '') && ($only_feed != $feed)) {
+            if (($this->only !== null) && ($this->only != $feed)) {
                 continue;
             }
 
@@ -90,7 +88,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
                 $ok = (strpos($result, 'Congratulations!') !== false);
                 if (!$ok) {
-                    if (get_param_integer('debug', 0) == 1) {
+                    if ($this->debug) {
                         @var_dump($data);
                         @var_dump($result);
                     }
@@ -102,7 +100,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
     public function testDayFilter()
     {
-        if (get_param_string('only_feed', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -117,7 +115,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
     public function testMaxFilter()
     {
-        if (get_param_string('only_feed', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -132,7 +130,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
     public function testDaysFilter()
     {
-        if (get_param_string('only_feed', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 
@@ -147,7 +145,7 @@ class _feeds_and_podcasts_test_set extends cms_test_case
 
     public function testPodcast()
     {
-        if (get_param_string('only_feed', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 

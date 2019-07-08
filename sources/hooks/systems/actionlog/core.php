@@ -43,6 +43,7 @@ class Hook_actionlog_core extends Hook_actionlog
         require_lang('upgrade');
         require_lang('group_member_timeouts');
         require_lang('trackbacks');
+        require_lang('privacy');
 
         return array(
             'ADD_ZONE' => array(

@@ -104,7 +104,7 @@ class _setupwizard_test_set extends cms_test_case
 
         $ok = ($http->message == '200');
 
-        if ((!$ok) && (get_param_integer('debug', 0) == 1)) {
+        if ((!$ok) && ($this->debug)) {
             @var_dump($http->data);
         }
 

@@ -52,15 +52,10 @@ class _resource_fs_test_set extends cms_test_case
             $done_once = true;
         }
 
-        $limit_to = get_param_string('limit_to', null); // Useful for breaking down testing into more manageable isolated pieces
-        if (($limit_to === null) && (isset($_SERVER['argv'][2]))) {
-            $limit_to = $_SERVER['argv'][2];
-        }
-
         $this->resource_fs_obs = array();
         $commandr_fs_hooks = find_all_hooks('systems', 'commandr_fs');
         foreach ($commandr_fs_hooks as $commandr_fs_hook => $dir) {
-            if (($limit_to !== null) && ($commandr_fs_hook != $limit_to)) {
+            if (($this->only !== null) && ($commandr_fs_hook != $this->only)) {
                 continue;
             }
 
@@ -149,7 +144,7 @@ class _resource_fs_test_set extends cms_test_case
             $count = $count_folders + $count_files;
 
             $ok = ($count == count($listing));
-            if (get_param_integer('debug', 0) == 1) {
+            if ($this->debug) {
                 @var_dump($listing);
             }
 

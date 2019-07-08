@@ -76,6 +76,8 @@ function find_domain_base_url()
  */
 function create_robots_txt($robots_txt = null, &$msg = '', $overwrite = false)
 {
+    require_lang('robots_txt');
+
     $path = find_robots_txt_path();
     $domain_base_url = find_domain_base_url();
 

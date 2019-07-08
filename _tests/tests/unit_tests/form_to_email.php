@@ -34,7 +34,7 @@ class form_to_email_test_set extends cms_test_case
         $result = cms_http_request($url, array('trigger_error' => false, 'post_params' => array('foo' => 'bar')));
         set_option('mail_queue_debug', $bak);
 
-        if (get_param_integer('debug', 0) == 1) {
+        if ($this->debug) {
             @var_dump($result);
         }
 
