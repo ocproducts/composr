@@ -859,6 +859,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BAD_ZONE
         NO_PHP_EMAILING_AVAILABLE
         CURRENT_BANNER_IS
+        DOC_GDPR
+        TEXT_PRIVACY_SEARCH
+        DESCRIPTION_PRIVACY_OTHER
+        TABLES
+        PURGE
+        PRIVACY_METHOD_leave
+        PRIVACY_METHOD_anonymise
+        PRIVACY_METHOD_delete
+        PERSONAL_DATA_PURGING
         SOURCE_MEDIA
         BANNED_ADDRESSES
         BANNERS

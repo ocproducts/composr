@@ -27,13 +27,11 @@ function init__privacy()
 {
     define('PRIVACY_METHOD_leave', 0);
     define('PRIVACY_METHOD_anonymise', 1);
-    define('PRIVACY_METHOD_delete', 2);
+    define('PRIVACY_METHOD_anonymise_only', 2); // Used only for removal_default_handle_method, if we will not allow a user to override with PRIVACY_METHOD_delete
+    define('PRIVACY_METHOD_delete', 3);
 
     require_lang('privacy');
 }
-
-
-// TODO
 
 /**
  * Privacy details base class.
@@ -56,6 +54,64 @@ abstract class Hook_privacy_base
     }
 
     /**
+     * Get selection SQL for a particular search.
+     *
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $table_details Details from the info function for the given table
+     * @param  ?MEMBER $member_id Member ID to search for (null: none)
+     * @param  array $ip_addresses List of IP addresses to search for
+     * @param  string $email_address E-mail address to search for (blank: none)
+     * @param  array $others List of other strings to search for, via additional-anonymise-fields
+     * @return string The stem of the SQL query
+     */
+    protected function get_selection_sql($table_name, $table_details, $member_id = null, $ip_addresses = array(), $email_address = '', $others = array())
+    {
+        $db = get_db_for($table_name);
+
+        $sql = '';
+
+        $conditions = array();
+        if ($member_id !== null) {
+            foreach ($table_details['member_id_fields'] as $member_id_field) {
+                $conditions[] = $member_id_field . '=' . strval($member_id);
+            }
+        }
+        foreach ($ip_addresses as $ip_address) {
+            foreach ($table_details['ip_address_fields'] as $ip_address_field) {
+                $conditions[] = db_string_equal_to($ip_address_field, $ip_address);
+            }
+        }
+        if ($email_address != '') {
+            foreach ($table_details['email_address_fields'] as $email_address_field) {
+                $conditions[] = db_string_equal_to($email_address_field, $email_address);
+            }
+        }
+        foreach ($others as $other) {
+            foreach ($table_details['additional_anonymise_fields'] as $other_field) {
+                $conditions[] = db_string_equal_to($other_field, $other);
+            }
+        }
+
+        if (count($conditions) > 0) {
+            $sql .= ' WHERE (';
+            foreach ($conditions as $i => $condition) {
+                if ($i != 0) {
+                    $sql .= ' OR ';
+                }
+
+                $sql .= $condition;
+            }
+            $sql .= ')';
+        }
+
+        if ($table_details['extra_where'] !== null) {
+            $sql .= ' AND ' . $table_details['extra_where'];
+        }
+
+        return $sql;
+    }
+
+    /**
      * Serialise a row.
      *
      * @param  ID_TEXT $table_name Table name
@@ -71,6 +127,10 @@ abstract class Hook_privacy_base
         foreach ($metadata as $key => $type) {
             if (strpos($type, '_TRANS') !== false) {
                 $row2[$key] = get_translated_text($row[$key], $db);
+            } elseif (strpos($type, 'TIME') !== false) {
+                $row2[$key] = ($row[$key] === null) ? null : get_timezoned_date($row[$key]);
+            } elseif (strpos($type, 'BINARY') !== false) {
+                $row2[$key] = ($row[$key] === null) ? null : ($row[$key] == 1);
             } else {
                 $row2[$key] = $row[$key];
             }
@@ -88,11 +148,11 @@ abstract class Hook_privacy_base
     public function anonymise($table_name, $row)
     {
         $info = $this->info();
-        $member_id_fields = $info['database_records'][$table_name]['member_id_fields'];
 
         $db = get_db_for($table_name);
         $metadata = $this->get_field_metadata($table_name);
 
+        // Work out WHERE clause
         $where = array();
         foreach ($metadata as $key => $type) {
             if (strpos($type, '*') !== false) {
@@ -104,6 +164,9 @@ abstract class Hook_privacy_base
         }
 
         $update = array();
+
+        // Anonymise member ID
+        $member_id_fields = $info['database_records'][$table_name]['member_id_fields'];
         foreach ($member_id_fields as $member_id_field) {
             if (strpos($metadata[$member_id_field], '?') !== false) {
                 $anonymised_value = null;
@@ -113,6 +176,25 @@ abstract class Hook_privacy_base
             $update[$member_id_field] = $anonymised_value;
         }
 
+        // Anonymise IP address
+        $ip_address_fields = $info['database_records'][$table_name]['ip_address_fields'];
+        foreach ($ip_address_fields as $ip_address_field) {
+            $update[$ip_address_field] = '';
+        }
+
+        // Anonymise e-mail address
+        $email_fields = $info['database_records'][$table_name]['email_fields'];
+        foreach ($email_fields as $email_field) {
+            $update[$email_field] = '';
+        }
+
+        // Anonymise additional fields
+        $additional_anonymise_fields = $info['database_records'][$table_name]['additional_anonymise_fields'];
+        foreach ($additional_anonymise_fields as $additional_anonymise_field) {
+            $update[$additional_anonymise_field] = do_lang('UNKNOWN');
+        }
+
+        // Run query
         $db->query_update($table_name, $update, $where, '', 1);
     }
 
@@ -129,6 +211,7 @@ abstract class Hook_privacy_base
         $db = get_db_for($table_name);
         $metadata = $this->get_field_metadata($table_name);
 
+        // Work out WHERE clause
         $where = array();
         foreach ($metadata as $key => $type) {
             if (strpos($type, '*') !== false) {
@@ -139,12 +222,14 @@ abstract class Hook_privacy_base
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
+        // Delete language strings
         foreach ($metadata as $key => $type) {
             if (strpos($type, '_TRANS') !== false) {
                 delete_lang($row[$key], $db);
             }
         }
 
+        // Run query
         $db->query_delete($table_name, $where, '', 1);
     }
 }

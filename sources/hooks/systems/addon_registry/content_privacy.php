@@ -63,6 +63,7 @@ class Hook_addon_registry_content_privacy
     {
         return array(
             'tut_censor',
+            'tut_legal',
         );
     }
 

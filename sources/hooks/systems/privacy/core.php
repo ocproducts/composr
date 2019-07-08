@@ -412,7 +412,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise_only,
                 ),
                 'edit_pings' => array(
                     'timestamp_field' => 'the_time',

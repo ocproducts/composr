@@ -52,7 +52,7 @@ class Hook_privacy_news extends Hook_privacy_base
                     'member_id_fields' => array('submitter'),
                     'ip_address_fields' => array(),
                     'email_fields' => array(),
-                    'additional_anonymise_fields' => array(),
+                    'additional_anonymise_fields' => array('author'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
                 ),

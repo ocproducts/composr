@@ -655,6 +655,7 @@ class Module_warnings extends Standard_crud_module
                 $fields->attach(form_input_list($handle_label, '', 'handle_post__' . strval($post_id), $list_options, null, false, false));
             }
 
+            // See also privacy_purge.php - this code handles deletion of individually-identified high-level content items, while privacy-purging will delete/anonymise on mass for any kinds of database record
             if (addon_installed('commandr')) {
                 $content = $this->find_member_content($member_id);
                 if (count($content) > 0) {

@@ -30,6 +30,10 @@ class Hook_privacy_core_cns extends Hook_privacy_base
      */
     public function info()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         require_lang('cns_privacy');
 
         return array(
@@ -206,7 +210,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array('f_cache_last_username'),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise_only,
                 ),
                 'f_topics' => array(
                     'timestamp_field' => 't_cache_first_time',

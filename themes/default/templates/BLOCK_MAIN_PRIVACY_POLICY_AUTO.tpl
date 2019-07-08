@@ -24,7 +24,7 @@
 			</thead>
 
 			<tbody>
-				{+START,LOOP,COOKIES}
+				{+START,LOOP,GENERAL}
 					<tr>
 						<td>
 							{ACTION*}
@@ -38,40 +38,40 @@
 			</tbody>
 		</table></div>
 	{+END}
-{+END}
 
-<h2>{!COOKIES}</h2>
+	{+START,IF,{$EQ,{HEADING},{!COOKIES}}}
+		<p>{!FOLLOWING_COOKIES}</p>
 
-<p>{!FOLLOWING_COOKIES}</p>
+		{+START,IF_NON_EMPTY,{COOKIES}}
+			<div class="wide-table-wrap"><table class="columned-table results-table wide-table responsive-table">
+				<thead>
+					<tr>
+						<th>
+							{!NAME}
+						</th>
 
-{+START,IF_NON_EMPTY,{COOKIES}}
-	<div class="wide-table-wrap"><table class="columned-table results-table wide-table responsive-table">
-		<thead>
-			<tr>
-				<th>
-					{!NAME}
-				</th>
+						<th>
+							{!REASON}
+						</th>
+					</tr>
+				</thead>
 
-				<th>
-					{!REASON}
-				</th>
-			</tr>
-		</thead>
+				<tbody>
+					{+START,LOOP,COOKIES}
+						<tr>
+							<td>
+								{NAME*}
+							</td>
 
-		<tbody>
-			{+START,LOOP,COOKIES}
-				<tr>
-					<td>
-						{NAME*}
-					</td>
-
-					<td>
-						{REASON*}
-					</td>
-				</tr>
-			{+END}
-		</tbody>
-	</table></div>
+							<td>
+								{REASON*}
+							</td>
+						</tr>
+					{+END}
+				</tbody>
+			</table></div>
+		{+END}
+	{+END}
 {+END}
 
 <p>

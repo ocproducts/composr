@@ -459,6 +459,26 @@ class Hook_actionlog_core extends Hook_actionlog
                     'UPGRADER_UPGRADER_TITLE' => '_SEARCH:admin_config:upgrader',
                 ),
             ),
+            'PERSONAL_DATA_DOWNLOAD' => array(
+                'flags' => ACTIONLOG_FLAG__GDPR,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
+                    'MEMBERS' => '_SEARCH:admin_cns_members',
+                ),
+            ),
+            'PERSONAL_DATA_PURGING' => array(
+                'flags' => ACTIONLOG_FLAG__GDPR,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
+                    'MEMBERS' => '_SEARCH:admin_cns_members',
+                ),
+            ),
         );
     }
 

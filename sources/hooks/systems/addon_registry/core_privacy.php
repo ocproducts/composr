@@ -99,6 +99,8 @@ class Hook_addon_registry_core_privacy
     {
         return array(
             'sources/hooks/systems/addon_registry/core_privacy.php',
+            'sources/hooks/systems/cron/privacy_purging.php',
+            'adminzone/pages/modules/admin_privacy.php',
             'lang/EN/privacy.ini',
             'sources/blocks/main_privacy_policy_auto.php',
             'themes/default/templates/BLOCK_MAIN_PRIVACY_POLICY_AUTO.tpl',
@@ -125,6 +127,8 @@ class Hook_addon_registry_core_privacy
             'sources/hooks/systems/config/call_home.php',
             'sources/hooks/systems/config/cookie_notice.php',
             'sources/hooks/systems/config/send_error_emails_ocproducts.php',
+            'sources/hooks/systems/tasks/privacy_download.php',
+            'sources/hooks/systems/tasks/privacy_purge.php',
         );
     }
 
@@ -149,8 +153,36 @@ class Hook_addon_registry_core_privacy
      */
     public function tpl_preview__block_main_privacy_policy_auto_screen()
     {
+        $cookies = array();
+        $cookies[] = array(
+            'NAME' => lorem_word(),
+            'REASON' => lorem_phrase(),
+        );
+
+        $sections = array();
+
+        $positive = array();
+        $positive[] = array(
+            'EXPLANATION' => lorem_phrase(),
+        );
+
+        $general = array();
+        $general[] = array(
+            'ACTION' => lorem_phrase(),
+            'REASON' => lorem_phrase(),
+        );
+
+        $sections[] = array(
+            'HEADING' => do_lang('COOKIES'),
+            'POSITIVE' => $positive,
+            'GENERAL' => $general,
+        );
+
         return array(
-            lorem_globalise(do_lorem_template('BLOCK_MAIN_PRIVACY_POLICY_AUTO', array(TODO)), null, '', true)
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_PRIVACY_POLICY_AUTO', array(
+                'SECTIONS' => $sections,
+                'COOKIES' => $cookies,
+            )), null, '', true)
         );
     }
 }
