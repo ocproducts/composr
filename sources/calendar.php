@@ -1754,7 +1754,7 @@ function get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year
         if (!$do_time) {
             $written_date = cms_strftime(do_lang('calendar_date_verbose'), $from);
         } else {
-            $written_date = cms_strftime(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $from);
+            $written_date = cms_strftime(do_lang('calendar_date_range_single'), $from);
         }
     } else {
         $written_date = date_range($from, $to, $do_time, true);

@@ -153,7 +153,7 @@ function redirect_exit($url, $title = null, $text = null, $intermediary_hop = fa
  */
 function assign_refresh($url, $multiplier = 0.0)
 {
-    if ($url == '') {
+    if ($url === '') {
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 

@@ -807,8 +807,8 @@ class Module_filedump
         require_code('form_templates');
         require_code('images');
 
-        $subpath = get_param_string('subpath', INPUT_FILTER_GET_COMPLEX);
-        $file = get_param_string('file', INPUT_FILTER_GET_COMPLEX);
+        $subpath = get_param_string('subpath', '', INPUT_FILTER_GET_COMPLEX);
+        $file = get_param_string('file', '', INPUT_FILTER_GET_COMPLEX);
 
         $url = get_custom_base_url() . '/uploads/filedump' . str_replace('%2F', '/', rawurlencode($subpath . $file));
         $path = get_custom_file_base() . '/uploads/filedump' . $subpath . $file;

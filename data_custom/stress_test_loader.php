@@ -77,7 +77,7 @@ function do_work()
         'downloads',
         'galleries',
         'news',
-        'newsletters',
+        'newsletter',
         'polls',
         'quizzes',
         'shopping',

@@ -100,7 +100,7 @@ class Hook_privacy_booking extends Hook_privacy_base
     public function delete($table_name, $row)
     {
         switch ($table_name) {
-            case 'delete_bookable':
+            case 'bookable':
                 require_code('booking2');
                 delete_booking($row['id']);
                 break;

@@ -542,7 +542,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') {
-            $url = make_string_tempcode(get_param_string('redirect', INPUT_FILTER_URL_INTERNAL));
+            $url = make_string_tempcode(get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL));
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
 
