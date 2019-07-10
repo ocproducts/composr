@@ -123,6 +123,8 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/trusted_sites_1.php',
             'sources/hooks/systems/config/trusted_sites_2.php',
             'sources/hooks/systems/config/page_after_login.php',
+            'sources_custom/hooks/systems/config_categories/.htaccess',
+            'sources_custom/hooks/systems/config_categories/index.html',
             'sources/hooks/systems/config_categories/messages.php',
             'sources/hooks/systems/config_categories/user_interaction.php',
             'sources/hooks/systems/config_categories/index.html',
@@ -399,6 +401,7 @@ class Hook_addon_registry_core_configuration
             'sources_custom/hooks/systems/config/index.html',
             'themes/default/templates/XML_CONFIG_SCREEN.tpl',
             'themes/default/javascript/core_configuration.js',
+            'sources/hooks/systems/config/use_site_name_text_as_logo.php',
         );
     }
 

@@ -148,6 +148,7 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/temp.php',
             'sources/hooks/systems/tasks/reorganise_uploads.php',
             'sources/hooks/systems/reorganise_uploads/index.html',
+            'sources/hooks/systems/reorganise_uploads/.htaccess',
         );
     }
 

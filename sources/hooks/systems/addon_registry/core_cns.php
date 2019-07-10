@@ -468,6 +468,8 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/BLOCK_MAIN_JOIN_DONE.tpl',
             'themes/default/text/COPPA_MAIL.txt',
             'sources/hooks/systems/actionlog/core_cns.php',
+            'themes/default/templates/CNS_MEMBER_PROFILE_FIELD.tpl',
+            'themes/default/templates/CNS_MEMBER_PROFILE_FIELDS.tpl',
 
             // Files for post map functionality
             'themes/default/templates/CNS_POST_MAP.tpl',

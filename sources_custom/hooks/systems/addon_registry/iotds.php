@@ -138,6 +138,9 @@ class Hook_addon_registry_iotds
         return array(
             'sources_custom/hooks/systems/privacy/iotds.php',
             'themes/default/images_custom/icons/menu/rich_content/iotds.svg',
+            'themes/default/images_custom/icons/menu/rich_content/index.html',
+            'themes/default/images_custom/icons_monochrome/menu/rich_content/iotds.svg',
+            'themes/default/images_custom/icons_monochrome/menu/rich_content/index.html',
             'sources_custom/iotds2.php',
             'sources_custom/hooks/systems/notifications/iotd_chosen.php',
             'sources_custom/hooks/systems/config/iotd_update_time.php',
@@ -169,7 +172,6 @@ class Hook_addon_registry_iotds
             'uploads/iotds_addon_thumbs/index.html',
             'sources_custom/hooks/systems/config/search_iotds.php',
             'themes/default/javascript_custom/iotds.js',
-            'themes/default/images_custom/icons/menu/rich_content/index.html',
             'sources_custom/hooks/systems/actionlog/iotds.php',
         );
     }

@@ -172,6 +172,7 @@ class Hook_addon_registry_composr_homesite_support_credits
             'text_custom/EN/support_credits_terms.txt',
             'themes/default/css_custom/tracker.css',
             'themes/default/images_custom/icons/tracker/index.html',
+            'themes/default/images_custom/icons_monochrome/tracker/index.html',
             'themes/default/images_custom/icons/tracker/easy.svg',
             'themes/default/images_custom/icons/tracker/hard.svg',
             'themes/default/images_custom/icons/tracker/minus.svg',

@@ -290,6 +290,8 @@ class Hook_addon_registry_core
             'themes/default/images/icons/buttons/copy.svg', // Perform a 'copy' action on the same screen, variation of "proceed"
             'themes/default/images/icons/buttons/skip.svg',
             'themes/default/images/icons/index.html',
+            'themes/default/images_custom/icons/index.html',
+            'themes/default/images_custom/icons_monochrome/index.html',
             'themes/default/images/boxes/boxless_title_leadin_leftcomp.svg',
             'themes/default/images/boxes/boxless_title_leadin_rightcomp.svg',
             'themes/default/images/icons/breadcrumbs.svg',
@@ -1040,6 +1042,8 @@ class Hook_addon_registry_core
             'themes/default/images/icons/editor/comcode.svg',
             'themes/default/images/icons_monochrome/editor/comcode.svg',
             'themes/default/images/EN/index.html',
+            'themes/default/images/EN/logo/small_logo.png',
+            'themes/default/images/EN/logo/small_white_logo.png',
             'themes/default/images/EN/logo/-logo.png',
             'themes/default/images/EN/logo/index.html',
             'themes/default/images/EN/logo/standalone_logo.png',
@@ -1477,6 +1481,7 @@ class Hook_addon_registry_core
             'sources_custom/hooks/systems/actionlog/index.html',
             'sources/hooks/systems/actionlog/core.php',
             'themes/default/templates/TRANSLATION_LINKS.tpl',
+            'data/no_banning.txt',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',
