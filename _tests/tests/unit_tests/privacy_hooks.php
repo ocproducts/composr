@@ -59,6 +59,10 @@ class privacy_hooks_test_set extends cms_test_case
                 $this->assertTrue(is_array($details['additional_anonymise_fields']), 'Invalid additional_anonymise_fields field in ' . $table);
                 $this->assertTrue($details['extra_where'] === null || is_string($details['extra_where']), 'Invalid extra_where field in ' . $table);
                 $this->assertTrue(is_integer($details['removal_default_handle_method']), 'Invalid removal_default_handle_method field in ' . $table);
+                $this->assertTrue(is_integer($details['allowed_handle_methods']), 'Invalid allowed_handle_methods field in ' . $table);
+
+                $this->assertTrue(($details['retention_handle_method'] == PRIVACY_METHOD_leave) || (($details['allowed_handle_methods'] & $details['retention_handle_method']) != 0), 'Invalid retention_handle_method value in ' . $table);
+                $this->assertTrue(($details['removal_default_handle_method'] == PRIVACY_METHOD_leave) || (($details['allowed_handle_methods'] & $details['removal_default_handle_method']) != 0), 'Invalid removal_default_handle_method value in ' . $table);
 
                 if ($details['retention_handle_method'] == PRIVACY_METHOD_leave) {
                     $this->assertTrue($details['retention_days'] === null, 'retention_days should not be set for PRIVACY_METHOD_leave, for ' . $table);

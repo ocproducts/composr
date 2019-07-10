@@ -55,6 +55,7 @@ class Hook_privacy_polls extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'poll_votes' => array(
                     'timestamp_field' => null,
@@ -66,6 +67,7 @@ class Hook_privacy_polls extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -80,7 +82,7 @@ class Hook_privacy_polls extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'poll_votes':
@@ -105,6 +107,8 @@ class Hook_privacy_polls extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('polls');
+
         switch ($table_name) {
             case 'poll':
                 require_code('polls2');
@@ -112,7 +116,7 @@ class Hook_privacy_polls extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

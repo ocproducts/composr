@@ -159,6 +159,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'actionlogs' => array(
                     'timestamp_field' => 'date_and_time',
@@ -170,6 +171,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'logged_mail_messages' => array(
                     'timestamp_field' => 'm_date_and_time',
@@ -181,6 +183,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array('m_to_name', 'm_from_name'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'rating' => array(
                     'timestamp_field' => 'rating_time',
@@ -192,6 +195,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'trackbacks' => array(
                     'timestamp_field' => 'trackback_time',
@@ -203,6 +207,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'link_tracker' => array(
                     'timestamp_field' => 'c_date_and_time',
@@ -214,6 +219,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'failedlogins' => array(
                     'timestamp_field' => 'date_and_time',
@@ -225,6 +231,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'post_tokens' => array(
                     'timestamp_field' => 'generation_time',
@@ -236,6 +243,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'sessions' => array(
                     'timestamp_field' => 'last_activity',
@@ -247,6 +255,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array('cache_username'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'attachments' => array(
                     'timestamp_field' => 'a_add_time',
@@ -258,6 +267,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'staff_tips_dismissed' => array(
                     'timestamp_field' => null,
@@ -269,6 +279,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'member_tracking' => array(
                     'timestamp_field' => 'mt_time',
@@ -280,6 +291,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array('mt_cache_username'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'member_zone_access' => array(
                     'timestamp_field' => null,
@@ -291,6 +303,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'member_page_access' => array(
                     'timestamp_field' => null,
@@ -302,6 +315,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'member_category_access' => array(
                     'timestamp_field' => null,
@@ -313,6 +327,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'autosave' => array(
                     'timestamp_field' => 'a_time',
@@ -324,6 +339,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'comcode_pages' => array(
                     'timestamp_field' => 'p_add_date',
@@ -335,6 +351,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'incoming_uploads' => array(
                     'timestamp_field' => 'i_date_and_time',
@@ -346,6 +363,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'cron_caching_requests' => array(
                     'timestamp_field' => null,
@@ -357,6 +375,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'cache' => array(
                     'timestamp_field' => 'date_and_time',
@@ -368,6 +387,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'notifications_enabled' => array(
                     'timestamp_field' => null,
@@ -379,6 +399,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'digestives_tin' => array(
                     'timestamp_field' => 'd_date_and_time',
@@ -390,6 +411,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'digestives_consumed' => array(
                     'timestamp_field' => 'c_time',
@@ -401,6 +423,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'task_queue' => array(
                     'timestamp_field' => null,
@@ -412,6 +435,7 @@ class Hook_privacy_core extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'translate' => array(
                     'timestamp_field' => null,
@@ -422,7 +446,8 @@ class Hook_privacy_core extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise_only,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise,
                 ),
                 'edit_pings' => array(
                     'timestamp_field' => 'the_time',
@@ -433,7 +458,8 @@ class Hook_privacy_core extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -448,9 +474,13 @@ class Hook_privacy_core extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
+            case 'sessions':
+                unset($ret['the_session']);
+                break;
+
             case 'rating':
                 require_code('content');
                 list($title) = content_get_details($row['rating_for_type'], $row['rating_for_id']);
@@ -490,13 +520,8 @@ class Hook_privacy_core extends Hook_privacy_base
                 delete_cms_page($row['the_zone'], $row['the_page'], 'comcode_custom', false);
                 break;
 
-            case 'translate':
-                // Deleting not acceptable!
-                $this->anonymise($table_name, $row);
-                break;
-
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

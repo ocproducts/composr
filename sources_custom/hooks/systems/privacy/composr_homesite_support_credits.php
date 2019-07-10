@@ -50,6 +50,7 @@ class Hook_privacy_composr_homesite_support_credits extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_leave,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'credit_charge_log' => array(
                     'timestamp_field' => 'date_and_time',
@@ -60,7 +61,8 @@ class Hook_privacy_composr_homesite_support_credits extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
             ),
         );

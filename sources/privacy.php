@@ -26,10 +26,9 @@
 function init__privacy()
 {
     if (!defined('PRIVACY_METHOD_leave')) {
-        define('PRIVACY_METHOD_leave', 0);
-        define('PRIVACY_METHOD_anonymise', 1);
-        define('PRIVACY_METHOD_anonymise_only', 2); // Used only for removal_default_handle_method, if we will not allow a user to override with PRIVACY_METHOD_delete
-        define('PRIVACY_METHOD_delete', 3);
+        define('PRIVACY_METHOD_leave', 1);
+        define('PRIVACY_METHOD_anonymise', 2);
+        define('PRIVACY_METHOD_delete', 4);
     }
 
     require_lang('privacy');
@@ -42,19 +41,6 @@ function init__privacy()
  */
 abstract class Hook_privacy_base
 {
-    /**
-     * Get field metadata for a table.
-     *
-     * @param  ID_TEXT $table_name Table name
-     * @return array Field metadata
-     */
-    protected function get_field_metadata($table_name)
-    {
-        $db = get_db_for($table_name);
-        $fields = $db->query_select($table_name, array('m_name', 'm_type'), array('m_table' => $table_name));
-        return collapse_2d_complexity('m_name', 'm_type', $fields);
-    }
-
     /**
      * Get selection SQL for a particular search.
      *
@@ -121,10 +107,28 @@ abstract class Hook_privacy_base
         }
 
         if ($table_details['extra_where'] !== null) {
-            $sql .= ' AND ' . $table_details['extra_where'];
+            if (count($conditions) == 0) {
+                $sql .= ' WHERE ';
+            } else {
+                $sql .= ' AND ';
+            }
+            $sql .= $table_details['extra_where'];
         }
 
         return $sql;
+    }
+
+    /**
+     * Get field metadata for a table.
+     *
+     * @param  ID_TEXT $table_name Table name
+     * @return array Field metadata
+     */
+    protected function get_field_metadata($table_name)
+    {
+        $db = get_db_for($table_name);
+        $fields = $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name));
+        return collapse_2d_complexity('m_name', 'm_type', $fields);
     }
 
     /**
@@ -210,8 +214,9 @@ abstract class Hook_privacy_base
             $update[$additional_anonymise_field] = do_lang('UNKNOWN');
         }
 
-        // Run query
-        $db->query_update($table_name, $update, $where, '', 1);
+        // Run query.
+        $db->query_update($table_name, $update, $where, '', null, 0, false, true);
+        $db->query_delete($table_name, $where); // In case there was some duplication error causing the above query to fail
     }
 
     /**

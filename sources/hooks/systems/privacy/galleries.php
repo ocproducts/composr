@@ -55,6 +55,7 @@ class Hook_privacy_galleries extends Hook_privacy_base
                     'additional_anonymise_fields' => array('fullname'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'images' => array(
                     'timestamp_field' => 'add_date',
@@ -66,6 +67,7 @@ class Hook_privacy_galleries extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'videos' => array(
                     'timestamp_field' => 'add_date',
@@ -77,6 +79,7 @@ class Hook_privacy_galleries extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -90,10 +93,12 @@ class Hook_privacy_galleries extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('galleries');
+
         switch ($table_name) {
             case 'galleries':
                 require_code('galleries2');
-                delete_gallery($row['id']);
+                delete_gallery($row['name']);
                 break;
 
             case 'images':
@@ -107,7 +112,7 @@ class Hook_privacy_galleries extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

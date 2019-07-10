@@ -79,6 +79,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'f_member_known_login_ips' => array(
                     'timestamp_field' => 'i_time',
@@ -90,6 +91,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_group_join_log' => array(
                     'timestamp_field' => 'join_time',
@@ -101,6 +103,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_invites' => array(
                     'timestamp_field' => 'i_time',
@@ -111,7 +114,8 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'email_fields' => array('i_email_address'),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_warnings' => array(
                     'timestamp_field' => 'w_time',
@@ -123,6 +127,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_members' => array(
                     'timestamp_field' => 'm_join_time',
@@ -134,6 +139,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_posts' => array(
                     'timestamp_field' => 'p_time',
@@ -145,6 +151,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array('p_poster_name_if_guest'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'f_password_history' => array(
                     'timestamp_field' => 'p_time',
@@ -156,6 +163,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_member_custom_fields' => array(
                     'timestamp_field' => null,
@@ -166,7 +174,8 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise, // Will be deleted properly with member record
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_member_cpf_perms' => array(
                     'timestamp_field' => null,
@@ -178,6 +187,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_group_members' => array(
                     'timestamp_field' => null,
@@ -189,6 +199,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_groups' => array(
                     'timestamp_field' => null,
@@ -200,6 +211,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'f_forums' => array(
                     'timestamp_field' => null,
@@ -210,7 +222,8 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array('f_cache_last_username'),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise_only,
+                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise,
                 ),
                 'f_topics' => array(
                     'timestamp_field' => 't_cache_first_time',
@@ -222,6 +235,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array('t_cache_first_username', 't_cache_last_username'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'f_special_pt_access' => array(
                     'timestamp_field' => null,
@@ -233,6 +247,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_poll_votes' => array(
                     'timestamp_field' => null,
@@ -244,6 +259,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'f_read_logs' => array(
                     'timestamp_field' => 'l_time',
@@ -255,6 +271,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_group_member_timeouts' => array(
                     'timestamp_field' => null,
@@ -266,6 +283,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_forum_intro_ip' => array(
                     'timestamp_field' => null,
@@ -277,6 +295,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'f_forum_intro_member' => array(
                     'timestamp_field' => null,
@@ -288,6 +307,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -302,7 +322,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'f_group_join_log':
@@ -323,12 +343,12 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                 );
                 if ($row['p_silence_from_topic'] !== null) {
                     $ret += array(
-                        'p_silence_from_topic' => '?AUTO_LINK',
+                        'p_silence_from_topic__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => $row['p_silence_from_topic'])),
                     );
                 }
-                if ($row['p_silence_from_topic'] !== null) {
+                if ($row['p_silence_from_forum'] !== null) {
                     $ret += array(
-                        'p_silence_from_forum' => '?AUTO_LINK',
+                        'p_silence_from_forum__dereferenced' => $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['p_silence_from_forum'])),
                     );
                 }
                 break;
@@ -340,6 +360,8 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                         'm_primary_group__dereferenced' => get_translated_text($name, $GLOBALS['FORUM_DB']),
                     );
                 }
+                unset($ret['m_pass_hash_salted']);
+                unset($ret['m_pass_salt']);
                 break;
 
             case 'f_posts':
@@ -422,28 +444,27 @@ class Hook_privacy_core_cns extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('cns');
+
         switch ($table_name) {
             case 'f_members':
                 require_code('cns_members_action2');
                 cns_delete_member($row['id']);
                 break;
 
+            case 'f_member_custom_fields':
+                 // Will be deleted properly with member record
+                break;
+
             case 'f_posts':
                 require_code('cns_posts_action3');
                 $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $row['id']));
-                if ($topic_id !== null) {
-                    cns_delete_posts_topic($topic_id, array($row['id']), '', false, true);
-                }
+                cns_delete_posts_topic($topic_id, array($row['id']), '', false, true, false);
                 break;
 
             case 'f_groups':
                 require_code('cns_groups_action2');
                 cns_delete_group($row['id']);
-                break;
-
-            case 'f_forums':
-                // Deleting not acceptable!
-                $this->anonymise($table_name, $row);
                 break;
 
             case 'f_topics':
@@ -452,7 +473,7 @@ class Hook_privacy_core_cns extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

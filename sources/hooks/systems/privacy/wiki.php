@@ -55,6 +55,7 @@ class Hook_privacy_wiki extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'wiki_pages' => array(
                     'timestamp_field' => 'add_date',
@@ -66,9 +67,35 @@ class Hook_privacy_wiki extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
+    }
+
+    /**
+     * Serialise a row.
+     *
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
+     * @return array Row in a cleanly serialised format
+     */
+    public function serialise($table_name, $row)
+    {
+        $ret = parent::serialise($table_name, $row);
+
+        switch ($table_name) {
+            case 'wiki_posts':
+                $title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $row['page_id']));
+                if ($title !== null) {
+                    $ret += array(
+                        'page_id__dereferenced' => get_translated_text($title),
+                    );
+                }
+                break;
+        }
+
+        return $ret;
     }
 
     /**
@@ -79,6 +106,8 @@ class Hook_privacy_wiki extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('wiki');
+
         switch ($table_name) {
             case 'wiki_posts':
                 require_code('wiki');
@@ -86,7 +115,7 @@ class Hook_privacy_wiki extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

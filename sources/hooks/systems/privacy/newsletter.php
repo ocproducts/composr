@@ -55,6 +55,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'newsletter_subscribers' => array(
                     'timestamp_field' => 'join_time',
@@ -66,6 +67,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'additional_anonymise_fields' => array('n_forename', 'n_surname'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'newsletter_drip_send' => array(
                     'timestamp_field' => 'd_inject_time',
@@ -77,6 +79,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'additional_anonymise_fields' => array('d_to_name'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'newsletter_archive' => array(
                     'timestamp_field' => 'date_and_time',
@@ -88,6 +91,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'additional_anonymise_fields' => array('from_name'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'newsletter_periodic' => array(
                     'timestamp_field' => null,
@@ -99,6 +103,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
                     'additional_anonymise_fields' => array('np_from_name'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -113,7 +118,7 @@ class Hook_privacy_newsletter extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'newsletter_subscribe':
@@ -140,11 +145,11 @@ class Hook_privacy_newsletter extends Hook_privacy_base
         switch ($table_name) {
             case 'newsletter_subscribers':
                 $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('email' => $row['email']));
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

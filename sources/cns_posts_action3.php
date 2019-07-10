@@ -240,9 +240,10 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
  * @param  LONG_TEXT $reason The reason for this action
  * @param  boolean $check_perms Whether to check permissions
  * @param  boolean $cleanup Whether to do a cleanup: delete the topic if there will be no posts left in it
+ * @param  boolean $save_revision Whether to save a revision
  * @return boolean Whether the topic was deleted, due to all posts in said topic being deleted
  */
-function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = true, $cleanup = true)
+function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = true, $cleanup = true, $save_revision = true)
 {
     if (count($posts) == 0) {
         return false;
@@ -290,7 +291,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     } else {
         $moderatorlog_id = cns_mod_log_it('DELETE_POSTS', strval($topic_id), strval(count($posts)), $reason);
     }
-    if (addon_installed('actionlog')) {
+    if ((addon_installed('actionlog')) && ($save_revision)) {
         require_code('revisions_engine_database');
         foreach ($_postdetails as $post) {
             $revision_engine = new RevisionEngineDatabase(true);

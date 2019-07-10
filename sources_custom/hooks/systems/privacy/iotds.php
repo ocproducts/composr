@@ -50,6 +50,7 @@ class Hook_privacy_iotds extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -63,6 +64,8 @@ class Hook_privacy_iotds extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('iotds');
+
         switch ($table_name) {
             case 'iotd':
                 require_code('iotds2');
@@ -70,7 +73,7 @@ class Hook_privacy_iotds extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

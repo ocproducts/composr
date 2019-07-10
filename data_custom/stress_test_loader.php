@@ -290,10 +290,10 @@ function do_work()
     $content_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $content_id), 'site');
     for ($j = $GLOBALS['SITE_DB']->query_select_value('trackbacks', 'COUNT(*)'); $j < $num_wanted; $j++) {
         // trackbacks
-        $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => 'downloads', 'trackback_for_id' => strval($content_id), 'trackback_ip' => '', 'trackback_time' => time(), 'trackback_url' => '', 'trackback_title' => random_line(), 'trackback_excerpt' => random_text(), 'trackback_name' => random_line()));
+        $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => 'download', 'trackback_for_id' => strval($content_id), 'trackback_ip' => '', 'trackback_time' => time(), 'trackback_url' => '', 'trackback_title' => random_line(), 'trackback_excerpt' => random_text(), 'trackback_name' => random_line()));
 
         // ratings
-        $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'downloads', 'rating_for_id' => strval($content_id), 'rating_member' => $j + 1, 'rating_ip' => '', 'rating_time' => time(), 'rating' => 3));
+        $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'download', 'rating_for_id' => strval($content_id), 'rating_member' => $j + 1, 'rating_ip' => '', 'rating_time' => time(), 'rating' => 3));
 
         // posts in a comment topic
         $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(

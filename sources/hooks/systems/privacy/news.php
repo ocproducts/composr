@@ -55,6 +55,7 @@ class Hook_privacy_news extends Hook_privacy_base
                     'additional_anonymise_fields' => array('author'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'news_categories' => array(
                     'timestamp_field' => null,
@@ -66,6 +67,7 @@ class Hook_privacy_news extends Hook_privacy_base
                     'additional_anonymise_fields' => array('nc_title'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -79,19 +81,21 @@ class Hook_privacy_news extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('news');
+
         switch ($table_name) {
             case 'news':
-                require_code('news2');
-                delete_news_category($row['id']);
-                break;
-
-            case 'news_categories':
                 require_code('news2');
                 delete_news($row['id']);
                 break;
 
+            case 'news_categories':
+                require_code('news2');
+                delete_news_category($row['id']);
+                break;
+
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

@@ -55,6 +55,7 @@ class Hook_privacy_awards extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -69,15 +70,18 @@ class Hook_privacy_awards extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'award_archive':
-                require_code('content');
-                list($title) = content_get_details($row['a_type_id'], $row['a_content_id']);
-                $ret += array(
-                    'content_title__dereferenced' => $title,
-                );
+                $content_type = $GLOBALS['SITE_DB']->query_select_value_if_there('award_types', 'a_content_type', array('id' => $row['a_type_id']));
+                if ($content_type !== null) {
+                    require_code('content');
+                    list($title) = content_get_details($content_type, $row['content_id']);
+                    $ret += array(
+                        'content_title__dereferenced' => $title,
+                    );
+                }
                 break;
         }
 

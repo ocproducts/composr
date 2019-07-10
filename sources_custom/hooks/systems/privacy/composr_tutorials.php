@@ -50,6 +50,7 @@ class Hook_privacy_composr_tutorials extends Hook_privacy_base
                     'additional_anonymise_fields' => array('t_author'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );

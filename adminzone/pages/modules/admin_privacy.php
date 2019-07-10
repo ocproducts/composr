@@ -213,8 +213,10 @@ class Module_admin_privacy
                         foreach ($details['database_records'] as $table_name => $table_details) {
                             $purge_options = new Tempcode();
                             $purge_options->attach(form_input_list_entry(strval(PRIVACY_METHOD_leave), $table_details['removal_default_handle_method'] == PRIVACY_METHOD_leave, do_lang_tempcode('PRIVACY_METHOD_leave')));
-                            $purge_options->attach(form_input_list_entry(strval(PRIVACY_METHOD_anonymise), $table_details['removal_default_handle_method'] == PRIVACY_METHOD_anonymise, do_lang_tempcode('PRIVACY_METHOD_anonymise')));
-                            if ($table_details['removal_default_handle_method'] != PRIVACY_METHOD_anonymise_only) {
+                            if (($table_details['allowed_handle_methods'] & PRIVACY_METHOD_anonymise) != 0) {
+                                $purge_options->attach(form_input_list_entry(strval(PRIVACY_METHOD_anonymise), $table_details['removal_default_handle_method'] == PRIVACY_METHOD_anonymise, do_lang_tempcode('PRIVACY_METHOD_anonymise')));
+                            }
+                            if (($table_details['allowed_handle_methods'] & PRIVACY_METHOD_delete) != 0) {
                                 $purge_options->attach(form_input_list_entry(strval(PRIVACY_METHOD_delete), $table_details['removal_default_handle_method'] == PRIVACY_METHOD_delete, do_lang_tempcode('PRIVACY_METHOD_delete')));
                             }
                             $fields->attach(form_input_list($table_name, '', $table_name, $purge_options));
@@ -282,8 +284,14 @@ class Module_admin_privacy
         foreach ($hook_obs as $hook_ob) {
             $details = $hook_ob->info();
             if ($details !== null) {
-                foreach (array_keys($details['database_records']) as $table_name) {
-                    $table_actions[$table_name] = get_param_integer($table_name, 0);
+                foreach ($details['database_records'] as $table_name => $table_details) {
+                    $table_actions[$table_name] = post_param_integer($table_name, 0);
+
+                    if (($table_details['allowed_handle_methods'] == PRIVACY_METHOD_anonymise) && ($table_actions[$table_name] == PRIVACY_METHOD_delete)) {
+                        $table_actions[$table_name] = PRIVACY_METHOD_anonymise;
+                    } elseif (($table_details['allowed_handle_methods'] == PRIVACY_METHOD_delete) && ($table_actions[$table_name] == PRIVACY_METHOD_anonymise)) {
+                        $table_actions[$table_name] = PRIVACY_METHOD_delete;
+                    }
                 }
             }
         }

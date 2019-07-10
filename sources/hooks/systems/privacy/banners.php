@@ -55,6 +55,7 @@ class Hook_privacy_banners extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'banners' => array(
                     'timestamp_field' => 'add_date',
@@ -66,6 +67,7 @@ class Hook_privacy_banners extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -79,6 +81,8 @@ class Hook_privacy_banners extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('banners');
+
         switch ($table_name) {
             case 'banners':
                 require_code('banners2');
@@ -86,7 +90,7 @@ class Hook_privacy_banners extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

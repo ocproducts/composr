@@ -82,7 +82,7 @@ class Hook_task_privacy_purge
         $db = get_db_for($table_name);
 
         $selection_sql = $hook_ob->get_selection_sql($table_name, $table_details, $member_id_username, $ip_addresses, $member_id, $email_address, $others);
-        $sql = 'SELECT FROM ' . $db->get_table_prefix() . $table_name;
+        $sql = 'SELECT * FROM ' . $db->get_table_prefix() . $table_name;
         $sql .= $selection_sql;
         $rows = $db->query($sql);
 

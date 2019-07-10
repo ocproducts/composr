@@ -55,7 +55,7 @@ class Hook_cron_privacy_purging
             $details = $hook_ob->info();
             if ($details !== null) {
                 foreach ($details['database_records'] as $table_name => $table_details) {
-                    if ($table_details['retention_handle_method'] != PRIVACY_METHOD_leave) {
+                    if (($table_details['retention_handle_method'] != PRIVACY_METHOD_leave) && ($table_details['timestamp_field'] !== null)) {
                         $table_action = $table_details['retention_handle_method'];
                         $this->handle_for_table($hook_ob, $table_name, $table_details, $table_action);
                     }
@@ -77,9 +77,14 @@ class Hook_cron_privacy_purging
         $db = get_db_for($table_name);
 
         $selection_sql = $hook_ob->get_selection_sql($table_name, $table_details);
-        $sql = 'SELECT FROM ' . $db->get_table_prefix() . $table_name;
+        $sql = 'SELECT * FROM ' . $db->get_table_prefix() . $table_name;
         $sql .= $selection_sql;
-        $sql .= ' AND ' . $table_details['timestamp_field'] . '<=' . strval(time() - 60 * 60 * 24 * $table_details['retention_days']);
+        if (strpos($sql, ' WHERE ') === false) {
+            $sql .= ' WHERE ';
+        } else {
+            $sql .= ' AND ';
+        }
+        $sql .= $table_details['timestamp_field'] . '<=' . strval(time() - 60 * 60 * 24 * $table_details['retention_days']);
         $rows = $db->query($sql);
 
         foreach ($rows as $row) {

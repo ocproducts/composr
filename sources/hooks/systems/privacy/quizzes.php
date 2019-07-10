@@ -55,6 +55,7 @@ class Hook_privacy_quizzes extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'quiz_member_last_visit' => array(
                     'timestamp_field' => 'v_time',
@@ -66,6 +67,7 @@ class Hook_privacy_quizzes extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'quiz_entries' => array(
                     'timestamp_field' => 'q_time',
@@ -77,6 +79,7 @@ class Hook_privacy_quizzes extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -91,7 +94,7 @@ class Hook_privacy_quizzes extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'quiz_member_last_visit':
@@ -103,9 +106,10 @@ class Hook_privacy_quizzes extends Hook_privacy_base
                 }
                 break;
             case 'quiz_entries':
-                $name = $GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_name', array('id' => $row['v_quiz_id']));
+                $name = $GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_name', array('id' => $row['q_quiz']));
                 if ($name !== null) {
                     require_code('quiz');
+                    require_lang('quiz');
                     $scoring = score_quiz($row['id']);
                     $ret += array(
                         'q_quiz__dereferenced' => get_translated_text($name),
@@ -126,6 +130,8 @@ class Hook_privacy_quizzes extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('quiz');
+
         switch ($table_name) {
             case 'quizzes':
                 require_code('quiz2');
@@ -134,11 +140,11 @@ class Hook_privacy_quizzes extends Hook_privacy_base
 
             case 'quiz_entries':
                 $GLOBALS['SITE_DB']->query_delete('quiz_entry_answer', array('q_entry' => $row['id']));
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

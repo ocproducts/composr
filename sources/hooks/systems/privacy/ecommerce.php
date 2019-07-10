@@ -79,6 +79,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'ecom_subscriptions' => array(
                     'timestamp_field' => 's_time',
@@ -90,6 +91,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => db_string_not_equal_to('s_state', 'active'),
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'ecom_invoices' => array(
                     'timestamp_field' => 'i_time',
@@ -101,6 +103,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => db_string_equal_to('i_state', 'paid') . ' OR ' . db_string_equal_to('i_state', 'delivered'),
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'ecom_transactions' => array(
                     'timestamp_field' => 't_time',
@@ -112,6 +115,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'ecom_trans_expecting' => array(
                     'timestamp_field' => 'e_time',
@@ -123,6 +127,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'ecom_trans_addresses' => array(
                     'timestamp_field' => null,
@@ -134,6 +139,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                     'additional_anonymise_fields' => array('a_firstname', 'a_lastname', 'a_street_address', 'a_city', 'a_state', 'a_post_code', 'a_country', 'a_phone'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -148,7 +154,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'ecom_sales':
@@ -223,7 +229,7 @@ class Hook_privacy_ecommerce extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

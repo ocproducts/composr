@@ -62,6 +62,7 @@ class Hook_privacy_shopping extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'shopping_cart' => array(
                     'timestamp_field' => null,
@@ -73,6 +74,7 @@ class Hook_privacy_shopping extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'shopping_orders' => array(
                     'timestamp_field' => 'add_date',
@@ -84,6 +86,7 @@ class Hook_privacy_shopping extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => db_string_not_equal_to('order_status', 'payment_received') . ' AND ' . db_string_not_equal_to('order_status', 'onhold'),
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -98,12 +101,12 @@ class Hook_privacy_shopping extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'shopping_orders':
                 $ret += array(
-                    'details' => $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $row['id'])),
+                    'details' => $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $row['id'])),
                     'addresses' => $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_txn_id' => $row['txn_id'])),
                 );
                 break;
@@ -127,7 +130,7 @@ class Hook_privacy_shopping extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

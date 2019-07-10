@@ -55,6 +55,7 @@ class Hook_privacy_securitylogging extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'usersubmitban_member' => array(
                     'timestamp_field' => null,
@@ -66,6 +67,7 @@ class Hook_privacy_securitylogging extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_leave,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'banned_ip' => array(
                     'timestamp_field' => null,
@@ -77,6 +79,7 @@ class Hook_privacy_securitylogging extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_leave,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'unbannable_ip' => array(
                     'timestamp_field' => null,
@@ -88,6 +91,7 @@ class Hook_privacy_securitylogging extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
             ),
         );

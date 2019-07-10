@@ -50,6 +50,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'w_itemdef' => array(
                     'timestamp_field' => null,
@@ -61,6 +62,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'w_items' => array(
                     'timestamp_field' => null,
@@ -72,6 +74,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'w_members' => array(
                     'timestamp_field' => null,
@@ -83,6 +86,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'w_messages' => array(
                     'timestamp_field' => 'm_datetime',
@@ -94,6 +98,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'w_portals' => array(
                     'timestamp_field' => null,
@@ -105,6 +110,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'w_rooms' => array(
                     'timestamp_field' => null,
@@ -116,6 +122,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'w_travelhistory' => array(
                     'timestamp_field' => null,
@@ -127,6 +134,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'w_realms' => array(
                     'timestamp_field' => null,
@@ -138,6 +146,7 @@ class Hook_privacy_buildr extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -152,35 +161,35 @@ class Hook_privacy_buildr extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'w_messages':
                 $ret += array(
                     'location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['location_realm'], 'location_x' => $row['location_x'], 'location_y' => $row['location_y'])),
-                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['location_realm'])),
+                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('id' => $row['location_realm'])),
                 );
                 break;
 
             case 'w_portals':
                 $ret += array(
                     'start_location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['start_location_realm'], 'location_x' => $row['start_location_x'], 'location_y' => $row['start_location_y'])),
-                    'start_location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['start_location_realm'])),
+                    'start_location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('id' => $row['start_location_realm'])),
                     'end_location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['end_location_realm'], 'location_x' => $row['end_location_x'], 'location_y' => $row['end_location_y'])),
-                    'end_location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['end_location_realm'])),
+                    'end_location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('id' => $row['end_location_realm'])),
                 );
                 break;
 
             case 'w_rooms':
                 $ret += array(
-                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['location_realm'])),
+                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('id' => $row['location_realm'])),
                 );
                 break;
 
             case 'w_travelhistory':
                 $ret += array(
                     'location__room_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $row['realm'], 'location_x' => $row['x'], 'location_y' => $row['y'])),
-                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('location_realm' => $row['realm'])),
+                    'location__realm_dereferenced' => $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'name', array('id' => $row['realm'])),
                 );
                 break;
         }
@@ -196,8 +205,11 @@ class Hook_privacy_buildr extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('buildr');
+
         switch ($table_name) {
             case 'w_itemdef':
+                require_code('buildr');
                 require_code('buildr_action');
                 delete_item_wrap($row['name']);
                 break;
@@ -209,17 +221,19 @@ class Hook_privacy_buildr extends Hook_privacy_base
                 break;
 
             case 'w_rooms':
+                require_code('buildr');
                 require_code('buildr_action');
-                delete_room_wrap($row['id']);
+                delete_room($row['location_x'], $row['location_y'], $row['location_realm']);
                 break;
 
             case 'w_realms':
+                require_code('buildr');
                 require_code('buildr_action');
-                delete_realm_wrap($row['id']);
+                delete_realm($row['id']);
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

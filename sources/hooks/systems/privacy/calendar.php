@@ -58,6 +58,7 @@ class Hook_privacy_calendar extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'calendar_reminders' => array(
                     'timestamp_field' => null,
@@ -69,6 +70,7 @@ class Hook_privacy_calendar extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'calendar_interests' => array(
                     'timestamp_field' => null,
@@ -80,6 +82,7 @@ class Hook_privacy_calendar extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'calendar_jobs' => array(
                     'timestamp_field' => 'j_time',
@@ -91,6 +94,7 @@ class Hook_privacy_calendar extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -105,9 +109,18 @@ class Hook_privacy_calendar extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
+            case 'calendar_events':
+                $title = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 't_title', array('id' => $row['e_type']));
+                if ($title !== null) {
+                    $ret += array(
+                        'e_type__dereferenced' => get_translated_text($title),
+                    );
+                }
+                break;
+
             case 'calendar_reminders':
                 $title = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_title', array('id' => $row['e_id']));
                 if ($title !== null) {
@@ -147,6 +160,8 @@ class Hook_privacy_calendar extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('calendar');
+
         switch ($table_name) {
             case 'calendar_events':
                 require_code('calendar2');
@@ -154,7 +169,7 @@ class Hook_privacy_calendar extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

@@ -55,9 +55,31 @@ class Hook_privacy_catalogues extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
+    }
+
+    /**
+     * Serialise a row.
+     *
+     * @param  ID_TEXT $table_name Table name
+     * @param  array $row Row raw from the database
+     * @return array Row in a cleanly serialised format
+     */
+    public function serialise($table_name, $row)
+    {
+        $ret = parent::serialise($table_name, $row);
+
+        switch ($table_name) {
+            case 'catalogue_entries':
+                require_code('catalogues');
+                $ret += get_catalogue_entry_field_values($row['c_name'], $row);
+                break;
+        }
+
+        return $ret;
     }
 
     /**
@@ -68,6 +90,8 @@ class Hook_privacy_catalogues extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('catalogues');
+
         switch ($table_name) {
             case 'catalogue_entries':
                 require_code('catalogues2');
@@ -75,7 +99,7 @@ class Hook_privacy_catalogues extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

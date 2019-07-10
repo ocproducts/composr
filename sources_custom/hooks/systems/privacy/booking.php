@@ -50,6 +50,7 @@ class Hook_privacy_booking extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'booking' => array(
                     'timestamp_field' => 'booked_at',
@@ -61,6 +62,7 @@ class Hook_privacy_booking extends Hook_privacy_base
                     'additional_anonymise_fields' => array('customer_name', 'customer_mobile', 'customer_phone'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -75,7 +77,7 @@ class Hook_privacy_booking extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'booking':
@@ -99,6 +101,8 @@ class Hook_privacy_booking extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('booking');
+
         switch ($table_name) {
             case 'bookable':
                 require_code('booking2');
@@ -111,7 +115,7 @@ class Hook_privacy_booking extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

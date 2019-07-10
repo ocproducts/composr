@@ -55,6 +55,7 @@ class Hook_privacy_downloads extends Hook_privacy_base
                     'additional_anonymise_fields' => array('author'),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
                 'download_logging' => array(
                     'timestamp_field' => 'date_and_time',
@@ -66,6 +67,7 @@ class Hook_privacy_downloads extends Hook_privacy_base
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
                     'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_anonymise | PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -80,9 +82,18 @@ class Hook_privacy_downloads extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
+            case 'download_downloads':
+                $category = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'category', array('id' => $row['category_id']));
+                if ($category !== null) {
+                    $ret += array(
+                        'category_id__dereferenced' => get_translated_text($category),
+                    );
+                }
+                break;
+
             case 'download_logging':
                 $name = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array('id' => $row['id']));
                 if ($name !== null) {
@@ -104,6 +115,8 @@ class Hook_privacy_downloads extends Hook_privacy_base
      */
     public function delete($table_name, $row)
     {
+        require_lang('downloads');
+
         switch ($table_name) {
             case 'download_downloads':
                 require_code('downloads2');
@@ -111,7 +124,7 @@ class Hook_privacy_downloads extends Hook_privacy_base
                 break;
 
             default:
-                $this->delete($table_name, $row);
+                parent::delete($table_name, $row);
                 break;
         }
     }

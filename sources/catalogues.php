@@ -890,7 +890,7 @@ function catalogue_entries_manual_sort($fields, &$entries, $order_by, $direction
  * @param  boolean $force_view_all Whether to render everything
  * @return array A map of information relating to the entry. The map contains 'FIELDS' (Tempcode for all accumulated fields), 'FIELD_x' (for each field x applying to the entry), STAFF_DETAILS, COMMENT_DETAILS, RATING_DETAILS, VIEW_URL, BREADCRUMBS
  */
-function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null, $force_view_all = false)
+function get_catalogue_entry_map($entry, $catalogue = null, $view_type = 'PAGE', $tpl_set = 'DEFAULT', $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null, $force_view_all = false)
 {
     $id = $entry['id'];
     $all_visible = true;
@@ -1089,7 +1089,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
 /**
  * Get the values for the specified fields, for the stated catalogue entry.
  *
- * @param  ?ID_TEXT $catalogue_name The catalogue name we are getting an entry in (null: lookup)
+ * @param  ?ID_TEXT $catalogue_name The catalogue name we are getting an entry in (null: lookup, only works if $entry_id is a real ID)
  * @param  mixed $entry_id The ID of the entry we are getting OR the row
  * @param  ?array $only_fields A list of fields that we are limiting ourselves to (null: get ALL fields)
  * @param  ?array $fields The database rows for the fields for this catalogue (null: find them)

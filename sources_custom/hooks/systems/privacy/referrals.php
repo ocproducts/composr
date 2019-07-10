@@ -49,7 +49,8 @@ class Hook_privacy_referrals extends Hook_privacy_base
                     'email_fields' => array('q_email_address'),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
                 'referrer_override' => array(
                     'timestamp_field' => null,
@@ -60,7 +61,8 @@ class Hook_privacy_referrals extends Hook_privacy_base
                     'email_fields' => array(),
                     'additional_anonymise_fields' => array(),
                     'extra_where' => null,
-                    'removal_default_handle_method' => PRIVACY_METHOD_anonymise,
+                    'removal_default_handle_method' => PRIVACY_METHOD_delete,
+                    'allowed_handle_methods' => PRIVACY_METHOD_delete,
                 ),
             ),
         );
@@ -75,7 +77,7 @@ class Hook_privacy_referrals extends Hook_privacy_base
      */
     public function serialise($table_name, $row)
     {
-        $ret = $this->serialise($table_name, $row);
+        $ret = parent::serialise($table_name, $row);
 
         switch ($table_name) {
             case 'referees_qualified_for':

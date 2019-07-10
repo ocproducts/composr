@@ -79,7 +79,7 @@ class Hook_task_privacy_download
 
         require_code('files2');
         $outfile_path = cms_tempnam();
-        make_csv($data, $filename, false, false, $outfile_path);
-        return array('text/csv', array($filename, $outfile_path), $headers, $ini_set);
+        file_put_contents($outfile_path, json_encode($data, JSON_PRETTY_PRINT));
+        return array('application/json', array($filename, $outfile_path), $headers, $ini_set);
     }
 }
