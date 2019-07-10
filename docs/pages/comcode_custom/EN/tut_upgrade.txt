@@ -115,9 +115,9 @@ If you want to prove to yourself how it works, create a random php file named [t
 
 This is very useful for upgrading because it helps identify old files that need removing. Generally though it is useful to make sure unexpected files don't lay around within the system causing potential problems.
 
-The integrity checker has the ability to get rid of the alien files. Check (tick) the checkbox next to the file name and press the "Automatically handle those ticked (checked) – delete/move as needed" button placed below the list of files. The selected files will be deleted or in some rare cases moved.
+The integrity checker has the ability to get rid of the alien files by quarantining them (moving them under an [tt]_old[/tt] directory). Check (tick) the checkbox next to the file name and press the "Automatically handle those ticked (checked) – quarantine/move as needed" button placed below the list of files.
 
-Obviously you should be careful deleting files, as there may be legitimate reasons you have put alien files there. The upgrader is smart enough to recognise files from old versions and automatically tick (check) those, leaving the ones totally unrecognised unticked (unchecked).
+Obviously you should be careful quarantining files, as there may be legitimate reasons you have put alien files there. The upgrader is smart enough to recognise files from old versions and automatically tick (check) those, leaving the ones totally unrecognised unticked (unchecked).
 
 [title="2"]Upgrade packages[/title]
 
