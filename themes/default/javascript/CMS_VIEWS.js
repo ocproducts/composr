@@ -1034,14 +1034,24 @@
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
         if ($cms.configOption('cookie_notice') && ($cms.runningScript() === 'index')) {
-            window.cookieconsent_options = { // eslint-disable-line camelcase
-                message: $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
-                dismiss: '{!INPUTSYSTEM_OK;}',
-                learnMore: '{!READ_MORE;}',
-                link: pageLinkPrivacy,
-                theme: 'dark-top'
-            };
-            $cms.requireJavascript('https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js');
+            var cookieConsentCss = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css',
+                cookieConsentJs = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js';
+
+            Promise.all([$cms.requireCss(cookieConsentCss), $cms.requireJavascript(cookieConsentJs)]).then(function () {
+                window.cookieconsent.initialise({
+                    'palette': {
+                        'popup': {'background': '#000'},
+                        'button': {'background': '#FFF'}
+                    },
+                    'theme': 'block',
+                    'content': {
+                        'message': $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
+                        'dismiss': '{!INPUTSYSTEM_OK;}',
+                        'link': '{!READ_MORE;}',
+                        'href': pageLinkPrivacy
+                    }
+                });
+            });
         }
 
         if ($cms.configOption('detect_javascript')) {
