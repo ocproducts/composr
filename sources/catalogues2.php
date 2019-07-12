@@ -55,9 +55,11 @@ function create_ecommerce_catalogue($catalogue_name)
             $i, // $order
             $field[3], // $defines_order
             $field[5], // $visible
-            $field[6], // $searchable
             array_key_exists(7, $field) ? $field[7] : '', // $default
             $field[4], // $required
+            $field[6],
+            $field[6],
+            0,
             array_key_exists(5, $field) ? $field[5] : 0, // $put_in_category
             array_key_exists(5, $field) ? $field[5] : 0, // $put_in_search
             array_key_exists(8, $field) ? $field[8] : '' // $field_options
@@ -214,16 +216,18 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
  * @param  ?integer $order The field order (the field order determines what order the fields are displayed within an entry) (null: next)
  * @param  BINARY $defines_order Whether this field defines the catalogue order
  * @param  BINARY $visible Whether this is a visible field
- * @param  BINARY $searchable Whether the field is usable as a search key
  * @param  LONG_TEXT $default The default value for the field
  * @param  BINARY $required Whether this field is required
+ * @param  BINARY $is_sortable Whether the field is sortable
+ * @param  BINARY $include_in_main_search Whether the field is included in main search
+ * @param  BINARY $allow_template_search Whether to allow template search
  * @param  BINARY $put_in_category Whether the field is to be shown in category views (not applicable for the list display type)
  * @param  BINARY $put_in_search Whether the field is to be shown in search views (not applicable for the list display type)
  * @param  SHORT_TEXT $options Field options
  * @param  ?AUTO_LINK $id Force this ID (null: auto-increment as normal)
  * @return AUTO_LINK Field ID
  */
-function actual_add_catalogue_field($c_name, $name, $description = '', $type = 'short_text', $order = null, $defines_order = 0, $visible = 1, $searchable = 0, $default = '', $required = 0, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
+function actual_add_catalogue_field($c_name, $name, $description = '', $type = 'short_text', $order = null, $defines_order = 0, $visible = 1, $default = '', $required = 0, $is_sortable = 0, $include_in_main_search = 0, $allow_template_search = 0, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
 {
     if ($order === null) {
         $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'MAX(cf_order)', array('c_name' => $c_name));
@@ -240,9 +244,11 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
         'cf_order' => $order,
         'cf_defines_order' => $defines_order,
         'cf_visible' => $visible,
-        'cf_searchable' => $searchable,
         'cf_default' => $default,
         'cf_required' => $required,
+        'cf_is_sortable' => $is_sortable,
+        'cf_include_in_main_search' => $include_in_main_search,
+        'cf_allow_template_search' => $allow_template_search,
         'cf_put_in_category' => $put_in_category,
         'cf_put_in_search' => $put_in_search,
         'cf_options' => $options,
@@ -487,15 +493,17 @@ function actual_delete_catalogue($name)
  * @param  integer $order The field order (the field order determines what order the fields are displayed within an entry)
  * @param  BINARY $defines_order Whether the field defines entry ordering
  * @param  BINARY $visible Whether the field is visible when an entry is viewed
- * @param  BINARY $searchable Whether the field is usable as a search key
  * @param  LONG_TEXT $default The default value for the field
  * @param  BINARY $required Whether the field is required
+ * @param  BINARY $is_sortable Whether the field is sortable
+ * @param  BINARY $include_in_main_search Whether the field is included in main search
+ * @param  BINARY $allow_template_search Whether to allow template search
  * @param  BINARY $put_in_category Whether the field is to be shown in category views (not applicable for the list display type)
  * @param  BINARY $put_in_search Whether the field is to be shown in search views (not applicable for the list display type)
  * @param  SHORT_TEXT $options Field options
  * @param  ?ID_TEXT $type The field type (null: do not change)
  */
-function actual_edit_catalogue_field($id, $c_name, $name, $description, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category = 1, $put_in_search = 1, $options = '', $type = null) // You cannot edit a field type
+function actual_edit_catalogue_field($id, $c_name, $name, $description, $order, $defines_order, $visible, $default, $required, $is_sortable, $include_in_main_search, $allow_template_search, $put_in_category = 1, $put_in_search = 1, $options = '', $type = null) // You cannot edit a field type
 {
     $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('cf_description', 'cf_name'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
@@ -510,9 +518,11 @@ function actual_edit_catalogue_field($id, $c_name, $name, $description, $order, 
         'cf_order' => $order,
         'cf_defines_order' => $defines_order,
         'cf_visible' => $visible,
-        'cf_searchable' => $searchable,
         'cf_default' => $default,
         'cf_required' => $required,
+        'cf_is_sortable' => $is_sortable,
+        'cf_include_in_main_search' => $include_in_main_search,
+        'cf_allow_template_search' => $allow_template_search,
         'cf_put_in_category' => $put_in_category,
         'cf_put_in_search' => $put_in_search,
         'cf_options' => $options,

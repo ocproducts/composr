@@ -1533,7 +1533,9 @@ abstract class Standard_crud_module
                 $name = get_translated_text($myrow['cf_name']);
                 $description = get_translated_text($myrow['cf_description']);
                 $prefix = 'existing_field_' . strval($myrow['id']) . '_';
-                list($_fields_existing, $_fields_hidden) = $this->get_field_fields((($i == 0) && (substr($c_name, 0, 1) != '_')), count($rows) + 10, $prefix, $field_count, $name, $description, $myrow['cf_type'], $myrow['cf_defines_order'], $myrow['cf_visible'], $myrow['cf_searchable'], $myrow['cf_default'], $myrow['cf_required'], $myrow['cf_put_in_category'], $myrow['cf_put_in_search'], $myrow['cf_options']);
+                /** @var $self Module_cms_catalogues_alt (Trick to enable IDE parameter name hints) */
+                $self = $this;
+                list($_fields_existing, $_fields_hidden) = $self->get_field_fields((($i == 0) && (substr($c_name, 0, 1) != '_')), count($rows) + 10, $prefix, $field_count, $name, $description, $myrow['cf_type'], $myrow['cf_defines_order'], $myrow['cf_visible'], $myrow['cf_default'], $myrow['cf_required'], $myrow['cf_is_sortable'], $myrow['cf_include_in_main_search'], $myrow['cf_allow_template_search'], $myrow['cf_put_in_category'], $myrow['cf_put_in_search'], $myrow['cf_options']);
                 if ((!is_ecommerce_catalogue($c_name)) || ($i > 9)) {
                     $_fields_existing->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c1959d74d4226cad31629b6f24a8e4b0', 'TITLE' => do_lang_tempcode('ACTIONS'))));
                     $_fields_existing->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), $prefix . 'delete', false));

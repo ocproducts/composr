@@ -254,6 +254,9 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
             $where_clause .= ' AND ';
             $where_clause .= 'r.c_name NOT LIKE \'' . db_encode_like('\_%') . '\''; // Don't want results drawn from the hidden custom-field catalogues
 
+            $where_clause .= ' AND ';
+            $where_clause .= 'f.cf_include_in_main_search = 1';
+
             $join .= $privacy_join;
 
             if ($g_or == '') {

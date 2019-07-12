@@ -895,13 +895,19 @@ function exact_match_sql($field, $i, $type = 'short', $param = null, $table_alia
     }
     $where_clause = '';
     if ($param != '') {
-        if ($type == 'float' || $type == 'integer') {
-            $where_clause .= $search_field . '=' . $param;
+        if (is_numeric($param) && ($type == 'float' || $type == 'integer')) {
+            $where_clause = $search_field . '=' . $param;
         } else {
             $where_clause = db_string_equal_to($search_field, $param);
         }
     }
-    return array(array(), array('f' . strval($i) . '.cv_value'), $table, $search_field, $where_clause);
+
+    $nontrans_fields = array();
+    if (($type !== 'float') && ($type !== 'integer')) { // Numeric column types don't have fulltext indexes on them
+        $nontrans_fields[] = $search_field;
+    }
+
+    return array(array(), $nontrans_fields, $table, $search_field, $where_clause);
 }
 
 /**
@@ -926,7 +932,8 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null, $table_a
     if ($param != '') {
         $where_clause = '(' . $search_field . ' LIKE \'' . db_encode_like($param) . '\' OR ' . $search_field . ' LIKE \'' . db_encode_like('%' . "\n" . $param) . '\' OR ' . $search_field . ' LIKE \'' . db_encode_like($param . "\n" . '%') . '\' OR ' . $search_field . ' LIKE \'' . db_encode_like('%' . "\n" . $param . "\n" . '%') . '\')';
     }
-    return array(array(), array('f' . strval($i) . '.cv_value'), $table, $search_field, $where_clause);
+
+    return array(array(), array($search_field), $table, $search_field, $where_clause);
 }
 
 /**

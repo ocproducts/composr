@@ -57,7 +57,7 @@ abstract class FieldsSearchHook
         if (addon_installed('catalogues')) {
             require_code('fields');
 
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_type', 'cf_default'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_type', 'cf_default'), array('c_name' => $catalogue_name, 'cf_is_sortable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
             foreach ($rows as $i => $row) {
                 $ob = get_fields_hook($row['cf_type']);
                 $temp = $ob->inputted_to_sql_for_search($row, $i);
@@ -85,7 +85,7 @@ abstract class FieldsSearchHook
         }
 
         $fields = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
+        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_allow_template_search' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         require_code('fields');
         foreach ($rows as $row) {
             $ob = get_fields_hook($row['cf_type']);
@@ -118,7 +118,7 @@ abstract class FieldsSearchHook
 
         $where_clause = '';
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'catalogue_fields WHERE ' . db_string_equal_to('c_name', $catalogue_name) . ' AND (cf_include_in_main_search = 1 OR cf_allow_template_search = 1) ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         if (count($fields) == 0) {
             return null;
         }
@@ -130,12 +130,19 @@ abstract class FieldsSearchHook
         require_code('fields');
         foreach ($fields as $i => $field) {
             $ob = get_fields_hook($field['cf_type']);
-            $temp = $ob->inputted_to_sql_for_search($field, $i, $table_alias);
+            $include_in_main_search = $field['cf_include_in_main_search'] == 1;
+            $allow_template_search = $field['cf_allow_template_search'] == 1;
+            $temp = null;
+            if ($allow_template_search) {
+                $temp = $ob->inputted_to_sql_for_search($field, $i, $table_alias);
+            }
             if ($temp === null) { // Standard direct 'substring' search
                 list(, , $row_type) = $ob->get_field_value_row_bits($field);
                 switch ($row_type) {
                     case 'long_trans':
-                        $trans_fields['f' . strval($i) . '.cv_value'] = 'LONG_TRANS__COMCODE';
+                        if ($include_in_main_search) {
+                            $trans_fields['f' . strval($i) . '.cv_value'] = 'LONG_TRANS__COMCODE';
+                        }
                         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_long_trans f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
                         if (multi_lang_content()) {
                             $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
@@ -144,7 +151,9 @@ abstract class FieldsSearchHook
                         }
                         break;
                     case 'short_trans':
-                        $trans_fields['f' . strval($i) . '.cv_value'] = 'SHORT_TRANS__COMCODE';
+                        if ($include_in_main_search) {
+                            $trans_fields['f' . strval($i) . '.cv_value'] = 'SHORT_TRANS__COMCODE';
+                        }
                         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short_trans f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
                         if (multi_lang_content()) {
                             $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
@@ -153,7 +162,9 @@ abstract class FieldsSearchHook
                         }
                         break;
                     case 'long':
-                        $nontrans_fields[] = 'f' . strval($i) . '.cv_value';
+                        if ($include_in_main_search) {
+                            $nontrans_fields[] = 'f' . strval($i) . '.cv_value';
+                        }
                         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_long f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
                         if (multi_lang_content()) {
                             $search_field = 't' . strval(count($trans_fields) - 1) . '.text_original';
@@ -162,7 +173,9 @@ abstract class FieldsSearchHook
                         }
                         break;
                     case 'short':
-                        $nontrans_fields[] = 'f' . strval($i) . '.cv_value';
+                        if ($include_in_main_search) {
+                            $nontrans_fields[] = 'f' . strval($i) . '.cv_value';
+                        }
                         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=' . $table_alias . '.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
                         $search_field = 'f' . strval($i) . '.cv_value';
                         break;
@@ -176,55 +189,57 @@ abstract class FieldsSearchHook
                         break;
                 }
 
-                $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
-                if ($range_search) {
-                    if (method_exists($ob, 'get_search_filter_from_env')) {
-                        list($from, $to) = explode(';', $ob->get_search_filter_from_env($field));
-                    } else {
-                        $from = get_param_string('option_' . strval($field['id']) . '_from', '');
-                        $to = get_param_string('option_' . strval($field['id']) . '_to', '');
-                    }
-                    if ($from != '' || $to != '') {
-                        if ($from == '') {
-                            $from = $to;
-                        }
-                        if ($to == '') {
-                            $to = $from;
-                        }
-
-                        $where_clause .= ' AND ';
-
-                        if (is_numeric($from) && is_numeric($to)) {
-                            $where_clause .= $search_field . '>=' . $from . ' AND ' . $search_field . '<=' . $to;
+                if ($allow_template_search) {
+                    $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
+                    if ($range_search) {
+                        if (method_exists($ob, 'get_search_filter_from_env')) {
+                            list($from, $to) = explode(';', $ob->get_search_filter_from_env($field));
                         } else {
-                            $where_clause .= $search_field . '>=\'' . db_escape_string($from) . '\' AND ' . $search_field . '<=\'' . db_escape_string($to) . '\'';
+                            $from = get_param_string('option_' . strval($field['id']) . '_from', '');
+                            $to = get_param_string('option_' . strval($field['id']) . '_to', '');
                         }
-                    }
-                } else {
-                    if (method_exists($ob, 'get_search_filter_from_env')) {
-                        $param = $ob->get_search_filter_from_env($field);
+                        if ($from != '' || $to != '') {
+                            if ($from == '') {
+                                $from = $to;
+                            }
+                            if ($to == '') {
+                                $to = $from;
+                            }
+
+                            $where_clause .= ' AND ';
+
+                            if (is_numeric($from) && is_numeric($to)) {
+                                $where_clause .= $search_field . '>=' . $from . ' AND ' . $search_field . '<=' . $to;
+                            } else {
+                                $where_clause .= $search_field . '>=\'' . db_escape_string($from) . '\' AND ' . $search_field . '<=\'' . db_escape_string($to) . '\'';
+                            }
+                        }
                     } else {
-                        $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
-                    }
-
-                    if ($param != '') {
-                        $where_clause .= ' AND ';
-
-                        if (substr($param, 0, 1) == '=') {
-                            $where_clause .= db_string_equal_to($search_field, substr($param, 1));
-                        } elseif ($row_type == 'integer' || $row_type == 'float') {
-                            if (is_numeric($param)) {
-                                $where_clause .= $search_field . '=' . $param;
-                            } else {
-                                $where_clause .= db_string_equal_to($search_field, $param);
-                            }
+                        if (method_exists($ob, 'get_search_filter_from_env')) {
+                            $param = $ob->get_search_filter_from_env($field);
                         } else {
-                            if (($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) && (!is_under_radar($param))) {
-                                $temp = $GLOBALS['SITE_DB']->full_text_assemble($param, true);
+                            $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
+                        }
+
+                        if ($param != '') {
+                            $where_clause .= ' AND ';
+
+                            if (substr($param, 0, 1) == '=') {
+                                $where_clause .= db_string_equal_to($search_field, substr($param, 1));
+                            } elseif ($row_type == 'integer' || $row_type == 'float') {
+                                if (is_numeric($param)) {
+                                    $where_clause .= $search_field . '=' . $param;
+                                } else {
+                                    $where_clause .= db_string_equal_to($search_field, $param);
+                                }
                             } else {
-                                list($temp,) = db_like_assemble($param);
+                                if (($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) && (!is_under_radar($param))) {
+                                    $temp = $GLOBALS['SITE_DB']->full_text_assemble($param, true);
+                                } else {
+                                    list($temp,) = db_like_assemble($param);
+                                }
+                                $where_clause .= preg_replace('#\?#', $search_field, $temp);
                             }
-                            $where_clause .= preg_replace('#\?#', $search_field, $temp);
                         }
                     }
                 }
@@ -236,7 +251,7 @@ abstract class FieldsSearchHook
                     $where_clause .= $temp[4];
                 } else {
                     $trans_fields = array_merge($trans_fields, $temp[0]);
-                    $non_trans_fields = array_merge($nontrans_fields, $temp[1]);
+                    $nontrans_fields = array_merge($nontrans_fields, $temp[1]);
                 }
             }
             if ($i == 0) {

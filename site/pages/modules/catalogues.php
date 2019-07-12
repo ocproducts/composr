@@ -35,7 +35,7 @@ class Module_catalogues
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 9;
+        $info['version'] = 10;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -131,12 +131,14 @@ class Module_catalogues
                 'cf_order' => 'INTEGER',
                 'cf_defines_order' => 'SHORT_INTEGER', // 0, 1, or 2
                 'cf_visible' => 'BINARY',
-                'cf_searchable' => 'BINARY',
                 'cf_default' => 'LONG_TEXT',
                 'cf_required' => 'BINARY',
                 'cf_put_in_category' => 'BINARY',
                 'cf_put_in_search' => 'BINARY',
                 'cf_options' => 'SHORT_TEXT',
+                'cf_is_sortable' => 'BINARY',
+                'cf_include_in_main_search' => 'BINARY',
+                'cf_allow_template_search' => 'BINARY',
             ));
 
             $GLOBALS['SITE_DB']->create_table('catalogue_entries', array(
@@ -262,9 +264,11 @@ class Module_catalogues
                     $i, // $order
                     $field[3], // $defines_order
                     1, // $visible
-                    1, // $searchable
                     $field[5], // $default
-                    $field[4] // $required
+                    $field[4], // $required
+                    1, // $is_sortable
+                    1, // $include_in_main_search
+                    0 // $allow_template_search
                 );
             }
             $cat_id = actual_add_catalogue_category('projects', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), '', null, '');
@@ -288,9 +292,11 @@ class Module_catalogues
                     $i, // $order
                     $field[3], // $defines_order
                     1, // $visible
-                    1, // $searchable
                     '', // $default
                     $field[4], // $required
+                    1,
+                    1,
+                    0,
                     $field[5] // $put_in_category
                 );
             }
@@ -314,9 +320,11 @@ class Module_catalogues
                     $i, // $order
                     $field[3], // $defines_order
                     $field[5], // $visible
-                    1, // $searchable
                     '', // $default
                     $field[4], // $required
+                    1,
+                    1,
+                    0,
                     1, // $put_in_category
                     1, // $put_in_search
                     $field[6] // $options
@@ -351,9 +359,11 @@ class Module_catalogues
                     $i, // $order
                     $field[3], // $defines_order
                     1, // $visible
-                    1, // $searchable
                     '', // $default
-                    $field[4] // $required
+                    $field[4], // $required
+                    1,
+                    1,
+                    0
                 );
             }
             actual_add_catalogue_category('contacts', lang_code_to_default_content('cc_title', 'CONTACTS', false, 2), '', '', null, '');
@@ -457,6 +467,16 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 10)) {
+            $GLOBALS['FORUM_DB']->add_table_field('catalogue_fields', 'cf_is_sortable', 'BINARY');
+            $GLOBALS['FORUM_DB']->add_table_field('catalogue_fields', 'cf_include_in_main_search', 'BINARY');
+            $GLOBALS['FORUM_DB']->add_table_field('catalogue_fields', 'cf_allow_template_search', 'BINARY');
+            // Mirror sensible defaults from the old 3-in-one "Searchable" field
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_is_sortable' => 1, 'cf_include_in_main_search' => 1), array('cf_searchable' => 1));
+
+            $GLOBALS['FORUM_DB']->delete_table_field('catalogue_fields', 'cf_searchable');
         }
     }
 

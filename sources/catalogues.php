@@ -369,7 +369,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
         // Render sort change dropdown
         $selectors = new Tempcode();
         foreach ($fields as $i => $field) {
-            if ($field['cf_searchable'] == 1) {
+            if ($field['cf_is_sortable'] == 1) {
                 $potential_sorter_name = get_translated_text($field['cf_name']);
                 foreach (array('ASC' => '_ASCENDING', 'DESC' => '_DESCENDING') as $dir_code => $dir_lang) {
                     $sort_sel = (($order_by == strval($i)) && ($direction == $dir_code));
@@ -540,7 +540,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 $field_count = 0;
                 foreach ($fields as $i => $field) {
                     if (((($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH'))) && ($field['cf_visible'] == 1)) {
-                        if ($field['cf_searchable'] == 1) {
+                        if ($field['cf_is_sortable'] == 1) {
                             $sort_url_asc = get_self_url(false, false, array($ordering_param => strval($i) . ' ASC'), true);
                             $sort_url_desc = get_self_url(false, false, array($ordering_param => strval($i) . ' DESC'), true);
                             $sort_asc_selected = (($order_by == strval($field['id'])) && ($direction == 'ASC'));
