@@ -37,6 +37,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         require_code('symbols');
 
         $lang = user_lang();
+
         $value = array(
             'PAGE'              => ecv_PAGE($lang, [], []),
             'ZONE'              => ecv_ZONE($lang, [], []),
@@ -67,6 +68,13 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         $value['zone_default_page'] = ($ZONE !== null) ? $ZONE['zone_default_page'] : '';
         $value['sees_javascript_error_alerts'] = has_privilege(get_member(), 'sees_javascript_error_alerts');
         $value['can_try_url_schemes'] = can_try_url_schemes();
+
+        require_code('locations');
+        $country = get_country();
+
+        if (!empty($country)) {
+            $value['COUNTRY'] = $country;
+        }
 
         return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
     }

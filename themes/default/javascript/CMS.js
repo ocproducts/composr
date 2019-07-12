@@ -106,7 +106,13 @@
      * @returns {string}
      */
     $cms.userLang = $util.constant(strVal(symbols.LANG));
-
+    /**
+     * Find the active ISO country for the current user.
+     * @memberof $cms
+     * @method
+     * @returns {string|null} The active region (null: none found, unfiltered)
+     */
+    $cms.getCountry = $util.constant((symbols['COUNTRY'] != null) ? strVal(symbols['COUNTRY']) : null);
     /**
      * Get URL stub to propagate keep_* parameters
      * @memberof $cms

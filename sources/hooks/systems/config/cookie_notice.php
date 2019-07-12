@@ -52,6 +52,6 @@ class Hook_config_cookie_notice
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

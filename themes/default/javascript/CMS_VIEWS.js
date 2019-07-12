@@ -1032,25 +1032,34 @@
             this.initializeGoogleAnalytics();
         }
 
-        // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
+        // Cookie Consent plugin by Osano - https://cookieconsent.osano.com/
         if ($cms.configOption('cookie_notice') && ($cms.runningScript() === 'index')) {
-            var cookieConsentCss = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css',
-                cookieConsentJs = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js';
+            var cookieConsentCss = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css',
+                cookieConsentJs = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js';
 
             Promise.all([$cms.requireCss(cookieConsentCss), $cms.requireJavascript(cookieConsentJs)]).then(function () {
-                window.cookieconsent.initialise({
-                    'palette': {
-                        'popup': {'background': '#000'},
-                        'button': {'background': '#FFF'}
+                var cookieConsentOptions = {
+                    palette: {
+                        popup: {'background': '#000'},
+                        button: {'background': '#FFF'},
                     },
-                    'theme': 'block',
-                    'content': {
-                        'message': $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
-                        'dismiss': '{!INPUTSYSTEM_OK;}',
-                        'link': '{!READ_MORE;}',
-                        'href': pageLinkPrivacy
-                    }
-                });
+                    theme: 'block',
+                    content: {
+                        message: $util.format('{!COOKIE_NOTICE;}', [$cms.getSiteName()]),
+                        dismiss: '{!INPUTSYSTEM_OK;}',
+                        link: '{!READ_MORE;}',
+                        href: pageLinkPrivacy
+                    },
+                };
+
+                if ($cms.getCountry()) {
+                    cookieConsentOptions['law'] = {
+                        countryCode: $cms.getCountry(),
+                        regionalLaw: false,// "If false, then we only enable the popup if the country has the cookie law. We ignore all other country specific rules."
+                    };
+                }
+
+                window.cookieconsent.initialise(cookieConsentOptions)
             });
         }
 
