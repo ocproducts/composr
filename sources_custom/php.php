@@ -242,6 +242,10 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
                         $parameters[$arg_counter]['description'] = preg_replace('#^\$\w+ #', '', $_description);
                         $parameters[$arg_counter]['phpdoc_name'] = ltrim(preg_replace('#^(\$\w+) .*#', '$1', $_description), '$');
                     } elseif (substr($ltrim, 0, 7) == '@return') {
+                        if ($return !== null) {
+                            attach_message('Multiple return values defined', 'inform');
+                        }
+
                         $return = array();
 
                         if ($pedantic_warnings) {

@@ -578,7 +578,6 @@ function create_selection_list_download_licences($it = null, $allow_na = false)
  * @param  boolean $include_link Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)
  * @param  ?ID_TEXT $zone The zone the download module we're using is in (null: find it)
  * @param  boolean $attach_to_url_filter Whether to copy through any filter parameters in the URL, under the basis that they are associated with what this box is browsing
- * @return Tempcode The breadcrumbs
  * @return array The breadcrumb segments
  */
 function download_breadcrumbs($category_id, $root = null, $include_link = false, $zone = null, $attach_to_url_filter = false)

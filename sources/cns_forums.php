@@ -290,7 +290,6 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
  * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB)
  * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call)
  * @param  ?AUTO_LINK $root Virtual root (null: none)
- * @return Tempcode The breadcrumbs
  * @return array The breadcrumbs
  */
 function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_forum = null, $start = true, $root = null)
