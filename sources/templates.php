@@ -99,9 +99,10 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
  * @param  ?Tempcode $user_online_title Separate title to put into the 'currently viewing' data (null: use $title)
  * @param  array $awards Awards to say this has won
  * @param  boolean $save_as_metadata Whether to use this as metadata for the screen
+ * @param  ?mixed $sub Sub-title (null: none)
  * @return Tempcode The title Tempcode
  */
-function get_screen_title($title, $dereference_lang = true, $params = array(), $user_online_title = null, $awards = array(), $save_as_metadata = true)
+function get_screen_title($title, $dereference_lang = true, $params = array(), $user_online_title = null, $awards = array(), $save_as_metadata = true, $sub = null)
 {
     global $TITLE_CALLED;
     $TITLE_CALLED = true;
@@ -152,7 +153,7 @@ function get_screen_title($title, $dereference_lang = true, $params = array(), $
         $DISPLAYED_TITLE = $_title;
     }
 
-    return do_template('SCREEN_TITLE', array('_GUID' => '847ffbe4823eca6d2d5eac42828ee552', 'AWARDS' => $awards, 'TITLE' => $_title));
+    return do_template('SCREEN_TITLE', array('_GUID' => '847ffbe4823eca6d2d5eac42828ee552', 'AWARDS' => $awards, 'TITLE' => $_title, 'SUB' => $sub));
 }
 
 /**
