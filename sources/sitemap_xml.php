@@ -343,6 +343,24 @@ function _sitemap_cache_node($node)
 }
 
 /**
+ * Remove _SEARCH from page-links.
+ *
+ * @param SHORT_TEXT $page_link The page-link
+ */
+function canonicalise_sitemap_page_link(&$page_link)
+{
+    // We don't want to leave _SEARCH in there, as it's inconsistent with what the regular Sitemap code goes
+    list($zone, $map) = page_link_decode($page_link);
+    if (isset($map['page'])) {
+        $_zone = get_page_zone($map['page'], false);
+        if ($_zone !== null) {
+            $page_link = preg_replace('#^_SEARCH:#', $_zone . ':', $page_link);
+        }
+    }
+
+}
+
+/**
  * Add a row to our sitemap cache.
  *
  * @param SHORT_TEXT $page_link The page-link
@@ -355,6 +373,8 @@ function _sitemap_cache_node($node)
  */
 function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
 {
+    canonicalise_sitemap_page_link($page_link);
+
     // Maybe we're still installing
     if (!$GLOBALS['SITE_DB']->table_exists('sitemap_cache') || running_script('install')) {
         return;
@@ -409,6 +429,8 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
  */
 function notify_sitemap_node_edit($page_link, $guest_access)
 {
+    canonicalise_sitemap_page_link($page_link);
+
     $rows = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), array(
         'page_link' => $page_link,
     ), '', 1);
@@ -436,6 +458,8 @@ function notify_sitemap_node_edit($page_link, $guest_access)
  */
 function notify_sitemap_node_delete($page_link)
 {
+    canonicalise_sitemap_page_link($page_link);
+
     $GLOBALS['SITE_DB']->query_update('sitemap_cache', array(
         'last_updated' => time(),
         'is_deleted' => 1,
