@@ -69,6 +69,7 @@ function pop_up_menu(id,place,menu,event,outside_fixed_width)
 	if (typeof outside_fixed_width=='undefined') outside_fixed_width=false;
 
 	var e=document.getElementById(id);
+	if (!e) return false;
 
 	if (window.clean_menus_timeout)
 	{
