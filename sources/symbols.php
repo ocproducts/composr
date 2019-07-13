@@ -6507,7 +6507,7 @@ function ecv_LOGIN_LABEL($lang, $escaped, $param)
 {
     switch (get_option('one_per_email_address')) {
         case '1':
-            $value = '<span class="must-show-together">' . do_lang('USERNAME') . '/' . do_lang('EMAIL_ADDRESS') . '</span>';
+            $value = '<span class="must-show-together">' . do_lang('USERNAME') . ' / ' . do_lang('EMAIL_ADDRESS') . '</span>';
             break;
 
         case '2':

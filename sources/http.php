@@ -57,7 +57,7 @@ function cache_and_carry($func, $args, $timeout = null, $cache_errors = false)
         require_code('files');
         if ($func == 'cms_http_request') {
             $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
-            if (($cache_errors) || (substr($_ret->message, 0, 1) == '2')) {
+            if (($cache_errors) || (($_ret->message !== null) && (substr($_ret->message, 0, 1) == '2'))) {
                 cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
             }
         } else {
