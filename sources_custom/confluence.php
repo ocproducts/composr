@@ -201,12 +201,69 @@ function confluence_get_mappings()
     return $mappings;
 }
 
+function create_selection_list_confluence($selected_page_id = null, $under = null, $prefix = '')
+{
+    $mappings = confluence_get_mappings();
+
+    if ($under === null) {
+        $under = $mappings[confluence_root_id()];
+    }
+
+    $out = new Tempcode();
+
+    foreach ($under['children'] as $child) {
+        $out->attach('<option value="' . strval($child) . '"' . (($selected_page_id == $child) ? ' selected="selected"' : '') . '>' . escape_html($prefix . $mappings[$child]['title']) . '</option>');
+        $out->attach(create_selection_list_confluence($selected_page_id, $mappings[$child], $prefix . $mappings[$child]['title'] . ' > '));
+    }
+
+    return $out;
+}
+
+/**
+ * Get a formatted XHTML string of the route back to the specified root, from the specified category.
+ *
+ * @param  AUTO_LINK $category_id The category we are finding for
+ * @param  boolean $no_link_for_me_sir Whether to include category links at this level (the recursed levels will always contain links - the top level is optional, hence this parameter)
+ * @return ?array The breadcrumb segments (null: lost)
+ */
+function confluence_breadcrumbs($page_id, $no_link_for_me_sir = true)
+{
+    $mappings = confluence_get_mappings();
+
+    $zone = get_page_zone('docs');
+
+    $map = array('page' => 'docs', 'type' => $page_id);
+    $page_link = build_page_link($map, $zone);
+
+    if (!array_key_exists($page_id, $mappings)) {
+        return null;
+    }
+
+    $title = $mappings[$page_id]['title'];
+
+    if ($page_id == confluence_root_id()) {
+        if ($no_link_for_me_sir) {
+            return array();
+        }
+        return array(array($page_link, $title));
+    }
+
+    $segments = array();
+    if (!$no_link_for_me_sir) {
+        $segments[] = array($page_link, $title);
+    }
+
+    $below = confluence_breadcrumbs(intval($mappings[$page_id]['parent_id']), false);
+
+    return array_merge($below, $segments);
+}
+
 function confluence_clean_page($html)
 {
-    // Fix embedded images
+    // Fix embedded images, which may need httpauth via our proxy
     $html = preg_replace('#\ssrc="([^"]+)"#', ' src="' . find_script('confluence_proxy') . '?$1"', $html);
 
-    // Fix links
+    // Fix internal links, which should be served under our docs module
     $html = preg_replace_callback('#\shref="\s*([^"]+)"#', function($matches) {
         $url = qualify_url($matches[1], get_confluence_base_url());
         $url = str_replace('http://', 'https://', $url);
@@ -231,7 +288,7 @@ function confluence_clean_page($html)
     }, $html);
 
     // Strip out links to usernames
-    $html = preg_replace('#<a href="' . preg_quote(get_confluence_base_url()) . '/display/~[^<>]*>(.*)</a>#Us', '$1', $html);
+    $html = preg_replace('#<a [^<>]*href="' . preg_quote(get_confluence_base_url(), '#') . '/display/~[^<>]*>(.*)</a>#Us', '$1', $html);
 
     // Strip out some special links that should not be there
     $html = preg_replace('#<a\s[^<>]*>(Edit|Show More)</a>#Us', '', $html);
@@ -251,6 +308,46 @@ function confluence_clean_page($html)
 
     // Add missing CSS classes and IDs that the real site has, but Confluence misses out
     $html = '<div id="content" class="page view"><div id="main-content" class="wiki-content">' . $html . '</div></div>';
+
+    // Excessive blank lines
+    $html = preg_replace('#(<p>\s*(<br\s*/>|&nbsp;)*\s*</p>)+#s', '<p><br/>', $html);
+
+    // More table styles
+    $html = preg_replace_callback('#(<div class="table-wrap)(">\s*<table[^<>]*>)#s', function($matches) {
+        if (strpos($matches[2], 'width:') === false || true) {
+            return $matches[1] . ' table-wrap-simple' . $matches[2];
+        }
+        return $matches[0];
+    }, $html);
+
+    // Fix incorrect defined header
+    $tag_regexp = '(</?(p|div|code|strong|em|a|br)[^<>]*>)';
+    $html = preg_replace('#(</colgroup>\s*|<table[^<>]*>\s*)<tbody( style="[^"]*")?>((\s*<tr[^<>]*>(\s*<th[^<>]*>[^<>]*' . $tag_regexp . '*[^<>]*' . $tag_regexp . '*[^<>]*</th>)+\s*</tr>)+)#s', '$1<thead>$3</thead><tbody>', $html);
+
+    // Responsive tables
+    do { // We have to loop as our regex doesn't handle nested tables well
+        $html_before = $html;
+        $html = preg_replace_callback('#(<table class="((wrapped |relative-table )*)confluenceTable)("[^<>]*>(\s*<colgroup>.*</colgroup>)?\s*<thead.*</table>)#Us', function($matches) { // The last ".*</table>" bit is so we can detect the colspans
+            if (strpos(str_replace('colspan="1"', '', $matches[0]), 'colspan="') !== false) { // colspan will screw up responsive tables
+                return $matches[0];
+            }
+
+            return $matches[1] . ' responsive-table' . $matches[4];
+        }, $html);
+    }
+    while ($html != $html_before);
+
+    // Clickable images so to allow zoom on mobile
+    if (is_mobile()) {
+        $html = preg_replace_callback('#(<img [^<>]*class="[^"]*(confluence-embedded-image|gliffy-image)[^"]*"[^<>]* src=")([^"]*)("[^<>]*>)#s', function($matches) use($html) {
+            $cleaned_leadup = preg_replace('#<a [^<>]*>.*</a>#U', '', substr($html, 0, strpos($html, $matches[0])));
+            if (strpos($cleaned_leadup, '<a ') !== false) { // We're inside a link already
+                return $matches[0];
+            }
+
+            return '<a href="' . $matches[3] . '">' . $matches[1] . $matches[3] . $matches[4] . '</a>';
+        }, $html);
+    }
 
     return $html;
 }
@@ -274,7 +371,7 @@ function confluence_query($query, $trigger_error = true)
 function confluence_call_url($url, $trigger_error = true)
 {
     global $CONFLUENCE_USERNAME, $CONFLUENCE_PASSWORD;
-    if ($CONFLUENCE_USERNAME == '') {
+    if (($CONFLUENCE_USERNAME == '') || (substr($url, 0, strlen(get_confluence_base_url() . '/')) != get_confluence_base_url() . '/')) {
         $auth = null;
     } else {
         $auth = array($CONFLUENCE_USERNAME, $CONFLUENCE_PASSWORD);

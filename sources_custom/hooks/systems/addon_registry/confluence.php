@@ -146,6 +146,14 @@ class Hook_addon_registry_confluence
             'themes/default/templates_custom/CONFLUENCE_SCREEN.tpl',
             'site/pages/minimodules_custom/docs.php',
             'sources_custom/hooks/systems/health_checks/confluence.php',
+            'themes/default/javascript_custom/confluence.js',
+            'themes/default/javascript_custom/confluence2.js',
+            'data_custom/webfonts/adgs-icons.eot',
+            'data_custom/webfonts/adgs-icons.svg',
+            'data_custom/webfonts/adgs-icons.ttf',
+            'data_custom/webfonts/adgs-icons.woff',
+            'data_custom/webfonts/index.html',
+            'sources_custom/hooks/modules/search/confluence.php',
         );
     }
 }

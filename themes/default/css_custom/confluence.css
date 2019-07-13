@@ -1,134 +1,466 @@
-.confluence-left {
-	float: left;
-	width: 200px;
-	margin-bottom: 20px;
-	margin-right: 20px;
-}
-
-.confluence-main {
-}
-
-@media all and (max-width: 768px) {
-	.confluence-left {
-		display: none;
-	}
-}
-
 /*
 The below is grabbed from Confluence directly. We should not need it, but Confluence provides corrupt CSS via the API (e.g. we've found un-preprocessed LESS in it)
 */
 
-/* module-key = 'com.atlassian.auiplugin:aui-avatars', location = 'less/aui-avatars.less' */
-
-.aui-avatar {
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	display: inline-block;
-	vertical-align: text-bottom
-}
-.aui-avatar-inner {
-	display: table-cell;
-	vertical-align: middle
-}
-.aui-avatar img {
-	border-radius: 3px;
-	display: block;
-	margin: 0 auto;
-	height: 100%;
-	width: 100%
-}
-.aui-avatar-xsmall,
-.aui-avatar-xsmall .aui-avatar-inner {
-	height: 16px;
-	width: 16px
-}
-.aui-avatar-small,
-.aui-avatar-small .aui-avatar-inner {
-	height: 24px;
-	width: 24px
-}
-.aui-avatar-medium,
-.aui-avatar-medium .aui-avatar-inner {
-	height: 32px;
-	width: 32px
-}
-.aui-avatar-large,
-.aui-avatar-large .aui-avatar-inner {
-	height: 48px;
-	width: 48px
-}
-.aui-avatar-xlarge,
-.aui-avatar-xlarge .aui-avatar-inner {
-	height: 64px;
-	width: 64px
-}
-.aui-avatar-xxlarge,
-.aui-avatar-xxlarge .aui-avatar-inner {
-	height: 96px;
-	width: 96px
-}
-.aui-avatar-xxxlarge,
-.aui-avatar-xxxlarge .aui-avatar-inner {
-	height: 128px;
-	width: 128px
-}
-.aui-avatar-xsmall .aui-avatar-inner img {
-	max-height: 16px;
-	max-width: 16px
-}
-.aui-avatar-small .aui-avatar-inner img {
-	max-height: 24px;
-	max-width: 24px
-}
-.aui-avatar-medium .aui-avatar-inner img {
-	max-height: 32px;
-	max-width: 32px
-}
-.aui-avatar-large .aui-avatar-inner img {
-	max-height: 48px;
-	max-width: 48px
-}
-.aui-avatar-xlarge .aui-avatar-inner img {
-	max-height: 64px;
-	max-width: 64px
-}
-.aui-avatar-xxlarge .aui-avatar-inner img {
-	max-height: 96px;
-	max-width: 96px
-}
-.aui-avatar-xxxlarge .aui-avatar-inner img {
-	max-height: 128px;
-	max-width: 128px
-}
-.aui-avatar-xxlarge img,
-.aui-avatar-xxxlarge img {
-	border-radius: 5px
-}
-.aui-avatar-project {
-	background-color: #fff;
-	box-shadow: 0 0 0 1px #ccc;
-	position: relative
-}
-.aui-avatar-project,
-.aui-avatar-project img {
-	border-radius: 100%
-}
-.aui-avatar-project img {
-	height: auto;
-	max-height: 100%;
+.embeddedObject video { /* Added by ChrisG */
 	max-width: 100%;
-	width: auto
+	height: auto;
 }
-.aui-avatar-project:before {
-	border-radius: 100%;
-	border: 1px solid #ccc;
-	bottom: -1px;
-	content: "";
-	left: -1px;
-	position: absolute;
-	right: -1px;
-	top: -1px
+
+/*
+FROM https://docs.ificlaims.com/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/3/_/styles/colors.css
+*/
+
+h1, h2, h3, h4,
+.wiki-content h1,
+.wiki-content h2,
+.wiki-content h3,
+.wiki-content h4,
+.pagetitle,
+.steptitle,
+.substeptitle,
+.formtitle,
+table.confluenceTable td.confluenceTd.highlight,
+table.confluenceTable td.confluenceTd.highlight > p,
+table.confluenceTable th.confluenceTh,
+table.confluenceTable th.confluenceTh > p,
+.wiki-content .tablesorter-header-inner,
+table.admin th,
+.form-element-large,
+.form-element-small,
+#toolbar #format-dropdown .format-h1 a,
+#toolbar #format-dropdown .format-h2 a,
+#toolbar #format-dropdown .format-h3 a,
+#toolbar #format-dropdown .format-h4 a {
+    color: #172B4D;
 }
+
+h5, h6,
+.wiki-content h5,
+.wiki-content h6,
+#toolbar #format-dropdown .format-h5 a,
+#toolbar #format-dropdown .format-h6 a {
+    color: #5E6C84;
+}
+
+#format-dropdown .mce_formatPreview.mce_blockquote a {
+    border-left-color: #c4c4c4;
+}
+
+.wiki-content h1,
+.wiki-content h2 {
+ 	border-bottom-color: #c4c4c4;
+}
+
+.wiki-content-preview {
+    border-left-color: #c4c4c4;
+    border-right-color: #c4c4c4;
+}
+
+.pageSectionHeader {
+    border-bottom-color: #DFE1E6;
+}
+
+.panel {
+    border-color: #c4c4c4;
+}
+
+.panelHeader,
+.menuheading,
+.pageheader,
+.sectionbottom {
+    border-bottom-color: #c4c4c4;
+}
+
+.topRow {
+    border-top-color: #c4c4c4;
+}
+
+.tabletitle, .pageSectionHeader {
+	border-bottom-color: #c4c4c4;
+}
+
+blockquote {
+    border-left-color: #c4c4c4;
+}
+
+a,
+a:visited,
+a:focus,
+a:hover,
+a:active,
+a.blogHeading {
+    color: #0052CC;
+}
+
+.acs-side-bar-space-info a,
+.acs-side-bar .tip a,
+.ia-secondary-container a {
+    color: #0052CC;
+}
+
+.wiki-content a,
+.wiki-content a:link,
+.wiki-content a:visited,
+.wiki-content a:focus,
+.wiki-content a:hover,
+.wiki-content a:active {
+    color: #0052CC;
+}
+
+.ia-secondary-content .acs-tree-item .navigation-pseudo-link {
+    color: #0052CC;
+}
+
+a.visitable:visited {
+    color: #333;
+}
+
+.createlink,
+a.createlink,
+a.createlink:link,
+a.createlink:visited,
+a.createlink:active,
+a.createlink:hover {
+    text-decoration: underline;
+    color: #6D1806;
+}
+
+.unresolved,
+a.unresolved,
+a.unresolved:link,
+a.unresolved:visited,
+a.unresolved:active,
+a.unresolved:hover {
+    text-decoration: underline;
+    color: #828282;
+}
+
+.not-permitted,
+a.not-permitted,
+a.not-permitted:link,
+a.not-permitted:visited,
+a.not-permitted:hover,
+a.not-permitted:active {
+    color: #cc0000;
+}
+
+.grey,
+a.grey,
+a.grey:link,
+a.grey:visited,
+a.grey:hover,
+a.grey:active {
+    color: #666;
+}
+
+#tinymce.wiki-content a,
+#tinymce.wiki-content a:link,
+#tinymce.wiki-content a:visited,
+#tinymce.wiki-content a:focus,
+#tinymce.wiki-content a:hover,
+#tinymce.wiki-content a:active {
+	color: #0052CC !important;
+}
+
+#tinymce.wiki-content>p {
+    word-wrap: break-word;
+}
+
+#tinymce.wiki-content a.createlink {
+    color: #6D1806  !important; }
+
+#tinymce.wiki-content a.unresolved {
+    color: #828282 !important; }
+
+#tinymce.wiki-content a.not-permitted {
+    color: #cc0000 !important; }
+
+h1 a:link,
+h1 a:visited,
+h1 a:focus,
+h1 a:hover,
+h1 a:active {
+    color: #0052CC;
+    border-bottom-color: #172B4D;
+}
+
+.spacenametitle-printable,
+.spacenametitle-printable a,
+.spacenametitle-printable a:visited {
+    color: #999999;
+}
+
+.tableview th {
+    color: #172B4D;
+    border-bottom-color: #c4c4c4;
+}
+
+.navBackgroundBox {
+    background: #DFE1E6;
+    color: #505F79;
+}
+
+.previewBoxTop,
+.previewContent,
+.previewBoxBottom,
+.functionbox {
+    border-color: #c4c4c4;
+}
+
+.smalltext-blue {
+    color: #c4c4c4;
+}
+
+.tabnav,
+.comment .tabnav,
+ul.tabnav {
+    border-bottom-color: #DFE1E6;
+}
+
+.tabnav .tabs a {
+    border-color: #DFE1E6;
+    background: #DFE1E6;
+}
+
+.tabnav .tabs a:link,
+.tabnav .tabs a:visited {
+    color: #505F79;
+}
+.tabnav .tabs a:hover {
+    color: #ffffff;
+    background: #172B4D;
+    border-color: #172B4D;
+}
+
+#squaretab a {
+    border-color: #DFE1E6;
+}
+
+#squaretab a:link,
+#squaretab a:visited {
+    background-color: #DFE1E6;
+    color: #505F79;
+}
+
+#squaretab a:hover {
+    color: #ffffff;
+    background-color: #172B4D;
+    border-color: #172B4D;
+}
+
+table.blogcalendar {
+    border-color: #c4c4c4;
+}
+
+.blogcalendar th.calendarhead,
+a.calendarhead,
+a.calendarhead:link,
+a.calendarhead:visited,
+a.calendarhead:hover {
+    background-color: #DFE1E6;
+    color: #505F79;
+}
+
+.searchGroupHeading {
+    background-color: #DFE1E6;
+    color: #505F79;
+}
+
+.topBar {
+    background-color: #c2def2;
+}
+
+.basicPanelContainer {
+    border-color: #DFE1E6;
+}
+
+.greynavbar {
+    border-top-color: #DFE1E6
+}
+
+div.license-personal {
+   background-color: #c2def2;
+   color: #505F79;
+}
+
+div.license-personal a {
+   color: #505F79;
+}
+
+#header {
+    background-color: #c2def2;
+}
+
+#header a,
+#breadcrumbs {
+    color: #292929;
+}
+
+.breadcrumbs {
+ 	border-color: #c4c4c4;
+}
+
+.tab-navigation .tab a {
+    background-color: #DFE1E6;
+    border: 1px solid #DFE1E6;
+    color: #505F79;
+}
+.tab-navigation .tab a:hover {
+    color: #ffffff;
+    background-color: #172B4D;
+    border-bottom-color: #172B4D;
+}
+
+.tabletitle, .heading-text-color {
+    color: #172B4D;
+}
+
+ol.autocompleter li.focused {
+	background: #F4F5F7;
+	color: #ffffff;
+}
+
+
+.diff-navigation a.version-navigation {
+    background-color: #ddd;
+}
+
+.diff-navigation a.version-navigation:hover {
+    background-color: #bbb;
+}
+
+.diff-navigation a.version-navigation.all:hover {
+    background-color: transparent;
+}
+
+
+.tasklist .task.complete .signoff { color: #008004; }
+.tasklist .task.incomplete .signoff { color: #cc0000; }
+
+
+
+#move-page-dialog .ui-tree li a.highlighted {
+    background-color: #DFE1E6;
+    color: #505F79;
+}
+
+.ajs-menu-bar .ajs-menu-item li.active a,
+.ajs-menu-bar .ajs-menu-item.opened .ajs-drop-down li.active a,
+.ajs-content-hover .popup-follow a:hover {
+    color: #ffffff;
+    background-color: #10629c;
+}
+
+.ajs-menu-bar .ajs-menu-item.opened a.trigger {
+    background-color: #F4F5F7;
+}
+
+
+/* @group Diff colours */
+
+.diff-tag-added {
+    background-color: #93c49f;
+}
+
+.diff-tag-removed {
+    background-color: #df9898;
+}
+
+.diff-html-added {
+    background-color: #ddfade;
+    border-color: #93c49f;
+}
+
+.diff-html-removed {
+    background-color: #ffe7e7;
+    border-color: #df9898;
+}
+
+.diff-html-changed {
+    background-color: #d6f0ff;
+    border-color: #9eb6d4;
+}
+
+.diff-html-added img {
+    border-color: #93c49f;
+}
+
+.diff-html-removed img {
+    border-color: #df9898;
+}
+
+.diff-html-changed img {
+    border-color: #9eb6d4;
+}
+
+.diff-image-overlay,
+.wiki-content .diff-image-overlay {
+    color: #535353;
+}
+
+.diff-image-overlay.diff-removed-image {
+    background-color: #ffe7e7;
+}
+
+.diff-image-overlay.diff-added-image {
+    background-color: #ddfade;
+}
+
+.diff-image-overlay.diff-changed-image {
+    background-color: #d6f0ff;
+}
+
+.diff-macro {
+    border-color: #ddd;
+    background-color: #f0f0f0;
+}
+
+.diff-macro .diff-macro-title {
+    background-color: transparent;
+}
+
+.diff-macro .diff-macro-properties {
+    border-color: #ddd;
+}
+
+.diff-macro .diff-macro-properties,
+.diff-macro .diff-macro-properties th,
+.diff-macro .diff-macro-properties td {
+    background-color: #fafafa;
+    background: rgba(255,255,255,0.5);
+}
+
+.diff-macro .diff-macro-body {
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.diff-macro.diff-html-added,
+.diff-macro.diff-html-added .diff-macro-body {
+    background-color: #ddfade;
+    border-color: #93c49f;
+}
+
+.diff-macro.diff-html-removed,
+.diff-macro.diff-html-removed .diff-macro-body {
+    background-color: #ffe7e7;
+    border-color: #df9898;
+}
+
+.diff-macro.diff-html-changed,
+.diff-macro.diff-html-changed .diff-macro-body {
+    background-color: #d6f0ff;
+    border-color: #9eb6d4;
+}
+
+.diff-macro.diff-html-added .diff-macro-body,
+.diff-macro.diff-html-removed .diff-macro-body,
+.diff-macro.diff-html-changed .diff-macro-body {
+    background-color: #fff;
+}
+
+/* @end Diff colours */
 
 /* module-key = 'confluence.web.resources:content-styles', location = '/includes/css/master.css' */
 
@@ -171,9 +503,6 @@ a img {
 .hidden {
 	display: none
 }
-.ia-splitter .aui-page-panel {
-	width: auto
-}
 #quick-search-submit {
 	display: none
 }
@@ -182,15 +511,6 @@ a img {
 }
 #quick-search.quick-search-loading:after {
 	display: none
-}
-.aui-nav-link span+span {
-	margin-left: 5px
-}
-.aui-nav-vertical li a:link,
-.aui-nav-vertical li a:focus,
-.aui-nav-vertical li a:visited,
-.aui-nav-vertical li a:active {
-	color: #666
 }
 .in-page-menu {
 	padding: 10px
@@ -206,10 +526,6 @@ a img {
 }
 #messageContainer li {
 	display: block
-}
-#messageContainer .aui-message {
-	margin: 0;
-	border-radius: 0
 }
 #breadcrumbs li.hidden-crumb {
 	display: none
@@ -263,9 +579,6 @@ a img {
 }
 #content::before {
 	display: none!important
-}
-.aui-layout #footer .footer-body>ul>li.print-only {
-	display: none
 }
 #com-atlassian-confluence .hidden {
 	display: none
@@ -376,15 +689,6 @@ body.people #main-header {
 	display: table;
 	width: 100%
 }
-body.people .dashboard-group>.aui-page-panel {
-	border-bottom: 0
-}
-body.people .dashboard-group .aui-page-panel .aui-page-panel-nav {
-	height: 523px
-}
-body.people .dashboard-group .aui-navgroup-inner {
-	margin-left: -10px
-}
 body.people .active-tab>a {
 	color: #333;
 	font-weight: bold
@@ -399,9 +703,6 @@ body.people .active-tab>a {
 body.people #people-search {
 	margin-top: 0;
 	text-align: right
-}
-.people-directory .aui-tabs>.tabs-menu {
-	padding: 0 30px
 }
 .people-directory .greybox {
 	position: relative;
@@ -418,9 +719,6 @@ body.people #people-search .field-group {
 	width: auto;
 	padding: 0 10px 0 0;
 	margin: 0
-}
-body.people .aui-message.error {
-	margin-bottom: 10px
 }
 body.people .greybox #peoplelist .profile-macro {
 	margin: 10px 40px 20px 0
@@ -452,12 +750,6 @@ body.people .blank-experience-people {
 	width: 70%;
 	margin-top: 0;
 	margin-bottom: 26px
-}
-.blank-experience-blog {
-	background: url('/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:content-styles/../../images/icons/blog-empty-placeholder.png') no-repeat right bottom
-}
-.blank-experience-page {
-	background: url('/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:content-styles/../../images/icons/pages-empty-placeholder.png') no-repeat right bottom
 }
 .blog-post-listing {
 	position: relative;
@@ -542,9 +834,6 @@ a.blogHeading {
 	margin-top: 0;
 	margin-bottom: 26px
 }
-.blank-experience-blog {
-	background: url('/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:content-styles/../../images/icons/blog-empty-placeholder.png') no-repeat right bottom
-}
 #squaretab {
 	margin-left: 0;
 	padding-left: 0;
@@ -572,9 +861,6 @@ a.blogHeading {
 }
 .admin-sidebar-group ~ .admin-sidebar-group {
 	margin-top: 20px
-}
-#main.aui-page-panel {
-	border-top: 0
 }
 .recently-updated-concise .update-item .update-item-desc,
 .recently-updated-concise .update-item .update-item-changes {
@@ -630,6 +916,11 @@ a.blogHeading {
 .wiki-content .cell {
 	display: table-cell;
 	padding: 0 10px
+}
+@media all and (max-width: 768px) { /* Added by ChrisG */
+	.wiki-content .cell {
+		display: block;
+	}
 }
 .wiki-content .innerCell {
 	overflow-x: auto
@@ -779,9 +1070,6 @@ a.blogHeading {
 .wiki-content .text-placeholder.selected {
 	color: #333
 }
-.wiki-content .aui-lozenge {
-	padding: 3px 5px 2px 5px
-}
 .contentLayout .innerCell>*:first-child .innerCell>*:first-child,
 .contentLayout2 .innerCell>*:first-child {
 	margin-top: 0
@@ -860,6 +1148,17 @@ div.large+div.sidebars,
 	margin-bottom: 8px
 }
 
+@media all and (max-width: 768px) { /* Added by ChrisG */
+	.two-right-sidebar {
+		display: block !important;
+	}
+
+	.two-right-sidebar > .cell {
+		display: block !important;
+		width: auto !important;
+	}
+}
+
 /* module-key = 'confluence.web.resources:content-styles', location = '/includes/css/tables.css' */
 
 .confluenceTable {
@@ -873,6 +1172,11 @@ div.large+div.sidebars,
 	text-align: left;
 	min-width: 8px
 }
+{+START,IF,{$MOBILE}}
+	.confluenceTable.responsive_table .confluenceTh, .confluenceTable.responsive_table .confluenceTd {
+		border-bottom: 0; /* Added by ChrisG */
+	}
+{+END}
 .confluenceTable ol,
 .confluenceTable ul {
 	margin-left: 0;
@@ -881,8 +1185,37 @@ div.large+div.sidebars,
 .confluenceTable,
 .table-wrap {
 	margin: 10px 0 0 0;
-	overflow-x: auto
+	overflow-x: auto;
 }
+
+/* Added by ChrisG - sticky table headers */
+.table-wrap thead th {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+.table-wrap .table-wrap thead th {
+	z-index: 9;
+}
+.table-wrap thead tr + tr th {
+	top: 36px; /* Imperfect */
+}
+@media all and (min-width: 650px) { /* Added by ChrisG */
+	.table-wrap tbody tr td:first-child {
+		position: sticky;
+		left: 0;
+		background: white;
+	}
+}
+
+/* Added by ChrisG - allows horizontal scrollbar to be in view */
+.table-wrap-simple {
+	max-height: 80vh;
+}
+.table-wrap-simple .table-wrap-simple {
+	max-height: none;
+}
+
 .confluenceTable:first-child,
 .table-wrap:first-child {
 	margin-top: 0
@@ -895,7 +1228,8 @@ table.confluenceTable th.confluenceTh.highlight-grey,
 table.confluenceTable th.confluenceTh.highlight-grey>p,
 table.confluenceTable td.confluenceTd.highlight-grey,
 table.confluenceTable td.confluenceTd.highlight-grey>p {
-	background-color: #f0f0f0
+	background-color: #f0f0f0;
+	color: black; /* Added by ChrisG */
 }
 table.confluenceTable th.confluenceTh.info,
 table.confluenceTable th.confluenceTh.info>p,
@@ -1135,9 +1469,6 @@ a.content-type-attachment-unknown span {
 }
 .icon-edit {
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAVUlEQVQoz2NgIAcUpBW8K/hfsKpAEJf0fyhchV8aCAlIF7zDL/2/II2O0oJ4pYEKQpFdjiENVNBRUF5wBiptjC1wzhQogV2BXRqo4F3BbqApLgw0AQCBhnfEgf2VHQAAAABJRU5ErkJggg==)
-}
-.aui-button>.icon-edit {
-	padding-right: 6px
 }
 #labels-section .icon-edit {
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAASklEQVQoz2NgoAkoMMYvPbPgf8E7nIrA0iD4Dr80CBrjl55JZ2kXvNJABR0F5QVncEoDFawqEAQqwSUNVPAOqL+jIBR34ApSEHEAoZNTWJsXIJoAAAAASUVORK5CYII=)
@@ -1439,476 +1770,6 @@ span.content-type-attachment-unknown,
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAjUlEQVQoFa3BQW2EABQFwG8BC7WABSysBc4j41tYC1jAAhawgIXXkrYJaZb20pmqv5lM9cFoERG7NtQ3D11lFrFpbReHsT5pq1kcHvVFi8NQJ08RMdWFFl0nq4i1frDb6+QQEYtHXWipk9is2myqCy31G4vUPaNY6o7BJqZ6xWC2i2e9JiK67mizt/o377RxXKGhGxsFAAAAAElFTkSuQmCC)
 }
 
-/* module-key = 'confluence.web.resources:master-styles', location = '/includes/css/master.css' */
-
-fieldset {
-	border: 0;
-	margin: 0;
-	padding: 0
-}
-.smalltext {
-	font-size: 12px;
-	color: #707070
-}
-#title-text {
-	margin: 0;
-	font-size: 28px
-}
-#title-text a:hover {
-	text-decoration: none
-}
-body.error-page #main {
-	padding-top: 0
-}
-body.error-page #main-header {
-	margin: 0 -20px;
-	padding: 20px;
-	border-bottom: 1px solid #ccc;
-	background-color: #f5f5f5
-}
-#main-header,
-#preview-header {
-	margin-bottom: 20px
-}
-#preview-header #title-text {
-	color: #333;
-	margin-top: 10px
-}
-a img {
-	border: 0
-}
-.hidden {
-	display: none
-}
-.ia-splitter .aui-page-panel {
-	width: auto
-}
-#quick-search-submit {
-	display: none
-}
-#quick-search {
-	margin: 0
-}
-#quick-search.quick-search-loading:after {
-	display: none
-}
-.aui-nav-link span+span {
-	margin-left: 5px
-}
-.aui-nav-vertical li a:link,
-.aui-nav-vertical li a:focus,
-.aui-nav-vertical li a:visited,
-.aui-nav-vertical li a:active {
-	color: #666
-}
-.in-page-menu {
-	padding: 10px
-}
-.in-page-menu-content {
-	border-left: 1px solid #CCC;
-	padding: 0 0 20px 10px
-}
-#messageContainer {
-	list-style-type: none;
-	margin: 0;
-	padding: 0
-}
-#messageContainer li {
-	display: block
-}
-#messageContainer .aui-message {
-	margin: 0;
-	border-radius: 0
-}
-#breadcrumbs li.hidden-crumb {
-	display: none
-}
-.page-metadata ul {
-	overflow: hidden;
-	margin: 0;
-	padding: 0
-}
-.page-metadata ul li {
-	list-style: none;
-	float: left;
-	padding: 0 5px 0 0;
-	margin: 0;
-	line-height: 1.5
-}
-.page-metadata ul a.page-tinyurl span {
-	float: left;
-	height: 16px;
-	width: 10px;
-	text-indent: -9999em
-}
-.page-metadata ul a.action-view-attachments span.page-metadata-attachments-count {
-	margin-left: 3px
-}
-#main {
-	margin: 0;
-	padding: 20px;
-	clear: both;
-	min-height: 600px
-}
-#title-heading {
-	margin: 0;
-	padding: 0
-}
-#title-text a {
-	color: #333
-}
-.navBackgroundBox {
-	padding: 5px;
-	font-size: 22px;
-	font-weight: bold;
-	text-decoration: none
-}
-.simple-confirmation>form>.buttons-container {
-	padding-left: 0;
-	margin-top: 20px
-}
-#content {
-	clear: none!important
-}
-#content::before {
-	display: none!important
-}
-.aui-layout #footer .footer-body>ul>li.print-only {
-	display: none
-}
-#com-atlassian-confluence .hidden {
-	display: none
-}
-#status {
-	margin: 10px 0
-}
-#status table {
-	margin: 10px 0
-}
-#taskProgressBar {
-	background: #ebf2f9;
-	border-radius: 3px
-}
-#taskGreenBar {
-	background: #3b7fc4
-}
-#status .smalltext {
-	text-align: center;
-	color: #707070
-}
-#content {
-	position: static!important
-}
-hr {
-	border: 0;
-	border-bottom: 1px solid #ccc
-}
-#bloglist {
-	display: none
-}
-.children-show-hide.icon {
-	display: none
-}
-.child-display {
-	padding: 2px 2px 2px 12px;
-	display: block
-}
-#page-history-warning {
-	margin-bottom: 20px
-}
-.page-history-view a:before {
-	display: inline-block;
-	content: "·";
-	padding: 0 10px
-}
-.page-history-view a:before:hover {
-	text-decoration: none
-}
-.page-history-view a:first-child:before {
-	display: none;
-	content: '';
-	padding: 0
-}
-.version-navigation-block {
-	padding-top: 10px
-}
-.current-version-margin {
-	display: inline-block;
-	padding-left: 10px
-}
-.current-version-margin:first-child {
-	padding: 0
-}
-.alternative-page-list {
-	list-style: none;
-	padding-left: 30px;
-	line-height: 20px
-}
-.alternative-page-list .excerpt {
-	margin-left: 20px
-}
-.page-section,
-.page-group {
-	display: table;
-	margin: 0;
-	padding: 0;
-	width: 100%
-}
-.page-section .page-group {
-	display: table-row;
-	margin: 0;
-	padding: 0;
-	width: 100%
-}
-.page-item {
-	display: table-cell;
-	margin: 0;
-	min-width: 256px;
-	padding: 0 0 0 16px;
-	vertical-align: top
-}
-body.people .dashboard {
-	margin-top: 0
-}
-body.people .dashboard-group>div {
-	margin-top: 0
-}
-body.people #main {
-	padding: 0
-}
-body.people #main-header {
-	padding: 20px;
-	margin-bottom: 0;
-	background-color: #f5f5f5
-}
-.people-directory .dashboard-section {
-	display: table;
-	width: 100%
-}
-body.people .dashboard-group>.aui-page-panel {
-	border-bottom: 0
-}
-body.people .dashboard-group .aui-page-panel .aui-page-panel-nav {
-	height: 523px
-}
-body.people .dashboard-group .aui-navgroup-inner {
-	margin-left: -10px
-}
-body.people .active-tab>a {
-	color: #333;
-	font-weight: bold
-}
-#people-search-title-bar {
-	overflow: hidden;
-	margin-bottom: 10px
-}
-#people-search-title-bar h2 {
-	float: left
-}
-body.people #people-search {
-	margin-top: 0;
-	text-align: right
-}
-.people-directory .aui-tabs>.tabs-menu {
-	padding: 0 30px
-}
-.people-directory .greybox {
-	position: relative;
-	margin: 0
-}
-.people-directory .greyboxfilled {
-	width: 100%
-}
-body.people #people-search input {
-	vertical-align: top
-}
-body.people #people-search .field-group {
-	display: inline-block;
-	width: auto;
-	padding: 0 10px 0 0;
-	margin: 0
-}
-body.people .aui-message.error {
-	margin-bottom: 10px
-}
-body.people .greybox #peoplelist .profile-macro {
-	margin: 10px 40px 20px 0
-}
-#people-search .field-group {
-	padding-left: 0
-}
-body.people .blank-experience-people {
-	margin-top: 50px
-}
-.blank-experience-people {
-	min-height: 100px;
-	background: url(/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:master-styles/../../../images/icons/people-empty-placeholder.png) no-repeat right bottom
-}
-.watches .tableview-action-icon {
-	text-align: right
-}
-.blank-experience-container {
-	border: 1px solid #CCC;
-	border-radius: 3px;
-	width: 65%;
-	margin: 100px auto;
-	padding: 30px
-}
-.blank-experience-container p {
-	color: #707070;
-	line-height: 24px;
-	font-size: 16px;
-	width: 70%;
-	margin-top: 0;
-	margin-bottom: 26px
-}
-.blank-experience-blog {
-	background: url('/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:master-styles/../../images/icons/blog-empty-placeholder.png') no-repeat right bottom
-}
-.blank-experience-page {
-	background: url('/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:master-styles/../../images/icons/pages-empty-placeholder.png') no-repeat right bottom
-}
-.blog-post-listing {
-	position: relative;
-	padding: 30px 20px 20px 68px;
-	margin-top: -10px
-}
-#link-browser-tab-items+.blog-post-listing {
-	padding-top: 10px
-}
-#link-browser-tab-items+.blog-post-listing .logoBlock {
-	top: 10px
-}
-.blog-post-listing+.blog-post-listing {
-	border-top: 1px solid #ccc;
-	margin-top: 0
-}
-.logoBlock,
-.blogHeading {
-	display: inline-block
-}
-.userLogo {
-	width: 48px;
-	height: 48px;
-	border-radius: 3px
-}
-.userLogoLink {
-	display: inline
-}
-.page-metadata {
-	line-height: 1.25!important
-}
-.logo-heading-block {
-	margin-bottom: 20px
-}
-.logoBlock {
-	position: absolute;
-	left: 0;
-	top: 30px
-}
-.userLogoLink {
-	line-height: 30px
-}
-#title-heading .userLogoLink {
-	float: left
-}
-.logo-heading-block .userLogo {
-	width: 48px;
-	border-radius: 3px;
-	display: inline-block
-}
-span.blogHeading {
-	display: block
-}
-.blogHeading .page-metadata {
-	margin: 0;
-	line-height: 16px!important;
-	margin-top: 2px;
-	margin-right: 10px
-}
-a.blogHeading {
-	font-size: 24px
-}
-.blog-post-listing>.wiki-content {
-	padding: 0!important
-}
-.blog-post-listing .endsection {
-	clear: both;
-	margin-top: 20px
-}
-.blank-experience-container {
-	border: 1px solid #CCC;
-	border-radius: 3px;
-	width: 65%;
-	margin: 100px auto;
-	padding: 30px
-}
-.blank-experience-container p {
-	color: #707070;
-	line-height: 24px;
-	font-size: 16px;
-	width: 70%;
-	margin-top: 0;
-	margin-bottom: 26px
-}
-.blank-experience-blog {
-	background: url('/s/en_GB/6214/6860359b26f1e8cc7164bebdad0e2f04c128c291.3/1.0/_/download/resources/confluence.web.resources:master-styles/../../images/icons/blog-empty-placeholder.png') no-repeat right bottom
-}
-#squaretab {
-	margin-left: 0;
-	padding-left: 0;
-	white-space: nowrap;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	line-height: 20px
-}
-#squaretab li {
-	display: inline;
-	list-style-type: none
-}
-#squaretab a {
-	padding: 5px 7px 3px 7px;
-	border-width: 1px;
-	border-style: solid
-}
-#squaretab a:link,
-#squaretab a:visited {
-	color: #fff;
-	text-decoration: none
-}
-#squaretab a:hover {
-	text-decoration: none
-}
-.admin-sidebar-group ~ .admin-sidebar-group {
-	margin-top: 20px
-}
-#main.aui-page-panel {
-	border-top: 0
-}
-.recently-updated-concise .update-item .update-item-desc,
-.recently-updated-concise .update-item .update-item-changes {
-	font-size: 12px;
-	margin-left: 5px;
-	line-height: 20px
-}
-::-webkit-input-placeholder {
-	color: #999
-}
-:-moz-placeholder {
-	color: #999;
-}
-::-moz-placeholder {
-	color: #999;
-}
-:-ms-input-placeholder {
-	color: #999;
-}
-.default-macro-spinner {
-	width: 40px;
-	height: 40px;
-	position: relative
-}
-
 /* module-key = 'confluence.macros.advanced:common-resources', location = 'com/atlassian/confluence/plugins/macros/advanced/css/common.less' */
 
 .macro-blank-experience {
@@ -1999,14 +1860,10 @@ a.blogHeading {
 	display: block;
 	margin-left: 2px;
 	margin-right: 2px;
-	max-width: calc(100% - 4px)
-}
-.wiki-content .confluence-embedded-file-wrapper .confluence-embedded-image[height],
-.wiki-content .confluence-embedded-file-wrapper .confluence-embedded-image[width] {
-	max-width: none
-}
-.wiki-content .confluence-embedded-file-wrapper.confluence-embedded-manual-size {
-	max-width: none
+	max-width: calc(100% - 4px);
+
+	/* Added by ChrisG */
+	height: auto !important;
 }
 .wiki-content .image-left-wrapper {
 	float: left;
@@ -2021,440 +1878,6 @@ a.blogHeading {
 	float: right;
 	margin: 0 0 10px 10px
 }
-
-/* module-key = 'confluence.web.resources:colors', location = '/styles/colors-css.vm' */
-
-/* (stripped down for Composr) */
-
-.wiki-content-preview {
-	border-left-color: #c4c4c4;
-	border-right-color: #c4c4c4;
-}
-.pageSectionHeader {
-	border-bottom-color: #3572b0;
-}
-.panel {
-	border-color: #c4c4c4;
-}
-.panelHeader,
-.menuheading,
-.pageheader,
-.sectionbottom {
-	border-bottom-color: #c4c4c4;
-}
-.topRow {
-	border-top-color: #c4c4c4;
-}
-.tabletitle,
-.pageSectionHeader {
-	border-bottom-color: #c4c4c4;
-}
-.aui-nav-vertical li a:link,
-.aui-nav-vertical li a:focus,
-.aui-nav-vertical li a:visited,
-.aui-nav-vertical li a:active {
-	color: #3572b0;
-}
-.aui-navgroup-vertical .aui-nav>li>a {
-	color: #3572b0;
-}
-.navigation-pseudo-link {
-	color: #3572b0;
-}
-a.visitable:visited {
-	color: #333;
-}
-.createlink,
-a.createlink,
-a.createlink:link,
-a.createlink:visited,
-a.createlink:active,
-a.createlink:hover {
-	text-decoration: underline;
-	color: #6D1806;
-}
-.unresolved,
-a.unresolved,
-a.unresolved:link,
-a.unresolved:visited,
-a.unresolved:active,
-a.unresolved:hover {
-	text-decoration: underline;
-	color: #828282;
-}
-.not-permitted,
-a.not-permitted,
-a.not-permitted:link,
-a.not-permitted:visited,
-a.not-permitted:hover,
-a.not-permitted:active {
-	color: #cc0000;
-}
-.grey,
-a.grey,
-a.grey:link,
-a.grey:visited,
-a.grey:hover,
-a.grey:active {
-	color: #666;
-}
-.spacenametitle-printable,
-.spacenametitle-printable a,
-.spacenametitle-printable a:visited {
-	color: #999999;
-}
-.tableview th {
-	color: #333333;
-	border-bottom-color: #c4c4c4;
-}
-.navBackgroundBox {
-	background: #3572b0;
-	color: #ffffff;
-}
-.previewBoxTop,
-.previewContent,
-.previewBoxBottom,
-.functionbox {
-	border-color: #c4c4c4;
-}
-.smalltext-blue {
-	color: #c4c4c4;
-}
-.tabnav,
-.comment .tabnav,
-ul.tabnav {
-	border-bottom-color: #3572b0;
-}
-.tabnav .tabs a {
-	border-color: #3572b0;
-	background: #3572b0;
-}
-.tabnav .tabs a:link,
-.tabnav .tabs a:visited {
-	color: #ffffff;
-}
-.tabnav .tabs a:hover {
-	color: #ffffff;
-	background: #205081;
-	border-color: #205081;
-}
-#squaretab a {
-	border-color: #3572b0;
-}
-#squaretab a:link,
-#squaretab a:visited {
-	background-color: #3572b0;
-}
-#squaretab a:hover {
-	color: #ffffff;
-	background-color: #205081;
-	border-color: #205081;
-}
-table.blogcalendar {
-	border-color: #c4c4c4;
-}
-.blogcalendar th.calendarhead,
-a.calendarhead,
-a.calendarhead:link,
-a.calendarhead:visited,
-a.calendarhead:hover {
-	background-color: #3572b0;
-	color: #ffffff;
-}
-.searchGroupHeading {
-	background-color: #3572b0;
-	color: #ffffff;
-}
-.comment-header .author .author-lozenge {
-	background-color: #10629c;
-	color: #ffffff;
-}
-.topBar {
-	background-color: #c2def2;
-}
-.basicPanelContainer {
-	border-color: #3572b0;
-}
-.greynavbar {
-	border-top-color: #3572b0
-}
-div.license-personal {
-	background-color: #c2def2;
-	color: #ffffff;
-}
-div.license-personal a {
-	color: #ffffff;
-}
-#header {
-	background-color: #c2def2;
-}
-#header a,
-#breadcrumbs {
-	color: #292929;
-}
-.breadcrumbs {
-	border-color: #c4c4c4;
-}
-.tab-navigation .tab a {
-	background-color: #3572b0;
-	border: 1px solid #3572b0;
-	color: #ffffff;
-}
-.tab-navigation .tab a:hover {
-	color: #ffffff;
-	background-color: #205081;
-	border-bottom-color: #205081;
-}
-.tabletitle,
-.heading-text-color {
-	color: #333333;
-}
-ol.autocompleter li.focused {
-	background: #3572b0;
-	color: #ffffff;
-}
-.diff-navigation a.version-navigation {
-	background-color: #ddd;
-}
-.diff-navigation a.version-navigation:hover {
-	background-color: #bbb;
-}
-.diff-navigation a.version-navigation.all:hover {
-	background-color: transparent;
-}
-.tasklist .task.complete .signoff {
-	color: #008004;
-}
-.tasklist .task.incomplete .signoff {
-	color: #cc0000;
-}
-#move-page-dialog .ui-tree li a.highlighted {
-	background-color: #3572b0;
-	color: #ffffff;
-}
-a:not(.aui-button,
-.aui-dialog2-header-close) {
-	color: #3572b0;
-}
-.aui-toolbar .aui-buttons .toolbar-item-link:hover button.toolbar-trigger,
-.aui-toolbar .aui-buttons .toolbar-item-link button.toolbar-trigger,
-.aui-navgroup-horizontal .aui-nav > li a,
-.aui-dialog .dialog-page-menu li.page-menu-item button.item-button,
-body.spaces .aui-tabs > .tabs-menu .menu-item a,
-body.spaces .aui-tabs > .tabs-menu .menu-item a:link,
-body.spaces .aui-tabs > .tabs-menu .menu-item a:visited {
-	color: #3572b0;
-}
-.aui-nav-vertical li.active a,
-.aui-nav-vertical li.active a:hover {
-	color: #ffffff;
-	background-color: #10629c;
-}
-#com-atlassian-confluence .aui-dd-parent .aui-dropdown .dropdown-item a,
-.aui-dropdown2 .aui-dropdown2-section li a {
-	color: #333333;
-}
-.aui-dialog .dialog-button-panel a.button-panel-link {
-	color: #3572b0;
-}
-.aui-button.aui-button-link {
-	color: #3572b0;
-}
-.aui-dropdown2-in-header.aui-style-default a,
-.aui-dropdown2-in-header.aui-style-default a:visited,
-.aui-dropdown2-in-header.aui-style-default a:link {
-	color: #333333;
-}
-.aui-dropdown2.aui-style-default a:focus,
-.aui-dropdown2.aui-style-default a:hover,
-.aui-dropdown2.aui-style-default a.active {
-	color: #ffffff;
-	background-color: #10629c;
-}
-#com-atlassian-confluence .aui-dd-parent a.perms-dropdown-trigger:hover,
-#com-atlassian-confluence .aui-dd-parent a.perms-dropdown-trigger:focus,
-#com-atlassian-confluence .aui-dd-parent .aui-dropdown .dropdown-item.active a,
-.ajs-menu-bar .ajs-menu-item li.active a,
-.aui-dd-parent .aui-dropdown li.active,
-.aui-dd-parent .aui-dropdown li.active span,
-.aui-dd-parent .aui-dropdown a:focus span,
-.ajs-menu-bar .ajs-menu-item.opened .ajs-drop-down li.active a,
-.ajs-content-hover .popup-follow a:hover {
-	color: #ffffff;
-	background-color: #10629c;
-}
-.ajs-menu-bar .ajs-menu-item.opened a.trigger {
-	background-color: #3572b0;
-}
-/*************** NEW HEADER COLORS ***************/
-
-#header .aui-header {
-	background-color: #c2def2;
-	color: #292929;
-}
-.aui-header .aui-dropdown2-trigger:hover,
-.aui-header .aui-dropdown2-trigger.active,
-#header .aui-header .aui-nav-link.active,
-#header .aui-header .aui-nav-imagelink.active,
-#header .aui-header .aui-nav-imagelink:focus,
-#header .aui-header .aui-nav-imagelink:hover,
-#header .aui-header a:focus,
-#header .aui-header a:hover,
-#header .aui-header a:active {
-	background-color: #10629c;
-	border-color: #10629c;
-	color: #ffffff;
-}
-.aui-header .aui-dropdown2-trigger.active::after,
-.aui-header .aui-dropdown2-trigger:hover::after {
-	border-top-color: #ffffff;
-}
-.aui-header .aui-dropdown2-trigger::after {
-	border-top-color: #292929;
-}
-.aui-header .aui-dropdown2-trigger,
-#header .aui-header .aui-nav-link,
-#header .aui-header .aui-nav-imagelink,
-#header .aui-header a {
-	color: #292929;
-}
-#header .aui-header .aui-dropdown2 {
-	border-color: #c2def2;
-}
-#header .aui-header .aui-dropdown2 li.separator {
-	border-top-color: #c2def2;
-}
-#header .aui-header .aui-dd-parent .aui-dropdown a:focus,
-#header .aui-header .aui-dd-parent .aui-dropdown a:hover,
-#header .aui-header .aui-dd-parent .aui-dropdown a:active,
-#header .aui-header .aui-dd-parent .aui-dropdown li.active a {
-	color: #ffffff;
-	background-color: #10629c;
-}
-#header .aui-header li.aui-nav a.aui-nav-link a {
-	color: #333333;
-}
-#app-switcher .nav-links .active .nav-link-label,
-#app-switcher .nav-links .active .nav-link-description,
-#app-switcher.aui-dropdown2.aui-style-default .active,
-.aui-dropdown2-trigger.app-switcher-trigger:hover,
-.aui-dropdown2.aui-style-default .active {
-	background-color: #10629c;
-	color: #ffffff;
-}
-#app-switcher .nav-links .nav-link-label {
-	color: #333333;
-}
-#header .aui-header .aui-nav .aui-button-primary {
-	background-color: #1376bc;
-	color: #ffffff;
-}
-#header .aui-header .aui-nav .aui-button-primary:hover,
-#header .aui-header .aui-nav .aui-button-primary:focus {
-	background-color: $buttonHoverTopBGColour;
-	color: #ffffff;
-}
-.aui-header .aui-quicksearch input[type='text'],
-.aui-header .aui-quicksearch input[type='text'][type='text']:focus {
-	background: rgba(0, 0, 0, 0.2)
-}
-#header .aui-header .aui-nav .aui-button-primary:active {
-	background-color: #1376bc;
-	color: #ffffff;
-}
-/* @group labels */
-
-.aui-label {
-	background-color: #F2F2F2;
-}
-.tag-cloud .aui-label a:link,
-.tag-cloud .aui-label a:visited {
-	color: #3572b0;
-}
-/* @end */
-/* @group Diff colours */
-
-.diff-tag-added {
-	background-color: #93c49f;
-}
-.diff-tag-removed {
-	background-color: #df9898;
-}
-.diff-html-added {
-	background-color: #ddfade;
-	border-color: #93c49f;
-}
-.diff-html-removed {
-	background-color: #ffe7e7;
-	border-color: #df9898;
-}
-.diff-html-changed {
-	background-color: #d6f0ff;
-	border-color: #9eb6d4;
-}
-.diff-html-added img {
-	border-color: #93c49f;
-}
-.diff-html-removed img {
-	border-color: #df9898;
-}
-.diff-html-changed img {
-	border-color: #9eb6d4;
-}
-.diff-image-overlay,
-.wiki-content .diff-image-overlay {
-	color: #535353;
-}
-.diff-image-overlay.diff-removed-image {
-	background-color: #ffe7e7;
-}
-.diff-image-overlay.diff-added-image {
-	background-color: #ddfade;
-}
-.diff-image-overlay.diff-changed-image {
-	background-color: #d6f0ff;
-}
-.diff-macro {
-	border-color: #ddd;
-	background-color: #f0f0f0;
-}
-.diff-macro .diff-macro-title {
-	background-color: transparent;
-}
-.diff-macro .diff-macro-properties {
-	border-color: #ddd;
-}
-.diff-macro .diff-macro-properties,
-.diff-macro .diff-macro-properties th,
-.diff-macro .diff-macro-properties td {
-	background-color: #fafafa;
-	background: rgba(255, 255, 255, 0.5);
-}
-.diff-macro .diff-macro-body {
-	background-color: #fff;
-	border: 1px solid #ddd;
-}
-.diff-macro.diff-html-added,
-.diff-macro.diff-html-added .diff-macro-body {
-	background-color: #ddfade;
-	border-color: #93c49f;
-}
-.diff-macro.diff-html-removed,
-.diff-macro.diff-html-removed .diff-macro-body {
-	background-color: #ffe7e7;
-	border-color: #df9898;
-}
-.diff-macro.diff-html-changed,
-.diff-macro.diff-html-changed .diff-macro-body {
-	background-color: #d6f0ff;
-	border-color: #9eb6d4;
-}
-.diff-macro.diff-html-added .diff-macro-body,
-.diff-macro.diff-html-removed .diff-macro-body,
-.diff-macro.diff-html-changed .diff-macro-body {
-	background-color: #fff;
-}
-/* @end Diff colours */
 
 /* module-key = 'confluence.web.resources:custom-page-content-resources', location = '/includes/css/custom-page-content.css' */
 
@@ -2497,72 +1920,6 @@ form[name="configurecustompagecontent"] .field-group {
 	padding: 5px 0 1px 5px;
 	margin-left: -5px;
 	margin-right: 5px
-}
-
-/* module-key = 'confluence.extra.information:information-plugin-adg-styles', location = 'css/information-macros-adg.css' */
-
-.confluence-information-macro {
-	background: #fcfcfc;
-	border: 1px solid #ccc;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	color: #333;
-	margin: 10px 0 1em 0;
-	min-height: 20px;
-	padding: 10px 10px 10px 36px;
-	position: relative
-}
-.confluence-information-macro.has-no-icon {
-	padding-left: 10px
-}
-.confluence-information-macro:first-child {
-	margin-top: 0
-}
-.confluence-information-macro-warning {
-	background: #fff8f7;
-	border-color: #d04437
-}
-.confluence-information-macro-information {
-	background-color: #fcfcfc;
-	border-color: #aab8c6
-}
-.confluence-information-macro-tip {
-	background-color: #f3f9f4;
-	border-color: #91c89c
-}
-.confluence-information-macro-note {
-	background: #fffdf6;
-	border-color: #ffeaae
-}
-.confluence-information-macro>.title {
-	font-weight: bold
-}
-.confluence-information-macro>.title>strong {
-	font-weight: inherit
-}
-.confluence-information-macro .confluence-information-macro-icon {
-	display: block;
-	left: 10px;
-	line-height: 20px;
-	position: absolute;
-	top: 12px;
-	vertical-align: text-bottom
-}
-.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-info {
-	color: #4a6785
-}
-.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-error {
-	color: #cf4336
-}
-.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-approve {
-	color: #14892c
-}
-.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-warning {
-	color: #594300
-}
-.confluence-information-macro>.confluence-information-macro-body>p:empty {
-	display: none
 }
 
 /* module-key = 'com.atlassian.confluence.plugins.status-macro:view_content_status', location = 'css/status-view.css' */
@@ -2915,8 +2272,9 @@ pre.syntaxhighlighter-pre {
 	padding-left: 15px;
 	padding-top: 15px;
 	font-size: 14px;
-	overflow-x: scroll;
-	font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace!important
+	overflow-x: /*scroll*/auto; /* Changed by ChrisG */
+	font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace!important;
+	white-space: pre-wrap; /* Added by ChrisG */
 }
 
 /* module-key = 'com.atlassian.confluence.ext.newcode-macro-plugin:syntaxhighlighter-init', location = 'sh/styles/collapseSource.css' */
@@ -3281,14 +2639,6 @@ img.wait {
 	overflow-x: hidden;
 	padding: 8px
 }
-#savebar-container .aui-toolbar {
-	border-bottom: 0
-}
-#comments-actions.aui-toolbar {
-	background-color: transparent;
-	border-top: 0;
-	padding-top: 12px
-}
 #addcomment.comment-text .userLogo {
 	opacity: .5
 }
@@ -3325,75 +2675,8 @@ img.wait {
 	float: right;
 	margin: 0
 }
-#comments-text-editor .aui-toolbar {
-	background-color: transparent;
-	border-top: 0
-}
 .comment-actions-primary {
 	line-height: 16px
-}
-
-/* module-key = 'com.atlassian.auiplugin:aui-flag', location = 'less/flag.less' */
-
-#aui-flag-container {
-	position: fixed;
-	top: 71px;
-	right: 30px;
-	z-index: 4000
-}
-.aui-flag {
-	left: 0;
-	max-height: 300px;
-	opacity: 0;
-	position: relative;
-	top: -10px;
-	transition: opacity .2s, top .5s
-}
-.aui-flag[aria-hidden="true"] {
-	left: 300px;
-	max-height: 0;
-	opacity: 0;
-	overflow: hidden;
-	top: 0;
-	transition: max-height .5s .5s, opacity .8s, left 1s
-}
-.aui-flag[aria-hidden="false"] {
-	opacity: 1;
-	top: 0;
-	left: 0
-}
-.aui-flag .aui-message {
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-	margin-bottom: 20px;
-	width: 300px
-}
-
-/* module-key = 'confluence.aui.staging:confluence-flags', location = 'flag/confluence-flag.css' */
-
-#aui-flag-container>.aui-flag-stack>div.aui-flag-stack-top-item[aria-hidden="false"] {
-	display: block;
-	transition: transform .5s .5s, top .5s, opacity .8s
-}
-#aui-flag-container>.aui-flag-stack>div[aria-hidden="false"]:not(.aui-flag-stack-top-item) {
-	position: absolute;
-	top: 15px;
-	left: 0;
-	transform: scale(0.85, 0.85);
-	-ms-transform: scale(0.85, 0.85);
-	transition: top 0s, opacity: .8s
-}
-#aui-flag-container>.aui-flag-stack>div[aria-hidden="false"]:not(.aui-flag-stack-top-item) .aui-message {
-	box-shadow: none
-}
-.aui-flag-stack {
-	position: relative
-}
-.aui-flag-stack .aui-flag[aria-hidden="true"] {
-	position: absolute;
-	transition: max-height .5s .5s, opacity .4s, left .5s
-}
-.aui-flag-stack .aui-flag.aui-flag-stack-top-item[aria-hidden="true"] {
-	position: relative
 }
 
 /* module-key = 'confluence.macros.advanced:children-resource', location = 'com/atlassian/confluence/plugins/macros/advanced/css/children.css' */
@@ -3577,14 +2860,6 @@ ul.content-by-label {
 	float: left;
 	max-width: 100%
 }
-.wiki-content .confluence-embedded-file-wrapper .overlay .file-type-desc-overlay .aui-icon {
-	display: inline-block;
-	left: 0px;
-	line-height: 0px;
-	position: relative;
-	vertical-align: text-top;
-	top: auto
-}
 .wiki-content .confluence-embedded-file-wrapper .overlay .file-type-desc-overlay .content {
 	vertical-align: middle
 }
@@ -3673,12 +2948,6 @@ ul.content-by-label {
 	overflow-x: auto;
 }
 
-/* module-key = 'com.atlassian.confluence.plugins.confluence-previews:confluence-previews-jquery', location = '/css/confluence.css' */
-
-.wiki-content .confluence-embedded-image {
-	cursor: pointer
-}
-
 /* module-key = 'org.randombits.confluence.toc:toc-plugin-styles', location = 'net/customware/confluence/plugin/toc/css/toc.css' */
 
 .toc-macro ul.toc-indentation {
@@ -3700,81 +2969,6 @@ ul.content-by-label {
 	.toc-macro.non-printable {
 		display: none
 	}
-}
-
-/* module-key = 'confluence.web.resources:common-header-resources', location = '/includes/css/buttons.css' */
-
-.aui-button2 {
-	background-color: #eee;
-	-moz-border-radius: 5px;
-	-ms-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 3px;
-	border: 1px solid #aaa;
-	color: #000;
-	display: inline-block;
-	font-size: 13px;
-	line-height: 20px;
-	font-weight: bold;
-	margin: 0;
-	padding: 3px 9px;
-	vertical-align: baseline
-}
-.aui-button2:hover,
-.aui-button2:focus {
-	background-image: -o-linear-gradient(#fff, #dfdfdf);
-	background-image: -ms-linear-gradient(#fff, #dfdfdf);
-	background-image: -moz-linear-gradient(#fff, #dfdfdf);
-	background-image: -webkit-linear-gradient(#fff, #dfdfdf);
-	background-image: linear-gradient(#fff, #dfdfdf);
-	border-color: #666
-}
-.aui-button2::-moz-focus-inner {
-	border: 0;
-	padding: 0
-}
-.aui-nav.aui-style-blocks .aui-nav-link.aui-style-hero {
-	padding: 4px 10px
-}
-.aui-button2.aui-style-hero {
-	background-color: #366ea7;
-	background-image: -moz-linear-gradient(top, #5a88b7, #366ea7);
-	background-image: -ms-linear-gradient(top, #5a88b7, #366ea7);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5a88b7), to(#366ea7));
-	background-image: -webkit-linear-gradient(top, #5a88b7, #366ea7);
-	background-image: -o-linear-gradient(top, #5a88b7, #366ea7);
-	background-image: linear-gradient(top, #5a88b7, #366ea7);
-	background-repeat: repeat-x;
-	border: 0;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 3px rgba(0, 0, 0, 0.3);
-	color: #fff;
-	padding: 4px 10px
-}
-.aui-button2.aui-style-hero:hover,
-.aui-button2.aui-style-hero:focus {
-	background-color: #3c7ab9;
-	background-image: -moz-linear-gradient(top, #6e96bf, #3c7ab9);
-	background-image: -ms-linear-gradient(top, #6e96bf, #3c7ab9);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6e96bf), to(#3c7ab9));
-	background-image: -webkit-linear-gradient(top, #6e96bf, #3c7ab9);
-	background-image: -o-linear-gradient(top, #6e96bf, #3c7ab9);
-	background-image: linear-gradient(top, #6e96bf, #3c7ab9);
-	text-decoration: none
-}
-
-/* module-key = 'confluence.web.resources:common-header-resources', location = '/includes/css/utilities.css' */
-
-.aui-align-right {
-	float: right
-}
-.aui-align-left {
-	float: left
-}
-.aui-state-hidden {
-	display: none
-}
-.aui-rounded {
-	border-radius: 3px
 }
 
 /* module-key = 'com.atlassian.mywork.mywork-confluence-host-plugin:mw-header-anchor-css', location = 'css/miniview-anchor.css' */
@@ -3882,36 +3076,6 @@ ul.content-by-label {
 .wiki-content .jira-issue-status-no-lozenge {
 	color: #999
 }
-.wiki-content .aui-lozenge.jira-issue-status-lozenge-blue-gray {
-	background-color: #4a6785;
-	border-color: #4a6785;
-	color: #fff
-}
-.wiki-content .aui-lozenge.jira-issue-status-lozenge-green {
-	background-color: #14892c;
-	border-color: #14892c;
-	color: #fff
-}
-.wiki-content .aui-lozenge.jira-issue-status-lozenge-yellow {
-	background-color: #ffd351;
-	border-color: #ffd351;
-	color: #594300
-}
-.wiki-content .aui-lozenge.jira-issue-status-lozenge-brown {
-	background-color: #815b3a;
-	border-color: #815b3a;
-	color: #fff
-}
-.wiki-content .aui-lozenge.jira-issue-status-lozenge-warm-red {
-	background-color: #d04437;
-	border-color: #d04437;
-	color: #fff
-}
-.wiki-content .aui-lozenge.jira-issue-status-lozenge-medium-gray {
-	background-color: #ccc;
-	border-color: #ccc;
-	color: #333
-}
 .acs-nav-item.pinned_page.blueprint.jirareport .icon {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAA10lEQVR4AW3PMWrFMBAE0D2L75R7CDURvzKkEqr+EeI2GALGV0hrwq9cuHJpmM6F4cNkpS2UEHmwwcxjl5X8fHYJjo6elsDxZRRL+STc+MAFbjmX4lsmFXiuWtY4fqBMqaCWBri9w6b8AicmrHDMryUwiASNgb2UXwXtZaWnF/EaAxMO2IoDUwtE9rQVPSMbYNFyALcBjgsawKo7jbWAJtd3+2uBEzsiA0/8AxfsjlfmY+2GJyrgN2xBZL7GlqwVJLxxwVNRzQM9E5JI0sxdUv03Tuu5m+UHMsJofqeZW2sAAAAASUVORK5CYII=')
 }
@@ -3970,9 +3134,3708 @@ ul.content-by-label {
 	margin-bottom: 0;
 	padding-bottom: 2px
 }
-.blog-post.macro-blank-experience a.aui-button {
-	color: black
-}
 .blog-post.macro-blank-experience {
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALoAAADwCAMAAACAE47JAAAACVBMVEX///9wcHBwcHDMVYRVAAAAA3RSTlMAESJ8z6YqAAADxklEQVR42u3d0W4bMQxE0bn8/4/uQwMs2gXiLCVqyHbn3drjAQMlsKzod4i/AgBqH+LbAIyUXwGayge+gcgE2pQ+0h9rAS99KD/2BCz0qfrYGgz0ifooCAb6LH2UBQN9Cj5qg4E+AB8HgoHeGx8xFh/nMpgegYHeEh+ng5/ux0eMxYcng+mBke7HR4zFhzWD6YGD7seHP4PpgYHuxcdce8RYfMy1R4zFx1x79EoHejYk6POKp5+dcrrfHh0z2c6/b2ewXXylFV7JdHgnaDGA1z7zDaBtgab2lhuwdofBdgkM9mnlo5qAwT5Ij+rCYLvEYLtgnv0Kg+1isF1isF0MtovBdjHYLgbbRbzHnS12DPa+eDQXr5OZbGewXbz2yz4Vr7l2aSxec+1yZDBdWOl+u1wZTBdz6WIuXeyiOy7J2EHHdE/GMh3fNROs0eNjoKH95y+GZvZn8waN7M9fCU3sV+lOfZ7u1yfp2WC2S7EQ6u2f6X58nu7H5+l+fZ7ux6fpfjxpuh9Pmu7H46JHnLS3u8aJNN2Pz9P9U5On+4tP0/148nS/PU3340nT/XYzPaLW3vXKMgrpfrvU9ex5nu4vPkE32v8Iebrfnqb7Bz5N99upofvtUnS2t6AHSoQKut8u0due/izJb+c7OkPvr9Fcu6TuM8O3dInG9p/vFACt9iaeLgR0safWgb52fQ7Y7SysgvlHda0AnHaW6BJGe4Jepd9Qu/Ec9GrtkgnP8lOVCQ57gl6GX32ksjlv30YXp0eGG92IZ6l27/n5paq0Foy1a5KdG905NAvPch/+x0C32NlNl46NzH66HLVrUzhfu/x2DHSHnRvda8/VLrc9X7vc9nztamEnT6+376udIro4V7ua2DvQVV47ZXSdql1d7LSgU1w7dXRxpPZG3zvuQdeJiWn0tWN60HVgYtTIThM6lbVTSlf5xKiTnS50iifm87EAMNSepLPrQDGlE3OnY/1nbwt0Eo0Yar/TKTgLUjfsN/mOhRfsOXpiZR9dEU+fUj3tJOiJWswTcz2ixk45PR6ktnYe0in8mLZs2G/V2Gt/Ro8otFNJJzGP/onhKr2s9kI6Ea1q9//tfsVAbz4xElFdOy/9lkjFOuzz6Ryg04pOYe289P+dTjzKS99C10vfsyVV0ulE56VvGHbm0vU0NcUY6MZfwHDT87XLTM/Xjpuer73+Mtiq2nHT87XLTM/bZabnV6YZXWTlfrrIyv10kZX76aJQLpl3ay3EunGgleC7VQ4tJlf6Oh6tx3E7MdoTEvJM+Ip2hp3wX1/Ls3M7es6xAAAAAElFTkSuQmCC) right no-repeat
+}
+
+/* module-key = 'confluence.web.resources:panel-styles', location = '/includes/css/panels.css' */
+
+.panel,
+.alertPanel,
+.infoPanel {
+    color: #333;
+    padding: 0;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    border-radius: 3px
+}
+.alertPanel,
+.infoPanel,
+.panelContent {
+    padding: 10px
+}
+.alertPanel {
+    border-color: #c00
+}
+.infoPanel {
+    border-color: #69c
+}
+.panelHeader {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f7f7f7
+}
+.basicPanelContainer {
+    border-width: 1px;
+    border-style: solid;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    width: 100%
+}
+.basicPanelContainer: first-child {
+    margin-top: 0
+}
+.basicPanelTitle {
+    padding: 10px;
+    margin: 0;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ddd
+}
+.basicPanelBody {
+    padding: 5px;
+    margin: 0
+}
+
+/* module-key = 'confluence.web.resources:jquery-autocomplete', location = '/includes/css/autocomplete.css' */
+
+div.auto_complete {
+    width: 350px;
+    background: #fff
+}
+div.auto_complete ul {
+    border: 1px solid #888;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style-type: none
+}
+div.auto_complete ul li {
+    margin: 0;
+    padding: 3px
+}
+div.auto_complete ul li.selected {
+    background-color: #ffb
+}
+div.auto_complete ul strong.highlight {
+    color: #800;
+    margin: 0;
+    padding: 0
+}
+ol.autocompleter {
+    background: #fff;
+    border: 1px solid #888;
+    font-size: .9em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 15em
+}
+ol.autocompleter li {
+    margin: 0;
+    padding: 3px;
+    cursor: default
+}
+ol.autocompleter q,
+ol.autocompleter i {
+    display: none
+}
+ol.autocompleter li.focused {
+    background: #ccf
+}
+.username-in-autocomplete-list {
+    color: #666;
+    font-size: 1em
+}
+div.resize-to-input .aui-dropdown {
+    width: 100%
+}
+
+/* module-key = 'com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources', location = 'css/icons.css' */
+
+.confluence-icon-blogpost,
+.content-type-blogpost {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-blog.svg") no-repeat
+}
+.confluence-icon-page,
+.content-type-page {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-page.svg") no-repeat
+}
+.confluence-icon-question,
+.content-type-question {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-question.svg") no-repeat
+}
+.confluence-icon-home,
+.content-type-home {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-home.svg") no-repeat
+}
+.confluence-icon-space,
+.content-type-space,
+.content-type-spacedesc {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-space.svg") no-repeat
+}
+.confluence-icon-spaces,
+.content-type-spaces {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-spaces.svg") no-repeat
+}
+.confluence-icon-profile,
+.content-type-profile {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-profile.svg") no-repeat
+}
+.confluence-icon-personal-space,
+.content-type-personal-space,
+.content-type-personalspacedesc {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-personal-space.svg") no-repeat
+}
+.confluence-icon-comment,
+.content-type-comment {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-comment.svg") no-repeat
+}
+.confluence-icon-comment-count,
+.content-type-comment-count {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-comment-count.svg") no-repeat
+}
+.confluence-icon-like,
+.content-type-like {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-like.svg") no-repeat
+}
+.confluence-icon-popular {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-popular.svg") no-repeat
+}
+.confluence-icon-all-updates {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-all.svg") no-repeat
+}
+.confluence-icon-starred {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-starred.svg") no-repeat
+}
+.confluence-icon-recently-worked-on {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-recently-worked-on.svg") no-repeat
+}
+.confluence-icon-recently-viewed {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-recently-viewed.svg") no-repeat
+}
+.confluence-icon-blank-page {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-blank-page.svg") no-repeat
+}
+.confluence-icon-decision {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-decision.svg") no-repeat
+}
+.confluence-icon-folder {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-folder.svg") no-repeat
+}
+.confluence-icon-link {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-link.svg") no-repeat
+}
+.confluence-icon-meeting-notes {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-meeting-notes.svg") no-repeat
+}
+.confluence-icon-jira {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-jira.svg") no-repeat
+}
+.confluence-icon-requirements {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-requirements.svg") no-repeat
+}
+.confluence-icon-retrospective {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-retrospective.svg") no-repeat
+}
+.confluence-icon-task-report {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-task-report.svg") no-repeat
+}
+.confluence-icon-playbook-daci {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-playbook-daci.svg") no-repeat
+}
+.confluence-icon-playbook-experience-canvas {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-playbook-experience-canvas.svg") no-repeat
+}
+.confluence-icon-playbook-health-monitor {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-playbook-health-monitor.svg") no-repeat
+}
+.confluence-icon-playbook-project-poster {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-playbook-project-poster.svg") no-repeat
+}
+.confluence-icon-troubleshoot {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-troubleshoot.svg") no-repeat
+}
+.confluence-icon-how-to {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-how-to.svg") no-repeat
+}
+.confluence-icon-grab-handle {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-grab-handle.svg") no-repeat
+}
+.confluence-icon-status-macro {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-status-macro.svg") no-repeat!important
+}
+
+/* module-key = 'com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources', location = 'css/file-icons.css' */
+
+.confluence-icon-pdf,
+.content-type-attachment-pdf {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-pdf.svg") no-repeat
+}
+.confluence-icon-image,
+.content-type-attachment-image,
+.content-type-attachment-jpg,
+.content-type-attachment-gif,
+.content-type-attachment-png {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-image.svg") no-repeat
+}
+.confluence-icon-code,
+.content-type-attachment-code,
+.content-type-attachment-xml,
+.content-type-attachment-css,
+.content-type-attachment-js,
+.content-type-attachment-java,
+.content-type-attachment-html {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-code.svg") no-repeat
+}
+.confluence-icon-zip,
+.content-type-attachment-zip,
+.content-type-attachment-jar {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-zip.svg") no-repeat
+}
+.confluence-icon-spreadsheet,
+.content-type-attachment-spreadsheet,
+.content-type-attachment-excel97-template,
+.content-type-attachment-excel97,
+.content-type-attachment-excel,
+.content-type-attachment-excel-macro,
+.content-type-attachment-excel-template {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-spreadsheet.svg") no-repeat
+}
+.confluence-icon-presentation,
+.content-type-attachment-preso,
+.content-type-attachment-powerpoint97,
+.content-type-attachment-powerpoint97-template,
+.content-type-attachment-powerpoint,
+.content-type-attachment-powerpoint-macro,
+.content-type-attachment-powerpoint-slideshow {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-preso.svg") no-repeat
+}
+.confluence-icon-file,
+.content-type-attachment-text,
+.content-type-attachment-file,
+.content-type-attachment-word97-template,
+.content-type-attachment-word97,
+.content-type-attachment-word,
+.content-type-attachment-word-template,
+.content-type-attachment-unknown {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-file.svg") no-repeat
+}
+.confluence-icon-multimedia,
+.content-type-attachment-multimedia {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-multimedia.svg") no-repeat
+}
+.confluence-icon-video,
+.content-type-attachment-multimedia-video {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-video.svg") no-repeat
+}
+.confluence-icon-audio,
+.content-type-attachment-multimedia-audio {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/confluence-icon-audio.svg") no-repeat
+}
+
+/* module-key = 'com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources', location = 'css/confluence-sidebar-icons.css' */
+
+.confluence-sidebar-open-icon-page,
+.acs-nav-item.wiki .icon,
+.acs-nav-item.pinned_page .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-pages.svg") no-repeat
+}
+.confluence-sidebar-open-icon-blog,
+.acs-nav-item.blog .icon,
+.acs-nav-item.pinned_blog_post .icon,
+.ia-secondary-header-title.blog .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-blog.svg") no-repeat
+}
+.confluence-sidebar-open-icon-profile,
+.acs-nav-item.profile .icon,
+.acs-nav-item.pinned_profile .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-profile.svg") no-repeat
+}
+.confluence-sidebar-open-calendar,
+.acs-nav-item.calendar .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-calendars.svg") no-repeat
+}
+.confluence-sidebar-open-icon-pagetree,
+.ia-secondary-header-title.wiki .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-pagetree.svg") no-repeat
+}
+.confluence-sidebar-open-icon-blueprint,
+.acs-nav-item.pinned_page.blueprint .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-blueprints.svg") no-repeat
+}
+.confluence-sidebar-open-icon-space,
+.acs-nav-item.pinned_space .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-spacehome.svg") no-repeat
+}
+.confluence-sidebar-open-icon-link,
+.acs-nav-item.external_link .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-link.svg") no-repeat
+}
+.confluence-sidebar-open-alphabetical {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-open-alphabetical.svg") no-repeat
+}
+.confluence-sidebar-closed-icon-page,
+.collapsed .acs-nav-item.wiki .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-closed-pages.svg") no-repeat
+}
+.confluence-sidebar-closed-icon-blog,
+.collapsed .acs-nav-item.blog .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-closed-blog.svg") no-repeat
+}
+.confluence-sidebar-closed-icon-profile,
+.collapsed .acs-nav-item.pinned_profile .icon,
+.collapsed .acs-nav-item.profile .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-closed-profile.svg") no-repeat
+}
+.confluence-sidebar-closed-icon-link,
+.collapsed .acs-nav-item.space-calendar-sidebar-link .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-closed-profile.svg") no-repeat
+}
+.confluence-sidebar-closed-icon-pagetree,
+.collapsed .ia-secondary-header-title.page-tree .icon {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-closed-pagetree.svg") no-repeat
+}
+.confluence-sidebar-closed-icon-spaceshortcut,
+.collapsed .quick-links-section {
+    background: url("/s/en_US/8100/b0984b7297905b7c7bd946458f753ce0130bfc8c/1.0.9/_/download/resources/com.atlassian.confluence.plugins.confluence-icons:confluence-icon-resources/assets/icons/sidebar-closed-spaceshortcuts.svg") no-repeat
+}
+
+/* module-key = 'confluence.web.resources:print-styles', location = '/includes/css/print.css' */
+
+@media print {
+    #main {
+        padding-bottom: 1em!important
+    }
+    body {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        font-size: 10pt;
+        line-height: 1.2
+    }
+    body,
+    #full-height-container,
+    #main,
+    #page,
+    #content,
+    .has-personal-sidebar #content {
+        background: #fff!important;
+        color: #000!important;
+        border: 0!important;
+        width: 100%!important;
+        height: auto!important;
+        min-height: auto!important;
+        margin: 0!important;
+        padding: 0!important;
+        display: block!important
+    }
+    a,
+    a: link, a: visited, a: focus, a: hover, a: active {
+        color: #000
+    }
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        page-break-after: avoid
+    }
+    pre {
+        font-family: Monaco, "Courier New", monospace
+    }
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none!important
+    }
+    #splitter-content {
+        position: relative!important
+    }
+    .comment .date::before {
+        content: none!important
+    }
+    h1.pagetitle img {
+        height: auto;
+        width: auto
+    }
+    .print-only {
+        display: block
+    }
+    #footer {
+        position: relative!important;
+        margin: 0;
+        padding: 0;
+        background: 0;
+        clear: both
+    }
+    #poweredby {
+        border-top: 0;
+        background: 0
+    }
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic
+    }
+    #poweredby li.noprint {
+        display: none
+    }
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible!important
+    }
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid
+    }
+    #page-children a {
+        text-decoration: none
+    }
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0
+    }
+    .children-show-hide.icon {
+        display: none
+    }
+    .has-personal-sidebar #content {
+        margin-right: 0
+    }
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0
+    }
+    .no-print,
+    .no-print * {
+        display: none!important
+    }
+}
+
+/* module-key = 'confluence.extra.information:information-plugin-adg-styles', location = 'css/information-macros-adg.css' */
+
+.confluence-information-macro {
+    background: #fcfcfc;
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    color: #333;
+    margin: 10px 0 1em 0;
+    min-height: 20px;
+    padding: 10px 10px 10px 36px;
+    position: relative
+}
+.confluence-information-macro p { /* Added by ChrisG */
+	margin: 0;
+}
+.confluence-information-macro.has-no-icon {
+    padding-left: 10px
+}
+.confluence-information-macro: first-child {
+    margin-top: 0
+}
+.confluence-information-macro-warning {
+    background: #fff8f7;
+    border-color: #d04437
+}
+.confluence-information-macro-information {
+    background-color: #fcfcfc;
+    border-color: #aab8c6
+}
+.confluence-information-macro-tip {
+    background-color: #f3f9f4;
+    border-color: #91c89c
+}
+.confluence-information-macro-note {
+    background: #fffdf6;
+    border-color: #ffeaae
+}
+.confluence-information-macro>.title {
+    font-weight: bold
+}
+.confluence-information-macro>.title>strong {
+    font-weight: inherit
+}
+.confluence-information-macro .confluence-information-macro-icon {
+    display: block;
+    left: 10px;
+    line-height: 20px;
+    position: absolute;
+    top: 12px;
+    vertical-align: text-bottom
+}
+.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-info {
+    color: #4a6785
+}
+.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-error {
+    color: #cf4336
+}
+.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-approve {
+    color: #14892c
+}
+.confluence-information-macro .confluence-information-macro-icon.aui-iconfont-warning {
+    color: #594300
+}
+.confluence-information-macro>.confluence-information-macro-body>p:empty {
+    display: none
+}
+
+/* module-key = 'com.atlassian.confluence.plugins.confluence-labels:labels-resources', location = 'com/atlassian/confluence/plugins/labels/labels.css' */
+
+.labels-content {
+    position: relative;
+    font-size: 12px;
+    font-weight: 300;
+    vertical-align: middle
+}
+.label-list {
+    padding: 0;
+    margin: 0;
+    color: #5e6c84
+}
+.label-list .no-labels-message {
+    display: inline-block
+}
+.label-list.label-list-right {
+    text-align: right
+}
+.label-list.label-list-right.has-pen {
+    padding-right: 20px
+}
+.label-list .labels-edit-container {
+    display: inline-block;
+    max-width: 16px;
+    overflow: hidden;
+    vertical-align: middle
+}
+.label-list .labels-edit-container .aui-iconfont-devtools-tag-small {
+    color: #505f79
+}
+.label-list.label-list-right.has-pen .labels-edit-container {
+    position: absolute;
+    top: 0;
+    right: 0
+}
+.tag-cloud.label-list .aui-label {
+    border: 0;
+    background: 0;
+    margin: 0
+}
+#dialog-label-list {
+    margin-top: 15px
+}
+#label-operation-error-container .aui-message {
+    margin: 0 0 20px 0
+}
+#add-labels-editor-button {
+    margin-left: 8px
+}
+.plus-label: before {
+    content: "+ "
+}
+.minus-label: before {
+    content: "- "
+}
+.label-list .aui-label {
+    margin: 0 5px 5px 0
+}
+
+/* module-key = 'com.atlassian.auiplugin:aui-buttons', location = 'src/less/aui-buttons.less' */
+
+.aui-button,
+a.aui-button,
+.aui-button: visited {
+    box-sizing: border-box;
+    transition: background-color .1s ease-out;
+    border-radius: 3.01px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-variant: normal;
+    font-weight: 400;
+    background-image: none;
+    background-color: rgba(9, 30, 66, 0.08);
+    border-color: transparent;
+    color: #344563;
+    text-decoration: none;
+    display: inline-block;
+    height: 2.14285714em;
+    line-height: 1.42857143em;
+    margin: 0;
+    padding: 4px 10px;
+    vertical-align: baseline;
+    white-space: nowrap
+}
+.aui-button.aui-button-light,
+a.aui-button.aui-button-light,
+.aui-button: visited.aui-button-light {
+    background-color: #fff
+}
+.aui-button~.aui-button {
+    margin-left: 10px
+}
+a.aui-button: hover, a.aui-button: active, a.aui-button: focus {
+    text-decoration: none
+}
+.aui-button: focus, .aui-button: hover, .aui-button-subtle.aui-button: focus, .aui-button-subtle.aui-button: hover {
+    background-color: rgba(9, 30, 66, 0.13);
+    border-color: transparent;
+    color: #344563;
+    text-decoration: none
+}
+.aui-button: active, .aui-button.aui-button-subtle: active, .aui-button.aui-button-subtle.active {
+    background-image: none;
+    background-color: #deebff;
+    border-color: transparent;
+    color: #0052cc;
+    text-decoration: none
+}
+.aui-button.active,
+.aui-button-subtle.aui-button.active {
+    background-image: none;
+    background-color: #344563;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none
+}
+.aui-button.aui-button-split-main+.aui-button-split-more {
+    margin-left: 2px
+}
+.aui-button.aui-button-primary,
+.aui-button.aui-button-primary: visited {
+    background-image: none;
+    background-color: #0052cc;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600
+}
+.aui-button.aui-button-primary: hover, .aui-button.aui-button-primary: focus {
+    background-color: #0065ff;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none
+}
+.aui-button.aui-button-primary.active {
+    background-image: none;
+    background-color: #344563;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none
+}
+.aui-button.aui-button-primary: active {
+    background-image: none;
+    background-color: #0052cc;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none
+}
+.aui-button.aui-button-link,
+.aui-button.aui-button-link: visited, .aui-button.aui-button-text, .aui-button.aui-button-text: visited {
+    background-color: transparent;
+    border-color: transparent;
+    color: #0052cc;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 4px 0
+}
+.aui-button.aui-button-link: focus, .aui-button.aui-button-link: hover, .aui-button.aui-button-link: active, .aui-buttons .aui-button.aui-button-link: focus, .aui-buttons .aui-button.aui-button-link: hover, .aui-buttons .aui-button.aui-button-link: active, .aui-buttons .aui-button.aui-button-link[aria-pressed="true"], .aui-button.aui-button-text: focus, .aui-button.aui-button-text: hover, .aui-button.aui-button-text: active, .aui-buttons .aui-button.aui-button-text: focus, .aui-buttons .aui-button.aui-button-text: hover, .aui-buttons .aui-button.aui-button-text: active, .aui-buttons .aui-button.aui-button-text[aria-pressed="true"] {
+    background-color: transparent;
+    border-color: transparent
+}
+.aui-button.aui-button-link: hover, .aui-button.aui-button-text: hover {
+    color: #0065ff;
+    text-decoration: underline
+}
+.aui-button.aui-button-link: active, .aui-button.aui-button-text: active {
+    color: #0747a6;
+    text-decoration: none
+}
+.aui-button.aui-button-text,
+.aui-button.aui-button-text: visited {
+    border: none;
+    font-size: inherit;
+    height: inherit;
+    line-height: normal;
+    padding: 0
+}
+.aui-button.aui-button-subtle {
+    background-color: transparent;
+    border-color: transparent;
+    color: #344563
+}
+.aui-buttons .aui-button.aui-button-subtle {
+    border-radius: 3.01px
+}
+.aui-button>.aui-icon+.aui-button-label {
+    margin-left: 4px
+}
+.aui-button.aui-button-compact {
+    font-size: 12px;
+    height: 2.16666666666667em;
+    padding: 2px 8px;
+    line-height: 1.66666666666667
+}
+.aui-buttons {
+    display: inline-block;
+    font-size: 0
+}
+.aui-buttons::after {
+    clear: both;
+    content: "";
+    display: table
+}
+.aui-buttons .aui-button {
+    border-radius: 0;
+    margin: 0
+}
+.aui-buttons .aui-button: first-child {
+    border-top-left-radius: 3.01px;
+    border-bottom-left-radius: 3.01px
+}
+.aui-buttons .aui-button: last-child {
+    border-top-right-radius: 3.01px;
+    border-bottom-right-radius: 3.01px
+}
+.aui-buttons+.aui-buttons {
+    margin-left: 10px
+}
+.aui-buttons .aui-button: not(.aui-button-primary): not(.aui-button-link): focus, .aui-buttons .aui-button: not(.aui-button-primary): not(.aui-button-link): hover, .aui-buttons .aui-button: not(.aui-button-primary): not(.aui-button-link): active {
+    border-color: transparent
+}
+.aui-buttons .aui-button[disabled],
+.aui-buttons .aui-button[disabled]: hover, .aui-buttons .aui-button[disabled]: focus, .aui-buttons .aui-button[disabled]: active, .aui-buttons .aui-button[aria-disabled="true"], .aui-buttons .aui-button[aria-disabled="true"]: hover, .aui-buttons .aui-button[aria-disabled="true"]: focus, .aui-buttons .aui-button[aria-disabled="true"]: active {
+    border-color: transparent
+}
+.aui-buttons .aui-button~.aui-button {
+    border-left-width: 0;
+    margin-left: 2px
+}
+.aui-buttons .aui-button: hover, .aui-buttons .aui-button: focus, .aui-buttons .aui-button: active {
+    position: relative
+}
+.aui-buttons .aui-button: focus {
+    z-index: 1
+}
+.aui-button[aria-pressed="true"],
+.aui-buttons .aui-button[aria-pressed="true"],
+.aui-buttons .aui-button[aria-pressed="true"].aui-button-primary,
+.aui-buttons .aui-button[aria-pressed="true"].aui-button-subtle {
+    color: #fff;
+    background-color: #344563
+}
+.aui-buttons .aui-button[aria-pressed="true"]: active {
+    color: #344563;
+    background-color: #deebff
+}
+.aui-button[disabled],
+.aui-button[disabled]: hover, .aui-button[disabled]: focus, .aui-button[disabled]: active, .aui-button[aria-disabled="true"], .aui-button[aria-disabled="true"]: hover, .aui-button[aria-disabled="true"]: focus, .aui-button[aria-disabled="true"]: active, .aui-button[aria-disabled="true"][aria-pressed] {
+    background-color: #f4f5f7;
+    border-color: transparent;
+    color: #a5adba;
+    cursor: default
+}
+.aui-button.aui-button-subtle[disabled],
+.aui-button.aui-button-subtle[aria-disabled="true"] {
+    border: 0;
+    background: none
+}
+.aui-button.aui-button-primary[disabled],
+.aui-button.aui-button-primary[disabled]: hover, .aui-button.aui-button-primary[disabled]: focus, .aui-button.aui-button-primary[disabled]: active, .aui-button.aui-button-primary[aria-disabled="true"], .aui-button.aui-button-primary[aria-disabled="true"]: hover, .aui-button.aui-button-primary[aria-disabled="true"]: focus, .aui-button.aui-button-primary[aria-disabled="true"]: active {
+    background-color: #f4f5f7;
+    border-color: transparent;
+    color: #a5adba;
+    cursor: default
+}
+.aui-button.aui-button-link[disabled],
+.aui-button.aui-button-link[disabled]: hover, .aui-button.aui-button-link[disabled]: focus, .aui-button.aui-button-link[disabled]: active, .aui-button.aui-button-link[aria-disabled="true"], .aui-button.aui-button-link[aria-disabled="true"]: hover, .aui-button.aui-button-link[aria-disabled="true"]: focus, .aui-button.aui-button-link[aria-disabled="true"]: active, .aui-button.aui-button-text[disabled], .aui-button.aui-button-text[disabled]: hover, .aui-button.aui-button-text[disabled]: focus, .aui-button.aui-button-text[disabled]: active, .aui-button.aui-button-text[aria-disabled="true"], .aui-button.aui-button-text[aria-disabled="true"]: hover, .aui-button.aui-button-text[aria-disabled="true"]: focus, .aui-button.aui-button-text[aria-disabled="true"]: active {
+    background-color: transparent;
+    border-color: transparent;
+    color: #a5adba;
+    text-decoration: none
+}
+.aui-button.aui-button-compact .aui-icon {
+    margin-top: -1px
+}
+.aui-button .aui-icon {
+    color: #344563
+}
+.aui-button: hover .aui-icon {
+    color: #344563
+}
+.aui-button: active .aui-icon {
+    color: #0052cc
+}
+.aui-button.active .aui-icon {
+    color: #fff
+}
+.aui-button.aui-button-primary .aui-icon {
+    color: #fff
+}
+.aui-button.aui-button-link .aui-icon {
+    color: #0052cc
+}
+.aui-button.aui-button-link: hover .aui-icon {
+    color: #0065ff
+}
+.aui-button.aui-button-link.active .aui-icon,
+.aui-button.aui-button-link: active .aui-icon {
+    color: #0747a6
+}
+.aui-button[aria-disabled="true"] .aui-icon,
+.aui-button[disabled] .aui-icon,
+.aui-button[aria-disabled="true"]: hover .aui-icon, .aui-button[disabled]: hover .aui-icon, .aui-button[aria-disabled="true"]: active .aui-icon, .aui-button[disabled]: active .aui-icon {
+    color: #a5adba
+}
+.aui-button[busy] {
+    position: relative;
+    color: transparent !important
+}
+.aui-button[busy] aui-spinner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto
+}
+.aui-button[busy] aui-spinner {
+    color: #344563
+}
+.aui-button[busy].aui-button-primary aui-spinner {
+    color: #fff
+}
+/* module-key = 'com.atlassian.auiplugin:aui-toolbar2', location = 'src/less/aui-toolbar2.less' */
+
+.aui-toolbar2 {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+.aui-toolbar2 .aui-button {
+    margin-top: 10px
+}
+.aui-toolbar2: after, .aui-toolbar2-group: after {
+    clear: both;
+    content: "";
+    display: table
+}
+.aui-toolbar2-group {
+    margin: 0;
+    padding: 0
+}
+.aui-toolbar2-primary {
+    float: left
+}
+.aui-toolbar2-secondary {
+    float: right
+}
+.aui-toolbar2 .aui-buttons {
+    float: left;
+    padding: 0;
+    white-space: nowrap
+}
+.aui-toolbar2 .aui-button-link {
+    padding: 4px 0
+}
+.aui-toolbar2-primary>.aui-buttons,
+.aui-toolbar2-secondary>.aui-buttons {
+    margin: 0 10px 0 0
+}
+.aui-toolbar2-secondary>.aui-buttons: last-child {
+    margin-right: 0
+}
+/* module-key = 'com.atlassian.auiplugin:aui-navigation', location = 'src/less/aui-navigation.less' */
+
+/*! AUI Navigation */
+
+.aui-nav,
+.aui-nav>li {
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+.aui-nav-breadcrumbs: after, .aui-nav-pagination: after, .aui-nav-horizontal: after, .aui-navgroup-horizontal .aui-nav: after, .aui-navgroup-horizontal .aui-navgroup-inner: after {
+    clear: both;
+    content: " ";
+    display: table
+}
+.aui-nav-breadcrumbs>li,
+.aui-nav-pagination>li {
+    float: left
+}
+.aui-nav-heading {
+    color: #6b778c;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.45454545;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    line-height: 1.81818182;
+    padding: 0 10px
+}
+.aui-nav-heading>strong {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit
+}
+.aui-nav-breadcrumbs>li {
+    padding: 0 10px 0 0
+}
+.aui-nav-breadcrumbs>li+li: before {
+    content: "/";
+    padding-right: 10px
+}
+.aui-nav-pagination {
+    margin: 10px 0 0 0
+}
+.aui-nav-pagination>li {
+    padding: 0
+}
+.aui-nav-pagination>li>a {
+    padding: 10px 10px 0 10px
+}
+.aui-nav-pagination>li.aui-nav-selected,
+.aui-nav-pagination>li.aui-nav-truncation {
+    padding-left: 10px;
+    padding-right: 10px
+}
+.aui-nav-pagination .aui-nav-truncation>a {
+    padding-left: 0;
+    padding-right: 0
+}
+.aui-nav-pagination>li: first-child>a, .aui-nav-pagination>li.aui-nav-truncation: first-child, .aui-nav-pagination>li.aui-nav-selected: first-child {
+    padding-left: 0
+}
+.aui-nav-pagination>li: last-child>a, .aui-nav-pagination>li.aui-nav-truncation: last-child, .aui-nav-pagination>li.aui-nav-selected: last-child {
+    padding-right: 0
+}
+.aui-nav-pagination a[aria-disabled="true"],
+.aui-nav-pagination a[aria-disabled="true"]: link, .aui-nav-pagination a[aria-disabled="true"]: visited, .aui-nav-pagination a[aria-disabled="true"]: focus, .aui-nav-pagination a[aria-disabled="true"]: hover, .aui-nav-pagination a[aria-disabled="true"]: active {
+    color: #97a0af;
+    text-decoration: none
+}
+.aui-nav-pagination>li.aui-nav-current,
+.aui-nav-pagination>li.aui-nav-selected {
+    color: #172b4d;
+    font-weight: 600
+}
+.aui-navgroup-vertical .aui-nav>li>a,
+.aui-nav-vertical>li>a {
+    border-radius: 3px;
+    box-sizing: content-box;
+    display: block;
+    line-height: 1.14285714;
+    padding: 7px 10px;
+    background-color: transparent;
+    color: #42526e;
+    text-decoration: none;
+    word-wrap: break-word
+}
+.aui-navgroup-vertical .aui-nav>li>a: hover, .aui-nav-vertical>li>a: hover {
+    background-color: rgba(9, 30, 66, 0.08);
+    text-decoration: none
+}
+.aui-navgroup-vertical .aui-nav>li>a: active, .aui-nav-vertical>li>a: active {
+    background-color: #deebff;
+    color: #42526e;
+    text-decoration: none
+}
+.aui-navgroup-vertical .aui-nav>li>a: focus, .aui-nav-vertical>li>a: focus {
+    text-decoration: none
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-selected>a,
+.aui-nav-vertical .aui-nav .aui-nav-selected>a {
+    background-color: rgba(9, 30, 66, 0.08);
+    color: #42526e;
+    font-weight: 500
+}
+.aui-navgroup-vertical .aui-nav,
+.aui-navgroup-vertical .aui-nav-heading {
+    margin: 0
+}
+.aui-navgroup-vertical .aui-nav+.aui-nav {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #dfe1e6
+}
+.aui-navgroup-vertical .aui-nav+.aui-nav-heading {
+    margin-top: 20px
+}
+.aui-navgroup-vertical .aui-nav: first-child, .aui-navgroup-vertical .aui-navgroup-inner>.aui-nav-heading: first-child, .aui-navgroup-vertical .aui-navgroup-primary>.aui-nav-heading: first-child {
+    margin-top: 0;
+    padding-top: 0
+}
+.aui-navgroup-vertical .aui-nav .aui-nav {
+    margin-top: 0;
+    padding: 0 0 0 20px
+}
+.aui-navgroup-vertical .aui-nav .aui-nav>li {
+    position: relative
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded] {
+    position: relative
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded] .aui-nav-heading {
+    padding-left: 0
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded] .aui-nav-subtree-toggle {
+    box-sizing: border-box;
+    color: #97a0af;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    padding: 2px;
+    top: 5px;
+    width: 20px;
+    z-index: 1
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded] .aui-nav-subtree-toggle>.aui-icon {
+    display: block;
+    margin: 0 auto
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded] .aui-nav-subtree-toggle+.aui-nav-item {
+    padding-left: 30px
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded] li {
+    position: relative
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded][aria-expanded="false"]>* {
+    display: none
+}
+.aui-navgroup-vertical .aui-nav>li[aria-expanded][aria-expanded="false"]>.aui-nav-subtree-toggle,
+.aui-navgroup-vertical .aui-nav>li[aria-expanded][aria-expanded="false"]>.aui-nav-item {
+    display: inherit
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions {
+    background: transparent none;
+    border-color: transparent;
+    color: #344563;
+    text-decoration: none;
+    border-radius: 2px;
+    display: block;
+    height: 16px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    right: 5px;
+    text-indent: -999em;
+    top: 7px;
+    width: 16px
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0;
+    font-family: "Adgs Icons";
+    font-weight: normal;
+    font-style: normal;
+    speak: none;
+    content: "\f15b";
+    font-size: 12px;
+    height: 12px;
+    line-height: 1;
+    margin-top: -6px;
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    text-indent: 0;
+    width: 12px;
+    content: "\f17f"
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions: hover, .aui-navgroup-vertical .aui-nav .aui-nav-item-actions: focus {
+    background-color: rgba(9, 30, 66, 0.13);
+    border-color: transparent;
+    color: #344563;
+    text-decoration: none
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions: active {
+    background-image: none;
+    background-color: #deebff;
+    border-color: transparent;
+    color: #0052cc;
+    text-decoration: none
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions: active: after {
+    border-top-color: #172b4d
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions.active {
+    background-image: none;
+    background-color: #344563;
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none
+}
+.aui-navgroup-vertical .aui-nav .aui-nav-item-actions~.aui-nav-item-label {
+    margin-right: 15px
+}
+.aui-nav-horizontal,
+.aui-navgroup-horizontal .aui-nav {
+    display: flex;
+    flex-direction: row
+}
+.aui-nav-horizontal>li a,
+.aui-navgroup-horizontal .aui-nav>li a {
+    padding-right: 10px
+}
+.aui-navgroup-horizontal {
+    position: relative;
+    margin: 0;
+    padding: 0 10px
+}
+.aui-navgroup-horizontal::after {
+    background: #ebecf0;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    width: initial;
+    z-index: auto
+}
+.aui-navgroup-horizontal .aui-navgroup-inner,
+.aui-navgroup-horizontal .aui-navgroup-primary,
+.aui-navgroup-horizontal .aui-navgroup-secondary,
+.aui-navgroup-horizontal .aui-nav {
+    display: flex;
+    flex-wrap: wrap
+}
+.aui-navgroup-horizontal .aui-navgroup-inner {
+    justify-content: space-between
+}
+.aui-navgroup-horizontal .aui-navgroup-primary {
+    flex-grow: 1;
+    order: 0
+}
+.aui-navgroup-horizontal .aui-navgroup-secondary {
+    order: 1
+}
+.aui-navgroup-horizontal .aui-nav>li a {
+    display: block;
+    margin: 0;
+    padding: 9px 10px;
+    position: relative
+}
+.aui-navgroup-horizontal .aui-nav>li a,
+.aui-navgroup-horizontal .aui-nav>li a: link, .aui-navgroup-horizontal .aui-nav>li a: visited {
+    color: #42526e;
+    text-decoration: none
+}
+.aui-navgroup-horizontal .aui-nav>li a: focus, .aui-navgroup-horizontal .aui-nav>li a: hover {
+    color: #4c9aff
+}
+.aui-navgroup-horizontal .aui-nav>li a: focus {
+    z-index: 1
+}
+.aui-navgroup-horizontal .aui-nav>.aui-nav-selected a {
+    position: relative;
+    font-weight: 500
+}
+.aui-navgroup-horizontal .aui-nav>.aui-nav-selected a::after {
+    background: #0052cc;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 2px;
+    left: 10px;
+    position: absolute;
+    right: 10px;
+    width: initial;
+    z-index: 1
+}
+.aui-navgroup-horizontal .aui-nav>.aui-nav-selected a,
+.aui-navgroup-horizontal .aui-nav>.aui-nav-selected a: link, .aui-navgroup-horizontal .aui-nav>.aui-nav-selected a: visited, .aui-navgroup-horizontal .aui-nav>.aui-nav-selected a.active {
+    color: #0052cc
+}
+.aui-navgroup-horizontal .aui-dropdown2-trigger .aui-icon-dropdown {
+    display: none
+}
+.aui-navgroup-horizontal .aui-dropdown2-trigger::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0;
+    font-family: "Adgs Icons";
+    font-weight: normal;
+    font-style: normal;
+    speak: none;
+    content: "\f15b";
+    font-size: 16px;
+    height: 16px;
+    line-height: 1;
+    margin-top: -8px;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    text-indent: 0;
+    width: 16px
+}
+.aui-navgroup-horizontal .aui-nav-breadcrumbs>li,
+.aui-navgroup-horizontal .aui-nav-breadcrumbs>li: before {
+    padding: 0
+}
+.aui-navgroup-horizontal .aui-nav-breadcrumbs>li a {
+    display: inline-block
+}
+.aui-navgroup-horizontal .aui-nav-heading {
+    padding: 10px 10px 0 10px
+}
+.aui-nav-actions-list {
+    font-size: 0;
+    list-style: none;
+    margin: 10px 0 0 0;
+    padding: 0
+}
+.aui-nav-actions-list: first-child {
+    margin-top: 0
+}
+.aui-nav-actions-list>li {
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 5px
+}
+.aui-nav-actions-list>li+li::before {
+    content: "";
+    border-radius: 2px;
+    width: 2px;
+    height: 2px;
+    background-color: #7a869a;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-right: 10px
+}
+/* module-key = 'com.atlassian.auiplugin:aui-experimental-iconfont', location = 'src/less/adg-iconfont.less' */
+
+.aui-iconfont-add: before {
+    content: "\f101"
+}
+.aui-iconfont-add-comment: before {
+    content: "\f102"
+}
+.aui-iconfont-add-small: before {
+    content: "\f103"
+}
+.aui-iconfont-approve: before {
+    content: "\f104"
+}
+.aui-iconfont-appswitcher: before {
+    content: "\f105"
+}
+.aui-iconfont-arrows-down: before {
+    content: "\f106"
+}
+.aui-iconfont-arrows-left: before {
+    content: "\f107"
+}
+.aui-iconfont-arrows-right: before {
+    content: "\f108"
+}
+.aui-iconfont-arrows-up: before {
+    content: "\f109"
+}
+.aui-iconfont-attachment: before {
+    content: "\f10a"
+}
+.aui-iconfont-attachment-small: before {
+    content: "\f10b"
+}
+.aui-iconfont-autocomplete-date: before {
+    content: "\f10c"
+}
+.aui-iconfont-back-page: before {
+    content: "\f10d"
+}
+.aui-iconfont-blogroll: before {
+    content: "\f10e"
+}
+.aui-iconfont-bp-decisions: before {
+    content: "\f10f"
+}
+.aui-iconfont-bp-default: before {
+    content: "\f110"
+}
+.aui-iconfont-bp-files: before {
+    content: "\f111"
+}
+.aui-iconfont-bp-requirements: before {
+    content: "\f112"
+}
+.aui-iconfont-bp-howto: before {
+    content: "\f113"
+}
+.aui-iconfont-bp-jira: before {
+    content: "\f114"
+}
+.aui-iconfont-bp-meeting: before {
+    content: "\f115"
+}
+.aui-iconfont-bp-retrospective: before {
+    content: "\f116"
+}
+.aui-iconfont-bp-sharedlinks: before {
+    content: "\f117"
+}
+.aui-iconfont-bp-troubleshooting: before {
+    content: "\f118"
+}
+.aui-iconfont-build: before {
+    content: "\f119"
+}
+.aui-iconfont-calendar: before {
+    content: "\f11a"
+}
+.aui-iconfont-close-dialog: before {
+    content: "\f11b"
+}
+.aui-iconfont-collapsed: before {
+    content: "\f11c"
+}
+.aui-iconfont-comment: before {
+    content: "\f11d"
+}
+.aui-iconfont-configure: before {
+    content: "\f11e"
+}
+.aui-iconfont-confluence: before {
+    content: "\f11f"
+}
+.aui-iconfont-copy-clipboard: before {
+    content: "\f120"
+}
+.aui-iconfont-custom-bullet: before {
+    content: "\f121"
+}
+.aui-iconfont-delete: before {
+    content: "\f122"
+}
+.aui-iconfont-deploy: before {
+    content: "\f123"
+}
+.aui-iconfont-details: before {
+    content: "\f124"
+}
+.aui-iconfont-devtools-arrow-left: before {
+    content: "\f125"
+}
+.aui-iconfont-devtools-arrow-right: before {
+    content: "\f126"
+}
+.aui-iconfont-devtools-branch: before {
+    content: "\f127"
+}
+.aui-iconfont-devtools-branch-small: before {
+    content: "\f128"
+}
+.aui-iconfont-devtools-browse-up: before {
+    content: "\f129"
+}
+.aui-iconfont-devtools-checkout: before {
+    content: "\f12a"
+}
+.aui-iconfont-devtools-clone: before {
+    content: "\f12b"
+}
+.aui-iconfont-devtools-commit: before {
+    content: "\f12c"
+}
+.aui-iconfont-devtools-compare: before {
+    content: "\f12d"
+}
+.aui-iconfont-devtools-file: before {
+    content: "\f12e"
+}
+.aui-iconfont-devtools-file-binary: before {
+    content: "\f12f"
+}
+.aui-iconfont-devtools-file-commented: before {
+    content: "\f130"
+}
+.aui-iconfont-devtools-folder-closed: before {
+    content: "\f131"
+}
+.aui-iconfont-devtools-folder-open: before {
+    content: "\f132"
+}
+.aui-iconfont-devtools-fork: before {
+    content: "\f133"
+}
+.aui-iconfont-devtools-pull-request: before {
+    content: "\f134"
+}
+.aui-iconfont-devtools-repository: before {
+    content: "\f135"
+}
+.aui-iconfont-devtools-repository-forked: before {
+    content: "\f136"
+}
+.aui-iconfont-devtools-repository-locked: before {
+    content: "\f137"
+}
+.aui-iconfont-devtools-side-diff: before {
+    content: "\f138"
+}
+.aui-iconfont-devtools-submodule: before {
+    content: "\f139"
+}
+.aui-iconfont-devtools-tag: before {
+    content: "\f13a"
+}
+.aui-iconfont-devtools-tag-small: before {
+    content: "\f13b"
+}
+.aui-iconfont-devtools-task-cancelled: before {
+    content: "\f13c"
+}
+.aui-iconfont-devtools-task-disabled: before {
+    content: "\f13d"
+}
+.aui-iconfont-devtools-task-in-progress: before {
+    content: "\f13e"
+}
+.aui-iconfont-doc: before {
+    content: "\f13f"
+}
+.aui-iconfont-down: before {
+    content: "\f140"
+}
+.aui-iconfont-drag-vertical: before {
+    content: "\f141"
+}
+.aui-iconfont-edit: before {
+    content: "\f142"
+}
+.aui-iconfont-edit-small: before {
+    content: "\f143"
+}
+.aui-iconfont-editor-align-center: before {
+    content: "\f144"
+}
+.aui-iconfont-editor-align-left: before {
+    content: "\f145"
+}
+.aui-iconfont-editor-align-right: before {
+    content: "\f146"
+}
+.aui-iconfont-editor-bold: before {
+    content: "\f147"
+}
+.aui-iconfont-editor-color: before {
+    content: "\f148"
+}
+.aui-iconfont-editor-emoticon: before {
+    content: "\f149"
+}
+.aui-iconfont-editor-help: before {
+    content: "\f14a"
+}
+.aui-iconfont-editor-hr: before {
+    content: "\f14b"
+}
+.aui-iconfont-editor-indent: before {
+    content: "\f14c"
+}
+.aui-iconfont-editor-italic: before {
+    content: "\f14d"
+}
+.aui-iconfont-editor-layout: before {
+    content: "\f14e"
+}
+.aui-iconfont-editor-list-bullet: before {
+    content: "\f14f"
+}
+.aui-iconfont-editor-list-number: before {
+    content: "\f150"
+}
+.aui-iconfont-editor-macro-toc: before {
+    content: "\f151"
+}
+.aui-iconfont-editor-mention: before {
+    content: "\f152"
+}
+.aui-iconfont-editor-outdent: before {
+    content: "\f153"
+}
+.aui-iconfont-editor-styles: before {
+    content: "\f154"
+}
+.aui-iconfont-editor-symbol: before {
+    content: "\f155"
+}
+.aui-iconfont-editor-table: before {
+    content: "\f156"
+}
+.aui-iconfont-editor-task: before {
+    content: "\f157"
+}
+.aui-iconfont-editor-underline: before {
+    content: "\f158"
+}
+.aui-iconfont-email: before {
+    content: "\f159"
+}
+.aui-iconfont-error: before {
+    content: "\f15a"
+}
+.aui-iconfont-expanded: before {
+    content: "\f15b"
+}
+.aui-iconfont-file-code: before {
+    content: "\f15c"
+}
+.aui-iconfont-file-doc: before {
+    content: "\f15d"
+}
+.aui-iconfont-file-java: before {
+    content: "\f15e"
+}
+.aui-iconfont-file-pdf: before {
+    content: "\f15f"
+}
+.aui-iconfont-file-ppt: before {
+    content: "\f160"
+}
+.aui-iconfont-file-txt: before {
+    content: "\f161"
+}
+.aui-iconfont-file-wav: before {
+    content: "\f162"
+}
+.aui-iconfont-file-xls: before {
+    content: "\f163"
+}
+.aui-iconfont-file-zip: before {
+    content: "\f164"
+}
+.aui-iconfont-flag: before {
+    content: "\f165"
+}
+.aui-iconfont-focus: before {
+    content: "\f166"
+}
+.aui-iconfont-group: before {
+    content: "\f167"
+}
+.aui-iconfont-handle-horizontal: before {
+    content: "\f168"
+}
+.aui-iconfont-help: before {
+    content: "\f169"
+}
+.aui-iconfont-hipchat: before {
+    content: "\f16a"
+}
+.aui-iconfont-homepage: before {
+    content: "\f16b"
+}
+.aui-iconfont-image: before {
+    content: "\f16c"
+}
+.aui-iconfont-image-extrasmall: before {
+    content: "\f16d"
+}
+.aui-iconfont-image-small: before {
+    content: "\f16e"
+}
+.aui-iconfont-info: before {
+    content: "\f16f"
+}
+.aui-iconfont-jira: before {
+    content: "\f170"
+}
+.aui-iconfont-jira-completed-task: before {
+    content: "\f171"
+}
+.aui-iconfont-jira-test-session: before {
+    content: "\f172"
+}
+.aui-iconfont-like: before {
+    content: "\f173"
+}
+.aui-iconfont-like-small: before {
+    content: "\f174"
+}
+.aui-iconfont-weblink: before {
+    content: "\f175"
+}
+.aui-iconfont-link: before {
+    content: "\f176"
+}
+.aui-iconfont-list-add: before {
+    content: "\f177"
+}
+.aui-iconfont-list-remove: before {
+    content: "\f178"
+}
+.aui-iconfont-locked: before {
+    content: "\f179"
+}
+.aui-iconfont-locked-small: before {
+    content: "\f17a"
+}
+.aui-iconfont-macro-code: before {
+    content: "\f17b"
+}
+.aui-iconfont-macro-default: before {
+    content: "\f17c"
+}
+.aui-iconfont-macro-gallery: before {
+    content: "\f17d"
+}
+.aui-iconfont-macro-status: before {
+    content: "\f17e"
+}
+.aui-iconfont-more: before {
+    content: "\f17f"
+}
+.aui-iconfont-nav-children: before {
+    content: "\f180"
+}
+.aui-iconfont-page-blank: before {
+    content: "\f181"
+}
+.aui-iconfont-page-blogpost: before {
+    content: "\f182"
+}
+.aui-iconfont-page-default: before {
+    content: "\f183"
+}
+.aui-iconfont-page-template: before {
+    content: "\f184"
+}
+.aui-iconfont-pages: before {
+    content: "\f185"
+}
+.aui-iconfont-quote: before {
+    content: "\f186"
+}
+.aui-iconfont-redo: before {
+    content: "\f187"
+}
+.aui-iconfont-remove: before {
+    content: "\f188"
+}
+.aui-iconfont-remove-label: before {
+    content: "\f189"
+}
+.aui-iconfont-review: before {
+    content: "\f18a"
+}
+.aui-iconfont-rss: before {
+    content: "\f18b"
+}
+.aui-iconfont-search: before {
+    content: "\f18c"
+}
+.aui-iconfont-search-small: before {
+    content: "\f18d"
+}
+.aui-iconfont-share: before {
+    content: "\f18e"
+}
+.aui-iconfont-sidebar-link: before {
+    content: "\f18f"
+}
+.aui-iconfont-sourcetree: before {
+    content: "\f190"
+}
+.aui-iconfont-space-default: before {
+    content: "\f191"
+}
+.aui-iconfont-space-personal: before {
+    content: "\f192"
+}
+.aui-iconfont-star: before {
+    content: "\f193"
+}
+.aui-iconfont-success: before {
+    content: "\f194"
+}
+.aui-iconfont-table-bg: before {
+    content: "\f195"
+}
+.aui-iconfont-table-col-left: before {
+    content: "\f196"
+}
+.aui-iconfont-table-col-remove: before {
+    content: "\f197"
+}
+.aui-iconfont-table-col-right: before {
+    content: "\f198"
+}
+.aui-iconfont-table-copy-row: before {
+    content: "\f199"
+}
+.aui-iconfont-table-cut-row: before {
+    content: "\f19a"
+}
+.aui-iconfont-table-header-column: before {
+    content: "\f19b"
+}
+.aui-iconfont-table-header-row: before {
+    content: "\f19c"
+}
+.aui-iconfont-table-merge: before {
+    content: "\f19d"
+}
+.aui-iconfont-table-no-bg: before {
+    content: "\f19e"
+}
+.aui-iconfont-table-paste-row: before {
+    content: "\f19f"
+}
+.aui-iconfont-table-remove: before {
+    content: "\f1a0"
+}
+.aui-iconfont-table-row-down: before {
+    content: "\f1a1"
+}
+.aui-iconfont-table-row-remove: before {
+    content: "\f1a2"
+}
+.aui-iconfont-table-row-up: before {
+    content: "\f1a3"
+}
+.aui-iconfont-table-split: before {
+    content: "\f1a4"
+}
+.aui-iconfont-teamcals: before {
+    content: "\f1a5"
+}
+.aui-iconfont-time: before {
+    content: "\f1a6"
+}
+.aui-iconfont-undo: before {
+    content: "\f1a7"
+}
+.aui-iconfont-unfocus: before {
+    content: "\f1a8"
+}
+.aui-iconfont-unlocked: before {
+    content: "\f1a9"
+}
+.aui-iconfont-unstar: before {
+    content: "\f1aa"
+}
+.aui-iconfont-unwatch: before {
+    content: "\f1ab"
+}
+.aui-iconfont-up: before {
+    content: "\f1ac"
+}
+.aui-iconfont-user: before {
+    content: "\f1ad"
+}
+.aui-iconfont-user-status: before {
+    content: "\f1ae"
+}
+.aui-iconfont-view: before {
+    content: "\f1af"
+}
+.aui-iconfont-view-card: before {
+    content: "\f1b0"
+}
+.aui-iconfont-view-list: before {
+    content: "\f1b1"
+}
+.aui-iconfont-view-table: before {
+    content: "\f1b2"
+}
+.aui-iconfont-warning: before {
+    content: "\f1b3"
+}
+.aui-iconfont-watch: before {
+    content: "\f1b4"
+}
+.aui-iconfont-workbox: before {
+    content: "\f1b5"
+}
+.aui-iconfont-workbox-empty: before {
+    content: "\f1b6"
+}
+.aui-iconfont-configure-columns: before {
+    content: "\f1b7"
+}
+.aui-iconfont-export: before {
+    content: "\f1b8"
+}
+.aui-iconfont-export-list: before {
+    content: "\f1b9"
+}
+.aui-iconfont-file-image: before {
+    content: "\f1ba"
+}
+.aui-iconfont-admin-fusion: before {
+    content: "\f1bb"
+}
+.aui-iconfont-admin-jira-fields: before {
+    content: "\f1bc"
+}
+.aui-iconfont-admin-issue: before {
+    content: "\f1bd"
+}
+.aui-iconfont-admin-notifications: before {
+    content: "\f1be"
+}
+.aui-iconfont-admin-roles: before {
+    content: "\f1bf"
+}
+.aui-iconfont-admin-jira-screens: before {
+    content: "\f1c0"
+}
+.aui-iconfont-pause: before {
+    content: "\f1c1"
+}
+.aui-iconfont-priority-highest: before {
+    content: "\f1c2"
+}
+.aui-iconfont-priority-high: before {
+    content: "\f1c3"
+}
+.aui-iconfont-priority-medium: before {
+    content: "\f1c4"
+}
+.aui-iconfont-priority-low: before {
+    content: "\f1c5"
+}
+.aui-iconfont-priority-lowest: before {
+    content: "\f1c6"
+}
+.aui-iconfont-refresh-small: before {
+    content: "\f1c7"
+}
+.aui-iconfont-share-list: before {
+    content: "\f1c8"
+}
+.aui-iconfont-switch-small: before {
+    content: "\f1c9"
+}
+.aui-iconfont-version: before {
+    content: "\f1ca"
+}
+.aui-iconfont-workflow: before {
+    content: "\f1cb"
+}
+.aui-iconfont-admin-jira-settings: before {
+    content: "\f1cc"
+}
+.aui-iconfont-component: before {
+    content: "\f1cd"
+}
+.aui-iconfont-reopen: before {
+    content: "\f1ce"
+}
+.aui-iconfont-roadmap: before {
+    content: "\f1cf"
+}
+.aui-iconfont-deploy-success: before {
+    content: "\f1d0"
+}
+.aui-iconfont-deploy-fail: before {
+    content: "\f1d1"
+}
+.aui-iconfont-file-generic: before {
+    content: "\f1d2"
+}
+.aui-iconfont-arrow-down: before {
+    content: "\f1d3"
+}
+.aui-iconfont-arrow-up: before {
+    content: "\f1d4"
+}
+.aui-iconfont-file-video: before {
+    content: "\f1d5"
+}
+.aui-iconfont-filter: before {
+    content: "\f1d6"
+}
+.aui-iconfont-table-copy-column: before {
+    content: "\f1d7"
+}
+.aui-iconfont-table-paste-column: before {
+    content: "\f1d8"
+}
+.aui-iconfont-table-cut-column: before {
+    content: "\f1d9"
+}
+.aui-iconfont-maximise-small: before {
+    content: "\f1da"
+}
+.aui-iconfont-minimise-small: before {
+    content: "\f1db"
+}
+.aui-iconfont-more-small: before {
+    content: "\f1dc"
+}
+.aui-iconfont-move-small: before {
+    content: "\f1dd"
+}
+.aui-iconfont-download: before {
+    content: "\f1de"
+}
+.aui-iconfont-upload: before {
+    content: "\f1df"
+}
+.aui-iconfont-version-unreleased: before {
+    content: "\f1e0"
+}
+.aui-iconfont-puzzle: before {
+    content: "\f1e1"
+}
+.aui-iconfont-editor-files: before {
+    content: "\f1e2"
+}
+.aui-iconfont-bp-sprint: before {
+    content: "\f1e3"
+}
+.aui-iconfont-jira-issues: before {
+    content: "\f1e4"
+}
+.aui-iconfont-bitbucket: before {
+    content: "\f1e5"
+}
+.aui-iconfont-blogroll-large: before {
+    content: "\f1e6"
+}
+.aui-iconfont-email-large: before {
+    content: "\f1e7"
+}
+.aui-iconfont-layout-1col-large: before {
+    content: "\f1e8"
+}
+.aui-iconfont-layout-2col-large: before {
+    content: "\f1e9"
+}
+.aui-iconfont-layout-2col-left-large: before {
+    content: "\f1ea"
+}
+.aui-iconfont-layout-2col-right-large: before {
+    content: "\f1eb"
+}
+.aui-iconfont-layout-3col-center-large: before {
+    content: "\f1ec"
+}
+.aui-iconfont-layout-3col-large: before {
+    content: "\f1ed"
+}
+.aui-iconfont-nav-children-large: before {
+    content: "\f1ee"
+}
+.aui-iconfont-pages-large: before {
+    content: "\f1ef"
+}
+.aui-iconfont-sidebar-link-large: before {
+    content: "\f1f0"
+}
+.aui-iconfont-teamcals-large: before {
+    content: "\f1f1"
+}
+.aui-iconfont-user-large: before {
+    content: "\f1f2"
+}
+
+/* module-key = 'com.atlassian.auiplugin:internal-iconfont-v2', location = 'src/less/iconfont-adgs-icons.less' */
+
+@font-face {
+    font-family: "Adgs Icons";
+    src: url('{$BASE_URL;}/data_custom/webfonts/adgs-icons.eot');
+    src: url('{$BASE_URL;}/data_custom/webfonts/adgs-icons.eot?#iefix') format('embedded-opentype'), url('{$BASE_URL;}/data_custom/webfonts/adgs-icons.woff') format('woff'), url('{$BASE_URL;}/data_custom/webfonts/adgs-icons.ttf') format('truetype'), url('{$BASE_URL;}/data_custom/webfonts/adgs-icons.svg#adgs-icons') format('svg');
+    font-weight: normal;
+    font-style: normal
+}
+
+/* module-key = 'com.atlassian.auiplugin:aui-experimental-iconfont', location = 'src/less/adg-iconfont.less' */
+
+.aui-iconfont-add: before {
+    content: "\f101"
+}
+.aui-iconfont-add-comment: before {
+    content: "\f102"
+}
+.aui-iconfont-add-small: before {
+    content: "\f103"
+}
+.aui-iconfont-approve: before {
+    content: "\f104"
+}
+.aui-iconfont-appswitcher: before {
+    content: "\f105"
+}
+.aui-iconfont-arrows-down: before {
+    content: "\f106"
+}
+.aui-iconfont-arrows-left: before {
+    content: "\f107"
+}
+.aui-iconfont-arrows-right: before {
+    content: "\f108"
+}
+.aui-iconfont-arrows-up: before {
+    content: "\f109"
+}
+.aui-iconfont-attachment: before {
+    content: "\f10a"
+}
+.aui-iconfont-attachment-small: before {
+    content: "\f10b"
+}
+.aui-iconfont-autocomplete-date: before {
+    content: "\f10c"
+}
+.aui-iconfont-back-page: before {
+    content: "\f10d"
+}
+.aui-iconfont-blogroll: before {
+    content: "\f10e"
+}
+.aui-iconfont-bp-decisions: before {
+    content: "\f10f"
+}
+.aui-iconfont-bp-default: before {
+    content: "\f110"
+}
+.aui-iconfont-bp-files: before {
+    content: "\f111"
+}
+.aui-iconfont-bp-requirements: before {
+    content: "\f112"
+}
+.aui-iconfont-bp-howto: before {
+    content: "\f113"
+}
+.aui-iconfont-bp-jira: before {
+    content: "\f114"
+}
+.aui-iconfont-bp-meeting: before {
+    content: "\f115"
+}
+.aui-iconfont-bp-retrospective: before {
+    content: "\f116"
+}
+.aui-iconfont-bp-sharedlinks: before {
+    content: "\f117"
+}
+.aui-iconfont-bp-troubleshooting: before {
+    content: "\f118"
+}
+.aui-iconfont-build: before {
+    content: "\f119"
+}
+.aui-iconfont-calendar: before {
+    content: "\f11a"
+}
+.aui-iconfont-close-dialog: before {
+    content: "\f11b"
+}
+.aui-iconfont-collapsed: before {
+    content: "\f11c"
+}
+.aui-iconfont-comment: before {
+    content: "\f11d"
+}
+.aui-iconfont-configure: before {
+    content: "\f11e"
+}
+.aui-iconfont-confluence: before {
+    content: "\f11f"
+}
+.aui-iconfont-copy-clipboard: before {
+    content: "\f120"
+}
+.aui-iconfont-custom-bullet: before {
+    content: "\f121"
+}
+.aui-iconfont-delete: before {
+    content: "\f122"
+}
+.aui-iconfont-deploy: before {
+    content: "\f123"
+}
+.aui-iconfont-details: before {
+    content: "\f124"
+}
+.aui-iconfont-devtools-arrow-left: before {
+    content: "\f125"
+}
+.aui-iconfont-devtools-arrow-right: before {
+    content: "\f126"
+}
+.aui-iconfont-devtools-branch: before {
+    content: "\f127"
+}
+.aui-iconfont-devtools-branch-small: before {
+    content: "\f128"
+}
+.aui-iconfont-devtools-browse-up: before {
+    content: "\f129"
+}
+.aui-iconfont-devtools-checkout: before {
+    content: "\f12a"
+}
+.aui-iconfont-devtools-clone: before {
+    content: "\f12b"
+}
+.aui-iconfont-devtools-commit: before {
+    content: "\f12c"
+}
+.aui-iconfont-devtools-compare: before {
+    content: "\f12d"
+}
+.aui-iconfont-devtools-file: before {
+    content: "\f12e"
+}
+.aui-iconfont-devtools-file-binary: before {
+    content: "\f12f"
+}
+.aui-iconfont-devtools-file-commented: before {
+    content: "\f130"
+}
+.aui-iconfont-devtools-folder-closed: before {
+    content: "\f131"
+}
+.aui-iconfont-devtools-folder-open: before {
+    content: "\f132"
+}
+.aui-iconfont-devtools-fork: before {
+    content: "\f133"
+}
+.aui-iconfont-devtools-pull-request: before {
+    content: "\f134"
+}
+.aui-iconfont-devtools-repository: before {
+    content: "\f135"
+}
+.aui-iconfont-devtools-repository-forked: before {
+    content: "\f136"
+}
+.aui-iconfont-devtools-repository-locked: before {
+    content: "\f137"
+}
+.aui-iconfont-devtools-side-diff: before {
+    content: "\f138"
+}
+.aui-iconfont-devtools-submodule: before {
+    content: "\f139"
+}
+.aui-iconfont-devtools-tag: before {
+    content: "\f13a"
+}
+.aui-iconfont-devtools-tag-small: before {
+    content: "\f13b"
+}
+.aui-iconfont-devtools-task-cancelled: before {
+    content: "\f13c"
+}
+.aui-iconfont-devtools-task-disabled: before {
+    content: "\f13d"
+}
+.aui-iconfont-devtools-task-in-progress: before {
+    content: "\f13e"
+}
+.aui-iconfont-doc: before {
+    content: "\f13f"
+}
+.aui-iconfont-down: before {
+    content: "\f140"
+}
+.aui-iconfont-drag-vertical: before {
+    content: "\f141"
+}
+.aui-iconfont-edit: before {
+    content: "\f142"
+}
+.aui-iconfont-edit-small: before {
+    content: "\f143"
+}
+.aui-iconfont-editor-align-center: before {
+    content: "\f144"
+}
+.aui-iconfont-editor-align-left: before {
+    content: "\f145"
+}
+.aui-iconfont-editor-align-right: before {
+    content: "\f146"
+}
+.aui-iconfont-editor-bold: before {
+    content: "\f147"
+}
+.aui-iconfont-editor-color: before {
+    content: "\f148"
+}
+.aui-iconfont-editor-emoticon: before {
+    content: "\f149"
+}
+.aui-iconfont-editor-help: before {
+    content: "\f14a"
+}
+.aui-iconfont-editor-hr: before {
+    content: "\f14b"
+}
+.aui-iconfont-editor-indent: before {
+    content: "\f14c"
+}
+.aui-iconfont-editor-italic: before {
+    content: "\f14d"
+}
+.aui-iconfont-editor-layout: before {
+    content: "\f14e"
+}
+.aui-iconfont-editor-list-bullet: before {
+    content: "\f14f"
+}
+.aui-iconfont-editor-list-number: before {
+    content: "\f150"
+}
+.aui-iconfont-editor-macro-toc: before {
+    content: "\f151"
+}
+.aui-iconfont-editor-mention: before {
+    content: "\f152"
+}
+.aui-iconfont-editor-outdent: before {
+    content: "\f153"
+}
+.aui-iconfont-editor-styles: before {
+    content: "\f154"
+}
+.aui-iconfont-editor-symbol: before {
+    content: "\f155"
+}
+.aui-iconfont-editor-table: before {
+    content: "\f156"
+}
+.aui-iconfont-editor-task: before {
+    content: "\f157"
+}
+.aui-iconfont-editor-underline: before {
+    content: "\f158"
+}
+.aui-iconfont-email: before {
+    content: "\f159"
+}
+.aui-iconfont-error: before {
+    content: "\f15a"
+}
+.aui-iconfont-expanded: before {
+    content: "\f15b"
+}
+.aui-iconfont-file-code: before {
+    content: "\f15c"
+}
+.aui-iconfont-file-doc: before {
+    content: "\f15d"
+}
+.aui-iconfont-file-java: before {
+    content: "\f15e"
+}
+.aui-iconfont-file-pdf: before {
+    content: "\f15f"
+}
+.aui-iconfont-file-ppt: before {
+    content: "\f160"
+}
+.aui-iconfont-file-txt: before {
+    content: "\f161"
+}
+.aui-iconfont-file-wav: before {
+    content: "\f162"
+}
+.aui-iconfont-file-xls: before {
+    content: "\f163"
+}
+.aui-iconfont-file-zip: before {
+    content: "\f164"
+}
+.aui-iconfont-flag: before {
+    content: "\f165"
+}
+.aui-iconfont-focus: before {
+    content: "\f166"
+}
+.aui-iconfont-group: before {
+    content: "\f167"
+}
+.aui-iconfont-handle-horizontal: before {
+    content: "\f168"
+}
+.aui-iconfont-help: before {
+    content: "\f169"
+}
+.aui-iconfont-hipchat: before {
+    content: "\f16a"
+}
+.aui-iconfont-homepage: before {
+    content: "\f16b"
+}
+.aui-iconfont-image: before {
+    content: "\f16c"
+}
+.aui-iconfont-image-extrasmall: before {
+    content: "\f16d"
+}
+.aui-iconfont-image-small: before {
+    content: "\f16e"
+}
+.aui-iconfont-info: before {
+    content: "\f16f"
+}
+.aui-iconfont-jira: before {
+    content: "\f170"
+}
+.aui-iconfont-jira-completed-task: before {
+    content: "\f171"
+}
+.aui-iconfont-jira-test-session: before {
+    content: "\f172"
+}
+.aui-iconfont-like: before {
+    content: "\f173"
+}
+.aui-iconfont-like-small: before {
+    content: "\f174"
+}
+.aui-iconfont-weblink: before {
+    content: "\f175"
+}
+.aui-iconfont-link: before {
+    content: "\f176"
+}
+.aui-iconfont-list-add: before {
+    content: "\f177"
+}
+.aui-iconfont-list-remove: before {
+    content: "\f178"
+}
+.aui-iconfont-locked: before {
+    content: "\f179"
+}
+.aui-iconfont-locked-small: before {
+    content: "\f17a"
+}
+.aui-iconfont-macro-code: before {
+    content: "\f17b"
+}
+.aui-iconfont-macro-default: before {
+    content: "\f17c"
+}
+.aui-iconfont-macro-gallery: before {
+    content: "\f17d"
+}
+.aui-iconfont-macro-status: before {
+    content: "\f17e"
+}
+.aui-iconfont-more: before {
+    content: "\f17f"
+}
+.aui-iconfont-nav-children: before {
+    content: "\f180"
+}
+.aui-iconfont-page-blank: before {
+    content: "\f181"
+}
+.aui-iconfont-page-blogpost: before {
+    content: "\f182"
+}
+.aui-iconfont-page-default: before {
+    content: "\f183"
+}
+.aui-iconfont-page-template: before {
+    content: "\f184"
+}
+.aui-iconfont-pages: before {
+    content: "\f185"
+}
+.aui-iconfont-quote: before {
+    content: "\f186"
+}
+.aui-iconfont-redo: before {
+    content: "\f187"
+}
+.aui-iconfont-remove: before {
+    content: "\f188"
+}
+.aui-iconfont-remove-label: before {
+    content: "\f189"
+}
+.aui-iconfont-review: before {
+    content: "\f18a"
+}
+.aui-iconfont-rss: before {
+    content: "\f18b"
+}
+.aui-iconfont-search: before {
+    content: "\f18c"
+}
+.aui-iconfont-search-small: before {
+    content: "\f18d"
+}
+.aui-iconfont-share: before {
+    content: "\f18e"
+}
+.aui-iconfont-sidebar-link: before {
+    content: "\f18f"
+}
+.aui-iconfont-sourcetree: before {
+    content: "\f190"
+}
+.aui-iconfont-space-default: before {
+    content: "\f191"
+}
+.aui-iconfont-space-personal: before {
+    content: "\f192"
+}
+.aui-iconfont-star: before {
+    content: "\f193"
+}
+.aui-iconfont-success: before {
+    content: "\f194"
+}
+.aui-iconfont-table-bg: before {
+    content: "\f195"
+}
+.aui-iconfont-table-col-left: before {
+    content: "\f196"
+}
+.aui-iconfont-table-col-remove: before {
+    content: "\f197"
+}
+.aui-iconfont-table-col-right: before {
+    content: "\f198"
+}
+.aui-iconfont-table-copy-row: before {
+    content: "\f199"
+}
+.aui-iconfont-table-cut-row: before {
+    content: "\f19a"
+}
+.aui-iconfont-table-header-column: before {
+    content: "\f19b"
+}
+.aui-iconfont-table-header-row: before {
+    content: "\f19c"
+}
+.aui-iconfont-table-merge: before {
+    content: "\f19d"
+}
+.aui-iconfont-table-no-bg: before {
+    content: "\f19e"
+}
+.aui-iconfont-table-paste-row: before {
+    content: "\f19f"
+}
+.aui-iconfont-table-remove: before {
+    content: "\f1a0"
+}
+.aui-iconfont-table-row-down: before {
+    content: "\f1a1"
+}
+.aui-iconfont-table-row-remove: before {
+    content: "\f1a2"
+}
+.aui-iconfont-table-row-up: before {
+    content: "\f1a3"
+}
+.aui-iconfont-table-split: before {
+    content: "\f1a4"
+}
+.aui-iconfont-teamcals: before {
+    content: "\f1a5"
+}
+.aui-iconfont-time: before {
+    content: "\f1a6"
+}
+.aui-iconfont-undo: before {
+    content: "\f1a7"
+}
+.aui-iconfont-unfocus: before {
+    content: "\f1a8"
+}
+.aui-iconfont-unlocked: before {
+    content: "\f1a9"
+}
+.aui-iconfont-unstar: before {
+    content: "\f1aa"
+}
+.aui-iconfont-unwatch: before {
+    content: "\f1ab"
+}
+.aui-iconfont-up: before {
+    content: "\f1ac"
+}
+.aui-iconfont-user: before {
+    content: "\f1ad"
+}
+.aui-iconfont-user-status: before {
+    content: "\f1ae"
+}
+.aui-iconfont-view: before {
+    content: "\f1af"
+}
+.aui-iconfont-view-card: before {
+    content: "\f1b0"
+}
+.aui-iconfont-view-list: before {
+    content: "\f1b1"
+}
+.aui-iconfont-view-table: before {
+    content: "\f1b2"
+}
+.aui-iconfont-warning: before {
+    content: "\f1b3"
+}
+.aui-iconfont-watch: before {
+    content: "\f1b4"
+}
+.aui-iconfont-workbox: before {
+    content: "\f1b5"
+}
+.aui-iconfont-workbox-empty: before {
+    content: "\f1b6"
+}
+.aui-iconfont-configure-columns: before {
+    content: "\f1b7"
+}
+.aui-iconfont-export: before {
+    content: "\f1b8"
+}
+.aui-iconfont-export-list: before {
+    content: "\f1b9"
+}
+.aui-iconfont-file-image: before {
+    content: "\f1ba"
+}
+.aui-iconfont-admin-fusion: before {
+    content: "\f1bb"
+}
+.aui-iconfont-admin-jira-fields: before {
+    content: "\f1bc"
+}
+.aui-iconfont-admin-issue: before {
+    content: "\f1bd"
+}
+.aui-iconfont-admin-notifications: before {
+    content: "\f1be"
+}
+.aui-iconfont-admin-roles: before {
+    content: "\f1bf"
+}
+.aui-iconfont-admin-jira-screens: before {
+    content: "\f1c0"
+}
+.aui-iconfont-pause: before {
+    content: "\f1c1"
+}
+.aui-iconfont-priority-highest: before {
+    content: "\f1c2"
+}
+.aui-iconfont-priority-high: before {
+    content: "\f1c3"
+}
+.aui-iconfont-priority-medium: before {
+    content: "\f1c4"
+}
+.aui-iconfont-priority-low: before {
+    content: "\f1c5"
+}
+.aui-iconfont-priority-lowest: before {
+    content: "\f1c6"
+}
+.aui-iconfont-refresh-small: before {
+    content: "\f1c7"
+}
+.aui-iconfont-share-list: before {
+    content: "\f1c8"
+}
+.aui-iconfont-switch-small: before {
+    content: "\f1c9"
+}
+.aui-iconfont-version: before {
+    content: "\f1ca"
+}
+.aui-iconfont-workflow: before {
+    content: "\f1cb"
+}
+.aui-iconfont-admin-jira-settings: before {
+    content: "\f1cc"
+}
+.aui-iconfont-component: before {
+    content: "\f1cd"
+}
+.aui-iconfont-reopen: before {
+    content: "\f1ce"
+}
+.aui-iconfont-roadmap: before {
+    content: "\f1cf"
+}
+.aui-iconfont-deploy-success: before {
+    content: "\f1d0"
+}
+.aui-iconfont-deploy-fail: before {
+    content: "\f1d1"
+}
+.aui-iconfont-file-generic: before {
+    content: "\f1d2"
+}
+.aui-iconfont-arrow-down: before {
+    content: "\f1d3"
+}
+.aui-iconfont-arrow-up: before {
+    content: "\f1d4"
+}
+.aui-iconfont-file-video: before {
+    content: "\f1d5"
+}
+.aui-iconfont-filter: before {
+    content: "\f1d6"
+}
+.aui-iconfont-table-copy-column: before {
+    content: "\f1d7"
+}
+.aui-iconfont-table-paste-column: before {
+    content: "\f1d8"
+}
+.aui-iconfont-table-cut-column: before {
+    content: "\f1d9"
+}
+.aui-iconfont-maximise-small: before {
+    content: "\f1da"
+}
+.aui-iconfont-minimise-small: before {
+    content: "\f1db"
+}
+.aui-iconfont-more-small: before {
+    content: "\f1dc"
+}
+.aui-iconfont-move-small: before {
+    content: "\f1dd"
+}
+.aui-iconfont-download: before {
+    content: "\f1de"
+}
+.aui-iconfont-upload: before {
+    content: "\f1df"
+}
+.aui-iconfont-version-unreleased: before {
+    content: "\f1e0"
+}
+.aui-iconfont-puzzle: before {
+    content: "\f1e1"
+}
+.aui-iconfont-editor-files: before {
+    content: "\f1e2"
+}
+.aui-iconfont-bp-sprint: before {
+    content: "\f1e3"
+}
+.aui-iconfont-jira-issues: before {
+    content: "\f1e4"
+}
+.aui-iconfont-bitbucket: before {
+    content: "\f1e5"
+}
+.aui-iconfont-blogroll-large: before {
+    content: "\f1e6"
+}
+.aui-iconfont-email-large: before {
+    content: "\f1e7"
+}
+.aui-iconfont-layout-1col-large: before {
+    content: "\f1e8"
+}
+.aui-iconfont-layout-2col-large: before {
+    content: "\f1e9"
+}
+.aui-iconfont-layout-2col-left-large: before {
+    content: "\f1ea"
+}
+.aui-iconfont-layout-2col-right-large: before {
+    content: "\f1eb"
+}
+.aui-iconfont-layout-3col-center-large: before {
+    content: "\f1ec"
+}
+.aui-iconfont-layout-3col-large: before {
+    content: "\f1ed"
+}
+.aui-iconfont-nav-children-large: before {
+    content: "\f1ee"
+}
+.aui-iconfont-pages-large: before {
+    content: "\f1ef"
+}
+.aui-iconfont-sidebar-link-large: before {
+    content: "\f1f0"
+}
+.aui-iconfont-teamcals-large: before {
+    content: "\f1f1"
+}
+.aui-iconfont-user-large: before {
+    content: "\f1f2"
+}
+
+/* module-key = 'com.atlassian.auiplugin:aui-experimental-iconfont', location = 'src/less/adg-missing-icons.less' */
+
+.aui-iconfont-autocomplete-date::before, .aui-iconfont-blogroll::before, .aui-iconfont-devtools-browse-up::before, .aui-iconfont-deploy::before, .aui-iconfont-custom-bullet::before, .aui-iconfont-hipchat::before, .aui-iconfont-file-code::before, .aui-iconfont-file-doc::before, .aui-iconfont-file-java::before, .aui-iconfont-file-pdf::before, .aui-iconfont-file-ppt::before, .aui-iconfont-file-txt::before, .aui-iconfont-file-wav::before, .aui-iconfont-file-xls::before, .aui-iconfont-file-zip::before, .aui-iconfont-page-blogpost::before, .aui-iconfont-page-template::before, .aui-iconfont-macro-default::before, .aui-iconfont-macro-gallery::before, .aui-iconfont-macro-status::before, .aui-iconfont-user-status::before, .aui-iconfont-view-card::before, .aui-iconfont-workbox-empty::before, .aui-iconfont-export-list::before, .aui-iconfont-admin-fusion::before, .aui-iconfont-admin-jira-fields::before, .aui-iconfont-admin-issue::before, .aui-iconfont-admin-notifications::before, .aui-iconfont-admin-jira-screens::before, .aui-iconfont-priority-highest::before, .aui-iconfont-priority-high::before, .aui-iconfont-priority-medium::before, .aui-iconfont-share-list::before, .aui-iconfont-version::before, .aui-iconfont-workflow::before, .aui-iconfont-admin-jira-settings::before, .aui-iconfont-reopen::before, .aui-iconfont-roadmap::before, .aui-iconfont-deploy-success::before, .aui-iconfont-deploy-fail::before, .aui-iconfont-file-generic::before, .aui-iconfont-file-video::before, .aui-iconfont-blogroll-large::before, .aui-iconfont-priority-low::before, .aui-iconfont-priority-lowest::before, .aui-iconfont-review::before, .aui-iconfont-rss::before, .aui-iconfont-sourcetree::before, .aui-iconfont-space-default::before, .aui-iconfont-table-bg::before, .aui-iconfont-table-no-bg::before, .aui-iconfont-devtools-folder-open::before, .aui-iconfont-devtools-compare::before, .aui-iconfont-devtools-file::before, .aui-iconfont-devtools-file-binary::before, .aui-iconfont-devtools-file-commented::before, .aui-iconfont-devtools-repository::before, .aui-iconfont-devtools-repository-forked::before, .aui-iconfont-devtools-repository-locked::before, .aui-iconfont-devtools-side-diff::before, .aui-iconfont-table-cut-row::before, .aui-iconfont-table-copy-row::before, .aui-iconfont-table-paste-row::before, .aui-iconfont-table-cut-column::before, .aui-iconfont-table-copy-column::before, .aui-iconfont-table-paste-column::before, .aui-iconfont-maximise-small::before, .aui-iconfont-minimise-small::before, .aui-iconfont-more-small::before, .aui-iconfont-move-small::before, .aui-iconfont-version-unreleased::before, .aui-iconfont-puzzle::before, .aui-iconfont-editor-files::before, .aui-iconfont-bp-sprint::before, .aui-iconfont-jira-issues::before, .aui-iconfont-bitbucket::before, .aui-iconfont-jira-completed-task::before, .aui-iconfont-jira-test-session::before, .aui-iconfont-back-page::before, .aui-iconfont-macro-code::before {
+    font-family: "Atlassian Icons"
+}
+/* module-key = 'com.atlassian.auiplugin:aui-experimental-iconfont', location = 'src/less/adgs-icons.less' */
+
+.aui-iconfont-add::before {
+    content: "\f101"
+}
+.aui-iconfont-add-comment::before {
+    content: "\f102"
+}
+.aui-iconfont-approve::before {
+    content: "\f104"
+}
+.aui-iconfont-menu::before {
+    content: "\f105"
+}
+.aui-iconfont-chevron-double-down::before {
+    content: "\f106"
+}
+.aui-iconfont-chevron-double-left::before {
+    content: "\f107"
+}
+.aui-iconfont-chevron-double-right::before {
+    content: "\f108"
+}
+.aui-iconfont-chevron-double-up::before {
+    content: "\f109"
+}
+.aui-iconfont-attachment::before {
+    content: "\f10a"
+}
+.aui-iconfont-documents::before {
+    content: "\f10f"
+}
+.aui-iconfont-refresh::before {
+    content: "\f119"
+}
+.aui-iconfont-calendar::before {
+    content: "\f11a"
+}
+.aui-iconfont-cross::before {
+    content: "\f11b"
+}
+.aui-iconfont-chevron-right::before {
+    content: "\f11c"
+}
+.aui-iconfont-comment::before {
+    content: "\f11d"
+}
+.aui-iconfont-settings::before {
+    content: "\f11e"
+}
+.aui-iconfont-confluence::before {
+    content: "\f11f"
+}
+.aui-iconfont-copy::before {
+    content: "\f120"
+}
+.aui-iconfont-trash::before {
+    content: "\f122"
+}
+.aui-iconfont-upload::before {
+    content: "\f123"
+}
+.aui-iconfont-detail-view::before {
+    content: "\f124"
+}
+.aui-iconfont-arrow-left::before {
+    content: "\f125"
+}
+.aui-iconfont-arrow-right::before {
+    content: "\f126"
+}
+.aui-iconfont-sign-in::before {
+    content: "\f12a"
+}
+.aui-iconfont-import::before {
+    content: "\f12b"
+}
+.aui-iconfont-branch::before {
+    content: "\f127"
+}
+.aui-iconfont-commits::before {
+    content: "\f12c"
+}
+.aui-iconfont-folder-filled::before {
+    content: "\f131"
+}
+.aui-iconfont-create-fork::before {
+    content: "\f133"
+}
+.aui-iconfont-export::before {
+    content: "\f134"
+}
+.aui-iconfont-submodule::before {
+    content: "\f139"
+}
+.aui-iconfont-tag::before {
+    content: "\f13a"
+}
+.aui-iconfont-incomplete-build::before {
+    content: "\f13c"
+}
+.aui-iconfont-plan-disabled::before {
+    content: "\f13d"
+}
+.aui-iconfont-queued-build::before {
+    content: "\f13e"
+}
+.aui-iconfont-document::before {
+    content: "\f13f"
+}
+.aui-iconfont-new-arrow-down::before {
+    content: "\f140"
+}
+.aui-iconfont-edit-filled::before {
+    content: "\f142"
+}
+.aui-iconfont-center-alignment::before {
+    content: "\f144"
+}
+.aui-iconfont-left-alignment::before {
+    content: "\f145"
+}
+.aui-iconfont-right-alignment::before {
+    content: "\f146"
+}
+.aui-iconfont-bold::before {
+    content: "\f147"
+}
+.aui-iconfont-text-color::before {
+    content: "\f148"
+}
+.aui-iconfont-emoji::before {
+    content: "\f149"
+}
+.aui-iconfont-new-help::before {
+    content: "\f14a"
+}
+.aui-iconfont-horizontal-rule::before {
+    content: "\f14b"
+}
+.aui-iconfont-indent-left::before {
+    content: "\f14c"
+}
+.aui-iconfont-italic::before {
+    content: "\f14d"
+}
+.aui-iconfont-page-layout-toggle::before {
+    content: "\f14e"
+}
+.aui-iconfont-bullet-list::before {
+    content: "\f14f"
+}
+.aui-iconfont-number-list::before {
+    content: "\f150"
+}
+.aui-iconfont-table-of-contents::before {
+    content: "\f151"
+}
+.aui-iconfont-mention::before {
+    content: "\f152"
+}
+.aui-iconfont-indent-right::before {
+    content: "\f153"
+}
+.aui-iconfont-advanced::before {
+    content: "\f154"
+}
+.aui-iconfont-symbol::before {
+    content: "\f155"
+}
+.aui-iconfont-table::before {
+    content: "\f156"
+}
+.aui-iconfont-task::before {
+    content: "\f157"
+}
+.aui-iconfont-underline::before {
+    content: "\f158"
+}
+.aui-iconfont-email::before {
+    content: "\f159"
+}
+.aui-iconfont-error::before {
+    content: "\f15a"
+}
+.aui-iconfont-chevron-down::before {
+    content: "\f15b"
+}
+.aui-iconfont-flag::before {
+    content: "\f165"
+}
+.aui-iconfont-vid-full-screen-on::before {
+    content: "\f166"
+}
+.aui-iconfont-group::before {
+    content: "\f167"
+}
+.aui-iconfont-more-vertical::before {
+    content: "\f168"
+}
+.aui-iconfont-question-circle::before {
+    content: "\f169"
+}
+.aui-iconfont-home-circle::before {
+    content: "\f16b"
+}
+.aui-iconfont-image::before {
+    content: "\f16c"
+}
+.aui-iconfont-info-circle::before {
+    content: "\f16f"
+}
+.aui-iconfont-jira::before {
+    content: "\f170"
+}
+.aui-iconfont-like::before {
+    content: "\f173"
+}
+.aui-iconfont-world::before {
+    content: "\f175"
+}
+.aui-iconfont-link::before {
+    content: "\f176"
+}
+.aui-iconfont-add-circle::before {
+    content: "\f177"
+}
+.aui-iconfont-cross-circle::before {
+    content: "\f178"
+}
+.aui-iconfont-lock-filled::before {
+    content: "\f179"
+}
+.aui-iconfont-more::before {
+    content: "\f17f"
+}
+.aui-iconfont-nav-children::before {
+    content: "\f180"
+}
+.aui-iconfont-file::before {
+    content: "\f183"
+}
+.aui-iconfont-quote::before {
+    content: "\f186"
+}
+.aui-iconfont-redo::before {
+    content: "\f187"
+}
+.aui-iconfont-search::before {
+    content: "\f18c"
+}
+.aui-iconfont-share::before {
+    content: "\f18e"
+}
+.aui-iconfont-shortcut::before {
+    content: "\f18f"
+}
+.aui-iconfont-person-circle::before {
+    content: "\f192"
+}
+.aui-iconfont-star-filled::before {
+    content: "\f193"
+}
+.aui-iconfont-check::before {
+    content: "\f194"
+}
+.aui-iconfont-insert-column-before::before {
+    content: "\f196"
+}
+.aui-iconfont-remove-column::before {
+    content: "\f197"
+}
+.aui-iconfont-insert-column-after::before {
+    content: "\f198"
+}
+.aui-iconfont-copy-table-row::before {
+    content: "\f199"
+}
+.aui-iconfont-cut-table-row::before {
+    content: "\f19a"
+}
+.aui-iconfont-heading-column::before {
+    content: "\f19b"
+}
+.aui-iconfont-heading-row::before {
+    content: "\f19c"
+}
+.aui-iconfont-merge-table-cells::before {
+    content: "\f19d"
+}
+.aui-iconfont-paste-table-row::before {
+    content: "\f19f"
+}
+.aui-iconfont-remove-table::before {
+    content: "\f1a0"
+}
+.aui-iconfont-insert-row-after::before {
+    content: "\f1a1"
+}
+.aui-iconfont-remove-row::before {
+    content: "\f1a2"
+}
+.aui-iconfont-insert-row-before::before {
+    content: "\f1a3"
+}
+.aui-iconfont-split-merged-table-cells::before {
+    content: "\f1a4"
+}
+.aui-iconfont-team-calendar::before {
+    content: "\f1a5"
+}
+.aui-iconfont-recent::before {
+    content: "\f1a6"
+}
+.aui-iconfont-undo::before {
+    content: "\f1a7"
+}
+.aui-iconfont-vid-full-screen-off::before {
+    content: "\f1a8"
+}
+.aui-iconfont-unlock-filled::before {
+    content: "\f1a9"
+}
+.aui-iconfont-new-star::before {
+    content: "\f1aa"
+}
+.aui-iconfont-new-watch::before {
+    content: "\f1ab"
+}
+.aui-iconfont-new-arrow-up::before {
+    content: "\f1ac"
+}
+.aui-iconfont-person::before {
+    content: "\f1ad"
+}
+.aui-iconfont-watch-filled::before {
+    content: "\f1af"
+}
+.aui-iconfont-room-menu::before {
+    content: "\f1b1"
+}
+.aui-iconfont-warning::before {
+    content: "\f1b3"
+}
+.aui-iconfont-tray::before {
+    content: "\f1b5"
+}
+.aui-iconfont-vid-pause::before {
+    content: "\f1c1"
+}
+.aui-iconfont-swap::before {
+    content: "\f1c9"
+}
+.aui-iconfont-component::before {
+    content: "\f1cd"
+}
+.aui-iconfont-arrow-down-small::before {
+    content: "\f1d3"
+}
+.aui-iconfont-arrow-up-small::before {
+    content: "\f1d4"
+}
+.aui-iconfont-filter::before {
+    content: "\f1d6"
+}
+.aui-iconfont-download::before {
+    content: "\f1de"
+}
+.aui-iconfont-single-column::before {
+    content: "\f1e8"
+}
+.aui-iconfont-two-column::before {
+    content: "\f1e9"
+}
+.aui-iconfont-right-side-bar::before {
+    content: "\f1ea"
+}
+.aui-iconfont-left-side-bar::before {
+    content: "\f1eb"
+}
+.aui-iconfont-three-column-side-bars::before {
+    content: "\f1ec"
+}
+.aui-iconfont-three-column::before {
+    content: "\f1ed"
+}
+.aui-iconfont-location::before {
+    content: "\f1ee"
+}
+.aui-iconfont-radio::before {
+    content: "\f500"
+}
+.aui-iconfont-activity::before {
+    content: "\f1f3"
+}
+.aui-iconfont-add-item::before {
+    content: "\f1f4"
+}
+.aui-iconfont-addon::before {
+    content: "\f1f5"
+}
+.aui-iconfont-app-access::before {
+    content: "\f1f6"
+}
+.aui-iconfont-app-switcher::before {
+    content: "\f1f7"
+}
+.aui-iconfont-arrow-down-circle::before {
+    content: "\f1f8"
+}
+.aui-iconfont-arrow-down-left::before {
+    content: "\f1f9"
+}
+.aui-iconfont-arrow-down-right::before {
+    content: "\f1fa"
+}
+.aui-iconfont-arrow-left-circle::before {
+    content: "\f1fb"
+}
+.aui-iconfont-arrow-right-circle::before {
+    content: "\f1fc"
+}
+.aui-iconfont-arrow-up-circle::before {
+    content: "\f1fd"
+}
+.aui-iconfont-audio-circle::before {
+    content: "\f1fe"
+}
+.aui-iconfont-audio::before {
+    content: "\f1ff"
+}
+.aui-iconfont-backlog::before {
+    content: "\f200"
+}
+.aui-iconfont-billing-filled::before {
+    content: "\f201"
+}
+.aui-iconfont-billing::before {
+    content: "\f202"
+}
+.aui-iconfont-board::before {
+    content: "\f203"
+}
+.aui-iconfont-book::before {
+    content: "\f204"
+}
+.aui-iconfont-calendar-filled::before {
+    content: "\f205"
+}
+.aui-iconfont-camera-filled::before {
+    content: "\f206"
+}
+.aui-iconfont-camera-rotate::before {
+    content: "\f207"
+}
+.aui-iconfont-camera-take-picture::before {
+    content: "\f208"
+}
+.aui-iconfont-camera::before {
+    content: "\f209"
+}
+.aui-iconfont-canvas::before {
+    content: "\f20a"
+}
+.aui-iconfont-cell-color-underline::before {
+    content: "\f20b"
+}
+.aui-iconfont-cell-color::before {
+    content: "\f20c"
+}
+.aui-iconfont-check-circle-filled::before {
+    content: "\f20d"
+}
+.aui-iconfont-check-circle::before {
+    content: "\f20e"
+}
+.aui-iconfont-checkbox::before {
+    content: "\f20f"
+}
+.aui-iconfont-chevron-down-circle::before {
+    content: "\f210"
+}
+.aui-iconfont-chevron-left-circle::before {
+    content: "\f211"
+}
+.aui-iconfont-chevron-left::before {
+    content: "\f212"
+}
+.aui-iconfont-chevron-right-circle::before {
+    content: "\f213"
+}
+.aui-iconfont-chevron-up-circle::before {
+    content: "\f214"
+}
+.aui-iconfont-chevron-up::before {
+    content: "\f215"
+}
+.aui-iconfont-clone-small::before {
+    content: "\f216"
+}
+.aui-iconfont-code::before {
+    content: "\f217"
+}
+.aui-iconfont-copy-table-column::before {
+    content: "\f218"
+}
+.aui-iconfont-create-branch::before {
+    content: "\f219"
+}
+.aui-iconfont-create-pull-request::before {
+    content: "\f21a"
+}
+.aui-iconfont-credit-card::before {
+    content: "\f21b"
+}
+.aui-iconfont-credit-card-filled::before {
+    content: "\f21c"
+}
+.aui-iconfont-cut-table-column::before {
+    content: "\f21d"
+}
+.aui-iconfont-dashboard::before {
+    content: "\f21e"
+}
+.aui-iconfont-decision::before {
+    content: "\f21f"
+}
+.aui-iconfont-discover-filled::before {
+    content: "\f220"
+}
+.aui-iconfont-discover::before {
+    content: "\f221"
+}
+.aui-iconfont-document-filled::before {
+    content: "\f222"
+}
+.aui-iconfont-dropbox::before {
+    content: "\f223"
+}
+.aui-iconfont-new-edit::before {
+    content: "\f224"
+}
+.aui-iconfont-failed-build::before {
+    content: "\f225"
+}
+.aui-iconfont-feedback::before {
+    content: "\f226"
+}
+.aui-iconfont-folder::before {
+    content: "\f227"
+}
+.aui-iconfont-followers::before {
+    content: "\f228"
+}
+.aui-iconfont-following::before {
+    content: "\f229"
+}
+.aui-iconfont-fork-small::before {
+    content: "\f22a"
+}
+.aui-iconfont-gallery::before {
+    content: "\f22b"
+}
+.aui-iconfont-google-drive::before {
+    content: "\f22c"
+}
+.aui-iconfont-google::before {
+    content: "\f22d"
+}
+.aui-iconfont-graph-bar::before {
+    content: "\f22e"
+}
+.aui-iconfont-graph-line::before {
+    content: "\f22f"
+}
+.aui-iconfont-highlights::before {
+    content: "\f230"
+}
+.aui-iconfont-home-filled::before {
+    content: "\f231"
+}
+.aui-iconfont-image-border::before {
+    content: "\f232"
+}
+.aui-iconfont-image-resize::before {
+    content: "\f233"
+}
+.aui-iconfont-info-filled::before {
+    content: "\f234"
+}
+.aui-iconfont-insert-numbered-column::before {
+    content: "\f235"
+}
+.aui-iconfont-invite-team::before {
+    content: "\f236"
+}
+.aui-iconfont-issue-raise::before {
+    content: "\f237"
+}
+.aui-iconfont-issue::before {
+    content: "\f238"
+}
+.aui-iconfont-issues::before {
+    content: "\f239"
+}
+.aui-iconfont-lightbulb-filled::before {
+    content: "\f23a"
+}
+.aui-iconfont-lightbulb::before {
+    content: "\f23b"
+}
+.aui-iconfont-link-filled::before {
+    content: "\f23c"
+}
+.aui-iconfont-list::before {
+    content: "\f23d"
+}
+.aui-iconfont-lock-circle-small::before {
+    content: "\f23e"
+}
+.aui-iconfont-lock::before {
+    content: "\f23f"
+}
+.aui-iconfont-marketplace::before {
+    content: "\f240"
+}
+.aui-iconfont-multiple-commits::before {
+    content: "\f241"
+}
+.aui-iconfont-needs-work::before {
+    content: "\f242"
+}
+.aui-iconfont-notification-all::before {
+    content: "\f243"
+}
+.aui-iconfont-notification-direct::before {
+    content: "\f244"
+}
+.aui-iconfont-notification::before {
+    content: "\f245"
+}
+.aui-iconfont-office-building-filled::before {
+    content: "\f246"
+}
+.aui-iconfont-office-building::before {
+    content: "\f247"
+}
+.aui-iconfont-open::before {
+    content: "\f248"
+}
+.aui-iconfont-overview::before {
+    content: "\f249"
+}
+.aui-iconfont-page-filled::before {
+    content: "\f24a"
+}
+.aui-iconfont-page::before {
+    content: "\f24b"
+}
+.aui-iconfont-paint-bucket::before {
+    content: "\f24c"
+}
+.aui-iconfont-paste-table-column::before {
+    content: "\f24d"
+}
+.aui-iconfont-pdf::before {
+    content: "\f24e"
+}
+.aui-iconfont-people-group::before {
+    content: "\f24f"
+}
+.aui-iconfont-people::before {
+    content: "\f250"
+}
+.aui-iconfont-portfolio::before {
+    content: "\f251"
+}
+.aui-iconfont-preferences::before {
+    content: "\f252"
+}
+.aui-iconfont-progress::before {
+    content: "\f253"
+}
+.aui-iconfont-pull-requests::before {
+    content: "\f254"
+}
+.aui-iconfont-question-filled::before {
+    content: "\f255"
+}
+.aui-iconfont-queues::before {
+    content: "\f256"
+}
+.aui-iconfont-recent-filled::before {
+    content: "\f257"
+}
+.aui-iconfont-repository-small::before {
+    content: "\f258"
+}
+.aui-iconfont-running-build::before {
+    content: "\f259"
+}
+.aui-iconfont-schedule-filled::before {
+    content: "\f25a"
+}
+.aui-iconfont-schedule::before {
+    content: "\f25b"
+}
+.aui-iconfont-screen::before {
+    content: "\f25c"
+}
+.aui-iconfont-send::before {
+    content: "\f25d"
+}
+.aui-iconfont-ship::before {
+    content: "\f25e"
+}
+.aui-iconfont-sign-out::before {
+    content: "\f25f"
+}
+.aui-iconfont-source::before {
+    content: "\f260"
+}
+.aui-iconfont-subtask::before {
+    content: "\f261"
+}
+.aui-iconfont-successful-build::before {
+    content: "\f262"
+}
+.aui-iconfont-task-list::before {
+    content: "\f263"
+}
+.aui-iconfont-text-color-underline::before {
+    content: "\f264"
+}
+.aui-iconfont-tray-empty::before {
+    content: "\f265"
+}
+.aui-iconfont-unlink::before {
+    content: "\f266"
+}
+.aui-iconfont-unlock-circle::before {
+    content: "\f267"
+}
+.aui-iconfont-unlock::before {
+    content: "\f268"
+}
+.aui-iconfont-vid-audio-muted::before {
+    content: "\f269"
+}
+.aui-iconfont-vid-audio-on::before {
+    content: "\f26a"
+}
+.aui-iconfont-vid-backward::before {
+    content: "\f26b"
+}
+.aui-iconfont-vid-forward::before {
+    content: "\f26c"
+}
+.aui-iconfont-vid-full-connection-circle::before {
+    content: "\f26d"
+}
+.aui-iconfont-vid-full-speaking-circle::before {
+    content: "\f26e"
+}
+.aui-iconfont-vid-hang-up::before {
+    content: "\f26f"
+}
+.aui-iconfont-vid-hd-circle::before {
+    content: "\f270"
+}
+.aui-iconfont-vid-play::before {
+    content: "\f271"
+}
+.aui-iconfont-vid-raised-hand::before {
+    content: "\f272"
+}
+.aui-iconfont-vid-share-screen::before {
+    content: "\f273"
+}
+.aui-iconfont-video-camera-off::before {
+    content: "\f274"
+}
+.aui-iconfont-video-circle::before {
+    content: "\f275"
+}
+.aui-iconfont-video-filled::before {
+    content: "\f276"
+}
+
+/* module-key = 'com.atlassian.auiplugin:icons', location = 'src/less/aui-icons.less' */
+
+.aui-icon {
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    border: none;
+    display: inline-block;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    /*text-indent: -999em; Removed by ChrisG */
+    vertical-align: text-bottom;
+    width: 16px
+}
+.aui-icon-small,
+.aui-icon-large {
+    line-height: 0;
+    position: relative;
+    vertical-align: text-top
+}
+.aui-icon-small::before, .aui-icon-large::before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0;
+    font-family: "Adgs Icons";
+    font-weight: normal;
+    font-style: normal;
+    speak: none;
+    color: inherit;
+    left: 0;
+    line-height: 1;
+    position: absolute;
+    text-indent: 0;
+    top: 50%
+}
+.aui-icon-small {
+    height: 16px;
+    width: 16px
+}
+.aui-icon-large {
+    height: 32px;
+    width: 32px
+}
+.aui-icon-small: before {
+    font-size: 16px;
+    margin-top: -8px
+}
+.aui-icon-large: before {
+    font-size: 32px;
+    margin-top: -16px
+}
+.icon-move,
+.icon-move-d,
+.icon-dropdown,
+.icon-dropdown-d,
+.icon-dropdown-active,
+.icon-dropdown-active-d,
+.icon-minimize,
+.icon-minimize-d,
+.icon-maximize,
+.icon-maximize-d {
+    background-repeat: no-repeat
+}
+.aui-icon.icon-move,
+.aui-icon.icon-move-d,
+.aui-icon.icon-dropdown,
+.aui-icon.icon-dropdown-d,
+.aui-icon.icon-dropdown-active,
+.aui-icon.icon-dropdown-active-d,
+.aui-icon.icon-minimize,
+.aui-icon.icon-minimize-d,
+.aui-icon.icon-maximize,
+.aui-icon.icon-maximize-d {
+    background-position: 0 0 !important;
+    height: 13px;
+    vertical-align: baseline;
+    width: 13px
+}
+.icon-move {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANAQAAAABakNnRAAAAAnRSTlMAAHaTzTgAAAAlSURBVHgBY2BiYGBnYOBvADGUFBiSDBj+/wCSIDYTSBwoC2QAAF4LBNQUu22rAAAAAElFTkSuQmCC');
+    cursor: move
+}
+.icon-move-d {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAAAAABXgLugAAAAAnRSTlMAAHaTzTgAAAAtSURBVHgBY4CAXDAJ4+TmInOgXAyVuXAMIuC8XCBGBqhyMBaaSTjtg3DQVQIAa64U3lyaxpQAAAAASUVORK5CYII=');
+    cursor: move
+}
+.icon-dropdown {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAKUlEQVQY02NgwAf+YwFQCezKKZRCtwdFF4oD0A1ESFDBGVil8IQGbgAAiaBjnU8tP0kAAAAASUVORK5CYII=')
+}
+.icon-dropdown-d {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAKklEQVQY02NgwAdy/2NCqAR25RRKoduDogvFAegGIiSo4AysUnhCAzcAAJOYRxkKj+5hAAAAAElFTkSuQmCC')
+}
+.icon-dropdown-active {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAKElEQVQY02NgwAf+YwE4JaCSlEhh2o2kC91RKAYyoPOo7kI8oYEbAACHhecZSiXhsAAAAABJRU5ErkJggg==')
+}
+.icon-dropdown-active-d {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAKElEQVQY02NgwAdy/2NCnBJQSUqkMO1G0oXuKBQDGdB5VHchntDADQAE0qTxqu2HqgAAAABJRU5ErkJggg==')
+}
+.icon-minimize {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAHklEQVQY02NgwAf+YwE4JaCS5Epht3/wSOEJDdwAAFcvh3lwBRT4AAAAAElFTkSuQmCC')
+}
+.icon-minimize-d {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAH0lEQVQY02NgwAdy/2NCnBJQSXKlsNs/eKTwhAZuAAAbK2Cx/Io00wAAAABJRU5ErkJggg==')
+}
+.icon-maximize {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAJUlEQVQY02NgIAT+YwDipNBNwS+F3SjCUtjdSoYDiJDC6VncAAAKY3uF7U/mdQAAAABJRU5ErkJggg==')
+}
+.icon-maximize-d {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAJklEQVQY02NgIARy/6ND4qTQTcEvhd0owlLY3UqGA4iQwulZ3AAAn8BYKXiL6OYAAAAASUVORK5CYII=')
+}
+form.aui .icon-date,
+.aui-icon-date {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAARElEQVR4AWMoIBGANFgXr8dE927fw0TkaCDLSf/B4O7duwQZ5Gq4iwNccDGHI4gIARuA6tAYJGig1En0DyVMQFcnkQgA7103vYurRvEAAAAASUVORK5CYII=')
+}
+form.aui .icon-range,
+.aui-icon-range {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAARklEQVR4AWMoIBGANFgXr8dEd7EBcjSQ5aT/YAA0gCCDXA0Q911wMSeIUGwA8gkyyNWAsJRyJ6F5mmQNhJ2EFtN0ijgSAQD0WQfB7IGD0QAAAABJRU5ErkJggg==')
+}
+.aui-icon-required {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAARUlEQVR4AWOAgQsu5v8ZSAIIjaVAbA4yAEqXkmpAMxDfABkApZtJNYARiHtABkBpRlIN0AbiK0AcBMQrQHyGkQdGwSgAAPtCJnBUV/TSAAAAAElFTkSuQmCC')
+}
+form.aui .icon-users,
+.aui-icon-users {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAArElEQVR4AWOgCbAuXi8HxLuA+DOUliPVgN1A/B8J78epuKCgwBOIn0GxJ9SAz2gG/MSllgHK+Q/Fz/C5AFMtpuBzWBhADfkCpeWxqoUKeoE4QPwExMbhU9LUAm2UAuK9IL8D8R4glmQgYLIGCCMZsBYtDNZiqkUIlCH5qxxqwCc0Az5jVQsVfI4k+A5qwH90jEstA4SDwLgNwFQ7jAy4gSR4F2rAaTQDjuFSCwBFeGK4drVwMAAAAABJRU5ErkJggg==')
+}
+form.aui .icon-help,
+.aui-icon-help,
+form.aui .icon-inline-help,
+.aui-icon-inline-help {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAABG0lEQVR4AU2RNVYtQRiE+7m7IxHRlRxnHWwAty9lDbg7K4AUh7kJ7vDwEGLcvU6f6cP8NVJVXe3GFWGqWedSWBcLm2DxjmZuuSFGgxATu9X/tWt+zTAPdBNnnBNHl5whP0KDRJm1ezjimn6SpArlNhqRCLd02eA0h+SSzS47PJfuUEvEUMMN/yR/8UC5DVaKJej/T6PVGNbxjC1SeKtvBgfMawQVHhuGS9oC+8ninGW3XNq4MlwRDAyzx1enFDgxbOAFAhP0BpTHf7dIZyW64f1F1hqi3NLhW584Ej77StskKkIjD5Ra6y0bwlvLC7inyR31iCJd2MF5Zs+0U84wr58uq5U7bvBoEDxupBrVHCwi1LLJNaf8F4s4/xGiuqDPs2tUOAAAAABJRU5ErkJggg==')
+}
+.aui-message .icon-close,
+.aui-icon-close {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAOUlEQVR4AWOgGogCQjQ+KrcfCKMw+MgCECEMHqYSdGlMJZjSCCWo0oQVELaCsCMJe5NwQBEOasoBAGP2Kx0Yi3q/AAAAAElFTkSuQmCC')
+}
+.aui-message .icon-close-inverted,
+.aui-message.error .icon-close,
+.aui-icon-close-inverted {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAOklEQVR4AWOgFvi/4P8CdD4qFwQWYPCRBSBCGDxMJejSmEowpRFKUKUJKyBsBWFHEvYm4YAiHNSUAwDHH6hxrraMqwAAAABJRU5ErkJggg==')
+}
+.aui-icon-dropdown {
+    border: 4px solid transparent;
+    border-top-color: #172b4d;
+    content: "";
+    display: inline-block;
+    height: 0;
+    overflow: hidden;
+    text-align: left;
+    text-indent: -999em;
+    position: relative;
+    vertical-align: baseline;
+    width: 0
 }

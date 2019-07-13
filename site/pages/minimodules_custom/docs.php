@@ -30,6 +30,11 @@ global $CONFLUENCE_SPACE;
 $CONFLUENCE_SPACE = 'EXAMPLE';
 */
 
+// Special index, useful for debugging
+if (get_param_string('type', '') == 'index') {
+    return do_block('menu', array('type' => 'sitemap', 'param' => get_zone_name() . ':docs'));
+}
+
 list($content_type, $id, $posting_day) = confluence_current_page_id();
 
 if ($content_type == 'page') {
@@ -40,13 +45,22 @@ if ($content_type == 'page') {
     } else {
         $html = $full['body']['view']['value'];
     }
+
+    $title = get_screen_title($full['title'], false);
 } else {
-    $query = 'content?expand=body.view,container&type=' . urlencode($content_type) . '&title=' . urlencode($id) . '&postingDay=' . urlencode($posting_day);
+    $query = 'content?expand=body.view,container,history&type=' . urlencode($content_type) . '&title=' . urlencode($id) . '&postingDay=' . urlencode($posting_day);
     $full = confluence_query($query);
     if (!isset($full['results'][0])) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $html = $full['results'][0]['body']['view']['value'];
+
+    $sub = null;
+    if ($content_type == 'blogpost') {
+        $sub = do_lang('BLOG_POST_BY', $full['results'][0]['history']['createdBy']['username']);
+    }
+
+    $title = get_screen_title($full['results'][0]['title'], false, null, null, null, true, $sub);
 }
 
 
@@ -54,5 +68,15 @@ $html = confluence_clean_page($html);
 
 $root_id = confluence_root_id();
 
-return do_template('CONFLUENCE_SCREEN', array('_GUID' => '33a65e7f6832fac49cbb1f8e77a9c7b0', 'HTML' => $html, 'ROOT_ID' => strval($root_id),
+$breadcrumbs = confluence_breadcrumbs($id);
+if ($breadcrumbs !== null) {
+    breadcrumb_set_parents($breadcrumbs);
+}
+
+return do_template('CONFLUENCE_SCREEN', array(
+    '_GUID' => '33a65e7f6832fac49cbb1f8e77a9c7b0',
+    'TITLE' => $title,
+    'HTML' => $html,
+    'ROOT_ID' => strval($root_id),
+    'BREADCRUMBS' => ($breadcrumbs === null) ? new Tempcode() : breadcrumb_segments_to_tempcode($breadcrumbs),
 ));
