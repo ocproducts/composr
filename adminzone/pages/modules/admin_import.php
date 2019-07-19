@@ -410,7 +410,7 @@ class Module_admin_import
                 $old_base_dir = '/' . $old_base_dir;
             } elseif ((substr($old_base_dir, 0, 1) != '/') && (file_exists(get_file_base() . '/' . $old_base_dir))) {
                 $old_base_dir = get_file_base() . '/' . $old_base_dir;
-            } elseif (file_exists(get_file_base() . '/' . $old_base_dir)) {
+            } elseif (file_exists(get_file_base() . $old_base_dir)) {
                 $old_base_dir = get_file_base() . $old_base_dir;
             }
         }
