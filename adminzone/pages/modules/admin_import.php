@@ -382,7 +382,7 @@ class Module_admin_import
         $url = build_url(array('page' => '_SELF', 'type' => 'hook', 'session' => $session, 'importer' => $importer), '_SELF');
         $message = array_key_exists('message', $info) ? $info['message'] : '';
 
-        return do_template('FORM_SCREEN', array('_GUID' => '15f2c855acf0d365a2e6329bec692dc8', 'TEXT' => $message, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
+        return do_template('FORM_SCREEN', array('_GUID' => '15f2c855acf0d365a2e6329bec692dc8', 'MODSECURITY_WORKAROUND' => true, 'TEXT' => $message, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
     }
 
     /**
@@ -394,6 +394,9 @@ class Module_admin_import
      */
     public function choose_actions($extra = '')
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $session = either_param_string('session', get_session_id());
         $this->appropriate_import_session_to_current($session);
 
