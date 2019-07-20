@@ -207,7 +207,7 @@ class Hook_search_confluence extends FieldsSearchHook
         global $SEARCH__CONTENT_BITS;
         $highlight_bits = is_null($SEARCH__CONTENT_BITS) ? array() : $SEARCH__CONTENT_BITS;
 
-        $text_summary_h = nl2br(escape_html(preg_replace('#\n+#', "\n", $myrow['excerpt'])));
+        $text_summary_h = nl2br(escape_html(preg_replace('#\n+#', "\n", str_replace('@', '', $myrow['excerpt']))));
         $text_summary = generate_text_summary($text_summary_h, $highlight_bits);
 
         $url = build_url(array('page' => 'docs', 'type' => $myrow['content']['id']), '_SEARCH');
