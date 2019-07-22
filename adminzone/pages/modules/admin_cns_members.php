@@ -55,6 +55,10 @@ class Module_admin_cns_members
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MEMBERS', 'menu/social/members'),
             'step1' => array('ADD_MEMBER', 'menu/adminzone/tools/users/member_add'),
@@ -68,7 +72,7 @@ class Module_admin_cns_members
         $ret['export_csv'] = array('EXPORT_MEMBERS', 'admin/export_csv');
 
         if ($support_crosslinks) {
-            if (has_privilege(get_member(), 'member_maintenance')) {
+            if (has_privilege($member_id, 'member_maintenance')) {
                 $ret['_SEARCH:members:browse'] = array('MEMBER_DIRECTORY', 'menu/adminzone/tools/users/member_edit');
             }
             $ret['_SEARCH:admin_cns_merge_members:browse'] = array('MERGE_MEMBERS', 'menu/adminzone/tools/users/merge_members');

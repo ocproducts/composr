@@ -1004,12 +1004,6 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
 
             if (array_key_exists($field_id, $custom_fields)) {
                 if ($check_correctness) {
-                    if (($field['cf_public_view'] == 0) && ($member_id != get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                        access_denied('I_ERROR');
-                    }
-                    if (($field['cf_owner_view'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                        access_denied('I_ERROR');
-                    }
                     if (($field['cf_owner_set'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
                         access_denied('I_ERROR');
                     }

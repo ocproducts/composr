@@ -135,6 +135,56 @@ Templates:
  - [tt]CATALOGUE_*_GRID_ENTRY_FIELD.tpl[/tt]
 [/surround]
 
+[title="3"]Embedded ratings (advanced)[/title]
+
+Ratings will only appear on category views if there are no separate entry views. There are no separate entry views if all these conditions are met:
+ - All fields are visible on categories
+ - Trackbacks are not enabled
+ - Commenting is not enabled
+
+You may be surprised that rating doesn't show on views for the bundled links catalogue, even if you manually add in the [tt]{RATING}[/tt] Tempcode parameter somewhere to the entry templates. This is because the URL field is not set to visible, due to how it is folded in with the title field in the template.
+
+This can be remedied by manually adding a rating field to the templating. The changes (which would be done in proper template overrides) would be like this:
+[code="diff"]
+diff --git a/themes/default/templates/CATALOGUE_links_TABULAR_ENTRY_WRAP.tpl b/themes/default/templates/CATALOGUE_links_TABULAR_ENTRY_WRAP.tpl
+index 70069923c..3cf08b8ae 100644
+--- a/themes/default/templates/CATALOGUE_links_TABULAR_ENTRY_WRAP.tpl
++++ b/themes/default/templates/CATALOGUE_links_TABULAR_ENTRY_WRAP.tpl
+@@ -3,5 +3,9 @@
+ 
+ <tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
+ 	{FIELDS_TABULAR}
++
++	<td>
++		{$RATING,catalogues__links,{ID},{SUBMITTER},{$SELF_URL},{FIELD_1_PLAIN},RATING_INLINE_DYNAMIC}
++	</td>
+ </tr>
+ 
+diff --git a/themes/default/templates/CATALOGUE_links_TABULAR_WRAP.tpl b/themes/default/templates/CATALOGUE_links_TABULAR_WRAP.tpl
+index c2d0d36ae..83ba46381 100644
+--- a/themes/default/templates/CATALOGUE_links_TABULAR_WRAP.tpl
++++ b/themes/default/templates/CATALOGUE_links_TABULAR_WRAP.tpl
+@@ -13,6 +13,19 @@
+ 		<thead>
+ 			<tr>
+ 				{HEAD}
++
++				<th>
++					Rating
++
++					<span class="table_header_sorting">
++						{+START,IF,{$NEQ,{$PAGE},search}}
++						<a target="_self" href="{$SELF_URL*,0,0,0,module_order=compound_rating ASC}"><img src="{$IMG*,results/{$?,{$EQ,{$_GET,module_order},compound_rating ASC},sortablefield_asc,sortablefield_asc_nonselected}}" title="{!SORT_BY} Rating, {!ASCENDING}" alt="{!SORT_BY} Rating, {!ASCENDING}" /></a>
++						{+END}
++						{+START,IF,{$NEQ,{$PAGE},search}}
++						<a target="_self" href="{$SELF_URL*,0,0,0,module_order=compound_rating DESC}"><img src="{$IMG*,results/{$?,{$EQ,{$_GET,module_order},compound_rating DESC},sortablefield_desc,sortablefield_desc_nonselected}}" title="{!SORT_BY} Rating, {!DESCENDING}" alt="{!SORT_BY} Rating, {!DESCENDING}" /></a>
++						{+END}
++					</span>
++				</th>
+ 			</tr>
+ 		</thead>
+[/code]
+
 [title="2"]Adding a catalogue[/title]
 
 To add a catalogue (among other functions) go to Admin Zone > Content > Catalogues > Add catalogue.

@@ -56,15 +56,39 @@ class Module_cms_galleries extends Standard_crud_module
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MANAGE_GALLERIES', 'menu/rich_content/galleries'),
-            'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
-            'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
-            'add_other' => array('ADD_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video'),
-            'edit_other' => array('EDIT_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video'),
         );
 
-        if (has_privilege(get_member(), 'mass_import', 'cms_galleries')) {
+        if (has_privilege($member_id, 'submit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'add_other' => array('ADD_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'edit_other' => array('EDIT_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video'),
+            );
+        }
+
+        if (has_privilege($member_id, 'mass_import', 'cms_galleries')) {
             $ret['import'] = array('GALLERY_IMPORT', 'admin/import');
         }
 

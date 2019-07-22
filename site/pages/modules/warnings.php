@@ -1075,7 +1075,7 @@ class Module_warnings extends Standard_crud_module
             $banned_ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address');
             require_code('failure');
             require_code('failure_spammers');
-            syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
+            syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, false);
 
             require_code('cns_general_action2');
             cns_mod_log_it('MARK_AS_SPAMMER', strval($member_id), $username, $explanation);

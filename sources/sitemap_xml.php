@@ -18,6 +18,14 @@
  * @package    core
  */
 
+/*
+Need to force sitemap regeneration due to some kind of bug? Run these commands via execute_temp.php...
+
+require_code('sitemap_xml');
+build_sitemap_cache_table();
+sitemap_xml_build(true);
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -366,6 +374,24 @@ function _sitemap_cache_node($node, $guest_access)
 }
 
 /**
+ * Remove _SEARCH from page-links.
+ *
+ * @param  SHORT_TEXT $page_link The page-link
+ */
+function canonicalise_sitemap_page_link(&$page_link)
+{
+    // We don't want to leave _SEARCH in there, as it's inconsistent with what the regular Sitemap code goes
+    list($zone, $map) = page_link_decode($page_link);
+    if (isset($map['page'])) {
+        $_zone = get_page_zone($map['page'], false);
+        if ($_zone !== null) {
+            $page_link = preg_replace('#^_SEARCH:#', $_zone . ':', $page_link);
+        }
+    }
+
+}
+
+/**
  * Add a row to our sitemap cache.
  *
  * @param  SHORT_TEXT $page_link The page-link
@@ -378,6 +404,8 @@ function _sitemap_cache_node($node, $guest_access)
  */
 function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null, $priority = null, $refreshfreq = null, $guest_access = null)
 {
+    canonicalise_sitemap_page_link($page_link);
+
     list($zone, $map) = page_link_decode($page_link);
     if (isset($map['page'])) {
         require_code('global4');
@@ -500,6 +528,8 @@ function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null
  */
 function notify_sitemap_node_edit($page_link, $guest_access = null)
 {
+    canonicalise_sitemap_page_link($page_link);
+
     if ($guest_access === null) {
         notify_sitemap_node_add($page_link); // Go through the full flow, which includes gathering metadata
         return;
@@ -533,6 +563,8 @@ function notify_sitemap_node_edit($page_link, $guest_access = null)
  */
 function notify_sitemap_node_delete($page_link)
 {
+    canonicalise_sitemap_page_link($page_link);
+
     $GLOBALS['SITE_DB']->query_update('sitemap_cache', array(
         'last_updated' => time(),
         'is_deleted' => 1,

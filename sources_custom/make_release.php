@@ -1138,7 +1138,7 @@ function _download_latest_data_no_banning()
         $data .= http_get_contents($url);
     }
 
-    cms_file_put_contents_safe(get_file_base() . '/data/no_banning.txt', $data);
+    cms_file_put_contents_safe(get_file_base() . '/text/unbannable_ips.txt', $data);
 }
 
 // See phpdoc_parser.php for functions.dat manifest building

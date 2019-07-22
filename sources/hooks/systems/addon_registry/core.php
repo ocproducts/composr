@@ -1481,7 +1481,6 @@ class Hook_addon_registry_core
             'sources_custom/hooks/systems/actionlog/index.html',
             'sources/hooks/systems/actionlog/core.php',
             'themes/default/templates/TRANSLATION_LINKS.tpl',
-            'data/no_banning.txt',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',

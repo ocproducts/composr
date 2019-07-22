@@ -114,10 +114,14 @@ class Module_filedump
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('FILEDUMP', 'menu/cms/filedump'),
         );
-        if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+        if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) {
             $ret += array(
                 'broken' => array('FIND_BROKEN_FILEDUMP_LINKS', 'menu/adminzone/tools/cleanup'),
             );

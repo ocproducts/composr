@@ -275,6 +275,10 @@ class Self_learning_cache
             $this->data[$key] = array();
         }
 
+        if ((isset($this->data[$key])) && (!is_array($this->data[$key]))) { // Fix to corrupted data
+            $this->data[$key] = array();
+        }
+
         if ((!isset($this->data[$key][$value])) && !array_key_exists($value, $this->data[$key]) || $this->data[$key][$value] !== $value_2) {
             if ($this->paused) {
                 return true;

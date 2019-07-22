@@ -59,7 +59,11 @@ class Module_cms_blogs extends Standard_crud_module
             return null;
         }
 
-        if (!has_privilege(get_member(), 'have_personal_category', 'cms_news')) {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        if (!has_privilege($member_id, 'have_personal_category', 'cms_news')) {
             return null;
         }
 

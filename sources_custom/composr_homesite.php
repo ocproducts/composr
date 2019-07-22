@@ -420,11 +420,11 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     // Set some default config
     $db_conn = new DatabaseConnector('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $SITE_INFO['mysql_demonstratr_password'], 'cms_');
     $db_conn->query_update('config', array('c_value' => $email_address), array('c_name' => 'staff_address'), '', 1);
-    $pass = md5($password);
-    $salt = '';
-    $compat = 'md5';
+    require_code('crypt');
+    $salt = get_secure_random_string();
+    $password_salted = ratchet_hash($password, $salt);
     push_db_scope_check(false);
-    $db_conn->query_update('f_members', array('m_email_address' => $email_address, 'm_pass_hash_salted' => $pass, 'm_pass_salt' => $salt, 'm_password_compat_scheme' => $compat), array('m_username' => 'admin'), '', 1);
+    $db_conn->query_update('f_members', array('m_email_address' => $email_address, 'm_pass_hash_salted' => $password_salted, 'm_pass_salt' => $salt, 'm_password_compat_scheme' => ''), array('m_username' => 'admin'), '', 1);
     pop_db_scope_check();
 
     // Create default file structure

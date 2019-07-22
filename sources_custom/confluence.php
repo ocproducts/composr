@@ -322,7 +322,7 @@ function confluence_clean_page($html)
 
     // Fix incorrect defined header
     $tag_regexp = '(</?(p|div|code|strong|em|a|br)[^<>]*>)';
-    $html = preg_replace('#(</colgroup>\s*|<table[^<>]*>\s*)<tbody( style="[^"]*")?>((\s*<tr[^<>]*>(\s*<th[^<>]*>[^<>]*' . $tag_regexp . '*[^<>]*' . $tag_regexp . '*[^<>]*</th>)+\s*</tr>)+)#s', '$1<thead>$3</thead><tbody>', $html);
+    $html = preg_replace('#(</colgroup>\s*|<table[^<>]*>\s*)<tbody( style="[^"]*")?' . '>((\s*<tr[^<>]*>(\s*<th[^<>]*>[^<>]*' . $tag_regexp . '*[^<>]*' . $tag_regexp . '*[^<>]*</th>)+\s*</tr>)+)#s', '$1<thead>$3</thead><tbody>', $html);
 
     // Responsive tables
     do { // We have to loop as our regex doesn't handle nested tables well

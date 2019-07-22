@@ -6929,8 +6929,8 @@ function ecv_HAS_EDIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
+        $member_id = ((isset($param[2]))) ? intval($param[2]) : get_member();
+        $cms_page = ((isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
             $value = has_edit_permission($range, $member_id, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
         } else {

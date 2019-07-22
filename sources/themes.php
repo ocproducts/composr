@@ -232,7 +232,9 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     // Smart cache learning if we ended up having to bypass smart cache
     if ((($THEME_IMAGES_LOAD_INTENSITY[$db_place] === THEME_IMAGES_LOAD_INTENSITY__ALL) || ($force_recache)) && (!$pure_only)) {
-        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang . '_' . strval($db_place), $id, $url);
+        if ($SMART_CACHE !== null) {
+            $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang . '_' . strval($db_place), $id, $url);
+        }
     }
 
     if ($url !== '') {
@@ -292,7 +294,9 @@ function load_theme_image_cache($db, $db_place, $true_theme, $true_lang)
 
     switch ($THEME_IMAGES_LOAD_INTENSITY[$db_place]) {
         case THEME_IMAGES_LOAD_INTENSITY__NONE:
-            $THEME_IMAGES_CACHE[$db_place] = $SMART_CACHE->get('theme_images_' . $true_theme . '_' . $true_lang . '_' . strval($db_place));
+            if ($SMART_CACHE !== null) {
+                $THEME_IMAGES_CACHE[$db_place] = $SMART_CACHE->get('theme_images_' . $true_theme . '_' . $true_lang . '_' . strval($db_place));
+            }
             if ($THEME_IMAGES_CACHE[$db_place] === null) {
                 $THEME_IMAGES_CACHE[$db_place] = array();
             }

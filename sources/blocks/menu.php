@@ -76,7 +76,7 @@ class Block_menu
         }
 
         $type = isset($map['type']) ? $map['type'] : 'embossed';
-        if ($type != 'dropdown' && $type != 'tree' && $type != 'embossed' && $type != 'popup' && $type != 'select') {
+        if ($type != 'dropdown' && $type != 'tree' && $type != 'embossed' && $type != 'popup' && $type != 'select' && $type != 'sitemap' && $type != 'mobile') {
             $exists = file_exists(get_file_base() . '/themes/default/templates/MENU_BRANCH_' . $type . '.tpl');
             if (!$exists) {
                 $exists = file_exists(get_custom_file_base() . '/themes/default/templates_custom/MENU_BRANCH_' . $type . '.tpl');

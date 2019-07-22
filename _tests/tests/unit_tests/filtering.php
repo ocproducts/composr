@@ -676,7 +676,7 @@ class filtering_test_set extends cms_test_case
 
     public function tearDown()
     {
-        if (!$debug) {
+        if (!$this->debug) {
             $this->cleanup_db();
         }
 

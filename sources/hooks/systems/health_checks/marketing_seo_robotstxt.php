@@ -72,7 +72,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
 
         $rules = $this->robots_parse(null, true);
 
-        $this->assertTrue($rules !== null, '[tt]robots.txt[/tt] not found on domain root');
+        $this->assertTrue($rules !== null, '[tt]robots.txt[/tt] not found on domain root or not web accessible');
     }
 
     /**
@@ -92,6 +92,11 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
         }
         if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
+        }
+
+        $rules = $this->robots_parse(null, true);
+        if ($rules === null) {
+            $this->stateCheckSkipped('No robots.txt file');
         }
 
         $url = $this->get_page_url();
@@ -159,6 +164,11 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
         }
         if ($check_context == CHECK_CONTEXT__SPECIFIC_PAGE_LINKS) {
             return;
+        }
+
+        $rules = $this->robots_parse(null, true);
+        if ($rules === null) {
+            $this->state_check_skipped('No robots.txt file');
         }
 
         $scripts = array( // Really bad if these get indexed on Google

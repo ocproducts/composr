@@ -70,6 +70,8 @@ class web_resources_test_set extends cms_test_case
             'modernizr.js',
             'plupload.js',
             'base64.js',
+            'confluence.js',
+            'confluence2.js',
 
             // Third-party code not confirming to Composr standards
             'widget_color.js',

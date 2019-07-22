@@ -447,10 +447,6 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     $confidence_level = null;
     $status = ANTISPAM_RESPONSE_UNLISTED;
 
-    if (strpos($user_ip, ':') !== false) { // No ipv6 support
-        return array(ANTISPAM_RESPONSE_ERROR, $confidence_level); // TODO: #2585
-    }
-
     // Do the query with every detail we have
     require_code('files');
     require_code('character_sets');

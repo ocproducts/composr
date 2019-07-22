@@ -234,7 +234,9 @@ function _google_translate_api_request($url, $request = null)
 
     $result = @json_decode($_result, true);
     if (($result === false) || (array_key_exists('error', $result))) {
-        error_log('Google Translate issue: ' . $_result, 0);
+        if (php_function_allowed('error_log')) {
+            error_log('Google Translate issue: ' . $_result, 0);
+        }
 
         return null;
     }

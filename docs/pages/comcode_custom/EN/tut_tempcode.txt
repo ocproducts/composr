@@ -1350,7 +1350,7 @@ where:
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RATING,downloads,3}</td>
-			<td>Show a content type's rating. The first parameter is the content-type's code (usually the page name it's viewed from, e.g. downloads) and the second parameter is the ID for the resource.</td>
+			<td>Show a content type's rating. The first parameter is the content-type's code (usually the page name it's viewed from, e.g. downloads) and the second parameter is the ID for the resource. There's an optional third parameter of resource submitter, an optional fourth parameter as the content URL, an optional fifth parameter as the resource title, and an optional sixth parameter as the rating template to use (defaults to showing the raw rating value). Any optional parameters may be left blank to get to the next parameter.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$NUM_RATINGS,downloads,3}</td>

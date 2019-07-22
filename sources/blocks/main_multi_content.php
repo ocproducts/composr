@@ -376,7 +376,7 @@ class Block_main_multi_content
             if ($max_rows == 0) {
                 $rows = array();
             } else {
-                if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) {
+                if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) { // Must be after COUNT(*) happens
                     $query .= ' GROUP BY r.' . $info['id_field'];
                 }
 

@@ -1805,7 +1805,9 @@ function load_comcode_page_from_cache($codename, $zone, $theme)
     $tuple = array($codename, $zone, $theme);
 
     global $SMART_CACHE;
-    $SMART_CACHE->append('comcode_pages_needed', serialize($tuple));
+    if ($SMART_CACHE !== null) {
+        $SMART_CACHE->append('comcode_pages_needed', serialize($tuple));
+    }
 
     $ret = _load_comcodes_page_from_cache(array($tuple));
     return isset($ret[0]) ? $ret[0] : null;

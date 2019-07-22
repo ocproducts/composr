@@ -28,6 +28,10 @@ class comment_encapsulation_test_set extends cms_test_case
             foreach ($files as $file) {
                 $c = file_get_contents($path . '/' . $file);
 
+                if (strpos($c, '/*{$,parser hint: pure}*/') !== false) {
+                    continue;
+                }
+
                 $c = preg_replace('#/\*.*\*/#Us', '', $c);
 
                 $matches = array();

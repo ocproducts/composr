@@ -183,6 +183,7 @@ class basic_code_formatting_test_set extends cms_test_case
                 'themes/default/javascript_custom/sortable_tables.js',
                 'themes/default/javascript_custom/unslider.js',
                 'themes/default/javascript_custom/charts.js',
+                'themes/default/javascript_custom/confluence2.js',
                 'themes/default/templates/BREADCRUMB_SEPARATOR.tpl',
                 'data_custom/rate_limiter.php',
             );
@@ -234,6 +235,9 @@ class basic_code_formatting_test_set extends cms_test_case
                 'lang/langs.ini',
                 'mobiquo/license_agreement.txt',
                 'themes/default/css_custom/confluence.css',
+                'data_custom/webfonts/adgs-icons.svg',
+                'themes/default/javascript_custom/confluence.js',
+                'themes/default/javascript_custom/confluence2.js',
             );
             if (in_array($path, $exceptions)) {
                 continue;

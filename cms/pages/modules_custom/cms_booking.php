@@ -48,17 +48,65 @@ class Module_cms_booking extends Standard_crud_module
             return null;
         }
 
-        return array(
-           'browse' => array('BOOKINGS', 'booking/booking'),
-           'add_booking' => array('ADD_BOOKING', 'admin/add'),
-           'edit_booking' => array('EDIT_BOOKING', 'admin/edit'),
-           'add' => array('ADD_BOOKABLE', 'booking/bookable'),
-           'edit' => array('EDIT_BOOKABLE', 'booking/bookable'),
-           'add_category' => array('ADD_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
-           'edit_category' => array('EDIT_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
-           'add_other' => array('ADD_BOOKABLE_BLACKED', 'booking/blacked'),
-           'edit_other' => array('EDIT_BOOKABLE_BLACKED', 'booking/blacked'),
-        ) + parent::get_entry_points();
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        $ret = array(
+           'browse' => array('BOOKINGS', 'menu/booking'),
+        );
+
+        if (has_privilege($member_id, 'submit_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add_booking' => array('ADD_BOOKING', 'booking/booking'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit_booking' => array('EDIT_BOOKING', 'booking/booking'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add' => array('ADD_BOOKABLE', 'booking/bookable'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit' => array('EDIT_BOOKABLE', 'booking/bookable'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add_category' => array('ADD_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit_category' => array('EDIT_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add_other' => array('ADD_BOOKABLE_BLACKED', 'booking/blacked'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit_other' => array('EDIT_BOOKABLE_BLACKED', 'booking/blacked'),
+            );
+        }
+
+        $ret += parent::get_entry_points();
+
+        return $ret;
     }
 
     /**

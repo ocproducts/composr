@@ -45,7 +45,7 @@ class Hook_rss_news
         }
 
         $filters_1 = selectcode_to_sqlfragment($_filters, 'p.news_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $filters_2 = selectcode_to_sqlfragment($_filters, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        $filters_2 = selectcode_to_sqlfragment($_filters, 'd.news_entry_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
         $filters = '(' . $filters_1 . ' OR ' . $filters_2 . ')';
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;

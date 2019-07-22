@@ -458,7 +458,8 @@ class Module_newsletter
         // Change/make settings
         $old_password = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'the_password', array('email' => $email));
         $old_salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
-        if ((!has_privilege(get_member(), 'change_newsletter_subscriptions')) && ($old_confirm !== null) && ($old_confirm == 0) && ($old_password != '') && (!hash_equals($old_password, md5($password . $old_salt)))) { // Access denied. People who can change any subscriptions can't get denied.
+        require_code('crypt');
+        if ((!has_privilege(get_member(), 'change_newsletter_subscriptions')) && ($old_confirm !== null) && ($old_confirm == 0) && ($old_password != '') && (ratchet_hash_verify($password, $old_password, $old_salt))) { // Access denied. People who can change any subscriptions can't get denied.
             // Access denied to an existing record that was confirmed
             $_reset_url = build_url(array('page' => '_SELF', 'type' => 'reset', 'email' => $email), '_SELF');
             $reset_url = $_reset_url->evaluate();

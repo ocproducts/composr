@@ -20,6 +20,8 @@ if (!addon_installed__messaged('confluence', $error_msg)) {
     return $error_msg;
 }
 
+load_csp(array('csp_enabled' => '0'));
+
 require_code('confluence');
 require_css('confluence');
 
@@ -60,7 +62,7 @@ if ($content_type == 'page') {
         $sub = do_lang('BLOG_POST_BY', $full['results'][0]['history']['createdBy']['username']);
     }
 
-    $title = get_screen_title($full['results'][0]['title'], false, null, null, null, true, $sub);
+    $title = get_screen_title($full['results'][0]['title'], false, array(), null, array(), true, $sub);
 }
 
 

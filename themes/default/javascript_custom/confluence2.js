@@ -1,4 +1,4 @@
-/*{$,Parser hint: pure}*/
+/*{$,parser hint: pure}*/
 
 WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
 ;

@@ -1225,7 +1225,7 @@ function ecv2_HAS_CATEGORY_ACCESS($lang, $escaped, $param)
     $value = '';
 
     if ((isset($param[0])) && (function_exists('has_category_access'))) {
-        $value = has_category_access((($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1]) ? '1' : '0';
+        $value = has_category_access(((isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1]) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1285,7 +1285,7 @@ function ecv2_HAS_PAGE_ACCESS($lang, $escaped, $param)
             $param[1] = '_SEARCH';
         }
 
-        $value = has_page_access((($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1], (($param !== null) && (isset($param[3]))) ? ($param[3] == '1') : false) ? '1' : '0';
+        $value = has_page_access(((isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1], ((isset($param[3]))) ? ($param[3] == '1') : false) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1311,8 +1311,8 @@ function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[0])) {
         $range = strtolower($param[0]);
         $ip_address = $param[1];
-        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
+        $member_id = ((isset($param[2]))) ? intval($param[2]) : get_member();
+        $cms_page = ((isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
             $value = has_submit_permission($range, $member_id, $ip_address, $cms_page, array($param[5], $param[6])) ? '1' : '0';
         } else {
@@ -1566,20 +1566,20 @@ function ecv2_RATING($lang, $escaped, $param)
             global $DISPLAYED_TITLE;
 
             require_code('feedback');
-            $display_tpl = array_key_exists(5, $param) ? $param[5] : 'RATING_FORM';
+            $display_tpl = empty($param[5]) ? 'RATING_FORM' : $param[5];
             $rating = get_rating_simple_array(
-                array_key_exists(3, $param) ? $param[3] : get_self_url(true), // content_url
-                array_key_exists(4, $param) ? $param[4] : (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()), // content_title
+                empty($param[3]) ? get_self_url(true) : $param[3], // content_url
+                empty($param[4]) ? (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()) : $param[4], // content_title
                 $param[0], // content_type
                 $param[1], // content_id
                 'RATING_FORM', // form_tpl
-                array_key_exists(2, $param) ? intval($param[2]) : null // submitter
+                empty($param[2]) ? null : intval($param[2]) // submitter
             );
             if ($rating !== null) {
-                if (array_key_exists(5, $param)) {
-                    $value = static_evaluate_tempcode(do_template($display_tpl, $rating));
-                } else {
+                if (empty($param[5])) {
                     $value = isset($rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['RATING']) ? $rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['RATING'] : '';
+                } else {
+                    $value = static_evaluate_tempcode(do_template($display_tpl, $rating));
                 }
             }
 
@@ -1619,7 +1619,7 @@ function ecv2_NUM_RATINGS($lang, $escaped, $param)
             $value = $cache_num_ratings[$cache_key];
         } else {
             require_code('feedback');
-            $rating = get_rating_simple_array(array_key_exists(3, $param) ? $param[3] : get_self_url(true), array_key_exists(4, $param) ? $param[4] : (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()), $param[0], $param[1], array_key_exists(5, $param) ? $param[5] : 'RATING_FORM', array_key_exists(2, $param) ? $param[2] : null);
+            $rating = get_rating_simple_array(empty($param[3]) ? get_self_url(true) : $param[3], empty($param[4]) ? (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()) : $param[4], $param[0], $param[1], empty($param[5]) ? 'RATING_FORM' : $param[5], empty($param[2]) ? null : $param[2]);
             if ($rating !== null) {
                 $value = $rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['NUM_RATINGS'];
             }
