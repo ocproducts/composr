@@ -12,7 +12,6 @@ test_a
 /www.pid
 /_critical_error.html
 /critical_errors
-/nbproject
 .DS_Store
 /.ftaccess
 /.ftpquota
@@ -147,4 +146,5 @@ pages/html_custom/*/*.htm
 /stats
 /uploads/website_specific/compo.sr/upgrades/full
 /data_custom/fonts/*.ttf
+/nbproject
 
