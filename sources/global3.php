@@ -1137,7 +1137,7 @@ function intelligent_write_error($path)
  * Discern the cause of a file-write error, and return an appropriate error message.
  *
  * @param  PATH $path File path that could not be written
- * @return Tempcode Message
+ * @return mixed Message (Tempcode or string)
  */
 function intelligent_write_error_inline($path)
 {
