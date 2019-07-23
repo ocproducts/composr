@@ -373,6 +373,10 @@ function canonicalise_sitemap_page_link(&$page_link)
  */
 function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
 {
+    if (running_script('install')) {
+        return;
+    }
+
     canonicalise_sitemap_page_link($page_link);
 
     // Maybe we're still installing
