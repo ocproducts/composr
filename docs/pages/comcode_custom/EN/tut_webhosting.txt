@@ -138,6 +138,7 @@ We require:
   - XML extension ([tt]xml[/tt]).
   - The iconv ([tt]iconv[/tt]) or Multibyte String ([tt]mbstring[/tt]) PHP extension (for reliable Unicode support).
   - cURL extension ([tt]curl[/tt]) (for reliable file downloading).
+  - JSON support is required in PHP which should be available by default, but for controversial licensing reasons is provided in separate packaging on some Linux distributions
  - The file upload settings set to allow at least 5MB (or higher, depending on your particular needs).
  - A maximum execution time of at least 30 seconds.
  - Key functions may not be disabled with [tt]disable_functions[/tt] (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been.
