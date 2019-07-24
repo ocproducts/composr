@@ -102,7 +102,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
  *
  * @ignore
  */
-function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
+function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
     disable_php_memory_limit();
 
@@ -499,13 +499,13 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
     }
 
     if ($ext2 == 'png') {
-        if (strtolower(substr($to, -4)) != '.png') {
+        if ((strtolower(substr($to, -4)) != '.png') && (get_file_extension($to) != '')) {
             $to .= '.png';
         }
     }
 
     $lossy = ($width <= 300 && $width != -1 || $height <= 300 && $height != -1 || $box_width <= 300 && $box_width != -1);
-    
+
     $unknown_format = false;
     $test = cms_imagesave($dest, $to, $ext2, $lossy, $unknown_format);
 

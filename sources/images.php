@@ -551,8 +551,10 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return boolean Success
  */
-function convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
+function convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
 {
+    // TODO: Make sure in v11 $to is returned by reference, as it may get changed if the output file type has to be changed for feature-preservation
+
     require_code('images2');
     cms_profile_start_for('convert_image');
     $ret = _convert_image($from, $to, $width, $height, $box_width, $exit_on_error, $ext2, $using_path, $only_make_smaller, $thumb_options);
