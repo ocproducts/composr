@@ -146,4 +146,5 @@ pages/html_custom/*/*.htm
 /stats
 /uploads/website_specific/compo.sr/upgrades/full
 /data_custom/fonts/*.ttf
+/nbproject
 

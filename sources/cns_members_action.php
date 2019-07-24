@@ -233,8 +233,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
             }
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != ''))
-        {
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '')) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if ($test !== null) {
                 warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));

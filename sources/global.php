@@ -330,7 +330,8 @@ function clean_php_file_for_eval($c, $path = null)
 
 // LEGACY (PHP < 7)
 if (!class_exists('Error')) {
-    class Error {
+    class Error
+    {
     }
 }
 

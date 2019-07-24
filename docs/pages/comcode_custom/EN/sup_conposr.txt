@@ -30,7 +30,7 @@ To get Conposr running just download it, put the [tt]conposr[/tt] directory in y
 [code="PHP"]
 global $SITE_INFO; // You can override any options defined with defaults in Conposr's config.php by setting them in this array
 $SITE_INFO['db_site'] = 'test';
-require_once('conposr/global.php');
+require_once('lib/conposr/global.php');
 [/code]
 Then you have access to the API. Functions generally work the same as they do in Composr, e.g. [tt]do_template[/tt] (although templates just reside directly in a [tt]templates[/tt] directory, there are no themes).
 
@@ -49,16 +49,16 @@ This is functionality useful to many kinds of web app, but not really applicable
 
 To get Conposr++ running just download it, put the [tt]conposr_plus_plus[/tt] directory in your project, and load it (after Conposr) with something like:
 [code="PHP"]
-require_once('conposr/global.php');
-require_once('conposr_plus_plus/global.php');
+require_once('lib/conposr/global.php');
+require_once('lib/conposr_plus_plus/global.php');
 [/code]
 
 Here is an example of a Bean class you might name [tt]index.php[/tt]:
 [code="PHP"]
 <?php
 
-require_once('conposr/global.php');
-require_once('conposr_plus_plus/global.php');
+require_once('lib/conposr/global.php');
+require_once('lib/conposr_plus_plus/global.php');
 
 class ExamplePage extends PHPBeanPage
 {
@@ -75,6 +75,9 @@ class ExamplePage extends PHPBeanPage
 $page = new ExamplePage();
 try {
     $page->run();
+}
+catch (Exception $ex) {
+    output_cpp_error($ex);
 }
 [/code]
 Create a template to go with it, [tt]templates/example_page.tpl[/tt]:

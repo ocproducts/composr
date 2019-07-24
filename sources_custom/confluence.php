@@ -264,7 +264,7 @@ function confluence_clean_page($html)
     $html = preg_replace('#\ssrc="([^"]+)"#', ' src="' . find_script('confluence_proxy') . '?$1"', $html);
 
     // Fix internal links, which should be served under our docs module
-    $html = preg_replace_callback('#\shref="\s*([^"]+)"#', function($matches) {
+    $html = preg_replace_callback('#\shref="\s*([^"]+)"#', function ($matches) {
         $url = qualify_url($matches[1], get_confluence_base_url());
         $url = str_replace('http://', 'https://', $url);
 
@@ -313,7 +313,7 @@ function confluence_clean_page($html)
     $html = preg_replace('#(<p>\s*(<br\s*/>|&nbsp;)*\s*</p>)+#s', '<p><br/>', $html);
 
     // More table styles
-    $html = preg_replace_callback('#(<div class="table-wrap)(">\s*<table[^<>]*>)#s', function($matches) {
+    $html = preg_replace_callback('#(<div class="table-wrap)(">\s*<table[^<>]*>)#s', function ($matches) {
         if (strpos($matches[2], 'width:') === false || true) {
             return $matches[1] . ' table-wrap-simple' . $matches[2];
         }
@@ -327,7 +327,7 @@ function confluence_clean_page($html)
     // Responsive tables
     do { // We have to loop as our regex doesn't handle nested tables well
         $html_before = $html;
-        $html = preg_replace_callback('#(<table class="((wrapped |relative-table )*)confluenceTable)("[^<>]*>(\s*<colgroup>.*</colgroup>)?\s*<thead.*</table>)#Us', function($matches) { // The last ".*</table>" bit is so we can detect the colspans
+        $html = preg_replace_callback('#(<table class="((wrapped |relative-table )*)confluenceTable)("[^<>]*>(\s*<colgroup>.*</colgroup>)?\s*<thead.*</table>)#Us', function ($matches) { // The last ".*</table>" bit is so we can detect the colspans
             if (strpos(str_replace('colspan="1"', '', $matches[0]), 'colspan="') !== false) { // colspan will screw up responsive tables
                 return $matches[0];
             }
@@ -339,7 +339,7 @@ function confluence_clean_page($html)
 
     // Clickable images so to allow zoom on mobile
     if (is_mobile()) {
-        $html = preg_replace_callback('#(<img [^<>]*class="[^"]*(confluence-embedded-image|gliffy-image)[^"]*"[^<>]* src=")([^"]*)("[^<>]*>)#s', function($matches) use($html) {
+        $html = preg_replace_callback('#(<img [^<>]*class="[^"]*(confluence-embedded-image|gliffy-image)[^"]*"[^<>]* src=")([^"]*)("[^<>]*>)#s', function ($matches) use($html) {
             $cleaned_leadup = preg_replace('#<a [^<>]*>.*</a>#U', '', substr($html, 0, strpos($html, $matches[0])));
             if (strpos($cleaned_leadup, '<a ') !== false) { // We're inside a link already
                 return $matches[0];

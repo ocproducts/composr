@@ -784,8 +784,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                 $next_ok = _is_valid_data_mash_char($ch);
                 if (($next_ok) && (!$in_portion)) {
                     $x = $ch;
-                    for ($j = $i + 1; $j < strlen($data); $j++) // Count how far a new word goes
-                    {
+                    for ($j = $i + 1; $j < strlen($data); $j++) { // Count how far a new word goes
                         $_ch = $data[$j];
                         $_next_ok = _is_valid_data_mash_char($_ch);
                         if ($_next_ok) {

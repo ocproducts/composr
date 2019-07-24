@@ -940,8 +940,7 @@ function handle_position_in_workflow_edit($validated, $content_type, $id, $categ
         if ($edit_workflow && ($workflow_id == -1)) {
             // Look for the workflow of the containing category
             $workflow_id = ($category_content_type === null || $category_id === null) ? null : get_workflow_of_content($category_content_type, $category_id);
-            if ($workflow_id === null)
-            {
+            if ($workflow_id === null) {
                 // Use the default if it has none
                 $default_workflow_id = get_default_workflow();
                 if ($current_workflow != $default_workflow_id) {
@@ -958,8 +957,7 @@ function handle_position_in_workflow_edit($validated, $content_type, $id, $categ
         }
         elseif ($edit_workflow) {
             // Use the specific ID provided
-            if ($workflow_id != $current_workflow)
-            {
+            if ($workflow_id != $current_workflow) {
                 add_content_to_workflow($content_type, strval($id), $workflow_id);
                 attach_message(do_lang_tempcode('CONTENT_NOW_IN_WORKFLOW', escape_html(get_workflow_name($workflow_id))), 'inform');
             }

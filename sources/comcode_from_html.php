@@ -677,8 +677,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
     $semihtml = cms_preg_replace_safe('#(\s)\s*#', '${1}', $semihtml);
 
     // Clean redundant CSS syntax
-    do
-    {
+    do {
         $old = $semihtml;
         $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
     }
@@ -926,8 +925,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false, $member_
     $semihtml = comcode_preg_replace('center', '#^\[center\]\[right\](.*)\[/right\]\[/center\]$#si', '[center]${1}[/center]', $semihtml);
 
     // Clean redundant CSS syntax (again)
-    do
-    {
+    do {
         $old = $semihtml;
         $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
     }

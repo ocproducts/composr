@@ -76,7 +76,7 @@ class Module_report_content
         if (($upgrade_from === null) || ($upgrade_from < 4)) {
             add_privilege('GENERAL_SETTINGS', 'may_report_content', true);
 
-            register_shutdown_function(function() { // Tickets module not installed yet, so we need to delay
+            register_shutdown_function(function () { // Tickets module not installed yet, so we need to delay
                 // Add ticket type
                 require_lang('tickets');
                 $map = array(

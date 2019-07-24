@@ -35,7 +35,8 @@ function init__minikernel()
 {
     // LEGACY (PHP < 7)
     if (!class_exists('Error')) {
-        class Error {
+        class Error
+        {
         }
     }
 

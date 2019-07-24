@@ -497,8 +497,7 @@ function sitemap_script_saving()
     $changed_privileges = false;
 
     // Read it all in
-    foreach ($map as $i => $page_link) // For everything we're setting at once
-    {
+    foreach ($map as $i => $page_link) { // For everything we're setting at once
         $is_root = (($page_link == ((get_option('single_public_zone') == '0') ? ':' : '')));
 
         // Decode page link

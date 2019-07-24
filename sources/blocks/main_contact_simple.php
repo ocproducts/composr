@@ -132,8 +132,7 @@ class Block_main_contact_simple
         if ($support_attachments) {
             require_code('form_templates');
             list($attachments, $attach_size_field) = get_attachments('post', false);
-        } else
-        {
+        } else {
             $attachments = null;
             $attach_size_field = null;
         }

@@ -404,6 +404,10 @@ function canonicalise_sitemap_page_link(&$page_link)
  */
 function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null, $priority = null, $refreshfreq = null, $guest_access = null)
 {
+    if (running_script('install')) {
+        return;
+    }
+
     canonicalise_sitemap_page_link($page_link);
 
     list($zone, $map) = page_link_decode($page_link);
