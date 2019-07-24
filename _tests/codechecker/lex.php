@@ -796,7 +796,7 @@ function lex($text = null)
                     $lex_state = PLEXER_FREE;
                     $tokens[] = array('string_literal', $special_token_value, $i);
                     if ((isset($GLOBALS['CHECKS'])) && (isset($GLOBALS['PEDANTIC'])) && (strpos($special_token_value, '<') !== false) && (strpos($special_token_value, '<') != strlen($special_token_value) - 1)) {
-                        log_warning('Should\'t this be templated?', $i, true);
+                        log_warning('Shouldn\'t this be templated?', $i, true);
                     }
                     $special_token_value = '';
                     break;
