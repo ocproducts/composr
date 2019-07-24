@@ -24,7 +24,8 @@
  *
  * @param  ?MEMBER $member_id Member ID to do for (null: all)
  */
-function autofill_geo_cpfs($member_id = null) {
+function autofill_geo_cpfs($member_id = null)
+{
     $where = mixed();
     if (!is_null($member_id)) {
         $where['mf_member_id'] = $member_id;
@@ -32,8 +33,7 @@ function autofill_geo_cpfs($member_id = null) {
 
     $start = 0;
     $max = 100;
-    do
-    {
+    do {
         $rows = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields f JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m ON m.id=f.mf_member_id', array('f.*', 'm.id', 'm_ip_address'), $where, 'ORDER BY mf_member_id', $max, $start);
         foreach ($rows as $row) {
             _autofill_geo_cpfs($row);
@@ -50,7 +50,8 @@ function autofill_geo_cpfs($member_id = null) {
  *
  * @ignore
  */
-function _autofill_geo_cpfs($row) {
+function _autofill_geo_cpfs($row)
+{
     require_code('cns_members');
     require_code('locations');
     require_code('locations_geocoding');

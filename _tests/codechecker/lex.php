@@ -455,8 +455,21 @@ function lex($text = null)
                             log_warning('Missing surrounding spacing (for ' . $token_found . ') against coding standards', $i, true);
                         }
                     }
-                    if (($TEXT[$i] != ' ') && ($TEXT[$i] != "\n") && ($TEXT[$i] != "\r") && (in_array($token_found, array('IF', 'ELSEIF', 'FOREACH', 'FOR', 'WHILE', 'DO')))) {
-                        log_warning('Missing following spacing (for ' . $token_found . ') against coding standards', $i, true);
+                    if (in_array($token_found, array('IF', 'ELSE', 'ELSEIF', 'FOREACH', 'FOR', 'FOREACH', 'WHILE', 'DO', 'TRY', 'CATCH', 'SWITCH', 'INTERFACE', 'CLASS', 'FUNCTION'))) {
+                        $line_end = strpos($TEXT, "\n", $i);
+                        if ($line_end !== false) {
+                            $remaining_line = str_replace("\r", '', substr($TEXT, $i, $line_end - $i + 1));
+
+                            $next_line_end = strpos($TEXT, "\n", $line_end + 1);
+                            $next_line = ($next_line_end === false) ? '' : substr($TEXT, $line_end + 1, $next_line_end - $line_end - 1 + 1);
+
+                            if ((strpos($remaining_line, ' {') === false) && (strpos($remaining_line, '/*') === false) && (($token_found != 'WHILE') || (substr($remaining_line, -2) != ";\n")) && (strpos($next_line, '{') !== false/*brace should move to own line for multi-line boolean checks*/) && (in_array($token_found, array('IF', 'ELSE', 'ELSEIF', 'FOREACH', 'FOR', 'FOREACH', 'WHILE', 'DO', 'TRY', 'CATCH', 'SWITCH')))) {
+                                log_warning('Incorrect bracing spacing (for ' . $token_found . ') against coding standards', $i, true);
+                            }
+                            if ((strpos($remaining_line, ' {') !== false) && (strpos($next_line, '{') === false/*To weed out edge cases like when a parameter default contains ' {'*/) && (in_array($token_found, array('INTERFACE', 'CLASS', 'FUNCTION')))) {
+                                log_warning('Incorrect bracing spacing (for ' . $token_found . ') against coding standards', $i, true);
+                            }
+                        }
                     }
                     if (($i_current > 0) && (($TEXT[$i_current - 1] != ' ') || (($TEXT[$i] != ' ') && ($TEXT[$i] != "\n") && ($TEXT[$i] != "\r"))) && (in_array($token_found, array('BOOLEAN_AND', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_OR_2')))) {
                         log_warning('Missing surrounding spacing (for ' . $token_found . ') against coding standards', $i, true);

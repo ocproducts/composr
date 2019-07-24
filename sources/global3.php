@@ -980,8 +980,7 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
         $amount = cms_mb_strlen($in, $force) - $from;
     }
 
-    if ($in == '' || strlen($in) == $from)
-    {
+    if ($in == '' || strlen($in) == $from) {
         return ''; // Workaround PHP bug/inconsistency (https://bugs.php.net/bug.php?id=72320)
     }
 
