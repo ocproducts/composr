@@ -356,7 +356,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image of the requested file type for some reason
  * @param  ?integer $width The maximum width we want our new image to be (null: don't factor this in)
  * @param  ?integer $height The maximum height we want our new image to be (null: don't factor this in)
- * @param  ?integer $box_width This is only considered if both $width and $height are null. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly) (null: use width or height)
+ * @param  ?integer $box_size This is only considered if both $width and $height are null. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly) (null: use width or height)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
  * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
@@ -364,11 +364,11 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  */
-function convert_image($from, &$to, $width, $height, $box_width = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
+function convert_image($from, &$to, $width, $height, $box_size = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
 {
     require_code('images2');
     cms_profile_start_for('convert_image');
-    $ret = _convert_image($from, $to, $width, $height, $box_width, $exit_on_error, $ext2, $using_path, $only_make_smaller, $thumb_options);
+    $ret = _convert_image($from, $to, $width, $height, $box_size, $exit_on_error, $ext2, $using_path, $only_make_smaller, $thumb_options);
     cms_profile_end_for('convert_image', $from);
     return $ret;
 }

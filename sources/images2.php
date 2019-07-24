@@ -255,7 +255,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
  * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image of the requested file type for some reason
  * @param  ?integer $width The maximum width we want our new image to be (null: don't factor this in)
  * @param  ?integer $height The maximum height we want our new image to be (null: don't factor this in)
- * @param  ?integer $box_width This is only considered if both $width and $height are null. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly) (null: use width or height)
+ * @param  ?integer $box_size This is only considered if both $width and $height are null. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly) (null: use width or height)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
  * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
@@ -265,7 +265,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
  *
  * @ignore
  */
-function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
+function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
     disable_php_memory_limit();
     $old_limit = cms_extend_time_limit(TIME_LIMIT_EXTEND_modest);
@@ -364,9 +364,9 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         // If we're not sure if this is gonna stretch to fit a width or stretch to fit a height
         if (($width === null) && ($height === null)) {
             if ($sx > $sy) {
-                $width = $box_width;
+                $width = $box_size;
             } else {
-                $height = $box_width;
+                $height = $box_size;
             }
         }
 
@@ -635,7 +635,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         }
     }
 
-    $lossy = ($width <= 300 && $width !== null || $height <= 300 && $height !== null || $box_width <= 300 && $box_width !== null);
+    $lossy = ($width <= 300 && $width !== null || $height <= 300 && $height !== null || $box_size <= 300 && $box_size !== null);
 
     $unknown_format = false;
     $test = cms_imagesave($dest, $to, $ext2, $lossy, $unknown_format);

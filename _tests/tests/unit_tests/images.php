@@ -103,10 +103,10 @@ class images_test_set extends cms_test_case
 
         // Helper functions
 
-        function convertImage($path_source, &$path, $convert_width, $convert_height, $box_width, $only_make_smaller, &$additional_information)
+        function convertImage($path_source, &$path, $convert_width, $convert_height, $box_size, $only_make_smaller, &$additional_information)
         {
             foreach (array($path_source, preg_replace('#^' . preg_quote(get_file_base() . '/') . '#', get_base_url() . '/', $path_source)) as $_source) {
-                $convert = convert_image($_source, $path, $convert_width, $convert_height, $box_width, true, null, true, $only_make_smaller);
+                $convert = convert_image($_source, $path, $convert_width, $convert_height, $box_size, true, null, true, $only_make_smaller);
                 if ($convert === null) {
                     $additional_information = 'convert_image failed.';
                     return false;
@@ -168,12 +168,12 @@ class images_test_set extends cms_test_case
 
         // Test functions
 
-        function runDimensionTest($extension, $start_width, $start_height, $convert_width, $convert_height, $box_width, $only_make_smaller, $expected_width, $expected_height, &$additional_information)
+        function runDimensionTest($extension, $start_width, $start_height, $convert_width, $convert_height, $box_size, $only_make_smaller, $expected_width, $expected_height, &$additional_information)
         {
             $additional_information = '';
             $path = cms_tempnam();
 
-            if (!convertImage(get_file_base() . '/_tests/assets/images/' . $start_width . 'x' . $start_height . '.' . $extension, $path, $convert_width, $convert_height, $box_width, $only_make_smaller, $additional_information)) {
+            if (!convertImage(get_file_base() . '/_tests/assets/images/' . $start_width . 'x' . $start_height . '.' . $extension, $path, $convert_width, $convert_height, $box_size, $only_make_smaller, $additional_information)) {
                 return false;
             }
 
