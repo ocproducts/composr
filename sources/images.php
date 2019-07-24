@@ -352,7 +352,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
 /**
  * Resize an image to the specified size, but retain the aspect ratio.
  *
- * @param  URLPATH $from The URL to the image to resize. May be either relative or absolute
+ * @param  string $from The URL to the image to resize. May be either relative or absolute. If $using_path is set it is actually a path
  * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image of the requested file type for some reason
  * @param  ?integer $width The maximum width we want our new image to be (null: don't factor this in)
  * @param  ?integer $height The maximum height we want our new image to be (null: don't factor this in)

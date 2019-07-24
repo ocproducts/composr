@@ -251,7 +251,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 /**
  * (Helper for convert_image / convert_image_plus).
  *
- * @param  URLPATH $from The URL to the image to resize. May be either relative or absolute
+ * @param  string $from The URL to the image to resize. May be either relative or absolute. If $using_path is set it is actually a path
  * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image of the requested file type for some reason
  * @param  ?integer $width The maximum width we want our new image to be (null: don't factor this in)
  * @param  ?integer $height The maximum height we want our new image to be (null: don't factor this in)
@@ -278,11 +278,12 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     // Load
     $ext = get_file_extension($from);
     if ($using_path) {
-        if (!check_memory_limit_for($from, $exit_on_error)) {
-            cms_set_time_limit($old_limit);
-            return $from;
-        }
-        if ($ext == 'svg') { // SVG is pass-through
+        if ((!check_memory_limit_for($from, $exit_on_error)) || ($ext == 'svg'/*SVG is pass-through*/)) {
+            if ($using_path) {
+                copy($from, $to);
+                fix_permissions($to);
+                sync_file($to);
+            }
             cms_set_time_limit($old_limit);
             return $from;
         }
@@ -291,11 +292,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     } else {
         $file_path_stub = convert_url_to_path($from);
         if ($file_path_stub !== null) {
-            if (!check_memory_limit_for($file_path_stub, $exit_on_error)) {
-                cms_set_time_limit($old_limit);
-                return $from;
-            }
-            if ($ext == 'svg') { // SVG is pass-through
+            if ((!check_memory_limit_for($from, $exit_on_error)) || ($ext == 'svg'/*SVG is pass-through*/)) {
                 cms_set_time_limit($old_limit);
                 return $from;
             }
