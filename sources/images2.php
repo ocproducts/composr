@@ -102,7 +102,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
  *
  * @ignore
  */
-function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
+function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
     disable_php_memory_limit();
 
@@ -485,6 +485,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     // Save
     if (is_null($ext2)) {
         $ext2 = get_file_extension($to);
+        if ($ext2 == '') {
+            $ext2 = get_file_extension($from);
+            if ($ext2 == '') {
+               $ext2 = null;
+            }
+        }
     }
 
     // If we've got transparency then we have to save as PNG
@@ -499,7 +505,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     }
 
     $lossy = ($width <= 300 && $width != -1 || $height <= 300 && $height != -1 || $box_width <= 300 && $box_width != -1);
-
+    
     $unknown_format = false;
     $test = cms_imagesave($dest, $to, $ext2, $lossy, $unknown_format);
 

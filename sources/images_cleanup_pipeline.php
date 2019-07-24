@@ -623,7 +623,7 @@ function png_compress($path, $lossy = false)
             $parsed_colour = imagecolorsforindex($img, $at);
             if ((isset($parsed_colour['alpha'])) && ($parsed_colour['alpha'] != 0)) {
                 $has_alpha = true;
-                if ($parsed_colour['alpha'] != 127) {
+                if ($parsed_colour['alpha'] != 0) {
                     // Blended alpha, cannot handle as anything other than a proper 32-bit PNG
                     imagedestroy($img);
                     return;
