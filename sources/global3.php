@@ -2425,7 +2425,7 @@ function get_os_string()
         return $_SERVER['HTTP_UA_OS'];
     } elseif ($_SERVER['HTTP_USER_AGENT'] != '') {
         // E.g. Mozilla/4.5 [en] (X11; U; Linux 2.2.9 i586)
-        // We need to get the stuff in the brackets
+        // We need to get the stuff in the parentheses
         $matches = array();
         if (preg_match('#\(([^\)]*)\)#', $_SERVER['HTTP_USER_AGENT'], $matches) != 0) {
             $ret = $matches[1];

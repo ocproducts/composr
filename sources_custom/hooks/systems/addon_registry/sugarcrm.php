@@ -104,7 +104,7 @@ Another Composr Field=Another SugarCRM field
 (Some static text)=A SugarCRM field
 [some_posted_field]=A SugarCRM field
 [/code]
-Parenthesis-bracketed fields on the left-hand-side always define static text to place into a SugarCRM field.
+Parenthesised fields on the left-hand-side always define static text to place into a SugarCRM field.
 Square-bracketed fields on the left-hand-side always define request field parameters (order: POST, GET, COOKIE) to place into a SugarCRM field.
 Fields on either the left-hand-side or right-hand-side do not need to exist, and will simply be skipped if so. The same will happen if the Composr field is blank. This system makes it feasible to have multiple very different contact forms all synching with SugarCRM.
 If multiple mappings are made to the same SugarCRM field then this will either:

@@ -57,8 +57,8 @@ $PTOKENS['QUESTION'] = '?';
 $PTOKENS['COMMA'] = ',';
 $PTOKENS['CURLY_CLOSE'] = '}';
 $PTOKENS['CURLY_OPEN'] = '{';
-$PTOKENS['BRACKET_OPEN'] = '(';
-$PTOKENS['BRACKET_CLOSE'] = ')';
+$PTOKENS['PARENTHESIS_OPEN'] = '(';
+$PTOKENS['PARENTHESIS_CLOSE'] = ')';
 $PTOKENS['COMMAND_TERMINATE'] = ';';
 $PTOKENS['EXTRACT_OPEN'] = '[';
 $PTOKENS['EXTRACT_CLOSE'] = ']';
@@ -719,9 +719,9 @@ function lex($text = null)
                         }
                         if (count($heredoc_buildup) > 0) {
                             $tokens[] = array('IDENTIFIER', 'strval', $i);
-                            $tokens[] = array('BRACKET_OPEN', $i);
+                            $tokens[] = array('PARENTHESIS_OPEN', $i);
                             $tokens = array_merge($tokens, $heredoc_buildup);
-                            $tokens[] = array('BRACKET_CLOSE', $i);
+                            $tokens[] = array('PARENTHESIS_CLOSE', $i);
                             $tokens[] = array('CONC', $i);
                         }
                         $special_token_value_2 = '';

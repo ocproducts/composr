@@ -36,7 +36,7 @@ Note that:
  - subtree/category specifiers work on category-sets rather than record-sets. In other words, it's a different set of IDs, unless the category-set equals the record-set for the specific case. It is possible that there could be no category-set available, in which case subtree specifiers will produce no effect.
  - nothing is accepted by default. If you want this, add '*' into your Selectcode.
  - avoidance overrides acceptance, and there is no ordering. For example, "!3,3*" would get everything under category 3 except ID#3 (if our record-set equals our category-set, this example makes more sense as something useful)
- - while Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need brackets, order-support, etc.
+ - while Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need parentheses, order-support, etc.
  - for record searching, look at Filtercode, the companion language
 
 EXAMPLE CALLS...
@@ -116,7 +116,7 @@ function selectcode_to_idlist_using_callback($filter, $ids_and_parents_callback,
  * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
  * @param  ?object $db Database connector to use (null: website)
- * @return string SQL query fragment. Note that brackets will be put around this automatically if required, so there's no need to do this yourself.
+ * @return string SQL query fragment. Note that parentheses will be put around this automatically if required, so there's no need to do this yourself.
  */
 function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
 {

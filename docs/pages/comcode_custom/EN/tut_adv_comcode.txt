@@ -123,7 +123,7 @@ Note that Comcode is cached, and if you edit a tag after adding Comcode using it
 If you want to let users use some specific "dangerous" Comcode (such as Tempcode symbols, or an iframe), wrapping it up within a Custom Comcode tag is a great solution. As long as a user has permission to the tag itself (i.e. it's not added as dangerous), they can indirectly do what code it contains regardless of the nature of that code.
 [/box]
 
-In the Replacement text you can either put your parameters in lower case like [tt]{example}[/tt] or upper case like [tt]{EXAMPLE}[/tt]. If you are comfortable with Tempcode programming, use upper case, as this is standard Tempcode and thus the conventional way to do it; you can also add escaping, e.g. [tt]{EXAMPLE*}[/tt]. If you use lower case then a substitution to upper case will be done for you while also automatically adding HTML escaping (i.e. special HTML characters like brackets with parameters will be shown literally rather than run as code within the web browser).
+In the Replacement text you can either put your parameters in lower case like [tt]{example}[/tt] or upper case like [tt]{EXAMPLE}[/tt]. If you are comfortable with Tempcode programming, use upper case, as this is standard Tempcode and thus the conventional way to do it; you can also add escaping, e.g. [tt]{EXAMPLE*}[/tt]. If you use lower case then a substitution to upper case will be done for you while also automatically adding HTML escaping (i.e. special HTML characters like angled brackets with parameters will be shown literally rather than run as code within the web browser).
 
 [title="3"]Sophisticated example[/title]
 

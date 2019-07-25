@@ -971,7 +971,7 @@ function parse_css_colour_expression($textual)
     // '*' is inserted after a %, and then % is dropped
     $textual = preg_replace('#(^| )(\d+)%#', '\\1\\2 *', $textual);
 
-    // We're using spaces as token delimiters, so we need to do a trim to clean up, and also put spaces around brackets
+    // We're using spaces as token delimiters, so we need to do a trim to clean up, and also put spaces around parentheses
     $textual = trim(str_replace(')', ' )', str_replace('(', '( ', $textual)));
 
     // Perform inner conversion
@@ -992,7 +992,7 @@ function parse_css_colour_expression($textual)
 function _parse_css_colour_expression($tokens)
 {
     // We now scan through, structuring into an evaluation-order tree (but not an expression tree  at the level we're operating on)
-    // Brackets
+    // Parentheses
     $new_tokens = array();
     for ($i = 0; $i < count($tokens); $i++) {
         if ($tokens[$i] === '(') {

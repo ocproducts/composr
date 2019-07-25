@@ -1124,7 +1124,7 @@ function function-name(argument1,argument2)
 	lines-of-code;
 }
 [/code]
-Functions have to start with the [i]keyword[/i] [tt]function[/tt], then the name of the function, and the arguments required to be passed to the function in brackets. Following this should be the lines of code in the function, surrounded by curly brackets.
+Functions have to start with the [i]keyword[/i] [tt]function[/tt], then the name of the function, and the arguments required to be passed to the function in parentheses. Following this should be the lines of code in the function, surrounded by curly brackets.
 
 The lines of code themselves have to follow strict rules (which are beyond the scope of this document), and have to be terminated with a semicolon.
 [code="JavaScript"]

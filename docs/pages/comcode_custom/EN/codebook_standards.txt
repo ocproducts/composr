@@ -135,7 +135,7 @@ We do not use [tt]HACKHACK[/tt] or [tt]FIXME[/tt] markers, although the CQC will
 | Technical debt
 | All development
 | Manually
-| Don't write code that is too "clever" or relies on too deep an understanding, unless there's good reason to. For example, don't assume the programmer knows the precedence order of some of the less common operators so put in explicit brackets to make things clear.
+| Don't write code that is too "clever" or relies on too deep an understanding, unless there's good reason to. For example, don't assume the programmer knows the precedence order of some of the less common operators so put in explicit parentheses to make things clear.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use software engineering best practices[/color]
@@ -1839,7 +1839,7 @@ Don't define binary options in negative terms
 | Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code. The only exception is hidden configuration options, which are often set to '1' to disable something.
 |}
 
-Respect the Queen of England ;)...
+Respect the Queen of England ;), but also do not confuse Americans...
 {|
 ! Standard
 ! Reason
@@ -1867,6 +1867,13 @@ Say "tick (check)" rather than just "tick" or just "check"
 | Product development only
 | Automated test ([tt]lang_spelling.php[/tt])
 | The word "tick" in British English is "check" in American English (referring to the square 'tickbox'/'checkbox' on HTML forms). Due to this disparity, write both like "tick (check)".
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use American-friendly bracket terminology[/color]
+| Consistent UI
+| Product development only
+| Manually
+| Brackets in US English typically means square brackets, or sometimes some unspecified type of bracketing, while in British English it means parentheses. Parenthesis/parentheses is a word valid in both UK and US English. Therefore never use the word "bracket" when specifically referring to parentheses.
 |}
 
 Language for submit buttons...
@@ -2339,7 +2346,7 @@ Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])
 | Consistency
 | Product development only
 | Manually
-| Generally code is formatted the same way as PSR-2 is specified and with spaces around operators, except with JavaScript we use camelCase for identifiers rather than underscores, and we place function opening braces on the same line as the function declaration. For functions assigned to a variable we put a space between the function keyword and opening bracket ([tt]function (foo)[/tt]). Rather than us prescribing all the rules we suggest looking at existing code to see how to do it.
+| Generally code is formatted the same way as PSR-2 is specified and with spaces around operators, except with JavaScript we use camelCase for identifiers rather than underscores, and we place function opening braces on the same line as the function declaration. For functions assigned to a variable we put a space between the function keyword and opening parenthesis ([tt]function (foo)[/tt]). Rather than us prescribing all the rules we suggest looking at existing code to see how to do it.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use of classes[/color]

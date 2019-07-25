@@ -70,8 +70,8 @@ function init__webstandards_js_lex()
     $TOKENS['COMMA'] = ',';
     $TOKENS['CURLY_CLOSE'] = '}';
     $TOKENS['CURLY_OPEN'] = '{';
-    $TOKENS['BRACKET_OPEN'] = '(';
-    $TOKENS['BRACKET_CLOSE'] = ')';
+    $TOKENS['PARENTHESIS_OPEN'] = '(';
+    $TOKENS['PARENTHESIS_CLOSE'] = ')';
     $TOKENS['COMMAND_TERMINATE'] = ';';
     $TOKENS['EXTRACT_OPEN'] = '[';
     $TOKENS['EXTRACT_CLOSE'] = ']';
@@ -258,8 +258,8 @@ function webstandards_js_lex($text)
                 }
 
                 if (isset($applicable_tokens['DIV_EQUAL'])) {
-                    $previous = isset($JS_LEX_TOKENS[$num_tokens_so_far - 1]) ? ($JS_LEX_TOKENS[$num_tokens_so_far - 1][0]) : 'BRACKET_OPEN';
-                    if (($previous == 'BRACKET_OPEN') || ($previous == 'COMMA')) {
+                    $previous = isset($JS_LEX_TOKENS[$num_tokens_so_far - 1]) ? ($JS_LEX_TOKENS[$num_tokens_so_far - 1][0]) : 'PARENTHESIS_OPEN';
+                    if (($previous == 'PARENTHESIS_OPEN') || ($previous == 'COMMA')) {
                         $applicable_tokens = array('DIVIDE'); // Actually, a regular expression
                     }
                 }
@@ -279,7 +279,7 @@ function webstandards_js_lex($text)
                     } elseif ($token_found == 'COMMENT') {
                         $lex_state = LEXER_COMMENT;
                         break;
-                    } elseif (($token_found == 'DIVIDE') && (!in_array(@$JS_LEX_TOKENS[$num_tokens_so_far - 1][0], array('number_literal', 'IDENTIFIER', 'EXTRACT_CLOSE', 'BRACKET_CLOSE')))) {
+                    } elseif (($token_found == 'DIVIDE') && (!in_array(@$JS_LEX_TOKENS[$num_tokens_so_far - 1][0], array('number_literal', 'IDENTIFIER', 'EXTRACT_CLOSE', 'PARENTHESIS_CLOSE')))) {
                         $lex_state = LEXER_REGEXP;
                         break;
                     } elseif ($token_found == 'DOUBLE_QUOTE') {
@@ -402,9 +402,9 @@ function webstandards_js_lex($text)
                     $lex_state = LEXER_FREE;
                     $JS_LEX_TOKENS[] = array('NEW', $i);
                     $JS_LEX_TOKENS[] = array('IDENTIFIER', 'RegExp', $i);
-                    $JS_LEX_TOKENS[] = array('BRACKET_OPEN', $i);
+                    $JS_LEX_TOKENS[] = array('PARENTHESIS_OPEN', $i);
                     $JS_LEX_TOKENS[] = array('string_literal', $special_token_value, $i);
-                    $JS_LEX_TOKENS[] = array('BRACKET_CLOSE', $i);
+                    $JS_LEX_TOKENS[] = array('PARENTHESIS_CLOSE', $i);
                     $JS_VALUE_RANGES[] = array($i - strlen($special_token_value), $i);
                     $special_token_value = '';
                     $num_tokens_so_far += 5;

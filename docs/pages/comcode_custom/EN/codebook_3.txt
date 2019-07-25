@@ -104,7 +104,7 @@ Processing:
 
 We try and keep the core code size to an absolute minimum, due to memory requirements and PHP parsing time. Sometimes we have a little more code loaded up than needed, but only for things that are common even if not 100% routine. It is reasonable to assume a performance-conscience user will have an opcode cache, which removes the issue of code quantity.
 
-Anything not marked with a specific bypass optimisation (in brackets) will still have been heavily optimised: the Composr core is extremely optimal.
+Anything not marked with a specific bypass optimisation (in parentheses) will still have been heavily optimised: the Composr core is extremely optimal.
 
 Note that while we have a lot of user-specific and security features in the above list, but these can be bypassed when not needed via the static cache.
 
