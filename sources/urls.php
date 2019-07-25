@@ -80,6 +80,9 @@ function init__urls()
     global $HTTPS_PAGES_CACHE;
     $HTTPS_PAGES_CACHE = null;
 
+    global $CANONICAL_URL;
+    $CANONICAL_URL = null;
+
     if (!defined('SELF_REDIRECT_RIP')) {
         define('SELF_REDIRECT_RIP', '!--:)defUNLIKELY1'); // Use this if you want a self-URL that goes back to the root if there's been a POST request
         define('SELF_REDIRECT', '!--:)defUNLIKELY2'); // Use this if you want a self-URL that goes back to the root if there's been a POST request
@@ -166,6 +169,27 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
     }
 
     return $url;
+}
+
+/**
+ * Get a canonical URL for the current page. Similar to get_self_url() except non-canonical parameters are stripped.
+ *
+ * @return URLPATH The canonical URL
+ */
+function get_canonical_url()
+{
+    global $NON_CANONICAL_PARAMS, $CANONICAL_URL;
+    if ($CANONICAL_URL === null) {
+        $non_canonical = array();
+        if (is_array($NON_CANONICAL_PARAMS)) {
+            foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
+                $non_canonical[$n] = null;
+            }
+        }
+        $CANONICAL_URL = get_self_url(true, false, $non_canonical);
+    }
+
+    return $CANONICAL_URL;
 }
 
 /**

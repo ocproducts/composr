@@ -25,11 +25,10 @@
  */
 function init__symbols()
 {
-    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $CANONICAL_URL, $STATIC_TEMPLATE_TEST_MODE;
+    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $STATIC_TEMPLATE_TEST_MODE;
     $BLOCKS_CACHE = array();
     $PAGES_CACHE = array();
     $PANELS_CACHE = array();
-    $CANONICAL_URL = null;
     $STATIC_TEMPLATE_TEST_MODE = false;
 }
 
@@ -2509,17 +2508,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
  */
 function ecv_CANONICAL_URL($lang, $escaped, $param)
 {
-    global $NON_CANONICAL_PARAMS, $CANONICAL_URL;
-    if ($CANONICAL_URL === null) {
-        $non_canonical = array();
-        if (is_array($NON_CANONICAL_PARAMS)) {
-            foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
-                $non_canonical[$n] = null;
-            }
-        }
-        $CANONICAL_URL = get_self_url(true, false, $non_canonical);
-    }
-    $value = $CANONICAL_URL;
+    $value = get_canonical_url();
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
