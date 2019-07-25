@@ -186,7 +186,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name'],
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name']),
         'RESOURCE_TYPE' => 'catalogue_category',
     ));
 }
@@ -234,7 +234,7 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name'],
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name']),
         'RESOURCE_TYPE' => 'catalogue',
     ));
 }

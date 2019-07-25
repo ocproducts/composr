@@ -55,7 +55,7 @@ class Block_side_cns_private_topics
         $info = array();
         $info['cache_on'] = 'array()';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_MEMBER;
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 100;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : (60 * 100);
         return $info;
     }
 

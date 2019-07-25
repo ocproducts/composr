@@ -214,7 +214,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_news:__edit_category:' . strval($row['id']),
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:cms_news:__edit_category:' . strval($row['id'])),
         'RESOURCE_TYPE' => 'news_category',
     ));
 }
@@ -346,7 +346,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
  */
 function create_selection_list_news($it, $only_owned = null, $editable_filter = false, $only_in_blog = false)
 {
-    $where = ($only_owned === null) ? '1' : 'submitter=' . strval($only_owned);
+    $where = ($only_owned === null) ? '1' : ('submitter=' . strval($only_owned));
     if ($only_in_blog) {
         $rows = $GLOBALS['SITE_DB']->query('SELECT n.* FROM ' . get_table_prefix() . 'news n JOIN ' . get_table_prefix() . 'news_categories c ON c.id=n.news_category AND ' . $where . ' AND nc_owner IS NOT NULL ORDER BY date_and_time DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     } else {

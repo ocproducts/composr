@@ -982,7 +982,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
             }
         }
 
-        $topic_filter = ($filter_topic_title != '') ? 'AND title LIKE \'' . db_encode_like($this->ipb_escape($filter_topic_title)) . '\'' : '';
+        $topic_filter = ($filter_topic_title != '') ? ('AND title LIKE \'' . db_encode_like($this->ipb_escape($filter_topic_title)) . '\'') : '';
         if ($filter_topic_description != '') {
             $topic_filter .= ' AND description LIKE \'' . db_encode_like($this->ipb_escape($filter_topic_description)) . '\'';
         }

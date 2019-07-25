@@ -717,7 +717,7 @@ class Module_topicview
                         'I' => strval($answer['id']),
                     ));
                 } else {
-                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER' . ($_poll['maximum_selections'] == 1 ? '_RADIO' : ''), array('REAL_BUTTON' => $real_button, 'ID' => strval($_poll['id']), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
+                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER' . (($_poll['maximum_selections'] == 1) ? '_RADIO' : ''), array('REAL_BUTTON' => $real_button, 'ID' => strval($_poll['id']), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
                 }
                 $answers->attach($answer_tpl);
             }

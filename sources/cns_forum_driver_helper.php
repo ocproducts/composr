@@ -168,7 +168,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
             $spacer_post_title = $content_title;
             $home_link = hyperlink($content_url, $content_title, false, true);
             $spacer_post = '[semihtml]' . do_lang('SPACER_POST', $home_link->evaluate()) . '[/semihtml]';
-            $spacer_post_username = ($spacer_post_member_id == ($this_ref->get_guest_id()) ? do_lang('SYSTEM') : $this_ref->get_username($spacer_post_member_id));
+            $spacer_post_username = ($spacer_post_member_id == $this_ref->get_guest_id()) ? do_lang('SYSTEM') : $this_ref->get_username($spacer_post_member_id);
             cns_make_post($topic_id, $spacer_post_title, $spacer_post, 0, true, 1, 0, $spacer_post_username, $ip, $time, $spacer_post_member_id, null, null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, null, false, false, false, false, null, false);
             $is_starter = false;
         }

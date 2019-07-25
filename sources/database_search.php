@@ -1190,7 +1190,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                 $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
 
-                $main_query_part = 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : ' WHERE ' . $where_clause_3);
+                $main_query_part = 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
                 if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
                     $main_query_part .= ' ORDER BY ' . $order;
                     if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {

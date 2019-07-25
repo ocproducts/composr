@@ -290,7 +290,7 @@ function output_ical($headers_and_exit = true)
             } else {
                 echo "DTSTART;TZID=" . $event['e_timezone'] . ":" . date('Ymd', $time) . "T" . date('His', $time) . "\r\n";
                 if ($time2 !== null) {
-                    echo "DTEND:" . date('Ymd', $time2) . (($event['e_start_hour'] === null) ? "" : "T" . date('His', $time2)) . "\r\n";
+                    echo "DTEND:" . date('Ymd', $time2) . (($event['e_start_hour'] === null) ? "" : ("T" . date('His', $time2))) . "\r\n";
                 }
             }
 

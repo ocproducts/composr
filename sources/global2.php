@@ -1294,7 +1294,7 @@ function cms_version_pretty()
         return 'unknown';
     }
     $minor = cms_version_minor();
-    $dotted = strval(cms_version()) . (($minor == '') ? '' : '.' . $minor);
+    $dotted = strval(cms_version()) . (($minor == '') ? '' : ('.' . $minor));
     return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
 }
 

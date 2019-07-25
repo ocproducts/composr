@@ -2802,7 +2802,7 @@ function ecv_HAS_SU($lang, $escaped, $param)
 {
     $value = '0';
     if (!is_guest()) {
-        $value = (get_option('show_su') == '1') && (has_privilege(get_member(), 'assume_any_member')) ? '1' : '0';
+        $value = ((get_option('show_su') == '1') && (has_privilege(get_member(), 'assume_any_member'))) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {

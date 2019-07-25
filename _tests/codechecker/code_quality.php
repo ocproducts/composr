@@ -1780,6 +1780,16 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 infer_expression_type_to_variable_type($type_a, $e[2][1]);
             }
         }
+
+        // Common most egregious cases of horribly ugly code
+        if (in_array($e[1][0], array('TERNARY_IF', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'INSTANCEOF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND'))) {
+            log_warning('Raw complex expression in ternary syntax boolean controller should be bracketed, for clarity', $c_pos);
+        }
+        $bad_ops = array('TERNARY_IF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND', 'REFERENCE', 'BW_OR', 'BW_XOR', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'INSTANCEOF', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ADD', 'SUBTRACT', 'CONC', 'MULTIPLY', 'DIVIDE', 'REMAINDER', 'EXPONENTIATION');
+        if ((in_array($e[2][0][0], $bad_ops)) || (in_array($e[2][1][0], $bad_ops))) {
+            log_warning('Raw complex expression in ternary syntax should be bracketed, for clarity', $c_pos);
+        }
+
         return $type_a;
     }
     if (in_array($e[0], array('BOOLEAN_AND', 'BOOLEAN_OR', 'BOOLEAN_XOR'))) {

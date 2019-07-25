@@ -924,7 +924,7 @@ class Hook_addon_registry_core_cns
                 'MAX' => strval(30),
                 'SORTABLE' => 'm_join_time',
                 'SORT_ORDER' => 'DESC',
-                'ITEM_WIDTH' => ($per_row === null) ? '' : float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%',
+                'ITEM_WIDTH' => ($per_row === null) ? '' : (float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%'),
                 'PER_ROW' => strval($per_row),
                 'DISPLAY_MODE' => 'avatars',
                 'MEMBER_BOXES' => $member_boxes,

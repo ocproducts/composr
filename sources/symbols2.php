@@ -2067,7 +2067,7 @@ function ecv2_STARTS_WITH($lang, $escaped, $param)
     $value = '1';
 
     if (isset($param[1]) && ($param[1] !== '')) {
-        $value = substr($param[0], 0, strlen($param[1])) === $param[1] ? '1' : '0';
+        $value = (substr($param[0], 0, strlen($param[1])) === $param[1]) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -2092,7 +2092,7 @@ function ecv2_ENDS_WITH($lang, $escaped, $param)
     $value = '1';
 
     if (isset($param[1]) && ($param[1] !== '')) {
-        $value = substr($param[0], -strlen($param[1])) === $param[1] ? '1' : '0';
+        $value = (substr($param[0], -strlen($param[1])) === $param[1]) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {

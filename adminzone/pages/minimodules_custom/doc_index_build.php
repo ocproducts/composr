@@ -150,7 +150,7 @@ foreach ($addons as $addon => $addon_details) {
             <td>
                 ' . $icon . escape_html($addon_details['pretty']) . '<br />(<kbd>' . escape_html($addon) . '</kbd>)<br /><br />
                 <strong>Core</strong>: ' . escape_html($addon_details['core'] ? 'Yes' : 'No') . '<br /><br />
-                <strong>Dependencies</strong>: ' . (($addon_details['dependencies'] == array()) ? '<em>None</em>' : '<kbd>' . implode('</kbd>, <kbd>', array_map('escape_html', $addon_details['dependencies'])) . '</kbd>') . '
+                <strong>Dependencies</strong>: ' . (($addon_details['dependencies'] == array()) ? '<em>None</em>' : ('<kbd>' . implode('</kbd>, <kbd>', array_map('escape_html', $addon_details['dependencies'])) . '</kbd>')) . '
             </td>
             <td>' . escape_html($addon_details['description']) . '</td>
             <td>' . $tutorials . '</td>

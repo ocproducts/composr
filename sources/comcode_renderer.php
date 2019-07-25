@@ -1960,7 +1960,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $url_thumb = $url_full;
             } else {
                 if ($attributes['param'] != '') {
-                    $url_thumb = url_is_local($attributes['param']) ? get_custom_base_url() . '/' . $attributes['param'] : $attributes['param'];
+                    $url_thumb = url_is_local($attributes['param']) ? (get_custom_base_url() . '/' . $attributes['param']) : $attributes['param'];
                 }
                 if (($attributes['param'] == '') || ((url_is_local($attributes['param'])) && (!file_exists(get_custom_file_base() . '/' . rawurldecode($attributes['param']))))) {
                     $new_name = url_to_filename($url_full);

@@ -92,7 +92,7 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         'SUMMARY' => $summary,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_banners:__edit:' . $row['name'],
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:cms_banners:__edit:' . $row['name']),
         'RESOURCE_TYPE' => 'banner',
     ));
 }

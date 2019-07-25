@@ -527,7 +527,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
 
     if ($data === null) {
         if (($direct_path) || (url_is_local($url))) {
-            $actual_path = $direct_path ? $url : get_custom_file_base() . '/' . rawurldecode($url);
+            $actual_path = $direct_path ? $url : (get_custom_file_base() . '/' . rawurldecode($url));
 
             if (file_exists($actual_path)) {
                 switch ($extension) {

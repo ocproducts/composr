@@ -54,7 +54,7 @@ class Block_main_gallery_embed
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
         }
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 2;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : (60 * 2);
         return $info;
     }
 
@@ -249,7 +249,7 @@ class Block_main_gallery_embed
                         $thumb_url = ensure_thumbnail($row_image['url'], $row_image['thumb_url'], 'galleries', 'images', $row_image['id']);
                         $thumb = do_image_thumb($thumb_url, $entry_title);
                         $full_url = $row_image['url'];
-                        $file_size = url_is_local($full_url) ? file_exists(get_custom_file_base() . '/' . rawurldecode($full_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($full_url))) : '' : '';
+                        $file_size = url_is_local($full_url) ? (file_exists(get_custom_file_base() . '/' . rawurldecode($full_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($full_url))) : '') : '';
                         if (url_is_local($full_url)) {
                             $full_url = get_custom_base_url() . '/' . $full_url;
                         }

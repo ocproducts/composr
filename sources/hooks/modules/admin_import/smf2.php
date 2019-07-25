@@ -401,7 +401,7 @@ class Hook_import_smf2
                 $password = $row['passwd'];
                 $type = 'smf';
                 $salt = $row['password_salt'];
-                $allow_emails = intval($row['instant_messages']) > 0 ? 1 : 0;
+                $allow_emails = (intval($row['instant_messages']) > 0) ? 1 : 0;
 
                 if ($row['date_registered'] == 0) {
                     $row['date_registered'] = time();
@@ -832,7 +832,7 @@ class Hook_import_smf2
             $cat_id = $row['id_cat'];
 
             $profile_id = (integer)$row['id_profile'];
-            $redirection = isset($row['redirect']) && !empty($row['redirect']) ? $row['redirect'] : '';
+            $redirection = (isset($row['redirect']) && !empty($row['redirect'])) ? $row['redirect'] : '';
 
             $category_id = import_id_remap_get('category', strval($cat_id), true);
 
@@ -1694,7 +1694,7 @@ class Hook_import_smf2
             if ($row['id_topic'] != 0) {
                 $atts = $db->query_select('attachments', array('*'), array('id_msg' => $row['id_topic']), 'ORDER BY id_msg ASC');
                 $attid = isset($atts[0]['id_attach']) ? $atts[0]['id_attach'] : 0;
-                $att_imported = $attid > 0 && import_check_if_imported('post_files', strval($attid)) ? true : false;
+                $att_imported = ($attid > 0 && import_check_if_imported('post_files', strval($attid))) ? true : false;
                 $messages = $db->query_select('messages', array('*'), array('id_topic' => $row['id_topic']), 'ORDER BY id_topic ASC');
                 $description = empty($messages[0]['body']) ? '' : str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($messages[0]['body']));
             }

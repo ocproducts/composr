@@ -220,7 +220,7 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
     $icon = do_template('ICON', array('_GUID' => '7a9a0914fc785d0c748f5f3497c4eb2e', 'NAME' => $_icon));
-    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
+    $ret .= '<button' . (empty($js) ? '' : (' onclick="return window.confirm(\'' . addslashes($js) . '\');"')) . ' accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;
 }

@@ -187,7 +187,7 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
         $a = get_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
     }
 
-    $b = (is_file($a)) ? $a : get_file_base() . '/lang/' . $lang . '/' . $file . '.ini';
+    $b = (is_file($a)) ? $a : (get_file_base() . '/lang/' . $lang . '/' . $file . '.ini');
 
     if (!is_file($b)) {
         $b = get_file_base() . '/lang/' . fallback_lang() . '/' . $file . '.ini';

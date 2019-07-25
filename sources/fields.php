@@ -814,7 +814,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
 
             foreach ($sub_types as $__type => $_title) {
                 //$_type_list->attach(form_input_list_entry($__type, ($__type == $type), $_title));
-                $_type_list .= '<option value="' . escape_html($__type) . '"' . ($__type == $type ? ' selected="selected"' : '') . '>' . $_title->evaluate() . '</option>'; // XHTMLXHTML
+                $_type_list .= '<option value="' . escape_html($__type) . '"' . (($__type == $type) ? ' selected="selected"' : '') . '>' . $_title->evaluate() . '</option>'; // XHTMLXHTML
             }
         }
     }

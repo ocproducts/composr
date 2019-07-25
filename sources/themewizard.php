@@ -1654,15 +1654,15 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
             $scale_b = null;
             $scale_count = 0;
             if ($colour_a_orig_r != $colour_b_orig_r) {
-                $scale_r = ($colour_a_orig_r - $colour_b_orig_r == 0) ? 0.0 : floatval($existing_colour_r - $colour_b_orig_r) / floatval($colour_a_orig_r - $colour_b_orig_r);
+                $scale_r = ($colour_a_orig_r - $colour_b_orig_r == 0) ? 0.0 : (floatval($existing_colour_r - $colour_b_orig_r) / floatval($colour_a_orig_r - $colour_b_orig_r));
                 $scale_count++;
             }
             if ($colour_a_orig_r != $colour_b_orig_r) {
-                $scale_g = ($colour_a_orig_g - $colour_b_orig_g == 0) ? 0.0 : floatval($existing_colour_g - $colour_b_orig_g) / floatval($colour_a_orig_g - $colour_b_orig_g);
+                $scale_g = ($colour_a_orig_g - $colour_b_orig_g == 0) ? 0.0 : (floatval($existing_colour_g - $colour_b_orig_g) / floatval($colour_a_orig_g - $colour_b_orig_g));
                 $scale_count++;
             }
             if ($colour_a_orig_r != $colour_b_orig_r) {
-                $scale_b = ($colour_a_orig_b - $colour_b_orig_b == 0) ? 0.0 : floatval($existing_colour_b - $colour_b_orig_b) / floatval($colour_a_orig_b - $colour_b_orig_b);
+                $scale_b = ($colour_a_orig_b - $colour_b_orig_b == 0) ? 0.0 : (floatval($existing_colour_b - $colour_b_orig_b) / floatval($colour_a_orig_b - $colour_b_orig_b));
                 $scale_count++;
             }
             if ($scale_count == 0) { // Impossible to calculate

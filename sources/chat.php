@@ -66,7 +66,7 @@ function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
         'SUMMARY' => '',
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'room_name',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_chat:__edit:' . strval($row['id']),
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:admin_chat:__edit:' . strval($row['id'])),
         'RESOURCE_TYPE' => 'chat',
     ));
 }
@@ -1206,7 +1206,7 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
             }
             $where .= 'system_message=0';
         }
-        $query .= (($where == '') ? '' : ' WHERE ' . $where) . ' ORDER BY date_and_time DESC,id DESC';
+        $query .= (($where == '') ? '' : (' WHERE ' . $where)) . ' ORDER BY date_and_time DESC,id DESC';
         global $TABLE_LANG_FIELDS_CACHE;
         $rows = $GLOBALS['SITE_DB']->query($query, $max_messages, 0, false, false, array_key_exists('chat_messages', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['chat_messages'] : array());
     } else {
