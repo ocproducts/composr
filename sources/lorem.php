@@ -755,7 +755,7 @@ function find_comcodes()
     $zones = find_all_zones();
     $files = array();
     foreach ($zones as $zone) {
-        $z = $zone == '' ? 'pages' : $zone;
+        $z = ($zone == '') ? 'pages' : $zone;
         $files[$z] = find_all_pages($zone, 'comcode/' . fallback_lang(), 'txt');
     }
     return $files;
@@ -771,7 +771,7 @@ function find_html()
     $zones = find_all_zones();
     $files = array();
     foreach ($zones as $zone) {
-        $z = $zone == '' ? 'pages' : $zone;
+        $z = ($zone == '') ? 'pages' : $zone;
         $files[$z] = find_all_pages($zone, 'html/' . fallback_lang(), 'htm');
     }
     return $files;

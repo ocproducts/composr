@@ -377,7 +377,7 @@ class DKIMSignature
         $i_part =
             empty($this->options['identity']) ?
                 '' :
-                ' i=' . $this->options['identity'] . ';' . "\r\n\t";
+                (' i=' . $this->options['identity'] . ';' . "\r\n\t");
 
         $dkim_header =
             'DKIM-Signature: ' .

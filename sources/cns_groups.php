@@ -72,7 +72,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_cns_groups:__edit:' . strval($row['id']),
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:admin_cns_groups:__edit:' . strval($row['id'])),
         'RESOURCE_TYPE' => 'group',
     ));
 }

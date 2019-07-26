@@ -106,7 +106,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
             case 'FILEDUMP_UPLOAD':
             case 'FILEDUMP_DELETE_FILE':
                 $path = trim($actionlog_row['param_b'], '/');
-                $written_context = ($path == '') ? '' : ($path . '/') . $actionlog_row['param_a'];
+                $written_context = ($path == '') ? '' : ($path . '/' . $actionlog_row['param_a']);
                 return $written_context;
 
             case 'FILEDUMP_MOVE':

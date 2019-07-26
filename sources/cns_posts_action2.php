@@ -303,7 +303,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
     if ($first) {
         $update_first =
             't_cache_first_post_id=' . (($first_post_id === null) ? 'NULL' : strval($first_post_id)) . ',
-            ' . (($first_title == '') ? '' : ('t_cache_first_title=\'' . db_escape_string($first_title) . '\'') . ',') . '
+            ' . (($first_title == '') ? '' : ('t_cache_first_title=\'' . db_escape_string($first_title) . '\',')) . '
             t_cache_first_time=' . (($first_time === null) ? 'NULL' : strval($first_time)) . ',
             t_cache_first_post=' . (multi_lang_content() ? ((($first_post === null) ? 'NULL' : strval($first_post))) : '\'\'') . ',
             t_cache_first_username=\'' . db_escape_string($first_username) . '\',
@@ -323,7 +323,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             ($first ? $update_first : '') .
             ($last ? $update_last : '') .
             (
-                $post_count_dif !== null
+                ($post_count_dif !== null)
                 ?
                 ('t_cache_num_posts=(t_cache_num_posts+' . strval($post_count_dif) . ')')
                 :

@@ -995,7 +995,7 @@ class Database_Static_xml extends DatabaseDriver
      */
     protected function _turn_where_expr_to_map($where_expr, $table_as, $schema = null, $not_full_accuracy = false)
     {
-        if ($where_expr[0] == 'BRACKETED') {
+        if ($where_expr[0] == 'PARENTHESISED') {
             return $this->_turn_where_expr_to_map($where_expr[1], $table_as, $schema, $not_full_accuracy);
         }
         if ($where_expr[0] == 'AND') {
@@ -2093,7 +2093,7 @@ class Database_Static_xml extends DatabaseDriver
                     }
                     $expr = array('SUBQUERY_VALUE', $subquery);
                 } else {
-                    $expr = array('BRACKETED', $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
+                    $expr = array('PARENTHESISED', $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
                 }
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
@@ -2343,7 +2343,7 @@ class Database_Static_xml extends DatabaseDriver
                 }
                 return $result;
 
-            case 'BRACKETED':
+            case 'PARENTHESISED':
                 return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
 
             case 'LITERAL':
@@ -2855,9 +2855,9 @@ class Database_Static_xml extends DatabaseDriver
                 return null;
             }
 
-            $is_bracketed = true;
+            $is_parenthesised = true;
         } else {
-            $is_bracketed = false;
+            $is_parenthesised = false;
         }
 
         $as = null;
@@ -2909,7 +2909,7 @@ class Database_Static_xml extends DatabaseDriver
         // FROM
 
         if ($this->_parsing_expects($at, $tokens, 'FROM', $query, true)) {
-            $closing_brackets_needed = 0;
+            $closing_parentheses_needed = 0;
             $table_name = $this->_parsing_read($at, $tokens, $query);
             if ($table_name == '(') { // subquery
                 $table_name = $this->_parse_query_select($tokens, $query, $db, null, 0, $fail_ok, $at, false);
@@ -2930,11 +2930,11 @@ class Database_Static_xml extends DatabaseDriver
                 }
             }
 
-            for ($i = 0; $i < $closing_brackets_needed; $i++) {
+            for ($i = 0; $i < $closing_parentheses_needed; $i++) {
                 $br = $this->_parsing_read($at, $tokens, $query, true);
                 if ($br === ')') {
                     $i--;
-                    $closing_brackets_needed--;
+                    $closing_parentheses_needed--;
                 } else {
                     $at--;
                     break;
@@ -2943,13 +2943,13 @@ class Database_Static_xml extends DatabaseDriver
 
             $joins = array(array('SIMPLE', $table_name, $as));
             do {
-                $test = $this->_read_join($at, $tokens, $query, $db, $fail_ok, $closing_brackets_needed);
+                $test = $this->_read_join($at, $tokens, $query, $db, $fail_ok, $closing_parentheses_needed);
                 if ($test !== null) {
                     $joins[] = $test;
                 }
             } while ($test !== null);
 
-            for ($i = 0; $i < $closing_brackets_needed; $i++) {
+            for ($i = 0; $i < $closing_parentheses_needed; $i++) {
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
@@ -3082,7 +3082,7 @@ class Database_Static_xml extends DatabaseDriver
             }
         }
 
-        if ($is_bracketed) {
+        if ($is_parenthesised) {
             if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                 return null;
             }
@@ -3645,10 +3645,10 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
-     * @param  integer $closing_brackets_needed How many closing brackets we expect
+     * @param  integer $closing_parentheses_needed How many closing parentheses we expect
      * @return ?array Join condition (null: no join here)
      */
-    protected function _read_join(&$at, $tokens, $query, $db, $fail_ok, &$closing_brackets_needed)
+    protected function _read_join(&$at, $tokens, $query, $db, $fail_ok, &$closing_parentheses_needed)
     {
         $token = $this->_parsing_read($at, $tokens, $query, true);
 
@@ -3668,7 +3668,7 @@ class Database_Static_xml extends DatabaseDriver
         $join_table = $this->_parsing_read($at, $tokens, $query);
 
         if ($join_table == '(') {
-            $closing_brackets_needed++;
+            $closing_parentheses_needed++;
             $join_table = $this->_parsing_read($at, $tokens, $query);
         }
 
@@ -3694,11 +3694,11 @@ class Database_Static_xml extends DatabaseDriver
             $on_expr = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
         }
 
-        for ($i = 0; $i < $closing_brackets_needed; $i++) {
+        for ($i = 0; $i < $closing_parentheses_needed; $i++) {
             $br = $this->_parsing_read($at, $tokens, $query, true);
             if ($br === ')') {
                 $i--;
-                $closing_brackets_needed--;
+                $closing_parentheses_needed--;
             } else {
                 $at--;
                 break;

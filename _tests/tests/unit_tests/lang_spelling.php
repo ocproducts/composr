@@ -372,7 +372,7 @@ class lang_spelling_test_set extends cms_test_case
             (preg_match('#[^s]tick [^\(]#', $string) != 0) &&
             (!in_array($file, array('cns_install.php')))
         ) {
-            $ob->assertTrue(false, 'The word tick was used in ' . $path . ' without being followed by check in brackets in the conventional way.');
+            $ob->assertTrue(false, 'The word tick was used in ' . $path . ' without being followed by check in parentheses in the conventional way.');
         }
 
         $common_spelling_mistakes = array(

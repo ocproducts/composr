@@ -67,7 +67,7 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
         'ENTRY_DETAILS' => $entry_details,
         'BREADCRUMBS' => $breadcrumbs,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:topics:_edit_topic:' . strval($row['id']),
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:topics:_edit_topic:' . strval($row['id'])),
         'RESOURCE_TYPE' => 'topic',
     ));
 }

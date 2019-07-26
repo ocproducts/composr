@@ -370,14 +370,14 @@ class CMS_RSS
                                 $this->gleamed_feed['copyright'] = $data2;
                                 break;
                             case 'MANAGINGEDITOR':
-                                $bracket = strpos($data, '(');
-                                if ($bracket !== false) {
-                                    $bracket2 = strrpos(substr($data, $bracket), ')') + $bracket;
-                                    if ($bracket2 === false) {
-                                        $bracket2 = $bracket;
+                                $parenthesis = strpos($data, '(');
+                                if ($parenthesis !== false) {
+                                    $parenthesis2 = strrpos(substr($data, $parenthesis), ')') + $parenthesis;
+                                    if ($parenthesis2 === false) {
+                                        $parenthesis2 = $parenthesis;
                                     }
-                                    $this->gleamed_feed['author'] = substr($data, $bracket + 1, $bracket2 - $bracket - 1);
-                                    $this->gleamed_feed['author_email'] = substr($data, 0, $bracket);
+                                    $this->gleamed_feed['author'] = substr($data, $parenthesis + 1, $parenthesis2 - $parenthesis - 1);
+                                    $this->gleamed_feed['author_email'] = substr($data, 0, $parenthesis);
                                 } else {
                                     $this->gleamed_feed['author_email'] = $data;
                                 }
@@ -504,11 +504,11 @@ class CMS_RSS
                                 $current_item['full_url'] = $data;
                                 break;
                             case 'AUTHOR':
-                                $bracket = strpos($data, '(');
-                                if ($bracket !== false) {
-                                    $bracket2 = strpos($data, ')', $bracket);
-                                    $current_item['author'] = substr($data, $bracket + 1, $bracket2 - $bracket - 1);
-                                    $current_item['author_email'] = rtrim(substr($data, 0, $bracket));
+                                $parenthesis = strpos($data, '(');
+                                if ($parenthesis !== false) {
+                                    $parenthesis2 = strpos($data, ')', $parenthesis);
+                                    $current_item['author'] = substr($data, $parenthesis + 1, $parenthesis2 - $parenthesis - 1);
+                                    $current_item['author_email'] = rtrim(substr($data, 0, $parenthesis));
                                 } else {
                                     $current_item['author_email'] = $data;
                                 }

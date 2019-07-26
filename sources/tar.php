@@ -190,7 +190,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
  */
 function file_size_to_tar_block_size($size)
 {
-    return ($size % 512 == 0) ? $size : (intval($size / 512) + 1) * 512;
+    return ($size % 512 == 0) ? $size : ((intval($size / 512) + 1) * 512);
 }
 
 /**

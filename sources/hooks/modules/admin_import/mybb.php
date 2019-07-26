@@ -1377,12 +1377,12 @@ class Hook_import_mybb
     {
         $rows = $db->query_select('modtools', array('*'), array('type' => 't'));
         foreach ($rows as $row) {
-            $mm_forum_multi_code = (isset($row['forums']) && strlen($row['forums']) > 0) ? '+' . $row['forums'] : '*'; //'mm_forum_multi_code'
+            $mm_forum_multi_code = (isset($row['forums']) && (strlen($row['forums']) > 0)) ? ('+' . $row['forums']) : '*'; //'mm_forum_multi_code'
             $mm_name = $row['name'];
 
             $topic_options = unserialize($row['threadoptions']);
 
-            $mm_open_state = ($topic_options['openthread'] == 'open') ? 1 : ($topic_options['openthread'] == 'close') ? 0 : null;
+            $mm_open_state = ($topic_options['openthread'] == 'open') ? 1 : (($topic_options['openthread'] == 'close') ? 0 : null);
             $mm_move_to = ($topic_options['movethread'] != 0) ? $topic_options['movethread'] : null;
 
             $mm_title_suffix = ($topic_options['newsubject'] != '{subject}') ? preg_replace('#\{username\}#', '', $topic_options['newsubject']) : '';

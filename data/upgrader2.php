@@ -48,7 +48,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 // Check access
 $hashed_password = $_GET['hashed_password'];
 global $SITE_INFO;
-require_once(is_file($FILE_BASE . '/_config.php') ? $FILE_BASE . '/_config.php' : $FILE_BASE . '/info.php'); // LEGACY
+require_once(is_file($FILE_BASE . '/_config.php') ? ($FILE_BASE . '/_config.php') : ($FILE_BASE . '/info.php')); // LEGACY
 if (!upgrader2_check_master_password($hashed_password)) {
     exit('Access Denied');
 }

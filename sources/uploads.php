@@ -547,7 +547,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             if (function_exists('imagetypes')) {
                 $thumb_filename = basename(preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0])));
                 list($place, , $thumb_filename) = find_unique_path($thumb_folder, $thumb_filename);
-                $url_full = url_is_local($url[0]) ? get_custom_base_url() . '/' . $url[0] : $url[0];
+                $url_full = url_is_local($url[0]) ? (get_custom_base_url() . '/' . $url[0]) : $url[0];
 
                 $thumb = convert_image($url_full, $place, null, null, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
             } else {

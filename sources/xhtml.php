@@ -484,7 +484,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                 $start_ellipses = '';
             }
             if ($ellipses) {
-                $end_ellipses = (($length !== null) && (($end_pos < $total_length - 1)) ? $entity : '');
+                $end_ellipses = ((($length !== null) && ($end_pos < $total_length - 1)) ? $entity : '');
             } else {
                 $end_ellipses = '';
             }

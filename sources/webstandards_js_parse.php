@@ -67,7 +67,7 @@ function webstandards_js_parse()
  */
 function _webstandards_js_parse_js()
 {
-    // Choice{"FUNCTION" "IDENTIFIER "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" command | command}*
+    // Choice{"FUNCTION" "IDENTIFIER "PARENTHESIS_OPEN" comma_parameters "PARENTHESIS_CLOSE" command | command}*
 
     $next = parser_peek();
     $program = array();
@@ -175,7 +175,7 @@ function _webstandards_js_parse_command()
  */
 function _webstandards_js_parse_command_actual()
 {
-    // Choice{"VAR" comma_variables | "FUNCTION" | variable "DEC" | variable "INC" | variable assignment_operator expression | function "BRACKET_OPEN" comma_expressions "BRACKET_CLOSE" | "IF" expression command if_rest? | "FINALLY" identifier "CURLY_OPEN" command "CURLY_CLOSE" | "CATCH" identifier "CURLY_OPEN" command "CURLY_CLOSE" | "TRY" "CURLY_OPEN" command "CURLY_CLOSE" | "SWITCH" expression "CURLY_OPEN" cases "CURLY_CLOSE" | "FOR" "BRACKET_OPEN" identifier "OF" expression "BRACKET_CLOSE" command | "FOR" "BRACKET_OPEN" command expression command "BRACKET_CLOSE" command | "DO" command "WHILE" "BRACKET_OPEN" expression "BRACKET_CLOSE" | "WHILE" "BRACKET_OPEN" expression "BRACKET_CLOSE" command | "RETURN" | "CONTINUE" | "BREAK" | "RETURN" expression | "THROW" expression | "DELETE" identifier}
+    // Choice{"VAR" comma_variables | "FUNCTION" | variable "DEC" | variable "INC" | variable assignment_operator expression | function "PARENTHESIS_OPEN" comma_expressions "PARENTHESIS_CLOSE" | "IF" expression command if_rest? | "FINALLY" identifier "CURLY_OPEN" command "CURLY_CLOSE" | "CATCH" identifier "CURLY_OPEN" command "CURLY_CLOSE" | "TRY" "CURLY_OPEN" command "CURLY_CLOSE" | "SWITCH" expression "CURLY_OPEN" cases "CURLY_CLOSE" | "FOR" "PARENTHESIS_OPEN" identifier "OF" expression "PARENTHESIS_CLOSE" command | "FOR" "PARENTHESIS_OPEN" command expression command "PARENTHESIS_CLOSE" command | "DO" command "WHILE" "PARENTHESIS_OPEN" expression "PARENTHESIS_CLOSE" | "WHILE" "PARENTHESIS_OPEN" expression "PARENTHESIS_CLOSE" command | "RETURN" | "CONTINUE" | "BREAK" | "RETURN" expression | "THROW" expression | "DELETE" identifier}
 
     $next = parser_peek(true);
     switch ($next[0]) {
@@ -204,14 +204,14 @@ function _webstandards_js_parse_command_actual()
         case 'IF':
             parser_next();
             $c_pos = $GLOBALS['JS_PARSE_POSITION'];
-            if (parser_expect('BRACKET_OPEN') === null) {
+            if (parser_expect('PARENTHESIS_OPEN') === null) {
                 return null;
             }
             $expression = _webstandards_js_parse_expression();
             if ($expression === null) {
                 return null;
             }
-            if (parser_expect('BRACKET_CLOSE') === null) {
+            if (parser_expect('PARENTHESIS_CLOSE') === null) {
                 return null;
             }
             $command = _webstandards_js_parse_command();
@@ -244,14 +244,14 @@ function _webstandards_js_parse_command_actual()
         case 'WITH':
             parser_next();
             $c_pos = $GLOBALS['JS_PARSE_POSITION'];
-            if (parser_expect('BRACKET_OPEN') === null) {
+            if (parser_expect('PARENTHESIS_OPEN') === null) {
                 return null;
             }
             $var = _webstandards_js_parse_variable();
             if ($var === null) {
                 $exp = null;
             }
-            if (parser_expect('BRACKET_CLOSE') === null) {
+            if (parser_expect('PARENTHESIS_CLOSE') === null) {
                 return null;
             }
             $command = _webstandards_js_parse_command();
@@ -264,14 +264,14 @@ function _webstandards_js_parse_command_actual()
         case 'CATCH':
             parser_next();
             $c_pos = $GLOBALS['JS_PARSE_POSITION'];
-            if (parser_expect('BRACKET_OPEN') === null) {
+            if (parser_expect('PARENTHESIS_OPEN') === null) {
                 return null;
             }
             $target = parser_expect('IDENTIFIER');
             if ($target === null) {
                 return null;
             }
-            if (parser_expect('BRACKET_CLOSE') === null) {
+            if (parser_expect('PARENTHESIS_CLOSE') === null) {
                 return null;
             }
             $command = _webstandards_js_parse_command();
@@ -314,7 +314,7 @@ function _webstandards_js_parse_command_actual()
         case 'FOR':
             parser_next();
             $c_pos = $GLOBALS['JS_PARSE_POSITION'];
-            if (parser_expect('BRACKET_OPEN') === null) {
+            if (parser_expect('PARENTHESIS_OPEN') === null) {
                 return null;
             }
             $_test = parser_peek_dist(1);
@@ -337,7 +337,7 @@ function _webstandards_js_parse_command_actual()
                 if ($expression === null) {
                     return null;
                 }
-                if (parser_expect('BRACKET_CLOSE') === null) {
+                if (parser_expect('PARENTHESIS_CLOSE') === null) {
                     return null;
                 }
                 $loop_command = _webstandards_js_parse_command();
@@ -366,7 +366,7 @@ function _webstandards_js_parse_command_actual()
                     return null;
                 }
                 $next_2 = parser_peek();
-                if ($next_2 == 'BRACKET_CLOSE') {
+                if ($next_2 == 'PARENTHESIS_CLOSE') {
                     $control_commands = null;
                 } else {
                     $control_commands = _webstandards_js_parse_comma_commands();
@@ -374,7 +374,7 @@ function _webstandards_js_parse_command_actual()
                         return null;
                     }
                 }
-                if (parser_expect('BRACKET_CLOSE') === null) {
+                if (parser_expect('PARENTHESIS_CLOSE') === null) {
                     return null;
                 }
                 $next_2 = parser_peek();
@@ -400,14 +400,14 @@ function _webstandards_js_parse_command_actual()
             if (parser_expect('WHILE') === null) {
                 return null;
             }
-            if (parser_expect('BRACKET_OPEN') === null) {
+            if (parser_expect('PARENTHESIS_OPEN') === null) {
                 return null;
             }
             $control_expression = _webstandards_js_parse_expression();
             if ($control_expression === null) {
                 return null;
             }
-            if (parser_expect('BRACKET_CLOSE') === null) {
+            if (parser_expect('PARENTHESIS_CLOSE') === null) {
                 return null;
             }
             $command = array('DO', $control_expression, $loop_command, $c_pos);
@@ -416,11 +416,11 @@ function _webstandards_js_parse_command_actual()
         case 'WHILE':
             parser_next();
             $c_pos = $GLOBALS['JS_PARSE_POSITION'];
-            if (parser_expect('BRACKET_OPEN') === null) {
+            if (parser_expect('PARENTHESIS_OPEN') === null) {
                 return null;
             }
             $control_expression = _webstandards_js_parse_expression();
-            if (parser_expect('BRACKET_CLOSE') === null) {
+            if (parser_expect('PARENTHESIS_CLOSE') === null) {
                 return null;
             }
             if ($control_expression === null) {
@@ -588,14 +588,14 @@ function _webstandards_js_parse_function_dec($anonymous = false)
             return null;
         }
     }
-    if (parser_expect('BRACKET_OPEN') === null) {
+    if (parser_expect('PARENTHESIS_OPEN') === null) {
         return null;
     }
     $function['parameters'] = _webstandards_js_parse_comma_parameters(false);
     if ($function['parameters'] === null) {
         return null;
     }
-    if (parser_expect('BRACKET_CLOSE') === null) {
+    if (parser_expect('PARENTHESIS_CLOSE') === null) {
         return null;
     }
     $function['code'] = _webstandards_js_parse_command();
@@ -711,7 +711,7 @@ function precedence_sort($op_list)
  */
 function _webstandards_js_parse_expression_inner()
 {
-    // Choice{"BW_NOT" expression | "BOOLEAN_NOT" expression | "TYPEOF" "IDENTIFIER" | "IDENTIFIER" "IN" "IDENTIFIER" | "IDENTIFIER" "INSTANCEOF" "IDENTIFIER" | SUBTRACT expression | literal | variable | variable "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" | "IDENTIFIER" | "IDENTIFIER" "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" | "NEW" "IDENTIFIER" "BRACKET_OPEN" comma_expressions "BRACKET_CLOSE" | "NEW" "IDENTIFIER" | "ARRAY" "BRACKET_OPEN" create_array "BRACKET_CLOSE" | "BRACKET_OPEN" expression "BRACKET_CLOSE" | "BRACKET_OPEN" assignment "BRACKET_CLOSE"}
+    // Choice{"BW_NOT" expression | "BOOLEAN_NOT" expression | "TYPEOF" "IDENTIFIER" | "IDENTIFIER" "IN" "IDENTIFIER" | "IDENTIFIER" "INSTANCEOF" "IDENTIFIER" | SUBTRACT expression | literal | variable | variable "PARENTHESIS_OPEN" comma_parameters "PARENTHESIS_CLOSE" | "IDENTIFIER" | "IDENTIFIER" "PARENTHESIS_OPEN" comma_parameters "PARENTHESIS_CLOSE" | "NEW" "IDENTIFIER" "PARENTHESIS_OPEN" comma_expressions "PARENTHESIS_CLOSE" | "NEW" "IDENTIFIER" | "ARRAY" "PARENTHESIS_OPEN" create_array "PARENTHESIS_CLOSE" | "PARENTHESIS_OPEN" expression "PARENTHESIS_CLOSE" | "PARENTHESIS_OPEN" assignment "PARENTHESIS_CLOSE"}
 
     $next = parser_peek();
 
@@ -823,14 +823,14 @@ function _webstandards_js_parse_expression_inner()
             $expression = array('NEW_OBJECT_FUNCTION', $function, $GLOBALS['JS_PARSE_POSITION']);
 
             $test = parser_peek();
-            if ($test == 'BRACKET_OPEN') {
+            if ($test == 'PARENTHESIS_OPEN') {
                 parser_next();
 
                 $parameters = _webstandards_js_parse_comma_expressions();
                 if ($parameters === null) {
                     return null;
                 }
-                if (parser_expect('BRACKET_CLOSE') === null) {
+                if (parser_expect('PARENTHESIS_CLOSE') === null) {
                     return null;
                 }
                 $expression = array('CALL', array('VARIABLE', '_', array(), $GLOBALS['JS_PARSE_POSITION']), $parameters, $GLOBALS['JS_PARSE_POSITION']);
@@ -846,13 +846,13 @@ function _webstandards_js_parse_expression_inner()
                 return null;
             }
             $next_2 = parser_peek();
-            if ($next_2 == 'BRACKET_OPEN') {
+            if ($next_2 == 'PARENTHESIS_OPEN') {
                 parser_next();
                 $expressions = _webstandards_js_parse_comma_expressions();
                 if ($expressions === null) {
                     return null;
                 }
-                if (parser_expect('BRACKET_CLOSE') === null) {
+                if (parser_expect('PARENTHESIS_CLOSE') === null) {
                     return null;
                 }
                 $expression = array('NEW_OBJECT', $identifier[1], $expressions, $GLOBALS['JS_PARSE_POSITION']);
@@ -893,7 +893,7 @@ function _webstandards_js_parse_expression_inner()
             }
             break;
 
-        case 'BRACKET_OPEN':
+        case 'PARENTHESIS_OPEN':
             parser_next();
 
             // Look ahead to see if this is an embedded assignment or a cast
@@ -912,7 +912,7 @@ function _webstandards_js_parse_expression_inner()
                     return null;
                 }
                 $expression = array('ASSIGNMENT', 'EQUAL', $target, $_expression, $GLOBALS['JS_PARSE_POSITION']);
-                if (parser_expect('BRACKET_CLOSE') === null) {
+                if (parser_expect('PARENTHESIS_CLOSE') === null) {
                     return null;
                 }
             } else {
@@ -920,26 +920,26 @@ function _webstandards_js_parse_expression_inner()
                 if ($_expression === null) {
                     return null;
                 }
-                if (parser_expect('BRACKET_CLOSE') === null) {
+                if (parser_expect('PARENTHESIS_CLOSE') === null) {
                     return null;
                 }
                 $test = parser_peek();
                 if (($test == 'EXTRACT_OPEN') || ($test == 'OBJECT_OPERATOR')) {
                     $extra = _webstandards_js_parse_variable_actual();
                     $expression = array('VARIABLE', $_expression, $extra, $GLOBALS['JS_PARSE_POSITION']);
-                } elseif ($test == 'BRACKET_OPEN') {
+                } elseif ($test == 'PARENTHESIS_OPEN') {
                     $variable = array('VARIABLE', $_expression, array(), $GLOBALS['JS_PARSE_POSITION']);
                     parser_next();
                     $parameters = _webstandards_js_parse_comma_expressions();
                     if ($parameters === null) {
                         return null;
                     }
-                    if (parser_expect('BRACKET_CLOSE') === null) {
+                    if (parser_expect('PARENTHESIS_CLOSE') === null) {
                         return null;
                     }
                     $expression = array('CALL', $variable, $parameters, $GLOBALS['JS_PARSE_POSITION']);
                 } else {
-                    $expression = array('BRACKETED', $_expression, $GLOBALS['JS_PARSE_POSITION']);
+                    $expression = array('PARENTHESISED', $_expression, $GLOBALS['JS_PARSE_POSITION']);
                 }
             }
             break;
@@ -972,13 +972,13 @@ function _webstandards_js_parse_identify_chain($variable)
             $expression = array('INC', $variable, $GLOBALS['JS_PARSE_POSITION']);
             break;
 
-        case 'BRACKET_OPEN': // Is it an inline direct function call, or possibly a longer chain
+        case 'PARENTHESIS_OPEN': // Is it an inline direct function call, or possibly a longer chain
             parser_next();
             $parameters = _webstandards_js_parse_comma_expressions();
             if ($parameters === null) {
                 return null;
             }
-            if (parser_expect('BRACKET_CLOSE') === null) {
+            if (parser_expect('PARENTHESIS_CLOSE') === null) {
                 return null;
             }
             $expression = array('CALL', $variable, $parameters, $GLOBALS['JS_PARSE_POSITION']);
@@ -993,7 +993,7 @@ function _webstandards_js_parse_identify_chain($variable)
 
             // Extension?
             $next_2 = parser_peek();
-            if (in_array($next_2, array('BRACKET_OPEN', 'DEC', 'INC', 'IN', 'INSTANCEOF', 'EQUAL', 'CONCAT_EQUAL', 'DIV_EQUAL', 'MUL_EQUAL', 'SUBTRACT_EQUAL', 'PLUS_EQUAL', 'SL_EQUAL', 'SR_EQUAL', 'ZSR_EQUAL', 'BW_AND_EQUAL', 'BW_OR_EQUAL'))) {
+            if (in_array($next_2, array('PARENTHESIS_OPEN', 'DEC', 'INC', 'IN', 'INSTANCEOF', 'EQUAL', 'CONCAT_EQUAL', 'DIV_EQUAL', 'MUL_EQUAL', 'SUBTRACT_EQUAL', 'PLUS_EQUAL', 'SL_EQUAL', 'SR_EQUAL', 'ZSR_EQUAL', 'BW_AND_EQUAL', 'BW_OR_EQUAL'))) {
                 return _webstandards_js_parse_identify_chain(array('VARIABLE', $expression, array(), $GLOBALS['JS_PARSE_POSITION']));
             }
             break;
@@ -1092,7 +1092,7 @@ function _webstandards_js_parse_variable_actual()
 
             $variable = array('OBJECT_OPERATOR', $dereference, $tunnel, $GLOBALS['JS_PARSE_POSITION']);
 
-            if ($next_3 == 'BRACKET_OPEN') { // Function call actually
+            if ($next_3 == 'PARENTHESIS_OPEN') { // Function call actually
                 $variable = _webstandards_js_parse_identify_chain($variable);
             }
 
@@ -1227,7 +1227,7 @@ function _webstandards_js_parse_literal()
  * @return ?list Parse info (null: error)
  * @ignore
  */
-function _webstandards_js_parse_comma_expressions($allow_blanks = false, $closer = 'BRACKET_CLOSE')
+function _webstandards_js_parse_comma_expressions($allow_blanks = false, $closer = 'PARENTHESIS_CLOSE')
 {
     // Choice{expression "COMMA" comma_expressions | expression}
 
@@ -1268,7 +1268,7 @@ function _webstandards_js_parse_comma_expressions($allow_blanks = false, $closer
  * @return ?list Parse info (null: error)
  * @ignore
  */
-function _webstandards_js_parse_comma_variables($allow_blanks = false, $closer = 'BRACKET_CLOSE')
+function _webstandards_js_parse_comma_variables($allow_blanks = false, $closer = 'PARENTHESIS_CLOSE')
 {
     // Choice{"variable" "COMMA" comma_variables | "variable"}
 
@@ -1318,7 +1318,7 @@ function _webstandards_js_parse_comma_variables($allow_blanks = false, $closer =
  * @return ?list Parse info (null: error)
  * @ignore
  */
-function _webstandards_js_parse_comma_parameters($allow_expressions = true, $closer = 'BRACKET_CLOSE', $separator = 'EQUAL')
+function _webstandards_js_parse_comma_parameters($allow_expressions = true, $closer = 'PARENTHESIS_CLOSE', $separator = 'EQUAL')
 {
     // Choice{parameter | parameter "COMMA" comma_parameters}?
 

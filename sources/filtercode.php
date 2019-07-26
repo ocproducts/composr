@@ -119,7 +119,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
         $info2 = $ob2->info();
         if (($info2['support_custom_fields']) || ($content_type == 'catalogue_entry')) {
             require_code('fields');
-            $catalogue_fields = list_to_map('id', get_catalogue_fields(($content_type == 'catalogue_entry') ? $catalogue_name : '_' . $content_type));
+            $catalogue_fields = list_to_map('id', get_catalogue_fields(($content_type == 'catalogue_entry') ? $catalogue_name : ('_' . $content_type)));
             foreach ($catalogue_fields as $catalogue_field) {
                 if ($catalogue_field['cf_put_in_search'] == 1) {
                     $remapped_name = 'field_' . strval($catalogue_field['id']);

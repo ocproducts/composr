@@ -1034,7 +1034,7 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                         if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][$and_position + 1][0] == 'CALL_DIRECT') && ($c[1][$and_position + 1][1] == 'php_function_allowed' || strpos($c[1][$and_position + 1][1], '_exists') !== false) && (isset($c[1][$and_position + 1][2][$function_parameter_pos])) && ($c[1][$and_position + 1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($c[1][$and_position + 1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
                             $temp_function_guard .= ',' . $c[1][$and_position + 1][2][$function_parameter_pos][0][1][1] . ',';
                         }
-                        if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][$and_position + 1][0] == 'BRACKETED') && ($c[1][$and_position + 1][1][0] == 'CALL_DIRECT') && ($c[1][$and_position + 1][1][1] == 'php_function_allowed' || strpos($c[1][$and_position + 1][1][1], '_exists') !== false) && (isset($c[1][$and_position + 1][1][2][$function_parameter_pos])) && ($c[1][$and_position + 1][1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($c[1][$and_position + 1][1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
+                        if (($c[1][0] == 'BOOLEAN_AND') && ($c[1][$and_position + 1][0] == 'PARENTHESISED') && ($c[1][$and_position + 1][1][0] == 'CALL_DIRECT') && ($c[1][$and_position + 1][1][1] == 'php_function_allowed' || strpos($c[1][$and_position + 1][1][1], '_exists') !== false) && (isset($c[1][$and_position + 1][1][2][$function_parameter_pos])) && ($c[1][$and_position + 1][1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($c[1][$and_position + 1][1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
                             $temp_function_guard .= ',' . $c[1][$and_position + 1][1][2][$function_parameter_pos][0][1][1] . ',';
                         }
                     }
@@ -1780,15 +1780,25 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 infer_expression_type_to_variable_type($type_a, $e[2][1]);
             }
         }
+
+        // Common most egregious cases of horribly ugly code
+        if (in_array($e[1][0], array('TERNARY_IF', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'INSTANCEOF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND'))) {
+            log_warning('Raw complex expression in ternary syntax boolean controller should be parenthesised, for clarity', $c_pos);
+        }
+        $bad_ops = array('TERNARY_IF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND', 'REFERENCE', 'BW_OR', 'BW_XOR', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'INSTANCEOF', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ADD', 'SUBTRACT', 'CONC', 'MULTIPLY', 'DIVIDE', 'REMAINDER', 'EXPONENTIATION');
+        if ((in_array($e[2][0][0], $bad_ops)) || (in_array($e[2][1][0], $bad_ops))) {
+            log_warning('Raw complex expression in ternary syntax should be parenthesised, for clarity', $c_pos);
+        }
+
         return $type_a;
     }
     if (in_array($e[0], array('BOOLEAN_AND', 'BOOLEAN_OR', 'BOOLEAN_XOR'))) {
         foreach (array(0, 1) as $function_parameter_pos) {
             foreach (array(0, 1) as $and_position) {
-                if (($e[0] == 'BOOLEAN_AND') && ($e[1][0] == 'BRACKETED') && ($e[1][$and_position + 1][0] == 'CALL_DIRECT') && ($e[1][$and_position + 1][1] == 'php_function_allowed' || strpos($e[1][$and_position + 1][1], '_exists') !== false) && (isset($e[1][$and_position + 1][2][$function_parameter_pos])) && ($e[1][$and_position + 1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($e[1][$and_position + 1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
+                if (($e[0] == 'BOOLEAN_AND') && ($e[1][0] == 'PARENTHESISED') && ($e[1][$and_position + 1][0] == 'CALL_DIRECT') && ($e[1][$and_position + 1][1] == 'php_function_allowed' || strpos($e[1][$and_position + 1][1], '_exists') !== false) && (isset($e[1][$and_position + 1][2][$function_parameter_pos])) && ($e[1][$and_position + 1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($e[1][$and_position + 1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
                     $function_guard .= ',' . $e[1][1][2][$function_parameter_pos][0][1][1] . ',';
                 }
-                if (($e[0] == 'BOOLEAN_AND') && ($e[2][0] == 'BOOLEAN_AND') && ($e[2][1][0] == 'BRACKETED') && ($e[2][1][$and_position + 1][0] == 'CALL_DIRECT') && ($e[2][1][$and_position + 1][1] == 'php_function_allowed' || strpos($e[2][1][$and_position + 1][1], '_exists') !== false) && (isset($e[2][1][$and_position + 1][2][$function_parameter_pos][0])) && ($e[2][1][$and_position + 1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($e[2][1][$and_position + 1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
+                if (($e[0] == 'BOOLEAN_AND') && ($e[2][0] == 'BOOLEAN_AND') && ($e[2][1][0] == 'PARENTHESISED') && ($e[2][1][$and_position + 1][0] == 'CALL_DIRECT') && ($e[2][1][$and_position + 1][1] == 'php_function_allowed' || strpos($e[2][1][$and_position + 1][1], '_exists') !== false) && (isset($e[2][1][$and_position + 1][2][$function_parameter_pos][0])) && ($e[2][1][$and_position + 1][2][$function_parameter_pos][0][0] == 'LITERAL') && ($e[2][1][$and_position + 1][2][$function_parameter_pos][0][1][0] == 'STRING')) {
                     $function_guard .= ',' . $e[2][1][1][2][$function_parameter_pos][0][1][1] . ',';
                 }
             }
@@ -1932,7 +1942,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         case 'CASTED':
             check_expression($inner[2], false, false, $function_guard);
             return strtolower($inner[1]);
-        case 'BRACKETED':
+        case 'PARENTHESISED':
             return check_expression($inner[1], false, false, $function_guard);
         case 'BOOLEAN_NOT':
             $passes = ensure_type(array('boolean'), check_expression($inner[1], false, false, $function_guard), $c_pos, 'Can only \'NOT\' a boolean', true);

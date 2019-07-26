@@ -122,7 +122,7 @@ Additionally:
 
 [title="4"]The tag opens and closes[/title]
 
-Tags are written as in a way similar to HTML, except using the [tt][][/tt] brackets instead of the [tt]<>[/tt] brackets, and a slightly more user-friendly notation.
+Tags are written as in a way similar to HTML, except using the [tt][][/tt] square brackets instead of the [tt]<>[/tt] angled brackets, and a slightly more user-friendly notation.
 
 All tags have an opening tag, written [tt][tag][/tt], and a closing tag, written [tt][/tag][/tt].
 
@@ -161,7 +161,7 @@ This only applies to the [tt]param[/tt] parameter (and only if a tag has one).
 
 If you need to include the [tt]"[/tt] symbol inside a tag parameter, you can put it in as [tt]\"[/tt] (e.g. [tt][quote="Mr \"Happy\""][/quote][/tt]).
 
-Also, if you need to literally display a tag without it being parsed, you may type [tt]\[[/tt] for the opening bracket (e.g. [tt]\[i do not want this as italics][/tt]).
+Also, if you need to literally display a tag without it being parsed, you may type [tt]\[[/tt] for the opening square bracket (e.g. [tt]\[i do not want this as italics][/tt]).
 
 [title="3"]Table syntax[/title]
 

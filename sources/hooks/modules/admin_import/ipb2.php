@@ -946,7 +946,7 @@ class Hook_import_ipb2
                         break;
                 }
 
-                $id_new = cns_make_topic($forum_id, @html_entity_decode($row['description'], ENT_QUOTES), $emoticon, $row['approved'], $row['state'] == 'open' ? 1 : 0, $row['pinned'], 0, null, null, false, $row['views']);
+                $id_new = cns_make_topic($forum_id, @html_entity_decode($row['description'], ENT_QUOTES), $emoticon, $row['approved'], ($row['state'] == 'open') ? 1 : 0, $row['pinned'], 0, null, null, false, $row['views']);
 
                 import_id_remap_put('topic', strval($row['tid']), $id_new);
             }

@@ -626,7 +626,7 @@ class Forum_driver_smf2 extends Forum_driver_base
             }
         }
 
-        $topic_filter = ($filter_topic_title != '') ? ' AND p.subject LIKE \'' . db_encode_like($filter_topic_title) . '\'' : '';
+        $topic_filter = ($filter_topic_title != '') ? (' AND p.subject LIKE \'' . db_encode_like($filter_topic_title) . '\'') : '';
         $rows = $this->db->query('SELECT t.num_replies, t.id_topic AS t_id_topic, t.id_member_updated AS t_id_member_updated, t.id_member_started AS t_id_member_started, t.locked AS t_locked, p.subject AS p_subject FROM ' . $this->db->get_table_prefix() . 'topics t LEFT JOIN ' . $this->db->get_table_prefix() . 'messages p ON t.id_first_msg=p.id_msg WHERE (' . $id_list . ')' . $topic_filter . ' ORDER BY ' . (($date_key == 'lasttime') ? 'id_last_msg' : 'id_first_msg') . ' DESC', $limit, $start, null, false, true);
         $max_rows = $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'topics t LEFT JOIN ' . $this->db->get_table_prefix() . 'messages p ON t.ID_FIRST_MSG=p.ID_MSG WHERE (' . $id_list . ')' . $topic_filter);
         $out = array();
@@ -1097,7 +1097,7 @@ class Forum_driver_smf2 extends Forum_driver_base
     public function forum_md5($data, $key, $just_first = false)
     {
         $key = strtolower($key);
-        $new_key = str_pad(strlen($key) <= 64 ? $key : pack('H*', md5($key)), 64, chr(0x00));
+        $new_key = str_pad((strlen($key) <= 64) ? $key : pack('H*', md5($key)), 64, chr(0x00));
 
         $a = md5(($new_key ^ str_repeat(chr(0x5c), 64)) . pack('H*', md5(($new_key ^ str_repeat(chr(0x36), 64)) . $data))); // SMF 1.0 style
         if ($just_first) {
