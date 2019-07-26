@@ -1144,8 +1144,8 @@ where:
   - [tt]height[/tt] for an image which is stretched to the given height and a width in proportion to that
   - [tt]crop[/tt] for an image which has been shrunk until one of its dimensions matched that given and the rest has been chopped off
   - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out (padding will only be added if not together the where is 'both' and background is 'none' -- if both & none then it will just make the output image dimensions smaller)
-  - [tt]pad_vert_crop_vert[/tt] for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
-  - [tt]pad_horiz_crop_horiz[/tt] for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
+  - [tt]pad_vert_crop_vert[/tt] for an image where the horizontal axis is privileged; the vertical axis gets cropped and the horizontal gets padding, as necessary.
+  - [tt]pad_horiz_crop_horiz[/tt] for an image where the vertical axis is privileged; the horizontal axis gets cropped and the vertical gets padding, as necessary.
  - The [tt]where[/tt] argument is not needed for [tt]width[/tt] or [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types it is where to *anchor from* when cropping/padding:
   - [tt]both[/tt] (crops/pads around all edges; the default)
   - [tt]start[/tt] (anchors to the lhs/top, therefore padding/cropping to the rhs/bottom)
