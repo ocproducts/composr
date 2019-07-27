@@ -87,7 +87,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
  * @param  string $where Where to cut from or pad
  * @set start end both start_if_vertical start_if_horizontal end_if_vertical end_if_horizontal
  * @param  ?string $background Background colour to use for padding, RGB/RGBA style and the "#" may be omitted -- or 'none' (null: choose the average colour in the image)
- * @param  boolean $only_make_smaller Only ever make the output smaller than the source image, no blowing small images up
+ * @param  boolean $only_make_smaller Only ever make the output smaller than the source image, no blowing small images up. Parameter is ignored for crop and pad.
  * @return URLPATH Generated thumbnail
  *
  * @ignore
@@ -96,20 +96,16 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 {
     cms_profile_start_for('convert_image_plus');
 
-    if ($dimensions === null) {
+    if (($dimensions === null) || (strpos($dimensions, 'x') === false) || ($dimensions == 'x')) {
         $dimensions = get_option('thumb_width');
     }
+
     $exp_dimensions = array_map('intval', explode('x', $dimensions, 2));
     if ($exp_dimensions[0] == 0) {
         $exp_dimensions[0] = null;
     }
     if ((count($exp_dimensions) == 1) || ($exp_dimensions[1] == 0)) {
         $exp_dimensions[1] = null;
-    }
-    
-    // Exit if no dimensions were provided. There's no reason to create a thumbnail without dimensions.
-    if ($exp_dimensions[0] === null && $exp_dimensions[1] === null) {
-        return warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     
     if (url_is_local($orig_url)) {
@@ -202,10 +198,16 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
                     // Is it too wide, requiring cropping?
                     $scale_to = floatval($source_y) / floatval($exp_dimensions[1]);
                     $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != $exp_dimensions[0];
+                    if ($will_modify_image) {
+                        $algorithm = 'crop';
+                    }
                 } else {
                     // Is the image too short, requiring padding?
                     $scale_to = floatval($source_x) / floatval($exp_dimensions[0]);
                     $will_modify_image = intval(round(floatval($source_y) / $scale_to)) != $exp_dimensions[1];
+                    if ($will_modify_image) {
+                        $algorithm = 'pad';
+                    }
                 }
             } elseif ($source_aspect < $destination_aspect) {
                 // The image is taller than the output
@@ -214,10 +216,16 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
                     // Is it too tall, requiring cropping?
                     $scale_to = floatval($source_x) / floatval($exp_dimensions[0]);
                     $will_modify_image = intval(round(floatval($source_y) / $scale_to)) != $exp_dimensions[1];
+                    if ($will_modify_image) {
+                        $algorithm = 'crop';
+                    }
                 } else {
                     // Is the image too narrow, requiring padding?
                     $scale_to = floatval($source_y) / floatval($exp_dimensions[1]);
                     $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != $exp_dimensions[0];
+                    if ($will_modify_image) {
+                        $algorithm = 'pad';
+                    }
                 }
             } else {
                 // They're the same, within the tolerances of floating point arithmetic. Just scale it.
@@ -274,7 +282,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
  * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
- * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
+ * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images). Parameter is ignored for some $thumb_options combinations.
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  *
@@ -361,6 +369,9 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
     // Derive actual width x height, for the given maximum box (maintain aspect ratio)
     $sx = imagesx($source);
     $sy = imagesy($source);
+    // The typical case is to copy the full image from source to destination (PHP may be doing scaling, but that's irrelevant to this)
+    $copy_width = $sx;
+    $copy_height = $sy;
 
     // Fix bad parameters
     if ($width === 0) {
@@ -445,8 +456,7 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
         $wrong_x = intval(round(floatval($sx) / $thumb_options['scale_to']));
         $wrong_y = intval(round(floatval($sy) / $thumb_options['scale_to']));
 
-        // Handle cropping here
-        if (($thumb_options['type'] == 'crop') || (($thumb_options['type'] == 'pad_horiz_crop_horiz') && ($wrong_x > $width)) || (($thumb_options['type'] == 'pad_vert_crop_vert') && ($wrong_y > $height))) {
+        if ($thumb_options['type'] == 'crop') { // Handle cropping here
             // See which direction we're cropping in
             if (intval(round(floatval($sx) / $thumb_options['scale_to'])) != $width) {
                 $crop_direction = 'x';
@@ -471,25 +481,24 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
             } else {
                 $displacement = intval(floatval($crop_off) / 2.0);
             }
-
+            
             // Now we convert this to the right x and y start locations for the window
             $source_x = ($crop_direction == 'x') ? $displacement : 0;
             $source_y = ($crop_direction == 'y') ? $displacement : 0;
 
             // Now we set the width and height of our window, which will be scaled versions of the width and height of the output
-            $sx = intval(($width * $thumb_options['scale_to']));
-            $sy = intval(($height * $thumb_options['scale_to']));
+            $copy_width = intval(($width * $thumb_options['scale_to']));
+            $copy_height = intval(($height * $thumb_options['scale_to']));
 
             // We start at the origin of our output
             $dest_x = 0;
             $dest_y = 0;
 
-            // and it is always the full size it can be (or else we'd be cropping too much)
+            // and it is always the full size it can be (or else we'd be cropping too little/much)
             $_width = $width;
             $_height = $height;
-            
-            // Handle padding here
-        } elseif ($thumb_options['type'] == 'pad' || (($thumb_options['type'] == 'pad_horiz_crop_horiz') && ($wrong_x < $width)) || (($thumb_options['type'] == 'pad_vert_crop_vert') && ($wrong_y < $height))) {
+
+        } elseif ($thumb_options['type'] == 'pad') { // Handle padding here
             // We definitely need to pad some excess space because otherwise $thumb_options would not call us.
             // Thus we need a background (can be transparent). Let's see if we've been given one.
             if (array_key_exists('background', $thumb_options) && ($thumb_options['background'] !== null)) {
@@ -564,8 +573,8 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
             // Now set all of the parameters needed for blitting our image $sx and $sy are fine, since they cover the whole image
             $source_x = 0;
             $source_y = 0;
-            $_width = ($pad_axis == 'x') ? intval(round(floatval($sx) / $thumb_options['scale_to'])) : $width;
-            $_height = ($pad_axis == 'y') ? intval(round(floatval($sy) / $thumb_options['scale_to'])) : $height;
+            $_width = ($pad_axis == 'x') ? ($width - $pad_amount) : $width;
+            $_height = ($pad_axis == 'y') ? ($height - $pad_amount) : $height;
             $dest_x = ($pad_axis == 'x') ? $pad_amount : 0;
             $dest_y = ($pad_axis == 'y') ? $pad_amount : 0;
         }
@@ -616,7 +625,7 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
     unset($from_file);
     
     // Resample/copy
-    imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
+    imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $copy_width, $copy_height);
 
     // Clean up
     imagedestroy($source);

@@ -360,7 +360,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
  * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
- * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
+ * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images). Parameter is ignored for some $thumb_options combinations.
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  */
