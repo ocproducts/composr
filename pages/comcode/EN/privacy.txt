@@ -2,4 +2,4 @@
 
 [block]main_privacy_policy_auto[/block]
 
-[i]This policy was last revised on {$METADATA*,modified}.[/i]
+[i]This policy was last revised on {$METADATA*,modified}. Material changes to this policy will be posted as a news update to {$SITE_NAME*}.[/i]

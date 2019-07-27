@@ -25,7 +25,7 @@ If you are a commercial entity, or if you hold sensitive personal data, you are 
 Such laws include, but are not limited to:
  - The EU [concept]GDPR[/concept] regulation (which is so broad it can almost be considered a superset of global privacy requirements, and is well-served throughout Composr)
  - EU regulation required registering with a 'data commissioner'
- - California privacy regulation
+ - California privacy regulation (California Online Privacy Protection Act, California Consumer Privacy Act)
  - US COPPA regulation (see the Child protection section)
 
 {!DOC_GDPR}
@@ -50,11 +50,14 @@ The extent of your precautions will likely depend on the nature of personal data
 
 There is a "Do Not Track" HTTP that many web browsers allow their users to enable. If you want to support the header, then you can do so using the [tt]{$DO_NOT_TRACK_REQUESTED}[/tt] symbol.
 
-To meet Californian law a privacy policy must state:
- - What you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
- - The date the privacy policy was written on
- - A dated list of amendments
-The first two items are included with the default privacy policy.
+To meet Californian law a privacy policy must:
+ - State what you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
+ - State the date the privacy policy was written on
+ - State a described process for how changed in the privacy policy are communicated
+ - Provide at least 2 ways of contacting about privacy requests
+ - Provide a dated list of amendments
+ - Provide a 'Do Not Sell My Personal Information' link if you sell personal information
+The first four items are included with the default privacy policy. Note there are thresholds that specify what organisations have to apply with certain Californian privacy law, which is outside the scope of this tutorial.
 
 [title="2"]Accessibility[/title]
 

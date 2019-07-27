@@ -73,3 +73,18 @@
 		</table></div>
 	{+END}
 {+END}
+
+<h2>{!CONTACT_US}</h2>
+
+<p>
+	{!PRIVACY_YOU_MAY}
+	<ul>
+		<li><a href="{$MAILTO}{$STAFF_ADDRESS}">{!EMAIL_US}</a></li>
+		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,privacy_fax}}
+			<li>{!FAX_US}: {$CONFIG_OPTION*,privacy_fax}</li>
+		{+END}
+		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,privacy_postal_address}}
+			<li>{!MAIL_US}:<br /><address>{$CONFIG_OPTION*,privacy_postal_address}</address></li>
+		{+END}
+	</ul>
+</p>

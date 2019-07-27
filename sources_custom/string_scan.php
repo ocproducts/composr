@@ -8306,6 +8306,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHANGE_HERE
         CHANGE_SETTINGS_BY_RESUBSCRIBING
         CHANGING_IN
+        PRIVACY_YOU_MAY
+        EMAIL_US
+        FAX_US
+        MAIL_US
         CHARGE
         CHARGES
         CHAT
