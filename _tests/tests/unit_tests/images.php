@@ -21,92 +21,18 @@
 class images_test_set extends cms_test_case
 {
 
-    public function setUp()
+    protected function cleanupFromConvertImagePlus()
     {
-        parent::setUp();
-
-        require_code('images');
-        require_code('images2');
-    }
-
-    public function testIsImage()
-    {
-        if (($this->only !== null) && ($this->only != 'testIsImage')) {
-            return;
+        $dh = opendir(get_custom_file_base() . '/temp');
+        if ($dh !== false) {
+            while (($file = readdir($dh)) !== false) {
+                if (is_image($file, IMAGE_CRITERIA_GD_READ)) {
+                    unlink(get_custom_file_base() . '/temp/' . $file);
+                }
+            }
+            closedir($dh);
         }
-        
-        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_NONE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.ico', IMAGE_CRITERIA_NONE, /* $as_admin */ false));
-
-        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpg', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-        $this->assertTrue(!is_image('test.ico', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-        // May not be in PHP build $this->assertTrue(is_image('test.webp', IMAGE_CRITERIA_GD_READ, /*$as_admin*/false));
-        // May not be in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_GD_READ, /*$as_admin*/false));
-        $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
-
-        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpg', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-        $this->assertTrue(!is_image('test.ico', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-        // May not be in PHP build $this->assertTrue(is_image('test.webp', IMAGE_CRITERIA_GD_WRITE, /*$as_admin*/false));
-        // May not be in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_GD_WRITE, /*$as_admin*/false));
-        $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
-
-        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.ico', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(!is_image('test.webp', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        // Won't be in valid_images if not in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
-        $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-
-        $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_GD_READ, /* $as_admin */ true));
-        $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
-        $this->assertTrue(is_image('test.svg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ true));
-
-        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_RASTER, /* $as_admin */ true));
-        $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_RASTER, /* $as_admin */ true));
-        $this->assertTrue(!is_image('test.png', IMAGE_CRITERIA_VECTOR, /* $as_admin */ true));
-        $this->assertTrue(is_image('test.svg', IMAGE_CRITERIA_VECTOR, /* $as_admin */ true));
     }
-
-    public function testImageSizing()
-    {
-        if (($this->only !== null) && ($this->only != 'testImageSizing')) {
-            return;
-        }
-        
-        $this->assertTrue(is_array(cms_getimagesize(get_file_base() . '/themes/default/images/button1.png')));
-        $this->assertTrue(is_array(cms_getimagesize_url(get_base_url() . '/themes/default/images/button1.png')));
-        $this->assertTrue(!isset($GLOBALS['REQUIRED_CODE']['http'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
-        $this->assertTrue(is_array(cms_getimagesize_url('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
-        $this->assertTrue(cms_getimagesize(get_file_base() . '/themes/default/images/not_here.png') === false);
-    }
-
-    public function testIsAnimated()
-    {
-        if (($this->only !== null) && ($this->only != 'testIsAnimated')) {
-            return;
-        }
-
-        require_code('images_cleanup_pipeline');
-
-        $this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/under_construction_animated.gif'), 'gif'));
-        $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/flags/ZM.gif'), 'gif'));
-
-        $this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/cns_emoticons/rockon.gif.png'), 'png'));
-        $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/video_thumb.png'), 'png'));
-    }
-
-    // Define helper functions used by testConvertImage and testConvertImagePlus
 
     protected function convertImage($path_source, &$path, $convert_width, $convert_height, $box_size, $only_make_smaller, &$additional_information)
     {
@@ -171,6 +97,105 @@ class images_test_set extends cms_test_case
             require_code('mime_types');
             echo '<br style="clear: both" />';
             echo '<img style="float: left; width: 50px; margin-right: 10px; margin-bottom: 10px" src="data:' . get_mime_type(get_file_extension($file), false) . ';base64,' . base64_encode(file_get_contents($path)) . '" />';
+            return false;
+        }
+        return true;
+    }
+
+    protected function checkRedPatch($file, $path, $image_resource, $x, $y, $image_dimensions, $color_tolerance, &$additional_information)
+    {
+        $tolerance = intval(max($image_dimensions) * 0.1) + 1;
+        $extension = get_file_extension($file);
+        if ($extension === 'jpg' || $extension === 'jpeg') {
+            $color_tolerance = $color_tolerance + ((255 - $color_tolerance) / (($image_dimensions[0] + $image_dimensions[1]) / 8));
+        }
+
+        for ($_x = max(0, $x - $tolerance); $_x <= min($image_dimensions[0] - 1, $x + $tolerance); $_x++) {
+            for ($_y = max(0, $y - $tolerance); $_y <= min($image_dimensions[1] - 1, $y + $tolerance); $_y++) {
+                if ($this->checkRed($file, $path, $image_resource, $_x, $_y, $color_tolerance, $additional_information)) {
+                    return true;
+                }
+            }
+        }
+
+        $additional_information = 'Expected pixel ' . strval($x) . 'x' . strval($y) . ' (or any pixels within ' . $tolerance . ') to have at least ' . strval(255 - $color_tolerance) . ' red, and more red than green and blue, but none of them were.';
+        require_code('mime_types');
+        echo '<br style="clear: both" />';
+        echo '<img style="float: left; width: 50px; margin-right: 10px; margin-bottom: 10px" src="data:' . get_mime_type($extension, false) . ';base64,' . base64_encode(file_get_contents($path)) . '" />';
+        return false;
+    }
+
+    protected function checkRed($file, $path, $image_resource, $x, $y, $color_tolerance, &$additional_information)
+    {
+        $pixel = imagecolorat($image_resource, $x, $y);
+        $data = imagecolorsforindex($image_resource, $pixel);
+        if ($data['red'] <= (255 - $color_tolerance) || $data['red'] < $data['green'] || $data['red'] < $data['blue']) {
+            return false;
+        }
+        return true;
+    }
+
+    protected function checkBlackPatch($file, $path, $image_resource, $x, $y, $image_dimensions, $color_tolerance, &$additional_information)
+    {
+        $tolerance = intval(max($image_dimensions) * 0.1) + 1;
+        $extension = get_file_extension($file);
+        if ($extension === 'jpg' || $extension === 'jpeg') {
+            $color_tolerance = $color_tolerance + ((255 - $color_tolerance) / (($image_dimensions[0] + $image_dimensions[1]) / 8));
+        }
+
+        for ($_x = max(0, $x - $tolerance); $_x <= min($image_dimensions[0] - 1, $x + $tolerance); $_x++) {
+            for ($_y = max(0, $y - $tolerance); $_y <= min($image_dimensions[1] - 1, $y + $tolerance); $_y++) {
+                if ($this->checkBlack($file, $path, $image_resource, $_x, $_y, $color_tolerance, $additional_information)) {
+                    return true;
+                }
+            }
+        }
+
+        $additional_information = 'Expected pixel ' . strval($x) . 'x' . strval($y) . ' (or any pixels within ' . $tolerance . ') to have no color channels greater than ' . $color_tolerance . ', and no color channels more than ' . $color_tolerance . ' apart from each other (black test).';
+        require_code('mime_types');
+        echo '<br style="clear: both" />';
+        echo '<img style="float: left; width: 50px; margin-right: 10px; margin-bottom: 10px" src="data:' . get_mime_type($extension, false) . ';base64,' . base64_encode(file_get_contents($path)) . '" />';
+        return false;
+    }
+
+    protected function checkBlack($file, $path, $image_resource, $x, $y, $color_tolerance, &$additional_information)
+    {
+        $pixel = imagecolorat($image_resource, $x, $y);
+        $data = imagecolorsforindex($image_resource, $pixel);
+        if ($data['red'] >= $color_tolerance || $data['green'] >= $color_tolerance || $data['blue'] >= $color_tolerance || abs($data['red'] - $data['green']) >= $color_tolerance || abs($data['red'] - $data['blue']) >= $color_tolerance || abs($data['blue'] - $data['green']) >= $color_tolerance) {
+            return false;
+        }
+        return true;
+    }
+
+    protected function checkBluePatch($file, $path, $image_resource, $x, $y, $image_dimensions, $color_tolerance, &$additional_information)
+    {
+        $tolerance = intval(max($image_dimensions) * 0.1) + 1;
+        $extension = get_file_extension($file);
+        if ($extension === 'jpg' || $extension === 'jpeg') {
+            $color_tolerance = $color_tolerance + ((255 - $color_tolerance) / (($image_dimensions[0] + $image_dimensions[1]) / 8));
+        }
+
+        for ($_x = max(0, $x - $tolerance); $_x <= min($image_dimensions[0] - 1, $x + $tolerance); $_x++) {
+            for ($_y = max(0, $y - $tolerance); $_y <= min($image_dimensions[1] - 1, $y + $tolerance); $_y++) {
+                if ($this->checkBlue($file, $path, $image_resource, $_x, $_y, $color_tolerance, $additional_information)) {
+                    return true;
+                }
+            }
+        }
+
+        $additional_information = 'Expected pixel ' . strval($x) . 'x' . strval($y) . ' (or any pixels within ' . $tolerance . ') to have at least ' . (255 - $color_tolerance) . ' blue, and more blue than green and red, but none of them were.';
+        require_code('mime_types');
+        echo '<br style="clear: both" />';
+        echo '<img style="float: left; width: 50px; margin-right: 10px; margin-bottom: 10px" src="data:' . get_mime_type($extension, false) . ';base64,' . base64_encode(file_get_contents($path)) . '" />';
+        return false;
+    }
+
+    protected function checkBlue($file, $path, $image_resource, $x, $y, $color_tolerance, &$additional_information)
+    {
+        $pixel = imagecolorat($image_resource, $x, $y);
+        $data = imagecolorsforindex($image_resource, $pixel);
+        if ($data['blue'] <= (255 - $color_tolerance) || $data['blue'] < $data['green'] || $data['blue'] < $data['red']) {
             return false;
         }
         return true;
@@ -365,12 +390,251 @@ class images_test_set extends cms_test_case
         return true;
     }
 
+    protected function runCropTest($url, $dimensions, $expected_width, $expected_height, $algorithm, $where, $only_make_smaller, &$additional_information)
+    {
+        $additional_information = '';
+        $thumbnail = $this->convertImagePlus($url, $dimensions, $algorithm, $where, $only_make_smaller, $additional_information);
+
+        if (!$thumbnail) {
+            return false;
+        } else {
+            $thumbnail = preg_replace('#^' . preg_quote(get_file_base() . '/') . '#', get_base_url() . '/', $thumbnail);
+        }
+
+        $image_dimensions = $this->checkImageSize($thumbnail, $expected_width, $expected_height, $additional_information);
+        if (!$image_dimensions) {
+            return false;
+        }
+
+        $file_contents = $this->getImageContents($thumbnail, $additional_information);
+        if (!$file_contents) {
+            return false;
+        }
+
+        $image_resource = $this->createImageFromString($file_contents, $additional_information);
+        if (!$image_resource) {
+            return false;
+        }
+
+        // Crop pixel color test
+        if ($algorithm === 'crop') {
+            if (!$this->checkRedPatch($thumbnail, $thumbnail, $image_resource, 0, 0, $image_dimensions, 128, $additional_information)) {
+                return false;
+            }
+            if (!$this->checkRedPatch($thumbnail, $thumbnail, $image_resource, $image_dimensions[0] - 1, $image_dimensions[1] - 1, $image_dimensions, 128, $additional_information)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function runPadTest($url, $dimensions, $expected_width, $expected_height, $algorithm, $where, $only_make_smaller, $black_x1, $black_y1, $red_x1, $red_y1, $black_x2, $black_y2, $red_x2, $red_y2, &$additional_information)
+    {
+        $additional_information = '';
+        $thumbnail = $this->convertImagePlus($url, $dimensions, $algorithm, $where, $only_make_smaller, $additional_information);
+
+        if (!$thumbnail) {
+            return false;
+        } else {
+            $thumbnail = preg_replace('#^' . preg_quote(get_file_base() . '/') . '#', get_base_url() . '/', $thumbnail);
+        }
+
+        $image_dimensions = $this->checkImageSize($thumbnail, $expected_width, $expected_height, $additional_information);
+        if (!$image_dimensions) {
+            return false;
+        }
+
+        $file_contents = $this->getImageContents($thumbnail, $additional_information);
+        if (!$file_contents) {
+            return false;
+        }
+
+        $image_resource = $this->createImageFromString($file_contents, $additional_information);
+        if (!$image_resource) {
+            return false;
+        }
+
+        // Crop pixel color test
+        if ($algorithm === 'pad') {
+            if ($black_x1 !== null && $black_y1 !== null) {
+                if (!$this->checkBlackPatch($thumbnail, $thumbnail, $image_resource, $black_x1, $black_y1, $image_dimensions, 8, $additional_information)) {
+                    return false;
+                }
+            }
+            if ($red_x1 !== null && $red_y1 !== null) {
+                if (!$this->checkRedPatch($thumbnail, $thumbnail, $image_resource, $red_x1, $red_y1, $image_dimensions, 8, $additional_information)) {
+                    return false;
+                }
+            }
+            if ($black_x2 !== null && $black_y2 !== null) {
+                if (!$this->checkBlackPatch($thumbnail, $thumbnail, $image_resource, $black_x2, $black_y2, $image_dimensions, 8, $additional_information)) {
+                    return false;
+                }
+            }
+            if ($red_x2 !== null && $red_y2 !== null) {
+                if (!$this->checkRedPatch($thumbnail, $thumbnail, $image_resource, $red_x2, $red_y2, $image_dimensions, 8, $additional_information)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    protected function runPadCropTest($url, $dimensions, $expected_width, $expected_height, $algorithm, $where, $only_make_smaller, $black_x1, $black_y1, $red_x1, $red_y1, $blue_x1, $blue_y1, $black_x2, $black_y2, $red_x2, $red_y2, $blue_x2, $blue_y2, &$additional_information)
+    {
+        $additional_information = '';
+        $thumbnail = $this->convertImagePlus($url, $dimensions, $algorithm, $where, $only_make_smaller, $additional_information);
+
+        if (!$thumbnail) {
+            return false;
+        } else {
+            $thumbnail = preg_replace('#^' . preg_quote(get_file_base() . '/') . '#', get_base_url() . '/', $thumbnail);
+        }
+
+        $image_dimensions = $this->checkImageSize($thumbnail, $expected_width, $expected_height, $additional_information);
+        if (!$image_dimensions) {
+            return false;
+        }
+
+        $file_contents = $this->getImageContents($thumbnail, $additional_information);
+        if (!$file_contents) {
+            return false;
+        }
+
+        $image_resource = $this->createImageFromString($file_contents, $additional_information);
+        if (!$image_resource) {
+            return false;
+        }
+
+        if ($black_x1 !== null && $black_y1 !== null) {
+            if (!$this->checkBlackPatch($thumbnail, $thumbnail, $image_resource, $black_x1, $black_y1, $image_dimensions, 8, $additional_information)) {
+                return false;
+            }
+        }
+        if ($red_x1 !== null && $red_y1 !== null) {
+            if (!$this->checkRedPatch($thumbnail, $thumbnail, $image_resource, $red_x1, $red_y1, $image_dimensions, 8, $additional_information)) {
+                return false;
+            }
+        }
+        if ($blue_x1 !== null && $blue_y1 !== null) {
+            if (!$this->checkBluePatch($thumbnail, $thumbnail, $image_resource, $blue_x1, $blue_y1, $image_dimensions, 8, $additional_information)) {
+                return false;
+            }
+        }
+        if ($black_x2 !== null && $black_y2 !== null) {
+            if (!$this->checkBlackPatch($thumbnail, $thumbnail, $image_resource, $black_x2, $black_y2, $image_dimensions, 8, $additional_information)) {
+                return false;
+            }
+        }
+        if ($red_x2 !== null && $red_y2 !== null) {
+            if (!$this->checkRedPatch($thumbnail, $thumbnail, $image_resource, $red_x2, $red_y2, $image_dimensions, 8, $additional_information)) {
+                return false;
+            }
+        }
+        if ($blue_x2 !== null && $blue_y2 !== null) {
+            if (!$this->checkBluePatch($thumbnail, $thumbnail, $image_resource, $blue_x2, $blue_y2, $image_dimensions, 8, $additional_information)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        require_code('images');
+        require_code('images2');
+    }
+
+    public function testIsImage()
+    {
+        if (($this->only !== null) && ($this->only != 'testIsImage')) {
+            return;
+        }
+
+        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_NONE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.ico', IMAGE_CRITERIA_NONE, /* $as_admin */ false));
+
+        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpg', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+        $this->assertTrue(!is_image('test.ico', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+        // May not be in PHP build $this->assertTrue(is_image('test.webp', IMAGE_CRITERIA_GD_READ, /*$as_admin*/false));
+        // May not be in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_GD_READ, /*$as_admin*/false));
+        $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_GD_READ, /* $as_admin */ false));
+
+        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpg', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+        $this->assertTrue(!is_image('test.ico', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+        // May not be in PHP build $this->assertTrue(is_image('test.webp', IMAGE_CRITERIA_GD_WRITE, /*$as_admin*/false));
+        // May not be in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_GD_WRITE, /*$as_admin*/false));
+        $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_GD_WRITE, /* $as_admin */ false));
+
+        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.ico', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(!is_image('test.webp', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        // Won't be in valid_images if not in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
+        $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+
+        $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_GD_READ, /* $as_admin */ true));
+        $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ false));
+        $this->assertTrue(is_image('test.svg', IMAGE_CRITERIA_WEBSAFE, /* $as_admin */ true));
+
+        $this->assertTrue(is_image('test.png', IMAGE_CRITERIA_RASTER, /* $as_admin */ true));
+        $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_RASTER, /* $as_admin */ true));
+        $this->assertTrue(!is_image('test.png', IMAGE_CRITERIA_VECTOR, /* $as_admin */ true));
+        $this->assertTrue(is_image('test.svg', IMAGE_CRITERIA_VECTOR, /* $as_admin */ true));
+    }
+
+    public function testImageSizing()
+    {
+        if (($this->only !== null) && ($this->only != 'testImageSizing')) {
+            return;
+        }
+
+        $this->assertTrue(is_array(cms_getimagesize(get_file_base() . '/themes/default/images/button1.png')));
+        $this->assertTrue(is_array(cms_getimagesize_url(get_base_url() . '/themes/default/images/button1.png')));
+        $this->assertTrue(!isset($GLOBALS['REQUIRED_CODE']['http'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
+        $this->assertTrue(is_array(cms_getimagesize_url('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
+        $this->assertTrue(cms_getimagesize(get_file_base() . '/themes/default/images/not_here.png') === false);
+    }
+
+    public function testIsAnimated()
+    {
+        if (($this->only !== null) && ($this->only != 'testIsAnimated')) {
+            return;
+        }
+
+        require_code('images_cleanup_pipeline');
+
+        $this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/under_construction_animated.gif'), 'gif'));
+        $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/flags/ZM.gif'), 'gif'));
+
+        $this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/cns_emoticons/rockon.gif.png'), 'png'));
+        $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/video_thumb.png'), 'png'));
+    }
+
+    // Define helper functions used by testConvertImage and testConvertImagePlus
+
     public function testConvertImage()
     {
         if (($this->only !== null) && ($this->only != 'testConvertImage')) {
             return;
         }
-        
+
         $file_aspects = array(
             16 => 9,
             9 => 16,
@@ -380,8 +644,7 @@ class images_test_set extends cms_test_case
         );
         $file_types = array('png', 'jpg', 'jpeg', 'gif');
         $additional_information = '';
-
-        // Test functions
+        
         // Tests
 
         foreach ($file_types as $extension) {
@@ -454,33 +717,248 @@ class images_test_set extends cms_test_case
             return;
         }
         
+        // TODO: A lot of these tests are currently failing the black pixel test. Check for bugs and ensure specified pixel checks are correct.
+
         $additional_information = '';
-        
-        $this->cleanupFromConvertImagePlus();
-        
-        // Basic box tests
-        $this->assertTrue($this->runDimensionTestPlus('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png', '159x59', 159, 59, 'box', 'both', false, $additional_information), 'convert_image_plus with Composr logo. Box algorithm where = both. 158x59 dimensions. ' . $additional_information);
-        $this->assertTrue($this->runDimensionTestPlus('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png', '159x', 159, 59, 'box', 'both', false, $additional_information), 'convert_image_plus with Composr logo. Box algorithm where = both. 158x dimensions. ' . $additional_information);
-        $this->assertTrue($this->runDimensionTestPlus('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png', 'x59', 59, 22, 'box', 'both', false, $additional_information), 'convert_image_plus with Composr logo. Box algorithm where = both. x59 dimensions. ' . $additional_information);
-        $this->assertTrue($this->runDimensionTestPlus('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png', null, intval(get_option('thumb_width')), null, 'box', 'both', false, $additional_information), 'convert_image_plus with Composr logo. Box algorithm where = both. null dimensions. ' . $additional_information);
-        
-        // Basic width tests
-        $this->assertTrue($this->runDimensionTestPlus('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png', '480x', 480, null, 'box', 'width', false, $additional_information), 'convert_image_plus with Composr logo. Width algorithm where = both. 480x dimensions. ' . $additional_information);
-        $this->assertTrue($this->runDimensionTestPlus('https://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png', 'x360', 360, 135, 'box', 'height', false, $additional_information), 'convert_image_plus with Composr logo. Height algorithm where = both. x360 dimensions. ' . $additional_information);
+        $file_types = array('jpg', 'png', 'jpeg', 'gif');
+        $wheres = array('both', 'start', 'end', 'start_if_vertical', 'start_if_horizontal', 'end_if_vertical', 'end_if_horizontal');
 
         $this->cleanupFromConvertImagePlus();
-    }
 
-    protected function cleanupFromConvertImagePlus()
-    {
-        $dh = opendir(get_custom_file_base() . '/temp');
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if (substr($file, -4) == '.png') {
-                    unlink(get_custom_file_base() . '/temp/' . $file);
-                }
-            }
-            closedir($dh);
+        foreach ($file_types as $extension) {
+              // Basic box tests
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '64x36', 64, 36, 'box', 'both', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Box algorithm where = both and two dimensions specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '96x', 96, 54, 'box', 'both', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Box algorithm where = both and only width specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, 'x45', 45, 25, 'box', 'both', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Box algorithm where = both and only height specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, null, intval(get_option('thumb_width')), null, 'box', 'both', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Box algorithm where = both. null dimensions. ' . $additional_information);
+
+              // Basic width and height tests
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '480x', 480, null, 'box', 'width', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Width algorithm where = both and only width specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, 'x360', 360, null, 'box', 'width', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Width algorithm where = both and only height specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '640x360', 360, null, 'box', 'width', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Width algorithm where = both and both width and height specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '240x', null, 240, 'box', 'height', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Height algorithm where = both and only width specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, 'x180', null, 180, 'box', 'height', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Height algorithm where = both and only height specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '640x360', null, 360, 'box', 'height', false, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . '. Height algorithm where = both and both width and height specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '480x', null, 480, 'box', 'width', false, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . '. Width algorithm where = both and only width specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/9x16.' . $extension, 'x360', null, 360, 'box', 'width', false, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . '. Width algorithm where = both and only height specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '240x', null, 240, 'box', 'height', false, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . '. Height algorithm where = both and only width specified. ' . $additional_information);
+              $this->assertTrue($this->runDimensionTestPlus(get_base_url() . '/_tests/assets/images/9x16.' . $extension, 'x180', null, 180, 'box', 'height', false, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . '. Height algorithm where = both and only height specified. ' . $additional_information);
+
+              // Crop tests
+              foreach ($wheres as $where) {
+              // Down scaling crop
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_8x8.' . $extension, '8x8', 8, 8, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_16x9.' . $extension, '16x9', 16, 9, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (equal aspect test), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_4x8.' . $extension, '4x8', 4, 8, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 4x8 (unequal aspect test, 16:9 => 1:2), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              // Same scaling crop
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_8x8.' . $extension, '16x16', 16, 16, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x16 (unequal aspect test, 16:9 => 1:1), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_16x9.' . $extension, '32x18', 32, 18, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 32x18 (equal aspect test), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_4x8.' . $extension, '8x16', 8, 16, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 4x8 (unequal aspect test, 16:9 => 1:2), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              // Up scaling crop
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_8x8.' . $extension, '32x32', 32, 32, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 32x32 (unequal aspect test, 16:9 => 1:1), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_16x9.' . $extension, '64x36', 64, 36, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 64x36 (equal aspect test), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_4x8.' . $extension, '32x64', 32, 64, 'crop', $where, false, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 32x64 (unequal aspect test, 16:9 => 1:2), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              $this->assertTrue($this->runCropTest(get_base_url() . '/_tests/assets/images/crop_' . $where . '_32x18_4x8.' . $extension, '32x64', 32, 64, 'crop', $where, true, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 32x64 (only_make_smaller = true test; this parameter should be ignored for cropping.), Crop algorithm where = ' . $where . '. ' . $additional_information);
+              }
+
+              // Pad tests
+              // Down-scaling where = both
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'both', false, 0, 1, 0, 2, 7, 7, 7, 6, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'both', false, 2, 0, 3, 0, 6, 8, 7, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'both', false, 0, 2, 0, 1, 4, 2, 4, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'both', false, 2, 0, 1, 0, 2, 4, 1, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'both', false, 0, 1, 0, 2, 3, 3, 3, 2, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'both', false, 1, 0, 2, 0, 3, 3, 2, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'both', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'both', false, 0, 5, 0, 6, 9, 10, 9, 9, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'both', false, 2, 0, 3, 0, 7, 6, 6, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'both', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'both', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = both. ' . $additional_information);
+              // Same scaling where = both
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'both', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'both', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'both', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = both. ' . $additional_information);
+              // Up-scaling where = both
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'both', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'both', false, 0, 2, 0, 3, 6, 7, 6, 6, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'both', false, 11, 0, 12, 0, 21, 18, 20, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'both', false, 2, 0, 3, 0, 14, 9, 13, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'both', false, 0, 2, 0, 3, 9, 14, 9, 13, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'both', false, 0, 4, 0, 5, 9, 11, 9, 10, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'both', false, 4, 0, 5, 0, 11, 9, 10, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'both', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'both', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = both. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'both', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = both. ' . $additional_information);
+              // Down-scaling where = start
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'start', false, 0, 5, 0, 4, 8, 5, 8, 4, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'start', false, 5, 0, 4, 0, 5, 8, 4, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'start', false, 0, 2, 0, 1, 4, 2, 4, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'start', false, 2, 0, 1, 0, 2, 4, 1, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'start', false, 0, 2, 0, 1, 3, 2, 3, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'start', false, 2, 0, 1, 0, 2, 3, 1, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'start', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'start', false, 0, 5, 0, 4, 9, 5, 9, 4, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'start', false, 5, 0, 4, 0, 5, 6, 4, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'start', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'start', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = start. ' . $additional_information);
+              // Same scaling where = start
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'start', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'start', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'start', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = start. ' . $additional_information);
+              // Up-scaling where = start
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'start', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'start', false, 0, 5, 0, 4, 6, 5, 6, 4, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'start', false, 10, 0, 9, 0, 10, 18, 9, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'start', false, 12, 0, 11, 0, 12, 9, 11, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'start', false, 0, 12, 0, 11, 9, 12, 9, 11, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'start', false, 0, 7, 0, 6, 9, 7, 9, 6, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'start', false, 7, 0, 6, 0, 7, 9, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'start', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'start', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = start. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'start', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = start. ' . $additional_information);
+              // Down-scaling where = end
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'end', false, 0, 4, 0, 5, 8, 4, 8, 5, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'end', false, 4, 0, 5, 0, 4, 8, 5, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'end', false, 0, 1, 0, 2, 4, 1, 4, 2, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'end', false, 1, 0, 2, 0, 1, 4, 2, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'end', false, 0, 1, 0, 2, 3, 1, 3, 2, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'end', false, 1, 0, 2, 0, 1, 3, 2, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'end', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'end', false, 0, 11, 0, 12, 9, 11, 9, 12, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'end', false, 4, 0, 5, 0, 4, 6, 5, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'end', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'end', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = end. ' . $additional_information);
+              // Same scaling where = end
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'end', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'end', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'end', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = end. ' . $additional_information);
+              // Up-scaling where = end
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'end', false, 0, 4, 0, 5, 6, 4, 6, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'end', false, 22, 0, 23, 0, 22, 18, 23, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'end', false, 4, 0, 4, 0, 4, 9, 5, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'end', false, 0, 4, 0, 5, 9, 4, 9, 5, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'end', false, 0, 9, 0, 10, 9, 9, 9, 10, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'end', false, 9, 0, 10, 0, 9, 9, 10, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'end', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'end', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = end. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = end. ' . $additional_information);
+              // Down-scaling where = start_if_vertical
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'start_if_vertical', false, 0, 5, 0, 4, 8, 5, 8, 4, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'start_if_vertical', false, 2, 0, 3, 0, 7, 8, 6, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'start_if_vertical', false, 0, 2, 0, 1, 4, 2, 4, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'start_if_vertical', false, 2, 0, 1, 0, 2, 4, 1, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'start_if_vertical', false, 0, 2, 0, 1, 3, 2, 3, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'start_if_vertical', false, 1, 0, 2, 0, 3, 3, 2, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'start_if_vertical', false, 0, 5, 0, 4, 9, 5, 9, 4, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'start_if_vertical', false, 2, 0, 3, 0, 7, 6, 6, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              // Same scaling where = start_if_vertical
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              // Up-scaling where = start_if_vertical
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'start_if_vertical', false, 0, 5, 0, 4, 6, 5, 6, 4, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'start_if_vertical', false, 11, 0, 12, 0, 21, 18, 20, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'start_if_vertical', false, 2, 0, 3, 0, 14, 9, 13, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'start_if_vertical', false, 0, 12, 0, 11, 9, 12, 9, 11, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'start_if_vertical', false, 0, 7, 0, 6, 9, 7, 9, 6, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'start_if_vertical', false, 4, 0, 5, 0, 11, 9, 10, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'start_if_vertical', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'start_if_vertical', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = start_if_vertical. ' . $additional_information);
+              // Down-scaling where = start_if_horizontal
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'start_if_horizontal', false, 0, 2, 0, 3, 8, 8, 8, 7, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'start_if_horizontal', false, 5, 0, 4, 0, 5, 8, 4, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'start_if_horizontal', false, 0, 2, 0, 1, 4, 2, 4, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'start_if_horizontal', false, 2, 0, 1, 0, 2, 4, 1, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'start_if_horizontal', false, 0, 1, 0, 2, 3, 3, 3, 2, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'start_if_horizontal', false, 2, 0, 1, 0, 2, 3, 1, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'start_if_horizontal', false, 0, 5, 0, 6, 9, 10, 9, 9, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'start_if_horizontal', false, 5, 0, 4, 0, 5, 6, 4, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              // Same scaling where = start_if_horizontal
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              // Up-scaling where = start_if_horizontal
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'start_if_horizontal', false, 0, 2, 0, 3, 6, 7, 6, 6, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'start_if_horizontal', false, 10, 0, 9, 0, 10, 18, 9, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'start_if_horizontal', false, 12, 0, 11, 0, 12, 9, 11, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'start_if_horizontal', false, 0, 2, 0, 3, 9, 14, 9, 13, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'start_if_horizontal', false, 0, 4, 0, 5, 9, 11, 9, 10, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'start_if_horizontal', false, 7, 0, 6, 0, 7, 9, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'start_if_horizontal', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'start_if_horizontal', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+              // Down-scaling where = end_if_vertical
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'end_if_vertical', false, 0, 4, 0, 5, 8, 4, 8, 5, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'end_if_vertical', false, 2, 0, 3, 0, 7, 8, 6, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'end_if_vertical', false, 0, 1, 0, 2, 4, 1, 4, 2, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'end_if_vertical', false, 2, 0, 1, 0, 2, 4, 1, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'end_if_vertical', false, 0, 2, 0, 3, 3, 2, 3, 3, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'end_if_vertical', false, 1, 0, 2, 0, 3, 3, 2, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'end_if_vertical', false, 0, 11, 0, 12, 9, 11, 9, 12, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'end_if_vertical', false, 2, 0, 3, 0, 7, 6, 6, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              // Same scaling where = end_if_vertical
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              // Up-scaling where = end_if_vertical
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'end_if_vertical', false, 0, 4, 0, 5, 6, 4, 6, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'end_if_vertical', false, 11, 0, 12, 0, 21, 18, 20, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'end_if_vertical', false, 2, 0, 3, 0, 14, 9, 13, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'end_if_vertical', false, 0, 4, 0, 5, 9, 4, 9, 5, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'end_if_vertical', false, 0, 9, 0, 10, 9, 9, 9, 10, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'end_if_vertical', false, 4, 0, 5, 0, 11, 9, 10, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'end_if_vertical', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end_if_vertical', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = end_if_vertical. ' . $additional_information);
+              // Down-scaling where = end_if_horizontal
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'end_if_horizontal', false, 0, 2, 0, 3, 8, 7, 8, 6, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'end_if_horizontal', false, 4, 0, 5, 0, 4, 8, 5, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '4x3', 4, 3, 'pad', 'end_if_horizontal', false, 0, 2, 0, 1, 4, 2, 4, 1, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 4x3 (unequal aspect test, 16:9 => 4:3), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '3x4', 3, 4, 'pad', 'end_if_horizontal', false, 1, 0, 2, 0, 1, 4, 2, 4, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 3x4 (unequal aspect test, 9:16 => 3:4), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '3x4', 3, 4, 'pad', 'end_if_horizontal', false, 0, 1, 0, 2, 3, 3, 3, 2, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 3x4 (unequal aspect + flip width/height test, 16:9 => 3:4), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '4x3', 4, 3, 'pad', 'end_if_horizontal', false, 2, 0, 3, 0, 2, 3, 3, 3, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 4x3 (unequal aspect + flip width/height test, 9:16 => 4:3), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x9', 16, 9, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x9 (Equal aspect test, 16:9 => 16:9), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '9x16', 9, 16, 'pad', 'end_if_horizontal', false, 0, 5, 0, 6, 9, 10, 9, 9, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 9x16 (Reversed aspect test, 16:9 => 9:16), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, '8x6', 8, 6, 'pad', 'end_if_horizontal', false, 4, 0, 5, 0, 4, 6, 5, 6, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => 8x6 (Reversed aspect test, 3:4 => 4:3), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/32x18.' . $extension, '16x', 16, 9, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 32x18 ' . $extension . ' => 16x (Unspecified dimension test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/6x8.' . $extension, 'x4', 3, 4, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 2, 3, $additional_information), 'convert_image_plus w/ 6x8 ' . $extension . ' => x4 (Unspecified dimension test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              // Same scaling where = end_if_horizontal
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/2x2.' . $extension, '2x2', 2, 2, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 1, 1, $additional_information), 'convert_image_plus w/ 2x2 ' . $extension . ' => 2x2 (same dimensions test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '16x9', 16, 9, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 15, 8, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 16x9 (same dimensions test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '9x16', 9, 16, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 8, 15, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 9x16 (same dimensions test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              // Up-scaling where = end_if_horizontal
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 7, 5, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (Equal aspect test, 4:3 => 4:3), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '6x8', 6, 8, 'pad', 'end_if_horizontal', false, 0, 2, 0, 3, 6, 7, 6, 6, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 6x8 (Reversed aspect test, 4:3 => 3:4), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '32x18', 32, 18, 'pad', 'end_if_horizontal', false, 22, 0, 23, 0, 22, 18, 23, 18, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 32x18 (Reversed aspect test, 9:16 => 16:9), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '16x9', 16, 9, 'pad', 'end_if_horizontal', false, 4, 0, 5, 0, 4, 9, 5, 9, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 16x9 (unequal aspect test, 4:3 => 16:9), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '9x16', 9, 16, 'pad', 'end_if_horizontal', false, 0, 2, 0, 3, 9, 14, 9, 13, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 9x16 (unequal aspect test, 3:4 => 9:16), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '9x16', 9, 16, 'pad', 'end_if_horizontal', false, 0, 4, 0, 5, 9, 11, 9, 10, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 9x16 (unequal aspect + flip width/height test, 4:3 => 9:16), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, '16x9', 16, 9, 'pad', 'end_if_horizontal', false, 9, 0, 10, 0, 9, 9, 10, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => 16x9 (unequal aspect + flip width/height test, 3:4 => 16:9), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '24x', 24, 13, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 23, 12, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 24x (Unspecified dimension + uneven (1.5) scale test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/3x4.' . $extension, 'x10', 7, 10, 'pad', 'end_if_horizontal', false, null, null, 0, 0, null, null, 6, 9, $additional_information), 'convert_image_plus w/ 3x4 ' . $extension . ' => x10 (Unspecified dimension + uneven (2.5) scale test), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+              $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end_if_horizontal', true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = end_if_horizontal. ' . $additional_information);
+
+            // Pad-Crop Tests
+            // TODO: Finish these
+            //$this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x9', 32, 9, 'pad_vert_crop_vert', 'both', true, null, null, 8, 0, 7, 0, null, null, 24, 9, 25, 9, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+            //TODO: This one is failing at the moment. $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_18x32_4x4.' . $extension, '14x16', 31, 32, 'pad_horiz_crop_horiz', 'both', true, null, null, 1, 1, 0, 0, null, null, 2, 2, 3, 3, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
         }
+
+        //$this->cleanupFromConvertImagePlus();
     }
+
 }
