@@ -144,7 +144,7 @@ class Hook_addon_registry_recommend
                 'BLOCK_ID' => lorem_word(),
                 'PRINT_URL' => placeholder_url(),
                 'RECOMMEND_URL' => placeholder_url(),
-                'EASY_SELF_URL' => placeholder_url(),
+                'URL_ENCODED_SELF_URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
             )), null, '', true)
         );

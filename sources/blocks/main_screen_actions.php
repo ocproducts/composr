@@ -76,7 +76,7 @@ class Block_main_screen_actions
             'BLOCK_ID' => $block_id,
             'PRINT_URL' => get_self_url(true, false, array('wide_print' => 1)),
             'RECOMMEND_URL' => $recommend_url,
-            'EASY_SELF_URL' => str_replace("'", '', urlencode(get_self_url(true))),
+            'URL_ENCODED_SELF_URL' => urlencode(get_self_url(true)),
             'TITLE' => array_key_exists('title', $map) ? $map['title'] : '',
         ));
     }
