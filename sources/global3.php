@@ -1010,6 +1010,33 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
 }
 
 /**
+ * Workaround for when we can't enable LC_CTYPE on the locale - temporarily enable it when we really need it.
+ *
+ * @param  boolean $start Whether to start the workaround (as opposed to ending it).
+ */
+function _local_ctype_hack($start)
+{
+    if ($start) {
+        $ctype_hack = (do_lang('locale_ctype_hack') == '1');
+        if ($ctype_hack) {
+            static $proper_locale = null;
+            if ($proper_locale === null) {
+                $proper_locale = explode(',', do_lang('locale'));
+            }
+            setlocale(LC_CTYPE, $proper_locale);
+        }
+    } else {
+        if ($ctype_hack) {
+            static $fallback_locale = null;
+            if ($fallback_locale === null) {
+                $fallback_locale = explode(',', do_lang('locale'));
+            }
+            setlocale(LC_CTYPE, $fallback_locale);
+        }
+    }
+}
+
+/**
  * Make a string title-case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject.
@@ -1017,15 +1044,19 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
  */
 function cms_mb_ucwords($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return ucwords($in);
+        $ret = ucwords($in);
+    } elseif (function_exists('mb_convert_case')) {
+        $ret = @mb_convert_case($in, MB_CASE_TITLE, get_charset());
+    } else {
+        $ret = ucwords($in);
     }
 
-    if (function_exists('mb_convert_case')) {
-        return @mb_convert_case($in, MB_CASE_TITLE, get_charset());
-    }
+    _local_ctype_hack(false);
 
-    return ucwords($in);
+    return $ret;
 }
 
 /**
@@ -1036,15 +1067,19 @@ function cms_mb_ucwords($in)
  */
 function cms_mb_strtolower($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return strtolower($in);
+        $ret = strtolower($in);
+    } elseif (function_exists('mb_strtolower')) {
+        $ret = @mb_strtolower($in, get_charset());
+    } else {
+        $ret = strtolower($in);
     }
 
-    if (function_exists('mb_strtolower')) {
-        return @mb_strtolower($in, get_charset());
-    }
+    _local_ctype_hack(false);
 
-    return strtolower($in);
+    return $ret;
 }
 
 /**
@@ -1055,15 +1090,19 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return strtoupper($in);
+        $ret = strtoupper($in);
+    } elseif (function_exists('mb_strtoupper')) {
+        $ret = @mb_strtoupper($in, get_charset());
+    } else {
+        $ret = strtoupper($in);
     }
 
-    if (function_exists('mb_strtoupper')) {
-        return @mb_strtoupper($in, get_charset());
-    }
+    _local_ctype_hack(false);
 
-    return strtoupper($in);
+    return $ret;
 }
 
 /**
