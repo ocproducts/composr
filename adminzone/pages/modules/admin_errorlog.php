@@ -483,7 +483,7 @@ class Module_admin_errorlog
             ), true);
         }
 
-        asort($_result_entries, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($_result_entries, SORT_NATURAL | SORT_FLAG_CASE);
 
         $result_entries = new Tempcode();
         foreach ($_result_entries as $results_entry) {

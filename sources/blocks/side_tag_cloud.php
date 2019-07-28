@@ -115,7 +115,7 @@ class Block_side_tag_cloud
             }
             $tags[$keyword] = $mr['cnt'];
         }
-        arsort($tags, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_arsort($tags, SORT_NATURAL | SORT_FLAG_CASE);
         $_tags = $tags;
         $tags = array();
         foreach ($_tags as $tag => $count) {
@@ -127,7 +127,7 @@ class Block_side_tag_cloud
                 break;
             }
         }
-        ksort($tags, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($tags, SORT_NATURAL | SORT_FLAG_CASE);
 
         if (count($tags) == 0) {
             return do_template('RED_ALERT', array('_GUID' => 'qsgdln7dvorwfrtjwa1fuvqb9fbyf8sj', 'TEXT' => do_lang_tempcode('NO_ENTRIES')));

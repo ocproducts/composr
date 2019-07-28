@@ -141,7 +141,7 @@ class Hook_fields_list extends ListFieldHook
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            asort($list, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_asort($list, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $input_size = max(1, intval(option_value_from_field_array($field, 'input_size', '9')));

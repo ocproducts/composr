@@ -186,7 +186,7 @@ If Composr-fed DKIM is needed the PHP OpenSSL extension ([tt]openssl[/tt]) is re
 
 If spell checking is needed, the Pspell ([tt]pspell[/tt]) or Enchant ([tt]enchant[/tt]) PHP extensions must be installed with matching aspell/hunspell installs and dictionaries on the server.
 
-If transliteration of non-European languages is desired (for quality URL moniker generation), or Punycode support, the PHP intl extension ([tt]intl[/tt]) is required.
+If transliteration of non-European languages is desired (for quality URL moniker generation), or Punycode support, or locale-aware sorting, the PHP intl extension ([tt]intl[/tt]) is required.
 
 [title="2"]Further recommendations[/title]
 

@@ -131,7 +131,7 @@ class Block_main_privacy_policy_auto
             }
         }
 
-        ksort($sections, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($sections, SORT_NATURAL | SORT_FLAG_CASE);
 
         return do_template('BLOCK_MAIN_PRIVACY_POLICY_AUTO', array(
             '_GUID' => '0abf65878c508bf244836589a8cc45da',

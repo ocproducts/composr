@@ -496,7 +496,7 @@ class Module_cms_authors
             }
         }
         $authors = array_unique($authors);
-        sort($authors, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_sort($authors, SORT_NATURAL | SORT_FLAG_CASE);
         $out = new Tempcode();
         foreach ($authors as $author) {
             $selected = ($author == $it);

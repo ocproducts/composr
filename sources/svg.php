@@ -489,7 +489,7 @@ function create_pie_chart($data)
         define('PIE_RADIUS', 190);
     }
 
-    arsort($data, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_arsort($data, SORT_NATURAL | SORT_FLAG_CASE);
 
     // Work out some stats about our graph
     $_max_degrees = 0.0;

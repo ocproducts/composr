@@ -2016,7 +2016,7 @@ function _strlen_sort($a, $b)
  *
  * @param  array $rows List of maps to sort
  * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it)
- * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort), doesn't support natural supporting
+ * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort)
  * @param  boolean $natural Whether to do a natural sort
  */
 function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $natural = false)
@@ -2049,11 +2049,12 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $
 
 /**
  * Do a user sort, preserving order where reordering not needed. Based on a PHP manual comment at http://php.net/manual/en/function.usort.php.
+ * Roughly equivalent to PHP's uasort.
  *
  * @param  array $array Sort array
  * @param  mixed $cmp_function Comparison function
  */
-function merge_sort(&$array, $cmp_function = 'strcmp')
+function merge_sort(&$array, $cmp_function = 'cms_mb_strcasecmp')
 {
     // Arrays of size<2 require no action.
     if (count($array) < 2) {
@@ -2174,9 +2175,9 @@ function _multi_sort($a, $b)
             }
 
             if ((is_numeric($av)) && (is_numeric($bv)) || $M_SORT_NATURAL) {
-                $ret = strnatcasecmp($av, $bv);
+                $ret = cms_mb_strnatcasecmp($av, $bv);
             } else {
-                $ret = strcasecmp($av, $bv);
+                $ret = cms_mb_strcasecmp($av, $bv);
             }
 
             if ($backwards) {
@@ -4387,6 +4388,132 @@ function cms_preg_split_safe($pattern, $subject, $max_splits = null, $mode = nul
         }
     }
     return preg_split($pattern, $subject, $max_splits, $mode);
+}
+
+/**
+ * Unicode-safe case-insensitive string comparison.
+ * Note we have no cms_mb_strcmp because intl (Collator class) cannot do case-sensitive comparison.
+ *
+ * @param  string $str1 The first string
+ * @param  string $str2 The second string
+ * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
+ */
+function cms_mb_strcasecmp($str1, $str2)
+{
+    if (function_exists('collator_create')) {
+        if (function_exists('collator_set_attribute')) {
+            if (function_exists('collator_compare')) {
+                static $collator = false;
+                if ($collator === false) {
+                    $collator = collator_create(setlocale(LC_ALL, '0'));
+                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::OFF);
+                }
+                if ($collator !== null) {
+                    return collator_compare($collator, $str1, $str2);
+                }
+            }
+        }
+    }
+
+    // Ideally we'd use strcoll, but that's case-sensitive and also doesn't work on Windows for Unicode
+
+    return strcasecmp($str1, $str2);
+}
+
+/**
+ * Case insensitive string comparisons using a "natural order" algorithm.
+ *
+ * @param  string $str1 The first string
+ * @param  string $str2 The second string
+ * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
+ */
+function cms_mb_strnatcasecmp($str1, $str2)
+{
+    if (function_exists('collator_create')) {
+        if (function_exists('collator_set_attribute')) {
+            if (function_exists('collator_compare')) {
+                static $collator = false;
+                if ($collator === false) {
+                    $collator = collator_create(setlocale(LC_ALL, '0'));
+                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::ON);
+                }
+                if ($collator !== null) {
+                    return collator_compare($collator, $str1, $str2);
+                }
+            }
+        }
+    }
+
+    return strnatcasecmp($str1, $str2);
+}
+
+/**
+ * Sort an array of Unicode strings. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_sort(&$array, $sort_flags = 0)
+{
+    usort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+}
+
+/**
+ * Sort an array of Unicode strings in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_rsort(&$array, $sort_flags = 0)
+{
+    cms_mb_sort($array, $sort_flags);
+    $array = array_reverse($array);
+}
+
+/**
+ * Sort an array of Unicode strings and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array Array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_asort(&$array, $sort_flags = 0)
+{
+    uasort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+}
+
+/**
+ * Sort an array of Unicode strings in reverse order and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array Array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_arsort(&$array, $sort_flags = 0)
+{
+    cms_mb_asort($array, $sort_flags);
+    $array = array_reverse($array);
+}
+
+/**
+ * Sort an array by Unicode key. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_ksort(&$array, $sort_flags = 0)
+{
+    uksort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+}
+
+/**
+ * Sort an array by Unicode key in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_krsort(&$array, $sort_flags = 0)
+{
+    cms_mb_ksort($array, $sort_flags);
+    $array = array_reverse($array);
 }
 
 /**

@@ -381,7 +381,7 @@ function nice_get_filedump_files($it, $only_images = false, $base = null)
         $full_path .= '/' . $base;
     }
     $tree = get_directory_contents($full_path, '');
-    sort($tree, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($tree, SORT_NATURAL | SORT_FLAG_CASE);
 
     foreach ($tree as $f) {
         if ((!$only_images) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
@@ -413,7 +413,7 @@ function nice_get_filedump_places($it, $base = null)
 
     $directories = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, true, false);
     $directories[] = '';
-    sort($directories, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($directories, SORT_NATURAL | SORT_FLAG_CASE);
 
     foreach ($directories as $d) {
         $rel = ($base === null) ? $d : preg_replace('#^' . preg_quote($base, '#') . '/#', '', $d);

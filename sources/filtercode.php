@@ -248,7 +248,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                             }
                         }
                     }
-                    ksort($extra);
+                    cms_mb_ksort($extra, SORT_FLAG_CASE | SORT_NATURAL);
                 }
             } else {
                 $field_type = 'line';

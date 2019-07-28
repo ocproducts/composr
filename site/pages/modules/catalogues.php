@@ -924,7 +924,7 @@ class Module_catalogues
             inform_exit(do_lang_tempcode('NO_CATEGORIES', 'catalogue_category'));
         }
 
-        ksort($cats, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($cats, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($cats as $letter => $entries) {
             list($entry_buildup) = render_catalogue_category_entry_buildup(null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, null, $root, null, true, $entries);
 

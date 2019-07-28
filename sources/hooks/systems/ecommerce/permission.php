@@ -110,7 +110,7 @@ class Hook_ecommerce_permission
             }
             $__privileges[$_privilege['the_name']] = $_pt_name;
         }
-        asort($__privileges, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($__privileges, SORT_NATURAL | SORT_FLAG_CASE);
         foreach (array_keys($__privileges) as $__privilege) {
             $pt_name = do_lang_tempcode('PRIVILEGE_' . $__privilege);
             $temp = form_input_list_entry($__privilege, $__privilege == $privilege, $pt_name);

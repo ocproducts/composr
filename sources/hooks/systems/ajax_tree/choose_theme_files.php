@@ -248,7 +248,7 @@ class Hook_ajax_tree_choose_theme_files
                         $action_log_times = $this->load_actionlog_times_pages($zone);
 
                         $pages = find_all_pages_wrap($zone, false, false, FIND_ALL_PAGES__PERFORMANT, 'comcode');
-                        ksort($pages, SORT_NATURAL | SORT_FLAG_CASE);
+                        cms_mb_ksort($pages, SORT_NATURAL | SORT_FLAG_CASE);
                         foreach (array_keys($pages) as $page) {
                             if (is_integer($page)) {
                                 $page = strval($page);

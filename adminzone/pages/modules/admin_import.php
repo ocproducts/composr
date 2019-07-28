@@ -247,7 +247,7 @@ class Module_admin_import
             $info = $object->info();
             $__hooks[$hook] = strip_tags(static_evaluate_tempcode(is_maintained_description('import_' . $hook, $info['product'])));
         }
-        asort($__hooks, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($__hooks, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($__hooks as $hook => $hook_title) {
             $hooks->attach(form_input_list_entry($hook, false, $hook_title));
         }

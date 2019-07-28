@@ -116,7 +116,7 @@ function reconstitute_booking_requests(&$request)
 
     // Scan through, merging same things together and updating quantity
     for ($i = 0; $i < count($request); $i++) {
-        asort($request[$i]['supplements'], SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($request[$i]['supplements'], SORT_NATURAL | SORT_FLAG_CASE);
 
         if ($i != 0) {
             $a = &$request[$i - 1];

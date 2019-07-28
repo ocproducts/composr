@@ -1024,7 +1024,7 @@ class Module_admin_addons
         $url = build_url(array('page' => '_SELF', 'type' => '_addon_export', 'exp' => 'theme'), '_SELF');
         require_code('themes2');
         $all_themes = find_all_themes();
-        ksort($all_themes, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($all_themes, SORT_NATURAL | SORT_FLAG_CASE);
         $i = 0;
         $tpl_themes = new Tempcode();
         foreach ($all_themes as $theme => $theme_title) {

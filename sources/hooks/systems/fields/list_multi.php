@@ -180,7 +180,7 @@ class Hook_fields_list_multi extends ListFieldHook
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'backend' || $auto_sort == 'both') {
-            sort($list, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_sort($list, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $custom_name = $input_name . '_other';

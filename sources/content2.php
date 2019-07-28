@@ -917,8 +917,8 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     }
 
     // Put most common ones first
-    arsort($keywords_must_use, SORT_NATURAL | SORT_FLAG_CASE);
-    arsort($keywords_might_use, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_arsort($keywords_must_use, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_arsort($keywords_might_use, SORT_NATURAL | SORT_FLAG_CASE);
 
     // Put together keywords (in priority and frequency order, not alphabetical)
     $i = 0;

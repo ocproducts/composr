@@ -1505,7 +1505,7 @@ class Module_admin_stats
         }
 
         if ($sortable == 'views') {
-            asort($data1, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_asort($data1, SORT_NATURAL | SORT_FLAG_CASE);
             if ($sort_order == 'DESC') {
                 $data1 = array_reverse($data1);
             }

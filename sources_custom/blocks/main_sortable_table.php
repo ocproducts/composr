@@ -382,7 +382,7 @@ class Block_main_sortable_table
                 $values[] = $row[$j];
             }
             $values = array_unique($values);
-            sort($values, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_sort($values, SORT_NATURAL | SORT_FLAG_CASE);
             foreach ($values as $i => $value) {
                 $values[$i] = $this->apply_formatting($values[$i], $headers[$j]['SORTABLE_TYPE']);
             }

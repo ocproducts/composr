@@ -571,7 +571,7 @@ class Module_filedump
         // Find directories we could move stuff into / upload to
         $directories = get_directory_contents(get_custom_file_base() . '/uploads/filedump', '', IGNORE_ACCESS_CONTROLLERS, true, false);
         $directories[] = '';
-        sort($directories);
+        cms_mb_sort($directories, SORT_FLAG_CASE | SORT_NATURAL);
         $other_directories = $directories;
         $filtered_directories = $directories;
         if ($recurse == 0) {

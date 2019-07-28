@@ -188,7 +188,7 @@ class Hook_fields_content_link_multi
             $_list[$id] = $text;
         }
         if (count($_list) < 2000) {
-            asort($_list, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_asort($_list, SORT_NATURAL | SORT_FLAG_CASE);
         }
         foreach ($_list as $id => $text) {
             if (!is_string($id)) {

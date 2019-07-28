@@ -4778,7 +4778,7 @@ function ecv_VALID_FILE_TYPES($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    ksort($types, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_ksort($types, SORT_NATURAL | SORT_FLAG_CASE);
     foreach (array_flip($types) as $val) {
         $value .= $val . ',';
     }
@@ -6603,7 +6603,7 @@ function ecv_FONTS($lang, $escaped, $param)
     $fonts = array_map('trim', explode(',', get_option('fonts')));
     $google_fonts = array_map('trim', explode(',', get_option('google_fonts')));
     $all_fonts = array_unique(array_merge($fonts, $google_fonts));
-    sort($all_fonts, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($all_fonts, SORT_NATURAL | SORT_FLAG_CASE);
     foreach ($all_fonts as $font) {
         if ($font != '') {
             $value .= ',';

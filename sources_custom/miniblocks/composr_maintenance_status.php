@@ -31,7 +31,7 @@ while (($row = fgetcsv($myfile)) !== false) {
     unset($row[0]);
     $rows[$codename] = array('DATA' => array_values($row), 'CODENAME' => $codename);
 }
-ksort($rows, SORT_NATURAL | SORT_FLAG_CASE);
+cms_mb_ksort($rows, SORT_NATURAL | SORT_FLAG_CASE);
 
 fclose($myfile);
 

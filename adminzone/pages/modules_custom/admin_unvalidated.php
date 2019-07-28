@@ -158,7 +158,7 @@ class Module_admin_unvalidated
             $out[$info['title']->evaluate()] = do_template('UNVALIDATED_SECTION', array('_GUID' => '044f99ca3c101f90b35fc4b64977b1c7', 'TITLE' => $info['title'], 'CONTENT' => $content));
         }
 
-        ksort($out, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($out, SORT_NATURAL | SORT_FLAG_CASE);
 
         $_out = new Tempcode();
         foreach ($out as $__out) {

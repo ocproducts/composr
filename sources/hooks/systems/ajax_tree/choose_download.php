@@ -76,7 +76,7 @@ class Hook_ajax_tree_choose_download
         foreach ($tree as $t) {
             $_id = $t['id'];
             if (($id === strval($_id)) || (get_param_integer('full_depth', 0) == 1)) { // Possible when we look under as a root
-                asort($t['entries'], SORT_NATURAL | SORT_FLAG_CASE);
+                cms_mb_asort($t['entries'], SORT_NATURAL | SORT_FLAG_CASE);
 
                 foreach ($t['entries'] as $eid => $etitle) {
                     $download_rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $eid), '', 1);

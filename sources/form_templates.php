@@ -2054,7 +2054,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
     }
 
     // Sorting but fudge it so 'cns_default_avatars/default_set' always comes first
-    ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
     $avatars = (array_key_exists(0, $category)) && (substr($category[0], 0, 20) == 'cns_default_avatars/');
     if ((array_key_exists('cns_default_avatars/default_set', $categories)) && ($avatars)) {
         $def = $categories['cns_default_avatars/default_set'];

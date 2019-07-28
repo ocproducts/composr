@@ -474,7 +474,7 @@ function special_demonstratr_dir()
 function get_site_categories()
 {
     $cats = array('Entertainment', 'Computers', 'Sport', 'Art', 'Music', 'Television/Movies', 'Businesses', 'Other', 'Informative/Factual', 'Political', 'Humour', 'Geographical/Regional', 'Games', 'Personal/Family', 'Hobbies', 'Culture/Community', 'Religious', 'Health');
-    sort($cats, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($cats, SORT_NATURAL | SORT_FLAG_CASE);
     return $cats;
 }
 

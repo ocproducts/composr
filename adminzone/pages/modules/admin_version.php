@@ -1191,7 +1191,7 @@ class Module_admin_version
         }
         foreach ($sponsors as $sponsor => &$areas) {
             $areas['AREAS'] = array_unique($areas['AREAS']);
-            //sort($areas['AREAS'], SORT_NATURAL | SORT_FLAG_CASE); Actually order is meaningful
+            //cms_mb_sort($areas['AREAS'], SORT_NATURAL | SORT_FLAG_CASE); Actually order is meaningful
         }
         fclose($myfile);
 

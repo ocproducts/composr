@@ -264,7 +264,7 @@ function form_input_captcha($hidden)
             list($question, $answer, $wrong_answers) = $details;
             if ($wrong_answers !== null) {
                 $answers = array_merge(array($answer), $wrong_answers);
-                sort($answers);
+                cms_mb_sort($answers, SORT_FLAG_CASE | SORT_NATURAL);
                 $_answers = new Tempcode();
                 $_answers->attach(form_input_list_entry(''));
                 foreach ($answers as $answer) {

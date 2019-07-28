@@ -859,7 +859,7 @@ function catalogue_entries_manual_sort($fields, &$entries, $order_by, $direction
                     $r = (floatval($a) < floatval($b)) ? -1 : 1;
                 }
             } else { // Normal case
-                $r = strnatcmp(strtolower($a), strtolower($b));
+                $r = cms_mb_strnatcasecmp(strtolower($a), strtolower($b));
             }
             if ((($r < 0) && ($direction == 'ASC')) || (($r > 0) && ($direction == 'DESC'))) {
                 $temp = $entries[$i];
@@ -1402,7 +1402,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
         }
     }
 
-    asort($catalogues, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($catalogues, SORT_NATURAL | SORT_FLAG_CASE);
 
     $out = new Tempcode();
     foreach ($catalogues as $name => $title) {
@@ -1678,7 +1678,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
 
         $children[0]['entries'][$row['id']] = $name;
     }
-    asort($children[0]['entries'], SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($children[0]['entries'], SORT_NATURAL | SORT_FLAG_CASE);
     $children[0]['child_entry_count'] = count($children[0]['entries']);
     if ($levels === 0) { // We throw them away now because they're not on the desired level
         $children[0]['entries'] = array();

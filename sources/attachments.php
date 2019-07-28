@@ -351,7 +351,7 @@ function attachment_popup_script()
             }
         }
     }
-    asort($members, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($members, SORT_NATURAL | SORT_FLAG_CASE);
 
     $member_now = post_param_integer('member_id', get_member());
     if (!array_key_exists($member_now, $members)) {

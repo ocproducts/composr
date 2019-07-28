@@ -113,7 +113,7 @@ function find_all_themes()
     }
 
     // Sort
-    asort($themes, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($themes, SORT_NATURAL | SORT_FLAG_CASE);
 
     // Default theme should go first
     if (isset($themes['default'])) {

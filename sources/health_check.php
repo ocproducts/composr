@@ -87,11 +87,11 @@ function find_health_check_categories_and_sections()
     foreach ($hook_obs as $ob) {
         list($category_label, $sections) = $ob->run(null, $check_context, true);
 
-        ksort($sections, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($sections, SORT_NATURAL | SORT_FLAG_CASE);
 
         $categories[$category_label] = $sections;
     }
-    ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
     return $categories;
 }
@@ -263,13 +263,13 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
         }
 
         if (count($_sections) > 0) {
-            ksort($_sections, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_ksort($_sections, SORT_NATURAL | SORT_FLAG_CASE);
             $categories[$category_label] = array(
                 'SECTIONS' => $_sections,
             );
         }
     }
-    ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
     if ($HEALTH_CHECK_LOG_FILE !== null) {
         fwrite($HEALTH_CHECK_LOG_FILE, loggable_date() . '  (HEALTH CHECK ENDING)' . "\n");

@@ -269,7 +269,7 @@ class Module_admin_config
 
         // Show all categories
         $categories_tpl = new Tempcode();
-        ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($categories as $category => $option_count) {
             // Some are skipped
             if (get_forum_type() != 'cns') {
@@ -435,7 +435,7 @@ class Module_admin_config
             $all_known_groups[$_group] = $group;
         }
         $advanced_key = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
-        ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
         if (isset($all_known_groups[$advanced_key])) { // Advanced goes last
             $temp = $all_known_groups[$advanced_key];
             unset($all_known_groups[$advanced_key]);

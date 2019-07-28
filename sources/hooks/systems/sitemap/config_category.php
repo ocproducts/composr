@@ -86,7 +86,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
                 $categories[] = strtoupper($hook);
             }
         }
-        uksort($categories, 'strnatcasecmp');
+        cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
         if ($child_cutoff !== null) {
             if (count($categories) > $child_cutoff) {
