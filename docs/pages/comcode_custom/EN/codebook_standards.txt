@@ -205,7 +205,7 @@ Write comments in the standard way
 | Offline development and Intranets
 | Product development only
 | Manually
-| Unless intrinsically necessary for a particular piece of functionality, do not rely on external URLs such as CDNs. External URLs create a number of problems, including: network firewalls operating with whitelists blocking functionality (e.g. in museums), full functionality not being available offline (e.g. when developing on an airplane), or full functionality not working in private offline Intranets (e.g. in schools). If users want to make use of CDNs they can make manual changes to achieve it.
+| Unless intrinsically necessary for a particular piece of functionality, do not rely on external URLs such as CDNs. External URLs create a number of problems, including: network firewalls operating with whitelists blocking functionality (e.g. in museums), erratic firewall blocking (e.g. in China), full functionality not being available offline (e.g. when developing on an airplane), or full functionality not working in private offline Intranets (e.g. in schools). If users want to make use of CDNs they can make manual changes to achieve it.
 |}
 
 [title="4"]Code formatting[/title]
