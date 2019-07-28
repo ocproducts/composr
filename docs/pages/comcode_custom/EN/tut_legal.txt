@@ -53,7 +53,7 @@ There is a "Do Not Track" HTTP that many web browsers allow their users to enabl
 To meet Californian law a privacy policy must:
  - State what you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
  - State the date the privacy policy was written on
- - State a described process for how changed in the privacy policy are communicated
+ - State a described process for how changes in the privacy policy are communicated
  - Provide at least 2 ways of contacting about privacy requests
  - Provide a dated list of amendments
  - Provide a 'Do Not Sell My Personal Information' link if you sell personal information
