@@ -1251,6 +1251,33 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
 }
 
 /**
+ * Workaround for when we can't enable LC_CTYPE on the locale - temporarily enable it when we really need it.
+ *
+ * @param  boolean $start Whether to start the workaround (as opposed to ending it)
+ */
+function _local_ctype_hack($start)
+{
+    if ($start) {
+        $ctype_hack = (do_lang('locale_ctype_hack') == '1');
+        if ($ctype_hack) {
+            static $proper_locale = null;
+            if ($proper_locale === null) {
+                $proper_locale = explode(',', do_lang('locale'));
+            }
+            setlocale(LC_CTYPE, $proper_locale);
+        }
+    } else {
+        if ($ctype_hack) {
+            static $fallback_locale = null;
+            if ($fallback_locale === null) {
+                $fallback_locale = explode(',', do_lang('locale'));
+            }
+            setlocale(LC_CTYPE, $fallback_locale);
+        }
+    }
+}
+
+/**
  * Make a string title-case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject
@@ -1258,15 +1285,19 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
  */
 function cms_mb_ucwords($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return ucwords($in);
+        $ret = ucwords($in);
+    } elseif (function_exists('mb_convert_case')) {
+        $ret = @mb_convert_case($in, MB_CASE_TITLE, get_charset());
+    } else {
+        $ret = ucwords($in);
     }
 
-    if (function_exists('mb_convert_case')) {
-        return @mb_convert_case($in, MB_CASE_TITLE);
-    }
+    _local_ctype_hack(false);
 
-    return ucwords($in);
+    return $ret;
 }
 
 /**
@@ -1277,15 +1308,19 @@ function cms_mb_ucwords($in)
  */
 function cms_mb_strtolower($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return strtolower($in);
+        $ret = strtolower($in);
+    } elseif (function_exists('mb_strtolower')) {
+        $ret = @mb_strtolower($in, get_charset());
+    } else {
+        $ret = strtolower($in);
     }
 
-    if (function_exists('mb_strtolower')) {
-        return @mb_strtolower($in);
-    }
+    _local_ctype_hack(false);
 
-    return strtolower($in);
+    return $ret;
 }
 
 /**
@@ -1296,15 +1331,190 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return strtoupper($in);
+        $ret = strtoupper($in);
+    } elseif (function_exists('mb_strtoupper')) {
+        $ret = @mb_strtoupper($in, get_charset());
+    } else {
+        $ret = strtoupper($in);
     }
 
-    if (function_exists('mb_strtoupper')) {
-        return @mb_strtoupper($in);
+    _local_ctype_hack(false);
+
+    return $ret;
+}
+
+
+/**
+ * Unicode-safe case-insensitive string comparison.
+ * Note we have no cms_mb_strcmp because intl (Collator class) cannot do case-sensitive comparison.
+ *
+ * @param  string $str1 The first string
+ * @param  string $str2 The second string
+ * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
+ */
+function cms_mb_strcasecmp($str1, $str2)
+{
+    _local_ctype_hack(true);
+
+    if (function_exists('collator_create')) {
+        if (function_exists('collator_set_attribute')) {
+            if (function_exists('collator_compare')) {
+                static $collator = false;
+                if ($collator === false) {
+                    $collator = collator_create(setlocale(LC_ALL, '0'));
+                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::OFF);
+                }
+                if ($collator !== null) {
+                    $ret = collator_compare($collator, $str1, $str2);
+
+                    _local_ctype_hack(false);
+
+                    return $ret;
+                }
+            }
+        }
     }
 
-    return strtoupper($in);
+    // Ideally we'd use strcoll, but that's case-sensitive and also doesn't work on Windows for Unicode
+
+    $ret = strcasecmp($str1, $str2);
+
+    _local_ctype_hack(false);
+
+    return $ret;
+}
+
+/**
+ * Case insensitive string comparisons using a "natural order" algorithm.
+ *
+ * @param  string $str1 The first string
+ * @param  string $str2 The second string
+ * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
+ */
+function cms_mb_strnatcasecmp($str1, $str2)
+{
+    _local_ctype_hack(true);
+
+    if (function_exists('collator_create')) {
+        if (function_exists('collator_set_attribute')) {
+            if (function_exists('collator_compare')) {
+                static $collator = false;
+                if ($collator === false) {
+                    $collator = collator_create(setlocale(LC_ALL, '0'));
+                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::ON);
+                }
+                if ($collator !== null) {
+                    $ret = collator_compare($collator, $str1, $str2);
+
+                    _local_ctype_hack(false);
+
+                    return $ret;
+                }
+            }
+        }
+    }
+
+    $ret = strnatcasecmp($str1, $str2);
+
+    _local_ctype_hack(false);
+
+    return $ret;
+}
+
+/**
+ * Sort an array of Unicode strings. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_sort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    usort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array of Unicode strings in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_rsort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    cms_mb_sort($array, $sort_flags);
+    $array = array_reverse($array);
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array of Unicode strings and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array Array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_asort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    uasort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array of Unicode strings in reverse order and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array Array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_arsort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    cms_mb_asort($array, $sort_flags);
+    $array = array_reverse($array);
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array by Unicode key. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_ksort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    uksort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array by Unicode key in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_krsort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    cms_mb_ksort($array, $sort_flags);
+    $array = array_reverse($array);
+
+    _local_ctype_hack(false);
 }
 
 /**
@@ -4388,132 +4598,6 @@ function cms_preg_split_safe($pattern, $subject, $max_splits = null, $mode = nul
         }
     }
     return preg_split($pattern, $subject, $max_splits, $mode);
-}
-
-/**
- * Unicode-safe case-insensitive string comparison.
- * Note we have no cms_mb_strcmp because intl (Collator class) cannot do case-sensitive comparison.
- *
- * @param  string $str1 The first string
- * @param  string $str2 The second string
- * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
- */
-function cms_mb_strcasecmp($str1, $str2)
-{
-    if (function_exists('collator_create')) {
-        if (function_exists('collator_set_attribute')) {
-            if (function_exists('collator_compare')) {
-                static $collator = false;
-                if ($collator === false) {
-                    $collator = collator_create(setlocale(LC_ALL, '0'));
-                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::OFF);
-                }
-                if ($collator !== null) {
-                    return collator_compare($collator, $str1, $str2);
-                }
-            }
-        }
-    }
-
-    // Ideally we'd use strcoll, but that's case-sensitive and also doesn't work on Windows for Unicode
-
-    return strcasecmp($str1, $str2);
-}
-
-/**
- * Case insensitive string comparisons using a "natural order" algorithm.
- *
- * @param  string $str1 The first string
- * @param  string $str2 The second string
- * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
- */
-function cms_mb_strnatcasecmp($str1, $str2)
-{
-    if (function_exists('collator_create')) {
-        if (function_exists('collator_set_attribute')) {
-            if (function_exists('collator_compare')) {
-                static $collator = false;
-                if ($collator === false) {
-                    $collator = collator_create(setlocale(LC_ALL, '0'));
-                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::ON);
-                }
-                if ($collator !== null) {
-                    return collator_compare($collator, $str1, $str2);
-                }
-            }
-        }
-    }
-
-    return strnatcasecmp($str1, $str2);
-}
-
-/**
- * Sort an array of Unicode strings. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
- *
- * @param  array $array The array
- * @param  integer $sort_flags Sort flags
- */
-function cms_mb_sort(&$array, $sort_flags = 0)
-{
-    usort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
-}
-
-/**
- * Sort an array of Unicode strings in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
- *
- * @param  array $array The array to sort
- * @param  integer $sort_flags Sort flags
- */
-function cms_mb_rsort(&$array, $sort_flags = 0)
-{
-    cms_mb_sort($array, $sort_flags);
-    $array = array_reverse($array);
-}
-
-/**
- * Sort an array of Unicode strings and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
- *
- * @param  array $array Array
- * @param  integer $sort_flags Sort flags
- */
-function cms_mb_asort(&$array, $sort_flags = 0)
-{
-    uasort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
-}
-
-/**
- * Sort an array of Unicode strings in reverse order and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
- *
- * @param  array $array Array
- * @param  integer $sort_flags Sort flags
- */
-function cms_arsort(&$array, $sort_flags = 0)
-{
-    cms_mb_asort($array, $sort_flags);
-    $array = array_reverse($array);
-}
-
-/**
- * Sort an array by Unicode key. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
- *
- * @param  array $array The array to sort
- * @param  integer $sort_flags Sort flags
- */
-function cms_mb_ksort(&$array, $sort_flags = 0)
-{
-    uksort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
-}
-
-/**
- * Sort an array by Unicode key in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
- *
- * @param  array $array The array to sort
- * @param  integer $sort_flags Sort flags
- */
-function cms_mb_krsort(&$array, $sort_flags = 0)
-{
-    cms_mb_ksort($array, $sort_flags);
-    $array = array_reverse($array);
 }
 
 /**

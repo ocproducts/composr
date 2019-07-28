@@ -1,13 +1,11 @@
-<?php
+<?php /*
 
-/*
+ Composr
+ Copyright (c) ocProducts, 2004-2019
 
-  Composr
-  Copyright (c) ocProducts, 2004-2019
+ See text/EN/licence.txt for full licensing information.
 
-  See text/EN/licence.txt for full licensing information.
-
- */
+*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -695,10 +693,15 @@ class images_test_set extends cms_test_case
             //$this->assertTrue($this->runQuadrantTest(get_file_base() . '/_tests/assets/images/quadrant.' . $extension, 4, 4, $additional_information), 'Decreased 8x8 quadrant.' . $extension . ' to 4x4 and tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
         }
 
-        // Edge Case: 8-bit palette-alpha PNG transparency test
-        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_8bit.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_8bit.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_8bit.png', 8, 8, 127, $additional_information), '8x8 transparent_8bit.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_8bit.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_8bit.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        // Edge Case: palette-alpha PNG transparency test
+        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_palette_alpha.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_palette_alpha.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_palette_alpha.png', 8, 8, 127, $additional_information), '8x8 transparent_palette_alpha.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_palette_alpha.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_palette_alpha.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+
+        // Edge Case: palette-binary PNG transparency test
+        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_palette_binary.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_palette_binary.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_palette_binary.png', 8, 8, 127, $additional_information), '8x8 transparent_palette_binary.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        $this->assertTrue($this->runTransparencyTest(get_file_base() . '/_tests/assets/images/transparent_palette_binary.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_palette_binary.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
 
         // Edge Case: EXIF rotation test via dimension test and pixel color test
         $this->assertTrue($this->runEXIFTest(get_file_base() . '/_tests/assets/images/exifrotated.jpg', 4896, 6528, 4896, 6528, 4850, 250, 205, 164, 85, 0, $additional_information), 'exifrotated.jpg EXIF rotation test (size and color). Doubled the original size. ' . $additional_information);

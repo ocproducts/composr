@@ -426,7 +426,10 @@ function init__global2()
     @header('Content-type: text/html; charset=' . get_charset());
     setlocale(LC_ALL, explode(',', do_lang('locale')));
     if (substr(@strftime('%M'), 0, 2) == '??') { // Windows may do this because it can't output a utf-8 character set, so gets mangled to question marks by PHP
-        setlocale(LC_ALL, explode(',', 'en-GB.UTF-8,en_GB.UTF-8,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-GB,en_GB,en-US,en_US,en')); // The user will have to define locale_subst correctly
+        setlocale(LC_ALL, explode(',', do_lang('locale', null, null, null, fallback_lang()))); // The user will have to define locale_subst correctly
+    }
+    if (do_lang('locale_ctype_hack') == '1') {
+        setlocale(LC_CTYPE, explode(',', do_lang('locale', null, null, null, fallback_lang())));
     }
 
     // Check RBLs
