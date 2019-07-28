@@ -1257,17 +1257,15 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
  */
 function _local_ctype_hack($start)
 {
-    if ($start) {
-        $ctype_hack = (do_lang('locale_ctype_hack') == '1');
-        if ($ctype_hack) {
+    $ctype_hack = (do_lang('locale_ctype_hack') == '1');
+    if ($ctype_hack) {
+        if ($start) {
             static $proper_locale = null;
             if ($proper_locale === null) {
                 $proper_locale = explode(',', do_lang('locale'));
             }
             setlocale(LC_CTYPE, $proper_locale);
-        }
-    } else {
-        if ($ctype_hack) {
+        } else {
             static $fallback_locale = null;
             if ($fallback_locale === null) {
                 $fallback_locale = explode(',', do_lang('locale'));
