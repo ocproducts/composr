@@ -199,6 +199,13 @@ Write comments in the standard way
 | Product development only
 | Manually
 | URLs-within-URLs need to be encoded carefully so as to bypass ModSecurity restrictions (often any embedded URL is blocked). Basically URLs should be read in with a [tt]INPUT_FILTER_URL_*[/tt] flag to [tt]*_param_string[/tt], and URLs should be placed within URLs/forms with a [tt]protect_url_parameter[/tt] call around their value.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Support offline[/color]
+| Offline development and Intranets
+| Product development only
+| Manually
+| Unless intrinsically necessary for a particular piece of functionality, do not rely on external URLs such as CDNs. External URLs create a number of problems, including: network firewalls operating with whitelists blocking functionality (e.g. in museums), full functionality not being available offline (e.g. when developing on an airplane), or full functionality not working in private offline Intranets (e.g. in schools). If users want to make use of CDNs they can make manual changes to achieve it.
 |}
 
 [title="4"]Code formatting[/title]
