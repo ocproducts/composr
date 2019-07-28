@@ -130,7 +130,7 @@
                 $dom.hide(commandrBox);
                 bi = document.getElementById('main-website-inner');
                 if (bi) {
-                    $dom.fadeIn(bi);
+                    $dom.fadeTo(bi, null, 1);
                 }
             }
         }
