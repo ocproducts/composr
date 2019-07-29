@@ -326,7 +326,9 @@ function load_html_edit(posting_form,ajax_copy)
 			{
 				var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0'+keep_stub());
 				if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
-				var request=do_ajax_request(url,null,'data='+window.encodeURIComponent(posting_form.elements[counter].value.replace(new RegExp(String.fromCharCode(8203),'g'),'').replace('{'+'$,page hint: no_wysiwyg}','')));
+				var post='data='+window.encodeURIComponent(posting_form.elements[counter].value.replace(new RegExp(String.fromCharCode(8203),'g'),'').replace('{'+'$,page hint: no_wysiwyg}',''));
+				post=modsecurity_workaround_ajax(post);
+				var request=do_ajax_request(url,null,post);
 				if (!request.responseXML)
 				{
 					posting_form.elements[counter].value='';
@@ -749,7 +751,9 @@ function insert_textbox(element,text,sel,plain_insert,html)
 		{
 			var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&is_semihtml=1'+keep_stub());
 			if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
-			var request=do_ajax_request(url,null,'data='+window.encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203),'g'),'')));
+			var post='data='+window.encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203),'g'),''));
+			post=modsecurity_workaround_ajax(post);
+			var request=do_ajax_request(url,null,post);
 			if ((request.responseXML) && (request.responseXML.documentElement.getElementsByTagName('result')[0]))
 			{
 				var result_tags=request.responseXML.documentElement.getElementsByTagName('result');
@@ -894,7 +898,9 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 
 		var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&is_semihtml=1'+keep_stub());
 		if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
-		var request=do_ajax_request(url,null,'data='+window.encodeURIComponent((before_wrap_tag+selected_html+after_wrap_tag).replace(new RegExp(String.fromCharCode(8203),'g'),'')));
+		var post='data='+window.encodeURIComponent((before_wrap_tag+selected_html+after_wrap_tag).replace(new RegExp(String.fromCharCode(8203),'g'),''));
+		post=modsecurity_workaround_ajax(post);
+		var request=do_ajax_request(url,null,post);
 		if ((request.responseXML) && (request.responseXML.documentElement.getElementsByTagName('result')[0]))
 		{
 			var result_tags=request.responseXML.documentElement.getElementsByTagName('result');
