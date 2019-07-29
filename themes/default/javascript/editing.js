@@ -747,7 +747,7 @@ function insert_textbox(element,text,sel,plain_insert,html)
 			insert=get_selected_html(editor)+(html?html:escape_html(text).replace(new RegExp('\\\\n','gi'),'<br />'));
 		} else
 		{
-			var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1'+keep_stub());
+			var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&is_semihtml=1'+keep_stub());
 			if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
 			var request=do_ajax_request(url,null,'data='+window.encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203),'g'),'')));
 			if ((request.responseXML) && (request.responseXML.documentElement.getElementsByTagName('result')[0]))
@@ -892,7 +892,7 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 
 		var new_html='';
 
-		var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1'+keep_stub());
+		var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&is_semihtml=1'+keep_stub());
 		if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
 		var request=do_ajax_request(url,null,'data='+window.encodeURIComponent((before_wrap_tag+selected_html+after_wrap_tag).replace(new RegExp(String.fromCharCode(8203),'g'),'')));
 		if ((request.responseXML) && (request.responseXML.documentElement.getElementsByTagName('result')[0]))
