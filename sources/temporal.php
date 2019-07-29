@@ -102,13 +102,7 @@ function get_server_timezone()
  */
 function get_site_timezone()
 {
-    $_timezone_site = get_value('timezone');
-    if ($_timezone_site === null) {
-        $timezone_site = get_server_timezone();
-    } else {
-        $timezone_site = $_timezone_site;
-    }
-    return $timezone_site;
+    return get_option('timezone');
 }
 
 /**
@@ -186,7 +180,7 @@ function convert_timezone_offset_to_formal_timezone($offset)
 
     // Could not find one
 
-    if (!is_numeric(get_value('timezone'))) {
+    if (!is_numeric(get_option('timezone'))) {
         return get_site_timezone();
     }
     return get_server_timezone();

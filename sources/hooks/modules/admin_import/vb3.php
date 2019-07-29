@@ -150,6 +150,7 @@ class Hook_import_vb3
             'gzipoutput' => 'gzip_output',
             'regimagecheck' => 'use_captchas',
             'moderatenewmembers' => 'require_new_member_validation',
+            'timeoffset' => 'timezone',
         );
 
         $rows = $db->query_select('setting', array('*'));
@@ -169,8 +170,6 @@ class Hook_import_vb3
             }
             $PROBED_FORUM_CONFIG[$row['varname']] = $row['value'];
         }
-
-        set_value('timezone', $PROBED_FORUM_CONFIG['timeoffset']);
 
         // Now some usergroup options
         $groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list();

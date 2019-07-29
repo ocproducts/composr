@@ -197,7 +197,7 @@ class Hook_import_smf2
             }
             */
             if (isset($row['variable']) && $row['variable'] == 'default_timezone') {
-                $config_remapping['timezone'] = $row['value'];
+                $config_remapping['timezone'] = str_replace('Etc/GMT+', '', $row['value']);
                 continue;
             }
 
@@ -218,11 +218,7 @@ class Hook_import_smf2
         }
 
         foreach ($config_remapping as $key => $value) {
-            if ($key != 'timezone') {
-                set_option($key, is_string($value) ? $value : strval($value));
-            } else {
-                set_value('timezone', str_replace('Etc/GMT+', '', $value));
-            }
+            set_option($key, is_string($value) ? $value : strval($value));
         }
     }
 

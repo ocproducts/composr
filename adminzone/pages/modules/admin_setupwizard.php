@@ -385,7 +385,7 @@ class Module_admin_setupwizard
         foreach (get_timezone_list() as $_timezone => $timezone_nice) {
             $timezone_list .= static_evaluate_tempcode(form_input_list_entry($_timezone, $_timezone == $timezone, $timezone_nice));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('DESCRIPTION_TIMEZONE_SITE'), 'timezone', make_string_tempcode($timezone_list)));
+        $fields->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('CONFIG_OPTION_timezone'), 'timezone', make_string_tempcode($timezone_list)));
 
         $fields->attach(form_input_line(do_lang_tempcode('GOOGLE_ANALYTICS'), do_lang_tempcode('CONFIG_OPTION_google_analytics'), 'google_analytics', $google_analytics, false));
 
@@ -1182,7 +1182,7 @@ class Module_admin_setupwizard
             set_option('copyright', post_param_string('copyright'));
             set_option('staff_address', post_param_string('staff_address'));
             set_option('keywords', post_param_string('keywords'));
-            set_value('timezone', post_param_string('timezone'));
+            set_option('timezone', post_param_string('timezone'));
             set_option('google_analytics', post_param_string('google_analytics'));
             set_option('fixed_width', post_param_string('fixed_width', '0'));
 

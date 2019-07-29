@@ -1114,6 +1114,11 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->query_update('actionlogs', array('the_type' => 'SET_PAGE_REDIRECTS'), array('the_type' => 'SET_REDIRECTS'));
 
             $GLOBALS['SITE_DB']->alter_table_field('cache', 'groups', 'SHORT_TEXT', 'the_groups');
+
+            if (get_value('timezone') !== null) {
+                set_option('timezone', get_value('timezone'));
+                delete_value('timezone');
+            }
         }
     }
 

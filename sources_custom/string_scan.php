@@ -4406,7 +4406,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_TICKET_SEARCH_FAQ
         DESCRIPTION_TICKET_TYPE
         DESCRIPTION_TIED_TO_NEWSLETTER
-        DESCRIPTION_TIMEZONE_SITE
+        CONFIG_OPTION_timezone
         DESCRIPTION_TITLE
         DESCRIPTION_TITLE_SUFFIX
         DESCRIPTION_TOPIC_MOVE_TARGET

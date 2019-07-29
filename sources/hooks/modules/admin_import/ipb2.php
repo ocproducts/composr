@@ -275,6 +275,7 @@ class Hook_import_ipb2
             'home_name' => 'site_name',
             'reg_auth_type' => 'require_new_member_validation',
             //'show_max_msg_list' => 'forum_posts_per_page',
+            'time_offset' => 'timezone',
         );
 
         $rows = $db->query_select('conf_settings', array('*'));
@@ -293,7 +294,6 @@ class Hook_import_ipb2
         set_option('gzip_output', strval(1 - intval($PROBED_FORUM_CONFIG['disable_gzip'])));
         set_option('smtp_sockets_use', ($PROBED_FORUM_CONFIG['mail_method'] == 'smtp') ? '1' : '0');
         set_option('session_expiry_time', strval(60 * intval($PROBED_FORUM_CONFIG['session_expiration'])));
-        set_value('timezone', $PROBED_FORUM_CONFIG['time_offset']);
 
         // Now some usergroup options
         $groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list();

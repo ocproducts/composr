@@ -217,11 +217,7 @@ class Hook_import_mybb
         $PROBED_FORUM_CONFIG = array();
 
         foreach ($config_remapping as $key => $value) {
-            if ($key != 'timezone') {
-                set_option($key, $value);
-            } else {
-                set_value('timezone', $value);
-            }
+            set_option($key, $value);
 
             $PROBED_FORUM_CONFIG[$key] = $value;
         }

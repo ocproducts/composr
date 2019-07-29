@@ -414,10 +414,6 @@ class Module_admin_config
             }
         }
 
-        // Add in special ones
-        if ($category == 'SITE') {
-            $options['INTERNATIONALISATION']['timezone'] = array('name' => 'timezone', 'human_name' => 'TIMEZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 6);
-        }
         require_code('files');
         $upload_max_filesize = (ini_get('upload_max_filesize') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('upload_max_filesize')));
         $post_max_size = (ini_get('post_max_size') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('post_max_size')));
@@ -496,21 +492,8 @@ class Module_admin_config
                 // Render field inputter
                 switch ($option['type']) {
                     case 'special':
-                        switch ($name) {
-                            case 'timezone':
-                                $list = '';
-                                $timezone = get_site_timezone();
-                                foreach (get_timezone_list() as $_timezone => $timezone_nice) {
-                                    $list .= static_evaluate_tempcode(form_input_list_entry($_timezone, $_timezone == $timezone, $timezone_nice));
-                                }
-                                $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, 'timezone', make_string_tempcode($list)));
-                                break;
-
-                            default:
-                                $ob = $option['ob'];
-                                $out .= static_evaluate_tempcode($ob->field_inputter($name, $option, $human_name, $explanation));
-                                break;
-                        }
+                        $ob = $option['ob'];
+                        $out .= static_evaluate_tempcode($ob->field_inputter($name, $option, $human_name, $explanation));
                         break;
 
                     case 'integer':
@@ -730,11 +713,6 @@ class Module_admin_config
             }
         }
 
-        // Add in special ones
-        if ($category == 'SITE') {
-            $options['timezone'] = array(array('shared_hosting_restricted' => 0, 'type' => 'special'), null);
-        }
-
         // Go through all options on the page, saving
         foreach ($options as $name => $option_parts) {
             list($option, $ob) = $option_parts;
@@ -787,24 +765,19 @@ class Module_admin_config
                 $value = post_param_string($name, '');
             }
 
-            // Hard-coded special options
-            if ($name == 'timezone') {
-                set_value('timezone', $value);
-            } else {
-                // If the option was changed
-                $old_value = get_option($name);
-                if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
-                    // Run pre-save code where it exists
-                    if (($ob !== null) && (method_exists($ob, 'presave_handler'))) {
-                        $okay_to_save = $ob->presave_handler($value, $old_value);
-                    } else {
-                        $okay_to_save = true;
-                    }
+            // If the option was changed
+            $old_value = get_option($name);
+            if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
+                // Run pre-save code where it exists
+                if (($ob !== null) && (method_exists($ob, 'presave_handler'))) {
+                    $okay_to_save = $ob->presave_handler($value, $old_value);
+                } else {
+                    $okay_to_save = true;
+                }
 
-                    // Save
-                    if ($okay_to_save) {
-                        set_option($name, $value);
-                    }
+                // Save
+                if ($okay_to_save) {
+                    set_option($name, $value);
                 }
             }
         }
