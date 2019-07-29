@@ -32,7 +32,7 @@ class Hook_config_join_declarations
     {
         return array(
             'human_name' => 'JOIN_DECLARATIONS',
-            'type' => 'text',
+            'type' => 'transtext',
             'category' => 'USERS',
             'group' => 'JOINING',
             'explanation' => 'CONFIG_OPTION_join_declarations',

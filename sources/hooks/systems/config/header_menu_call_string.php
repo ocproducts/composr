@@ -32,7 +32,7 @@ class Hook_config_header_menu_call_string
     {
         return array(
             'human_name' => 'HEADER_MENU_CALL_STRING',
-            'type' => 'line',
+            'type' => 'transline',
             'category' => 'THEME',
             'group' => 'BLOCKS_AT_TOP',
             'explanation' => 'CONFIG_OPTION_header_menu_call_string',
