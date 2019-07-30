@@ -640,16 +640,22 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>
 				<p>This symbol is designed for assistive translations of user-supplied content.</p>
 
-				<p>Before you can use the API you must first configure it:</p>
+				<p>Before you can use the API you must first configure it. For the Google Translate backend:</p>
 				<ol>
 					<li>Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)</li>
-					<li>Make sure that Google Translation API is enabled on Google\'s end</li>
-					<li>Enable the "Google translate enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
+					<li>Make sure that Google Translation API is enabled on Google's end</li>
+					<li>Enable the "Google Translate enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
+				</ol>
+				<p>For the Bing Translator backend:</p>
+				<ol>
+					<li>Configure the Azure API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Microsoft API)</li>
+					<li>Make sure that Text Translator API is enabled on Azure's end</li>
+					<li>Enable the "Bing Translator enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
 				</ol>
 
 				<p>To use the symbol just wrap it around text that needs translating in templates, e.g. <kbd>{$PROVIDE_WITH_TRANSLATION,{TEXT},html_block,FR}</kbd>.</p>
 
-				<p>This example translates French in [tt]{TEXT}[/tt] to the site\'s current language, within the context of a block of HTML. The original text is followed by the translated text, and as it is a block of HTML it also includes the "Powered by Google Translate" message.</p>
+				<p>This example translates French in [tt]{TEXT}[/tt] to the site\'s current language, within the context of a block of HTML. The original text is followed by the translated text, and as it is a block of HTML it also includes the translation backends mandatory message (e.g. "Powered by Google Translate").</p>
 
 				<p>Here are the available translation modes:</p>
 				<ol>

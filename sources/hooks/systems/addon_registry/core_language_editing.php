@@ -130,6 +130,8 @@ class Hook_addon_registry_core_language_editing
             'themes/default/javascript/core_language_editing.js',
             'sources/translation.php',
             'sources/hooks/systems/translation/google_translate.php',
+            'sources/hooks/systems/translation/bing_translator.php',
+            'sources/hooks/systems/config/bing_translator_enabled.php',
             'sources/hooks/systems/translation/index.html',
             'sources/hooks/systems/symbols/PROVIDE_WITH_TRANSLATION.php',
             'themes/default/images/google_translate.svg',

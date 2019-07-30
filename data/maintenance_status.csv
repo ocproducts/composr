@@ -33,7 +33,8 @@ import_vb,vBulletin importer,,,"Needs ongoing maintenance, and liable to be inef
 import_wordpress,Wordpress importer,,,"Needs ongoing maintenance, and liable to be ineffective as people need plugin data importing too.",No,
 forum_in_portal,"""Show forum within website"" option",,,Not regularly tested and has the potential for instability.,No,
 sms,SMS notifications,,,Not regularly tested. Could potentially break due to third-party changes.,No,
-google_translate,Google Translate integration,,,Not regularly tested. Could potentially break due to third-party changes.,No,
+google_translate,Google Translate integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,translation automated test.
+bing_translator,Bing Translator integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,translation automated test.
 ldap,LDAP,,,Not regularly tested due to the complexity of having multiple working LDAP test environments.,No,
 httpauth,HTTP authentication,,,Not regularly tested.,No,Partly tested by httpauth automated test.
 cpf_encryption,CPF encryption,ocProducts,,Not regularly tested.,No,

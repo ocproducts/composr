@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_cns
+ * @package    core_language_editing
  */
 
 /**
  * Hook class.
  */
-class Hook_config_is_on_timezone_detection
+class Hook_config_bing_translator_enabled
 {
     /**
      * Gets the details relating to the config option.
@@ -31,18 +31,21 @@ class Hook_config_is_on_timezone_detection
     public function get_details()
     {
         return array(
-            'human_name' => 'IS_ON_TIMEZONE_DETECTION',
+            'human_name' => 'BING_TRANSLATOR_ENABLED',
             'type' => 'tick',
             'category' => 'SITE',
             'group' => 'INTERNATIONALISATION',
-            'explanation' => 'CONFIG_OPTION_is_on_timezone_detection',
+            'explanation' => 'CONFIG_OPTION_bing_translator_enabled',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
-            'required' => true,
-            'public' => true,
+            'order_in_category_group' => 12,
+            'required' => false,
 
-            'addon' => 'core_cns',
+            'public' => false,
+
+            'addon' => 'core_language_editing',
+
+            'maintenance_code' => 'bing_translator',
         );
     }
 
@@ -53,6 +56,6 @@ class Hook_config_is_on_timezone_detection
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '0';
+        return '0';
     }
 }

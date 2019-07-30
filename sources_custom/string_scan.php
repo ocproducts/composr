@@ -868,6 +868,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVACY_METHOD_anonymise
         PRIVACY_METHOD_delete
         PERSONAL_DATA_PURGING
+        CONFIG_OPTION_google_translate_enabled
+        GOOGLE_TRANSLATE_ENABLED
+        CONFIG_OPTION_bing_translator_enabled
+        BING_TRANSLATOR_ENABLED
+        AZURE_API
+        AZURE_API_KEY
+        CONFIG_OPTION_azure_api_key
         SOURCE_MEDIA
         BANNED_ADDRESSES
         BANNERS

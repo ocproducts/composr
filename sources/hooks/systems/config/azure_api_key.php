@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_cns
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_is_on_timezone_detection
+class Hook_config_azure_api_key
 {
     /**
      * Gets the details relating to the config option.
@@ -31,18 +31,19 @@ class Hook_config_is_on_timezone_detection
     public function get_details()
     {
         return array(
-            'human_name' => 'IS_ON_TIMEZONE_DETECTION',
-            'type' => 'tick',
-            'category' => 'SITE',
-            'group' => 'INTERNATIONALISATION',
-            'explanation' => 'CONFIG_OPTION_is_on_timezone_detection',
+            'human_name' => 'AZURE_API_KEY',
+            'type' => 'line',
+            'category' => 'COMPOSR_APIS',
+            'group' => 'AZURE_API',
+            'explanation' => 'CONFIG_OPTION_azure_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
-            'required' => true,
+            'order_in_category_group' => 1,
+            'required' => false,
+
             'public' => true,
 
-            'addon' => 'core_cns',
+            'addon' => 'core_configuration',
         );
     }
 
@@ -53,6 +54,6 @@ class Hook_config_is_on_timezone_detection
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '0';
+        return '';
     }
 }
