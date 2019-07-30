@@ -34,7 +34,7 @@ function init__http()
 /**
  * Call a function, with inbuilt on-disk caching support.
  *
- * @param  string $func Function to call
+ * @param  mixed $func Function to call
  * @param  array $args Arguments to call with
  * @param  ?integer $timeout Caching timeout in minutes (null: no timeout)
  * @param  boolean $cache_errors Whether to cache HTTP statuses that do not start '2'

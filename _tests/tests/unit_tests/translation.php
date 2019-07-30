@@ -32,8 +32,26 @@ class translation_test_set extends cms_test_case
 
     public function testTranslation()
     {
-        $from = 'Hello';
-        $to = translate_text($from, TRANS_TEXT_CONTEXT_autodetect, 'EN', 'FR');
-        $this->assertTrue($to == 'Bonjour', 'Got ' . $to);
+        $this->assertTrue(has_translation());
+
+        $hooks = array(
+            'google_translate',
+        );
+
+        foreach ($hooks as $hook) {
+            $translation_object = get_translation_object_for_hook($hook);
+            $errormsg = null;
+
+            $from = 'EN';
+            $to = 'FR';
+
+            $this->assertTrue(has_translation($from, $to, $translation_object, $errormsg));
+
+            $from_text = 'Hello';
+            $to_text = translate_text($from_text, TRANS_TEXT_CONTEXT_autodetect, $from, $to, $hook, $errormsg);
+            $this->assertTrue($to_text == 'Bonjour', 'Got ' . $to_text . ' (error message is ' . $errormsg . ')');
+
+            $this->assertTrue(get_translation_credit($from, $to, $hook) != '');
+        }
     }
 }
