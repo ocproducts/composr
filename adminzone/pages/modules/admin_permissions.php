@@ -426,15 +426,8 @@ class Module_admin_permissions
             }
         }
 
-        $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
-        $color = 'FF00FF';
-        if (file_exists($css_path)) {
-            $tmp_file = cms_file_get_contents_safe($css_path);
-            $matches = array();
-            if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-                $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
-            }
-        }
+        require_code('themewizard');
+        $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
         // Standard editing matrix
         // NB: For permissions tree editor, default access is shown as -1 in editor for clarity (because the parent permissions are easily findable which implies the default access would mean something else which would confuse [+ this would be hard to do due to the dynamicness of the interface])
@@ -462,14 +455,8 @@ class Module_admin_permissions
     public function _access_header($admin_groups, $groups)
     {
         $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
-        $color = 'FF00FF';
-        if (file_exists($css_path)) {
-            $tmp_file = cms_file_get_contents_safe($css_path);
-            $matches = array();
-            if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-                $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
-            }
-        }
+        require_code('themewizard');
+        $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
         require_code('character_sets');
 

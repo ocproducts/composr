@@ -218,15 +218,8 @@ class Module_admin_notifications
             sort_maps_by($notification_sections[$i]['NOTIFICATION_CODES'], 'NOTIFICATION_LABEL', false, true);
         }
 
-        $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
-        $color = 'FF00FF';
-        if (file_exists($css_path)) {
-            $tmp_file = file_get_contents($css_path);
-            $matches = array();
-            if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-                $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
-            }
-        }
+        require_code('themewizard');
+        $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
         $notification_types_titles = array();
         foreach ($_notification_types as $possible => $ntype) {
