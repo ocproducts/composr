@@ -294,7 +294,16 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'NOTIFICATIONS_LOCKDOWN' => '_SEARCH:admin_notifications',
+                    'NOTIFICATIONS_LOCKDOWN' => '_SEARCH:admin_notifications:lockdown',
+                ),
+            ),
+            'NOTIFICATIONS_DEFAULT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'NOTIFICATIONS_DEFAULT' => '_SEARCH:admin_notifications:default',
                 ),
             ),
             'PRIVILEGES' => array(
