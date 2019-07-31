@@ -1377,7 +1377,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
             }
         }
     }
-    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' ASC';
+    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title');
     $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/, 0, false, false, array('c_title' => 'SHORT_TRANS'));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
@@ -1429,7 +1429,7 @@ function create_selection_list_catalogue_category_tree($catalogue_name, $it = nu
     }
 
     $tree = array();
-    $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+    $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
     if (count($temp_rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
     }
@@ -1513,7 +1513,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     }
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => $category_id), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+    $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => $category_id), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
     if (get_page_name() == 'cms_catalogues') {
         if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
@@ -1602,7 +1602,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
             return array();
         }
         if ($is_tree == 0) {
-            $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+            $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
             if (get_page_name() == 'cms_catalogues') {
                 if (count($temp_rows) == intval(get_option('general_safety_listing_limit'))) {
                     attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
@@ -1615,7 +1615,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
             return $children;
         }
 
-        $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), 1);
+        $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), 1);
         if (!array_key_exists(0, $temp_rows)) {
             return array();
         }

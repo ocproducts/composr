@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_gallery_name_order
+class Hook_config_gallery_media_default_sort_order
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_gallery_name_order
     public function get_details()
     {
         return array(
-            'human_name' => 'GALLERY_NAME_ORDER',
-            'type' => 'tick',
+            'human_name' => 'GALLERY_MEDIA_DEFAULT_SORT_ORDER',
+            'type' => 'list',
             'category' => 'GALLERY',
             'group' => 'BROWSING_GALLERIES',
-            'explanation' => 'CONFIG_OPTION_gallery_name_order',
+            'explanation' => 'CONFIG_OPTION_gallery_media_default_sort_order',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => 'add_date DESC|add_date ASC|average_rating DESC|compound_rating DESC|url DESC|url ASC|fixed_random ASC',
             'required' => true,
 
             'public' => false,
@@ -57,6 +57,6 @@ class Hook_config_gallery_name_order
             return null;
         }
 
-        return '1';
+        return 'add_date DESC';
     }
 }

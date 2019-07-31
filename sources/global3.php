@@ -1475,7 +1475,7 @@ function cms_mb_asort(&$array, $sort_flags = 0)
  * @param  array $array Array
  * @param  integer $sort_flags Sort flags
  */
-function cms_arsort(&$array, $sort_flags = 0)
+function cms_mb_arsort(&$array, $sort_flags = 0)
 {
     _local_ctype_hack(true);
 

@@ -3109,14 +3109,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_forum_topics_per_page
         CONFIG_OPTION_forw_url
         CONFIG_OPTION_fractional_editing
-        CONFIG_OPTION_galleries_default_sort_order
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_add_date__ASC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_add_date__DESC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_average_rating__DESC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_compound_rating__DESC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_fixed_random__ASC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_url__ASC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_url__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_add_date__ASC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_add_date__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_average_rating__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_compound_rating__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_fixed_random__ASC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_url__ASC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_url__DESC
         CONFIG_OPTION_galleries_subcat_narrowin
         CONFIG_OPTION_gallery_entries_flow_per_page
         CONFIG_OPTION_gallery_entries_regular_per_page
@@ -3127,7 +3127,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_gallery_mode_is_VALUE_choice
         CONFIG_OPTION_gallery_mode_is_VALUE_flow
         CONFIG_OPTION_gallery_mode_is_VALUE_regular
-        CONFIG_OPTION_gallery_name_order
+        CONFIG_OPTION_galleries_sort_order
         CONFIG_OPTION_gallery_permissions
         CONFIG_OPTION_gallery_rep_image
         CONFIG_OPTION_gallery_selectors
@@ -5261,7 +5261,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FXML_FIELD_TOO_SHORT
         GAE_APPLICATION
         GAE_BUCKET_NAME
-        GALLERIES_DEFAULT_SORT_ORDER
+        GALLERY_MEDIA_DEFAULT_SORT_ORDER
         GALLERIES_SUBCAT_NARROWIN
         GALLERY_ENTRIES_FLOW_PER_PAGE
         GALLERY_ENTRIES_REGULAR_PER_PAGE

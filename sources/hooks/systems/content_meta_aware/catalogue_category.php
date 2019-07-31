@@ -74,7 +74,7 @@ class Hook_content_meta_aware_catalogue_category
             'support_url_monikers' => true,
 
             'views_field' => null,
-            'order_field' => 'cc_order',
+            'order_field' => null,
             'submitter_field' => null,
             'author_field' => null,
             'add_time_field' => 'cc_add_date',

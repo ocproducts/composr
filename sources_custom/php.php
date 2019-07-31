@@ -477,6 +477,8 @@ function _read_php_function_line($_line)
     $arg_name = '';
     $ref = false;
     $is_variadic = false;
+    $in_string = null;
+    $escaping = false;
 
     for ($k = 0; $k < strlen($_line); $k++) {
         $char = $_line[$k];
@@ -498,9 +500,9 @@ function _read_php_function_line($_line)
                 break;
 
             case 'in_default':
-                if (($char == '/') && ($_line[$k + 1] == '*')) {
+                if (($char == '/') && ($_line[$k + 1] == '*') && ($in_string === null) && (!$escaping)) {
                     $parse = 'in_comment_default';
-                } elseif (($char == ',') && (($_line[$k - 1] != '\'') || ($_line[$k - 2] != '='))) {
+                } elseif (($char == ',') && ($in_string === null) && (!$escaping)) {
                     $default_raw = $arg_default;
                     if ($arg_default === 'true') {
                         $default = 'boolean-true'; // hack, to stop booleans coming out of arrays as integers
@@ -514,7 +516,7 @@ function _read_php_function_line($_line)
                     $arg_default = '';
                     $parse = 'in_args';
                     $ref = false;
-                } elseif ($char == ')' && preg_match('#^array\([^\)]*$#', $arg_default) == 0) {
+                } elseif (($char == ')') && ($in_string === null) && (!$escaping) && (preg_match('#^\s*array\([^\)]*$#', $arg_default) == 0)) {
                     $default_raw = $arg_default;
                     if ($arg_default === 'true') {
                         $default = 'boolean-true'; // hack, to stop booleans coming out of arrays as integers
@@ -525,8 +527,20 @@ function _read_php_function_line($_line)
                     }
                     $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     $parse = 'done';
+                } elseif ($in_string !== null) {
+                    $arg_default .= $char;
+                    if ($escaping) {
+                        $escaping = false;
+                    } elseif ($in_string == $char) {
+                        $in_string = null;
+                    } elseif ($char == '\\') {
+                        $escaping = true;
+                    }
                 } else {
                     $arg_default .= $char;
+                    if (($char == '"') || ($char == "'")) {
+                        $in_string = $char;
+                    }
                 }
                 break;
 
@@ -562,7 +576,6 @@ function _read_php_function_line($_line)
                     $parse = 'in_args';
                     $ref = false;
                     $arg_name = '';
-                    $_line = substr($_line, 0, $k) . substr(str_replace(' ', '', $_line), $k); // Make parsing easier
                 } else {
                     $parse = 'between_name_and_args';
                 }
@@ -573,7 +586,6 @@ function _read_php_function_line($_line)
                     $parse = 'in_args';
                     $ref = false;
                     $arg_name = '';
-                    $_line = substr($_line, 0, $k) . substr(str_replace(' ', '', $_line), $k); // Make parsing easier
                 }
                 break;
 
@@ -704,12 +716,31 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
 
     // Check set
     if (($set !== null) && ($value !== null)) {
-        $_set = explode(' ', $set);
-        foreach ($_set as $i => $s) {
-            if ($s == '""') {
-                $_set[$i] = '';
+        $_set = array();
+        $len = strlen($set);
+        $in_quotes = false;
+        $current = '';
+        for ($i = 0; $i < $len; $i++) {
+            $char = $set[$i];
+            if ($in_quotes) {
+                if ($char == '"') {
+                    $in_quotes = false;
+                } else {
+                    $current .= $char;
+                }
+            } else {
+                if ($char == '"') {
+                    $in_quotes = true;
+                } else if ($char == ' ') {
+                    $_set[] = $current;
+                    $current = '';
+                } else {
+                    $current .= $char;
+                }
             }
         }
+        $_set[] = $current;
+
         if (!in_array(is_string($value) ? $value : strval($value), $_set)) {
             if ($value != '') {
                 attach_message(do_lang_tempcode('OUT_OF_RANGE_VALUE', escape_html($name), escape_html($function_name), array(escape_html($value))), 'warn');

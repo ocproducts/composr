@@ -2188,7 +2188,7 @@ class Hook_import_cms_merge
 
             $rep_image = $row['cc_rep_image'];
 
-            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], ($row['cc_parent_id'] === null) ? null : -$row['cc_parent_id'], $rep_image, $row['cc_move_days_lower'], $row['cc_move_days_higher'], $row['cc_move_target'], $row['cc_order'], $row['cc_add_date'], $id);
+            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], ($row['cc_parent_id'] === null) ? null : -$row['cc_parent_id'], $rep_image, $row['cc_move_days_lower'], $row['cc_move_days_higher'], $row['cc_move_target'], $row['cc_add_date'], $id);
 
             import_id_remap_put('catalogue_category', strval($row['id']), $id_new);
         }

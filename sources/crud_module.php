@@ -1564,7 +1564,7 @@ abstract class Standard_crud_module
                 }
                 $temp = do_template('FORM_FIELD_SET_GROUPER', array(
                     '_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this),
-                    'NAME' => $name . ' (ID #' . $myrow['id'] . ')',
+                    'NAME' => $name . ' (ID #' . strval($myrow['id']) . ')',
                     'ID' => 'FIELD_' . strval($i + 1),
                     'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/,
                 ));

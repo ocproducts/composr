@@ -26,7 +26,16 @@
  */
 function create_ecommerce_catalogue($catalogue_name)
 {
-    actual_add_catalogue($catalogue_name, lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PRODUCTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PRODUCTS_DESCRIPTION', true, 2), C_DT_GRID, 1, '', 0, 1);
+    actual_add_catalogue(
+        $catalogue_name,
+        lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PRODUCTS_TITLE', false, 2),
+        lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PRODUCTS_DESCRIPTION', true, 2),
+        C_DT_GRID,
+        1,
+        '',
+        0,
+        1
+    );
     $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $catalogue_name));
 
     $fields = array(
@@ -105,6 +114,8 @@ function catalogue_from_tree($catalogue_name)
  * @param  LONG_TEXT $notes Hidden notes pertaining to this catalogue
  * @param  integer $submit_points How many points a member gets by submitting to this catalogue
  * @param  BINARY $ecommerce Whether the catalogue is an eCommerce catalogue
+ * @param  SHORT_TEXT $categories_sort_order Category sort order
+ * @set "title ASC" "recent ASC" "recent DESC"
  * @param  ID_TEXT $send_view_reports How to send view reports
  * @set never daily weekly monthly quarterly
  * @param  ?integer $default_review_freq Default review frequency for catalogue entries (null: none)
@@ -112,7 +123,7 @@ function catalogue_from_tree($catalogue_name)
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce = 0, $send_view_reports = 'never', $default_review_freq = null, $add_time = null, $uniqify = false)
+function actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce = 0, $categories_sort_order = 'title ASC', $send_view_reports = 'never', $default_review_freq = null, $add_time = null, $uniqify = false)
 {
     if ($add_time === null) {
         $add_time = time();
@@ -138,6 +149,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
         'c_name' => $name,
         'c_send_view_reports' => $send_view_reports,
         'c_ecommerce' => $ecommerce,
+        'c_categories_sort_order' => $categories_sort_order,
         'c_display_type' => $display_type,
         'c_is_tree' => $is_tree,
         'c_notes' => $notes,
@@ -169,7 +181,6 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
             'rep_image' => '',
             'c_name' => $name,
             'cc_notes' => '',
-            'cc_order' => 0,
             'cc_add_date' => time(),
             'cc_parent_id' => null,
         );
@@ -314,6 +325,8 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
  * @param  LONG_TEXT $notes Admin notes
  * @param  integer $submit_points How many points are given to a member that submits to the catalogue
  * @param  BINARY $ecommerce Whether the catalogue is an eCommerce catalogue
+ * @param  SHORT_TEXT $categories_sort_order Category sort order
+ * @set "title ASC" "recent ASC" "recent DESC"
  * @param  ID_TEXT $send_view_reports How to send view reports
  * @set never daily weekly monthly quarterly
  * @param  ?integer $default_review_freq Default review frequency for catalogue entries (null: none)
@@ -321,7 +334,7 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time = null, $uniqify = false)
+function actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $add_time = null, $uniqify = false)
 {
     if ($old_name != $name) {
         // Check doesn't already exist
@@ -353,6 +366,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
         'c_send_view_reports' => $send_view_reports,
         'c_display_type' => $display_type,
         'c_ecommerce' => $ecommerce,
+        'c_categories_sort_order' => $categories_sort_order,
         'c_name' => $name,
         'c_notes' => $notes,
         'c_add_date' => $add_time,
@@ -560,14 +574,13 @@ function actual_delete_catalogue_field($id)
  * @param  integer $move_days_lower The number of days before expiry (lower limit)
  * @param  integer $move_days_higher The number of days before expiry (higher limit)
  * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
- * @param  ?integer $order The order (null: automatic)
  * @param  ?TIME $add_date The add time (null: now)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
  * @return AUTO_LINK The ID of the new category
  */
-function actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null, $add_date = null, $id = null, $meta_keywords = '', $meta_description = '')
+function actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $add_date = null, $id = null, $meta_keywords = '', $meta_description = '')
 {
     if ($add_date === null) {
         $add_date = time();
@@ -578,20 +591,10 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         prevent_double_submit('ADD_CATALOGUE_CATEGORY', null, $title);
     }
 
-    if ($order === null) {
-        $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name));
-        if (($order === null) || ($order >= 2147483647)) { // TODO: #3046 in tracker
-            $order = 0;
-        } else {
-            $order++;
-        }
-    }
-
     $map = array(
         'cc_move_days_lower' => $move_days_lower,
         'cc_move_days_higher' => $move_days_higher,
         'cc_move_target' => $move_target,
-        'cc_order' => $order,
         'rep_image' => $rep_image,
         'cc_add_date' => $add_date,
         'c_name' => $catalogue_name,
@@ -766,11 +769,10 @@ function calculate_category_child_count_cache($cat_id, $recursive_updates = true
  * @param  integer $move_days_lower The number of days before expiry (lower limit)
  * @param  integer $move_days_higher The number of days before expiry (higher limit)
  * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
- * @param  integer $order The order
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?ID_TEXT $c_name The catalogue name (null: do not change)
  */
-function actual_edit_catalogue_category($id, $title, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_time = null, $c_name = null)
+function actual_edit_catalogue_category($id, $title, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_time = null, $c_name = null)
 {
     $under_category_id = $parent_id;
     while (($under_category_id !== null) && ($under_category_id != INTEGER_MAGIC_NULL)) {
@@ -798,7 +800,6 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
         'cc_move_days_lower' => $move_days_lower,
         'cc_move_days_higher' => $move_days_higher,
         'cc_move_target' => $move_target,
-        'cc_order' => $order,
         'cc_notes' => $notes,
         'cc_parent_id' => $parent_id,
     );

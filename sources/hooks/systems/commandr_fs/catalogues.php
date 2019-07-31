@@ -227,11 +227,12 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $notes = $this->_default_property_str($properties, 'notes');
         $submit_points = $this->_default_property_int($properties, 'submit_points');
         $ecommerce = $this->_default_property_int($properties, 'ecommerce');
+        $categories_sort_order = $this->_default_property_str($properties, 'categories_sort_order');
         $send_view_reports = $this->_default_property_str($properties, 'send_view_reports');
         $default_review_freq = $this->_default_property_int_null($properties, 'default_review_freq');
         $add_time = $this->_default_property_time($properties, 'add_date');
 
-        return array($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time);
+        return array($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $add_time);
     }
 
     /**
@@ -269,12 +270,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         if (is_string($move_target)) {
             $move_target = intval($move_target);
         }
-        $order = $this->_default_property_int($properties, 'order');
         $add_date = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description);
+        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description);
     }
 
     /**
@@ -296,9 +296,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             if ($_properties === false) {
                 return false;
             }
-            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description) = $_properties;
+            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description) = $_properties;
 
-            $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, null, $meta_keywords, $meta_description);
+            $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, null, $meta_keywords, $meta_description);
 
             $this->_resource_save_extend('catalogue_category', strval($id), $filename, $label, $properties);
 
@@ -306,11 +306,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         } else { // Catalogue
             list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'catalogue');
 
-            list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
+            list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
 
             $name = $this->_create_name_from_label($label);
 
-            $name = actual_add_catalogue($name, $label, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time, true);
+            $name = actual_add_catalogue($name, $label, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $add_time, true);
 
             if ((array_key_exists('fields', $properties)) && ($properties['fields'] != '')) {
                 $fields_data = $properties['fields'];
@@ -379,7 +379,6 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 'move_days_lower' => $row['cc_move_days_lower'],
                 'move_days_higher' => $row['cc_move_days_higher'],
                 'move_target' => remap_resource_id_as_portable('catalogue_category', $row['cc_move_target']),
-                'order' => $row['cc_order'],
                 'meta_keywords' => $meta_keywords,
                 'meta_description' => $meta_description,
                 'add_date' => remap_time_as_portable($row['cc_add_date']),
@@ -424,6 +423,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'notes' => $row['c_notes'],
             'submit_points' => $row['c_submit_points'],
             'ecommerce' => $row['c_ecommerce'],
+            'categories_sort_order' => $row['c_categories_sort_order'],
             'send_view_reports' => $row['c_send_view_reports'],
             'default_review_freq' => $row['c_default_review_freq'],
             'fields' => $fields,
@@ -451,11 +451,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         if ($resource_type == 'catalogue') {
             $label = $this->_default_property_str($properties, 'label');
-            list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
+            list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
 
             $name = $this->_create_name_from_label($label);
 
-            $name = actual_edit_catalogue($resource_id, $name, $label, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time, true);
+            $name = actual_edit_catalogue($resource_id, $name, $label, $description, $display_type, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $add_time, true);
 
             // How to handle the fields
             if ((array_key_exists('fields', $properties)) && ($properties['fields'] != '')) {
@@ -495,9 +495,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             if ($_properties === false) {
                 return false;
             }
-            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description) = $_properties;
+            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description) = $_properties;
 
-            actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $catalogue_name);
+            actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $catalogue_name);
 
             $this->_resource_save_extend('catalogue_category', $resource_id, $filename, $label, $properties);
         }

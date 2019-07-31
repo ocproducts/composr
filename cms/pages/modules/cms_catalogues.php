@@ -1196,14 +1196,13 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array(
             'cc_title' => do_lang_tempcode('TITLE'),
-            'cc_order' => do_lang_tempcode('ORDER'),
             'cc_add_date' => do_lang_tempcode('ADDED'),
         );
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $fh = array(do_lang_tempcode('TITLE'), do_lang_tempcode('ADDED'), do_lang_tempcode('ORDER'));
+        $fh = array(do_lang_tempcode('TITLE'), do_lang_tempcode('ADDED'));
         $fh[] = do_lang_tempcode('ACTIONS');
         $header_row = results_header_row($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -1219,7 +1218,6 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $row['id']), get_module_zone('catalogues')), get_translated_text($row['cc_title']), false, true));
             $fr[] = get_timezoned_date_time($row['cc_add_date']);
-            $fr[] = ($row['cc_order'] == ORDER_AUTOMATED_CRITERIA) ? do_lang_tempcode('NA_EM') : make_string_tempcode(strval($row['cc_order']));
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
@@ -1267,10 +1265,9 @@ class Module_cms_catalogues_cat extends Standard_crud_module
      * @param  integer $move_days_lower The number of days before expiry (lower limit)
      * @param  integer $move_days_higher The number of days before expiry (higher limit)
      * @param  ?AUTO_LINK $move_target The expiry category (null: do not expire)
-     * @param  ?integer $order The order (null: auto-calculate, for new category)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($catalogue_name = null, $title = '', $description = '', $notes = '', $parent_id = -1, $id = null, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null)
+    public function get_form_fields($catalogue_name = null, $title = '', $description = '', $notes = '', $parent_id = -1, $id = null, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null)
     {
         if ($catalogue_name === null) {
             $catalogue_name = get_param_string('catalogue_name', ($id === null) ? false : $GLOBALS['SITE_DB']->query_select_value('catalogues_categories', 'c_name', array('id' => $id)));
@@ -1303,13 +1300,6 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         if (($is_tree == 1) && ($parent_id !== null)) {
             $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'catalogue_category'), 'parent_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true, (($parent_id === null) || ($parent_id == -1)) ? '' : strval($parent_id)));
         }
-
-        $max = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name), 'AND cc_order<>' . strval(ORDER_AUTOMATED_CRITERIA));
-        if ($max === null) {
-            $max = 0;
-        }
-        $total = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name));
-        $fields->attach(get_order_field('catalogue_category', null, $order, $max, $total));
 
         if (cron_installed()) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => ($move_target === null), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
@@ -1371,7 +1361,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        return $this->get_form_fields($catalogue_name, get_translated_text($myrow['cc_title']), get_translated_text($myrow['cc_description']), $myrow['cc_notes'], $myrow['cc_parent_id'], $category_id, $myrow['rep_image'], $myrow['cc_move_days_lower'], $myrow['cc_move_days_higher'], $myrow['cc_move_target'], $myrow['cc_order']);
+        return $this->get_form_fields($catalogue_name, get_translated_text($myrow['cc_title']), get_translated_text($myrow['cc_description']), $myrow['cc_notes'], $myrow['cc_parent_id'], $category_id, $myrow['rep_image'], $myrow['cc_move_days_lower'], $myrow['cc_move_days_higher'], $myrow['cc_move_target']);
     }
 
     /**
@@ -1418,7 +1408,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('catalogue_category', null);
 
-        $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, post_param_order_field(), $metadata['add_time']);
+        $category_id = actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $metadata['add_time']);
 
         set_url_moniker('catalogue_category', strval($category_id));
 
@@ -1479,7 +1469,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('catalogue_category', strval($category_id));
 
-        actual_edit_catalogue_category($category_id, $title, $description, $notes, $parent_id, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $rep_image, $move_days_lower, $move_days_higher, $move_target, fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(), $metadata['add_time']);
+        actual_edit_catalogue_category($category_id, $title, $description, $notes, $parent_id, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $rep_image, $move_days_lower, $move_days_higher, $move_target, $metadata['add_time']);
         if (!fractional_edit()) {
             if (get_value('disable_cat_cat_perms') !== '1') {
                 $this->set_permissions(strval($category_id));
@@ -1640,12 +1630,14 @@ class Module_cms_catalogues_alt extends Standard_crud_module
      * @param  LONG_TEXT $notes Admin notes
      * @param  integer $submit_points How many points are given to a member that submits to the catalogue
      * @param  BINARY $ecommerce Whether the catalogue is an eCommerce catalogue
+     * @param  SHORT_TEXT $categories_sort_order Category sort order
+     * @set "title ASC" "recent ASC" "recent DESC"
      * @param  ID_TEXT $send_view_reports How to send view reports
      * @set never daily weekly monthly quarterly
      * @param  ?integer $default_review_freq Default review frequency for catalogue entries (null: none)
      * @return array A tuple: the Tempcode for the visible fields, and the Tempcode for the hidden fields, ..., and action fields
      */
-    public function get_form_fields($name = '', $title = '', $description = '', $display_type = 0, $is_tree = 1, $notes = '', $submit_points = 0, $ecommerce = 0, $send_view_reports = 'never', $default_review_freq = null)
+    public function get_form_fields($name = '', $title = '', $description = '', $display_type = 0, $is_tree = 1, $notes = '', $submit_points = 0, $ecommerce = 0, $categories_sort_order = 'title ASC', $send_view_reports = 'never', $default_review_freq = null)
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -1708,6 +1700,12 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
                 $fields->attach(form_input_tick(do_lang_tempcode('CAT_ECOMMERCE'), do_lang_tempcode('DESCRIPTION_CAT_ECOMMERCE'), 'ecommerce', $ecommerce == 1));
             }
+
+            $sort_orders = new Tempcode();
+            $sort_orders->attach(form_input_list_entry('title ASC', $categories_sort_order == 'title ASC', do_lang_tempcode('TITLE')));
+            $sort_orders->attach(form_input_list_entry('recent DESC', $categories_sort_order == 'recent DESC', do_lang_tempcode('NEWEST_FIRST')));
+            $sort_orders->attach(form_input_list_entry('recent ASC', $categories_sort_order == 'recent ASC', do_lang_tempcode('OLDEST_FIRST')));
+            $fields->attach(form_input_list(do_lang_tempcode('CATEGORIES_SORT_ORDER'), do_lang_tempcode('DESCRIPTION_CATEGORIES_SORT_ORDER'), 'categories_sort_order', $sort_orders));
 
             if (get_option('enable_staff_notes') == '1') {
                 $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
@@ -1841,7 +1839,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $title = get_translated_text($myrow['c_title']);
         $description = get_translated_text($myrow['c_description']);
 
-        return $this->get_form_fields($catalogue_name, $title, $description, $myrow['c_display_type'], $myrow['c_is_tree'], $myrow['c_notes'], $myrow['c_submit_points'], $myrow['c_ecommerce'], $myrow['c_send_view_reports'], $myrow['c_default_review_freq']);
+        return $this->get_form_fields($catalogue_name, $title, $description, $myrow['c_display_type'], $myrow['c_is_tree'], $myrow['c_notes'], $myrow['c_submit_points'], $myrow['c_ecommerce'], $myrow['c_categories_sort_order'], $myrow['c_send_view_reports'], $myrow['c_default_review_freq']);
     }
 
     /**
@@ -1862,6 +1860,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $submit_points = post_param_integer('submit_points', 0);
         $cat_tab = post_param_integer('cat_tab', 0);
         $ecommerce = post_param_integer('ecommerce', 0);
+        $categories_sort_order = post_param_string('categories_sort_order');
         $send_view_reports = post_param_string('send_view_reports');
         $default_review_freq = post_param_integer('default_review_freq', null);
 
@@ -1890,7 +1889,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('catalogue', null);
 
-        actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $metadata['add_time']);
+        actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $metadata['add_time']);
 
         set_url_moniker('catalogue', $name);
 
@@ -2004,6 +2003,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $display_type = post_param_integer('display_type', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
         $submit_points = post_param_integer('submit_points', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
+        $categories_sort_order = post_param_string('categories_sort_order', STRING_MAGIC_NULL);
         $ecommerce = post_param_integer('ecommerce', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $send_view_reports = post_param_string('send_view_reports', STRING_MAGIC_NULL);
         if (!fractional_edit()) {
@@ -2078,7 +2078,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('catalogue', $old_name, array(), $name);
 
-        actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $metadata['add_time']);
+        actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $categories_sort_order, $send_view_reports, $default_review_freq, $metadata['add_time']);
 
         if ($old_name != $name) {
             unset($_GET['redirect']);
