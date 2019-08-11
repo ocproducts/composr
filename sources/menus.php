@@ -568,6 +568,10 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
         // If we need to check access
         if (isset($branch['modifiers']['check_perms'])) {
+			if (!function_exists('get_member')) {
+                return array(null, false); // Some kind of startup issue
+			}
+			require_code('permissions');
             if (!has_zone_access(get_member(), $zone_name)) {
                 return array(null, false);
             }
