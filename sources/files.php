@@ -524,6 +524,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 // IDE projects
                                 'clpprj' => '', // Code Lobster
                                 'csprj' => '', // Code Lobster
+                                'geany' => '', // Code Lobster
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
