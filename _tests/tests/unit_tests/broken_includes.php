@@ -30,7 +30,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireCode()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
+            if ((substr($c, -4) == '.php') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 if ($c == 'data_custom/execute_temp.php') {
                     continue;
                 }
@@ -59,7 +59,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireLang()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
+            if ((substr($c, -4) == '.php') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#require_lang\(\'([^\']+)\'\)#', $_c, $matches);
@@ -75,7 +75,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireLangB()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
+            if ((substr($c, -4) == '.php') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#do_lang(_tempcode)?\(\'([^\']+):([^\']+)\'\)#', $_c, $matches);
@@ -91,7 +91,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireLangC()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
+            if ((substr($c, -4) == '.tpl') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#\{\!(\w+):(\w+)\}#', $_c, $matches);
@@ -107,7 +107,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireCSS()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
+            if ((substr($c, -4) == '.php') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#require_css\(\'([^\']+)\'\)#', $_c, $matches);
@@ -123,7 +123,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireCSSB()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
+            if ((substr($c, -4) == '.tpl') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#\{\$REQUIRE_CSS,(\w+)\}#', $_c, $matches);
@@ -139,7 +139,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireJavascript()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
+            if ((substr($c, -4) == '.php') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#require_javascript\(\'([^\']+)\'\)#', $_c, $matches);
@@ -155,7 +155,7 @@ class broken_includes_test_set extends cms_test_case
     public function testRequireJavascriptB()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
+            if ((substr($c, -4) == '.tpl') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#\{\$REQUIRE_JAVASCRIPT,(\w+)\}#', $_c, $matches);

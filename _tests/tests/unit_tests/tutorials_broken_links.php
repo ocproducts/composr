@@ -50,7 +50,7 @@ class tutorials_broken_links_test_set extends cms_test_case
         require_code('files2');
         $files = get_directory_contents(get_file_base());
         foreach ($files as $file) {
-            if (substr($file, -4) == '.php') {
+            if ((substr($file, -4) == '.php') && (!should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $contents = file_get_contents(get_file_base() . '/' . $file);
 
                 $matches = array();

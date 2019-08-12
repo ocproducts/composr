@@ -146,7 +146,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
                             // Dynamic fixup possible?
                             if ($theme != 'default') {
-                                if (!file_exists(get_custom_file_base() . '/.git')) { // Do not automatically remap missing theme images if running out of git - could be that git operator is doing a resync between servers
+                                if (!file_exists(get_custom_file_base() . '/.git')) { // Do not automatically remap missing theme images if running out of git - could be that git operator is doing a re-sync between servers
                                     $url_path = $db->query_select_value_if_there('theme_images', 'path', array('id' => $id, 'theme' => 'default', 'lang' => $lang));
                                     if ($url_path !== null) {
                                         $db->query_update('theme_images', array('path' => $url_path), array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);

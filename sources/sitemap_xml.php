@@ -194,6 +194,9 @@ function rebuild_sitemap_index()
         }
 
         //$last_updated = $sitemap_set['last_updated']; Actually no, because this cannot find deletes
+        if (!is_file($path)) {
+            continue; // Should not happen, but don't crash
+        }
         $last_updated = filemtime($path);
         $xml_date = xmlentities(date('Y-m-d\TH:i:s', $last_updated) . substr_replace(date('O', $last_updated), ':', 3, 0));
 

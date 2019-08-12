@@ -25,6 +25,9 @@ class ssl_test_set extends cms_test_case
             return;
         }
 
+        if (get_domain() == 'localhost') {
+            set_value('disable_ssl_for__' . get_domain(), '1');
+        }
         $test = http_download_file('https://' . get_domain(), null, false);
 		if ($test === null) {
 			$this->assertTrue(false, 'SSL not running on this machine');
