@@ -20,15 +20,23 @@
  */
 class images_test_set extends cms_test_case
 {
+    protected function isRunningTest($name)
+    {
+        $only = get_param_string('only', null); // TODO: Change in v11
+        return (($only === null) || ($only == $name));
+    }
 
     public function testIsAnimated()
     {
+        if (!$this->isRunningTest('testIsAnimated')) {
+            return;
+        }
+
         require_code('images_cleanup_pipeline');
 
         $this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/under_construction_animated.gif'), 'gif'));
         $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/flags/ZM.gif'), 'gif'));
 
-        //$this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/TODO'), 'png'));  TODO: Enable in v11 with an APNG
         $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/video_thumb.png'), 'png'));
     }
 
@@ -36,6 +44,7 @@ class images_test_set extends cms_test_case
     {
         require_code('images');
         require_code('images2');
+
         $file_aspects = array(
             16 => 9,
             9 => 16,
@@ -43,9 +52,20 @@ class images_test_set extends cms_test_case
             3 => 4,
             1 => 1
         );
-        $file_types = array('png', 'jpg', 'jpeg', 'gif');
 
-        // Helper functions
+        $file_type = get_param_string('file_type', null);
+        if ($file_type === null) {
+            $file_types = array(
+                'png',
+                'jpg',
+                'jpeg',
+                'gif',
+            );
+        } else {
+            $file_types = array($file_type);
+        }
+
+        // Helper functions...
 
         function convertImage($file, &$path, $convert_width, $convert_height, $box_width, $only_make_smaller, &$additional_information)
         {
@@ -55,6 +75,16 @@ class images_test_set extends cms_test_case
                 return false;
             }
             return true;
+        }
+
+        function outputDebugVisual($file_path)
+        {
+            if (get_param_integer('debug', 0) == 1) {
+                echo '<br style="clear: both" />';
+                require_code('mime_types');
+                $value = 'data:' . get_mime_type(get_file_extension($file_path), false) . ';base64,' . base64_encode(file_get_contents($file_path));
+                echo '<img style="float: left; width: 100px; padding-right: 1em;" src="' . escape_html($value) . '" />';
+            }
         }
 
         function checkImageSize(&$path, $expected_width, $expected_height, &$additional_information)
@@ -107,7 +137,7 @@ class images_test_set extends cms_test_case
             return true;
         }
 
-        // Test functions
+        // Test functions...
 
         function runDimensionTest($extension, $start_width, $start_height, $convert_width, $convert_height, $box_width, $only_make_smaller, $expected_width, $expected_height, &$additional_information)
         {
@@ -119,6 +149,7 @@ class images_test_set extends cms_test_case
             }
 
             if (!checkImageSize($path, $expected_width, $expected_height, $additional_information)) {
+                outputDebugVisual($path);
                 return false;
             }
 
@@ -138,6 +169,7 @@ class images_test_set extends cms_test_case
 
             $dimensions = checkImageSize($path, -1, -1, $additional_information);
             if (!$dimensions) {
+                outputDebugVisual($path);
                 return false;
             }
 
@@ -152,6 +184,7 @@ class images_test_set extends cms_test_case
             }
 
             if (!testColor($image_resource, intval($dimensions[0] / 4), intval($dimensions[1] / 2), -1, -1, -1, $transparency, 4, $additional_information)) {
+                outputDebugVisual($path);
                 return false;
             }
 
@@ -171,11 +204,13 @@ class images_test_set extends cms_test_case
 
             $dimensions = checkImageSize($path, -1, -1, $additional_information);
             if (!$dimensions) {
+                outputDebugVisual($path);
                 return false;
             }
 
             $file_contents = getImageContents($path, $additional_information);
             if (!$file_contents) {
+                outputDebugVisual($path);
                 return false;
             }
 
@@ -185,22 +220,26 @@ class images_test_set extends cms_test_case
             }
 
             // Test red quadrant in upper left corner
-            if (!testColor($image_resource, intval($dimensions[0] / 4), intval($dimensions[1] / 4), 255, 0, 0, 0, 16, $additional_information)) {
+            if (!testColor($image_resource, intval($dimensions[0] / 4), intval($dimensions[1] / 4), 255, 0, 0, 0, 60, $additional_information)) {
+                outputDebugVisual($path);
                 return false;
             }
 
             // Test green quadrant in upper right corner
-            if (!testColor($image_resource, intval($dimensions[0] * 0.75), intval($dimensions[1] / 4), 0, 255, 0, 0, 16, $additional_information)) {
+            if (!testColor($image_resource, intval($dimensions[0] * 0.75), intval($dimensions[1] / 4), 0, 255, 0, 0, 60, $additional_information)) {
+                outputDebugVisual($path);
                 return false;
             }
 
             // Test blue quadrant in lower left corner
-            if (!testColor($image_resource, intval($dimensions[0] / 4), intval($dimensions[1] * 0.75), 0, 0, 255, 0, 16, $additional_information)) {
+            if (!testColor($image_resource, intval($dimensions[0] / 4), intval($dimensions[1] * 0.75), 0, 0, 255, 0, 60, $additional_information)) {
+                outputDebugVisual($path);
                 return false;
             }
 
             // Test white quadrant in lower right corner
-            if (!testColor($image_resource, intval($dimensions[0] * 0.75), intval($dimensions[1] * 0.75), 255, 255, 255, 0, 16, $additional_information)) {
+            if (!testColor($image_resource, intval($dimensions[0] * 0.75), intval($dimensions[1] * 0.75), 255, 255, 255, 0, 60, $additional_information)) {
+                outputDebugVisual($path);
                 return false;
             }
 
@@ -275,69 +314,151 @@ class images_test_set extends cms_test_case
                 $additional_information = '';
 
                 // Grow tests
-                $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Double width and height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, $height * 3, -1, false, $width * 2, $height * 2, $additional_information), 'Double width, 3x height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 3, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Double height, 3x width of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, $width, $height, -1, false, $width, $height, $additional_information), 'Keep the same width and height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, -1, -1, false, $width * 2, $height * 2, $additional_information), 'Double width, ignore (-1) height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, -1, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Double height, ignore (-1) width of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, -1, -1, 32, false, ($width > $height ? 32 : -1), ($height > $width ? 32 : -1), $additional_information), 'Use box width 16 of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, -1, -1, 8, false, ($width > $height ? 8 : -1), ($height > $width ? 8 : -1), $additional_information), 'Use box width 4 of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, -1, -1, 2, false, ($width > $height ? 2 : -1), ($height > $width ? 2 : -1), $additional_information), 'Use box width 1 of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, $height * 2, -1, true, $width, $height, $additional_information), 'Double width and height with only make smaller = true of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                if ($this->isRunningTest('1')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Double width and height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('2')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, $height * 3, -1, false, $width * 2, $height * 2, $additional_information), 'Double width, 3x height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('3')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 3, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Double height, 3x width of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('4')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, $width, $height, -1, false, $width, $height, $additional_information), 'Keep the same width and height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('5')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, -1, -1, false, $width * 2, $height * 2, $additional_information), 'Double width, ignore (-1) height of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('6')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, -1, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Double height, ignore (-1) width of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('7')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, -1, -1, 32, false, ($width > $height ? 32 : -1), ($height > $width ? 32 : -1), $additional_information), 'Use box width 16 of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('8')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, -1, -1, 8, false, ($width > $height ? 8 : -1), ($height > $width ? 8 : -1), $additional_information), 'Use box width 4 of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('9')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, -1, -1, 2, false, ($width > $height ? 2 : -1), ($height > $width ? 2 : -1), $additional_information), 'Use box width 1 of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('10')) {
+                    $this->assertTrue(runDimensionTest($extension, $width, $height, $width * 2, $height * 2, -1, true, $width, $height, $additional_information), 'Double width and height with only make smaller = true of ' . $width . 'x' . $height . '.' . $extension . '. ' . $additional_information);
+                }
 
                 // Shrink tests
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, $height, -1, false, $width, $height, $additional_information), 'Half the width and height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, $height * 2, -1, false, $width, $height, $additional_information), 'Half width, keep height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width * 2, $height, -1, false, $width, $height, $additional_information), 'Half height, keep width of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width * 2, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Keep the same width and height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, -1, -1, false, $width, -1, $additional_information), 'Half the width, ignore height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, $height, -1, false, -1, $height, $additional_information), 'Half the height, ignore width of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, -1, 16, false, ($width > $height ? 16 : -1), ($height > $width ? 16 : -1), $additional_information), 'Use box width 16 of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, -1, 4, false, ($width > $height ? 4 : -1), ($height > $width ? 4 : -1), $additional_information), 'Use box width 4 of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, -1, 1, false, ($width > $height ? 1 : -1), ($height > $width ? 1 : -1), $additional_information), 'Use box width 1 of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-                $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, $height, -1, true, $width, $height, $additional_information), 'Half the width and height with only make smaller = true of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
-
-                // TODO: Add test cases for cropping and padding in v11 after refactoring convert_image
+                if ($this->isRunningTest('11')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, $height, -1, false, $width, $height, $additional_information), 'Half the width and height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('12')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, $height * 2, -1, false, $width, $height, $additional_information), 'Half width, keep height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('13')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width * 2, $height, -1, false, $width, $height, $additional_information), 'Half height, keep width of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('14')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width * 2, $height * 2, -1, false, $width * 2, $height * 2, $additional_information), 'Keep the same width and height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('15')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, -1, -1, false, $width, -1, $additional_information), 'Half the width, ignore height of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('16')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, $height, -1, false, -1, $height, $additional_information), 'Half the height, ignore width of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('17')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, -1, 16, false, ($width > $height ? 16 : -1), ($height > $width ? 16 : -1), $additional_information), 'Use box width 16 of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('18')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, -1, 4, false, ($width > $height ? 4 : -1), ($height > $width ? 4 : -1), $additional_information), 'Use box width 4 of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('19')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, -1, -1, 1, false, ($width > $height ? 1 : -1), ($height > $width ? 1 : -1), $additional_information), 'Use box width 1 of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
+                if ($this->isRunningTest('20')) {
+                    $this->assertTrue(runDimensionTest($extension, $width * 2, $height * 2, $width, $height, -1, true, $width, $height, $additional_information), 'Half the width and height with only make smaller = true of ' . $width * 2 . 'x' . $height * 2 . '.' . $extension . '. ' . $additional_information);
+                }
             }
 
             // Edge case: transparency and translucent (50% opacity) tests
             if ($extension === 'png' || $extension === 'gif') { // jpg and jpeg does not support transparency
-                $this->assertTrue(runTransparencyTest('transparent.' . $extension, 16, 16, 127, $additional_information), 'Increased 8x8 transparent.' . $extension . ' to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-                $this->assertTrue(runTransparencyTest('transparent.' . $extension, 8, 8, 127, $additional_information), '8x8 transparent.' . $extension . '. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-                $this->assertTrue(runTransparencyTest('transparent.' . $extension, 4, 4, 127, $additional_information), 'Decreased 8x8 transparent.' . $extension . ' to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+                if ($this->isRunningTest('21')) {
+                    $this->assertTrue(runTransparencyTest('transparent.' . $extension, 16, 16, 127, $additional_information), 'Increased 8x8 transparent.' . $extension . ' to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+                }
+                if ($this->isRunningTest('22')) {
+                    $this->assertTrue(runTransparencyTest('transparent.' . $extension, 8, 8, 127, $additional_information), '8x8 transparent.' . $extension . '. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+                }
+                if ($this->isRunningTest('23')) {
+                    $this->assertTrue(runTransparencyTest('transparent.' . $extension, 4, 4, 127, $additional_information), 'Decreased 8x8 transparent.' . $extension . ' to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+                }
                 if ($extension === 'png') { // Only png supports alpha channel transparency
-                    $this->assertTrue(runTransparencyTest('translucent.' . $extension, 16, 16, 63, $additional_information), 'Increased 8x8 translucent.' . $extension . ' to 16x16 and tested for 50 percent opacity on the left side and 100 percent opacity on the right side. ' . $additional_information);
-                    $this->assertTrue(runTransparencyTest('translucent.' . $extension, 8, 8, 63, $additional_information), '8x8 translucent.' . $extension . '. Kept size the same. Tested for 50 percent opacity on the left side and 100 percent opacity on the right side. ' . $additional_information);
-                    $this->assertTrue(runTransparencyTest('translucent.' . $extension, 4, 4, 63, $additional_information), 'Decreased 8x8 translucent.' . $extension . ' to 4x4 and tested for 50 percent opacity on the left side and 100 percent opacity on the right side. ' . $additional_information);
+                    if ($this->isRunningTest('24')) {
+                        $this->assertTrue(runTransparencyTest('translucent.' . $extension, 16, 16, 63, $additional_information), 'Increased 8x8 translucent.' . $extension . ' to 16x16 and tested for 50 percent opacity on the left side and 100 percent opacity on the right side. ' . $additional_information);
+                    }
+                    if ($this->isRunningTest('25')) {
+                        $this->assertTrue(runTransparencyTest('translucent.' . $extension, 8, 8, 63, $additional_information), '8x8 translucent.' . $extension . '. Kept size the same. Tested for 50 percent opacity on the left side and 100 percent opacity on the right side. ' . $additional_information);
+                    }
+                    if ($this->isRunningTest('26')) {
+                        $this->assertTrue(runTransparencyTest('translucent.' . $extension, 4, 4, 63, $additional_information), 'Decreased 8x8 translucent.' . $extension . ' to 4x4 and tested for 50 percent opacity on the left side and 100 percent opacity on the right side. ' . $additional_information);
+                    }
                 }
             }
 
             // Edge case: Quadrant color test
-            $this->assertTrue(runQuadrantTest('quadrant.' . $extension, 16, 16, $additional_information), 'Increased 8x8 quadrant.' . $extension . ' to 16x16 and tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
-            $this->assertTrue(runQuadrantTest('quadrant.' . $extension, 8, 8, $additional_information), '8x8 quadrant.' . $extension . '. Kept size the same. Tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
-            //$this->assertTrue(runQuadrantTest('quadrant.' . $extension, 4, 4, $additional_information), 'Decreased 8x8 quadrant.' . $extension . ' to 4x4 and tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
+            if ($this->isRunningTest('27')) {
+                $this->assertTrue(runQuadrantTest('quadrant.' . $extension, 16, 16, $additional_information), 'Increased 8x8 quadrant.' . $extension . ' to 16x16 and tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
+            }
+            if ($this->isRunningTest('28')) {
+                $this->assertTrue(runQuadrantTest('quadrant.' . $extension, 8, 8, $additional_information), '8x8 quadrant.' . $extension . '. Kept size the same. Tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
+            }
+            if ($this->isRunningTest('29')) {
+                $this->assertTrue(runQuadrantTest('quadrant.' . $extension, 4, 4, $additional_information), 'Decreased 8x8 quadrant.' . $extension . ' to 4x4 and tested for quadrant colors (top->bottom, left->right) red, green, blue, white. ' . $additional_information);
+            }
         }
 
         // Edge Case: palette-alpha PNG transparency test
-        $this->assertTrue(runTransparencyTest('transparent_palette_alpha.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_palette_alpha.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-        $this->assertTrue(runTransparencyTest('transparent_palette_alpha.png', 8, 8, 127, $additional_information), '8x8 transparent_palette_alpha.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-        $this->assertTrue(runTransparencyTest('transparent_palette_alpha.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_palette_alpha.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        if ($this->isRunningTest('30')) {
+            $this->assertTrue(runTransparencyTest('transparent_palette_alpha.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_palette_alpha.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        }
+        if ($this->isRunningTest('31')) {
+            $this->assertTrue(runTransparencyTest('transparent_palette_alpha.png', 8, 8, 127, $additional_information), '8x8 transparent_palette_alpha.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        }
+        if ($this->isRunningTest('32')) {
+            $this->assertTrue(runTransparencyTest('transparent_palette_alpha.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_palette_alpha.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        }
 
         // Edge Case: palette-binary PNG transparency test
-        $this->assertTrue(runTransparencyTest('transparent_palette_binary.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_palette_binary.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-        $this->assertTrue(runTransparencyTest('transparent_palette_binary.png', 8, 8, 127, $additional_information), '8x8 transparent_palette_binary.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
-        $this->assertTrue(runTransparencyTest('transparent_palette_binary.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_palette_binary.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        /*
+        PHP/GD loads this as 32-bit, so it doesn't actually work :(. That said, it was incredibly hard to produce this test image and I couldn't find any in the wild. No software worked with it either.
+        if ($this->isRunningTest('33')) {
+            $this->assertTrue(runTransparencyTest('transparent_palette_binary.png', 16, 16, 127, $additional_information), 'Increased 8x8 transparent_palette_binary.png to 16x16 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        }
+        if ($this->isRunningTest('34')) {
+            $this->assertTrue(runTransparencyTest('transparent_palette_binary.png', 8, 8, 127, $additional_information), '8x8 transparent_palette_binary.png. Kept size the same. Tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        }
+        if ($this->isRunningTest('35')) {
+            $this->assertTrue(runTransparencyTest('transparent_palette_binary.png', 4, 4, 127, $additional_information), 'Decreased 8x8 transparent_palette_binary.png to 4x4 and tested for transparency on the left side and visible color on the right side. ' . $additional_information);
+        }
+        * */
 
         // Edge Case: EXIF rotation test via dimension test and pixel color test
-        $this->assertTrue(runEXIFTest('exifrotated.jpg', 4896, 6528, 4896, 6528, 4850, 250, 205, 164, 85, 0, $additional_information), 'exifrotated.jpg EXIF rotation test (size and color). Doubled the original size. ' . $additional_information);
-        //$this->assertTrue(runEXIFTest('exifrotated.jpg', 2448, 3264, 2448, 3264, 2425, 175, 205, 164, 85, 0, $additional_information), 'ExifRotated.jpg EXIF rotation test (size and color). Kept the original size. ' . $additional_information);
-        $this->assertTrue(runEXIFTest('exifrotated.jpg', 1224, 1632, 1224, 1632, 1212, 62, 206, 165, 86, 0, $additional_information), 'xxifrotated.jpg EXIF rotation test (size and color). Halved the original size. ' . $additional_information);
+        if ($this->isRunningTest('36')) {
+            $this->assertTrue(runEXIFTest('exifrotated.jpg', 4896, 6528, 4896, 6528, 4850, 250, 205, 164, 85, 0, $additional_information), 'exifrotated.jpg EXIF rotation test (size and color). Doubled the original size. ' . $additional_information);
+        }
+        if ($this->isRunningTest('37')) {
+            $this->assertTrue(runEXIFTest('exifrotated.jpg', 2448, 3264, 2448, 3264, 2425, 175, 205, 164, 85, 0, $additional_information), 'ExifRotated.jpg EXIF rotation test (size and color). Kept the original size. ' . $additional_information);
+        }
+        if ($this->isRunningTest('38')) {
+            $this->assertTrue(runEXIFTest('exifrotated.jpg', 1224, 1632, 1224, 1632, 1212, 62, 206, 165, 86, 0, $additional_information), 'xxifrotated.jpg EXIF rotation test (size and color). Halved the original size. ' . $additional_information);
+        }
 
         // Edge case: SVG image content tests
-        $this->assertTrue(runSvgTest('tux.svg', 670, 788, $additional_information), 'tux.svg contents test. Double the original size. ' . $additional_information);
-        $this->assertTrue(runSvgTest('tux.svg', 335, 394, $additional_information), 'tux.svg contents test. Kept the original size. ' . $additional_information);
-        $this->assertTrue(runSvgTest('tux.svg', 167, 197, $additional_information), 'tux.svg contents test. Half the original size. ' . $additional_information);
+        if ($this->isRunningTest('39')) {
+            $this->assertTrue(runSvgTest('tux.svg', 670, 788, $additional_information), 'tux.svg contents test. Double the original size. ' . $additional_information);
+        }
+        if ($this->isRunningTest('40')) {
+            $this->assertTrue(runSvgTest('tux.svg', 335, 394, $additional_information), 'tux.svg contents test. Kept the original size. ' . $additional_information);
+        }
+        if ($this->isRunningTest('41')) {
+            $this->assertTrue(runSvgTest('tux.svg', 167, 197, $additional_information), 'tux.svg contents test. Half the original size. ' . $additional_information);
+        }
     }
-
 }

@@ -407,7 +407,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         }
     }
 
-    if (($_width == $sx) && ($_height == $sy)) {
+    if (($_width == $sx) && ($_height == $sy) && (!$reorientated)) {
         // We can just escape, nothing to do...
 
         imagedestroy($source);
@@ -460,7 +460,8 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 $_transparent = imagecolorsforindex($source, $transparent);
                 $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
                 imagecolortransparent($dest, $__transparent);
-                imagefilledrectangle($dest, 0, 0, $width, $height, $__transparent);
+                imagefilledrectangle($dest, 0, 0, $_width, $_height, $__transparent);
+                imagealphablending($dest, true); // Do not want to copy old transparent index over in imagecopyresampled (if we did this command always it would mess up for 32 bit images as those need the blending off)
             }
         }
 
@@ -475,7 +476,6 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         } else {
             $dest = imagecreate($_width, $_height);
         }
-
         imagecopyresized($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
     }
 
