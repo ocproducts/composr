@@ -933,7 +933,21 @@ class images_test_set extends cms_test_case
 
     protected function isRunningTest($name)
     {
-        return (($this->only === null) || ($this->only == $name));
+        if ($this->only === null) {
+            return true;
+        }
+        if ($this->only == $name) {
+            return true;
+        }
+        $matches = array();
+        if (preg_match('#^(\d+)\-(\d+)$#', $this->only, $matches) != 0) {
+            $from = intval($matches[1]);
+            $to = intval($matches[2]);
+            if (($from <= intval($name)) && ($to >= intval($name))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function cleanupFromConvertImagePlus()
