@@ -75,7 +75,13 @@ tab_width = 3
 #  themes/default/css_custom/unslider.css themes/default/css_custom/sortable_tables.css themes/default/css_custom/google_search.css \
 #  themes/default/css_custom/columns.css themes/default/css_custom/flip.css
 # (ends)
-# Remember to update line_count.sh and licence.txt and phpdoc.dist.xml and https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0 and automated test skipping and maintenance_sheet.csv too (as appropriate).
+# Remember to also update, as appropriate:
+#  - line_count.sh
+#  - licence.txt
+#  - phpdoc.dist.xml
+#  - https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0
+#  - automated test skipping
+#  - maintenance_sheet.csv
 
 # PHPStorm settings (.idea/codeStyleSettings.xml)...
 
