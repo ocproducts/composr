@@ -207,6 +207,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_TOP_NOTIFICATIONS
         BLOCK_TOP_PERSONAL_STATS
         BLOCK_TOP_SEARCH
+        CATEGORIES_SORT_ORDER
+        GALLERY_DEFAULT_SORT_ORDER
+        GALLERY_NAME_ORDER
+        DESCRIPTION_CATEGORIES_SORT_ORDER
+        CONFIG_OPTION_galleries_sort_order_VALUE_add_date__ASC
+        CONFIG_OPTION_galleries_sort_order_VALUE_add_date__DESC
+        CONFIG_OPTION_galleries_sort_order_VALUE_average_rating__DESC
+        CONFIG_OPTION_galleries_sort_order_VALUE_compound_rating__DESC
+        CONFIG_OPTION_galleries_sort_order_VALUE_fullname__ASC
+        CONFIG_OPTION_galleries_sort_order_VALUE_name__ASC
         CONFIG_GROUP_DESCRIP_BLOCKS_AT_TOP
         CONFIG_OPTION_block_top_login
         CONFIG_OPTION_block_top_notifications

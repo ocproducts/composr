@@ -103,7 +103,7 @@ require_lang('backups');
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
     $msg = '';
-    $msg .= '<form action="restore.php" method="post"><button id="proceed-button" class="button-screen buttons--proceed" type="submit" onclick="this.disabled=true; this.form.submit();">' . $proceed_icon . ' ' . escape_html(do_lang('START')) . '</button></form>';
+    $msg .= '<form action="restore.php" method="post"><button id="proceed-button" class="button-screen buttons--proceed" type="submit" onclick="this.disabled=true; this.form.submit();">' . $proceed_icon->evaluate() . ' ' . escape_html(do_lang('START')) . '</button></form>';
     finish_restorer_output($msg);
 }
 
@@ -174,7 +174,7 @@ while (($line = fgets($data_file)) !== false) {
             $refresh_url = 'restore.php?start_offset=' . strval($offset);
             $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
             $msg = '';
-            $msg .= '<form action="' . escape_html($refresh_url) . '" method="post"><button id="proceed-button" class="button-screen buttons--proceed" type="submit" onclick="this.disabled=true; this.form.submit();">' . $proceed_icon . ' ' . escape_html(do_lang('CONTINUE_RESTORATION')) . '</button></form>';
+            $msg .= '<form action="' . escape_html($refresh_url) . '" method="post"><button id="proceed-button" class="button-screen buttons--proceed" type="submit" onclick="this.disabled=true; this.form.submit();">' . $proceed_icon->evaluate() . ' ' . escape_html(do_lang('CONTINUE_RESTORATION')) . '</button></form>';
             $msg .= '<script>var button=document.getElementById(\'proceed-button\'); button.disabled=true; button.form.submit();</script>';
             finish_restorer_output($msg);
         }
