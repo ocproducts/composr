@@ -428,12 +428,14 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
     }
 
     // Copy notification defaults
-    push_db_scope_check(false);
-    $notification_settings = $GLOBALS['FORUM_DB']->query_select('notifications_enabled', array('*'), array('l_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(), 'l_code_category' => ''));
-    foreach ($notification_settings as $notification_setting) {
-        $GLOBALS['FORUM_DB']->query_insert('notifications_enabled', array('l_member_id' => $member_id) + $notification_settings);
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+        push_db_scope_check(false);
+        $notification_settings = $GLOBALS['FORUM_DB']->query_select('notifications_enabled', array('*'), array('l_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(), 'l_code_category' => ''));
+        foreach ($notification_settings as $notification_setting) {
+            $GLOBALS['FORUM_DB']->query_insert('notifications_enabled', array('l_member_id' => $member_id) + $notification_settings);
+        }
+        push_db_scope_check(true);
     }
-    push_db_scope_check(true);
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('member', strval($member_id));

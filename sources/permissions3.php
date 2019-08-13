@@ -130,9 +130,10 @@ function privilege_exists($name)
 function add_privilege($section, $name, $default = false, $not_even_mods = false, $not_for_probation = false)
 {
     if (get_forum_type() == 'cns') {
-        $probation_usergroup = intval(get_option('probation_usergroup'));
+        require_code('cns_groups');
+        $probation_group = get_probation_group();
     } else {
-        $probation_usergroup = null;
+        $probation_group = false;
     }
 
     // We do bulk inserts, for performance reasons
@@ -146,7 +147,7 @@ function add_privilege($section, $name, $default = false, $not_even_mods = false
     $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
     $admin_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
     foreach (array_keys($usergroups) as $id) {
-        if ((($default) && ((!$not_for_probation) || ($id !== $probation_usergroup))) || ((in_array($id, $admin_groups)) && (!$not_even_mods))) {
+        if ((($default) && ((!$not_for_probation) || ($id !== $probation_group))) || ((in_array($id, $admin_groups)) && (!$not_even_mods))) {
             $ins_privilege[] = $name;
             $ins_group_id[] = $id;
             $ins_the_page[] = '';

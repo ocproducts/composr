@@ -30,9 +30,6 @@ function init__cns_groups()
 
     global $GROUP_MEMBERS_CACHE;
     $GROUP_MEMBERS_CACHE = array();
-
-    global $PROBATION_GROUP_CACHE;
-    $PROBATION_GROUP_CACHE = null;
 }
 
 /**
@@ -352,6 +349,24 @@ function cns_get_best_group_property($groups, $property)
 }
 
 /**
+ * Get the probation usergroup ID.
+ *
+ * @return ~GROUP Probation usergroup ID (false: none)
+ */
+function get_probation_group()
+{
+    static $probation_group_cache = null;
+    if ($probation_group_cache === null) {
+        $probation_group = get_option('probation_usergroup');
+        $probation_group_cache = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
+        if ($probation_group_cache === null) {
+            $probation_group_cache = false;
+        }
+    }
+    return $probation_group_cache;
+}
+
+/**
  * Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).
  *
  * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member)
@@ -375,15 +390,8 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
     if (($handle_probation) && ((!$GLOBALS['IS_VIA_BACKDOOR']) || ($member_id != get_member()))) {
         $opt = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_on_probation_until');
         if (($opt !== null) && ($opt > time())) {
-            global $PROBATION_GROUP_CACHE;
-            if ($PROBATION_GROUP_CACHE === null) {
-                $probation_group = get_option('probation_usergroup');
-                $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-                if ($PROBATION_GROUP_CACHE === null) {
-                    $PROBATION_GROUP_CACHE = false;
-                }
-            }
-            if ($PROBATION_GROUP_CACHE !== false) {
+            $probation_group = get_probation_group();
+            if ($probation_group !== false) {
                 if ($member_id == get_member() && running_script('index')) {
                     static $given_message = false;
                     if (!$given_message) {
@@ -394,7 +402,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
                     }
                 }
 
-                return array($PROBATION_GROUP_CACHE => true);
+                return array($probation_group => true);
             }
         }
     }

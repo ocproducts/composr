@@ -187,8 +187,9 @@ class Hook_profiles_tabs_edit_privacy
 
                 $groups = new Tempcode();
                 $groups->attach(form_input_list_entry('all', $view_by_groups == array('all'), do_lang_tempcode('_ALL')));
+                $probation_group = get_probation_group();
                 foreach ($tmp_groups as $gr_key => $group) {
-                    if ($group == get_option('probation_usergroup')) {
+                    if ($gr_key == $probation_group) {
                         continue;
                     }
 
