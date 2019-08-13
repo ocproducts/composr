@@ -1421,7 +1421,7 @@ function get_cookie_domain()
 function get_cookie_days()
 {
     global $SITE_INFO;
-    return array_key_exists('cookie_domain', $SITE_INFO) ? intval($SITE_INFO['cookie_days']) : 120;
+    return array_key_exists('cookie_days', $SITE_INFO) ? intval($SITE_INFO['cookie_days']) : 120;
 }
 
 /**

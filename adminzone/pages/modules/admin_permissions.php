@@ -426,7 +426,7 @@ class Module_admin_permissions
             }
         }
 
-        require_code('themewizard');
+        require_code('themes2');
         $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
         // Standard editing matrix
@@ -455,7 +455,7 @@ class Module_admin_permissions
     public function _access_header($admin_groups, $groups)
     {
         $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
-        require_code('themewizard');
+        require_code('themes2');
         $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
         require_code('character_sets');

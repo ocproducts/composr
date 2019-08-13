@@ -868,8 +868,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVACY_METHOD_anonymise
         PRIVACY_METHOD_delete
         PERSONAL_DATA_PURGING
-        CONFIG_OPTION_google_translate_enabled
-        GOOGLE_TRANSLATE_ENABLED
         CONFIG_OPTION_bing_translator_enabled
         BING_TRANSLATOR_ENABLED
         AZURE_API
@@ -9283,6 +9281,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LOADING
         LOAD_MORE
         locale_subst
+        locale_ctype_hack
         LOCATED_IN
         LOCATION
         LOG
@@ -10506,7 +10505,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INFORMATION_STORAGE
         INFORMATION_DISCLOSURE
         CHILD_PROTECTION
-        PERSONAL_DATA_DELETION
         PERSONAL_DATA_DELETION_EXPLANATION
         PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_logged
         PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_editorial

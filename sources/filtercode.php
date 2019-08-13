@@ -384,11 +384,11 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                 break;
 
             case 'float':
-                $form_fields->attach(form_input_float($field_label, '', 'filter_' . $field_name, ($default_value == '') ? null : floatval($default_value), false));
+                $form_fields->attach(form_input_float($field_label, '', 'filter_' . $field_name, ($default_value == '') ? null : @floatval($default_value), false));
                 break;
 
             case 'integer':
-                $form_fields->attach(form_input_integer($field_label, '', 'filter_' . $field_name, ($default_value == '') ? null : intval($default_value), false));
+                $form_fields->attach(form_input_integer($field_label, '', 'filter_' . $field_name, ($default_value == '') ? null : @intval($default_value), false));
                 break;
 
             case 'email':

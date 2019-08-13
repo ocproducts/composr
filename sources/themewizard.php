@@ -25,9 +25,8 @@
  */
 function init__themewizard()
 {
-    global $THEMEWIZARD_IMAGES_CACHE, $THEME_SEED_CACHE, $THEME_DARK_CACHE;
+    global $THEMEWIZARD_IMAGES_CACHE, $THEME_DARK_CACHE;
     $THEMEWIZARD_IMAGES_CACHE = array();
-    $THEME_SEED_CACHE = array();
     $THEME_DARK_CACHE = array();
 
     global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD;
@@ -105,48 +104,6 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
     $THEMEWIZARD_IMAGES_NO_WILD = explode(',', $themewizard_images_no_wild);
 
     $THEMEWIZARD_IMAGES_CACHE[$theme] = $THEMEWIZARD_IMAGES;
-}
-
-/**
- * Find the seed of a theme.
- *
- * @param  ID_TEXT $theme The theme name
- * @return ID_TEXT The seed colour
- */
-function find_theme_seed($theme)
-{
-    global $THEME_SEED_CACHE;
-    if (isset($THEME_SEED_CACHE[$theme])) {
-        return $THEME_SEED_CACHE[$theme];
-    }
-
-    $seed = get_theme_option('seed', ($theme == 'default') ? null : '');
-
-    if ($seed == '') {
-        $css_path = get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css';
-        if (!is_file($css_path)) {
-            $css_path = get_file_base() . '/themes/default/css/global.css';
-        }
-        $css_file_contents = cms_file_get_contents_safe($css_path);
-        $matches = array();
-        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
-            $THEME_SEED_CACHE[$theme] = $matches[1];
-        } else {
-            /*if ($no_easy_anchor)
-            {
-                   We could put some auto-detection code here; possibly a future improvement but not needed currently.
-            } else {*/
-            if ($theme == 'default') {
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-            }
-            $THEME_SEED_CACHE[$theme] = find_theme_seed('default');
-            //}
-        }
-    } else {
-        $THEME_SEED_CACHE[$theme] = $seed;
-    }
-
-    return $THEME_SEED_CACHE[$theme];
 }
 
 /**

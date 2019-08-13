@@ -47,7 +47,7 @@ function cache_and_carry($func, $args, $timeout = null, $cache_errors = false)
     $path = get_custom_file_base() . '/caches/http/' . md5(serialize($args)) . '.dat';
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
         $_ret = cms_file_get_contents_safe($path);
-        if ($func == 'cms_http_request') {
+        if ($func === 'cms_http_request') {
             $ret = @unserialize($_ret);
         } else {
             $ret = $_ret;
@@ -55,7 +55,7 @@ function cache_and_carry($func, $args, $timeout = null, $cache_errors = false)
     } else {
         $_ret = call_user_func_array($func, $args);
         require_code('files');
-        if ($func == 'cms_http_request') {
+        if ($func === 'cms_http_request') {
             $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
             if (($cache_errors) || (($_ret->message !== null) && (substr($_ret->message, 0, 1) == '2'))) {
                 cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
@@ -1125,6 +1125,8 @@ class HttpDownloaderCurl extends HttpDownloader
             $this->download_mime_type = substr($this->download_mime_type, 0, strpos($this->download_mime_type, ';'));
         }
 
+        curl_close($ch);
+
         // Process HTTP status
         switch ($this->message) {
             case '200':
@@ -1177,8 +1179,6 @@ class HttpDownloaderCurl extends HttpDownloader
                 }
                 break;
         }
-
-        curl_close($ch);
 
         // Receive headers
         foreach ($this->curl_headers as $header) {

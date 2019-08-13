@@ -113,7 +113,7 @@ Here are the step by step instructions for selecting an appropriate image:
 
 If you are active on Twitter you may want to edit the [tt]HTML_HEAD[/tt] template and add in some extra code for Twitter, for example:
 
-[code]
+[code="HTML"]
 <meta name="twitter:card" content="image" />
 <meta name="twitter:site" content="@yourTwitterName" />
 <meta name="twitter:creator" content="@yourTwitterName" />

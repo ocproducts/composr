@@ -34,8 +34,6 @@ class Hook_privacy_core_cns extends Hook_privacy_base
             return null;
         }
 
-        require_lang('cns_privacy');
-
         return array(
             'cookies' => array(
             ),

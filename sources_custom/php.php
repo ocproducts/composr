@@ -731,7 +731,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
             } else {
                 if ($char == '"') {
                     $in_quotes = true;
-                } else if ($char == ' ') {
+                } elseif ($char == ' ') {
                     $_set[] = $current;
                     $current = '';
                 } else {

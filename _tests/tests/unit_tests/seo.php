@@ -47,6 +47,6 @@ class seo_test_set extends cms_test_case
 
         // Test filtering
         list($keywords) = _seo_meta_find_data(array('Hello [attachment]new_1[/attachment] [media]uploads/downloads/example.png[/media] [b]World[/b] [Example]'), '');
-        $this->assertTrue($keywords == 'Hello,World,Example', 'Got: ' . $keywords);
+        $this->assertTrue($keywords == 'Example,World,Hello', 'Got: ' . $keywords);
     }
 }

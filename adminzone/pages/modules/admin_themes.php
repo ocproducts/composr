@@ -439,7 +439,7 @@ class Module_admin_themes
             // Render
             $seed = null;
             if (addon_installed('themewizard')) {
-                require_code('themewizard');
+                require_code('themes2');
                 $seed = find_theme_seed($theme);
             }
             $themes[] = array(

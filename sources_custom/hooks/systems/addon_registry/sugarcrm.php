@@ -139,7 +139,9 @@ CRM software supported:
             'requires' => array(
                 'PHP curl extension',
             ),
-            'recommends' => array(),
+            'recommends' => array(
+                'securitylogging',
+            ),
             'conflicts_with' => array(),
         );
     }

@@ -184,7 +184,7 @@ function point_info($member_id)
     $POINT_INFO_CACHE[$member_id] = array();
     foreach ($values as $key => $val) {
         if (!isset($val->codename/*faster than is_object*/)) {
-            $POINT_INFO_CACHE[$member_id][$key] = intval($val);
+            $POINT_INFO_CACHE[$member_id][$key] = @intval($val);
         }
     }
 

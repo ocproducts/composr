@@ -33,6 +33,7 @@ $title = get_screen_title('Theme Wizard theme repair', false);
 $title->evaluate_echo();
 
 require_code('themewizard');
+require_code('themes2');
 
 $theme = get_param_string('theme', null);
 if ($theme === null) {

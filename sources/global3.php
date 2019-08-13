@@ -1387,7 +1387,7 @@ function cms_mb_strcasecmp($str1, $str2)
 }
 
 /**
- * Case insensitive string comparisons using a "natural order" algorithm.
+ * Case insensitive string comparisons using a "natural order" algorithm, Unicode-safe.
  *
  * @param  string $str1 The first string
  * @param  string $str2 The second string
@@ -1575,7 +1575,7 @@ function addon_installed($addon, $check_hookless = false)
     $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
 
     // Check addons table
-    if (!running_script('install')) {
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
         require_code('database');
 
         if ((!$answer) && ($check_hookless)) {

@@ -351,6 +351,7 @@ class catalogues_test_set extends cms_test_case
             'tick_on_form__new_field_9_put_in_search' => '0',
             'require__new_field_9_put_in_search' => '0',
             'description__is_wysiwyg' => '1',
+            'categories_sort_order' => 'recent ASC',
         );
 
         require_code('autosave');

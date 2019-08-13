@@ -520,7 +520,7 @@ class Hook_addon_registry_core_cns
             'templates/BLOCK_MAIN_JOIN_DONE.tpl' => 'block_main_join_done',
             'templates/BLOCK_MAIN_JOIN.tpl' => 'block_main_join',
             'templates/JOIN_FORM.tpl' => 'join_form',
-            'text/COPPA_MAIL.txt' => 'administrative__coppa_mail',
+            'text/COPPA_MAIL.txt' => 'coppa_mail',
         );
     }
 
@@ -980,7 +980,7 @@ class Hook_addon_registry_core_cns
             'TIME_FOR_THEM' => placeholder_date(),
             'TIME_FOR_THEM_RAW' => placeholder_date_raw(),
             'SUBMIT_DAYS_AGO' => lorem_phrase(),
-            'SUBMIT_TIME_RAW' => placeholder_date(),
+            'SUBMIT_TIME_RAW' => placeholder_date_raw(),
             'LAST_VISIT_TIME_RAW' => placeholder_date_raw(),
             'ONLINE_NOW' => lorem_phrase(),
             '_ONLINE_NOW' => false,
@@ -1027,7 +1027,7 @@ class Hook_addon_registry_core_cns
             'MEMBER_ID' => placeholder_id(),
             'SECONDARY_GROUPS' => placeholder_array(),
             'VIEW_PROFILES' => true,
-            'ON_PROBATION' => lorem_phrase(),
+            'ON_PROBATION' => placeholder_date_raw(),
             'USERGROUP' => lorem_word(),
             'CLUBS' => lorem_phrase(),
             'EXTRA_INFO_DETAILS' => array(),
@@ -1404,7 +1404,7 @@ class Hook_addon_registry_core_cns
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__validation_request_mail()
+    public function tpl_preview__coppa_mail()
     {
         $fields_done = array();
         $fields_done[] = array('LABEL' => lorem_phrase(), 'VALUE' => lorem_phrase());

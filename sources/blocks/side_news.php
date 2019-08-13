@@ -104,7 +104,7 @@ class Block_side_news
         } else {
             require_code('selectcode');
             $selects_1 = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'p.news_category', 'id');
-            $selects_2 = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'd.news_category', 'id');
+            $selects_2 = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'd.news_entry_category', 'id');
             $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
         }
         if ($blogs === 0) {
@@ -126,7 +126,7 @@ class Block_side_news
 
         if ($select_and != '') {
             $selects_and_1 = selectcode_to_sqlfragment($select_and, 'r.id', 'news_categories', null, 'p.news_category', 'id');
-            $selects_and_2 = selectcode_to_sqlfragment($select_and, 'r.id', 'news_categories', null, 'd.news_category', 'id');
+            $selects_and_2 = selectcode_to_sqlfragment($select_and, 'r.id', 'news_categories', null, 'd.news_entry_category', 'id');
             $q_filter .= ' AND (' . $selects_and_1 . ' OR ' . $selects_and_2 . ')';
         }
 

@@ -135,6 +135,7 @@ class Hook_addon_registry_core_language_editing
             'sources/hooks/systems/translation/index.html',
             'sources/hooks/systems/symbols/PROVIDE_WITH_TRANSLATION.php',
             'themes/default/images/google_translate.svg',
+            'sources/hooks/systems/translation/.htaccess',
         );
     }
 

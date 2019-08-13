@@ -134,7 +134,7 @@ class Hook_fields_time
                 if (!array_key_exists(2, $time_bits)) {
                     $time_bits[2] = '00';
                 }
-                $time = mktime(intval($time_bits[0]), intval($time_bits[1]), intval($time_bits[2]));
+                $time = mktime(@intval($time_bits[0]), intval($time_bits[1]), intval($time_bits[2]));
                 //$time = utctime_to_usertime($time);   No, as we have no idea what date it is for, so cannot do DST changes
             }
             $ev = get_timezoned_time($time, true, true);
@@ -174,7 +174,7 @@ class Hook_fields_time
                 $time_bits[2] = '00';
             }
 
-            $time = array(intval($time_bits[1]), intval($time_bits[0]), intval(date('m')), intval(date('d')), intval(date('Y')));
+            $time = array(intval($time_bits[1]), @intval($time_bits[0]), intval(date('m')), intval(date('d')), intval(date('Y')));
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         return form_input_date($_cf_name, $_cf_description, $input_name, $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($time === null), true, $time, 1, 1900, null, false, null, false);

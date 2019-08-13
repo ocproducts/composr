@@ -15,7 +15,7 @@
 
 // Examples:
 // http://localhost/composr/data_custom/transifex_push.php?username=info@ocproducts.com&password=xxx
-// http://localhost/composr/data_custom/transifex_push.php?username=info@ocproducts.com&password=xxx&core_only=1&push_cms=0&limit_substring=global
+// http://localhost/composr/data_custom/transifex_push.php?username=info@ocproducts.com&password=xxx&core_only=1&push_cms=0&push_ini=1&limit_substring=global
 
 // Parameters:
 //    username                  Transifex username (required, if not saved)

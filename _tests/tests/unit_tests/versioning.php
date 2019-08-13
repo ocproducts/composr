@@ -124,6 +124,4 @@ class versioning_test_set extends cms_test_case
         $this->assertTrue(!is_substantial_release('3.1.beta2'));
         $this->assertTrue(!is_substantial_release('3.1.RC2'));
     }
-
-    // TODO: Upgrade path testing
 }

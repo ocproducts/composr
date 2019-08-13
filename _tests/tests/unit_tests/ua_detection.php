@@ -42,10 +42,10 @@ class ua_detection_test_set extends cms_test_case
         cns_make_post($topic_id, 'Welcome', 'Welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', null, false, false, false);
 
         $data = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'ua' => 'bingbot', 'cookies' => array(get_session_cookie() => get_session_id())));
-        $this->assertTrue($data !== null && strpos($data, 'findpost') === false);
+        $this->assertTrue($data !== null && strpos($data, 'findpost') === false, 'Could not find findpost in ' . $url->evaluate());
 
         $data = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'cookies' => array(get_session_cookie() => get_session_id())));
-        $this->assertTrue($data !== null && strpos($data, 'findpost') !== false);
+        $this->assertTrue($data !== null && strpos($data, 'findpost') !== false, 'Could not find findpost in ' . $url->evaluate());
     }
 
     public function testMobileDetection()

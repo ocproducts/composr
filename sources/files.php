@@ -233,7 +233,7 @@ function php_return_bytes($val)
         return 0;
     }
     $last = strtolower($val[strlen($val) - 1]);
-    $_val = intval($val);
+    $_val = intval(preg_replace('#[^\d]#', '', $val));
     switch ($last) {
         case 'g':
             $_val *= 1024;
@@ -488,6 +488,7 @@ function should_ignore_file($path, $bitmask = 0)
         // IDE projects
         'clpprj' => '', // Code Lobster
         'csprj' => '', // Code Lobster
+        'geany' => '', // Geany
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive

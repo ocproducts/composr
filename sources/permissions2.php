@@ -412,7 +412,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
         return $permission_rows;
     }
 
-    require_code('themewizard');
+    require_code('themes2');
     $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
     // For heading up the table matrix

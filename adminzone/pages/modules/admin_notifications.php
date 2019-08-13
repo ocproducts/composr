@@ -323,7 +323,7 @@ class Module_admin_notifications
             sort_maps_by($notification_sections[$i]['NOTIFICATION_CODES'], 'NOTIFICATION_LABEL', false, true);
         }
 
-        require_code('themewizard');
+        require_code('themes2');
         $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
         $notification_types_titles = array();

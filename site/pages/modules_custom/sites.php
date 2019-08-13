@@ -182,7 +182,6 @@ class Module_sites
         require_lang('installer');
         require_lang('downloads');
         require_code('form_templates');
-        require_code('ecommerce');
         require_lang('cns');
 
         $type = get_param_string('type', 'browse');
@@ -217,6 +216,9 @@ class Module_sites
     public function hostingcopy_step1()
     {
         if (!addon_installed('search')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+        if (!addon_installed('downloads')) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 

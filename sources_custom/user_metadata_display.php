@@ -15,6 +15,10 @@
 
 function user_metadata_display_script()
 {
+    if (!addon_installed('securitylogging')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $member_id = get_param_integer('member_id', get_member());
     $secure_key = get_param_string('secure_key', '');
     $expected_secure_key = generate_secure_user_metadata_display_key($member_id);

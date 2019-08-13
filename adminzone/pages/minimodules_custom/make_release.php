@@ -68,7 +68,24 @@ function phase_0()
         $release_description = 'This version is the gold release of the next version of Composr';
     }
 
-    $changes = 'All reported bugs since the last release have been fixed.';
+    $previous_version = null;
+    $previous_tag = shell_exec('git describe --tags');
+    $matches = array();
+    if (preg_match('#^(.*)-\w+-\w+$#', $previous_tag, $matches) != 0) {
+        $previous_version = $matches[1];
+    }
+    if ($previous_version !== null) {
+        $changes = "The following changes have been made since version " . $previous_version . "...\n";
+        $_changes = shell_exec('git log --pretty=oneline HEAD...refs/tags/' . $previous_version);
+        foreach (explode("\n", $_changes) as $change) {
+            $parts = explode(' ', $change, 2);
+            if (count($parts) == 2) {
+                $changes .= ' - [url="' . $parts[1] . '"]https://github.com/ocproducts/composr/commit/' . $parts[0] . '[/url]' . "\n";
+            }
+        }
+    } else {
+        $changes = 'All reported bugs since the last release have been fixed.';
+    }
 
     $on_disk_version_parts = explode('.', $on_disk_version);
     $last = count($on_disk_version_parts) - 1;
@@ -79,10 +96,6 @@ function phase_0()
     if ((intval($on_disk_version_parts[$last]) >= 0) && (substr_count($on_disk_version, '.') == 2)) {
         $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
-
-    $changes .= '[staff_note] For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
-
-[/staff_note]For all changes, see the [url="git history"]' . COMPOSR_REPOS_URL . '/commits/[/url].';
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 

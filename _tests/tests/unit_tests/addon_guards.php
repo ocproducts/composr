@@ -112,7 +112,7 @@ class addon_guards_test_set extends cms_test_case
         }
     }
 
-    /*TODOpublic function testAddonGuardsImplicitCodeCalls()
+    public function testAddonGuardsImplicitCodeCalls()
     {
         $files_in_addons = array();
 
@@ -224,5 +224,5 @@ class addon_guards_test_set extends cms_test_case
                 }
             }
         }
-    }*/
+    }
 }

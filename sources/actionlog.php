@@ -99,8 +99,10 @@ abstract class Hook_actionlog
                                         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                                     }
 
-                                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url(intval($page_link[1]), true);
-                                    $followup_urls[] = $url;
+                                    if (is_numeric($page_link[1])) {
+                                        $url = $GLOBALS['FORUM_DRIVER']->member_profile_url(intval($page_link[1]), true);
+                                        $followup_urls[] = $url;
+                                    }
                                     break;
 
                                 default:

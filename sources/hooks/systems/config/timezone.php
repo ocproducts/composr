@@ -70,7 +70,7 @@ class Hook_config_timezone
     {
         $current_value = get_option($name);
         if (is_numeric($current_value)) {
-            $current_value = convert_timezone_offset_to_formal_timezone($current_value);
+            $current_value = convert_timezone_offset_to_formal_timezone(floatval($current_value));
         }
 
         $list = '';
