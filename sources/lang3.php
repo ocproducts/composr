@@ -624,6 +624,7 @@ function _comcode_lang_string($lang_code)
         } elseif (array_key_exists(0, $comcode_page)) {
             $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $lang_code, 'the_zone' => '!'));
             delete_lang($comcode_page[0]['string_index']);
+            $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
         }
     } else {
         $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_page' => $lang_code, 'the_zone' => '!'), '', 1);
@@ -633,6 +634,7 @@ function _comcode_lang_string($lang_code)
             return $ret;
         } elseif (array_key_exists(0, $comcode_page)) {
             $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_page' => $lang_code, 'the_zone' => '!'));
+            $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
         }
     }
 

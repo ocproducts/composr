@@ -239,7 +239,7 @@ function php_return_bytes($val)
         return 0;
     }
     $last = strtolower($val[strlen($val) - 1]);
-    $_val = intval($val);
+    $_val = intval(preg_replace('#[^\d]#', '', $val));
     switch ($last) {
         // The 'G' modifier is available since PHP 5.1.0
         case 'g':
@@ -524,6 +524,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 // IDE projects
                                 'clpprj' => '', // Code Lobster
                                 'csprj' => '', // Code Lobster
+                                'geany' => '', // Geany
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive

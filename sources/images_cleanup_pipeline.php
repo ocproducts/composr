@@ -221,8 +221,7 @@ function is_animated_image($c, $ext)
     if ($ext == 'gif') {
         $str_loc = 0;
         $count = 0;
-        while ($count < 2) // There is no point in continuing after we find a 2nd frame
-        {
+        while ($count < 2) { // There is no point in continuing after we find a 2nd frame
             $where1 = strpos($c, "\x00\x21\xF9\x04", $str_loc);
             if ($where1 === false) {
                 break;
@@ -623,7 +622,7 @@ function png_compress($path, $lossy = false)
             $parsed_colour = imagecolorsforindex($img, $at);
             if ((isset($parsed_colour['alpha'])) && ($parsed_colour['alpha'] != 0)) {
                 $has_alpha = true;
-                if ($parsed_colour['alpha'] != 127) {
+                if ($parsed_colour['alpha'] != 0) {
                     // Blended alpha, cannot handle as anything other than a proper 32-bit PNG
                     imagedestroy($img);
                     return;

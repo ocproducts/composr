@@ -1035,7 +1035,7 @@ function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $star
             $protected = !has_privacy_access('event', strval($event['id']));
         }
 
-        $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF');
+        $url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'));
         $conflict = (!$protected) ? make_string_tempcode(get_translated_text($event['e_title'])) : do_lang_tempcode('PRIVATE_HIDDEN');
         $out->attach(do_template('CALENDAR_EVENT_CONFLICT', array('_GUID' => '2e209eae2dfe2ee74df61c0f4ffe1651', 'URL' => $url, 'ID' => strval($id), 'TITLE' => $conflict)));
     }

@@ -51,6 +51,6 @@ class Hook_config_jpeg_quality
      */
     public function get_default()
     {
-        return '75';
+        return '90';
     }
 }

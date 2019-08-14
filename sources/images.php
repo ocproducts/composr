@@ -234,6 +234,14 @@ function _symbol_thumbnail($param)
                 if ($exp_dimensions[1] == '0') {
                     $exp_dimensions[1] = '1';
                 }
+
+                if ($exp_dimensions[0] == '-1') {
+                    $exp_dimensions[0] = float_to_raw_string(round((floatval($exp_dimensions[1]) * $source_aspect)));
+                }
+                if ($exp_dimensions[1] == '-1') {
+                    $exp_dimensions[1] = float_to_raw_string(round((floatval($exp_dimensions[0]) * (1 / $source_aspect))));
+                }
+
                 $destination_aspect = floatval($exp_dimensions[0]) / floatval($exp_dimensions[1]);
 
                 // We test the scaled sizes, rather than the ratios
@@ -245,10 +253,16 @@ function _symbol_thumbnail($param)
                         // Is it too wide, requiring cropping?
                         $scale = floatval($source_y) / floatval($exp_dimensions[1]);
                         $modify_image = intval(round(floatval($source_x) / $scale)) != intval($exp_dimensions[0]);
+                        if ($modify_image) {
+                            $algorithm = 'crop';
+                        }
                     } else {
                         // Is the image too short, requiring padding?
                         $scale = floatval($source_x) / floatval($exp_dimensions[0]);
                         $modify_image = intval(round(floatval($source_y) / $scale)) != intval($exp_dimensions[1]);
+                        if ($modify_image) {
+                            $algorithm = 'pad';
+                        }
                     }
                 } elseif ($source_aspect < $destination_aspect) {
                     // The image is taller than the output
@@ -256,15 +270,26 @@ function _symbol_thumbnail($param)
                         // Is it too tall, requiring cropping?
                         $scale = floatval($source_x) / floatval($exp_dimensions[0]);
                         $modify_image = intval(round(floatval($source_y) / $scale)) != intval($exp_dimensions[1]);
+                        if ($modify_image) {
+                            $algorithm = 'crop';
+                        }
                     } else {
                         // Is the image too narrow, requiring padding?
                         $scale = floatval($source_y) / floatval($exp_dimensions[1]);
                         $modify_image = intval(round(floatval($source_x) / $scale)) != intval($exp_dimensions[0]);
+                        if ($modify_image) {
+                            $algorithm = 'pad';
+                        }
                     }
                 } else {
                     // They're the same, within the tolerances of
                     // floating point arithmetic. Just scale it.
-                    $modify_image = false;
+                    if ($source_x != intval($exp_dimensions[0]) || $source_y != intval($exp_dimensions[1])) {
+                        $scale = floatval($source_x) / floatval($exp_dimensions[0]);
+                        $modify_image = true;
+                    } else {
+                        $modify_image = false;
+                    }
                 }
 
                 // We have a special case here, since we can "pad" an
@@ -539,7 +564,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
 /**
  * Resize an image to the specified size, but retain the aspect ratio.
  *
- * @param  URLPATH $from The URL to the image to resize
+ * @param  string $from The URL to the image to resize. May be either relative or absolute. If $using_path is set it is actually a path
  * @param  PATH $to The file path (including filename) to where the resized image will be saved
  * @param  integer $width The maximum width we want our new image to be (-1 means "don't factor this in")
  * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
@@ -553,6 +578,8 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  */
 function convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
 {
+    // TODO: Make sure in v11 $to is returned by reference, as it may get changed if the output file type has to be changed for feature-preservation
+
     require_code('images2');
     cms_profile_start_for('convert_image');
     $ret = _convert_image($from, $to, $width, $height, $box_width, $exit_on_error, $ext2, $using_path, $only_make_smaller, $thumb_options);

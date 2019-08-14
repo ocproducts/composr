@@ -59,24 +59,51 @@ class Module_cms_catalogues extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false, $simplified = false)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MANAGE_CATALOGUES', 'menu/rich_content/catalogues/catalogues'),
-
-            'add_category' => array('ADD_CATALOGUE_CATEGORY', 'menu/_generic_admin/add_one_category'),
-            'edit_category' => array('EDIT_CATALOGUE_CATEGORY', 'menu/_generic_admin/edit_one_category'),
         );
 
-        if (!$simplified) {
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_catalogues')) {
             $ret += array(
-                'add_catalogue' => array('ADD_CATALOGUE', 'menu/cms/catalogues/add_one_catalogue'),
-                'edit_catalogue' => array('EDIT_CATALOGUE', 'menu/cms/catalogues/edit_one_catalogue'),
+                'add_category' => array('ADD_CATALOGUE_CATEGORY', 'menu/_generic_admin/add_one_category'),
             );
         }
 
-        $ret += array(
-            'import' => array('IMPORT_CATALOGUE_ENTRIES', 'menu/_generic_admin/import_csv'),
-            'export' => array('CATALOGUE_EXPORT', 'menu/_generic_admin/export'),
-        );
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_catalogues')) {
+            $ret += array(
+                'edit_category' => array('EDIT_CATALOGUE_CATEGORY', 'menu/_generic_admin/edit_one_category'),
+            );
+        }
+
+        if (!$simplified) {
+            if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_catalogues')) {
+                $ret += array(
+                    'add_catalogue' => array('ADD_CATALOGUE', 'menu/cms/catalogues/add_one_catalogue'),
+                );
+            }
+
+            if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_catalogues')) {
+                $ret += array(
+                    'edit_catalogue' => array('EDIT_CATALOGUE', 'menu/cms/catalogues/edit_one_catalogue'),
+                );
+            }
+        }
+
+        if (has_privilege($member_id, 'mass_import', 'cms_catalogues')) {
+            $ret += array(
+                'import' => array('IMPORT_CATALOGUE_ENTRIES', 'menu/_generic_admin/import_csv'),
+            );
+        }
+
+        if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) {
+            $ret += array(
+                'export' => array('CATALOGUE_EXPORT', 'menu/_generic_admin/export'),
+            );
+        }
 
         $this->cat_crud_module = class_exists('Mx_cms_catalogues_cat') ? new Mx_cms_catalogues_cat() : new Module_cms_catalogues_cat();
         $this->alt_crud_module = class_exists('Mx_cms_catalogues_alt') ? new Mx_cms_catalogues_alt() : new Module_cms_catalogues_alt();

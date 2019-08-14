@@ -71,7 +71,7 @@ class Block_side_news_archive
         if ($select == '*') {
             require_code('selectcode');
             $selects_1 = selectcode_to_sqlfragment($select, 'p.news_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-            $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_entry_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
             $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
         } else {
             $q_filter = '1=1';

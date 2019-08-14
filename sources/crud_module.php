@@ -110,7 +110,6 @@ abstract class Standard_crud_module
     public $table_prefix = '';
     public $array_key = 'id';
     public $title_is_multi_lang = true;
-    public $orderer_is_multi_lang = null;
     public $orderer = null;
     public $table = null; // Actually, this is used by choose_feedback_fields_statistically also
 
@@ -142,26 +141,51 @@ abstract class Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $entry_points = array();
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        $ret = array();
         if (method_exists($this, 'add_actualisation')) {
-            $entry_points += array(
-                'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
-                'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
-            );
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
+                );
+            }
+
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
+                );
+            }
         }
         if (!is_null($this->cat_crud_module)) {
-            $entry_points += array(
-                'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
-                'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
-            );
+            if (($this->cat_crud_module->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->cat_crud_module->permissions_require . 'range_content', $this->cat_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
+                );
+            }
+
+            if (($this->cat_crud_module->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->cat_crud_module->permissions_require . 'range_content', $this->cat_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
+                );
+            }
         }
         if (!is_null($this->alt_crud_module)) {
-            $entry_points += array(
-                'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
-                'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
-            );
+            if (($this->alt_crud_module->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->alt_crud_module->permissions_require . 'range_content', $this->alt_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
+                );
+            }
+
+            if (($this->alt_crud_module->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->alt_crud_module->permissions_require . 'range_content', $this->alt_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
+                );
+            }
         }
-        return $entry_points;
+        return $ret;
     }
 
     public $doing;
@@ -1106,32 +1130,32 @@ abstract class Standard_crud_module
             }
         }
 
-        $orderer_is_multi_lang = $this->orderer_is_multi_lang;
-        if (is_null($orderer_is_multi_lang)) {
-            $orderer_is_multi_lang = $this->title_is_multi_lang;
-        }
-
         $select_field = !is_null($this->orderer) ? $this->orderer : ($this->table_prefix . strtolower($this->select_name));
+
+        $table_raw = (is_null($this->table) ? $this->module_type : $this->table);
+        $table = $table_raw . ' r';
+        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails r') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
         if (is_null($orderer)) {
             $orderer = $select_field;
         }
-        $table_raw = (is_null($this->table) ? $this->module_type : $this->table);
-        $table = $table_raw . ' r';
-        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails r') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-        if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
+        $orderer_is_multi_lang = isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw][preg_replace('# (ASC|DESC)$#', '', $orderer)]);
+
+        if ($orderer_is_multi_lang) {
             $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
             if (substr($orderer, -5) == ' DESC') {
                 $_orderer .= ' DESC';
             }
             $orderer = $_orderer;
-        } elseif (substr($orderer, 0, 1) != '(') { // If not a subquery
+        } elseif ((substr($orderer, 0, 1) != '(') && (strpos($orderer, '.') === false)) { // If not a subquery and not already dotted
             $orderer = 'r.' . $orderer;
         }
+
         if ($force_site_db) {
             $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
         }
+
         $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, '', false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($max_rows == 0) {
             return array(array(), 0);
@@ -1141,13 +1165,15 @@ abstract class Standard_crud_module
             $max = get_param_integer('max', 20);
         }
         $rows = $db->query_select($table . $join, array('r.*'), $where, 'ORDER BY ' . $orderer, $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
+
         if ($force_site_db) {
             $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
         }
+
         $_entries = array();
         foreach ($rows as $row) {
             $key = $row[$this->array_key];
-            $readable = $orderer_is_multi_lang ? get_translated_text($row[$select_field], $db) : $row[$select_field];
+            $readable = $row[$select_field];
             if (is_integer($readable)) {
                 $readable = '#' . strval($readable);
             }
@@ -1501,7 +1527,7 @@ abstract class Standard_crud_module
                     $_fields_existing->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c1959d74d4226cad31629b6f24a8e4b0', 'TITLE' => do_lang_tempcode('ACTIONS'))));
                     $_fields_existing->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), $prefix . 'delete', false));
                 }
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name, 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name . ' (ID #' . $myrow['id'] . ')', 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/));
                 $fields_existing->attach($temp);
                 $hidden->attach($_fields_hidden);
 

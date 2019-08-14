@@ -105,7 +105,7 @@ function _a_tag_link_fixup($matches)
 {
     $referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));
     $caller_url = looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : get_base_url();
-    $ret = '<a ' . $matches[1] . 'href="' . qualify_url($matches[2], $caller_url) . '"' . $matches[3] . '>';
+    $ret = '<a ' . $matches[1] . 'href="' . escape_html(qualify_url(html_entity_decode($matches[2], ENT_QUOTES, get_charset()), $caller_url)) . '"' . $matches[3] . '>';
     return $ret;
 }
 
@@ -672,8 +672,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = cms_preg_replace_safe('#(\s)\s*#', '${1}', $semihtml);
 
     // Clean redundant CSS syntax
-    do
-    {
+    do {
         $old = $semihtml;
         $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
     }
@@ -921,8 +920,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = comcode_preg_replace('center', '#^\[center\]\[right\](.*)\[/right\]\[/center\]$#si', '[center]${1}[/center]', $semihtml);
 
     // Clean redundant CSS syntax (again)
-    do
-    {
+    do {
         $old = $semihtml;
         $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
     }
@@ -1200,8 +1198,7 @@ function array_html_preg_replace($element, $array, $semihtml)
             break;
         }
 
-        if ($pos == 0) // First iteration is just to find first opener
-        {
+        if ($pos == 0) { // First iteration is just to find first opener
             $pos = $pos_opener + 1;
             continue;
         }

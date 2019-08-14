@@ -388,10 +388,6 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     $confidence_level = mixed();
     $status = ANTISPAM_RESPONSE_UNLISTED;
 
-    if (strpos($user_ip, ':') !== false) { // No ipv6 support
-        return array(ANTISPAM_RESPONSE_ERROR, $confidence_level); // TODO: #2585
-    }
-
     // Do the query with every detail we have
     require_code('files');
     require_code('character_sets');
@@ -410,7 +406,7 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
 
     secure_serialized_data($_result);
 
-    $result = @unserialize($_result, array('allowed_classes' => false));
+    $result = @cms_unserialize($_result);
     if ($result !== false) {
         if ($result['success']) {
             foreach (array('username', 'email', 'ip') as $criterion) {

@@ -123,6 +123,14 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
 
     // Write files
     foreach ($file_array as $i => $file) {
+        if ($offset >= pow(2, 32) - 1) {
+            if ($outfile_path !== null) {
+                @unlink($outfile_path);
+            }
+
+            fatal_exit('Zip file is too large');
+        }
+
         $file_array[$i]['offset'] = $offset;
 
         $date = getdate($file['time']);
@@ -139,14 +147,16 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
         $now_date = (($date['year'] - 1980) << 25) | ($date['mon'] << 21) | ($date['mday'] << 16) | ($date['hours'] << 11) | ($date['minutes'] << 5) | ($date['seconds'] >> 1);
         $file_array[$i]['date'] = $now_date;
 
-        $offsets[$file['name']] = $offset + 30 + strlen($file['name']);
+        $header_offset = 30 + strlen($file['name']);
+        $offsets[$file['name']] = $offset + $header_offset;
 
         $out .= pack('VvvvVVVVvv', 0x04034b50, 10, 0, 0, $now_date, $crc, $compressed_size, $uncompressed_size, strlen($file['name']), 0);
         $out .= $file['name'];
+        $offset += $header_offset;
 
         if ($stream) {
             echo $out;
-            $offset += strlen($out) + $uncompressed_size;
+            $offset += $uncompressed_size;
             if ((!array_key_exists('data', $file)) || (is_null($file['data']))) {
                 readfile($file['full_path']);
             } else {
@@ -155,6 +165,9 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
             $out = '';
         } else {
             if (!is_null($outfile)) {
+                fwrite($outfile, $out);
+                $out = '';
+
                 if ((!array_key_exists('data', $file)) || (is_null($file['data']))) {
                     $tmp = fopen($file['full_path'], 'rb');
                     flock($tmp, LOCK_SH);
@@ -191,11 +204,7 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
     // Write directory
     $size = 0;
     foreach ($file_array as $file) {
-        if ((!array_key_exists('data', $file)) || (is_null($file['data']))) {
-            $uncompressed_size = filesize($file['full_path']);
-        } else {
-            $uncompressed_size = strlen($file['data']);
-        }
+        $uncompressed_size = $sizes[$file['name']];
 
         $compressed_size = $uncompressed_size;
 

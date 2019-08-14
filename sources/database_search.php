@@ -975,7 +975,7 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null, $table_a
  * @param  boolean $permissions_field_is_string Whether the permissions field is a string
  * @return array The rows found
  */
-function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $fields, $where_clause, $content_where, $order, $select = '*', $raw_fields = null, $permissions_module = null, $permissions_field = null, $permissions_field_is_string = false)
+function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $fields, $where_clause, $content_where, &$order, $select = '*', $raw_fields = null, $permissions_module = null, $permissions_field = null, $permissions_field_is_string = false)
 {
     if (multi_lang_content()) {
         @ignore_user_abort(false); // If the user multi-submits a search, we don't want to run parallel searches (very slow!). That said, this currently doesn't work in PHP, because PHP does not realise the connection has died until way too late :(. So we also use a different tact (dedupe_mode) but hope PHP will improve with time.

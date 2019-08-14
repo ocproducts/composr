@@ -106,7 +106,7 @@ function upgrade_script()
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
                         secure_serialized_data($news);
-                        $details = unserialize($news, array('allowed_classes' => false));
+                        $details = cms_unserialize($news);
                         if ($details[0] != '') {
                             $l_refer_release_notes = $details[0];
                             if ($details[2] != '') {
@@ -355,9 +355,9 @@ function upgrade_script()
                             // Addon registry file, for installed addon...
 
                             if (substr($upgrade_file['path'], -1) != '/') {
-                                if ($popup_simple_extract) {
-                                    $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                                } else {
+                                $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
+
+                                if (!$popup_simple_extract) {
                                     $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                                     if (!$dry_run) {
                                         afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
@@ -388,9 +388,9 @@ function upgrade_script()
                                         afm_make_directory($upgrade_file['path'], false, true);
                                     }
                                 } else {
-                                    if ($popup_simple_extract) {
-                                        $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                                    } else {
+                                    $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
+
+                                    if (!$popup_simple_extract) {
                                         $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                                         if (!$dry_run) {
                                             if (!file_exists(get_file_base() . '/' . dirname($upgrade_file['path']))) {
