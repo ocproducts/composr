@@ -67,8 +67,7 @@ class Hook_commandr_command_whois
 
             if (addon_installed('securitylogging')) {
                 $all_banned = collapse_1d_complexity('ip', $GLOBALS['SITE_DB']->query('SELECT ip FROM ' . get_table_prefix() . 'banned_ip WHERE i_ban_positive=1 AND (i_ban_until IS NULL OR i_ban_until>' . strval(time()) . ')'));
-            } else
-            {
+            } else {
                 $all_banned = array();
             }
 

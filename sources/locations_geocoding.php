@@ -140,14 +140,14 @@ function _google_geocode($url_params, &$error_msg = null)
     }
     
     $key = get_option('google_geocode_api_key');
-    /*if ($key == '') { Actually, does work
+    if ($key == '') {
         $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
         return null;
-    }*/
+    }
 
     require_code('json');
 
-    $url = 'http://maps.googleapis.com/maps/api/geocode/json';
+    $url = 'https://maps.googleapis.com/maps/api/geocode/json';
     $url .= '?language=' . urlencode(strtolower(get_site_default_lang()));
     if ($key != '') {
         $url .= '&key=' . urlencode($key);

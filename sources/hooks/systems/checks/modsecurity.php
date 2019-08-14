@@ -37,8 +37,7 @@ class Hook_check_modsecurity
             $test_url = get_custom_base_url() . '/data/empty.php';
             $test_a = http_download_file($test_url, 0, false, true);
             $message_a = $GLOBALS['HTTP_MESSAGE'];
-            if ($message_a == '200')
-            {
+            if ($message_a == '200') {
                 $test_b = http_download_file($test_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
                 $message_b = $GLOBALS['HTTP_MESSAGE'];
                 if ($message_b != '200') {

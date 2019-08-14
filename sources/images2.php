@@ -88,7 +88,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
 /**
  * (Helper for convert_image).
  *
- * @param  URLPATH $from The URL to the image to resize
+ * @param  string $from The URL to the image to resize. May be either relative or absolute. If $using_path is set it is actually a path
  * @param  PATH $to The file path (including filename) to where the resized image will be saved
  * @param  integer $width The maximum width we want our new image to be (-1 means "don't factor this in")
  * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
@@ -114,13 +114,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     // Load
     $ext = get_file_extension($from);
     if ($using_path) {
-        if (!check_memory_limit_for($from, $exit_on_error)) {
-            return false;
-        }
-        if ($ext == 'svg') { // SVG is pass-through
-            copy($from, $to);
-            fix_permissions($to);
-            sync_file($to);
+        if ((!check_memory_limit_for($from, $exit_on_error)) || ($ext == 'svg'/*SVG is pass-through*/)) {
+            if ($using_path) {
+                copy($from, $to);
+                fix_permissions($to);
+                sync_file($to);
+            }
             return true;
         }
         $from_file = @cms_file_get_contents_safe($from);
@@ -128,13 +127,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     } else {
         $file_path_stub = convert_url_to_path($from);
         if (!is_null($file_path_stub)) {
-            if (!check_memory_limit_for($file_path_stub, $exit_on_error)) {
-                return false;
-            }
-            if ($ext == 'svg') { // SVG is pass-through
-                copy($file_path_stub, $to);
-                fix_permissions($to);
-                sync_file($to);
+            if ((!check_memory_limit_for($from, $exit_on_error)) || ($ext == 'svg'/*SVG is pass-through*/)) {
+                if ($using_path) {
+                    copy($file_path_stub, $to);
+                    fix_permissions($to);
+                    sync_file($to);
+                }
                 return true;
             }
             $from_file = @cms_file_get_contents_safe($file_path_stub);
@@ -185,6 +183,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     // ===============================================================================
     $sx = imagesx($source);
     $sy = imagesy($source);
+
+    // The typical case is to copy the full image from source to destination (PHP may be doing scaling, but that's irrelevant to this)
+    $copy_width = $sx;
+    $copy_height = $sy;
 
     $red = null;
 
@@ -273,7 +275,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         $wrong_y = intval(round(floatval($sy) / $thumb_options['scale']));
 
         // Handle cropping here
-        if (($thumb_options['type'] == 'crop') || (($thumb_options['type'] == 'pad_horiz_crop_horiz') && ($wrong_x > $width)) || (($thumb_options['type'] == 'pad_vert_crop_vert') && ($wrong_y > $height))) {
+        if ($thumb_options['type'] == 'crop') {
             // See which direction we're cropping in
             if (intval(round(floatval($sx) / $thumb_options['scale'])) != $width) {
                 $crop_direction = 'x';
@@ -312,6 +314,9 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             $sx = intval(($width * $thumb_options['scale']));
             $sy = intval(($height * $thumb_options['scale']));
 
+            $copy_width = intval(($width * $thumb_options['scale_to']));
+            $copy_height = intval(($height * $thumb_options['scale_to']));
+
             // We start at the origin of our output
             $dest_x = 0;
             $dest_y = 0;
@@ -320,7 +325,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             // too much)
             $_width = $width;
             $_height = $height;
-        } elseif ($thumb_options['type'] == 'pad' || (($thumb_options['type'] == 'pad_horiz_crop_horiz') && ($wrong_x < $width)) || (($thumb_options['type'] == 'pad_vert_crop_vert') && ($wrong_y < $height))) {
+        } elseif ($thumb_options['type'] == 'pad') {
             // Padding code lives here. We definitely need to pad some excess space
             // because otherwise symbols.php would not call us. Thus we need a
             // background (can be transparent). Let's see if we've been given one.
@@ -400,14 +405,14 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             // $sx and $sy are fine, since they cover the whole image
             $source_x = 0;
             $source_y = 0;
-            $_width = ($pad_axis == 'x') ? intval(round(floatval($sx) / $thumb_options['scale'])) : $width;
-            $_height = ($pad_axis == 'y') ? intval(round(floatval($sy) / $thumb_options['scale'])) : $height;
+            $_width = ($pad_axis == 'x') ? ($width - $pad_amount) : $width;
+            $_height = ($pad_axis == 'y') ? ($height - $pad_amount) : $height;
             $dest_x = ($pad_axis == 'x') ? $pad_amount : 0;
             $dest_y = ($pad_axis == 'y') ? $pad_amount : 0;
         }
     }
 
-    if (($_width == $sx) && ($_height == $sy)) {
+    if (($_width == $sx) && ($_height == $sy) && (!$reorientated)) {
         // We can just escape, nothing to do...
 
         imagedestroy($source);
@@ -460,11 +465,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 $_transparent = imagecolorsforindex($source, $transparent);
                 $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
                 imagecolortransparent($dest, $__transparent);
-                imagefilledrectangle($dest, 0, 0, $width, $height, $__transparent);
+                imagefilledrectangle($dest, 0, 0, $_width, $_height, $__transparent);
+                imagealphablending($dest, true); // Do not want to copy old transparent index over in imagecopyresampled (if we did this command always it would mess up for 32 bit images as those need the blending off)
             }
         }
 
-        imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
+        imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $copy_width, $copy_height);
     } else { // LEGACY Old GD version, no truecolor support
         // Set the background if we have one
         if (!is_null($thumb_options) && !is_null($red)) {
@@ -475,8 +481,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         } else {
             $dest = imagecreate($_width, $_height);
         }
-
-        imagecopyresized($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
+        imagecopyresized($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $copy_width, $copy_height);
     }
 
     // Clean up
@@ -485,6 +490,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     // Save
     if (is_null($ext2)) {
         $ext2 = get_file_extension($to);
+        if ($ext2 == '') {
+            $ext2 = get_file_extension($from);
+            if ($ext2 == '') {
+               $ext2 = null;
+            }
+        }
     }
 
     // If we've got transparency then we have to save as PNG
@@ -493,7 +504,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     }
 
     if ($ext2 == 'png') {
-        if (strtolower(substr($to, -4)) != '.png') {
+        if ((strtolower(substr($to, -4)) != '.png') && (get_file_extension($to) != '')) {
             $to .= '.png';
         }
     }

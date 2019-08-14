@@ -45,7 +45,7 @@ class Hook_symbol_CATALOGUE_ENTRY_BACKREFS
             }
 
             $done = 0;
-            $table = 'catalogue_fields f JOIN ' . get_table_prefix() . 'catalogue_efv_short s ON (f.id=s.cf_id AND ' . db_string_equal_to('cf_type', 'reference') . ' OR cf_type LIKE \'' . db_encode_like('ck\_%') . '\')';
+            $table = 'catalogue_fields f JOIN ' . get_table_prefix() . 'catalogue_efv_short s ON (f.id=s.cf_id AND (' . db_string_equal_to('cf_type', 'reference') . ' OR cf_type LIKE \'' . db_encode_like('ck\_%') . '\'))';
             if ($field_id !== null) {
                 $table .= ' AND f.id=' . strval($field_id);
             }
@@ -61,15 +61,20 @@ class Hook_symbol_CATALOGUE_ENTRY_BACKREFS
                 }
             }
             $results = $GLOBALS['SITE_DB']->query_select($table, $select, array('cv_value' => $param[0]), $order_by);
+            $_results = array();
             foreach ($results as $result) {
+                if ($resolve != '') {
+                    $_results[] = $result['content_id'];
+                } else {
+                    $_results[] = strval($result['ce_id']);
+                }
+            }
+            $_results = array_unique($_results);
+            foreach ($_results as $_result) {
                 if ($value != '') {
                     $value .= ',';
                 }
-                if ($resolve != '') {
-                    $value .= $result['content_id'];
-                } else {
-                    $value .= strval($result['ce_id']);
-                }
+                $value .= $_result;
                 $done++;
 
                 if (($limit !== null) && ($done == $limit)) {

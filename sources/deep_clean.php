@@ -45,8 +45,7 @@ function deep_clean($d, $heading = '')
                     }
                 }
             }
-            if ($nesting_tally == 0) // Tags do balance, so it closed right at the end
-            {
+            if ($nesting_tally == 0) { // Tags do balance, so it closed right at the end
                 $d = cms_preg_replace_safe('#^\s*<div[^<>]*>#', '', $d);
                 $d = cms_preg_replace_safe('#</div>\s*$#s', '', $d);
             } else {
@@ -162,22 +161,19 @@ function column_cleanup(&$text)
     $temp_text = strip_tags($text, '<br>');
     $temp_text = html_entity_decode($temp_text, ENT_QUOTES, get_charset());
     $lines = explode('<br />', $temp_text);
-    if (count($lines) > 5) // Statistically significant
-    {
+    if (count($lines) > 5) { // Statistically significant
         $lengths = array();
         foreach ($lines as $line) {
             $lengths[] = strlen($line);
         }
         $mean_length = (int)(array_sum($lengths) / count($lengths));
-        if ($mean_length > 5) // Statistically significant
-        {
+        if ($mean_length > 5) { // Statistically significant
             $dist = 0;
             foreach ($lines as $line) {
                 $dist += abs(strlen($line) - $mean_length);
             }
             $sd = ((float)$dist) / ((float)count($lines));
-            if ($sd < 0.6 * (float)$mean_length) // Standard deviation within 60%
-            {
+            if ($sd < 0.6 * (float)$mean_length) { // Standard deviation within 60%
                 $sentence_ends = array('!', '?', '.', '>');
 
                 $lines = explode('<br />', $text);

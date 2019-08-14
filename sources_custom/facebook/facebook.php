@@ -15,6 +15,8 @@
  * under the License.
  */
 
+require_code('json'); // TODO: Remove in v11
+
 if (!function_exists('curl_init')) {
   throw new Exception('Facebook needs the CURL PHP extension.');
 }

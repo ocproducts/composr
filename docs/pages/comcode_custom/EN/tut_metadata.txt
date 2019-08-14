@@ -67,7 +67,7 @@ The Open Graph Title is taken as the same as the screen title (it's not combined
 
 The Open Graph Image is either contextual (the main image of whatever content is being viewed), or the [tt]logo/standalone_logo[/tt] theme image.
 
-Note that [tt]logo/trimmed_logo[/tt] is used for a number of things, including the e-mail header, and in RSS feeds. It is intended to be a simple standalone logo (i.e. not tied into the overall web design).
+Note that [tt]logo/standalone_logo[/tt] is used for a number of things, including the e-mail header, and in RSS feeds. It is intended to be a simple standalone logo (i.e. not tied into the overall web design).
 
 In your HTML the Open Graph tags look similar to:
 [code="HTML"]
