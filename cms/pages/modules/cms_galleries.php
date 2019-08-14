@@ -52,15 +52,39 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MANAGE_GALLERIES', 'menu/rich_content/galleries'),
-            'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
-            'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
-            'add_other' => array('ADD_VIDEO', 'menu/cms/galleries/add_one_video'),
-            'edit_other' => array('EDIT_VIDEO', 'menu/cms/galleries/edit_one_video'),
         );
 
-        if (has_privilege(get_member(), 'mass_import', 'cms_galleries')) {
+        if (has_privilege($member_id, 'submit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'add_other' => array('ADD_VIDEO', 'menu/cms/galleries/add_one_video'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'edit_other' => array('EDIT_VIDEO', 'menu/cms/galleries/edit_one_video'),
+            );
+        }
+
+        if (has_privilege($member_id, 'mass_import', 'cms_galleries')) {
             $ret['import'] = array('GALLERY_IMPORT', 'menu/_generic_admin/import');
         }
 

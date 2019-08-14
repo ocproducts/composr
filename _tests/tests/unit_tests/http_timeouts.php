@@ -49,7 +49,7 @@ class http_timeouts_test_set extends cms_test_case
         $this->assertTrue($r3[1] >= 33505479, 'Wrong download size @ ' . strval($r3[1]));
 
         // Test timeout being hit for something that really is timing out
-        $url = get_base_url() . '/_tests/sleep.php?timeout=' . float_to_raw_string($timeout);
+        $url = get_base_url() . '/_tests/sleep.php?timeout=' . float_to_raw_string($timeout + 2);
         $r1 = $this->_testCurl($url, $timeout);
         $this->assertTrue(!$r1[0]);
         $this->assertTrue($r1[1] == 0, 'Wrong download size @ ' . strval($r1[1]));

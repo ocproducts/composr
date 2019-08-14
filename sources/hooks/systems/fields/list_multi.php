@@ -210,8 +210,7 @@ class Hook_fields_list_multi extends ListFieldHook
 
         $input_size = max(1, intval(option_value_from_field_array($field, 'input_size', '5')));
 
-        switch ($widget)
-        {
+        switch ($widget) {
             case 'vertical_checkboxes':
             case 'horizontal_checkboxes':
                 $_list = array();
@@ -250,8 +249,7 @@ class Hook_fields_list_multi extends ListFieldHook
         }
 
         $widget = option_value_from_field_array($field, 'widget', 'multilist');
-        switch ($widget)
-        {
+        switch ($widget) {
             case 'vertical_checkboxes':
             case 'horizontal_checkboxes':
                 $i = 0;

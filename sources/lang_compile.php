@@ -57,6 +57,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
                     foreach ($comcode_lang_strings as $comcode_lang_string) {
                         $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', $comcode_lang_string);
                         delete_lang($comcode_lang_string['string_index']);
+                        $GLOBALS['COMCODE_PAGE_RUNTIME_CACHE'] = array();
                     }
                 }
             }

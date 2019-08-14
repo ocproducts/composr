@@ -192,6 +192,22 @@ mail('you@example.com','Test','Test');
 [/code]
 (of course substitute in your own e-mail address)
 
+[title="2"]Requesting help[/title]
+
+If you are not able to get e-mail working then it is almost certainly a result of your system configuration. Someone helping would likely need to have admin access to your site, or perhaps even to the whole SMTP server you are using. Never-the-less, if you are requesting help then at least make sure you answer the following questions so they have some insight into your configuration:
+1) Are you self-hosted or are you on shared hosting?
+2) Is your server Windows or is it Linux?
+3) If you are on Windows: Have you properly configured the SMTP settings in the server's [tt]php.ini[/tt] file?
+4) Is Composr configured to use its own SMTP settings, or they are blank and PHP's mailer is used?
+5) If you have not configured Composr to use its own SMTP settings: Are you on a local hosted SMTP server (same server as web server), or are you or a remote relay?
+6) Have you checked your spam folder?
+7) Have you have looked at the SMTP server logs?
+8) Have you installed the [tt]better_mail[/tt] addon?
+9) If you have configured Composr to use its own SMTP settings: Is your SMTP configuration secured via some kind of SSL?
+10) If you have configured Composr to use its own SMTP settings, and if it is SSL: What exact SSL configuration do you need to use?
+11) If you have configured Composr to use its own SMTP settings: Do you need to connect to SMTP with any special port settings?
+12) Are you running any exotic SMTP software?
+
 [concepts
  1_key="SPF"           1_value="Sender Policy framework. A DNS-based scheme to identify which servers are allowed to send e-mails."
  2_key="Sender ID"     2_value="A Microsoft extension of SPF (using the same syntax) that also competes with DKIM."

@@ -392,7 +392,7 @@ function try_cookie_login()
 
             secure_serialized_data($the_cookie, array());
 
-            $unserialize = @unserialize($the_cookie, array('allowed_classes' => false));
+            $unserialize = @cms_unserialize($the_cookie);
 
             if (is_array($unserialize)) {
                 if (array_key_exists($real_member_cookie, $unserialize)) {

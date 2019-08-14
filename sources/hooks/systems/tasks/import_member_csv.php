@@ -329,7 +329,7 @@ class Hook_task_import_member_csv
                 $custom_fields[$cpf['id']] = array_key_exists($cpf['_cf_name'], $line) ? $line[$cpf['_cf_name']] : $cpf['cf_default'];
 
                 if ($cpf['cf_type'] == 'integer') {
-                    $custom_fields[$cpf['id']] = intval($custom_fields[$cpf['id']]);
+                    $custom_fields[$cpf['id']] = ($custom_fields[$cpf['id']] === null) ? null : @intval($custom_fields[$cpf['id']]);
                 } elseif ($cpf['cf_type'] == 'tick') {
                     $custom_fields[$cpf['id']] = ((strtoupper($custom_fields[$cpf['id']]) == 'YES' || strtoupper($custom_fields[$cpf['id']]) == 'Y' || strtoupper($custom_fields[$cpf['id']]) == 'ON' || $custom_fields[$cpf['id']] == '1') ? 1 : 0);
                 } elseif (($cpf['cf_type'] == 'short_text') || ($cpf['cf_type'] == 'short_trans')) {
@@ -355,7 +355,7 @@ class Hook_task_import_member_csv
                         );
                         $custom_fields[$cpf['id']] = floatval($parts[1]) + $month_lookup[$parts[0]];
                     } else {
-                        $custom_fields[$cpf['id']] = floatval($custom_fields[$cpf['id']]);
+                        $custom_fields[$cpf['id']] = ($custom_fields[$cpf['id']] === null) ? null : @floatval($custom_fields[$cpf['id']]);
                     }
                 }
                 unset($line[$cpf['_cf_name']]);

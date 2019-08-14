@@ -2130,12 +2130,8 @@ class Module_admin_themes
     {
         require_code('uploads');
 
-        $lang = choose_language($this->title, true, true);
-        if (is_object($lang)) {
-            return $lang;
-        }
-
         $theme = post_param_string('theme');
+        $lang = post_param_string('lang');
         $id = post_param_string('id');
         $old_id = post_param_string('old_id');
 

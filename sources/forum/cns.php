@@ -611,7 +611,11 @@ class Forum_driver_cns extends Forum_driver_base
         if (has_interesting_post_fields()) {
             $page = '';
         }
-        $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+        if (get_page_name() == 'join') {
+            $_redirect_url = build_url(array('page' => 'start'), '');
+        } else {
+            $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+        }
         $redirect_url = $_redirect_url->evaluate();
 
         $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url));

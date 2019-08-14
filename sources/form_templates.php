@@ -1524,7 +1524,7 @@ function make_previewable_url_absolute($url)
             }
 
             $htaccess_path = $image_path . '/.htaccess';
-            if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
+            if ((is_file($htaccess_path)) && (stripos(file_get_contents($htaccess_path), 'deny from all') !== false) && (stripos(file_get_contents($htaccess_path), 'require not ip') !== false)) {
                 return array($_url, $is_image);
             }
 

@@ -71,6 +71,9 @@ class Block_twitter_feed
             $token = get_value('twitter_oauth_token', null, true);
             $token_secret = get_value('twitter_oauth_token_secret', null, true);
         }
+        if (($api_key == '') || ($api_secret == '')) {
+            return paragraph('API options are not configured.', '', 'red_alert');
+        }
 
         $twitter_query = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
         if (preg_match('#^\w+$#', $twitter_query) != 0) {
@@ -169,7 +172,7 @@ class Block_twitter_feed
                 $twitter_result = $twitter->searchTweets($twitter_query, null, null, null, null, $twitter_maxstatuses);
                 $twitter_statuses = $twitter_result['statuses'];
             }
-        } catch (TwitterException $e) {
+        } catch (Exception $e) {
             $twitter_error = $e->getMessage();
             $twitter_error .= '<br />';
             return do_template($twitter_templatemain, array(

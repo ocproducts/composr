@@ -29,7 +29,7 @@ class xml_sitemaps_test_set extends cms_test_case
     public function testSitemapAdd()
     {
         $id = add_news_category('Test' . uniqid('', true));
-        $page_link = '_SEARCH:news:browse:' . strval($id);
+        $page_link = get_module_zone('news') . ':news:browse:' . strval($id);
         $last_updated = $GLOBALS['SITE_DB']->query_select_value('sitemap_cache', 'last_updated', array('page_link' => $page_link));
         $this->assertTrue($last_updated >= time() - 3);
     }

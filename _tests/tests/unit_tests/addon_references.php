@@ -30,7 +30,7 @@ class addon_references_test_set extends cms_test_case
     public function testPHP()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
+            if ((substr($c, -4) == '.php') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#addon_installed\(\'([^\']*)\'\)#', $_c, $matches);
@@ -45,7 +45,7 @@ class addon_references_test_set extends cms_test_case
     public function testTemplates()
     {
         foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
+            if ((substr($c, -4) == '.tpl') && (!should_ignore_file($c, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#\{\$ADDON_INSTALLED,(\w+)\}#', $_c, $matches);

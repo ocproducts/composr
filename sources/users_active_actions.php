@@ -323,8 +323,7 @@ function set_invisibility($make_invisible = true)
 {
     $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => $make_invisible ? 1 : 0), array('member_id' => get_member(), 'the_session' => get_session_id()), '', 1);
     global $SESSION_CACHE;
-    if ($SESSION_CACHE[get_session_id()]['member_id'] == get_member()) // A little security
-    {
+    if ($SESSION_CACHE[get_session_id()]['member_id'] == get_member()) { // A little security
         $SESSION_CACHE[get_session_id()]['session_invisible'] = $make_invisible ? 1 : 0;
         if (get_option('session_prudence') == '0') {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);

@@ -105,10 +105,14 @@ class Module_filedump
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('FILEDUMP', 'menu/cms/filedump'),
         );
-        if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+        if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) {
             $ret += array(
                 'broken' => array('FIND_BROKEN_FILEDUMP_LINKS', 'menu/adminzone/tools/cleanup'),
             );

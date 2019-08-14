@@ -172,8 +172,11 @@ class Database_super_sqlserver
                 $unique_index_name = 'unique__' . $table_name;
                 $ret[] = 'IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name=\'' . $unique_index_name . '\' AND object_id=OBJECT_ID(\'' . $table_name . '\')) CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
 
+                // Delete full-text index if already exists
+                $ret[] = 'IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id=OBJECT_ID(\'' . $table_name . '\')) DROP FULLTEXT INDEX ON ' . $table_name;
+
                 // Create full-text index on table if needed
-                $ret[] = 'IF NOT EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id=OBJECT_ID(\'' . $table_name . '\')) CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
+                $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
             return $ret;
         }

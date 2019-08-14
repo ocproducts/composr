@@ -141,26 +141,51 @@ abstract class Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $entry_points = array();
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        $ret = array();
         if (method_exists($this, 'add_actualisation')) {
-            $entry_points += array(
-                'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
-                'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
-            );
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'add' => array('ADD_' . $this->lang_type, 'menu/_generic_admin/add_one'),
+                );
+            }
+
+            if (($this->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->permissions_require . 'range_content', $this->privilege_page_name))) {
+                $ret += array(
+                    'edit' => array('EDIT_' . $this->lang_type, 'menu/_generic_admin/edit_one'),
+                );
+            }
         }
         if (!is_null($this->cat_crud_module)) {
-            $entry_points += array(
-                'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
-                'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
-            );
+            if (($this->cat_crud_module->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->cat_crud_module->permissions_require . 'range_content', $this->cat_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'add_category' => array('ADD_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/add_one_category'),
+                );
+            }
+
+            if (($this->cat_crud_module->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->cat_crud_module->permissions_require . 'range_content', $this->cat_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'edit_category' => array('EDIT_' . $this->cat_crud_module->lang_type, 'menu/_generic_admin/edit_one_category'),
+                );
+            }
         }
         if (!is_null($this->alt_crud_module)) {
-            $entry_points += array(
-                'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
-                'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
-            );
+            if (($this->alt_crud_module->permissions_require === null) || (has_privilege($member_id, 'submit_' . $this->alt_crud_module->permissions_require . 'range_content', $this->alt_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'add_other' => array('ADD_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/add_one'),
+                );
+            }
+
+            if (($this->alt_crud_module->permissions_require === null) || (has_privilege($member_id, 'edit_' . $this->alt_crud_module->permissions_require . 'range_content', $this->alt_crud_module->privilege_page_name))) {
+                $ret += array(
+                    'edit_other' => array('EDIT_' . $this->alt_crud_module->lang_type, 'menu/_generic_admin/edit_one'),
+                );
+            }
         }
-        return $entry_points;
+        return $ret;
     }
 
     public $doing;
@@ -1502,7 +1527,7 @@ abstract class Standard_crud_module
                     $_fields_existing->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c1959d74d4226cad31629b6f24a8e4b0', 'TITLE' => do_lang_tempcode('ACTIONS'))));
                     $_fields_existing->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), $prefix . 'delete', false));
                 }
-                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name, 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/));
+                $temp = do_template('FORM_FIELD_SET_GROUPER', array('_GUID' => '1492d973db45cbecff892ad4ac1af28f' . get_class($this), 'NAME' => $name . ' (ID #' . $myrow['id'] . ')', 'ID' => 'FIELD_' . strval($i + 1), 'FIELDS' => $_fields_existing->evaluate()/*FUDGE*/));
                 $fields_existing->attach($temp);
                 $hidden->attach($_fields_hidden);
 

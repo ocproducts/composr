@@ -46,6 +46,7 @@ test_a
 /cms_sitemap.xml
 /*.clpprj
 /*.csprj
+/*.geany
 /.project
 /data_custom/latest_activity.txt
 /hphp-static-cache
@@ -146,4 +147,5 @@ pages/html_custom/*/*.htm
 /stats
 /uploads/website_specific/compo.sr/upgrades/full
 /data_custom/fonts/*.ttf
+/nbproject
 

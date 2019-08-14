@@ -105,7 +105,7 @@ class Hook_implicit_usergroups_antispam_question
             return 0;
         }
 
-        return $GLOBALS['FORUM_DB']->query_value('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where());
+        return $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where());
     }
 
     /**

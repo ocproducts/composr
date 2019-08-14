@@ -586,7 +586,7 @@ class Module_downloads
 
         // Load up all data
         $cats = array();
-        $rows = $GLOBALS['SITE_DB']->query('SELECT p.*,text_original FROM ' . get_table_prefix() . 'download_downloads p' . $privacy_join . ' WHERE ' . (addon_installed('unvalidated') ? 'validated=1 AND ' : '') . '(' . $sql_select . ')' . $privacy_where . ' ORDER BY text_original ASC', null, null, false, true, array('name' => 'SHORT_TRANS'));
+        $rows = $GLOBALS['SITE_DB']->query('SELECT p.* FROM ' . get_table_prefix() . 'download_downloads p' . $privacy_join . ' WHERE ' . (addon_installed('unvalidated') ? 'validated=1 AND ' : '') . '(' . $sql_select . ')' . $privacy_where . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name'), null, null, false, true, array('name' => 'SHORT_TRANS'));
         foreach ($rows as $row) {
             $download_name = get_translated_text($row['name']);
             $letter = strtoupper(substr($download_name, 0, 1));

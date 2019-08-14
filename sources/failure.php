@@ -769,13 +769,19 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
     $GLOBALS['SITE_DB']->query_insert('banned_ip', array('ip' => $ip, 'i_descrip' => $descrip, 'i_ban_until' => $ban_until, 'i_ban_positive' => $ban_positive ? 1 : 0), false, true); // To stop weird race-like conditions
     persistent_cache_delete('IP_BANS');
     if ((is_writable_wrap(get_file_base() . '/.htaccess')) && (is_null($ban_until))) {
-        $original_contents = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
+        $contents = unixify_line_format(cms_file_get_contents_safe(get_file_base() . '/.htaccess'));
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
-        if (strpos($original_contents, "\n" . 'deny from ' . $ip_cleaned) === false) {
+        if ((stripos($contents, "\n" . 'deny from ' . $ip_cleaned) === false) && (stripos($contents, "\n" . 'require not ip ' . $ip_cleaned) === false)) {
             require_code('files');
-            $contents = str_replace('# deny from xxx.xx.x.x (leave this comment here!)', '# deny from xxx.xx.x.x (leave this comment here!)' . "\n" . 'deny from ' . $ip_cleaned, $original_contents);
+
+            // < Apache 2.4
+            $contents = str_ireplace('# deny from xxx.xx.x.x (leave this comment here!)', '# deny from xxx.xx.x.x (leave this comment here!)' . "\n" . 'deny from ' . $ip_cleaned, $contents);
+
+            // >= Apache 2.4
+            $contents = str_ireplace('# require not ip xxx.xx.x.x (leave this comment here!)', '# require not ip xxx.xx.x.x (leave this comment here!)' . "\n" . 'require not ip ' . $ip_cleaned, $contents);
+
             cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }
@@ -797,14 +803,19 @@ function remove_ip_ban($ip)
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     persistent_cache_delete('IP_BANS');
     if (is_writable_wrap(get_file_base() . '/.htaccess')) {
-        $contents = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
+        $contents = unixify_line_format(cms_file_get_contents_safe(get_file_base() . '/.htaccess'));
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         if (trim($ip_cleaned) != '') {
             require_code('files');
-            $contents = str_replace("\n" . 'deny from ' . $ip_cleaned . "\n", "\n", $contents);
-            $contents = str_replace("\r" . 'deny from ' . $ip_cleaned . "\r", "\r", $contents); // Just in case
+
+            // < Apache 2.4
+            $contents = str_ireplace("\n" . 'deny from ' . $ip_cleaned . "\n", "\n", $contents);
+
+            // >= Apache 2.4
+            $contents = str_ireplace("\n" . 'require not ip ' . $ip_cleaned . "\n", "\n", $contents);
+
             cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }

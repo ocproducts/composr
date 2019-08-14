@@ -156,6 +156,10 @@ class Hook_commandr_fs_database
                     $where[$field['m_name']] = $this->unescape_name($value);
                 }
             }
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there($meta_dir[0], $where);
+            if ($test !== null) {
+                return false; // Directory exists
+            }
             $GLOBALS['SITE_DB']->query_insert($meta_dir[0], $where);
         } else {
             return false; // Directories aren't allowed to be added anywhere else

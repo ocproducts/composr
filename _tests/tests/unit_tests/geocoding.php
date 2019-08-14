@@ -18,6 +18,14 @@
  */
 class geocoding_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        // Please don't use this on a live site, we just need these to test against
+        set_option('google_geocode_api_key', 'AIzaSyD-jqeO_HlD1bLmA68JhAJOBajZw96-UHE');
+    }
+
     public function testIPGeocode()
     {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');

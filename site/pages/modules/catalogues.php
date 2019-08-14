@@ -1036,9 +1036,9 @@ class Module_catalogues
 
         // Get category contents
         if (get_value('cc_sort_date__' . $catalogue_name) !== '1') {
-            $cc_sort = 'recent ASC';
+            $cc_sort = 'title ASC';
         } else {
-            $cc_sort = 'title';
+            $cc_sort = 'recent ASC';
         }
         $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'efficient' => '0', 'zone' => get_zone_name(), 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
         if (get_option('catalogues_subcat_narrowin') == '1') {

@@ -185,8 +185,7 @@ function catalogue_file_script()
     if ($size == $new_length) {
         cms_ob_end_clean();
         fpassthru($myfile);
-    } else
-    {
+    } else {
         $i = 0;
         flush(); // LEGACY Works around weird PHP bug that sends data before headers, on some PHP versions
         while ($i < $new_length) {
