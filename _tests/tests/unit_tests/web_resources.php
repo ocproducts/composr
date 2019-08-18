@@ -65,7 +65,6 @@ class web_resources_test_set extends cms_test_case
     {
         $exceptions = array(
             // Won't parse
-            'jwplayer.js',
             'jquery_ui.js',
             'modernizr.js',
             'plupload.js',

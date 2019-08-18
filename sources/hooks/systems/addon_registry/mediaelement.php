@@ -88,7 +88,7 @@ class Hook_addon_registry_mediaelement
      */
     public function get_description()
     {
-        return 'Replaces the jwplayer player with MediaElement.js.';
+        return 'Embeds media using the MediaElement.js player.';
     }
 
     /**
@@ -133,19 +133,17 @@ class Hook_addon_registry_mediaelement
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/mediaelement.php',
-            'data_custom/mediaelement/index.html',
-            'data_custom/mediaelement/mediaelement-flash-audio-ogg.swf',
-            'data_custom/mediaelement/mediaelement-flash-audio.swf',
-            'data_custom/mediaelement/mediaelement-flash-video-hls.swf',
-            'data_custom/mediaelement/mediaelement-flash-video-mdash.swf',
-            'data_custom/mediaelement/mediaelement-flash-video.swf',
-            'themes/default/css_custom/mediaelementplayer.css',
-            'themes/default/images_custom/mediaelement/index.html',
-            'themes/default/images_custom/mediaelement/mejs-controls.svg',
-            'themes/default/javascript_custom/mediaelement-and-player.js',
-            'themes/default/templates_custom/MEDIA_AUDIO_WEBSAFE.tpl',
-            'themes/default/templates_custom/MEDIA_VIDEO_WEBSAFE.tpl',
+            'sources/hooks/systems/addon_registry/mediaelement.php',
+            'data/mediaelement/index.html',
+            'data/mediaelement/mediaelement-flash-audio-ogg.swf',
+            'data/mediaelement/mediaelement-flash-audio.swf',
+            'data/mediaelement/mediaelement-flash-video-hls.swf',
+            'data/mediaelement/mediaelement-flash-video-mdash.swf',
+            'data/mediaelement/mediaelement-flash-video.swf',
+            'themes/default/css/mediaelementplayer.css',
+            'themes/default/images/mediaelement/index.html',
+            'themes/default/images/mediaelement/mejs-controls.svg',
+            'themes/default/javascript/mediaelement-and-player.js',
         );
     }
 }

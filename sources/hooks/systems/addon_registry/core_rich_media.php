@@ -239,8 +239,6 @@ class Hook_addon_registry_core_rich_media
             'themes/default/images/big_tabs/controller_button_top_active.svg',
             'themes/default/images/big_tabs/controller_button_top.svg',
             'themes/default/images/big_tabs/controller_button.svg',
-            'data/jwplayer.flash.swf',
-            'themes/default/javascript/jwplayer.js',
             'sources/hooks/systems/notifications/member_mention.php',
             'sources/member_mentions.php',
             'data/attachment.php',

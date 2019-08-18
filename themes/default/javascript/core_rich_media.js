@@ -839,150 +839,144 @@
         });
     };
 
-    // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
-    // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-    $cms.templates.mediaAudioWebsafe = function (params, container) {
-        /* global jwplayer:false */
-        var jwplayerInstance,
-            embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
+    /* global MediaElementPlayer:false */
+    $cms.templates.mediaAudioWebsafe = function mediaAudioWebsafe(params, container) {
+        if (typeof MediaElementPlayer !== 'function') {
+            $util.error('$cms.templates.mediaAudioWebsafe(): MediaElement.js is not loaded');
+            return;
+        }
 
-        var playerOptions = {
-            width: params.width,
-            height: params.height,
-            autostart: false,
-            file: params.url,
-            type: params.type,
-            flashplayer: params.flashplayer,
-            events: {
-                onReady: function () {
+        var playerId = strVal(params.playerId), player,
+            width = strVal(params.width),
+            height = strVal(params.height),
+            url = strVal(params.url),
+            options = {
+                pluginPath: '{$BASE_URL;}/data/mediaelement/',
+                enableKeyboard: true,
+                success: function (media) {
+                    if (!$cms.configOption('show_inline_stats')) {
+                        media.addEventListener('play', function () {
+                            $cms.gaTrack(null, '{!VIDEO;}', url);
+                        });
+                    }
+
+                    var embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
+
                     if (embeddedMediaData != null) {
+                        media.addEventListener('play', function () {
+                            $dom.trigger(container, 'cms:media:play', {
+                                mediaDuration: player.duration,
+                                mediaCurrentTime: player.currentTime,
+                            });
+                        });
+
+                        media.addEventListener('canplay', function () {
+                            $dom.trigger(container, 'cms:media:canplay');
+                        });
+
+                        media.addEventListener('pause', function () {
+                            $dom.trigger(container, 'cms:media:pause');
+                        });
+
+                        media.addEventListener('ended', function () {
+                            $dom.trigger(container, 'cms:media:ended');
+                        });
+
                         $dom.on(container, 'cms:media:do-play', function () {
-                            jwplayerInstance.play();
+                            player.play();
                         });
 
                         $dom.on(container, 'cms:media:do-pause', function () {
-                            jwplayerInstance.pause();
+                            player.pause();
                         });
 
                         embeddedMediaData.ready = true;
                         $dom.trigger(container, 'cms:media:ready');
                     }
-                },
-                onPlay: function () {
-                    $dom.trigger(container, 'cms:media:play', {
-                        mediaDuration: jwplayerInstance.getDuration(),
-                        mediaCurrentTime: jwplayerInstance.getPosition(),
-                    });
-
-                    if (!$cms.configOption('show_inline_stats')) {
-                        $cms.gaTrack(null, '{!AUDIO;^}', params.url);
-                    }
-                },
-                onPause: function () {
-                    $dom.trigger(container, 'cms:media:pause');
-                },
-                onComplete: function () {
-                    $dom.trigger(container, 'cms:media:ended');
-                },
-            }
-        };
-
-        if (params.thumbUrl) {
-            playerOptions.image = $util.srl(params.thumbUrl);
-        }
-
-        if (params.duration) {
-            playerOptions.duration = params.duration;
-        }
-
-        playerOptions.autostart = (params.autostart === true);
-
-        if (params.closedCaptionsUrl) {
-            playerOptions.tracks = [
-                {
-                    file: $util.srl(params.closedCaptionsUrl),
-                    kind: 'captions',
-                    label: '{!CLOSED_CAPTIONS}'
                 }
-            ];
-        }
+            };
 
-        jwplayerInstance = jwplayer(params.playerId).setup(playerOptions);
+        // Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this
+        options.videoWidth = Math.min(950, width);
+        options.videoHeight = Math.min(height * (950 / width), height);
+
+        player = new MediaElementPlayer(playerId, options);
     };
 
-    // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
-    // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-    $cms.templates.mediaVideoWebsafe = function (params, container) {
-        var jwplayerInstance,
-            embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
+    $cms.templates.mediaVideoWebsafe = function mediaVideoWebsafe(params, container) {
+        if (typeof MediaElementPlayer !== 'function') {
+            $util.error('$cms.templates.mediaVideoWebsafe(): MediaElement.js is not loaded');
+            return;
+        }
 
-        var playerOptions = {
-            autostart: false,
-            file: params.url,
-            type: params.type,
-            flashplayer: params.flashplayer,
-            events: {
-                onReady: function () {
+        var playerId = strVal(params.playerId),
+            mediaElement,
+            url = strVal(params.url),
+            options = {
+                pluginPath: '{$BASE_URL;}/data/mediaelement/',
+                enableKeyboard: true,
+                success: function (media) {
+                    if (document.documentElement.classList.contains('is-gallery-slideshow')) {
+                        media.preload = 'auto';
+                        media.loop = false;
+                    }
+
+                    if (!$cms.configOption('show_inline_stats')) {
+                        media.addEventListener('play', function () {
+                            $cms.gaTrack(null, '{!VIDEO;}', url);
+                        });
+                    }
+
+                    var embeddedMediaData = $dom.data(container, 'cmsEmbeddedMedia');
+
                     if (embeddedMediaData != null) {
+                        media.addEventListener('play', function () {
+                            $dom.trigger(container, 'cms:media:play', {
+                                mediaDuration: mediaElement.duration,
+                                mediaCurrentTime: mediaElement.currentTime,
+                            });
+                        });
+
+                        media.addEventListener('canplay', function () {
+                            $dom.trigger(container, 'cms:media:canplay');
+                        });
+
+                        media.addEventListener('pause', function () {
+                            $dom.trigger(container, 'cms:media:pause');
+                        });
+
+                        media.addEventListener('ended', function () {
+                            $dom.trigger(container, 'cms:media:ended');
+                        });
+
                         $dom.on(container, 'cms:media:do-play', function () {
-                            jwplayerInstance.play();
+                            mediaElement.play();
                         });
 
                         $dom.on(container, 'cms:media:do-pause', function () {
-                            jwplayerInstance.pause();
+                            mediaElement.pause();
+                        });
+
+                        $dom.on(container, 'cms:media:do-resize', function () {
+                            mediaElement.setPlayerSize();
+                            mediaElement.setControlsSize();
                         });
 
                         embeddedMediaData.ready = true;
                         $dom.trigger(container, 'cms:media:ready');
                     }
-                },
-                onPlay: function () {
-                    $dom.trigger(container, 'cms:media:play', {
-                        mediaDuration: jwplayerInstance.getDuration(),
-                        mediaCurrentTime: jwplayerInstance.getPosition(),
-                    });
+                }
+            };
 
-                    if (!$cms.configOption('show_inline_stats')) {
-                        $cms.gaTrack(null, '{!VIDEO;^}', params.url);
-                    }
-                },
-                onPause: function () {
-                    $dom.trigger(container, 'cms:media:pause');
-                },
-                onComplete: function () {
-                    $dom.trigger(container, 'cms:media:ended');
-                },
-            }
-        };
-
-        if (params.thumbUrl) {
-            playerOptions.image = $util.srl(params.thumbUrl);
-        }
-
-        if (params.duration) {
-            playerOptions.duration = params.duration;
-        }
+        // Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this
+        options.videoWidth = params.playerWidth;
+        options.videoHeight = params.playerHeight;
 
         if (params.responsive) {
-            playerOptions.aspectratio = params.playerWidth + ':' + params.playerHeight;
-        } else {
-            playerOptions.width = params.playerWidth;
-            playerOptions.height = params.playerHeight;
+            options.stretching = 'responsive';
         }
 
-        playerOptions.autostart = (params.autostart === true);
-
-        if (params.closedCaptionsUrl) {
-            playerOptions.tracks = [
-                {
-                    file: $util.srl(params.closedCaptionsUrl),
-                    kind: 'captions',
-                    label: '{!CLOSED_CAPTIONS}'
-                }
-            ];
-        }
-
-        jwplayerInstance = jwplayer(params.playerId).setup(playerOptions);
+        mediaElement = new MediaElementPlayer(playerId, options);
     };
 
     $cms.functions.comcodeAddTryForSpecialComcodeTagSpecificContentsUi = function () {

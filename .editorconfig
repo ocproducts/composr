@@ -59,8 +59,8 @@ tab_width = 3
 #  sources_custom/Cloudinary sources_custom/ILess sources_custom/spout sources_custom/twitter.php data/ckeditor data_custom/ckeditor data/ace \
 #  sources_custom/aws sources_custom/Transliterator \
 #  themes/default/javascript_custom/confluence.js themes/default/javascript_custom/confluence2.js \
-#  themes/default/javascript/widget_color.js themes/default/javascript/widget_date.js themes/default/javascript/jwplayer.js \
-#  themes/default/javascript_custom/mediaelement-and-player.js themes/default/css_custom/mediaelementplayer.css themes/default/javascript/sound.js \
+#  themes/default/javascript/widget_color.js themes/default/javascript/widget_date.js \
+#  themes/default/javascript/mediaelement-and-player.js themes/default/css/mediaelementplayer.css themes/default/javascript/sound.js \
 #  themes/default/javascript_custom/charts.js themes/default/javascript/modernizr.js themes/default/javascript/select2.js \
 #  themes/default/javascript_custom/skitter.js themes/default/javascript_custom/sortable_tables.js themes/default/javascript_custom/unslider.js \
 #  themes/default/javascript/plupload.js themes/default/javascript_custom/columns.js \

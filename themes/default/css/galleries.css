@@ -335,12 +335,6 @@ html.is-gallery-slideshow body#main-website #main-website-inner {
 	height: inherit;
 }
 
-.gallery-slideshow-screen .slideshow-media-wrapper .media-audio-websafe .jwplayer,
-.gallery-slideshow-screen .slideshow-media-wrapper .media-video-websafe .jwplayer {
-	width: inherit !important;
-	height: inherit !important;;
-}
-
 .gallery-slideshow-screen .slideshow-media-box-item figure {
 	margin: 0;
 }

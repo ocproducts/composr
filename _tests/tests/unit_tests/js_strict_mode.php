@@ -31,7 +31,6 @@ class js_strict_mode_test_set extends cms_test_case
                     'jquery.js',
                     'jquery_autocomplete.js',
                     'jquery_ui.js',
-                    'jwplayer.js',
                     'modernizr.js',
                     'widget_date.js',
                     'WYSIWYG_SETTINGS.js',
