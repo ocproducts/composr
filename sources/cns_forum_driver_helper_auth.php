@@ -264,7 +264,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
             $out['error'] = do_lang_tempcode('REQUIRES_IP_VALIDATION');
             return $out;
         }
-        $this_ref->connection->query_update('f_member_known_login_ips', array('i_time' => time()), array('i_member_id' => $row['id'], 'i_ip' => $ip, 'i_time' => time()), '', 1);
+        $this_ref->db->query_update('f_member_known_login_ips', array('i_time' => time()), array('i_member_id' => $row['id'], 'i_ip' => $ip, 'i_time' => time()), '', 1);
     }
 
     $this_ref->cns_flood_control($row['id']);

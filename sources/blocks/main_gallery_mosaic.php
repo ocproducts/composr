@@ -265,7 +265,7 @@ PHP;
             }
 
             if ($i >= $start) {
-                $just_media_row = db_map_restrict($c[0], array('id', 'description'));
+                $just_media_row = db_map_restrict($c[0], array('id', 'the_description'));
 
                 switch ($c[1]) {
                     case 'image':
@@ -298,7 +298,7 @@ PHP;
                             '_GUID' => '13c77543f8034f14adff4bd27ec5112e',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
-                            'DESCRIPTION' => get_translated_tempcode('images', $just_media_row, 'description'),
+                            'DESCRIPTION' => get_translated_tempcode('images', $just_media_row, 'the_description'),
                             'ID' => strval($row_image['id']),
                             'MEDIA_TYPE' => 'image',
                             'FILE_SIZE' => $file_size,
@@ -355,7 +355,7 @@ PHP;
                             '_GUID' => 'f98f86cc362c45d9bdccd93be062a286',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
-                            'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'description'),
+                            'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'the_description'),
                             'ID' => strval($row_video['id']),
                             'MEDIA_TYPE' => 'video',
                             'CAT' => $row_video['cat'],

@@ -146,8 +146,8 @@ PHP;
             $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
         }
 
-        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type,cat FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_image . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'video\' AS content_type,cat FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_video . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type,cat FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_image . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'video\' AS content_type,cat FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_video . $where_sup . ' AND validated=1 ORDER BY title ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS'));
 
         $all_rows = array_merge($image_rows, $video_rows);
 
@@ -183,9 +183,9 @@ PHP;
                 $thumb_url = get_custom_base_url() . '/' . $thumb_url;
             }
 
-            $just_media_row = db_map_restrict($row, array('id', 'description'));
+            $just_media_row = db_map_restrict($row, array('id', 'the_description'));
 
-            $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
+            $description = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'the_description');
 
             $edit_url = null;
             if ((has_actual_page_access(get_member(), 'cms_galleries')) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $gallery_name)))) {
