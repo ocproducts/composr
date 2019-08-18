@@ -62,7 +62,7 @@ class Block_main_gallery_mosaic
                     array_key_exists('video_filter', $map) ? $map['video_filter'] : '', 
                     array_key_exists('render_if_empty', $map) ? $map['render_if_empty'] : '0', 
                     array_key_exists('days', $map) ? $map['days'] : '', 
-                    !empty($map['sort']) ? $map['sort'] : get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX),
+                    !empty($map['sort']) ? $map['sort'] : get_param_string('sort', get_option('gallery_media_default_sort_order'), INPUT_FILTER_GET_COMPLEX),
                     array_key_exists('param', $map) ? $map['param'] : db_get_first_id(), 
                     array_key_exists('zone', $map) ? $map['zone'] : '', 
                     (($map === null) || (!array_key_exists('select', $map))) ? '*' : $map['select'], 
@@ -158,7 +158,7 @@ PHP;
         }
 
         // Sorting
-        $sort = !empty($map['sort']) ? $map['sort'] : get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
+        $sort = !empty($map['sort']) ? $map['sort'] : get_param_string('sort', get_option('gallery_media_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         if (($sort != 'fixed_random ASC') && ($sort != 'average_rating DESC') && ($sort != 'average_rating ASC') && ($sort != 'compound_rating DESC') && ($sort != 'compound_rating ASC') && ($sort != 'add_date DESC') && ($sort != 'add_date ASC') && ($sort != 'edit_date DESC') && ($sort != 'edit_date ASC') && ($sort != 'url DESC') && ($sort != 'url ASC')) {
             $sort = 'add_date DESC';
         }
@@ -410,7 +410,7 @@ PHP;
 
         $slideshow_url = null;
         if (($first_type !== null) && ($first_id !== null)) {
-            $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'id' => $first_id, 'wide_high' => 1, 'slideshow' => 1, 'days' => $days, 'sort' => ($sort == get_option('galleries_default_sort_order')) ? null : $sort, 'select' => ($map['select'] == '*') ? null : $map['select'], 'video_select' => ($map['video_select'] == '*') ? null : $map['video_select']) + propagate_filtercode(), '_SELF', array(), true);
+            $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'id' => $first_id, 'wide_high' => 1, 'slideshow' => 1, 'days' => $days, 'sort' => ($sort == get_option('gallery_media_default_sort_order')) ? null : $sort, 'select' => ($map['select'] == '*') ? null : $map['select'], 'video_select' => ($map['video_select'] == '*') ? null : $map['video_select']) + propagate_filtercode(), '_SELF', array(), true);
         }
 
         // Sorting

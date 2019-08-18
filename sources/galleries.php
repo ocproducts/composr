@@ -336,7 +336,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
             $first_id = ($first_image['add_date'] > $first_video['add_date']) ? $first_image['id'] : $first_video['id'];
         }
 
-        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'id' => $first_id, 'wide_high' => 1, 'sort' => ($sort === get_option('galleries_default_sort_order')) ? null : $sort, 'slideshow' => 1), '_SELF', array(), true);
+        $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'id' => $first_id, 'wide_high' => 1, 'sort' => ($sort === get_option('gallery_media_default_sort_order')) ? null : $sort, 'slideshow' => 1), '_SELF', array(), true);
     }
 
     // Render
