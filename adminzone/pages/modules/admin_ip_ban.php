@@ -317,8 +317,7 @@ class Module_admin_ip_ban
             }
         }
         $_unbannable = explode("\n", $unbannable);
-        foreach ($_unbannable as $str)
-        {
+        foreach ($_unbannable as $str) {
             if (trim($str) == '') {
                 continue;
             }

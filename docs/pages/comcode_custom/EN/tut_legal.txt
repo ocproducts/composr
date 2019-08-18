@@ -19,30 +19,45 @@ Composr provides a number of default rules pages that can be chosen using the Se
 
 [title="2"]Privacy[/title]
 
+There is a default [tt]privacy[/tt] page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that you collect and/or process, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
+
 If you are a commercial entity, or if you hold sensitive personal data, you are more likely to be affected by privacy laws than others.
+Such laws include, but are not limited to:
+ - The EU [concept]GDPR[/concept] regulation (which is so broad it can almost be considered a superset of global privacy requirements, and is well-served throughout Composr)
+ - EU regulation required registering with a 'data commissioner'
+ - California privacy regulation (California Online Privacy Protection Act, California Consumer Privacy Act)
+ - US COPPA regulation (see the Child protection section)
 
-There is a default [tt]privacy[/tt] page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that is collected into your systems, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
+{!DOC_GDPR}
 
-Composr (out of the box) can hold the following personal data:
- - Member profiles, including Custom Profile Fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether Custom Profile Fields are visible.
- - The 'online status' of all members. This is publicly visible.
- - Access statistics that allow you to see where-ever users have been on your site. This is not publicly visible.
- - Logs of user interactivity with the site. This is mostly not publicly visible, except for submitted and edited content.
- - Point transactions. The point 'giver' may define whether they are anonymous from the public, but they will not be from the staff.
- - Security logs for suspected hack-attempts. This is not publicly visible.
- - Private Topics. These are only visible between sender and receiver, and staff (when intentionally viewed).
- - Personal posts. These are only visible between sender and receiver, and staff (may be viewed unintentionally).
+To further meet GDPR Composr has many additional provisions, including:
+ - Logging of access to personal data in the action log
+ - Automatic log purging, configurable per-log
+ - Automatic scrubbing of old database records that contain personal data
+ - Ability to configure customised legal declarations for new users
+ - Automatic creation of a default privacy page that reflects an audit of what Composr privacy-affecting features are enabled, stock text to get you started
 
-It is not necessary to state that submitted-for-publication content will be visible as the user will know this is not personal data at the point of submitting it.
+To meet GDPR you also need to consider:
+ - Web server logs also need to be purged. On Linux you can configure [tt]logrotate[/tt] to do this.
+ - Backups:
+  - You must have an internal documented policy for how long you keep backups.
+  - Backup access must be restricted, and encryption may be a good idea.
+ - You may want to consider filesystem-level encryption, including of the database files, to prevent access to data if hardware is stolen.
+ - You should use SSL for your website, and any web services you rely on.
+ - You may need a webhost compliant with the 'EU-US privacy shield'.
 
-Depending on your jurisdiction and situation, you may need to register with a 'data commissioner' for holding personal data.
+The extent of your precautions will likely depend on the nature of personal data you hold (GDPR says: "shall implement appropriate technical and organisational measures to ensure a level of security appropriate to the risk"). However, basic provisions are required for any website due to the storage of user IP addresses.
 
-You may also wish to include your policy with respect to deletion of publicly submitted content upon request by the submitter or another party.
+There is a "Do Not Track" HTTP that many web browsers allow their users to enable. If you want to support the header, then you can do so using the [tt]{$DO_NOT_TRACK_REQUESTED}[/tt] symbol.
 
-To meet Californian law a privacy policy must state:
- - What you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
- - The date the privacy policy was written on
- - A dated list of amendments
+To meet Californian law a privacy policy must:
+ - State what you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
+ - State the date the privacy policy was written on
+ - State a described process for how changes in the privacy policy are communicated
+ - Provide at least 2 ways of contacting about privacy requests
+ - Provide a dated list of amendments
+ - Provide a 'Do Not Sell My Personal Information' link if you sell personal information
+The first four items are included with the default privacy policy. Note there are thresholds that specify what organisations have to apply with certain Californian privacy law, which is outside the scope of this tutorial.
 
 [title="2"]Accessibility[/title]
 
@@ -116,10 +131,11 @@ The sub-sections of this section briefly cover the main social issues you are li
 
 [title="3"]Child protection[/title]
 
-There is a US law, [concept]COPPA[/concept] (Children's Online Privacy Protection Act), that you need to comply with if your (US) website targets children under 13 for membership, or if you know that members of your website are under 13. More information on this law is available here from the COPPA website (see 'see also').
+There are laws in various jurisdictions that provide special protection for children active on websites:
+ - The US has a law, [concept]COPPA[/concept] that you need to comply with if your (US) website targets children under 13 for membership, or if you know that members of your website are under 13. More information on this law is available here from the COPPA website (see 'see also').
+ - The EU [concept]GDPR[/concept] requires protection for children under 13/14/15/16 (the actual age varies by EU country). 
 
-Australia has a similar law that you can use the same system for, COPA. If you are targeting COPA, adjust the [tt]COPPA_MAIL[/tt] language string to reflect this.
-Similarly the EU has an equivalent law, in GDPR (General Data Protection Regulation).
+For simplicity and historical reasons, we refer to any international child consent provisions as COPPA in the administration, and keep the language in the user UI vague.
 
 If COPPA support is configured in [concept]Conversr[/concept], then when visitors try to join they will be added as non-validated if they are too young, with a notice to send in a COPPA form to you via mail or fax.
 In addition to Composr's COPPA support, you should also add your real-world contact details to your privacy policy, along with thorough details about what Custom Profile Fields may be filled in, how the information is used, how it is disclosed (if at all), and specification of various parent rights (which are listed on the COPPA website).
@@ -185,6 +201,7 @@ You should develop a policy about how you handle feedback. This is of particular
 [concepts
  1_key="Privacy policy"   1_value="A standard term applied to the document that lays out a website's privacy policy; some laws specifically refer to a privacy policy and require a separate document for it"
  2_key="COPPA"            2_value="Children's Online Privacy Protection Act; a US law that affects websites that have child members"
+ 3_key="GDPR"             3_value="General Data Protection Regulation; an EU privacy law that puts many responsibilities on you"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
@@ -193,4 +210,4 @@ You should develop a policy about how you handle feedback. This is of particular
  - [url="Children's Online Privacy Protection Act (wikipedia)"]https://en.wikipedia.org/wiki/Children's_Online_Privacy_Protection_Act[/url]
  - [page="_SEARCH:tut_do"]Dos and Do-nots of a (Composr) website[/page]
 
-{$SET,tutorial_tags,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Guidance on the legal and social issues that webmasters need to understood.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Advice & Guidance,novice,core_privacy,content_privacy}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Guidance on the legal and social issues that webmasters need to understood.}[block]main_tutorial_rating[/block]

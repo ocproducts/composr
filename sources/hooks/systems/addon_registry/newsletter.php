@@ -98,6 +98,7 @@ class Hook_addon_registry_newsletter
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/newsletter.php',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_email_bounce.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_from_changes.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/subscribers.svg',

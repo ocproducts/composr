@@ -143,7 +143,6 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                     $this->get_member($options), // $member_id
                     false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
                     false, //$be_deferential
-
                 ));
 
                 $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], get_file_base() . '/' . $path);

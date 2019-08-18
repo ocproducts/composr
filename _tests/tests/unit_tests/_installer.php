@@ -29,14 +29,8 @@ class _installer_test_set extends cms_test_case
 
     public function testQuickInstallerBuildsAndDoesNotFullyCrash()
     {
-        $limit_to = get_param_string('limit_to', '');
-        if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
+        if (($this->only !== null) && ($this->only != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
             return;
-        }
-        if (isset($_SERVER['argv'][2])) {
-            if (!in_array('testQuickInstallerBuildsAndDoesNotFullyCrash', $_SERVER['argv'])) {
-                return;
-            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -69,14 +63,8 @@ class _installer_test_set extends cms_test_case
 
     public function testDoesNotFullyCrash()
     {
-        $limit_to = get_param_string('limit_to', '');
-        if (($limit_to != '') && ($limit_to != 'testDoesNotFullyCrash')) {
+        if (($this->only !== null) && ($this->only != 'testDoesNotFullyCrash')) {
             return;
-        }
-        if (isset($_SERVER['argv'][2])) {
-            if (!in_array('testDoesNotFullyCrash', $_SERVER['argv'])) {
-                return;
-            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -89,7 +77,7 @@ class _installer_test_set extends cms_test_case
         $this->assertTrue($http_result->message == '200', 'Wrong HTTP status code ' . $http_result->message);
 
         $success = (strpos($http_result->data, 'type="submit"') !== false);
-        if ((!$success) && (isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
+        if ((!$success) && ($this->debug)) {
             @var_dump($http_result->data);
             exit();
         }
@@ -98,14 +86,8 @@ class _installer_test_set extends cms_test_case
 
     public function testFullInstallSafeMode()
     {
-        $limit_to = get_param_string('limit_to', '');
-        if (($limit_to != '') && ($limit_to != 'testFullInstallSafeMode')) {
+        if (($this->only !== null) && ($this->only != 'testFullInstallSafeMode')) {
             return;
-        }
-        if (isset($_SERVER['argv'][2])) {
-            if (!in_array('testFullInstallSafeMode', $_SERVER['argv'])) {
-                return;
-            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -121,14 +103,8 @@ class _installer_test_set extends cms_test_case
 
     public function testFullInstallNormalMode()
     {
-        $limit_to = get_param_string('limit_to', '');
-        if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
+        if (($this->only !== null) && ($this->only != 'testFullInstallNormalMode')) {
             return;
-        }
-        if (isset($_SERVER['argv'][2])) {
-            if (!in_array('testFullInstallNormalMode', $_SERVER['argv'])) {
-                return;
-            }
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
@@ -185,7 +161,7 @@ class _installer_test_set extends cms_test_case
             );
             $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
-            if (!isset($_GET['debug'])) {
+            if (!$this->debug) {
                 $fail_message .= ' -- append &debug=1 to the URL to get debug output / pass debug CLI parameter';
             }
             $this->assertTrue($success, $fail_message);

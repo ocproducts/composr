@@ -177,8 +177,8 @@ class Hook_addon_registry_alternate_emoticons
     public function install($upgrade_from = null)
     {
         if ($upgrade_from === null) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images/cns_emoticons/%\'');
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images//cns_emoticons/%\'');
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE url LIKE \'themes/%/images/cns_emoticons/%\'');
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE url LIKE \'themes/%/images//cns_emoticons/%\'');
 
             if (class_exists('Self_learning_cache')) {
                 Self_learning_cache::erase_smart_cache();

@@ -52,7 +52,9 @@ function require_javascript($javascript)
 
     $JS_OUTPUT_STARTED_LIST[$javascript] = true;
 
-    $SMART_CACHE->append('JAVASCRIPTS', $javascript);
+    if ($SMART_CACHE !== null) {
+        $SMART_CACHE->append('JAVASCRIPTS', $javascript);
+    }
 }
 
 /**
@@ -285,7 +287,9 @@ function require_css($css)
 
     $CSS_OUTPUT_STARTED_LIST[$css] = true;
 
-    $SMART_CACHE->append('CSSS', $css);
+    if ($SMART_CACHE !== null) {
+        $SMART_CACHE->append('CSSS', $css);
+    }
 
     // Has to move into footer
     if ($CSS_OUTPUT_STARTED) {

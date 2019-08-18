@@ -42,7 +42,7 @@ class _database_integrity_test_set extends cms_test_case
                 $this->assertTrue($sql == '', $sql);
             }
 
-            if (get_param_integer('debug', 0) == 1) {
+            if ($this->debug) {
                 @var_dump($phase);
                 @var_dump($sql);
             }

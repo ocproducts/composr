@@ -79,12 +79,18 @@ class lang_spelling_test_set extends cms_test_case
 
         // Particular files...
 
-        $path = get_file_base() . '/';
+        $path = get_file_base();
         $files = array(
             'uploads/website_specific/compo.sr/errorservice.csv',
+            'data/maintenance_status.csv',
         );
         foreach ($files as $_path) {
             $c = file_get_contents($path . '/' . $_path);
+
+            if ($_path == 'data/maintenance_status.csv') {
+                $c = preg_replace('#^.*,#mU', '', $c);
+            }
+
             $this->check($this, $path . '/' . $_path, null, $c, $verbose);
         }
     }
@@ -123,6 +129,7 @@ class lang_spelling_test_set extends cms_test_case
                     'CANNOT_CONNECT_HOME',
                     'NO_GD_ON_SERVER',
                     'MYSQL_TOO_OLD',
+                    'APACHE_TOO_OLD',
                     'LOW_MEMORY_LIMIT',
                     'NO_ZIP_ON_SERVER',
                     'CONFIG_OPTION_network_links',
@@ -365,7 +372,7 @@ class lang_spelling_test_set extends cms_test_case
             (preg_match('#[^s]tick [^\(]#', $string) != 0) &&
             (!in_array($file, array('cns_install.php')))
         ) {
-            $ob->assertTrue(false, 'The word tick was used in ' . $path . ' without being followed by check in brackets in the conventional way.');
+            $ob->assertTrue(false, 'The word tick was used in ' . $path . ' without being followed by check in parentheses in the conventional way.');
         }
 
         $common_spelling_mistakes = array(

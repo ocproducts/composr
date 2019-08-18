@@ -102,6 +102,7 @@ class Module_catalogues
                 'c_ecommerce' => 'BINARY',
                 'c_default_review_freq' => '?INTEGER',
                 'c_send_view_reports' => 'ID_TEXT', // never,daily,weekly,monthly,quarterly
+                'c_categories_sort_order' => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('catalogue_categories', array(
@@ -116,7 +117,6 @@ class Module_catalogues
                 'cc_move_target' => '?AUTO_LINK',
                 'cc_move_days_lower' => 'INTEGER',
                 'cc_move_days_higher' => 'INTEGER',
-                'cc_order' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'catstoclean', array('cc_move_target'));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cataloguefind', array('c_name'));
@@ -443,9 +443,6 @@ class Module_catalogues
         if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('catalogues', 'c_default_review_freq', '?INTEGER', null);
 
-            require_code('content2');
-            $GLOBALS['SITE_DB']->add_table_field('catalogue_categories', 'cc_order', 'INTEGER', ORDER_AUTOMATED_CRITERIA);
-
             $GLOBALS['SITE_DB']->add_table_field('catalogue_fields', 'cf_options', 'SHORT_TEXT');
 
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
@@ -459,14 +456,14 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_options' => 'default=AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
         }
 
-        if (($upgrade_from === null) || ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
-        }
-
         if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
+
+            $GLOBALS['SITE_DB']->delete_table_field('catalogue_categories', 'cc_order');
+
+            $GLOBALS['SITE_DB']->add_table_field('catalogues', 'c_categories_sort_order', 'SHORT_TEXT', 'title ASC');
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 10)) {
@@ -840,12 +837,14 @@ class Module_catalogues
         if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > intval(get_option('general_safety_listing_limit')) * 3) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
-        $rows_subcategories = $GLOBALS['SITE_DB']->query_select(
-            'catalogue_categories',
-            array('*'),
-            array('c_name' => $catalogue_name),
-            'ORDER BY cc_order,' . ((get_value('cc_sort_date__' . $catalogue_name) === '1') ? 'cc_add_date' : $GLOBALS['SITE_DB']->translate_field_ref('cc_title'))
-        );
+        $sort = $catalogue['c_categories_sort_order'];
+        list($_sort, $_dir) = explode(' ', $sort, 2);
+        if ($_sort == 'title') {
+            $sort = $GLOBALS['SITE_DB']->translate_field_ref('cc_title') . ' ' . $_dir;
+        } elseif ($_sort == 'recent') {
+            $sort = 'cc_add_date ' . $_dir;
+        }
+        $rows_subcategories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('c_name' => $catalogue_name), 'ORDER BY ' . $sort);
 
         // Render categories
         // Not done via main_multi_content block due to need for custom query
@@ -944,7 +943,7 @@ class Module_catalogues
             inform_exit(do_lang_tempcode('NO_CATEGORIES', 'catalogue_category'));
         }
 
-        ksort($cats, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($cats, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($cats as $letter => $entries) {
             list($entry_buildup) = render_catalogue_category_entry_buildup(null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, null, $root, null, true, $entries);
 
@@ -1068,11 +1067,7 @@ class Module_catalogues
         }
 
         // Get category contents
-        if (get_value('cc_sort_date__' . $catalogue_name) !== '1') {
-            $cc_sort = 'recent ASC';
-        } else {
-            $cc_sort = 'title';
-        }
+        $cc_sort = $catalogue['c_categories_sort_order'];
         $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'zone' => get_zone_name(), 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
         if (get_option('catalogues_subcat_narrowin') == '1') {
             $cat_select = strval($id) . '*';

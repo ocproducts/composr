@@ -104,7 +104,7 @@ function report_content_form($title, $content_type, $content_id)
     return do_template('POSTING_SCREEN', array(
         '_GUID' => '92a0a35a7c07edd0d3f8a960710de608',
         'TITLE' => $title,
-        'JS_FUNCTION_CALLS' => (function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '') ? array(captcha_ajax_check_function()) : array(),
+        'JS_FUNCTION_CALLS' => ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) ? array(captcha_ajax_check_function()) : array(),
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));

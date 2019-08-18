@@ -432,52 +432,7 @@ Throughout Composr, measures are taken to reduce the chance of e-mail addresses 
 
 [title="2"]robots.txt[/title]
 
-To remove the possibility of search engines indexing the login screens of your Admin Zone you can create a [tt]robots.txt[/tt] file on the root of your domain name:
-[code="robots"]
-User-agent: *
-
-# Normal things to block bot access to
-Disallow: /cgi-bin/
-
-# Bots should never get here as raw data
-Disallow: /caches/
-Disallow: /exports/
-Disallow: /imports/
-Disallow: /temp/
-
-# Bots should never get here as exposes framework files
-Disallow: /data/ace/
-Disallow: /data/ckeditor/
-Disallow: /text/
-Disallow: /text_custom/
-Disallow: /themes/*/text
-Disallow: /themes/*/xml
-
-# Bots should never get here as exposes admin functionality (individual admin/utility scripts have noindex built-in)
-Disallow: /adminzone/
-#Disallow: /cms/
-
-# Set Sitemap
-Sitemap: http://yourbaseurl/data_custom/sitemaps/index.xml
-Sitemap: http://yourbaseurl/data_custom/sitemaps/news_sitemap.xml
-
-# Block some Spammy bots
-User-agent: SurdotlyBot
-Disallow: /
-User-agent: SemrushBot
-Disallow: /
-User-agent: DotBot
-Disallow: /
-User-agent: BLEXBot
-Disallow: /
-User-agent: AhrefsBot
-Disallow: /
-
-# Set reasonable Crawl Delay to stop over-enthusiastic bots
-Crawl-Delay: 10
-[/code]
-
-I also added a line there to say where your XML Sitemap is.
+To remove the possibility of search engines indexing the login screens of your Admin Zone you can create a [tt]robots.txt[/tt] file on the root of your domain name. The bundled [tt]robots_txt[/tt] addon provides a good default. The installer puts this default in place if you don't already have a [tt]robots.txt[/tt] and if it can write out the file. There is also an editing UI at Admin Zone > Structure > Search engine policy ([tt]robots.txt[/tt]).
 
 [title="2"]File-type white-list[/title]
 
@@ -655,15 +610,7 @@ Follows are sample access rules for an Apache [tt].htaccess[/tt] file to provide
 For IIS, the [tt]web.config[/tt] file's [tt]hiddenSegments[/tt] can be extended:
 [code="XML"]
 <hiddenSegments>
-	<add segment="caches" />
-	<add segment="safe_mode_temp" />
-	<add segment="errorlog.php" />
-	<add segment="permissioncheckslog.php" />
-	<add segment="ecommerce.log" />
-	<add segment="queries.log" />
-	<add segment="big_query_screens.log" />
-	<add segment="profiling*.log" />
-	<add segment="resource_fs.log" />
+	(existing rules)
 
 	<add segment="rootkit_detection.php" />
 	<add segment="upgrader.php" />
@@ -754,4 +701,4 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:codebook_standards"]Code Book, part 4 (Coding Standards)[/page]
  - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
-{$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,ssl,securitylogging,robots_txt,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

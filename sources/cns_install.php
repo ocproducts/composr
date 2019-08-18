@@ -261,6 +261,8 @@ function install_cns($upgrade_from = null)
         foreach ($autofill_map as $cf_name => $arr) {
             $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_autofill_type' => $arr[0], 'cf_autofill_hint' => isset($arr[1]) ? $arr[1] : ''), array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $cf_name));
         }
+
+        $GLOBALS['FORUM_DB']->add_table_field('f_member_known_login_ips', 'i_time', 'TIME');
     }
 
     if (($upgrade_from !== null) && ($upgrade_from < 10.0)) { // LEGACY
@@ -391,6 +393,9 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY', 0);
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style', 'BINARY', 1);
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_sound_enabled', 'BINARY', 0);
+    }
+    if ((!is_null($upgrade_from)) && ($upgrade_from < 11.0)) {
+        $GLOBALS['FORUM_DB']->add_table_field('f_member_known_login_ips', 'i_time', 'TIME');
     }
 
     if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
@@ -951,6 +956,7 @@ function install_cns($upgrade_from = null)
             'i_member_id' => '*MEMBER',
             'i_ip' => '*IP',
             'i_val_code' => 'SHORT_TEXT',
+            'i_time' => 'TIME',
         ));
 
         // NB: post_param_string's will return default's if Conversr is being installed but not used yet (e.g. IPB forum driver chosen at installation)

@@ -100,6 +100,7 @@ class Hook_addon_registry_catalogues
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/catalogues.php',
             'themes/default/images/icons/menu/rich_content/catalogues/catalogues.svg',
             'themes/default/images/icons/menu/cms/catalogues/add_one_catalogue.svg',
             'themes/default/images/icons/menu/cms/catalogues/edit_one_catalogue.svg',

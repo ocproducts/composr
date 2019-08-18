@@ -109,7 +109,7 @@ function resource_fs_logging($message, $type = 'warn')
             return;
         }
 
-        $message = date('d/m/Y H:i:s') . ': ' . $type . ': ' . $message . "\n";
+        $message = loggable_date() . ' -- ' . $type . ' --  ' . $message . "\n";
         fwrite($RESOURCE_FS_LOGGER, $message);
         if (running_script('execute_temp')) {
             print($message);

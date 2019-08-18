@@ -34,7 +34,7 @@ function init__zones2()
  * It's all an approximation, but a pretty good one. We don't support single quotes, or missing quotes for the subtitle, or tags that look like HTML tags but are not, or HTML tags opening and closing before the title tag.
  *
  * @param  PATH $path Path to Comcode page
- * @param  boolean $include_subtitle Whether to include the subtitle in brackets after if it exists
+ * @param  boolean $include_subtitle Whether to include the subtitle in parentheses after if it exists
  * @param  boolean $in_tempcode Whether to get in Tempcode format (which will be HTML)
  * @return mixed Comcode page title
  */
@@ -941,7 +941,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
         $out += _find_all_pages('site', $type, $ext, $keep_ext_on);
     }
 
-    ksort($out, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_ksort($out, SORT_NATURAL | SORT_FLAG_CASE);
     return $out;
 }
 

@@ -53,6 +53,6 @@ class Hook_config_is_on_coppa
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '0';
+        return (get_forum_type() != 'cns') ? null : '1';
     }
 }

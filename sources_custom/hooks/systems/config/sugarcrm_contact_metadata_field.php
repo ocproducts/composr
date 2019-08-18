@@ -51,6 +51,9 @@ class Hook_config_sugarcrm_contact_metadata_field
         if (!addon_installed('sugarcrm')) {
             return null;
         }
+        if (!addon_installed('securitylogging')) {
+            return null;
+        }
 
         return '';
     }

@@ -1022,7 +1022,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         require_code('filedump');
         require_lang('filedump');
         $list = nice_get_filedump_places('');
-        $place_list = form_input_list(do_lang_tempcode('FOLDER'), '', 'place', $list, null, false, false);
+        $subpath_list = form_input_list(do_lang_tempcode('FOLDER'), '', 'subpath', $list, null, false, false);
         $DOING_ALTERNATE_FIELDS_SET = null;
 
         $set_name = 'file';
@@ -1030,7 +1030,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         $set_title = do_lang_tempcode('FILE');
         $field_set = alternate_fields_set__start($set_name);
 
-        $_FORM_INPUT_SUFFIX = $place_list;
+        $_FORM_INPUT_SUFFIX = $subpath_list;
         $upload_field = form_input_upload(do_lang_tempcode('CHOICE_FILEDUMP_UPLOAD'), '', 'tag_contents__c', false);
         $_FORM_INPUT_SUFFIX = null;
         $field_set->attach($upload_field);
@@ -1170,7 +1170,7 @@ function _get_preview_environment_comcode($tag)
             is_plupload(true);
 
             if (!empty($_FILES['tag_contents__c']['tmp_name'])) {
-                $place = post_param_string('place', '');
+                $subpath = post_param_string('subpath', '');
 
                 $file = $_FILES['tag_contents__c'];
 
@@ -1184,12 +1184,12 @@ function _get_preview_environment_comcode($tag)
 
                 $description = post_param_string('description', '');
 
-                $error_msg = add_filedump_file($place, $filename, $file['tmp_name'], $description);
+                $error_msg = add_filedump_file($subpath, $filename, $file['tmp_name'], $description);
                 if ($error_msg !== null) {
                     warn_exit($error_msg);
                 }
 
-                $tag_contents = 'uploads/filedump' . $place . $filename;
+                $tag_contents = 'uploads/filedump' . $subpath . $filename;
             }
         }
     }

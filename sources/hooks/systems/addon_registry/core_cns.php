@@ -102,6 +102,7 @@ class Hook_addon_registry_core_cns
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/core_cns.php',
             'themes/default/images/cns_default_avatars/default.png',
             'themes/default/images/icons/tool_buttons/inbox.svg',
             'themes/default/images/icons/tool_buttons/inbox2.svg',
@@ -163,6 +164,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/snippets/exists_emoticon.php',
             'sources/hooks/systems/sitemap/group.php',
             'sources/hooks/systems/sitemap/member.php',
+            'sources/hooks/systems/config/join_declarations.php',
             'sources/hooks/systems/config/page_after_join.php',
             'sources/hooks/systems/config/allow_alpha_search.php',
             'sources/hooks/systems/config/member_email_receipt_configurability.php',
@@ -175,6 +177,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/httpauth_is_enabled.php',
             'sources/hooks/systems/config/invites_per_day.php',
             'sources/hooks/systems/config/is_on_coppa.php',
+            'sources/hooks/systems/config/coppa_age.php',
             'sources/hooks/systems/config/is_on_invisibility.php',
             'sources/hooks/systems/config/is_on_invites.php',
             'sources/hooks/systems/config/is_on_timezone_detection.php',
@@ -463,7 +466,10 @@ class Hook_addon_registry_core_cns
             'sources/blocks/main_join.php',
             'themes/default/templates/BLOCK_MAIN_JOIN.tpl',
             'themes/default/templates/BLOCK_MAIN_JOIN_DONE.tpl',
+            'themes/default/text/COPPA_MAIL.txt',
             'sources/hooks/systems/actionlog/core_cns.php',
+            'themes/default/templates/CNS_MEMBER_PROFILE_FIELD.tpl',
+            'themes/default/templates/CNS_MEMBER_PROFILE_FIELDS.tpl',
 
             // Files for post map functionality
             'themes/default/templates/CNS_POST_MAP.tpl',
@@ -514,6 +520,7 @@ class Hook_addon_registry_core_cns
             'templates/BLOCK_MAIN_JOIN_DONE.tpl' => 'block_main_join_done',
             'templates/BLOCK_MAIN_JOIN.tpl' => 'block_main_join',
             'templates/JOIN_FORM.tpl' => 'join_form',
+            'text/COPPA_MAIL.txt' => 'coppa_mail',
         );
     }
 
@@ -568,6 +575,7 @@ class Hook_addon_registry_core_cns
                 'URL' => placeholder_url(),
                 'HIDDEN' => '',
                 'GROUP_SELECT' => $group_select,
+                'DECLARATIONS' => array(do_lang('I_AGREE')),
             )), null, '', true)
         );
     }
@@ -916,7 +924,7 @@ class Hook_addon_registry_core_cns
                 'MAX' => strval(30),
                 'SORTABLE' => 'm_join_time',
                 'SORT_ORDER' => 'DESC',
-                'ITEM_WIDTH' => ($per_row === null) ? '' : float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%',
+                'ITEM_WIDTH' => ($per_row === null) ? '' : (float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%'),
                 'PER_ROW' => strval($per_row),
                 'DISPLAY_MODE' => 'avatars',
                 'MEMBER_BOXES' => $member_boxes,
@@ -972,7 +980,7 @@ class Hook_addon_registry_core_cns
             'TIME_FOR_THEM' => placeholder_date(),
             'TIME_FOR_THEM_RAW' => placeholder_date_raw(),
             'SUBMIT_DAYS_AGO' => lorem_phrase(),
-            'SUBMIT_TIME_RAW' => placeholder_date(),
+            'SUBMIT_TIME_RAW' => placeholder_date_raw(),
             'LAST_VISIT_TIME_RAW' => placeholder_date_raw(),
             'ONLINE_NOW' => lorem_phrase(),
             '_ONLINE_NOW' => false,
@@ -1019,7 +1027,7 @@ class Hook_addon_registry_core_cns
             'MEMBER_ID' => placeholder_id(),
             'SECONDARY_GROUPS' => placeholder_array(),
             'VIEW_PROFILES' => true,
-            'ON_PROBATION' => lorem_phrase(),
+            'ON_PROBATION' => placeholder_date_raw(),
             'USERGROUP' => lorem_word(),
             'CLUBS' => lorem_phrase(),
             'EXTRA_INFO_DETAILS' => array(),
@@ -1386,6 +1394,29 @@ class Hook_addon_registry_core_cns
                 'ONE_PER_EMAIL_ADDRESS' => true,
                 'USE_CAPTCHA' => true,
             )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declarative.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__coppa_mail()
+    {
+        $fields_done = array();
+        $fields_done[] = array('LABEL' => lorem_phrase(), 'VALUE' => lorem_phrase());
+
+        return array(
+            lorem_globalise(do_lorem_template('COPPA_MAIL', array(
+                'FAX' => lorem_phrase(),
+                'POSTAL_ADDRESS' => lorem_phrase(),
+                'EMAIL_ADDRESS' => lorem_phrase(),
+                'FIELDS_DONE' => $fields_done,
+                'PRIVACY_POLICY_URL' => placeholder_url(),
+            ), null, false, null, '.txt', 'text'), null, '', true)
         );
     }
 }

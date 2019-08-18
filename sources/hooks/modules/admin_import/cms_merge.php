@@ -872,7 +872,7 @@ class Hook_import_cms_merge
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'author', array('author' => $row['author']));
             if ($test === null) {
-                add_author($row['author'], $row['url'], $row['member_id'], $this->get_lang_string($db, $row['description']), $this->get_lang_string($db, $row['skills']));
+                add_author($row['author'], $row['url'], $row['member_id'], $this->get_lang_string($db, $row['the_description']), $this->get_lang_string($db, $row['skills']));
             }
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'author', null);
@@ -1251,7 +1251,7 @@ class Hook_import_cms_merge
 
                 $map = array();
                 $map += insert_lang('title', $this->get_lang_string($db, $row['title']), 2);
-                $map += insert_lang('description', $this->get_lang_string($db, $row['description']), 2);
+                $map += insert_lang('the_description', $this->get_lang_string($db, $row['the_description']), 2);
                 $id_new = $GLOBALS['SITE_DB']->query_insert('newsletters', $map, true);
 
                 import_id_remap_put('newsletter', strval($row['id']), $id_new);
@@ -1327,7 +1327,7 @@ class Hook_import_cms_merge
             }
 
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-            $id = add_download_category($this->get_lang_string($db, $row['category']), -$row['parent_id'], $this->get_lang_string($db, $row['description']), $row['notes'], $row['rep_image'], $id);
+            $id = add_download_category($this->get_lang_string($db, $row['category']), -$row['parent_id'], $this->get_lang_string($db, $row['the_description']), $row['notes'], $row['rep_image'], $id);
 
             import_id_remap_put('download_category', strval($row['id']), $id);
         }
@@ -1359,7 +1359,7 @@ class Hook_import_cms_merge
                 $category_id = db_get_first_id();
             }
             $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-            $id_new = add_download($category_id, $this->get_lang_string($db, $row['name']), $row['url'], $this->get_lang_string($db, $row['description']), $row['author'], $this->get_lang_string($db, $row['additional_details']), null, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['original_filename'], $row['file_size'], $row['download_cost'], $row['download_submitter_gets_points'], $row['download_licence'], $row['add_date'], $row['num_downloads'], $row['download_views'], $submitter, $row['edit_date'], $id, '', '', $row['default_pic'], $row['url_redirect']);
+            $id_new = add_download($category_id, $this->get_lang_string($db, $row['name']), $row['url'], $this->get_lang_string($db, $row['the_description']), $row['author'], $this->get_lang_string($db, $row['additional_details']), null, $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['original_filename'], $row['file_size'], $row['download_cost'], $row['download_submitter_gets_points'], $row['download_licence'], $row['add_date'], $row['num_downloads'], $row['download_views'], $submitter, $row['edit_date'], $id, '', '', $row['default_pic'], $row['url_redirect']);
 
             $this->_import_content_privacy($db, 'download', strval($row['id']), strval($id_new));
 
@@ -1411,7 +1411,7 @@ class Hook_import_cms_merge
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $row['name']));
             if ($test === null) {
-                add_gallery($row['name'], $this->get_lang_string($db, $row['fullname']), $this->get_lang_string($db, $row['description']), $row['notes'], $row['parent_id'], $row['accept_images'], $row['accept_videos'], $row['is_member_synched'], $row['layout_mode'], $row['rep_image'], $row['watermark_top_left'], $row['watermark_top_right'], $row['watermark_bottom_left'], $row['watermark_bottom_right'], $row['allow_rating'], $row['allow_comments'], false, $row['add_date']);
+                add_gallery($row['name'], $this->get_lang_string($db, $row['fullname']), $this->get_lang_string($db, $row['the_description']), $row['notes'], $row['parent_id'], $row['accept_images'], $row['accept_videos'], $row['is_member_synched'], $row['layout_mode'], $row['rep_image'], $row['watermark_top_left'], $row['watermark_top_right'], $row['watermark_bottom_left'], $row['watermark_bottom_right'], $row['allow_rating'], $row['allow_comments'], false, $row['add_date']);
             }
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'gallery', null);
@@ -1435,7 +1435,7 @@ class Hook_import_cms_merge
             $regions = collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'image', 'content_id' => strval($row['id']))));
 
             $title = $this->get_lang_string($db, $row['title']);
-            $id_new = add_image($title, $row['cat'], $this->get_lang_string($db, $row['description']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['add_date'], $row['edit_date'], $row['image_views'], $id, '', '', $regions);
+            $id_new = add_image($title, $row['cat'], $this->get_lang_string($db, $row['the_description']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $submitter, $row['add_date'], $row['edit_date'], $row['image_views'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'image', strval($row['id']), strval($id_new));
 
@@ -1461,7 +1461,7 @@ class Hook_import_cms_merge
             $regions = collapse_1d_complexity('region', $db->query_select('content_regions', array('region'), array('content_type' => 'video', 'content_id' => strval($row['id']))));
 
             $title = $this->get_lang_string($db, $row['title']);
-            $id_new = add_video($title, $row['cat'], $this->get_lang_string($db, $row['description']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['video_length'], $row['video_width'], $row['video_height'], $submitter, $row['add_date'], $row['edit_date'], $row['video_views'], $id, '', '', $regions);
+            $id_new = add_video($title, $row['cat'], $this->get_lang_string($db, $row['the_description']), $row['url'], $row['thumb_url'], $row['validated'], $row['allow_rating'], $row['allow_comments'], $row['allow_trackbacks'], $row['notes'], $row['video_length'], $row['video_width'], $row['video_height'], $submitter, $row['add_date'], $row['edit_date'], $row['video_views'], $id, '', '', $regions);
 
             $this->_import_content_privacy($db, 'video', strval($row['id']), strval($id_new));
 
@@ -1516,7 +1516,7 @@ class Hook_import_cms_merge
                 'add_date' => $row['add_date'],
             );
             $map += insert_lang('title', $title, 2);
-            $map += insert_lang_comcode('description', $this->get_lang_string($db, $row['description']), 2);
+            $map += insert_lang_comcode('the_description', $this->get_lang_string($db, $row['the_description']), 2);
             $id = $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map, true);
 
             $titlemap[$id] = $title;
@@ -2188,7 +2188,7 @@ class Hook_import_cms_merge
 
             $rep_image = $row['cc_rep_image'];
 
-            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], ($row['cc_parent_id'] === null) ? null : -$row['cc_parent_id'], $rep_image, $row['cc_move_days_lower'], $row['cc_move_days_higher'], $row['cc_move_target'], $row['cc_order'], $row['cc_add_date'], $id);
+            $id_new = actual_add_catalogue_category($row['c_name'], $this->get_lang_string($db, $row['cc_title']), $this->get_lang_string($db, $row['cc_description']), $row['cc_notes'], ($row['cc_parent_id'] === null) ? null : -$row['cc_parent_id'], $rep_image, $row['cc_move_days_lower'], $row['cc_move_days_higher'], $row['cc_move_target'], $row['cc_add_date'], $id);
 
             import_id_remap_put('catalogue_category', strval($row['id']), $id_new);
         }
@@ -2460,7 +2460,7 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
-            $row = insert_lang('description', $this->get_lang_string($db, $row['description']), 2) + $row;
+            $row = insert_lang('the_description', $this->get_lang_string($db, $row['the_description']), 2) + $row;
             $row['the_member'] = $on_same_msn ? $row['the_member'] : import_id_remap_get('member', strval($row['the_member']), true);
             if ($row['the_member'] === null) {
                 $row['the_member'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();

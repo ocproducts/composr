@@ -29,7 +29,7 @@ function get_download_bandwidth()
 
     if ($value == 0) {
         $total = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)', array('validated' => 1));
-        if ($total > 200) { // Fast but won't work on some databases
+        if ($total > 200) { // Fast but won't work on some downloads
             $_value = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'SUM(file_size*num_downloads)', array('validated' => 1));
             $value = @intval($_value);
         } else {

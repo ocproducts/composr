@@ -65,7 +65,7 @@ function bookables_ical_script()
         }
 
         echo "SUMMARY:" . ical_escape(get_translated_text($event['title'])) . "\n";
-        $description = get_translated_text($event['description']);
+        $description = get_translated_text($event['the_description']);
         echo "DESCRIPTION:" . ical_escape($description) . "\n";
 
         if (!is_guest($event['submitter'])) {
@@ -283,8 +283,10 @@ function bookings_ical_script()
                 echo "UID:" . ical_escape(strval($booking['id']) . '-booking@' . get_base_url()) . "\n";
                 echo "URL:" . ical_escape($url) . "\n";
 
-                echo "DTSTART:" . str_pad($r['start_year'], 4, '0', STR_PAD_LEFT) . str_pad($r['start_month'], 2, '0', STR_PAD_LEFT) . str_pad($r['start_day'], 2, '0', STR_PAD_LEFT) . "\n";
-                echo "DTEND:" . str_pad($r['end_year'], 4, '0', STR_PAD_LEFT) . str_pad($r['end_month'], 2, '0', STR_PAD_LEFT) . str_pad($r['end_day'], 2, '0', STR_PAD_LEFT) . "\n";
+                echo "DTSTART:" . str_pad(strval($r['start_year']), 4, '0', STR_PAD_LEFT) . str_pad(strval($r['start_month']), 2, '0', STR_PAD_LEFT) . str_pad(strval($r['start_day']), 2, '0', STR_PAD_LEFT) . "\n";
+                if ($r['end_day'] !== null) {
+                    echo "DTEND:" . str_pad(strval($r['end_year']), 4, '0', STR_PAD_LEFT) . str_pad(strval($r['end_month']), 2, '0', STR_PAD_LEFT) . str_pad(strval($r['end_day']), 2, '0', STR_PAD_LEFT) . "\n";
+                }
                 echo 'TZID:' . get_site_timezone() . "\n";
 
                 echo "END:VEVENT\n";

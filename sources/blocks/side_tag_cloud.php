@@ -50,7 +50,7 @@ class Block_side_tag_cloud
     {
         $info = array();
         $info['cache_on'] = 'array(array_key_exists(\'title\',$map)?$map[\'title\']:do_lang(\'search:TAG_CLOUD\'),array_key_exists(\'max\',$map)?intval($map[\'max\']):30,array_key_exists(\'zone\',$map)?$map[\'zone\']:\'_SEARCH\',array_key_exists(\'param\',$map)?$map[\'param\']:\'\')';
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 1;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : (60 * 1);
         return $info;
     }
 
@@ -115,7 +115,7 @@ class Block_side_tag_cloud
             }
             $tags[$keyword] = $mr['cnt'];
         }
-        arsort($tags, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_arsort($tags, SORT_NATURAL | SORT_FLAG_CASE);
         $_tags = $tags;
         $tags = array();
         foreach ($_tags as $tag => $count) {
@@ -127,7 +127,7 @@ class Block_side_tag_cloud
                 break;
             }
         }
-        ksort($tags, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($tags, SORT_NATURAL | SORT_FLAG_CASE);
 
         if (count($tags) == 0) {
             return do_template('RED_ALERT', array('_GUID' => 'qsgdln7dvorwfrtjwa1fuvqb9fbyf8sj', 'TEXT' => do_lang_tempcode('NO_ENTRIES')));

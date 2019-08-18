@@ -56,7 +56,7 @@
 	3_REL=edit
 	3_ICON=admin/edit_this_category
 	4_URL={EDIT_CATALOGUE_URL*}
-	4_TITLE={!EDIT_CATALOGUE}
+	4_TITLE={!EDIT_THIS_CATALOGUE}
 	4_ICON=menu/cms/catalogues/edit_this_catalogue
 {+END}
 

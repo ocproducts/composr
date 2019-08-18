@@ -96,13 +96,6 @@ function do_comcode_attachments($comcode, $type = 'null', $id = '', $previewing_
         $matches = array();
         if ((($may_have_one) && (is_plupload()) || (is_uploaded_file($file['tmp_name']))) && (preg_match('#file(\d+)#', $key, $matches) != 0)) {
             $has_one = true;
-
-            $matches_extract = array();
-            if ((!browser_matches('simplified_attachments_ui')) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
-                if (preg_match('#\]\d+\[/attachment\]#', $comcode) == 0) { // Attachment could have already been put through (e.g. during a preview). If we have actual IDs referenced, it's almost certainly the case.
-                    $comcode .= "\n\n" . '[attachment]new_' . $matches[1] . '[/attachment]';
-                }
-            }
         }
     }
 

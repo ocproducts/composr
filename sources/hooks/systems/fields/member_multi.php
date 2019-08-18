@@ -101,12 +101,14 @@ class Hook_fields_member_multi
 
         $out = array();
         foreach (($ev == '') ? array() : explode("\n", $ev) as $ev) {
-            $out[intval($ev)] = $GLOBALS['FORUM_DRIVER']->get_username(intval($ev), false, USERNAME_DEFAULT_BLANK);
+            if (is_numeric($ev)) {
+                $out[intval($ev)] = $GLOBALS['FORUM_DRIVER']->get_username(intval($ev), false, USERNAME_DEFAULT_BLANK);
+            }
         }
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            @asort($out, SORT_NATURAL | SORT_FLAG_CASE);
+            @cms_mb_asort($out, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $ret = new Tempcode();
@@ -144,7 +146,9 @@ class Hook_fields_member_multi
         }
         $usernames = array();
         foreach (explode("\n", $actual_value) as $actual_value) {
-            $usernames[] = $GLOBALS['FORUM_DRIVER']->get_username(intval($actual_value), false, USERNAME_DEFAULT_BLANK);
+            if (is_numeric($actual_value)) {
+                $usernames[] = $GLOBALS['FORUM_DRIVER']->get_username(intval($actual_value), false, USERNAME_DEFAULT_BLANK);
+            }
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         return form_input_username_multi($_cf_name, $_cf_description, $input_name, $usernames, ($field['cf_required'] == 1) ? 1 : 0, true);

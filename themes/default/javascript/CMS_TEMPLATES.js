@@ -28,7 +28,7 @@
     };
 
     $cms.templates.blockMainScreenActions = function blockMainScreenActions(params, container) {
-        var easySelfUrl = strVal(params.easySelfUrl);
+        var urlEncodedCanonicalUrl = strVal(params.urlEncodedCanonicalUrl);
 
         $dom.on(container, 'click', '.js-click-action-print-screen', function () {
             $cms.gaTrack(null,'{!recommend:PRINT_THIS_SCREEN;}');
@@ -39,7 +39,7 @@
         });
 
         $dom.on(container, 'click', '.js-click-action-add-to-twitter', function (e, link) {
-            link.href = 'https://twitter.com/share?count=horizontal&counturl=' + easySelfUrl + '&original_referer=' + easySelfUrl + '&text=' + encodeURIComponent(document.title) + '&url=' + easySelfUrl;
+            link.href = 'https://twitter.com/share?count=horizontal&counturl=' + urlEncodedCanonicalUrl + '&original_referer=' + urlEncodedCanonicalUrl + '&text=' + encodeURIComponent(document.title) + '&url=' + urlEncodedCanonicalUrl;
 
             $cms.gaTrack(null,'social__twitter');
         });

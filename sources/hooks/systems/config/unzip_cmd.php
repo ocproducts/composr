@@ -56,6 +56,14 @@ class Hook_config_unzip_cmd
         if (function_exists('zip_open')) {
             return null;
         }
-        return '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@';
+        if (php_function_allowed('shell_exec')) {
+            if (@strpos(shell_exec('unzip -h'), 'UnZip') !== false) {
+                return 'unzip -o @_SRC_@ -x -d @_DST_@';
+            }
+            if (@strpos(shell_exec('/usr/bin/unzip -h'), 'UnZip') !== false) {
+                return '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@';
+            }
+        }
+        return '';
     }
 }

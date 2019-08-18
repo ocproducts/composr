@@ -37,8 +37,7 @@ function autofill_geo_cpfs($member_id = null)
 
     $start = 0;
     $max = 100;
-    do
-    {
+    do {
         $rows = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields f JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m ON m.id=f.mf_member_id', array('f.*', 'm.id', 'm_ip_address'), $where, 'ORDER BY mf_member_id', $max, $start);
         foreach ($rows as $row) {
             _autofill_geo_cpfs($row);

@@ -56,15 +56,39 @@ class Module_cms_galleries extends Standard_crud_module
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MANAGE_GALLERIES', 'menu/rich_content/galleries'),
-            'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
-            'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
-            'add_other' => array('ADD_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video'),
-            'edit_other' => array('EDIT_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video'),
         );
 
-        if (has_privilege(get_member(), 'mass_import', 'cms_galleries')) {
+        if (has_privilege($member_id, 'submit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'edit' => array('EDIT_IMAGE', 'menu/cms/galleries/edit_one_image'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'add_other' => array('ADD_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_midrange_content', 'cms_galleries')) {
+            $ret += array(
+                'edit_other' => array('EDIT_VIDEO', (get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video'),
+            );
+        }
+
+        if (has_privilege($member_id, 'mass_import', 'cms_galleries')) {
             $ret['import'] = array('GALLERY_IMPORT', 'admin/import');
         }
 
@@ -270,10 +294,10 @@ class Module_cms_galleries extends Standard_crud_module
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_galleries') ? array('admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_GALLERY')) : null,
                 has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_GALLERY')) : null,
                 has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('GALLERY_IMPORT'), 'DOC_GALLERY_IMPORT') : null,
-                (!$allow_images) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/add_one_image', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IMAGE')) : null,
-                (!$allow_images) ? null : has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_image', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_IMAGE')) : null,
-                (!$allow_videos) ? null : has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_VIDEO')) : null,
-                (!$allow_videos) ? null : has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null,
+                (!$allow_images) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/add_one_image', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IMAGE')) : null),
+                (!$allow_images) ? null : (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_image', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_IMAGE')) : null),
+                (!$allow_videos) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/add_one_multimedia' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_VIDEO')) : null),
+                (!$allow_videos) ? null : (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array((get_option('allow_audio_videos') == '2') ? 'menu/cms/galleries/edit_one_multimedia' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null),
             ), manage_custom_fields_donext_link('image'), manage_custom_fields_donext_link('video'), manage_custom_fields_donext_link('gallery')),
             do_lang('MANAGE_GALLERIES')
         );
@@ -400,7 +424,7 @@ class Module_cms_galleries extends Standard_crud_module
                 closedir($_dir);
             }
             if (count($there) != 0) {
-                asort($there);
+                cms_mb_asort($there, SORT_FLAG_CASE | SORT_NATURAL);
                 $test1 = collapse_1d_complexity('url', $GLOBALS['SITE_DB']->query_select('images', array('url')));
                 $test2 = collapse_1d_complexity('url', $GLOBALS['SITE_DB']->query_select('videos', array('url')));
                 arsort($there);
@@ -542,7 +566,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') {
-            $url = make_string_tempcode(get_param_string('redirect', INPUT_FILTER_URL_INTERNAL));
+            $url = make_string_tempcode(get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL));
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
 
@@ -1041,7 +1065,7 @@ class Module_cms_galleries extends Standard_crud_module
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
         }
         $myrow = $rows[0];
-        $description = get_translated_text($myrow['description']);
+        $description = get_translated_text($myrow['the_description']);
         $cat = $myrow['cat'];
         $validated = $myrow['validated'];
 
@@ -1437,7 +1461,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             }
 
             if ($filename !== null) {
-                if (substr(strtolower($filename), -4) == '.mp3') {
+                if (strtolower(substr($filename, -4)) == '.mp3') {
                     $_video_width = 300;
                     $_video_height = 60;
                 }
@@ -1673,7 +1697,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
         }
         $myrow = $rows[0];
-        $description = get_translated_text($myrow['description']);
+        $description = get_translated_text($myrow['the_description']);
         $url = $myrow['url'];
         $cat = $myrow['cat'];
         $validated = $myrow['validated'];
@@ -2136,7 +2160,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        return $this->get_form_fields($id, get_translated_text($myrow['fullname']), get_translated_text($myrow['description']), $myrow['notes'], $myrow['parent_id'], $myrow['accept_images'], $myrow['accept_videos'], $myrow['is_member_synched'], $myrow['layout_mode'], $myrow['rep_image'], $myrow['watermark_top_left'], $myrow['watermark_top_right'], $myrow['watermark_bottom_left'], $myrow['watermark_bottom_right'], $myrow['allow_rating'], $myrow['allow_comments']);
+        return $this->get_form_fields($id, get_translated_text($myrow['fullname']), get_translated_text($myrow['the_description']), $myrow['notes'], $myrow['parent_id'], $myrow['accept_images'], $myrow['accept_videos'], $myrow['is_member_synched'], $myrow['layout_mode'], $myrow['rep_image'], $myrow['watermark_top_left'], $myrow['watermark_top_right'], $myrow['watermark_bottom_left'], $myrow['watermark_bottom_right'], $myrow['allow_rating'], $myrow['allow_comments']);
     }
 
     /**

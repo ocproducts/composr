@@ -502,7 +502,10 @@ function sugarcrm_log_action($action_type, $params)
     $log_path = get_custom_file_base() . '/data_custom/sugarcrm.log';
     if ((file_exists($log_path)) && (is_writable($log_path))) {
         $logfile = fopen($log_path, 'ab');
-        fwrite($logfile, "\n" . date('Y-m-d H:i:s') . ' ' . $action_type . '... ' . json_encode($params));
+        flock($logfile, LOCK_EX);
+        fseek($logfile, 0, SEEK_END);
+        fwrite($logfile, "\n" . loggable_date() . ' -- ' . $action_type . '... ' . json_encode($params));
+        flock($logfile, LOCK_UN);
         fclose($logfile);
     }
 }

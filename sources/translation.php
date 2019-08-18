@@ -37,36 +37,64 @@ function init__translation()
 /**
  * Whether translation is available.
  *
+ * @param  ?LANGUAGE_NAME $from Source language (null: do not consider)
+ * @param  ?LANGUAGE_NAME $to Destination language (null: do not consider)
+ * @param  ?object $translation_object Translation object, will be returned by reference (null: search all)
+ * @param  ?string $errormsg Error message (returned by reference) (null: not set yet)
  * @return boolean Whether it is
  */
-function has_translation()
+function has_translation($from = null, $to = null, &$translation_object = null, &$errormsg = null)
 {
-    if (get_option('google_apis_api_key') == '') {
-        return false;
+    if ($translation_object !== null) {
+        return $translation_object->has_translation($from, $to, $errormsg);
     }
-    if (get_option('google_translate_enabled') == '0') {
-        return false;
+
+    $hook_obs = find_all_hook_obs('systems', 'translation', 'Hook_translation_');
+    foreach ($hook_obs as $hook_ob) {
+        if ($hook_ob->has_translation($from, $to, $errormsg)) {
+            $translation_object = $hook_ob;
+            return true;
+        }
     }
-    return true;
+
+    return false;
+}
+
+/**
+ * Get a particular translation object.
+ *
+ * @param  string $hook Specific hook to use
+ * @return ?object Translation object (null: could not find)
+ */
+function get_translation_object_for_hook($hook)
+{
+    if ($hook === null) {
+        return null;
+    }
+
+    require_code('hooks/systems/translation/' . $hook);
+    return object_factory('Hook_translation_' . $hook);
 }
 
 /**
  * Translate some text.
- * Powered by Google Translate.
  *
  * @param  string $text The text to translate
  * @param  integer $context A TRANS_TEXT_CONTEXT_* constant
- * @param  ?LANGUAGE_NAME $from Source language (null: autodetect)
+ * @param  ?LANGUAGE_NAME $from Source language (null: autodetect from the text itself)
  * @param  ?LANGUAGE_NAME $to Destination language (null: current user's language)
+ * @param  ?string $hook Specific hook to use (null: first that'll do it)
+ * @param  ?string $errormsg Error message (returned by reference) (null: not set yet)
  * @return ?string Translated text (null: some kind of error)
  */
-function translate_text($text, $context = 0, $from = null, $to = null)
+function translate_text($text, $context = 0, $from = null, $to = null, $hook = null, &$errormsg = null)
 {
     if ($text == '') {
         return '';
     }
 
-    if (!has_translation()) {
+    $translation_object = get_translation_object_for_hook($hook);
+    if (!has_translation($from, $to, $translation_object, $errormsg)) {
         return null;
     }
 
@@ -75,24 +103,16 @@ function translate_text($text, $context = 0, $from = null, $to = null)
     }
 
     if ($to === $from) {
-        return null;
+        return null; // No translation needed
     }
 
-    $_to = get_google_lang_code($to);
-    if ($_to === null) {
-        return null;
-    }
-    if ($from !== null) {
-        $_from = get_google_lang_code($from);
-        if ($_from === null) {
-            return null;
-        }
-    } else {
-        $_from = null;
+    if ($from === null) {
         if (($to === 'EN') && (preg_match('#^[\x00-\x7F]*$#', ($context == TRANS_TEXT_CONTEXT_plain) ? $text : html_entity_decode($text, ENT_QUOTES, 'utf-8')) != 0)) {
             return null; // Looks like it's already in English (no other languages work well in ASCII): don't waste money on translation
         }
     }
+
+    $context_metadata = $translation_object->get_translation_context($context, $from, $to, $errormsg);
 
     $cache_map = array(
         't_lang_from' => ($from === null) ? '' : $from,
@@ -102,139 +122,34 @@ function translate_text($text, $context = 0, $from = null, $to = null)
     );
     $text_result = $GLOBALS['SITE_DB']->query_select_value_if_there('translation_cache', 't_text_result', $cache_map);
 
-    if ($text_result === null) {
-        $url = 'https://translation.googleapis.com/language/translate/v2';
-        $request = array(
-            'q' => $text,
-            'source' => $_from,
-            'target' => $_to,
-        );
-        switch ($context) {
-            case TRANS_TEXT_CONTEXT_autodetect:
-                break;
-
-            case TRANS_TEXT_CONTEXT_plain:
-                $request['format'] = 'text';
-                break;
-
-            case TRANS_TEXT_CONTEXT_html_block:
-            case TRANS_TEXT_CONTEXT_html_inline:
-            case TRANS_TEXT_CONTEXT_html_raw:
-                $request['format'] = 'html';
-                break;
-        }
-
-        $result = _google_translate_api_request($url, $request);
-
-        if ($result === null) {
-            return null;
-        }
-        if (!isset($result['data']['translations'][0]['translatedText'])) {
+    if ($text_result === null) { // Not cached
+        $text_result = $translation_object->translate_text($text, $context, $context_metadata, $from, $to, $errormsg);
+        if ($text_result === null) { // Some kind of error
             return null;
         }
 
-        $text_result = $result['data']['translations'][0]['translatedText'];
-
+        // Store into cache
         $GLOBALS['SITE_DB']->query_insert('translation_cache', $cache_map + array('t_text_result' => $text_result));
     }
 
-    if (trim($text) == trim($text_result)) {
-        return null;
-    }
-
-    $ret = '';
-    switch ($context) {
-        case TRANS_TEXT_CONTEXT_autodetect:
-        case TRANS_TEXT_CONTEXT_plain:
-        case TRANS_TEXT_CONTEXT_html_raw:
-            $ret = $text_result;
-            break;
-
-        case TRANS_TEXT_CONTEXT_html_block:
-        case TRANS_TEXT_CONTEXT_html_inline:
-            $tag = ($context == TRANS_TEXT_CONTEXT_html_block) ? 'div' : 'span';
-            $ret = '<' . $tag . ' lang="' . $_to . '-x-mtfrom-' . $_from . '">' . $text_result . '</' . $tag . '>';
-            if ($context == TRANS_TEXT_CONTEXT_html_block) {
-                $ret .= '<div>' . get_google_translate_credit() . '</div>';
-            }
-            break;
-    }
+    $ret = $translation_object->put_result_into_context($text_result, $context, $context_metadata);
 
     return $ret;
 }
 
 /**
- * Get HTML to provide Google credit.
+ * Get HTML to provide credit to the translation backend, as appropriate.
  *
+ * @param  ?LANGUAGE_NAME $from Source language (null: do not consider)
+ * @param  ?LANGUAGE_NAME $to Destination language (null: do not consider)
+ * @param  ?string $hook Specific hook to use (null: first that'll do it)
  * @return string Credit HTML
  */
-function get_google_translate_credit()
+function get_translation_credit($from = null, $to = null, $hook = null)
 {
-    $powered_by = do_lang('POWERED_BY', 'Google translate');
-    $lnw = do_lang('LINK_NEW_WINDOW');
-    $img = find_theme_image('google_translate');
-    return '<a href="http://translate.google.com/" target="_blank" title="' . $powered_by . ' ' . $lnw . '"><img src="' . escape_html($img) . '" alt="" /></a>';
-}
-
-/**
- * Convert a standard language codename to a google code.
- *
- * @param  LANGUAGE_NAME $in The code to convert
- * @return ?string The converted code (null: none found)
- */
-function get_google_lang_code($in)
-{
-    if (!has_translation()) {
-        return null;
+    $translation_object = get_translation_object_for_hook($hook);
+    if (!has_translation($from, $to, $translation_object)) {
+        return '';
     }
-
-    $url = 'https://translation.googleapis.com/language/translate/v2/languages';
-    $ret = str_replace('_', '-', strtolower($in));
-
-    // Now check the language actually exists...
-
-    require_code('http');
-    $result = unserialize(cache_and_carry('_google_translate_api_request', array($url, null)));
-
-    if ($result === null) {
-        return null;
-    }
-    if (!isset($result['data']['languages'])) {
-        return null;
-    }
-
-    foreach ($result['data']['languages'] as $lang) {
-        if ($lang['language'] == $ret) {
-            return $ret;
-        }
-    }
-
-    return null;
-}
-
-/**
- * Call a Google translate API.
- *
- * @param  URLPATH $url API URL to call
- * @param  ?array $request Request data (null: GET request)
- * @return ?array Result (null: some kind of error)
- */
-function _google_translate_api_request($url, $request = null)
-{
-    $key = get_option('google_apis_api_key');
-    $url .= '?key=' . urlencode($key);
-
-    if ($request === null) {
-        $_request = null;
-    } else {
-        $_request = json_encode($request);
-    }
-
-    $_result = http_get_contents($url, array('trigger_error' => false, 'post_params' => ($_request === null) ? null : array($_request), 'timeout' => 0.5, 'raw_post' => ($request !== null), 'http_verb' => ($request === null) ? 'GET' : 'POST', 'raw_content_type' => 'application/json'));
-
-    $result = @json_decode($_result, true);
-    if ($result === false) {
-        return null;
-    }
-    return $result;
+    return $translation_object->get_translation_credit();
 }

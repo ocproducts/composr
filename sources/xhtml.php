@@ -399,7 +399,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                 if (isset($html[$i + 1]) && strtolower($html[$i + 1]) == 'i'/*Optimisation before we bother looking harder*/ && preg_match('#<img[^<>]+src="([^"]+)"#iA', $html, $matches, 0, $i) != 0) {
                     require_code('images');
                     $test = cms_getimagesize_url(html_entity_decode($matches[1], ENT_QUOTES), true); // Safe way to grab image dimensions
-                    if ($test === false) {
+                    if (($test === false) || ($test[0] === null) || ($test[1] === null)) {
                         $width = intval(get_option('thumb_width'));
                         $height = intval(get_option('thumb_width'));
                     } else {
@@ -484,7 +484,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                 $start_ellipses = '';
             }
             if ($ellipses) {
-                $end_ellipses = (($length !== null) && (($end_pos < $total_length - 1)) ? $entity : '');
+                $end_ellipses = ((($length !== null) && ($end_pos < $total_length - 1)) ? $entity : '');
             } else {
                 $end_ellipses = '';
             }

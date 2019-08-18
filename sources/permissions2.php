@@ -412,16 +412,8 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
         return $permission_rows;
     }
 
-    // Find out colour for our vertical text image headings (CSS can't rotate text), using the CSS as a basis
-    $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
-    $color = 'FF00FF';
-    if (file_exists($css_path)) {
-        $tmp_file = cms_file_get_contents_safe($css_path);
-        $matches = array();
-        if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-            $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
-        }
-    }
+    require_code('themes2');
+    $color = find_theme_seed($GLOBALS['FORUM_DRIVER']->get_theme());
 
     // For heading up the table matrix
     $overrides_array = array();

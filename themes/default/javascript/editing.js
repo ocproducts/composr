@@ -212,7 +212,7 @@
                     return resolvePromise();
                 }
 
-                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keep()));
+                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1&is_semihtml=1' + $cms.keep()));
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
@@ -358,7 +358,11 @@
                     url += '&forum_db=1';
                 }
 
-                $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(textarea.value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', ''))).then(function (xhr) {
+                var post = 'data=' + encodeURIComponent(textarea.value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', ''));
+                if ($cms.form.isModSecurityWorkaroundEnabled()) {
+                    post = $cms.form.modSecurityWorkaroundAjax(post);
+                }
+                $cms.doAjaxRequest(url, null, post).then(function (xhr) {
                     if (!xhr.responseXML) {
                         textarea.value = '';
                     } else {
@@ -822,14 +826,17 @@
                     return resolvePromise();
                 }
 
-                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep()));
+                var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&is_semihtml=1&lax_comcode=1' + $cms.keep()));
                 if ($cms.getPageName() === 'topics') {
                     url += '&forum_db=1';
                 }
 
-                var data = encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
+                var post = 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
+                if ($cms.form.isModSecurityWorkaroundEnabled()) {
+                    post = $cms.form.modSecurityWorkaroundAjax(post);
+                }
 
-                $cms.doAjaxRequest(url, null, 'data=' + data).then(function (xhr) {
+                $cms.doAjaxRequest(url, null, post).then(function (xhr) {
                     var responseXML = xhr.responseXML;
                     if (responseXML && (responseXML.querySelector('result'))) {
                         var result = responseXML.querySelector('result');
@@ -1001,6 +1008,10 @@
                     url += '&forum_db=1';
                 }
 
+                var post = 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
+                if ($cms.form.isModSecurityWorkaroundEnabled()) {
+                    post = $cms.form.modSecurityWorkaroundAjax(post);
+                }
                 $cms.doAjaxRequest(url, function (responseXml) {
                     if (responseXml && (responseXml.querySelector('result'))) {
                         var result = responseXml.querySelector('result');
@@ -1012,7 +1023,7 @@
 
                     _insertTextboxWrappingWysiwyg(element, editor, newHtml);
                     resolvePromise();
-                }, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+                }, post);
             });
         }
 

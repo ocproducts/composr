@@ -777,7 +777,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
 {
     $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
 
-    if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name)) {
+    if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name) && (!multi_lang_content())) {
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
             $sub_name = $name . '__' . $sub_name;
             $sub_new_name = $new_name . '__' . $sub_name;
@@ -1104,6 +1104,17 @@ function get_db_keywords()
         'PARSE_GCOL_EXPR', 'PRECEDES', 'REPLICATE_DO_DB', 'REPLICATE_DO_TABLE', 'REPLICATE_IGNORE_DB', 'REPLICATE_IGNORE_TABLE',
         'REPLICATE_REWRITE_DB', 'REPLICATE_WILD_DO_TABLE', 'REPLICATE_WILD_IGNORE_TABLE', 'ROTATE', 'STORED', 'VALIDATION',
         'VIRTUAL', 'WITHOUT', 'XID',
+
+        // Added in MySQL 8.0
+        'ARRAY', 'CUME_DIST', 'DENSE_RANK', 'EMPTY', 'FIRST_VALUE', 'GET_MASTER_PUBLIC_KEY;', 'GROUPING', 'GROUPS',
+        'JSON_TABLE', 'LAG', 'LAST_VALUE', 'LATERAL', 'LEAD', 'MEMBER', 'NTH_VALUE', 'NTILE', 'OF', 'OVER', 'PERCENT_RANK',
+        'PERSIST_ONLY;', 'RANK', 'RECURSIVE', 'ROW_NUMBER', 'SYSTEM', 'WINDOW', 'ACTIVE;', 'BUCKETS;', 'CLONE;', 'DEFINITION;',
+        'DESCRIPTION;', 'ENFORCED;', 'EXCLUDE;', 'FOLLOWING;', 'GEOMCOLLECTION;', 'HISTOGRAM;', 'HISTORY;', 'INACTIVE;',
+        'LOCKED;', 'MASTER_COMPRESSION_ALGORITHMS;', 'MASTER_PUBLIC_KEY_PATH;', 'MASTER_ZSTD_COMPRESSION_LEVEL;', 'NESTED;',
+        'NETWORK_NAMESPACE;', 'NOWAIT;', 'NULLS;', 'OJ;', 'OLD;', 'OPTIONAL;', 'ORDINALITY;', 'ORGANIZATION;', 'OTHERS;',
+        'PATH;', 'PRECEDING;', 'PROCESS;', 'REFERENCE;', 'RESOURCE;', 'RESPECT;', 'RESTART;', 'RETAIN;', 'REUSE;',
+        'SECONDARY;', 'SECONDARY_ENGINE;', 'SECONDARY_LOAD;', 'SECONDARY_UNLOAD;', 'SKIP;', 'SRID;', 'THREAD_PRIORITY;',
+        'TIES;', 'UNBOUNDED;', 'VCPU;',
     );
     return $words;
 }

@@ -52,7 +52,7 @@ class Block_menu
         $info = array();
         $info['cache_on'] = array('block_menu__cache_on');
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24 * 140;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : (60 * 24 * 140);
         return $info;
     }
 
@@ -76,7 +76,7 @@ class Block_menu
         }
 
         $type = isset($map['type']) ? $map['type'] : 'embossed';
-        if ($type != 'dropdown' && $type != 'tree' && $type != 'embossed' && $type != 'popup' && $type != 'select') {
+        if ($type != 'dropdown' && $type != 'tree' && $type != 'embossed' && $type != 'popup' && $type != 'select' && $type != 'sitemap' && $type != 'mobile') {
             $exists = file_exists(get_file_base() . '/themes/default/templates/MENU_BRANCH_' . $type . '.tpl');
             if (!$exists) {
                 $exists = file_exists(get_custom_file_base() . '/themes/default/templates_custom/MENU_BRANCH_' . $type . '.tpl');

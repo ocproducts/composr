@@ -31,8 +31,7 @@ class microformats_test_set extends cms_test_case
 
     public function testHCalendar()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testHCalendar')) {
+        if (($this->only !== null) && ($this->only != 'testHCalendar')) {
             return;
         }
 
@@ -49,8 +48,7 @@ class microformats_test_set extends cms_test_case
 
     public function testHCalendarSideBlock()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testHCalendarSideBlock')) {
+        if (($this->only !== null) && ($this->only != 'testHCalendarSideBlock')) {
             return;
         }
 
@@ -64,8 +62,7 @@ class microformats_test_set extends cms_test_case
 
     public function testHCard()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testHCard')) {
+        if (($this->only !== null) && ($this->only != 'testHCard')) {
             return;
         }
 

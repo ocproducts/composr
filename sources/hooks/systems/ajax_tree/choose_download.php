@@ -76,7 +76,7 @@ class Hook_ajax_tree_choose_download
         foreach ($tree as $t) {
             $_id = $t['id'];
             if (($id === strval($_id)) || (get_param_integer('full_depth', 0) == 1)) { // Possible when we look under as a root
-                asort($t['entries'], SORT_NATURAL | SORT_FLAG_CASE);
+                cms_mb_asort($t['entries'], SORT_NATURAL | SORT_FLAG_CASE);
 
                 foreach ($t['entries'] as $eid => $etitle) {
                     $download_rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $eid), '', 1);
@@ -87,8 +87,8 @@ class Hook_ajax_tree_choose_download
                         }
                     }
 
-                    $description = get_translated_text($download_rows[0]['description']);
-                    $description_html = get_translated_tempcode('download_downloads', $download_rows[0], 'description');
+                    $description = get_translated_text($download_rows[0]['the_description']);
+                    $description_html = get_translated_tempcode('download_downloads', $download_rows[0], 'the_description');
 
                     if (addon_installed('galleries')) {
                         // Images
@@ -114,7 +114,7 @@ class Hook_ajax_tree_choose_download
                                 $view_url = get_custom_base_url() . '/' . $view_url;
                             }
                             $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
-                            $description_image = get_translated_tempcode('images', $row, 'description');
+                            $description_image = get_translated_tempcode('images', $row, 'the_description');
                             $thumb = do_image_thumb($thumb_url, '');
                             $iedit_url = new Tempcode();
                             $_content = do_template('DOWNLOAD_SCREEN_IMAGE', array(

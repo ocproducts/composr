@@ -187,6 +187,11 @@ class Module_warnings extends Standard_crud_module
         require_code('templates_results_table');
 
         $member_id = get_param_integer('id');
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+
+        if ($member_id != get_member()) {
+            log_it('PUNITIVE_HISTORY', strval($member_id), $username);
+        }
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id), 'ORDER BY w_time');
         if (count($rows) == 0) {
@@ -650,6 +655,7 @@ class Module_warnings extends Standard_crud_module
                 $fields->attach(form_input_list($handle_label, '', 'handle_post__' . strval($post_id), $list_options, null, false, false));
             }
 
+            // See also privacy_purge.php - this code handles deletion of individually-identified high-level content items, while privacy-purging will delete/anonymise on mass for any kinds of database record
             if (addon_installed('commandr')) {
                 $content = $this->find_member_content($member_id);
                 if (count($content) > 0) {
@@ -1069,7 +1075,7 @@ class Module_warnings extends Standard_crud_module
             $banned_ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address');
             require_code('failure');
             require_code('failure_spammers');
-            syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
+            syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, false);
 
             require_code('cns_general_action2');
             cns_mod_log_it('MARK_AS_SPAMMER', strval($member_id), $username, $explanation);

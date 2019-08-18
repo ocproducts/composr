@@ -99,6 +99,7 @@ class Hook_addon_registry_galleries
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/galleries.php',
             'themes/default/images/icons/menu/rich_content/galleries.svg',
             'themes/default/images/icons/menu/cms/galleries/add_one_image.svg',
             'themes/default/images/icons/menu/cms/galleries/add_one_video.svg',
@@ -129,7 +130,7 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/config/galleries_show_stats_count_galleries.php',
             'sources/hooks/systems/config/galleries_show_stats_count_images.php',
             'sources/hooks/systems/config/galleries_show_stats_count_videos.php',
-            'sources/hooks/systems/config/gallery_name_order.php',
+            'sources/hooks/systems/config/galleries_sort_order.php',
             'sources/hooks/systems/config/gallery_selectors.php',
             'sources/hooks/systems/config/max_personal_gallery_images_high.php',
             'sources/hooks/systems/config/max_personal_gallery_images_low.php',
@@ -224,7 +225,7 @@ class Hook_addon_registry_galleries
             'themes/default/javascript/galleries.js',
             'themes/default/templates/CNS_MEMBER_PROFILE_GALLERIES.tpl',
             'sources/hooks/systems/block_ui_renderers/galleries.php',
-            'sources/hooks/systems/config/galleries_default_sort_order.php',
+            'sources/hooks/systems/config/gallery_media_default_sort_order.php',
             'sources/hooks/systems/config/galleries_subcat_narrowin.php',
             'sources/hooks/systems/config/gallery_entries_carousel_per_page.php',
             'sources/hooks/systems/config/gallery_entries_grid_per_page.php',

@@ -809,7 +809,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             }
         }
 
-        $topic_filter = ($filter_topic_title != '') ? 'AND topic_title LIKE \'' . db_encode_like($filter_topic_title) . '\'' : '';
+        $topic_filter = ($filter_topic_title != '') ? ('AND topic_title LIKE \'' . db_encode_like($filter_topic_title) . '\'') : '';
         $topic_filter .= ' ORDER BY ' . (($date_key == 'lasttime') ? 'topic_last_post_id' : 'topic_time') . ' DESC';
         $rows = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'topics WHERE (' . $id_list . ') ' . $topic_filter, $limit, $start);
         $max_rows = $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'topics WHERE (' . $id_list . ') ' . $topic_filter);

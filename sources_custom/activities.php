@@ -45,7 +45,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
 
             // Grabbing who you've blocked
             $_blocking = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => $viewer_member));
-            $blocking = implode(',', collapse_1d_complexity('member_blocked', $_blocking));
+            $blocking = implode(',', array_map('strval', collapse_1d_complexity('member_blocked', $_blocking)));
         }
     }
 

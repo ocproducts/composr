@@ -100,6 +100,7 @@ class Hook_addon_registry_tickets
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/tickets.php',
             'themes/default/images/icons/menu/site_meta/tickets.svg',
             'themes/default/images/icons/buttons/add_ticket.svg',
             'themes/default/images/icons/buttons/new_reply_staff_only.svg',

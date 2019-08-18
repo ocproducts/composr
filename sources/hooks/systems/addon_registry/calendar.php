@@ -98,6 +98,7 @@ class Hook_addon_registry_calendar
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/calendar.php',
             'themes/default/images/icons/menu/rich_content/calendar.svg',
             'themes/default/images/icons_monochrome/menu/rich_content/calendar.svg',
             'sources/hooks/systems/snippets/calendar_recurrence_suggest.php',

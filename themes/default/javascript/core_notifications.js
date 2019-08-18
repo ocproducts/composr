@@ -142,14 +142,14 @@
                 firstInput = inputEls[0],
                 secondInput = inputEls[1];
 
-            if ((raw === -1) || (raw === -2)) { // Statistical/disallowed (from admin_notifications lock-down) will unselect all else
+            if ((raw === -1) || (raw === -2) || (raw === -4)) { // Statistical/choice/default (from admin_notifications lock-down) will unselect all else
                 for (var i = 0; i < inputEls.length; i++) {
                     if ((inputEls[i] !== checkbox) && (inputEls[i].type === 'checkbox')) {
                         inputEls[i].checked = false;
                     }
                 }
             } else {
-                if (firstInput && firstInput.name.includes('CHOICE')) {
+                if (firstInput && (firstInput.name.includes('CHOICE') || firstInput.name.includes('INBUILT_DEFAULT'))) {
                     firstInput.checked = false;
                 }
 

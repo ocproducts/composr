@@ -108,6 +108,12 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
             return;
         }
         list($width, $height) = $image_size;
+        if ($width === null) {
+            return;
+        }
+        if ($height === null) {
+            return;
+        }
 
         if (($width > $maximum_dimension) || ($height > $maximum_dimension)) {
             $ops = $ops | IMG_OP__CONSTRAIN_DIMENSIONS;
@@ -144,7 +150,7 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
         $result = adjust_pic_orientation($image, $exif);
         $image = $result[0];
         $reorientated = $result[1];
-        $made_change |= $result[1];
+        $made_change = $made_change || $result[1];
     } else {
         $reorientated = false;
     }
@@ -166,13 +172,13 @@ function handle_images_cleanup_pipeline($path, $filename = null, $recompress_mod
     if (($ops & IMG_OP__CONSTRAIN_DIMENSIONS) != 0) {
         $result = adjust_pic_size($image, $maximum_dimension);
         $image = $result[0];
-        $made_change |= $result[1];
+        $made_change = $made_change || $result[1];
     }
 
     if (($ops & IMG_OP__WATERMARK) != 0) {
         $result = add_pic_watermarking($image, $watermarks);
         $image = $result[0];
-        $made_change |= $result[1];
+        $made_change = $made_change || $result[1];
     }
 
     // Save
@@ -220,8 +226,7 @@ function is_animated_image($c, $ext)
     if ($ext == 'gif') {
         $str_loc = 0;
         $count = 0;
-        while ($count < 2) // There is no point in continuing after we find a 2nd frame
-        {
+        while ($count < 2) { // There is no point in continuing after we find a 2nd frame
             $where1 = strpos($c, "\x00\x21\xF9\x04", $str_loc);
             if ($where1 === false) {
                 break;
@@ -596,7 +601,7 @@ function png_compress($path, $lossy = false)
             $parsed_colour = imagecolorsforindex($img, $at);
             if ((isset($parsed_colour['alpha'])) && ($parsed_colour['alpha'] != 0)) {
                 $has_alpha = true;
-                if ($parsed_colour['alpha'] != 127) {
+                if ($parsed_colour['alpha'] != 0) {
                     // Blended alpha, cannot handle as anything other than a proper 32-bit PNG
                     imagedestroy($img);
                     return;

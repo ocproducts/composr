@@ -230,7 +230,7 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
     foreach (array_keys($_langs) as $lang) {
         $_langs[$lang] = lookup_language_full_name($lang);
     }
-    asort($_langs, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($_langs, SORT_NATURAL | SORT_FLAG_CASE);
 
     foreach ($_langs as $lang => $full_name) {
         $langs->attach(form_input_list_entry($lang, ($lang == $select_lang), $full_name));
@@ -239,7 +239,7 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
     if ($show_unset) {
         global $LANGS_MAP_CACHE;
         if ($LANGS_MAP_CACHE !== null) {
-            asort($LANGS_MAP_CACHE, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_asort($LANGS_MAP_CACHE, SORT_NATURAL | SORT_FLAG_CASE);
             foreach ($LANGS_MAP_CACHE as $lang => $full) {
                 if (!array_key_exists($lang, $_langs)) {
                     $_full = make_string_tempcode($full);

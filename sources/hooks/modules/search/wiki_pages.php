@@ -160,7 +160,7 @@ class Hook_search_wiki_pages extends FieldsSearchHook
         global $SEARCH__CONTENT_BITS;
         $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
         push_lax_comcode(true);
-        $summary = get_translated_text($row['description']);
+        $summary = get_translated_text($row['the_description']);
         $text_summary_h = comcode_to_tempcode($summary, null, false, null, null, COMCODE_NORMAL, $highlight_bits);
         pop_lax_comcode();
         $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);

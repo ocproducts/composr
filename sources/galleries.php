@@ -63,7 +63,7 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
     require_css('galleries');
     require_code('images');
 
-    $just_image_row = db_map_restrict($row, array('id', 'description'));
+    $just_image_row = db_map_restrict($row, array('id', 'the_description'));
 
     // URL
     $map = array('page' => 'galleries', 'type' => 'image', 'id' => $row['id']);
@@ -87,7 +87,7 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
     }
 
     // Description
-    $description = get_translated_tempcode('images', $just_image_row, 'description');
+    $description = get_translated_tempcode('images', $just_image_row, 'the_description');
 
     // Images
     $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
@@ -138,7 +138,7 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
     require_css('galleries');
     require_code('images');
 
-    $just_video_row = db_map_restrict($row, array('id', 'description'));
+    $just_video_row = db_map_restrict($row, array('id', 'the_description'));
 
     // URL
     $map = array('page' => 'galleries', 'type' => 'video', 'id' => $row['id']);
@@ -162,7 +162,7 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
     }
 
     // Description
-    $description = get_translated_tempcode('videos', $just_video_row, 'description');
+    $description = get_translated_tempcode('videos', $just_video_row, 'the_description');
 
     // Images
     $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'videos', $row['id']);
@@ -219,7 +219,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     require_lang('galleries');
     require_css('galleries');
 
-    $just_gallery_row = db_map_restrict($myrow, array('name', 'description'));
+    $just_gallery_row = db_map_restrict($myrow, array('name', 'the_description'));
 
     $member_id = get_member_id_from_gallery_name($myrow['name'], $myrow, true);
     $is_member = $member_id !== null;
@@ -237,7 +237,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     // Basic details
     $_title = get_translated_text($myrow['fullname']);
     $add_date = get_timezoned_date_tempcode($myrow['add_date']);
-    $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
+    $description = get_translated_tempcode('galleries', $just_gallery_row, 'the_description');
 
     // Member details
     if ($show_member_stats_if_appropriate) {
@@ -687,7 +687,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
         if ($num_children >= intval(get_option('general_safety_listing_limit'))) {
             $rows = $GLOBALS['SITE_DB']->query('SELECT name,fullname,accept_images,accept_videos,is_member_synched,g.fullname,parent_id ' . $query . ' ORDER BY add_date', intval(get_option('general_safety_listing_limit')), 0, false, false, array('fullname' => 'SHORT_TRANS__COMCODE'));
         } else {
-            $rows = $GLOBALS['SITE_DB']->query('SELECT name,fullname,accept_images,accept_videos,is_member_synched,g.fullname,parent_id ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('fullname') . ' ASC', null, 0, false, false, array('fullname' => 'SHORT_TRANS__COMCODE'));
+            $rows = $GLOBALS['SITE_DB']->query('SELECT name,fullname,accept_images,accept_videos,is_member_synched,g.fullname,parent_id ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('fullname'), null, 0, false, false, array('fullname' => 'SHORT_TRANS__COMCODE'));
         }
     }
     if ((($filter === null) || (!is_callable($filter)) || (call_user_func_array($filter, array($gallery, $member_id, count($rows))))) && ((!$must_accept_images) || (($accept_images) && (!$is_member_synched))) && ((!$must_accept_videos) || (($accept_videos) && (!$is_member_synched)))) {
@@ -1063,15 +1063,12 @@ function get_gallery_content_tree($table, $submitter = null, $gallery = null, $b
     $compound_list = $gallery . ',';
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'fullname'), array('parent_id' => $gallery), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('fullname') . ' ASC', intval(get_option('general_safety_listing_limit')));
-    if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
-        $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'fullname'), array('parent_id' => $gallery), 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit')));
-    }
+    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'fullname'), array('parent_id' => $gallery), 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit')));
     $where = array('cat' => $gallery);
     if ($submitter !== null) {
         $where['submitter'] = $submitter;
     }
-    $erows = $GLOBALS['SITE_DB']->query_select($table, array('id', 'url', 'submitter', 'title', 'thumb_url'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('title') . ' ASC', intval(get_option('general_safety_listing_limit')));
+    $erows = $GLOBALS['SITE_DB']->query_select($table, array('id', 'url', 'submitter', 'title', 'thumb_url'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('title'), intval(get_option('general_safety_listing_limit')));
     if (count($erows) == intval(get_option('general_safety_listing_limit'))) {
         $erows = $GLOBALS['SITE_DB']->query_select($table, array('id', 'url', 'submitter', 'title', 'thumb_url'), $where, 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit')));
     }

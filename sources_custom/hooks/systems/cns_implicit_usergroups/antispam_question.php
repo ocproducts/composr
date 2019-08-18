@@ -87,7 +87,7 @@ class Hook_implicit_usergroups_antispam_question
     public function get_member_list($group_id)
     {
         if ($this->field_id === null) {
-            return 0;
+            return array();
         }
 
         if (!addon_installed('antispam_question')) {

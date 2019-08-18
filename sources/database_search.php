@@ -999,7 +999,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         }
     }
 
-    // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
+    // This is so for example catalogue_entries.php can use parentheses in it's table specifier while avoiding the table prefix after the first parenthesis. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);
     if ($table[0] == '(') {
         $table_clause = '(' . $table_clause;
@@ -1197,7 +1197,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                 $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
 
-                $main_query_part = 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : ' WHERE ' . $where_clause_3);
+                $main_query_part = 'SELECT ' . $select . (($_select == '') ? '' : ',') . $_select . ' FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
                 if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
                     $main_query_part .= ' ORDER BY ' . $order;
                     if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {
@@ -1739,9 +1739,9 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
  *
  * @param  array $hook_results Search results from the search hook, assumed already sorted
  * @param  array $results Existing array of results (originally starts blank)
- * @return array Sorted results
  * @param  string $direction Sort direction
  * @set ASC DESC
+ * @return array Sorted results
  */
 function sort_search_results($hook_results, $results, $direction)
 {

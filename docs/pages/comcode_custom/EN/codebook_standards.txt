@@ -135,7 +135,7 @@ We do not use [tt]HACKHACK[/tt] or [tt]FIXME[/tt] markers, although the CQC will
 | Technical debt
 | All development
 | Manually
-| Don't write code that is too "clever" or relies on too deep an understanding, unless there's good reason to. For example, don't assume the programmer knows the precedence order of some of the less common operators so put in explicit brackets to make things clear.
+| Don't write code that is too "clever" or relies on too deep an understanding, unless there's good reason to. For example, don't assume the programmer knows the precedence order of some of the less common operators so put in explicit parentheses to make things clear.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use software engineering best practices[/color]
@@ -199,6 +199,13 @@ Write comments in the standard way
 | Product development only
 | Manually
 | URLs-within-URLs need to be encoded carefully so as to bypass ModSecurity restrictions (often any embedded URL is blocked). Basically URLs should be read in with a [tt]INPUT_FILTER_URL_*[/tt] flag to [tt]*_param_string[/tt], and URLs should be placed within URLs/forms with a [tt]protect_url_parameter[/tt] call around their value.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Support offline[/color]
+| Offline development and Intranets
+| Product development only
+| Manually
+| Unless intrinsically necessary for a particular piece of functionality, do not rely on external URLs such as CDNs. External URLs create a number of problems, including: network firewalls operating with whitelists blocking functionality (e.g. in museums), erratic firewall blocking (e.g. in China), full functionality not being available offline (e.g. when developing on an airplane), or full functionality not working in private offline Intranets (e.g. in schools). If users want to make use of CDNs they can make manual changes to achieve it.
 |}
 
 [title="4"]Code formatting[/title]
@@ -324,7 +331,7 @@ These rules are very standard, but if broken then code-overriding may not work c
 | Usability: so live sites are tidy
 | All development
 | Manually
-| Remember to sort things. Sometimes this needs doing in PHP code, and sometimes it needs doing in your queries ([tt]ORDER BY[/tt]). If doing it in PHP code consider you usually will want to do a "natural" sort. Typically you should order data records by date, not by ID (because IDs may not be sequential, especially on exotic database backends). You should never assume that data comes out of the database in the same order as it goes in.
+| Remember to sort things. Sometimes this needs doing in PHP code, and sometimes it needs doing in your queries ([tt]ORDER BY[/tt]). If doing it in PHP code consider you usually will want to do a "natural" sort, to consider whether case-insensitivity needs enabling, and to consider Unicode-safe sorting (handled by the [tt]cms_mb_*sort[/tt] functions). Typically you should order data records by date, not by ID (because IDs may not be sequential, especially on exotic database backends). You should never assume that data comes out of the database in the same order as it goes in.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Remember to apply pagination wherever appropriate[/color]
@@ -798,6 +805,58 @@ Run the [tt]sync_file[/tt] function after making any file changes
 | Files are never locked automatically, and it can cause big problems if you don't manually do locking -- writes can mess up each other, or partial files can read in and cache. The [tt]cms_file_put_contents_safe[/tt] will handle locking well.
 |}
 
+[title="4"]Log files[/title]
+
+{|
+! Standard
+! Reason
+! Scope
+! Test method
+! Notes
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Define log file in a hook
+| GDPR, Administration
+| Composr development
+| Manually
+| A [tt]systems/logs[/tt] hook needs to define that your log exists. This allows the log purger to clear out old records, and the administrative error-log interface to find your log.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use correct date format
+| GDPR
+| Composr development
+| Manually
+| Start your log entries using the output of [tt]loggable_date()[/tt]. This consistent date formatting will allow the log purger to read the log. Multiple lines per entry and lead-in text at the top of the log are allowed; these special lines should not include the date/time. Other than this function there's no explicit log-writing API, because it's pretty standard PHP file I/O.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Lock your file when writing
+| Stability
+| Composr development
+| Manually
+| Multiple processes may want to write to the log at the same time. Look how other logging code handles locking. In rare situations it may be guaranteed an operation is not going to happen concurrently, in which case you can forget about locking.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Store log as [tt]data_custom/whatever.log[/tt]
+| Security
+| Composr development
+| Manually
+| This allows the default Apache [tt].htaccess[/tt] to deny web access to the log. The only exception should be logs which are created by default, which must be [tt].php[/tt] files with some lead-in code to prevent PHP command execution (using [tt].php[/tt] is the only 100%-reliable way to prevent unintended file download by URL access).
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Do not create log by default
+| Security
+| Composr development
+| Manually
+| Logs should usually only be used if the standard file has been pre-created by hand. This avoids bloated unneeded logs that may not be properly secured against unwanted access. See the note above for stipulations around the exception to this rule.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Reference in [tt]web.config[/tt] file
+| Security
+| Composr development
+| Manually
+| We support IIS, which does not support wild-card blocking of file access. So we must manually block access to each individual log file.
+}
+
 [title="4"]URLs and file paths[/title]
 
 {|
@@ -1061,6 +1120,13 @@ No null strings
 | Product development only
 | 
 | It is up to the database layer whether database string comparisons are case sensitive or not. Usually you don't need to think about it because the sensitivity just maps straight to the application behaviour you'd expect, but there may be occasional issues to consider. The default supported MySQL driver is case insensitive as the default collation used is [tt]utf8mb4_general_ci[/tt].
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Define [tt]privacy[/tt] hooks, Manually
+| GDPR
+| Composr development +
+| Automated test ([tt]privacy_hooks.php[/tt])
+| Any member-ID, IP address, e-mail address, or human-name fields need to be managed for GDPR purposes. This includes support for downloading (serialising), deleting, and anonymising. Serialised content should be understandable without further context, so things like category titles may need to be included (if important) rather than IDs. Database records often should not be deleted without further consideration, so proper deletion API calls should be codified.
 |}
 
 [title="4"]Templates and Interfaces[/title]
@@ -1780,7 +1846,7 @@ Don't define binary options in negative terms
 | Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code. The only exception is hidden configuration options, which are often set to '1' to disable something.
 |}
 
-Respect the Queen of England ;)...
+Respect the Queen of England ;), but also do not confuse Americans...
 {|
 ! Standard
 ! Reason
@@ -1808,6 +1874,13 @@ Say "tick (check)" rather than just "tick" or just "check"
 | Product development only
 | Automated test ([tt]lang_spelling.php[/tt])
 | The word "tick" in British English is "check" in American English (referring to the square 'tickbox'/'checkbox' on HTML forms). Due to this disparity, write both like "tick (check)".
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use American-friendly bracket terminology[/color]
+| Consistent UI
+| Product development only
+| Manually
+| Brackets in US English typically means square brackets, or sometimes some unspecified type of bracketing, while in British English it means parentheses. Parenthesis/parentheses is a word valid in both UK and US English. Therefore never use the word "bracket" when specifically referring to parentheses.
 |}
 
 Language for submit buttons...
@@ -2310,7 +2383,7 @@ Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])
 | Consistency
 | Product development only
 | Manually
-| Generally code is formatted the same way as PSR-2 is specified and with spaces around operators, except with JavaScript we use camelCase for identifiers rather than underscores, and we place function opening braces on the same line as the function declaration. For functions assigned to a variable we put a space between the function keyword and opening bracket ([tt]function (foo)[/tt]). Rather than us prescribing all the rules we suggest looking at existing code to see how to do it.
+| Generally code is formatted the same way as PSR-2 is specified and with spaces around operators, except with JavaScript we use camelCase for identifiers rather than underscores, and we place function opening braces on the same line as the function declaration. For functions assigned to a variable we put a space between the function keyword and opening parenthesis ([tt]function (foo)[/tt]). Rather than us prescribing all the rules we suggest looking at existing code to see how to do it.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use of classes[/color]

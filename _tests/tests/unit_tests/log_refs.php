@@ -33,26 +33,30 @@ class log_refs_test_set extends cms_test_case
 
         $codebook = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/codebook_3.txt');
 
-        $admin_errorlog = file_get_contents(get_file_base() . '/adminzone/pages/modules/admin_errorlog.php');
-
         $web_config = file_get_contents(get_file_base() . '/web.config');
 
+        $defined_logs = array();
+        $hook_obs = find_all_hook_obs('systems', 'logs', 'Hook_logs_');
+        foreach ($hook_obs as $hook_ob) {
+            $defined_logs = array_merge($defined_logs, array_keys($hook_ob->enumerate_logs()));
+        }
+
         $matches = array();
-        $logs = array();
+        $logs_in_code = array();
         $num_matches = preg_match_all('#data_custom/\w+\.log#', $all_code, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $log = $matches[0][$i];
 
-            if (!in_array(basename($log), array('performance.log', 'performance_warnings.log', 'sugarcrm.log'))) {
-                $logs[] = $log;
+            if (!in_array(basename($log), array('performance.log', 'performance_warnings.log', 'sugarcrm.log', 'tapatalk.log'))) {
+                $logs_in_code[] = $log;
             }
         }
-        $logs = array_unique($logs);
+        $logs_in_code = array_unique($logs_in_code);
 
-        foreach ($logs as $log) {
+        foreach ($logs_in_code as $log) {
             $this->assertTrue(strpos($codebook, $log) !== false, 'Missing Codebook listing for ' . $log);
 
-            $this->assertTrue(strpos($admin_errorlog, basename($log)) !== false, 'Missing admin_errorlog reference for ' . $log);
+            $this->assertTrue(in_array(basename($log), $defined_logs), 'Missing logs hook reference for ' . $log);
 
             $this->assertTrue(strpos($web_config, '<add segment="' . basename($log) . '" />') !== false, 'Missing web.config skip for ' . $log);
         }

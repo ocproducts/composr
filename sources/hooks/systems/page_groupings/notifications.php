@@ -37,7 +37,7 @@ class Hook_page_groupings_notifications
         }
 
         return array(
-            array('setup', 'menu/adminzone/setup/notifications', array('admin_notifications', array('type' => 'browse'), get_module_zone('admin_notifications')), do_lang_tempcode('notifications:NOTIFICATIONS_LOCKDOWN'), 'notifications:DOC_NOTIFICATIONS'),
+            array('setup', 'menu/adminzone/setup/notifications', array('admin_notifications', array('type' => 'browse'), get_module_zone('admin_notifications')), do_lang_tempcode('notifications:NOTIFICATIONS'), 'notifications:DOC_NOTIFICATIONS'),
         );
     }
 }

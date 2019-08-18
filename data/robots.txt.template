@@ -1,0 +1,41 @@
+User-agent: *
+
+# Normal things to block bot access to
+Disallow: /cgi-bin/
+
+# Bots should never get here as raw data
+Disallow: /caches/
+Disallow: /exports/
+Disallow: /imports/
+Disallow: /temp/
+
+# Bots should never get here as exposes framework files
+Disallow: /data/ace/
+Disallow: /data/ckeditor/
+Disallow: /text/
+Disallow: /text_custom/
+Disallow: /themes/*/text
+Disallow: /themes/*/xml
+
+# Bots should never get here as exposes admin functionality (individual admin/utility scripts have noindex built-in)
+Disallow: /adminzone/
+#Disallow: /cms/
+
+# Set Sitemap
+Sitemap: http://yourbaseurl/data_custom/sitemaps/index.xml
+Sitemap: http://yourbaseurl/data_custom/sitemaps/news_sitemap.xml
+
+# Block some Spammy bots
+User-agent: SurdotlyBot
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+User-agent: BLEXBot
+Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+
+# Set reasonable Crawl Delay to stop over-enthusiastic bots
+Crawl-Delay: 10

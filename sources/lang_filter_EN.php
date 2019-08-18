@@ -430,8 +430,7 @@ class LangFilter_EN extends LangFilter
                         $specific_plural = $specific . 's';
                     }
 
-                    switch ($type)
-                    {
+                    switch ($type) {
                         case 'resource':
                             $reps = array(
                                 'a resource' => $article_word . ' ' . $specific,

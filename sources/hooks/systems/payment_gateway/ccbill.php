@@ -185,9 +185,9 @@ class Hook_payment_gateway_ccbill
 
         $account_num = $this->get_account_id();
         $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
-        $subaccount_num = sprintf('%04d', count($subaccount_nums) === 1 ? $subaccount_nums[0] : $subaccount_nums[1]); // Second value is for subscriptions, has to be exactly 4 digits
+        $subaccount_num = sprintf('%04d', (count($subaccount_nums) === 1) ? $subaccount_nums[0] : $subaccount_nums[1]); // Second value is for subscriptions, has to be exactly 4 digits
         $form_name = explode(',', get_option('payment_gateway_digest'));
-        $form_name = count($form_name) === 1 ? $form_name[0] : $form_name[1]; // Second value is for subscriptions
+        $form_name = (count($form_name) === 1) ? $form_name[0] : $form_name[1]; // Second value is for subscriptions
         $form_period = strval($length * $this->length_unit_to_days[$length_units]);
         $digest = md5(float_to_raw_string($price + $tax) . $form_period . float_to_raw_string($price + $tax) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
 

@@ -58,7 +58,7 @@ class template_xss_test_set extends cms_test_case
 
                         // Search
                         $matches = array();
-                        $num_matches = preg_match_all('#\{(\w+)([*=;\#~^\'&.@+-]*)\}#U', $c, $matches);
+                        $num_matches = preg_match_all('#\{([A-Z]\w*)([*=;\#~^\'&.@+-]*)\}#U', $c, $matches);
                         $params_found = array();
                         for ($i = 0; $i < $num_matches; $i++) {
                             $match = $matches[0][$i];

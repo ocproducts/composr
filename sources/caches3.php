@@ -586,17 +586,17 @@ function erase_comcode_page_cache()
  */
 function erase_theme_images_cache()
 {
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images/%\'');
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE url LIKE \'themes/%/images/%\'');
 
     Self_learning_cache::erase_smart_cache();
 
-    $paths = $GLOBALS['SITE_DB']->query_select('theme_images', array('path', 'id'));
-    foreach ($paths as $path) {
-        if ($path['path'] == '') {
-            $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
-        } elseif (preg_match('#^themes/[^/]+/images_custom/#', $path['path']) != 0) {
-            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($path['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($path['path'])))) {
-                $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
+    $urls = $GLOBALS['SITE_DB']->query_select('theme_images', array('url', 'id'));
+    foreach ($urls as $url) {
+        if ($url['url'] == '') {
+            $GLOBALS['SITE_DB']->query_delete('theme_images', $url, '', 1);
+        } elseif (preg_match('#^themes/[^/]+/images_custom/#', $url['url']) != 0) {
+            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($url['url']))) && (!file_exists(get_file_base() . '/' . rawurldecode($url['url'])))) {
+                $GLOBALS['SITE_DB']->query_delete('theme_images', $url, '', 1);
             }
         }
     }

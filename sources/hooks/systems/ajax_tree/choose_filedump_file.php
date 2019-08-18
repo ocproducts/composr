@@ -57,9 +57,9 @@ class Hook_ajax_tree_choose_filedump_file
 
         if ((has_actual_page_access(null, 'filedump')) && (file_exists($full_path))) {
             $files = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, false);
-            sort($files, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_sort($files, SORT_NATURAL | SORT_FLAG_CASE);
             foreach ($files as $f) {
-                $description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => basename($f), 'path' => $id . '/'));
+                $description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => basename($f), 'subpath' => $id . '/'));
 
                 $entry_id = cms_rawurlrecode('uploads/filedump/' . (($id == '') ? '' : (str_replace('%2F', '/', rawurlencode($id)) . '/')) . str_replace('%2F', '/', rawurlencode($f)));
 

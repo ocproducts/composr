@@ -73,15 +73,8 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
     // Now for probation
     $d = 0;
     if ($include_secondaries) {
-        global $PROBATION_GROUP_CACHE;
-        if ($PROBATION_GROUP_CACHE === null) {
-            $probation_group = get_option('probation_usergroup');
-            $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-            if ($PROBATION_GROUP_CACHE === null) {
-                $PROBATION_GROUP_CACHE = false;
-            }
-        }
-        if ($PROBATION_GROUP_CACHE === $group_id) {
+        $probation_group = get_probation_group();
+        if ($probation_group === $group_id) {
             $d = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE m_on_probation_until>' . strval(time()));
         }
     }
@@ -150,15 +143,8 @@ function cns_get_group_members_raw($group_id, $include_primaries = true, $non_va
 
     // Now for probation
     if ($include_secondaries) {
-        global $PROBATION_GROUP_CACHE;
-        if ($PROBATION_GROUP_CACHE === null) {
-            $probation_group = get_option('probation_usergroup');
-            $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-            if ($PROBATION_GROUP_CACHE === null) {
-                $PROBATION_GROUP_CACHE = false;
-            }
-        }
-        if ($PROBATION_GROUP_CACHE === $group_id) {
+        $probation_group = get_probation_group();
+        if ($probation_group === $group_id) {
             $d = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE m_on_probation_until>' . strval(time()), $max);
             foreach ($d as $member_row) {
                 $member_id = $member_row['id'];

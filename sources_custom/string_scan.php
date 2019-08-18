@@ -114,6 +114,32 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        DAYS_TO_KEEP__CRON_LOG
+        CONFIG_OPTION_days_to_keep__cron_log
+        DAYS_TO_KEEP__DEBUG_FS_LOG
+        CONFIG_OPTION_days_to_keep__debug_fs_log
+        DAYS_TO_KEEP__ERROR_LOG
+        CONFIG_OPTION_days_to_keep__error_log
+        DAYS_TO_KEEP__MAIL_INTEGRATION_LOG
+        CONFIG_OPTION_days_to_keep__mail_integration_log
+        DAYS_TO_KEEP__PERMISSION_CHECKS_LOG
+        CONFIG_OPTION_days_to_keep__permission_checks_log
+        DAYS_TO_KEEP__QUERIES_LOG
+        CONFIG_OPTION_days_to_keep__queries_log
+        DAYS_TO_KEEP__TASKS_LOG
+        CONFIG_OPTION_days_to_keep__tasks_log
+        DAYS_TO_KEEP__RESOURCE_FS_LOG
+        CONFIG_OPTION_days_to_keep__resource_fs_log
+        DAYS_TO_KEEP__ECOMMERCE_LOG
+        CONFIG_OPTION_days_to_keep__ecommerce_log
+        DAYS_TO_KEEP__HEALTH_CHECK_LOG
+        CONFIG_OPTION_days_to_keep__health_check_log
+        ROBOTS_TXT
+        ROBOTS_TXT_ALREADY_EXISTS
+        ROBOTS_TXT_CREATED
+        ROBOTS_TXT_NOT_MAPPED
+        ROBOTS_TXT_COULD_NOT_WRITE
+        DOC_ROBOTS_TXT
         BLOCK_TOP_LANGUAGE
         BLOCK_TRANS_NAME_top_language
         CONFIG_OPTION_block_top_language
@@ -181,6 +207,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_TOP_NOTIFICATIONS
         BLOCK_TOP_PERSONAL_STATS
         BLOCK_TOP_SEARCH
+        CATEGORIES_SORT_ORDER
+        GALLERY_DEFAULT_SORT_ORDER
+        GALLERY_NAME_ORDER
+        DESCRIPTION_CATEGORIES_SORT_ORDER
+        CONFIG_OPTION_galleries_sort_order_VALUE_add_date__ASC
+        CONFIG_OPTION_galleries_sort_order_VALUE_add_date__DESC
+        CONFIG_OPTION_galleries_sort_order_VALUE_average_rating__DESC
+        CONFIG_OPTION_galleries_sort_order_VALUE_compound_rating__DESC
+        CONFIG_OPTION_galleries_sort_order_VALUE_fullname__ASC
+        CONFIG_OPTION_galleries_sort_order_VALUE_name__ASC
         CONFIG_GROUP_DESCRIP_BLOCKS_AT_TOP
         CONFIG_OPTION_block_top_login
         CONFIG_OPTION_block_top_notifications
@@ -420,6 +456,25 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HERE_SURVEY_RESULTS
         HERE_TEST_RESULTS
         METADATA
+        CMD_HEALTH_CHECK_HELP_V
+        CMD_HEALTH_CHECK_PAGES_HELP
+        CMD_HEALTH_CHECK_PAGES_HELP_PARAM_0
+        CMD_HEALTH_CHECK_PAGES_HELP_V
+        DEAD_LINE_PROBLEM
+        DELURK_NON_CONFIRMED
+        DELURK_NON_CONFIRMED_DESCRIPTION
+        DOUBLE_SPACE_PROBLEM
+        FAKE_HEADING_PROBLEM
+        FAKE_TABLES_PROBLEM
+        FORM_ACTION_ERROR_HANDLING_PROBLEM
+        FORM_ACTION_PROBLEM
+        FORM_ACTION_RELATIVE_PROBLEM
+        HC_PAGE_DOWNLOAD_ERROR
+        INCONSISTENT_PERIOD_PROBLEM
+        NESTED_FONT_SIZE_PROBLEM
+        POOR_WYSIWYG_PROBLEM
+        SEQUENTIAL_FONT_SIZE_PROBLEM
+        TRAILING_SPACE_PROBLEM
         ABOUT_DELETE_MENU
         ABOUT_REVISIONS
         ABRUPTED_DIRECTIVE_OR_BRACE
@@ -814,6 +869,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BAD_ZONE
         NO_PHP_EMAILING_AVAILABLE
         CURRENT_BANNER_IS
+        DOC_GDPR
+        TEXT_PRIVACY_SEARCH
+        DESCRIPTION_PRIVACY_OTHER
+        TABLES
+        PURGE
+        PRIVACY_METHOD_leave
+        PRIVACY_METHOD_anonymise
+        PRIVACY_METHOD_delete
+        PERSONAL_DATA_PURGING
+        CONFIG_OPTION_bing_translator_enabled
+        BING_TRANSLATOR_ENABLED
+        AZURE_API
+        AZURE_API_KEY
+        CONFIG_OPTION_azure_api_key
         SOURCE_MEDIA
         BANNED_ADDRESSES
         BANNERS
@@ -1126,6 +1195,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMD_CSS_CLEANUP_HELP
         CMD_CSS_CLEANUP_HELP_PARAM_0
         CMD_CSS_CLEANUP_HELP_PARAM_1
+        CMD_TEST_MAIL_HELP
+        CMD_TEST_MAIL_HELP_PARAM_0
         DESCRIPTION__THEME__OPTION_OVERRIDES
         IS_ALSO_THEME_SETTING
         NAG_UNINSTALL_TEST_CONTENT
@@ -2044,6 +2115,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHANGED_USERGROUP
         CHANGE_BLOCK_BACKGROUND
         EDIT_TIME
+        MODULE_TRANS_NAME_admin_robots_txt
+        MODULE_TRANS_NAME_admin_privacy
         CHANGE_FIXED_WIDTH
         CHANGE_FONT
         CHANGE_HEADER_IMAGE
@@ -2307,6 +2380,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CODE_EDITOR
         CAPTCHA_MEMBER_DAYS
         CAPTCHA_MEMBER_POSTS
+        JOIN_DECLARATIONS
+        CONFIG_OPTION_join_declarations
         CONFIG_OPTION_captcha_member_days
         CONFIG_OPTION_captcha_member_posts
         CONFIG_OPTION_gallery_media_title_required_VALUE_0
@@ -2929,6 +3004,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_complex_privacy_options
         CONFIG_OPTION_complex_uploader
         CONFIG_OPTION_cookie_notice
+        CONFIG_OPTION_coppa_age
+        CONFIG_OPTION_website_activity_store_time
+        COPPA_AGE
+        PRIVILEGE_avoid_captcha
+        WEBSITE_ACTIVITY_STORE_TIME
+        MEMBER_SEARCH
         CONFIG_OPTION_copyright
         CONFIG_OPTION_cpf_enable_city
         CONFIG_OPTION_cpf_enable_country
@@ -3036,14 +3117,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_forum_topics_per_page
         CONFIG_OPTION_forw_url
         CONFIG_OPTION_fractional_editing
-        CONFIG_OPTION_galleries_default_sort_order
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_add_date__ASC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_add_date__DESC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_average_rating__DESC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_compound_rating__DESC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_fixed_random__ASC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_url__ASC
-        CONFIG_OPTION_galleries_default_sort_order_VALUE_url__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_add_date__ASC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_add_date__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_average_rating__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_compound_rating__DESC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_fixed_random__ASC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_url__ASC
+        CONFIG_OPTION_gallery_media_default_sort_order_VALUE_url__DESC
         CONFIG_OPTION_galleries_subcat_narrowin
         CONFIG_OPTION_gallery_entries_carousel_per_page
         CONFIG_OPTION_gallery_entries_grid_per_page
@@ -3055,7 +3136,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_gallery_mode_is_VALUE_grid
         CONFIG_OPTION_gallery_mode_is_VALUE_carousel
         CONFIG_OPTION_gallery_mode_is_VALUE_mosaic
-        CONFIG_OPTION_gallery_name_order
+        CONFIG_OPTION_galleries_sort_order
         CONFIG_OPTION_gallery_permissions
         CONFIG_OPTION_gallery_rep_image
         CONFIG_OPTION_gallery_selectors
@@ -3113,7 +3194,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_is_on_coppa
         CNS_WAITING_CONFIRM_MAIL_COPPA
         COPPA_JOIN_SUBJECT
-        COPPA_MAIL
+        INCORRECT_CAPTCHA_QUESTION_ANSWER
+        CONFIG_GROUP_DESCRIP_CAPTCHA_QUESTIONS
+        CAPTCHA_QUESTIONS
+        CONFIG_OPTION_captcha_questions
+        CAPTCHA_QUESTION_PAGES
+        CONFIG_OPTION_captcha_question_pages
+        CAPTCHA_QUESTION_TOTAL
+        CONFIG_OPTION_captcha_question_total
+        DESCRIPTION_CAPTCHA_QUESTION
+        DESCRIPTION_CAPTCHA_QUESTION_LIST
         PREPARE_EMAIL
         PREPARE_EMAIL_DESCRIPTION
         PREPARE_EMAIL_SUBJECT
@@ -3463,8 +3553,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_use_true_from_VALUE_0
         CONFIG_OPTION_use_true_from_VALUE_1
         CONFIG_OPTION_use_true_from_VALUE_2
-        EMAIL_LOG_DAYS
-        CONFIG_OPTION_email_log_days
+        EMAIL_LOG_STORE_TIME
+        CONFIG_OPTION_email_log_store_time
         CONFIG_OPTION_user_postsize_errors
         CONFIG_OPTION_username_profile_links
         CONFIG_OPTION_users_online_time
@@ -4332,7 +4422,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_TICKET_SEARCH_FAQ
         DESCRIPTION_TICKET_TYPE
         DESCRIPTION_TIED_TO_NEWSLETTER
-        DESCRIPTION_TIMEZONE_SITE
+        CONFIG_OPTION_timezone
         DESCRIPTION_TITLE
         DESCRIPTION_TITLE_SUFFIX
         DESCRIPTION_TOPIC_MOVE_TARGET
@@ -5119,7 +5209,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UPGRADER_FILE_UPGRADE_INFO_MANUAL
         UPGRADER_FIX_PERMISSIONS
         UPGRADER_FTP_INFO
-        UPGRADER_FTP_NEEDED
         UPGRADER_INSTALLED_ADDON
         UPGRADER_INSTALLED_BLOCK
         UPGRADER_INSTALLED_MODULE
@@ -5160,6 +5249,17 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UPGRADER_WILL_MERGE
         UNKNOWN_CURRENCY
         CURRENCY_CONVERSION_FAILED
+        FXML_IMAGE_TOO_NARROW
+        FXML_IMAGE_TOO_WIDE
+        FXML_IMAGE_TOO_SHORT
+        FXML_IMAGE_TOO_TALL
+        FXML_IMAGE_ASPECT_RATIO_TOO_LOW
+        FXML_IMAGE_ASPECT_RATIO_TOO_HIGH
+        FXML_IMAGE_FILESIZE_TOO_HIGH
+        FXML_IMAGE_NOT_LOSSLESS
+        FXML_IMAGE_NOT_RASTER
+        FXML_IMAGE_NOT_VECTOR
+        FXML_IMAGE_INVALID_FILE_EXTENSION
         FXML_FIELD_NOT_IN_SET
         FXML_FIELD_NOT_IN_SET_SECRETIVE
         FXML_FIELD_PATTERN_FAIL
@@ -5169,7 +5269,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FXML_FIELD_TOO_SHORT
         GAE_APPLICATION
         GAE_BUCKET_NAME
-        GALLERIES_DEFAULT_SORT_ORDER
+        GALLERY_MEDIA_DEFAULT_SORT_ORDER
         GALLERIES_SUBCAT_NARROWIN
         GALLERY_ENTRIES_CAROUSEL_PER_PAGE
         GALLERY_ENTRIES_GRID_PER_PAGE
@@ -5973,7 +6073,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTE_DESCRIPTION
         NOTHING_TO_INVOICE_FOR
         NOTHING_TO_TRANSLATE
+        NOTIFICATIONS_DEFINE_DEFAULT
         NOTIFICATIONS_DEFINE_LOCKDOWN
+        NOTIFICATIONS_DEFAULT
+        INBUILT_DEFAULT_WRAP
         NOTIFICATIONS_LOCKDOWN
         NOTIFICATION_BODY_CONTENT_REVIEWS
         NOTIFICATION_BODY_CONTENT_REVIEWS_delete
@@ -7707,6 +7810,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _DELETE_MEMBER_ADMIN
         _DELETE_MEMBER_MERGE
         _DELETE_MEMBER_SEARCH
+        _DELETE_MEMBER_PRIVACY_PURGE
+        _DELETE_MEMBER_WARNING
+        ALTERNATE_ACTIONS
         _DESCRIPTION_ANSWER
         _DESCRIPTION_BANNER_TYPE
         _DESCRIPTION_MAIL_PRICE
@@ -7821,6 +7927,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
+        I_AGREE_RULES
+        I_AGREE_PRIVACY
+        I_AGREE_UPDATES
         takes_lots_of_space
         JAVASCRIPT_REQUIRED
         DESCRIPTION_AWARD_OVERVIEW
@@ -8215,6 +8324,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHANGE_HERE
         CHANGE_SETTINGS_BY_RESUBSCRIBING
         CHANGING_IN
+        PRIVACY_YOU_MAY
+        EMAIL_US
+        FAX_US
+        MAIL_US
         CHARGE
         CHARGES
         CHAT
@@ -8500,6 +8613,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_hacker_news_DESCRIPTION
         DEFAULT_CPF_sn_instagram_NAME
         DEFAULT_CPF_sn_instagram_DESCRIPTION
+        DEFAULT_CPF_gitlab_NAME
+        DEFAULT_CPF_gitlab_DESCRIPTION
+        DEFAULT_CPF_sn_tiktok_NAME
+        DEFAULT_CPF_sn_tiktok_DESCRIPTION
         DEFAULT_CPF_sn_linkedin_NAME
         DEFAULT_CPF_sn_linkedin_DESCRIPTION
         DEFAULT_CPF_sn_minds_NAME
@@ -8823,6 +8940,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENABLE_NOTIFICATIONS_WEEKLY_EMAIL_DIGEST
         ENABLE_NOTIFICATIONS__CHOICE
         ENABLE_NOTIFICATIONS__STATISTICAL
+        ENABLE_NOTIFICATIONS__INBUILT_DEFAULT
         ENABLE_POPUPS
         ENABLE_WYSIWYG
         END_CHAT
@@ -9173,6 +9291,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LOADING
         LOAD_MORE
         locale_subst
+        locale_ctype_hack
         LOCATED_IN
         LOCATION
         LOG
@@ -10186,7 +10305,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         THEY_DOWNLOADED_THIS
         THIS
         THIS_IS_COMMENT_TOPIC
-        THIS_WITH_COMCODE
         THIS_WITH_SIMPLE
         THREADED_REPLY_NOTICE
         THUMBNAIL
@@ -10365,6 +10483,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         VIEW_VIDEO
         VIEW_VIDEO_IN
         VIRTUAL_FORUM
+        VIRTUAL_FORUMS
         VIRTUAL_ROOT
         VISIBLE
         VISIBLE_TO
@@ -10382,6 +10501,76 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WEBSITE
         WEEK
         WEEKLY
+        COOKIE_software_chat_prefs
+        COOKIE_last_chat_msg
+        PRIVACY_SETTINGS_EXPLANATION
+        INFORMATION_TRANSFER_ECOMMERCE
+        PRIVACY_ACTION_shippo
+        PRIVACY_REASON_shippo
+        PRIVACY_ACTION_taxcloud
+        PRIVACY_REASON_taxcloud
+        PRIVACY_ACTION_payments
+        PRIVACY_REASON_payments
+        INFORMATION_TRANSFER
+        INFORMATION_STORAGE
+        INFORMATION_DISCLOSURE
+        CHILD_PROTECTION
+        PERSONAL_DATA_DELETION_EXPLANATION
+        PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_logged
+        PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_editorial
+        PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_security
+        PERSONAL_DATA_DELETION_EXPLANATION_EXEMPTION_transactions
+        PERSONAL_DATA_DOWNLOAD
+        PERSONAL_DATA_DOWNLOAD_EXPLANATION
+        CORRECTIONS_EXPLANATION
+        COOKIES
+        COOKIE_autosave
+        COOKIE_has_cookies
+        COOKIE_has_js
+        COOKIE_last_visit
+        COOKIE_automatic_login
+        COOKIE_invisible
+        COOKIE_session
+        COOKIE_trays
+        COOKIE_use_wysiwyg
+        COOKIE_client_time
+        COOKIE_font_size
+        COOKIE_ga
+        PRIVACY_EXPLANATION_COPPA
+        PRIVACY_EXPLANATION_COOKIES
+        PRIVACY_EXPLANATION_NON_DISCLOSURE
+        PRIVACY_ACTION_PROFILE_DISCLOSURE
+        PRIVACY_REASON_PROFILE_DISCLOSURE
+        PRIVACY_ACTION_PRIVATE_TOPICS
+        PRIVACY_REASON_PRIVATE_TOPICS
+        PRIVACY_ACTION_stopforumspam
+        PRIVACY_REASON_stopforumspam
+        PRIVACY_ACTION_dnsbl
+        PRIVACY_REASON_dnsbl
+        PRIVACY_ACTION_recaptcha
+        PRIVACY_REASON_recaptcha
+        PRIVACY_ACTION_metadata
+        PRIVACY_REASON_metadata
+        PRIVACY_ACTION_editorial
+        PRIVACY_REASON_editorial
+        PRIVACY_ACTION_bans
+        PRIVACY_REASON_bans
+        PRIVACY_ACTION_newsletter
+        PRIVACY_REASON_newsletter
+        PRIVACY_ACTION_online_status
+        PRIVACY_ACTION_online_status_invisible
+        PRIVACY_REASON_online_status
+        PRIVACY_ACTION_no_dnt
+        PRIVACY_REASON_no_dnt
+        PRIVACY_ACTION_ip_lookup
+        PRIVACY_REASON_ip_lookup
+        PRIVACY_ACTION_web_code
+        PRIVACY_REASON_web_code
+        PRIVACY_ACTION_share_code
+        PRIVACY_REASON_share_code
+        PRIVACY_ACTION_shopping_sessions
+        PRIVACY_REASON_shopping_sessions
+        FOLLOWING_COOKIES
         WELCOME
         WELCOME_BACK
         WELCOME_CHAT_LOBBY
@@ -10722,7 +10911,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNTRY_BN
         COUNTRY_KH
         COUNTRY_CN
-        COUNTRY_CY
         COUNTRY_GE
         COUNTRY_HK
         COUNTRY_IN

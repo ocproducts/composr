@@ -98,6 +98,7 @@ class Hook_addon_registry_banners
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/banners.php',
             'themes/default/images/icons/menu/cms/banners.svg',
             'themes/default/images/icons_monochrome/menu/cms/banners.svg',
             'sources/hooks/systems/config/enable_edit_banner_buttons.php',

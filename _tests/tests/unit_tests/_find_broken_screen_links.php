@@ -49,9 +49,9 @@ class _find_broken_screen_links_test_set extends cms_test_case
             if ($page != '_SELF') {
                 $zone = get_module_zone($page);
                 $path = _get_module_path($zone, $page);
-                $module_path = zone_black_magic_filterer((($zone == '') ? '' : filter_naughty($zone) . '/') . 'pages/modules/' . filter_naughty_harsh($page) . '.php', true);
+                $module_path = zone_black_magic_filterer((($zone == '') ? '' : (filter_naughty($zone) . '/')) . 'pages/modules/' . filter_naughty_harsh($page) . '.php', true);
                 if (!is_file($module_path)) {
-                    $module_path = zone_black_magic_filterer((($zone == '') ? '' : filter_naughty($zone) . '/') . 'pages/modules_custom/' . filter_naughty_harsh($page) . '.php', true);
+                    $module_path = zone_black_magic_filterer((($zone == '') ? '' : (filter_naughty($zone) . '/')) . 'pages/modules_custom/' . filter_naughty_harsh($page) . '.php', true);
                 }
                 if (!is_file($module_path)) {
                     //$this->assertTrue(false, 'Missing module ' . $zone . ':' . $page);    Maybe a forum module but CNS is not running, or a module in a non-installed zone

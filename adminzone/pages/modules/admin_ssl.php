@@ -120,7 +120,7 @@ class Module_admin_ssl
         foreach ($zones as $zone) {
             $pages = find_all_pages_wrap($zone);
             $pk = array_keys($pages);
-            @sort($pk); // @'d for inconsistency (some integer keys like 404) (annoying PHP quirk)
+            @cms_mb_sort($pk, SORT_FLAG_CASE | SORT_NATURAL); // @'d for inconsistency (some integer keys like 404) (annoying PHP quirk)
             foreach ($pk as $page) {
                 if (!is_string($page)) {
                     $page = strval($page); // strval($page) as $page could have become numeric due to array imprecision

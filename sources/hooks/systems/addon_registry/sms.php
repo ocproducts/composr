@@ -98,6 +98,7 @@ class Hook_addon_registry_sms
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/sms.php',
             'sources/hooks/systems/addon_registry/sms.php',
             'sources/sms.php',
             'lang/EN/sms.ini',

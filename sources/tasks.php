@@ -371,7 +371,7 @@ function task_log($object, $message, $i = null, $total = null)
     }
 
     $line = '';
-    $line .= date('Y-m-d H:i:s');
+    $line .= loggable_date();
     if ($object !== null) {
         $line .= ' [' . get_class($object) . ']';
     }

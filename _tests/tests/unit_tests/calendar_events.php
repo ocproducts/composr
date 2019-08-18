@@ -30,8 +30,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testAllDayInAheadTimeZone()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testAllDayInAheadTimeZone')) {
+        if (($this->only !== null) && ($this->only != 'testAllDayInAheadTimeZone')) {
             return;
         }
 
@@ -72,8 +71,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiShiftRecurrence()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiShiftRecurrence')) {
+        if (($this->only !== null) && ($this->only != 'testApiShiftRecurrence')) {
             return;
         }
 
@@ -155,8 +153,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testDstBoundaryShift()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDstBoundaryShift')) {
+        if (($this->only !== null) && ($this->only != 'testDstBoundaryShift')) {
             return;
         }
 
@@ -167,8 +164,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiWeekNumbersConsistent()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiWeekNumbersConsistent')) {
+        if (($this->only !== null) && ($this->only != 'testApiWeekNumbersConsistent')) {
             return;
         }
 
@@ -196,8 +192,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiDayOfWeek()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiDayOfWeek')) {
+        if (($this->only !== null) && ($this->only != 'testApiDayOfWeek')) {
             return;
         }
 
@@ -230,8 +225,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiFindsCorrectTimezonedStart()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedStart')) {
+        if (($this->only !== null) && ($this->only != 'testApiFindsCorrectTimezonedStart')) {
             return;
         }
 
@@ -241,8 +235,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiFindsCorrectTimezonedEnd()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedEnd')) {
+        if (($this->only !== null) && ($this->only != 'testApiFindsCorrectTimezonedEnd')) {
             return;
         }
 
@@ -252,8 +245,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiFindsCorrectTimezonedStart2()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedStart2')) {
+        if (($this->only !== null) && ($this->only != 'testApiFindsCorrectTimezonedStart2')) {
             return;
         }
 
@@ -266,8 +258,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiFindsCorrectTimezonedEnd2()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedEnd2')) {
+        if (($this->only !== null) && ($this->only != 'testApiFindsCorrectTimezonedEnd2')) {
             return;
         }
 
@@ -278,8 +269,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testApiDaysBetween()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testApiDaysBetween')) {
+        if (($this->only !== null) && ($this->only != 'testApiDaysBetween')) {
             return;
         }
 
@@ -293,8 +283,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testWindowBinding()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testWindowBinding')) {
+        if (($this->only !== null) && ($this->only != 'testWindowBinding')) {
             return;
         }
 
@@ -328,8 +317,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceSimpleMonthly()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceSimpleMonthly')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceSimpleMonthly')) {
             return;
         }
 
@@ -363,8 +351,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceSimpleYearly()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceSimpleYearly')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceSimpleYearly')) {
             return;
         }
 
@@ -398,8 +385,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceSimpleWeekly()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceSimpleWeekly')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceSimpleWeekly')) {
             return;
         }
 
@@ -433,8 +419,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceSimpleStopAtN()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceSimpleStopAtN')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceSimpleStopAtN')) {
             return;
         }
 
@@ -463,8 +448,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceNthDayOfWeek()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceNthDayOfWeek')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceNthDayOfWeek')) {
             return;
         }
 
@@ -495,8 +479,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceNthDayOfWeekTimezones()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceNthDayOfWeekTimezones')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceNthDayOfWeekTimezones')) {
             return;
         }
 
@@ -535,8 +518,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testDayGap()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDayGap')) {
+        if (($this->only !== null) && ($this->only != 'testDayGap')) {
             return;
         }
 
@@ -567,8 +549,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceFastForward()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceFastForward')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceFastForward')) {
             return;
         }
 
@@ -600,8 +581,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testRecurrenceMasks()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testRecurrenceMasks')) {
+        if (($this->only !== null) && ($this->only != 'testRecurrenceMasks')) {
             return;
         }
 
@@ -632,8 +612,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testAddCalendarEvent()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testAddCalendarEvent')) {
+        if (($this->only !== null) && ($this->only != 'testAddCalendarEvent')) {
             return;
         }
 
@@ -643,8 +622,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testEditCalendarEvent()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testEditCalendarEvent')) {
+        if (($this->only !== null) && ($this->only != 'testEditCalendarEvent')) {
             return;
         }
 
@@ -654,8 +632,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testDeleteCalendarEvent()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testDeleteCalendarEvent')) {
+        if (($this->only !== null) && ($this->only != 'testDeleteCalendarEvent')) {
             return;
         }
 
@@ -664,8 +641,7 @@ class calendar_events_test_set extends cms_test_case
 
     public function testNormaliseTimeArray()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNormaliseTimeArray')) {
+        if (($this->only !== null) && ($this->only != 'testNormaliseTimeArray')) {
             return;
         }
 

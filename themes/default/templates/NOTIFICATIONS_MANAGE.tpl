@@ -1,5 +1,5 @@
 <p>
-	{$?,{$MATCH_KEY_MATCH,_SEARCH:admin_notifications},{!NOTIFICATIONS_DEFINE_LOCKDOWN},{!NOTIFICATIONS_INTRO}}
+	{INTRO*}
 </p>
 
 <div class="wide-table-wrap"><table class="columned-table wide-table results-table notifications-form responsive-table responsive-table-bolded-first-column">
@@ -40,7 +40,7 @@
 	<tbody>
 		{+START,LOOP,NOTIFICATION_SECTIONS}
 			<tr class="form-table-field-spacer">
-				<th class="responsive-table-no-prefix table-heading-cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
+				<th class="responsive-table-no-prefix table-heading-cell" colspan="{$SET,num_columns,{$ADD,{NOTIFICATION_TYPES_TITLES},1}}{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$INC,num_columns}{+END}{+START,IF,{ADVANCED_COLUMN}}{$INC,num_columns}{+END}{$GET*,num_columns}">
 					<span class="h2">{NOTIFICATION_SECTION*}</span>
 				</th>
 			</tr>

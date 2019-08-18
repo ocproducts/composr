@@ -175,7 +175,15 @@ class Module_join
             $hidden->attach(form_input_hidden('_lead_source_description', $_lead_source_description));
         }
 
-        return do_template('CNS_JOIN_STEP1_SCREEN', array('_GUID' => '3776e89f3b18e4bd9dd532defe6b1e9e', 'TITLE' => $this->title, 'RULES' => $rules, 'URL' => $url, 'GROUP_SELECT' => $group_select, 'HIDDEN' => $hidden));
+        return do_template('CNS_JOIN_STEP1_SCREEN', array(
+            '_GUID' => '3776e89f3b18e4bd9dd532defe6b1e9e',
+            'TITLE' => $this->title,
+            'RULES' => $rules,
+            'URL' => $url,
+            'GROUP_SELECT' => $group_select,
+            'HIDDEN' => $hidden,
+            'DECLARATIONS' => $this->get_declarations(),
+        ));
     }
 
     /**
@@ -189,7 +197,7 @@ class Module_join
             warn_exit(do_lang_tempcode('NO_JOIN_LOGGED_IN'));
         }
 
-        if ((get_option('show_first_join_page') == '1') && (post_param_integer('confirm', 0) != 1)) {
+        if ((get_option('show_first_join_page') == '1') && (!$this->declarations_made())) {
             warn_exit(do_lang_tempcode('DESCRIPTION_I_AGREE_RULES'));
         }
 
@@ -212,13 +220,39 @@ class Module_join
      */
     public function step3()
     {
-        if ((get_option('show_first_join_page') == '1') && (post_param_integer('confirm', 0) != 1)) {
+        if ((get_option('show_first_join_page') == '1') && (!$this->declarations_made())) {
             warn_exit(do_lang_tempcode('DESCRIPTION_I_AGREE_RULES'));
         }
 
         list($message) = cns_join_actual();
 
         return inform_screen($this->title, $message);
+    }
+
+    /**
+     * Get a list of declarations that need to be made.
+     *
+     * @return array List of declarations
+     */
+    protected function get_declarations()
+    {
+        return explode("\n", trim(preg_replace('#\n+#', "\n", get_option('join_declarations'))));
+    }
+
+    /**
+     * See if all the necessary declations were made.
+     *
+     * @return boolean Whether they have
+     */
+    protected function declarations_made()
+    {
+        $declarations = $this->get_declarations();
+        foreach ($declarations as $i => $declaration) {
+            if (post_param_integer('confirm_' . strval($i), 0) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

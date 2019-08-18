@@ -646,6 +646,10 @@ q::after {
 	content: "\201d";
 }
 
+address {
+	white-space: pre-wrap;
+}
+
 /* Reapply default styles non-HTML5-aware browsers */
 details, aside, header, footer, nav, article, section, figure, figcaption {
 	display: block;

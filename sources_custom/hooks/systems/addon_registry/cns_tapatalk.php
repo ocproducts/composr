@@ -204,15 +204,6 @@ Tapatalk uses XML-RPC for communication. A simple test harness and testing frame
 
 Composr has been configured to generate any errors in Tapatalk\'s XML-RPC format, via the enabling and catching/handling of Exceptions.
 
-If a [tt]mobiquo/logging.dat[/tt] file exists and is writable then full logging will be written to it.
-Never use this on a live site as it is not secure, unless you limit access via an [tt]data_custom/.htaccess[/tt] file:
-[code]
-<Files logging.dat>
-    Require all denied
-</Files>
-[/code]
-(don\'t blindingly trust this, test you cannot download the file by URL)
-
 For live debugging you may wish to consider using [url="Charles Proxy"]http://www.charlesproxy.com/download/[/url]. Charles Proxy lets you log and filter all requests coming from a mobile device. You do need to make sure the mobile device is on the same wi-fi network as your development machine, and configure the mobile device to use your development machine in its proxy settings.
 
 At the time of writing Tapatalk cannot produce web-links to Composr posts/topics/forums, as this is hard-coded into the Tapatalk client for all forum software they support, rather than coded up via API implementations like we have made.
@@ -289,6 +280,8 @@ For a demo, see this [url="video tutorial"]https://www.youtube.com/watch?v=SAGuj
             'sources_custom/hooks/systems/startup/tapatalk.php',
             'sources_custom/hooks/systems/upon_query/tapatalk_push.php',
             'sources_custom/hooks/systems/comcode_preparse/tapatalk.php',
+            'sources_custom/hooks/systems/config/days_to_keep__tapatalk_log.php',
+            'sources_custom/hooks/systems/logs/tapatalk.php',
             'lang_custom/EN/tapatalk.ini',
             'mobiquo/license_agreement.txt',
             'mobiquo/mobiquo.php',

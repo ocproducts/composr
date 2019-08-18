@@ -153,6 +153,16 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                     'VIEW_TOPIC' => '_SEARCH:topicview:browse:{1}',
                 ),
             ),
+            'PUNITIVE_HISTORY' => array(
+                'flags' => ACTIONLOG_FLAG__GDPR,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
+                    'MEMBERS' => '_SEARCH:admin_cns_members',
+                ),
+            ),
         );
     }
 

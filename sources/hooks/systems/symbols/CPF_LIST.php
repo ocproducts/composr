@@ -79,7 +79,7 @@ class Hook_symbol_CPF_LIST
                         case 'list':
                         case 'list_multi':
                             $bits = explode('|', $test[0]['cf_default']);
-                            sort($bits);
+                            cms_mb_sort($bits, SORT_FLAG_CASE | SORT_NATURAL);
                             foreach ($bits as $k) {
                                 if (trim($k, '-') == '' && $value == '') {
                                     continue;

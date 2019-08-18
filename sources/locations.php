@@ -153,7 +153,6 @@ function init__locations()
             'BN' => 'Brunei',
             'KH' => 'Cambodia',
             'CN' => 'China',
-            'CY' => 'Cyprus',
             'GE' => 'Georgia',
             'HK' => 'Hong Kong SAR China',
             'IN' => 'India',
@@ -412,7 +411,7 @@ function find_countries()
     foreach ($COUNTRY_LIST as $continent => $_countries) {
         $countries += $_countries;
     }
-    asort($countries, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($countries, SORT_NATURAL | SORT_FLAG_CASE);
     return $countries;
 }
 

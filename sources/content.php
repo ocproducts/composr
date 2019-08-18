@@ -414,7 +414,7 @@ function get_content_where_for_str_id($str_id, $cma_info, $table_alias = null)
     $id_parts = array_reverse($id_parts);
     foreach (is_array($id_field) ? $id_field : array($id_field) as $i => $id_field_part) {
         $val = array_key_exists($i, $id_parts) ? $id_parts[$i] : '';
-        $where[(($table_alias === null) ? '' : ($table_alias . '.')) . $id_field_part] = $cma_info['id_field_numeric'] ? intval($val) : $val;
+        $where[(($table_alias === null) ? '' : ($table_alias . '.')) . $id_field_part] = $cma_info['id_field_numeric'] ? @intval($val) : $val;
     }
     return $where;
 }

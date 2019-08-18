@@ -786,7 +786,7 @@ function add_newsletter($title, $description)
 
     $map = array();
     $map += insert_lang('title', $title, 2);
-    $map += insert_lang('description', $description, 2);
+    $map += insert_lang('the_description', $description, 2);
     $id = $GLOBALS['SITE_DB']->query_insert('newsletters', $map, true);
 
     if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
@@ -818,10 +818,10 @@ function edit_newsletter($id, $title, $description)
 
     $myrow = $rows[0];
     $_title = $myrow['title'];
-    $_description = $myrow['description'];
+    $_description = $myrow['the_description'];
     $map = array();
     $map += lang_remap('title', $_title, $title);
-    $map += lang_remap('description', $_description, $description);
+    $map += lang_remap('the_description', $_description, $description);
     $GLOBALS['SITE_DB']->query_update('newsletters', $map, array('id' => $id), '', 1);
 
     if ((addon_installed('commandr')) && (!running_script('install')) && (!get_mass_import_mode())) {
@@ -849,7 +849,7 @@ function delete_newsletter($id)
 
     $myrow = $rows[0];
     $_title = $myrow['title'];
-    $_description = $myrow['description'];
+    $_description = $myrow['the_description'];
 
     $GLOBALS['SITE_DB']->query_delete('newsletters', array('id' => $id), '', 1);
     $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('newsletter_id' => $id));

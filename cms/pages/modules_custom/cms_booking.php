@@ -48,17 +48,65 @@ class Module_cms_booking extends Standard_crud_module
             return null;
         }
 
-        return array(
-           'browse' => array('BOOKINGS', 'booking/booking'),
-           'add_booking' => array('ADD_BOOKING', 'admin/add'),
-           'edit_booking' => array('EDIT_BOOKING', 'admin/edit'),
-           'add' => array('ADD_BOOKABLE', 'booking/bookable'),
-           'edit' => array('EDIT_BOOKABLE', 'booking/bookable'),
-           'add_category' => array('ADD_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
-           'edit_category' => array('EDIT_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
-           'add_other' => array('ADD_BOOKABLE_BLACKED', 'booking/blacked'),
-           'edit_other' => array('EDIT_BOOKABLE_BLACKED', 'booking/blacked'),
-        ) + parent::get_entry_points();
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        $ret = array(
+           'browse' => array('BOOKINGS', 'menu/booking'),
+        );
+
+        if (has_privilege($member_id, 'submit_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add_booking' => array('ADD_BOOKING', 'booking/booking'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit_booking' => array('EDIT_BOOKING', 'booking/booking'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add' => array('ADD_BOOKABLE', 'booking/bookable'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit' => array('EDIT_BOOKABLE', 'booking/bookable'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add_category' => array('ADD_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit_category' => array('EDIT_BOOKABLE_SUPPLEMENT', 'booking/supplement'),
+            );
+        }
+
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'add_other' => array('ADD_BOOKABLE_BLACKED', 'booking/blacked'),
+            );
+        }
+
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_booking')) {
+            $ret += array(
+               'edit_other' => array('EDIT_BOOKABLE_BLACKED', 'booking/blacked'),
+            );
+        }
+
+        $ret += parent::get_entry_points();
+
+        return $ret;
     }
 
     /**
@@ -250,7 +298,7 @@ class Module_cms_booking extends Standard_crud_module
 
             $details = array(
                 'title' => null,
-                'description' => null,
+                'the_description' => null,
                 'price' => 0.00,
                 'categorisation' => null,
                 'cycle_type' => '',
@@ -279,7 +327,7 @@ class Module_cms_booking extends Standard_crud_module
 
         $fields = new Tempcode();
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', ($details['title'] === null) ? '' : get_translated_text($details['title']), true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['description'] === null) ? '' : get_translated_text($details['description']), false));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['the_description'] === null) ? '' : get_translated_text($details['the_description']), false));
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_BOOKABLE_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $categorisation = ($details['categorisation'] === null) ? '' : get_translated_text($details['categorisation']);
         if ($categorisation == '') {

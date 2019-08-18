@@ -168,7 +168,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $properties = array(
             'label' => get_translated_text($row['fullname']),
             'name' => $row['name'],
-            'description' => get_translated_text($row['description']),
+            'description' => get_translated_text($row['the_description']),
             'notes' => $row['notes'],
             'accept_images' => $row['accept_images'],
             'accept_videos' => $row['accept_videos'],
@@ -391,7 +391,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         $properties = array(
             'label' => get_translated_text($row['title']),
-            'description' => get_translated_text($row['description']),
+            'description' => get_translated_text($row['the_description']),
             'url' => remap_urlpath_as_portable($row['url']),
             'thumb_url' => remap_urlpath_as_portable($row['thumb_url']),
             'validated' => $row['validated'],

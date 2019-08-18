@@ -197,3 +197,26 @@ function get_mime_type($extension, $as_admin)
 
     return 'application/octet-stream';
 }
+
+/**
+ * Find the file extension for the given mime type. It does not take into account whether the file type has been white-listed or not.
+ *
+ * @param  string $mime_type The mime type
+ * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
+ * @return ?string File extension (null: unknown)
+ */
+function get_ext_from_mime_type($mime_type, $as_admin = true)
+{
+    $mime_type = strtolower($mime_type);
+
+    $mime_types = get_mime_types($as_admin);
+
+    if (in_array($mime_type, $mime_types)) {
+        $ret = array_search($mime_type, $mime_types);
+        if ($ret != 'application/octet-stream') {
+            return $ret;
+        }
+    }
+
+    return null;
+}

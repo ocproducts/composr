@@ -33,6 +33,8 @@ function send_recommendation_email($name, $email_address, $message, $is_invite =
 {
     require_lang('recommend');
 
+    log_it('RECOMMENDED');
+
     if (!is_array($email_address)) {
         $email_address = array($email_address);
     }

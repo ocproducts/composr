@@ -105,7 +105,7 @@ class MobiquoServerJSON extends MobiquoServer
                 $log_file = fopen(TAPATALK_LOG, 'ab');
                 flock($log_file, LOCK_EX);
                 fseek($log_file, 0, SEEK_END);
-                fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *TRACE*:\n");
+                fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . loggable_date() . " *TRACE*:\n");
                 fwrite($log_file, var_export($e->getTrace(), true));
                 fwrite($log_file, "\n\n");
                 flock($log_file, LOCK_UN);

@@ -87,7 +87,7 @@ function _intelligent_write_error($path)
  * Discern the cause of a file-write error, and return an appropriate error message.
  *
  * @param  PATH $path File path that could not be written
- * @return Tempcode Message
+ * @return mixed Message (Tempcode or string)
  *
  * @ignore
  */
@@ -95,7 +95,7 @@ function _intelligent_write_error_inline($path)
 {
     static $looping = false;
     if ($looping || !function_exists('do_lang_tempcode')) { // In case do_lang_tempcode below spawns a recursive failure, due to the file being the language cache itself
-        critical_error('PASSON', 'Could not write to ' . htmlentities($path)); // Bail out hard if would cause a loop
+        return 'Could not write to ' . htmlentities($path); // Bail out hard if would cause a loop
     }
     $looping = true;
 
@@ -529,6 +529,7 @@ function find_php_path($cgi = false)
 
 /**
  * Get the contents of a directory, recursively. It is assumed that the directory exists.
+ * Always uses '/' as the directory separator.
  *
  * @param  PATH $path The path to search
  * @param  PATH $rel_path The path we prepend to everything we find (intended to be used inside the recursion)

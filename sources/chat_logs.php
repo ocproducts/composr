@@ -58,7 +58,7 @@ function chat_logs_script()
     }
     check_chatroom_access($room_check[0]);
 
-    $start_date = ($start == 0) ? '' : strval($start_date_seed['year']) . '-' . strval($start_date_seed['mon']) . '-' . strval($start_date_seed['mday']) . ',' . strval($start_date_seed['hours']) . ':' . strval($start_date_seed['minutes']);
+    $start_date = ($start == 0) ? '' : (strval($start_date_seed['year']) . '-' . strval($start_date_seed['mon']) . '-' . strval($start_date_seed['mday']) . ',' . strval($start_date_seed['hours']) . ':' . strval($start_date_seed['minutes']));
     $finish_date = strval($finish_date_seed['year']) . '-' . strval($finish_date_seed['mon']) . '-' . strval($finish_date_seed['mday']) . ',' . strval($finish_date_seed['hours']) . ':' . strval($finish_date_seed['minutes']);
 
     $messages = chat_get_room_content($room, $room_check, null, false, true, intval($start), intval($finish), null, get_param_string('zone', get_module_zone('chat')));

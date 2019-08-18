@@ -237,6 +237,7 @@ class Hook_search_cns_members extends FieldsSearchHook
             $boolean_search = true;
             list($content_where) = build_content_where($content, $boolean_search, $boolean_operator); // Rebuilding $content_where from what was passed to this function
         }
+        $gdpr_log = false;
         foreach ($rows as $i => $row) {
             if (($row['cf_allow_template_search'] == 0) && ($row['cf_include_in_main_search'] == 0)) {
                 continue; // Nothing to do
@@ -249,6 +250,13 @@ class Hook_search_cns_members extends FieldsSearchHook
                 // Filter form
                 $param = get_param_string('option_' . strval($row['id']), '', INPUT_FILTER_GET_COMPLEX);
                 if ($param != '') {
+                    if (!$gdpr_log) {
+                        if (has_privilege(get_member(), 'view_any_profile_field')) {
+                            log_it('MEMBER_SEARCH');
+                        }
+                        $gdpr_log = true;
+                    }
+
                     $where_clause .= ' AND ';
 
                     if ($storage_type == 'integer') {

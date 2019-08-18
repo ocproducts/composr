@@ -330,7 +330,7 @@ function _build_stored_menu_branch($item, $items)
         'content_id' => null,
         'modifiers' => $modifiers,
         'only_on_page' => $item['i_page_only'],
-        'page_link' => $is_page_link ? $item['i_url'] : null,
+        'page_link' => $is_page_link ? (($item['i_include_sitemap'] == INCLUDE_SITEMAP_NO) ? $item['i_url'] : preg_replace('#,.*$#', '', $item['i_url'])) : null,
         'url' => $is_page_link ? null : $item['i_url'],
         'extra_meta' => array(
             'description' => get_translated_tempcode('menu_items', $item, 'i_caption_long'),
@@ -368,6 +368,10 @@ function _build_stored_menu_branch($item, $items)
                 switch ($item['i_include_sitemap']) {
                     case INCLUDE_SITEMAP_OVER:
                         $branches = $extra_branch['children'];
+                        if (array_key_exists(0, $branches)) {
+                            $branch['children'] = $branches[0]['children'];
+                            $branches[0] = $branch;
+                        }
                         break;
 
                     case INCLUDE_SITEMAP_UNDER:
@@ -561,6 +565,10 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
         // If we need to check access
         if (isset($branch['modifiers']['check_perms'])) {
+            if (!function_exists('get_member')) {
+                return array(null, false); // Some kind of startup issue
+            }
+            require_code('permissions');
             if (!has_zone_access(get_member(), $zone_name)) {
                 return array(null, false);
             }

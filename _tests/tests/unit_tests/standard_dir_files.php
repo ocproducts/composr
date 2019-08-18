@@ -98,7 +98,7 @@ class standard_dir_files_test_set extends cms_test_case
                 (!file_exists($dir . '/appbanner.js')) && // Not in mobiquo (we need to call Tapatalk)
                 (!file_exists($dir . '/tapatalk-banner-logo.png')) // Not in mobiquo (we need to call Tapatalk)
             ) {
-                $this->assertTrue(file_exists($dir . '/.htaccess'), 'cp "' . get_file_base() . '/sources/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
+                $this->assertTrue(file_exists($dir . '/.htaccess'), 'cp "' . get_file_base() . '/sources_custom/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
             }
         }
     }

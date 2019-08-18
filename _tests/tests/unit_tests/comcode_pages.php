@@ -31,11 +31,10 @@ class comcode_pages_test_set extends cms_test_case
 
         set_throw_errors(true);
 
-        $only_tutorial = get_param_string('only_tutorial', '') ;
-        if ($only_tutorial == '') {
+        if ($this->only === null) {
             $files = get_directory_contents(get_file_base(), '', 0, true, true, array('txt'));
         } else {
-            $files = array('docs/pages/comcode_custom/EN/' . $only_tutorial . '.txt');
+            $files = array('docs/pages/comcode_custom/EN/' . $this->only . '.txt');
         }
 
         foreach ($files as $file) {
@@ -62,7 +61,7 @@ class comcode_pages_test_set extends cms_test_case
 
     public function testPageTitleDetection()
     {
-        if (get_param_string('only_tutorial', '') != '') {
+        if ($this->only !== null) {
             return;
         }
 

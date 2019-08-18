@@ -273,7 +273,7 @@ class Module_news
             if (preg_match('#^(\d+)\*$#', $select, $matches) != 0) {
                 $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('id' => intval($matches[1])), '', 1);
                 if (array_key_exists(0, $news_cat_rows)) {
-                    $news_cat_id = intval($select);
+                    $news_cat_id = intval($matches[1]);
                 }
             }
 

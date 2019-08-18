@@ -139,6 +139,8 @@ class Hook_addon_registry_health_check
     {
         return array(
             'sources/hooks/systems/addon_registry/health_check.php',
+            'sources/hooks/systems/logs/health_check.php',
+            'sources/hooks/systems/config/days_to_keep__health_check_log.php',
             'lang/EN/health_check.ini',
             'sources/hooks/systems/config_categories/health_check.php',
             'sources/hooks/systems/health_checks/.htaccess',
@@ -210,6 +212,9 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/commandr_commands/health_check_pages.php',
             'sources_custom/hooks/systems/actionlog/health_check.php',
             'data/xml_config/page_errors.xml',
+            'sources_custom/hooks/systems/health_checks/.htaccess',
+            'sources_custom/hooks/systems/health_checks/index.html',
+            'sources/hooks/systems/config/hc_webstandards_whitelist.php',
         );
     }
 

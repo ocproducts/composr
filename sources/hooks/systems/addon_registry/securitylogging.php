@@ -100,6 +100,7 @@ class Hook_addon_registry_securitylogging
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/securitylogging.php',
             'themes/default/images/icons/menu/adminzone/audit/security_log.svg',
             'themes/default/images/icons/menu/adminzone/tools/users/investigate_user.svg',
             'themes/default/images/icons/menu/adminzone/security/ip_ban.svg',

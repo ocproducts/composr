@@ -102,7 +102,7 @@ The URLs are not intended to be viewed directly, although we have used a technol
 
 If a news block is filtered (for a blog, for example) the URLs provided by it will open up the feed with the same filter.
 The filter is driven by [page="_SEARCH:tut_selectcode"]Selectcode[/page]. This is an example selecting all news from category #1:
-[tt]http://yourbaseurl/backend.php?type=RSS2&mode=news&days=30&max=100&filter=1[/tt]
+[tt]http://yourbaseurl/backend.php?type=RSS2&mode=news&days=30&max=100&select=1[/tt]
 
 Note also how there is a [tt]days[/tt] parameter and a [tt]max[/tt] parameter for limiting results. These work in the obvious way.
 

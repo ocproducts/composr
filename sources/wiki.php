@@ -116,8 +116,8 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
     }
 
     if ($text_summary === null) {
-        $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));
-        $summary = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'description');
+        $just_wiki_page_row = db_map_restrict($row, array('id', 'the_description'));
+        $summary = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'the_description');
     } else {
         $summary = $text_summary;
     }
@@ -414,20 +414,20 @@ function wiki_add_page($title, $description, $notes, $show_posts, $member_id = n
         'edit_date' => $edit_date,
     );
     if (multi_lang_content()) {
-        $map['description'] = 0;
+        $map['the_description'] = 0;
     } else {
-        $map['description'] = '';
-        $map['description__text_parsed'] = '';
-        $map['description__source_user'] = get_member();
+        $map['the_description'] = '';
+        $map['the_description__text_parsed'] = '';
+        $map['the_description__source_user'] = get_member();
     }
     $map += insert_lang('title', $title, 2);
     if ($description != '') {
         $page_id = $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map, true);
 
         require_code('attachments2');
-        $GLOBALS['SITE_DB']->query_update('wiki_pages', insert_lang_comcode_attachments('description', 2, $description, 'wiki_page', strval($page_id), null, false, $member_id), array('id' => $page_id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('wiki_pages', insert_lang_comcode_attachments('the_description', 2, $description, 'wiki_page', strval($page_id), null, false, $member_id), array('id' => $page_id), '', 1);
     } else {
-        $map = insert_lang_comcode('description', $description, 2) + $map;
+        $map = insert_lang_comcode('the_description', $description, 2) + $map;
         $page_id = $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map, true);
     }
 
@@ -486,7 +486,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $show_posts, $me
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
     }
     $page = $pages[0];
-    $_description = $page['description'];
+    $_description = $page['the_description'];
     $_title = $page['title'];
 
     $log_id = log_it('WIKI_EDIT_PAGE', strval($page_id), get_translated_text($_title));
@@ -527,7 +527,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $show_posts, $me
     require_code('attachments3');
 
     $update_map += lang_remap('title', $_title, $title);
-    $update_map += update_lang_comcode_attachments('description', $_description, $description, 'wiki_page', strval($page_id), null, $member_id);
+    $update_map += update_lang_comcode_attachments('the_description', $_description, $description, 'wiki_page', strval($page_id), null, $member_id);
 
     $GLOBALS['SITE_DB']->query_update('wiki_pages', $update_map, array('id' => $page_id), '', 1);
 
@@ -562,7 +562,7 @@ function wiki_delete_page($page_id)
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
     }
     $page = $pages[0];
-    $_description = $page['description'];
+    $_description = $page['the_description'];
     $_title = $page['title'];
 
     // Delete posts
@@ -1025,7 +1025,7 @@ function dispatch_wiki_page_notification($page_id, $type)
     require_lang('wiki');
 
     $page_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'title', array('id' => $page_id)));
-    $_the_message = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'description', array('id' => $page_id)));
+    $_the_message = get_translated_text($GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'the_description', array('id' => $page_id)));
 
     $_view_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => $page_id), get_page_zone('wiki'), array(), false, false, true);
     $view_url = $_view_url->evaluate();

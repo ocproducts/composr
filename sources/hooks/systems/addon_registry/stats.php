@@ -98,6 +98,7 @@ class Hook_addon_registry_stats
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/stats.php',
             'themes/default/images/icons/menu/adminzone/audit/statistics/statistics.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/clear_stats.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/geolocate.svg',

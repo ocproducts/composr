@@ -269,7 +269,7 @@ class Module_admin_config
 
         // Show all categories
         $categories_tpl = new Tempcode();
-        ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($categories as $category => $option_count) {
             // Some are skipped
             if (get_forum_type() != 'cns') {
@@ -295,11 +295,13 @@ class Module_admin_config
                 attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html($category), 'OPTION_CATEGORY'), 'warn');
 
                 $category_name = make_string_tempcode($category);
+
+                $description = new Tempcode();
             } else {
                 $category_name = do_lang_tempcode('CONFIG_CATEGORY_' . $category);
-            }
 
-            $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
+                $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
+            }
 
             $count = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($option_count)));
 
@@ -412,10 +414,6 @@ class Module_admin_config
             }
         }
 
-        // Add in special ones
-        if ($category == 'SITE') {
-            $options['INTERNATIONALISATION']['timezone'] = array('name' => 'timezone', 'human_name' => 'TIMEZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 6);
-        }
         require_code('files');
         $upload_max_filesize = (ini_get('upload_max_filesize') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('upload_max_filesize')));
         $post_max_size = (ini_get('post_max_size') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('post_max_size')));
@@ -433,7 +431,7 @@ class Module_admin_config
             $all_known_groups[$_group] = $group;
         }
 
-        ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
 
         $general_key = strtolower(trim(cms_preg_replace_safe('#(&.*;)|[^\w\s]#U', '', do_lang('GENERAL'))));
         if (isset($all_known_groups[$general_key])) { // General goes first
@@ -503,21 +501,8 @@ class Module_admin_config
                 // Render field inputter
                 switch ($option['type']) {
                     case 'special':
-                        switch ($name) {
-                            case 'timezone':
-                                $list = '';
-                                $timezone = get_site_timezone();
-                                foreach (get_timezone_list() as $_timezone => $timezone_nice) {
-                                    $list .= static_evaluate_tempcode(form_input_list_entry($_timezone, $_timezone == $timezone, $timezone_nice));
-                                }
-                                $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, 'timezone', make_string_tempcode($list)));
-                                break;
-
-                            default:
-                                $ob = $option['ob'];
-                                $out .= static_evaluate_tempcode($ob->field_inputter($name, $option, $human_name, $explanation));
-                                break;
-                        }
+                        $ob = $option['ob'];
+                        $out .= static_evaluate_tempcode($ob->field_inputter($name, $option, $human_name, $explanation));
                         break;
 
                     case 'integer':
@@ -737,11 +722,6 @@ class Module_admin_config
             }
         }
 
-        // Add in special ones
-        if ($category == 'SITE') {
-            $options['timezone'] = array(array('shared_hosting_restricted' => 0, 'type' => 'special'), null);
-        }
-
         // Go through all options on the page, saving
         foreach ($options as $name => $option_parts) {
             list($option, $ob) = $option_parts;
@@ -794,24 +774,19 @@ class Module_admin_config
                 $value = post_param_string($name, '');
             }
 
-            // Hard-coded special options
-            if ($name == 'timezone') {
-                set_value('timezone', $value);
-            } else {
-                // If the option was changed
-                $old_value = get_option($name);
-                if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
-                    // Run pre-save code where it exists
-                    if (($ob !== null) && (method_exists($ob, 'presave_handler'))) {
-                        $okay_to_save = $ob->presave_handler($value, $old_value);
-                    } else {
-                        $okay_to_save = true;
-                    }
+            // If the option was changed
+            $old_value = get_option($name);
+            if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
+                // Run pre-save code where it exists
+                if (($ob !== null) && (method_exists($ob, 'presave_handler'))) {
+                    $okay_to_save = $ob->presave_handler($value, $old_value);
+                } else {
+                    $okay_to_save = true;
+                }
 
-                    // Save
-                    if ($okay_to_save) {
-                        set_option($name, $value);
-                    }
+                // Save
+                if ($okay_to_save) {
+                    set_option($name, $value);
                 }
             }
         }

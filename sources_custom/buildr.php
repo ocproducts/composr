@@ -53,9 +53,11 @@ function grab_new_owner($param_name)
  */
 function buildr_refresh_with_message($message, $msg_type = 'inform')
 {
-    $url = build_url(array('page' => 'buildr'), '_SELF');
-    require_code('site2');
-    redirect_exit($url, get_screen_title('MESSAGE'), $message, false, $msg_type);
+    if (get_page_name() == 'buildr') {
+        $url = build_url(array('page' => 'buildr'), '_SELF');
+        require_code('site2');
+        redirect_exit($url, get_screen_title('MESSAGE'), $message, false, $msg_type);
+    }
 }
 
 /**

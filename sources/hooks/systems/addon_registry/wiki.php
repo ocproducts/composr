@@ -99,6 +99,7 @@ class Hook_addon_registry_wiki
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/wiki.php',
             'themes/default/images/icons/menu/rich_content/wiki.svg',
             'themes/default/images/icons/menu/rich_content/wiki/random_page.svg',
             'themes/default/images/icons/admin/wiki_edit_tree.svg',

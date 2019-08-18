@@ -123,7 +123,7 @@ function get_states_US()
         $states += $region;
     }
 
-    asort($states, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($states, SORT_NATURAL | SORT_FLAG_CASE);
 
     return $states;
 }

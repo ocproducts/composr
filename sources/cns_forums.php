@@ -75,7 +75,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
         'ENTRY_DETAILS' => protect_from_escaping($entry_details),
         'BREADCRUMBS' => $breadcrumbs,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_cns_forums:__edit_category:' . strval($row['id']),
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:admin_cns_forums:__edit_category:' . strval($row['id'])),
         'RESOURCE_TYPE' => 'forum',
     ));
 }
@@ -290,7 +290,6 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
  * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB)
  * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call)
  * @param  ?AUTO_LINK $root Virtual root (null: none)
- * @return Tempcode The breadcrumbs
  * @return array The breadcrumbs
  */
 function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_forum = null, $start = true, $root = null)

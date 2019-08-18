@@ -149,7 +149,7 @@ function make_installers($skip_file_grab = false)
             \$FILE_ARRAY = array({$file_list});
             \$DATADOTCMS_FILE = @fopen('data.cms','rb');
             if (\$DATADOTCMS_FILE === false) exit('data.cms missing / inaccessible -- make sure you upload it');
-            if (filesize('data.cms') != {$archive_size}) warn_exit('data.cms not fully uploaded, or wrong version for this installer');
+            if (filesize('data.cms') != " . strval($archive_size) . ") warn_exit('data.cms not fully uploaded, or wrong version for this installer');
             if (md5(file_array_get('{$md5_test_path}')) != '{$md5}') warn_exit('data.cms corrupt. Must not be uploaded in text mode');
 
             function file_array_get(\$path)
@@ -186,7 +186,7 @@ function make_installers($skip_file_grab = false)
 
             function file_array_count()
             {
-                return {$file_count};
+                return " . strval($file_count) . ";
             }";
         $installer_start = preg_replace('#^\t{3}#m', '', $installer_start); // Format it correctly
         $auto_installer_code = '';
@@ -257,7 +257,11 @@ function make_installers($skip_file_grab = false)
         // Do the main work...
 
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar  --force-local -cvf ' . cms_escapeshellarg($bundled) . ' *'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $cmd = 'tar --force-local -cvf ' . cms_escapeshellarg($bundled) . ' *'; // --force-local is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        } else {
+            $cmd = 'tar -cvf ' . cms_escapeshellarg($bundled) . ' *';
+        }
         $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -266,7 +270,11 @@ function make_installers($skip_file_grab = false)
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'tar --force-local -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $cmd = 'tar --force-local -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt'; // --force-local is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        } else {
+            $cmd = 'tar -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt';
+        }
         $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -446,7 +454,11 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar --force-local --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $cmd = 'tar --force-local --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *'; // --force-local is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        } else {
+            $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *';
+        }
         $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -1082,16 +1094,16 @@ function _download_latest_data_ip_country()
         $from = ip2long($x[0]);
         $to = ip2long($x[1]);
 
-        if (($from < 0) || ($to < 0)) {
-            attach_message('Running on 32 bit PHP, will not regenerate IP_Country.txt', 'warn');
-            return;
-        }
-
         if (empty($from)) {
             continue;
         }
         if (empty($to)) {
             continue;
+        }
+
+        if (($from < 0) || ($to < 0)) {
+            attach_message('Running on 32 bit PHP, will not regenerate IP_Country.txt', 'warn');
+            return;
         }
 
         $csv_data .= strval($from) . ',' . strval($to) . ',' . $x[2] . "\n";
@@ -1126,7 +1138,7 @@ function _download_latest_data_no_banning()
         $data .= http_get_contents($url);
     }
 
-    cms_file_put_contents_safe(get_file_base() . '/data/no_banning.txt', $data);
+    cms_file_put_contents_safe(get_file_base() . '/text/unbannable_ips.txt', $data);
 }
 
 // See phpdoc_parser.php for functions.dat manifest building

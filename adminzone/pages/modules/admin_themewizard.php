@@ -207,6 +207,7 @@ class Module_admin_themewizard
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '0373ce292326fa209a6a44d829f547d4', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PARAMETERS'))));
 
+        require_code('themes2');
         $fields->attach(form_input_colour(do_lang_tempcode('SEED_COLOUR'), do_lang_tempcode('DESCRIPTION_SEED_COLOUR'), 'seed', '#' . preg_replace('/^\#/', '', get_param_string('seed', find_theme_seed('default'))), true));
 
         if (count(find_all_themes()) != 1) {

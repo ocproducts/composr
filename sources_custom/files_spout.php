@@ -59,6 +59,12 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
         if ($row == 0) { // Header
             $single_row = array();
             foreach (array_keys($line) as $column => $val) {
+                if ($val === null) {
+                    $val = '';
+                } elseif (!is_string($val)) {
+                    $val = strval($val);
+                }
+
                 $val = convert_to_internal_encoding($val, get_charset(), 'utf-8');
 
                 $single_row[] = $val;

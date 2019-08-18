@@ -68,6 +68,11 @@ class file_naming_test_set extends cms_test_case
             'data_custom/mediaelement/mediaelement-flash-video-hls.swf',
             'data_custom/mediaelement/mediaelement-flash-video-mdash.swf',
             'data_custom/mediaelement/mediaelement-flash-video.swf',
+            'data/robots.txt.template',
+            'data_custom/webfonts/adgs-icons.eot',
+            'data_custom/webfonts/adgs-icons.svg',
+            'data_custom/webfonts/adgs-icons.ttf',
+            'data_custom/webfonts/adgs-icons.woff',
         );
 
         $ignore_substrings = array(

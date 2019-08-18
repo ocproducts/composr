@@ -105,7 +105,7 @@ class Block_main_multi_content
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
         }
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 30;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : 30;
         return $info;
     }
 
@@ -376,7 +376,7 @@ class Block_main_multi_content
             if ($max_rows == 0) {
                 $rows = array();
             } else {
-                if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) {
+                if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && (is_string($info['id_field']))) { // Must be after COUNT(*) happens
                     $query .= ' GROUP BY r.' . $info['id_field'];
                 }
 

@@ -29,20 +29,45 @@ function upgrader_file_upgrade_screen()
     $out = '';
 
     require_code('version2');
-    $personal_upgrader_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+    $personal_upgrader_generation_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+    if (function_exists('gzopen')) {
+        $personal_upgrader_generation_url .= '&supports_gzip=1';
+    }
+    if ((function_exists('zip_open')) || (get_option('unzip_cmd') == '')) {
+        $personal_upgrader_generation_url .= '&supports_zip=1';
+    }
     $hooks = find_all_hooks('systems', 'addon_registry');
     foreach (array_keys($hooks) as $hook) {
         if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {
-            $personal_upgrader_url .= '&addon_' . $hook . '=1';
+            $personal_upgrader_generation_url .= '&addon_' . $hook . '=1';
         }
     }
 
-    if (get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL) == '') {
+    require_code('files2');
+    $found_upgraders = array();
+    foreach (array('/data_custom', '') as $upgrader_place) {
+        $files = get_directory_contents(get_file_base() . $upgrader_place, get_file_base() . $upgrader_place, null, false, true, array('cms', 'gz', 'zip'));
+        foreach ($files as $file_path) {
+            if (preg_match('#^.*/(omni-)?upgrade-' . preg_quote(get_version_dotted(), '#') . '-[^/]*\.(cms(\.gz)?|zip)$#', $file_path) != 0) {
+                $found_upgraders[get_base_url() . $upgrader_place . '/' . basename($file_path)] = filemtime($file_path);
+            }
+        }
+    }
+    if (count($found_upgraders) == 0) {
+        $upgrader_tar_url = base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL));
+    } else {
+        arsort($found_upgraders);
+        $found_upgraders = array_keys($found_upgraders);
+        $upgrader_tar_url = $found_upgraders[0];
+    }
+
+    if ($upgrader_tar_url == '') {
         $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO');
     }
-    $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_url));
+
+    $out .= do_lang('UPGRADER_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_generation_url));
     $out .= '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-    $out .= '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html(base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL))) . '" /></p>';
+    $out .= '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html($upgrader_tar_url) . '" /></p>';
     $out .= '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('UPGRADER_DRY_RUN') . '</label></p>';
     if ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
         $out .= '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
@@ -77,11 +102,17 @@ function _upgrader_file_upgrade_screen()
     cms_disable_time_limit();
     disable_php_memory_limit();
 
-    // Download file
+    // How we can get file
+    define('FILE_RETRIEVAL_UPLOAD', 0);
+    define('FILE_RETRIEVAL_HTTP', 1);
+    define('FILE_RETRIEVAL_LOCAL', 2);
+
+    // Get file
     require_code('tar');
-    $local_temp_path = false;
     if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
-        $temp_path = $_FILES['upload']['tmp_name'];
+        $upgrade_path = $_FILES['upload']['tmp_name'];
+        $original_filename = $_FILES['upload']['name'];
+        $retrieval_method = FILE_RETRIEVAL_UPLOAD;
     } else {
         if (post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
@@ -89,37 +120,43 @@ function _upgrader_file_upgrade_screen()
 
         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
-            //$local_temp_path = true;  We disabled this feature for security reasons (we don't want to have to pass a path of something to extract by URL)
-            $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
-            if (!is_file($temp_path)) {
+            $upgrade_path = get_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
+            if (!is_file($upgrade_path)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }
+            $original_filename = basename($upgrade_path);
+            $retrieval_method = FILE_RETRIEVAL_LOCAL;
         } else {
-            $temp_path = cms_tempnam();
-            $myfile = fopen($temp_path, 'wb');
-            http_get_contents($url, array('write_to_file' => $myfile));
-            fclose($myfile);
+            $upgrade_path = cms_tempnam();
+            $upgrade_path_handle = fopen($upgrade_path, 'wb');
+            $request = cms_http_request($url, array('write_to_file' => $upgrade_path_handle));
+            fclose($upgrade_path_handle);
+            $original_filename = $request->filename;
+            $retrieval_method = FILE_RETRIEVAL_HTTP;
         }
     }
+    $may_delete_upgrade_path = ($retrieval_method != FILE_RETRIEVAL_LOCAL);
 
     // We do support using a .zip (e.g. manual installer package), but we need to convert it
-    if (substr(strtolower($temp_path), -4) == '.zip') {
+    if (strtolower(substr($original_filename, -4)) == '.zip') {
         require_code('tar2');
-        $temp_path_new = convert_zip_to_tar($temp_path);
-        @unlink($temp_path);
-        rename($temp_path_new, $temp_path);
-        fix_permissions($temp_path);
+        $upgrade_path_new = convert_zip_to_tar($upgrade_path);
+        if ($may_delete_upgrade_path) {
+            @unlink($upgrade_path);
+        }
+        $upgrade_path = $upgrade_path_new;
+        fix_permissions($upgrade_path);
     }
 
-    // Open up TAR
-    $upgrade_resource = tar_open($temp_path, 'rb');
+    // Open up TAR (or tarball)
+    $upgrade_resource = tar_open($upgrade_path, 'rb', false, $original_filename);
     //tar_extract_to_folder($upgrade_resource, '', true);
     $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB of RAM
 
     // Hopefully $popup_simple_extract will be true (i.e. suEXEC mode), as it is safer
     $popup_simple_extract = (_ftp_info() === false);
     if ($popup_simple_extract) {
-        $data = array('todo' => array());
+        $metadata = array('todo' => array());
     } else {
         $out .= '<p>' . do_lang('EXTRACTING_MESSAGE') . '</p>';
     }
@@ -153,9 +190,11 @@ function _upgrader_file_upgrade_screen()
             continue;
         }
 
+        $is_directory = (substr($upgrade_file['path'], -1) == '/');
+
         if (!$popup_simple_extract) {
             // See if we can skip the file, if the on-disk version is identical?
-            if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size'])) {
+            if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (($is_directory) || (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size']))) {
                 $tar_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                 if (file_get_contents(get_file_base() . '/' . $upgrade_file['path']) == $tar_data['data']) {
                     $out .= do_lang('UPGRADER_SKIPPING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
@@ -168,10 +207,10 @@ function _upgrader_file_upgrade_screen()
         if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) || (strpos($upgrade_file['path'], '/core_') !== false))) {
             // Addon registry file, for installed addon...
 
-            if (substr($upgrade_file['path'], -1) != '/') {
-                if ($popup_simple_extract) {
-                    $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                } else {
+            if (!$is_directory) {
+                $metadata['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
+
+                if (!$popup_simple_extract) {
                     $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                     if (!$dry_run) {
                         afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
@@ -183,7 +222,7 @@ function _upgrader_file_upgrade_screen()
             // Some other file...
 
             $found = null;
-            if (substr($upgrade_file['path'], -1) != '/') {
+            if (!$is_directory) {
                 foreach ($addon_contents as $addon_name => $addon_data) {
                     // See if this is the addon for the file
                     $addon_file_path = $upgrade_file['path'];
@@ -196,15 +235,16 @@ function _upgrader_file_upgrade_screen()
 
             // Install if it's a file in an addon we have installed or for a core addon
             //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
-            if (($found !== null) && ((file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
-                if (substr($upgrade_file['path'], -1) == '/') {
+            $install_alien_files = false;
+            if ((($found !== null) || ($install_alien_files)) && (($found === null) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
+                if ($is_directory) {
                     if (!$dry_run) {
                         afm_make_directory($upgrade_file['path'], false, true);
                     }
                 } else {
-                    if ($popup_simple_extract) {
-                        $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                    } else {
+                    $metadata['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
+
+                    if (!$popup_simple_extract) {
                         $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                         if (!$dry_run) {
                             if (!file_exists(get_file_base() . '/' . dirname($upgrade_file['path']))) {
@@ -219,7 +259,7 @@ function _upgrader_file_upgrade_screen()
             }
 
             // Record to copy it into our archived addon so that addon is kept up-to-date
-            if (substr($upgrade_file['path'], -1) != '/') {
+            if (!$is_directory) {
                 if (($found !== null) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
                     $files_for_tar_updating[$found][$upgrade_file['path']] = array($upgrade_file['mode'], $upgrade_file['mtime']);
                 }
@@ -275,40 +315,66 @@ function _upgrader_file_upgrade_screen()
 
     // Do extraction within iframe, if possible
     if ($popup_simple_extract) {
-        @unlink(get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-        @unlink(get_custom_file_base() . '/data_custom/upgrader.tmp');
-        if (!$local_temp_path) {
-            $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-            if ($test === false) {
-                fatal_exit(do_lang_tempcode('UPGRADER_FTP_NEEDED'));
-            }
-            @unlink($temp_path);
-            $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+        // These are standardised temp files upgrader2.php will expect
+        $tmp_upgrade_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+        $tmp_metadata_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
+
+        // Remove standardised temp files
+        @unlink($tmp_upgrade_path);
+        @unlink($tmp_metadata_path);
+
+        // How do we get our $upgrade_path file into $tmp_upgrade_path?
+        switch ($retrieval_method) {
+            case FILE_RETRIEVAL_UPLOAD:
+                move_uploaded_file($upgrade_path, $tmp_upgrade_path);
+                break;
+            case FILE_RETRIEVAL_HTTP:
+                rename($upgrade_path, $tmp_upgrade_path);
+                break;
+            case FILE_RETRIEVAL_LOCAL:
+                copy($upgrade_path, $tmp_upgrade_path);
+                break;
         }
+
+        // Save our metadata
         require_code('files');
-        $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-        cms_file_put_contents_safe($tmp_data_path, serialize($data));
+        cms_file_put_contents_safe($tmp_metadata_path, serialize($metadata));
+
+        // LEGACY: Copy by old password key if needed
         global $SITE_INFO;
-        if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
+        if (isset($GLOBALS['SITE_INFO']['admin_password'])) {
             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
             unset($GLOBALS['SITE_INFO']['admin_password']);
         }
+
         if (!$dry_run) {
-            $extract_url = get_base_url() . '/data/upgrader2.php?hashed_password=' . urlencode($SITE_INFO['master_password']) . '&tmp_path=' . urlencode($temp_path) . '&file_offset=0&tmp_data_path=' . urlencode($tmp_data_path) . '&done=' . urlencode(do_lang('DONE'));
-            $out .= '<p>' . do_lang('UPGRADER_EXTRACTING_WINDOW', integer_format(count($data['todo']))) . '</p>';
+            // Create the iframe
+            $extract_url = get_base_url() . '/data/upgrader2.php';
+            $extract_url .= '?hashed_password=' . urlencode($SITE_INFO['master_password']);
+            $extract_url .= '&file_offset=0';
+            $extract_url .= '&done=' . urlencode(do_lang('DONE'));
+            $extract_url .= '&original_filename=' . urlencode($original_filename);
+            $extract_url .= '&may_delete_upgrade_path=' . strval($may_delete_upgrade_path ? 1 : 0);
+            $out .= '<p>' . do_lang('UPGRADER_EXTRACTING_WINDOW', integer_format(count($metadata['todo']))) . '</p>';
             $out .= '<iframe frameBorder="0" style="width: 100%; height: 400px" src="' . escape_html($extract_url) . '"></iframe>';
         } else {
+            // Show the dry-run results
             $out .= '<p>' . do_lang('FILES') . ':</p>';
             $out .= '<ul>';
-            foreach ($data['todo'] as $file) {
-                $out .= '<li>' . escape_html($file[0]) . '</li>';
+            if (count($metadata['todo']) == 0) {
+                $out .= '<li><em>' . do_lang('NONE') . '</em></li>';
+            } else {
+                foreach ($metadata['todo'] as $file) {
+                    $out .= '<li><kbd>' . escape_html($file[0]) . '</kbd></li>';
+                }
             }
             $out .= '</ul>';
         }
     } else {
+        // We extracted live, so just tidy up
         $out .= '<p>' . do_lang('SUCCESS') . '</p>';
-        if (!$local_temp_path) {
-            @unlink($temp_path);
+        if ($may_delete_upgrade_path) {
+            @unlink($upgrade_path);
         }
     }
 

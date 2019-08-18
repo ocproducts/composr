@@ -140,8 +140,8 @@ class Module_admin_cleanup
             }
         }
 
-        ksort($_fields_cache, SORT_NATURAL | SORT_FLAG_CASE);
-        ksort($_fields_optimise, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($_fields_cache, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($_fields_optimise, SORT_NATURAL | SORT_FLAG_CASE);
 
         $fields_cache = new Tempcode();
         foreach ($_fields_cache as $tick) {

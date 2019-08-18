@@ -98,6 +98,7 @@ class Hook_addon_registry_points
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/points.php',
             'themes/default/images/icons/menu/social/points.svg',
             'themes/default/images/icons/menu/adminzone/audit/points_log.svg',
             'themes/default/images/icons/menu/social/leader_board.svg',

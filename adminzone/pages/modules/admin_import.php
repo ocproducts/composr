@@ -83,7 +83,7 @@ class Module_admin_import
             $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_old', 'ID_TEXT');
         }
 
-        if (($upgrade_from === null) || ($upgrade_from < 4)) { // LEGACY
+        if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_table('import_parts_done', array(
                 'id' => '*AUTO',
                 'imp_id' => 'SHORT_TEXT',
@@ -247,7 +247,7 @@ class Module_admin_import
             $info = $object->info();
             $__hooks[$hook] = strip_tags(static_evaluate_tempcode(is_maintained_description('import_' . $hook, $info['product'])));
         }
-        asort($__hooks, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($__hooks, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($__hooks as $hook => $hook_title) {
             $hooks->attach(form_input_list_entry($hook, false, $hook_title));
         }
@@ -401,6 +401,7 @@ class Module_admin_import
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => '15f2c855acf0d365a2e6329bec692dc8',
+            'MODSECURITY_WORKAROUND' => true,
             'TEXT' => $message,
             'TITLE' => $this->title,
             'FIELDS' => $fields,
@@ -420,6 +421,9 @@ class Module_admin_import
      */
     public function choose_actions($extra = '')
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $session = either_param_string('session', get_session_id());
         $this->appropriate_import_session_to_current($session);
 
@@ -429,10 +433,22 @@ class Module_admin_import
         $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
         $info = $object->info();
 
+        // Get source path, and try and fix if it is incorrect
+        $old_base_dir = either_param_string('old_base_dir');
+        if (!file_exists($old_base_dir)) {
+            if ((substr($old_base_dir, 0, 1) != '/') && (file_exists('/' . $old_base_dir))) {
+                $old_base_dir = '/' . $old_base_dir;
+            } elseif ((substr($old_base_dir, 0, 1) != '/') && (file_exists(get_file_base() . '/' . $old_base_dir))) {
+                $old_base_dir = get_file_base() . '/' . $old_base_dir;
+            } elseif (file_exists(get_file_base() . $old_base_dir)) {
+                $old_base_dir = get_file_base() . $old_base_dir;
+            }
+        }
+
         // Load/probe DB details
         $db_host = get_db_site_host();
         if ((method_exists($object, 'probe_db_access')) && (get_param_integer('keep_manual_import_config', 0) == 0)) {
-            $probe = $object->probe_db_access(either_param_string('old_base_dir'));
+            $probe = $object->probe_db_access($old_base_dir);
             if (array_key_exists(4, $probe)) {
                 $db_host = $probe[4];
                 if ($db_host === null) {
@@ -467,7 +483,6 @@ class Module_admin_import
         unset($import_source);
 
         // Save data from choose_session2 step
-        $old_base_dir = either_param_string('old_base_dir');
         $refresh_time = either_param_integer('refresh_time', 0); // Shouldn't default, but reported on some systems to do so
         $GLOBALS['SITE_DB']->query_delete('import_session', array('imp_session' => get_session_id()), '', 1);
         $GLOBALS['SITE_DB']->query_insert('import_session', array(

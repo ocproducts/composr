@@ -41,7 +41,7 @@ global $MAIN;
 
 function _parse_php($inside_namespace = false)
 {
-    // Choice{"FUNCTION" "IDENTIFIER "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" command | "CLASS" "IDENTIFIER" ("EXTENDS" "IDENTIFIER")? "CURLY_OPEN" class_contents "CURLY_CLOSE" | command}*
+    // Choice{"FUNCTION" "IDENTIFIER "PARENTHESIS_OPEN" comma_parameters "PARENTHESIS_CLOSE" command | "CLASS" "IDENTIFIER" ("EXTENDS" "IDENTIFIER")? "CURLY_OPEN" class_contents "CURLY_CLOSE" | command}*
 
     $next = pparse__parser_peek();
     $program = array();
@@ -60,7 +60,7 @@ function _parse_php($inside_namespace = false)
                 }
 
                 pparse__parser_next();
-                pparse__parser_expect('BRACKET_OPEN');
+                pparse__parser_expect('PARENTHESIS_OPEN');
                 $key = pparse__parser_expect('IDENTIFIER', true);
                 pparse__parser_expect('EQUAL');
                 if (in_array($key, array('encoding'))) {
@@ -68,7 +68,7 @@ function _parse_php($inside_namespace = false)
                 } else {
                     $value = pparse__parser_expect('integer_literal');
                 }
-                pparse__parser_expect('BRACKET_CLOSE');
+                pparse__parser_expect('PARENTHESIS_CLOSE');
                 pparse__parser_expect('COMMAND_TERMINATE');
                 if (isset($program['declares'][$key])) {
                     log_warning('Repeated declare for ' . $key);
@@ -323,7 +323,7 @@ function _test_command_end()
 
 function _parse_command_actual($no_term_needed = false)
 {
-    // Choice{"FUNCTION" | variable "DEC" | variable "INC" | target assignment_operator expression | function "BRACKET_OPEN" comma_expressions "BRACKET_CLOSE" | "IF" expression command if_rest? | "SWITCH" expression "CURLY_OPEN" cases "CURLY_CLOSE" | "FOREACH" "BRACKET_OPEN" expression "AS" _foreach "BRACKET_CLOSE" command | "FOR" "BRACKET_OPEN" command expression command "BRACKET_CLOSE" command | "DO" command "WHILE" "BRACKET_OPEN" expression "BRACKET_CLOSE" | "WHILE" "BRACKET_OPEN" expression "BRACKET_CLOSE" command | "RETURN" | "CONTINUE" | "BREAK" | "BREAK" expression | "CONTINUE" expression | "RETURN" expression | "GLOBAL" comma_variables | "ECHO" expression}
+    // Choice{"FUNCTION" | variable "DEC" | variable "INC" | target assignment_operator expression | function "PARENTHESIS_OPEN" comma_expressions "PARENTHESIS_CLOSE" | "IF" expression command if_rest? | "SWITCH" expression "CURLY_OPEN" cases "CURLY_CLOSE" | "FOREACH" "PARENTHESIS_OPEN" expression "AS" _foreach "PARENTHESIS_CLOSE" command | "FOR" "PARENTHESIS_OPEN" command expression command "PARENTHESIS_CLOSE" command | "DO" command "WHILE" "PARENTHESIS_OPEN" expression "PARENTHESIS_CLOSE" | "WHILE" "PARENTHESIS_OPEN" expression "PARENTHESIS_CLOSE" command | "RETURN" | "CONTINUE" | "BREAK" | "BREAK" expression | "CONTINUE" expression | "RETURN" expression | "GLOBAL" comma_variables | "ECHO" expression}
 
     $is_static = false;
 
@@ -458,9 +458,9 @@ function _parse_command_actual($no_term_needed = false)
                     $expression = array('REFERENCE', $command, $GLOBALS['I']);
                 }
             } else {
-                pparse__parser_expect('BRACKET_OPEN');
+                pparse__parser_expect('PARENTHESIS_OPEN');
                 $parameters = _parse_function_call();
-                pparse__parser_expect('BRACKET_CLOSE');
+                pparse__parser_expect('PARENTHESIS_CLOSE');
                 $command = array('CALL_DIRECT', $identifier, $parameters, $suppress_error, $GLOBALS['I']);
             }
             while (pparse__parser_peek() == 'OBJECT_OPERATOR' || pparse__parser_peek() == 'SCOPE') {
@@ -495,9 +495,9 @@ function _parse_command_actual($no_term_needed = false)
         case 'IF':
             pparse__parser_next();
             $c_pos = $GLOBALS['I'];
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $expression = _parse_expression();
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $command = _parse_command(true);
 
             $next_2 = pparse__parser_peek();
@@ -522,16 +522,16 @@ function _parse_command_actual($no_term_needed = false)
         case 'FOREACH':
             pparse__parser_next();
             $c_pos = $GLOBALS['I'];
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $expression = _parse_expression();
             pparse__parser_expect('AS');
             // Choice{"variable" "DOUBLE_ARROW" "variable" | "variable"}
             $next = pparse__parser_peek();
             if ($next == 'LIST') {
                 pparse__parser_next();
-                pparse__parser_expect('BRACKET_OPEN');
+                pparse__parser_expect('PARENTHESIS_OPEN');
                 $variable = array('LIST', _parse_comma_variables(true), $GLOBALS['I']);
-                pparse__parser_expect('BRACKET_CLOSE');
+                pparse__parser_expect('PARENTHESIS_CLOSE');
             } else {
                 $is_reference = ($next == 'REFERENCE');
                 if ($is_reference) {
@@ -549,9 +549,9 @@ function _parse_command_actual($no_term_needed = false)
                 $next = pparse__parser_peek();
                 if ($next == 'LIST') {
                     pparse__parser_next();
-                    pparse__parser_expect('BRACKET_OPEN');
+                    pparse__parser_expect('PARENTHESIS_OPEN');
                     $_foreach = array($variable, array('LIST', _parse_comma_variables(true), $GLOBALS['I']));
-                    pparse__parser_expect('BRACKET_CLOSE');
+                    pparse__parser_expect('PARENTHESIS_CLOSE');
                 } else {
                     $is_reference = ($next == 'REFERENCE');
                     if ($is_reference) {
@@ -562,7 +562,7 @@ function _parse_command_actual($no_term_needed = false)
             } else {
                 $_foreach = $variable;
             }
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $loop_command = _parse_command(true);
             if ($after_variable == 'DOUBLE_ARROW') {
                 $command = array('FOREACH_map', $expression, $_foreach[0], $_foreach[1], $loop_command, $c_pos);
@@ -574,7 +574,7 @@ function _parse_command_actual($no_term_needed = false)
         case 'FOR':
             pparse__parser_next();
             $c_pos = $GLOBALS['I'];
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $next_2 = pparse__parser_peek();
             if ($next_2 == 'COMMAND_TERMINATE') {
                 $init_command = null;
@@ -585,7 +585,7 @@ function _parse_command_actual($no_term_needed = false)
             $control_expression = _parse_expression();
             pparse__parser_expect('COMMAND_TERMINATE');
             $control_command = _parse_command_actual(true);
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $loop_command = _parse_command(true);
             $command = array('FOR', $init_command, $control_expression, $control_command, $loop_command, $c_pos);
             break;
@@ -595,18 +595,18 @@ function _parse_command_actual($no_term_needed = false)
             $c_pos = $GLOBALS['I'];
             $loop_command = _parse_command(true);
             pparse__parser_expect('WHILE');
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $control_expression = _parse_expression();
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $command = array('DO', $control_expression, $loop_command, $c_pos);
             break;
 
         case 'WHILE':
             pparse__parser_next();
             $c_pos = $GLOBALS['I'];
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $control_expression = _parse_expression();
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $loop_command = _parse_command(true);
             $command = array('WHILE', $control_expression, $loop_command, $c_pos);
             break;
@@ -624,14 +624,14 @@ function _parse_command_actual($no_term_needed = false)
                 pparse__parser_expect('CATCH');
                 $catch_position = $GLOBALS['I'];
                 switch (pparse__parser_peek()) {
-                    case 'BRACKET_OPEN':
+                    case 'PARENTHESIS_OPEN':
                         // We are catching something specific. Let's treat it as a
                         // function's parameter list for the moment, as that's simplest,
                         // although it accepts a bit too much
-                        pparse__parser_expect('BRACKET_OPEN');
+                        pparse__parser_expect('PARENTHESIS_OPEN');
                         pparse__parser_expect('IDENTIFIER'); // E.g. 'EXCEPTION'
                         $exception = _parse_comma_parameters();
-                        pparse__parser_expect('BRACKET_CLOSE');
+                        pparse__parser_expect('PARENTHESIS_CLOSE');
                         if (pparse__parser_peek() != 'CURLY_OPEN') {
                             parser_error('Expected code block after "catch".');
                         }
@@ -640,7 +640,7 @@ function _parse_command_actual($no_term_needed = false)
                         $catches[] = array('CATCH', $exception, $catch, $catch_position);
                         break;
                     default:
-                        parser_error('Expected BRACKET_OPEN or CURLY_OPEN after "catch".');
+                        parser_error('Expected PARENTHESIS_OPEN or CURLY_OPEN after "catch".');
                         break;
                 }
             } while (pparse__parser_peek() == 'CATCH');
@@ -789,10 +789,10 @@ function _parse_call_chain($command = array(), $suppress_error = false)
 {
     $i = pparse__parser_expect('IDENTIFIER'); // Silly PHP syntax makes $scoped_variables and scoped_functions() different, but member_variables and member_functions() the same...
     switch (pparse__parser_peek()) {
-        case 'BRACKET_OPEN':
+        case 'PARENTHESIS_OPEN':
             pparse__parser_next(); // Consume the "("
             $args = _parse_function_call();
-            pparse__parser_expect('BRACKET_CLOSE'); // Consume the ")"
+            pparse__parser_expect('PARENTHESIS_CLOSE'); // Consume the ")"
             $expression = $command; // Actually the 'command' was an expression, on which we will call our object
             $command = array('CALL_METHOD', $expression, $args, $suppress_error, $GLOBALS['I']);
             break;
@@ -805,15 +805,15 @@ function _parse_call_chain($command = array(), $suppress_error = false)
 
 function _parse_target()
 {
-    // Choice{variable | "LIST" "BRACKET_OPEN" comma_variables "BRACKET_CLOSE" | "variable" "EXTRACT_OPEN" "EXTRACT_CLOSE"}
+    // Choice{variable | "LIST" "PARENTHESIS_OPEN" comma_variables "PARENTHESIS_CLOSE" | "variable" "EXTRACT_OPEN" "EXTRACT_CLOSE"}
 
     $next = pparse__parser_peek();
     switch ($next) {
         case 'LIST':
             pparse__parser_next();
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $target = array('LIST', _parse_comma_variables(true), $GLOBALS['I']);
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             break;
 
         default:
@@ -845,9 +845,9 @@ function _parse_if_rest()
         case 'ELSEIF':
             pparse__parser_next();
             $c_pos = $GLOBALS['I'];
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $expression = _parse_expression();
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $command = _parse_command(true);
             $next_2 = pparse__parser_peek();
             if (($next_2 == 'ELSE') || ($next_2 == 'ELSEIF')) {
@@ -1152,15 +1152,15 @@ function _parse_function_def($function_modifiers = array(), $is_closure = false)
     if (!$is_closure) {
         $function['name'] = pparse__parser_expect('IDENTIFIER');
     }
-    pparse__parser_expect('BRACKET_OPEN');
+    pparse__parser_expect('PARENTHESIS_OPEN');
     $function['parameters'] = _parse_comma_parameters(true);
-    pparse__parser_expect('BRACKET_CLOSE');
+    pparse__parser_expect('PARENTHESIS_CLOSE');
     if ($is_closure) {
         if (pparse__parser_peek() == 'USE') {
             pparse__parser_next();
-            pparse__parser_expect('BRACKET_OPEN');
+            pparse__parser_expect('PARENTHESIS_OPEN');
             $function['using'] = _parse_comma_variables(true);
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
         }
     }
     if (in_array('abstract', $function_modifiers)) {
@@ -1255,7 +1255,7 @@ function pparse__precedence_sort($op_list, $e_pos) // Oh my God, this is confusi
 
 function _parse_expression_inner()
 {
-    // Choice{"BOOLEAN_NOT expression | SUBTRACT expression | literal | variable | variable "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" | "IDENTIFIER" | "IDENTIFIER" "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" | "NEW" "IDENTIFIER" "BRACKET_OPEN" comma_expressions "BRACKET_CLOSE" | "NEW" "IDENTIFIER" | "CLONE" expression | "ARRAY" "BRACKET_OPEN" create_array "BRACKET_CLOSE" | "BRACKET_OPEN" expression "BRACKET_CLOSE" | "BRACKET_OPEN" assignment "BRACKET_CLOSE"}
+    // Choice{"BOOLEAN_NOT expression | SUBTRACT expression | literal | variable | variable "PARENTHESIS_OPEN" comma_parameters "PARENTHESIS_CLOSE" | "IDENTIFIER" | "IDENTIFIER" "PARENTHESIS_OPEN" comma_parameters "PARENTHESIS_CLOSE" | "NEW" "IDENTIFIER" "PARENTHESIS_OPEN" comma_expressions "PARENTHESIS_CLOSE" | "NEW" "IDENTIFIER" | "CLONE" expression | "ARRAY" "PARENTHESIS_OPEN" create_array "PARENTHESIS_CLOSE" | "PARENTHESIS_OPEN" expression "PARENTHESIS_CLOSE" | "PARENTHESIS_OPEN" assignment "PARENTHESIS_CLOSE"}
 
     $next = pparse__parser_peek();
     if (in_array($next, array('integer_literal', 'float_literal', 'string_literal', 'true', 'false', 'null'))) { // little trick
@@ -1326,10 +1326,10 @@ function _parse_expression_inner()
                     $expression[0] = 'CALL_METHOD';
                 }
                 $expression = array(array('CONSTANT', $next[1], $GLOBALS['I']), array('DEREFERENCE', $expression, array()), $GLOBALS['I']);
-            } elseif ($next_2 == 'BRACKET_OPEN') { // Is it an inline direct function call
+            } elseif ($next_2 == 'PARENTHESIS_OPEN') { // Is it an inline direct function call
                 pparse__parser_next();
                 $parameters = _parse_function_call();
-                pparse__parser_expect('BRACKET_CLOSE');
+                pparse__parser_expect('PARENTHESIS_CLOSE');
                 $expression = array('CALL_DIRECT', $next[1], $parameters, $suppress_error, $GLOBALS['I']);
                 //log_special('functions', $next[1] . '/' . count($parameters));
             } else {
@@ -1347,10 +1347,10 @@ function _parse_expression_inner()
                 parser_error('Expected IDENTIFIER or variable but got ' . $identifier[0]);
             }
             $next_2 = pparse__parser_peek();
-            if ($next_2 == 'BRACKET_OPEN') {
+            if ($next_2 == 'PARENTHESIS_OPEN') {
                 pparse__parser_next();
                 $expressions = _parse_function_call();
-                pparse__parser_expect('BRACKET_CLOSE');
+                pparse__parser_expect('PARENTHESIS_CLOSE');
                 $expression = array('NEW_OBJECT', ($identifier[0] == 'IDENTIFIER') ? $identifier[1] : null, $expressions, $GLOBALS['I']);
             } else {
                 $expression = array('NEW_OBJECT', ($identifier[0] == 'IDENTIFIER') ? $identifier[1] : null, array(), $GLOBALS['I']);
@@ -1372,13 +1372,13 @@ function _parse_expression_inner()
 
         case 'ARRAY':
             pparse__parser_next();
-            pparse__parser_expect('BRACKET_OPEN');
-            $details = _parse_create_array('BRACKET_CLOSE');
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_OPEN');
+            $details = _parse_create_array('PARENTHESIS_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $expression = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
 
-        case 'BRACKET_OPEN':
+        case 'PARENTHESIS_OPEN':
             pparse__parser_next();
 
             // Look ahead to see if this is an embedded assignment or a cast
@@ -1389,8 +1389,8 @@ function _parse_expression_inner()
                 pparse__parser_expect('EQUAL');
                 $_expression = _parse_expression();
                 $expression = array('EMBEDDED_ASSIGNMENT', 'EQUAL', $target, $_expression, $GLOBALS['I']);
-                pparse__parser_expect('BRACKET_CLOSE');
-            } elseif ((in_array($next_2, array('INTEGER', 'INT', 'BOOL', 'FLOAT', 'ARRAY', 'OBJECT', 'STRING'))) && ($next_3 == 'BRACKET_CLOSE')) {
+                pparse__parser_expect('PARENTHESIS_CLOSE');
+            } elseif ((in_array($next_2, array('INTEGER', 'INT', 'BOOL', 'FLOAT', 'ARRAY', 'OBJECT', 'STRING'))) && ($next_3 == 'PARENTHESIS_CLOSE')) {
                 pparse__parser_next();
                 pparse__parser_next();
                 if ($next_2 == 'INT') {
@@ -1401,8 +1401,8 @@ function _parse_expression_inner()
                 }
                 $expression = array('CASTED', $next_2, _parse_expression_inner(), $GLOBALS['I']);
             } else {
-                $expression = array('BRACKETED', _parse_expression(), $GLOBALS['I']);
-                pparse__parser_expect('BRACKET_CLOSE');
+                $expression = array('PARENTHESISED', _parse_expression(), $GLOBALS['I']);
+                pparse__parser_expect('PARENTHESIS_CLOSE');
             }
             break;
 
@@ -1416,14 +1416,14 @@ function _parse_expression_inner()
             pparse__parser_next();
             $variable = _parse_variable($suppress_error);
             $expression = array('PRE_DEC', $variable, $GLOBALS['I']);
-            log_warning('Decrement used within expression is messy, put brackets around it');
+            log_warning('Decrement used within expression is messy, put parentheses around it');
             break;
 
         case 'INC':
             pparse__parser_next();
             $variable = _parse_variable($suppress_error);
             $expression = array('PRE_INC', $variable, $GLOBALS['I']);
-            log_warning('Increment used within expression is messy, put brackets around it');
+            log_warning('Increment used within expression is messy, put parentheses around it');
             break;
 
         case 'variable':
@@ -1436,7 +1436,7 @@ function _parse_expression_inner()
                     }
                     pparse__parser_next();
                     $expression = array('DEC', $target, $GLOBALS['I']);
-                    log_warning('Decrement used within expression is messy, put brackets around it');
+                    log_warning('Decrement used within expression is messy, put parentheses around it');
                     break;
 
                 case 'INC':
@@ -1445,7 +1445,7 @@ function _parse_expression_inner()
                     }
                     pparse__parser_next();
                     $expression = array('INC', $target, $GLOBALS['I']);
-                    log_warning('Increment used within expression is messy, put brackets around it');
+                    log_warning('Increment used within expression is messy, put parentheses around it');
                     break;
 
                 default: // Either an assignment or an indirect function call or a method call
@@ -1457,7 +1457,7 @@ function _parse_expression_inner()
                         $assignment = _parse_assignment_operator();
                         $expression_inner = _parse_expression();
                         $expression = array('ASSIGNMENT', $assignment, $expression, $expression_inner, $GLOBALS['I']);
-                        log_warning('Assignment used within expression is messy, put brackets around it');
+                        log_warning('Assignment used within expression is messy, put parentheses around it');
                     }
                     break;
             }
@@ -1499,10 +1499,10 @@ function _parse_variable($suppress_error, $can_be_dangling_method_call_instead =
 
     // Special case where it might be a call on the function name held in a variable
     if ($can_be_dangling_method_call_instead) {
-        if ($next == 'BRACKET_OPEN') { // Is it an inline indirect function call
+        if ($next == 'PARENTHESIS_OPEN') { // Is it an inline indirect function call
             pparse__parser_next();
             $parameters = _parse_function_call();
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             if (count($variable[2]) == 0) {
                 log_warning('Indirect call');
             }
@@ -1567,7 +1567,7 @@ function _parse_variable_dereferencing_chain_segment($suppress_error)
             $tunnel = array();
             $next_3 = pparse__parser_peek();
             $next_4 = pparse__parser_peek_dist(1);
-            if ((($next_3 == 'EXTRACT_OPEN') && ($next_4 != 'EXTRACT_CLOSE')) || ($next_3 == 'OBJECT_OPERATOR') || ($next_3 == 'SCOPE') || ($next_3 == 'BRACKET_OPEN')) {
+            if ((($next_3 == 'EXTRACT_OPEN') && ($next_4 != 'EXTRACT_CLOSE')) || ($next_3 == 'OBJECT_OPERATOR') || ($next_3 == 'SCOPE') || ($next_3 == 'PARENTHESIS_OPEN')) {
                 $tunnel = _parse_variable_dereferencing_chain_segment($suppress_error);
             }
             $variable = array('DEREFERENCE', $calling, $tunnel, $GLOBALS['I']);
@@ -1586,20 +1586,20 @@ function _parse_variable_dereferencing_chain_segment($suppress_error)
             $tunnel = array();
             $next_3 = pparse__parser_peek();
             $next_4 = pparse__parser_peek_dist(1);
-            if ((($next_3 == 'EXTRACT_OPEN') && ($next_4 != 'EXTRACT_CLOSE')) || ($next_3 == 'OBJECT_OPERATOR') || ($next_3 == 'SCOPE') || ($next_3 == 'BRACKET_OPEN')) {
+            if ((($next_3 == 'EXTRACT_OPEN') && ($next_4 != 'EXTRACT_CLOSE')) || ($next_3 == 'OBJECT_OPERATOR') || ($next_3 == 'SCOPE') || ($next_3 == 'PARENTHESIS_OPEN')) {
                 $tunnel = _parse_variable_dereferencing_chain_segment($suppress_error);
             }
             $variable = array('ARRAY_AT', $expression, $tunnel, $GLOBALS['I']);
             break;
 
-        case 'BRACKET_OPEN':
+        case 'PARENTHESIS_OPEN':
             pparse__parser_next(); // Consume the "("
             $args = _parse_function_call();
-            pparse__parser_expect('BRACKET_CLOSE'); // Consume the ")"
+            pparse__parser_expect('PARENTHESIS_CLOSE'); // Consume the ")"
             $tunnel = array();
             $next_3 = pparse__parser_peek();
             $next_4 = pparse__parser_peek_dist(1);
-            if ((($next_3 == 'EXTRACT_OPEN') && ($next_4 != 'EXTRACT_CLOSE')) || ($next_3 == 'OBJECT_OPERATOR') || ($next_3 == 'SCOPE') || ($next_3 == 'BRACKET_OPEN')) {
+            if ((($next_3 == 'EXTRACT_OPEN') && ($next_4 != 'EXTRACT_CLOSE')) || ($next_3 == 'OBJECT_OPERATOR') || ($next_3 == 'SCOPE') || ($next_3 == 'PARENTHESIS_OPEN')) {
                 $tunnel = _parse_variable_dereferencing_chain_segment($suppress_error);
             }
             $variable = array('CALL_METHOD', null/*will be subbed later for preceding part of chain*/, $args, $suppress_error, $GLOBALS['I'], $tunnel);
@@ -1681,9 +1681,9 @@ function _parse_literal()
 
         case 'ARRAY':
             pparse__parser_next(); // Skip over the ARRAY
-            pparse__parser_expect('BRACKET_OPEN');
-            $details = _parse_create_array('BRACKET_CLOSE');
-            pparse__parser_expect('BRACKET_CLOSE');
+            pparse__parser_expect('PARENTHESIS_OPEN');
+            $details = _parse_create_array('PARENTHESIS_CLOSE');
+            pparse__parser_expect('PARENTHESIS_CLOSE');
             $literal = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
 
@@ -1758,7 +1758,7 @@ function _parse_comma_expressions()
     $expressions = array();
 
     $next = pparse__parser_peek();
-    if (($next == 'BRACKET_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
+    if (($next == 'PARENTHESIS_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
         return array();
     }
 
@@ -1782,7 +1782,7 @@ function _parse_function_call()
     $parameters = array();
 
     $next = pparse__parser_peek();
-    if (($next == 'BRACKET_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
+    if (($next == 'PARENTHESIS_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
         return array();
     }
 
@@ -1820,17 +1820,17 @@ function _parse_comma_variables($allow_blanks = false)
     $variables = array();
 
     $next = pparse__parser_peek();
-    if (($next == 'BRACKET_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
+    if (($next == 'PARENTHESIS_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
         return $variables;
     }
 
     do {
         $next_2 = pparse__parser_peek();
-        while (($allow_blanks) && (($next_2 == 'COMMA') || ($next_2 == 'BRACKET_CLOSE'))) {
+        while (($allow_blanks) && (($next_2 == 'COMMA') || ($next_2 == 'PARENTHESIS_CLOSE'))) {
             if ($next_2 == 'COMMA') { // ,,
                 pparse__parser_next();
                 $variables[] = array('VARIABLE', '_', array());
-            } elseif ($next_2 == 'BRACKET_CLOSE') { // ,,
+            } elseif ($next_2 == 'PARENTHESIS_CLOSE') { // ,,
                 $variables[] = array('VARIABLE', '_', array());
                 return $variables;
             }
@@ -1857,7 +1857,7 @@ function _parse_comma_parameters($for_function_definition = false)
     $parameters = array();
 
     $next = pparse__parser_peek();
-    if (($next == 'BRACKET_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
+    if (($next == 'PARENTHESIS_CLOSE') || ($next == 'COMMAND_TERMINATE')) {
         return $parameters;
     }
 

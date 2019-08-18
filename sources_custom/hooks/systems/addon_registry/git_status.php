@@ -139,6 +139,7 @@ This is useful when using Git for deployment on staging and live servers, where 
             'adminzone/pages/minimodules_custom/admin_git_status.php',
             'themes/default/templates_custom/GIT_STATUS_SCREEN.tpl',
             'themes/default/templates_custom/GIT_STATUS_DIFF_SCREEN.tpl',
+            'themes/default/javascript/git_status.js',
         );
     }
 }

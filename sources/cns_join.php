@@ -165,7 +165,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     if ($username === null) {
         $username = trim(post_param_string('username'));
     }
-    cns_check_name_valid($username, null, null, true); // Adjusts username if needed
+    cns_check_name_valid($username, null, null, true); // Adjusts username if needed; other errors are ignored and will be picked up in cns_make_member's call to cns_check_name_valid
 
     if ($password === null) {
         $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
@@ -320,7 +320,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     require_code('crypt');
     $validated_email_confirm_code = $email_validation ? strval(get_secure_random_number()) : '';
     $staff_validation = (get_option_with_overrides('require_new_member_validation', $adjusted_config_options) == '1');
-    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && ($dob_year !== null) && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
+    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && ($dob_year !== null) && (intval(floor(utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0)) < intval(get_option('coppa_age')));
     $validated = ($staff_validation || $coppa) ? 0 : 1;
     if ($member_id === null) {
         $member_id = cns_make_member(
@@ -358,7 +358,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             $validated_email_confirm_code, // validated_email_confirm_code
             null, // on_probation_until
             0, // is_perm_banned
-            false // check_correctness
+            true // check_correctness
         );
     } else {
         attach_message(do_lang_tempcode('ALREADY_EXISTS', escape_html($username)), 'notice');
@@ -384,17 +384,30 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     // Send COPPA mail
     if ($coppa) {
-        $fields_done = do_lang('THIS_WITH_COMCODE', do_lang('USERNAME'), $username) . "\n\n";
+        require_code('fields');
+        $fields_done = array();
+        $fields_done[] = array('LABEL' => do_lang('USERNAME'), 'VALUE' => make_string_tempcode(escape_html($username)));
         foreach ($custom_fields as $custom_field) {
-            if ($custom_field['cf_type'] != 'upload') {
-                $fields_done .= do_lang('THIS_WITH_COMCODE', $custom_field['trans_name'], post_param_string('field_' . $custom_field['id'])) . "\n";
+            if (isset($actual_custom_fields[$custom_field['id']])) {
+                $fields_ob = get_fields_hook($custom_field['cf_type']);
+                $ev = $actual_custom_fields[$custom_field['id']];
+                $rendered = $fields_ob->render_field_value($custom_field, $ev);
+                $fields_done[] = array('LABEL' => $custom_field['trans_name'], 'VALUE' => $rendered);
             }
         }
-        $_privacy_url = build_url(array('page' => 'privacy'), '_SEARCH', array(), false, false, true);
-        $privacy_url = $_privacy_url->evaluate();
-        $message = do_lang('COPPA_MAIL', comcode_escape(get_option('site_name')), comcode_escape(get_option('privacy_fax')), array(comcode_escape(get_option('privacy_postal_address')), comcode_escape($fields_done), comcode_escape($privacy_url)), $language);
+
+        $privacy_policy_url = build_url(array('page' => 'privacy'), '_SEARCH', array(), false, false, true);
+
+        $message = do_template('COPPA_MAIL', array(
+            'FAX' => get_option('privacy_fax'),
+            'POSTAL_ADDRESS' => get_option('privacy_postal_address'),
+            'EMAIL_ADDRESS' => get_option('staff_address'),
+            'FIELDS_DONE' => $fields_done,
+            'PRIVACY_POLICY_URL' => $privacy_policy_url,
+        ), $language, false, null, '.txt', 'text');
+
         require_code('mail');
-        dispatch_mail(do_lang('COPPA_JOIN_SUBJECT', $username, get_site_name(), null, $language), $message, array($email_address), $username);
+        dispatch_mail(do_lang('COPPA_JOIN_SUBJECT', $username, get_site_name(), null, $language), $message->evaluate($language), array($email_address), $username);
     }
 
     // Send 'validate this member' notification
@@ -448,7 +461,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));
         }
-        $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL_COPPA'));
+        $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL_COPPA', strval(intval(get_option('coppa_age')))));
     } elseif ($staff_validation) {
         if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));

@@ -45,7 +45,10 @@
 						scaleLabel: {
 							display: true,
 							labelString: '{X_AXIS_LABEL;/}',
-						}
+						},
+						ticks: {
+							autoSkip: false,
+						},
 					}],
 				{+END}
 				yAxes: [{

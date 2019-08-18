@@ -57,6 +57,10 @@ class Module_cms_downloads extends Standard_crud_module
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MANAGE_DOWNLOADS', 'menu/rich_content/downloads'),
         );
@@ -66,12 +70,19 @@ class Module_cms_downloads extends Standard_crud_module
 
         $ret += parent::get_entry_points();
 
-        $ret += array(
-            'add_other' => array('ADD_DOWNLOAD_LICENCE', 'menu/cms/downloads/add_one_licence'),
-            'edit_other' => array('EDIT_DOWNLOAD_LICENCE', 'menu/cms/downloads/edit_one_licence'),
-        );
+        if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_downloads')) {
+            $ret += array(
+                'add_other' => array('ADD_DOWNLOAD_LICENCE', 'menu/cms/downloads/add_one_licence'),
+            );
+        }
 
-        if (has_privilege(get_member(), 'mass_import', 'cms_downloads')) {
+        if (has_privilege($member_id, 'edit_cat_highrange_content', 'cms_downloads')) {
+            $ret += array(
+                'edit_other' => array('EDIT_DOWNLOAD_LICENCE', 'menu/cms/downloads/edit_one_licence'),
+            );
+        }
+
+        if (has_privilege($member_id, 'mass_import', 'cms_downloads')) {
             if (function_exists('ftp_connect')) {
                 $ret['import'] = array('FTP_DOWNLOADS', 'admin/import');
             }
@@ -407,7 +418,7 @@ class Module_cms_downloads extends Standard_crud_module
         if (addon_installed('authors')) {
             $fields->attach(form_input_author(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', 'download'), 'author', $author, true));
         }
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'the_description', $description, false));
         $image_upload_field = form_input_upload(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_IMAGE_SHORTCUT'), 'img_file', false, null, null, true, get_allowed_image_file_types());
         if (($id === null) && (addon_installed('galleries'))) {
             $fields->attach($image_upload_field);
@@ -428,7 +439,7 @@ class Module_cms_downloads extends Standard_crud_module
         $fields->attach(form_input_text_comcode(do_lang_tempcode('ADDITIONAL_INFO'), do_lang_tempcode('DESCRIPTION_ADDITIONAL_INFO'), 'additional_details', $additional_details, false));
         if ($id !== null) {
             if (addon_installed('galleries')) {
-                $images = $GLOBALS['SITE_DB']->query_select('images', array('thumb_url', 'description'), array('cat' => 'download_' . strval($id)), 'ORDER BY add_date,id', 200);
+                $images = $GLOBALS['SITE_DB']->query_select('images', array('thumb_url', 'the_description'), array('cat' => 'download_' . strval($id)), 'ORDER BY add_date,id', 200);
                 if (count($images) == 0) {
                     $fields->attach($image_upload_field);
                 } else {
@@ -440,7 +451,7 @@ class Module_cms_downloads extends Standard_crud_module
                         if ($selected) {
                             $selected_path = $image['thumb_url'];
                         }
-                        $radios->attach(form_input_radio_entry('default_pic', strval($i + 1), $selected, do_image_thumb($image['thumb_url'], get_translated_tempcode('images', $image, 'description'), false, false, 50, 50)));
+                        $radios->attach(form_input_radio_entry('default_pic', strval($i + 1), $selected, do_image_thumb($image['thumb_url'], get_translated_tempcode('images', $image, 'the_description'), false, false, 50, 50)));
                     }
 
                     $fields->attach(form_input_radio(do_lang_tempcode('DEFAULT_IMAGE'), do_lang_tempcode('DESCRIPTION_DEFAULT_IMAGE'), 'default_pic', $radios, false, true, $selected_path));
@@ -540,7 +551,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         $cat = $myrow['category_id'];
 
-        $ret = $this->get_form_fields($id, get_translated_text($myrow['name']), $cat, $myrow['url'], $myrow['author'], get_translated_text($myrow['description']), get_translated_text($myrow['additional_details']), $myrow['out_mode_id'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $myrow['file_size'], $myrow['download_cost'], $myrow['download_submitter_gets_points'], $myrow['original_filename'], $myrow['download_licence'], $myrow['default_pic'], $myrow['url_redirect']);
+        $ret = $this->get_form_fields($id, get_translated_text($myrow['name']), $cat, $myrow['url'], $myrow['author'], get_translated_text($myrow['the_description']), get_translated_text($myrow['additional_details']), $myrow['out_mode_id'], $myrow['validated'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes'], $myrow['file_size'], $myrow['download_cost'], $myrow['download_submitter_gets_points'], $myrow['original_filename'], $myrow['download_licence'], $myrow['default_pic'], $myrow['url_redirect']);
 
         if (has_delete_permission('mid', get_member(), $myrow['submitter'], 'cms_downloads', array('downloads', $cat))) {
             $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('LEAVE'));
@@ -975,7 +986,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        return $this->get_form_fields($category_id, get_translated_text($myrow['category']), $myrow['parent_id'], get_translated_text($myrow['description']), $myrow['notes'], $category_id, $myrow['rep_image']);
+        return $this->get_form_fields($category_id, get_translated_text($myrow['category']), $myrow['parent_id'], get_translated_text($myrow['the_description']), $myrow['notes'], $category_id, $myrow['rep_image']);
     }
 
     /**

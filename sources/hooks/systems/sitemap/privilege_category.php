@@ -89,7 +89,7 @@ class Hook_sitemap_privilege_category extends Hook_sitemap_base
                 unset($_sections[$i]);
             }
         }
-        asort($_sections, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($_sections, SORT_NATURAL | SORT_FLAG_CASE);
 
         if ($child_cutoff !== null) {
             if (count($_sections) > $child_cutoff) {

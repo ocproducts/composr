@@ -30,6 +30,7 @@ function init__actionlog()
     if (!defined('ACTIONLOG_FLAGS_NONE')) {
         define('ACTIONLOG_FLAGS_NONE', 0);
         define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
+        define('ACTIONLOG_FLAG__GDPR', 2);
     }
 }
 
@@ -98,8 +99,10 @@ abstract class Hook_actionlog
                                         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                                     }
 
-                                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url(intval($page_link[1]), true);
-                                    $followup_urls[] = $url;
+                                    if (is_numeric($page_link[1])) {
+                                        $url = $GLOBALS['FORUM_DRIVER']->member_profile_url(intval($page_link[1]), true);
+                                        $followup_urls[] = $url;
+                                    }
                                     break;
 
                                 default:
@@ -232,6 +235,29 @@ abstract class Hook_actionlog
     {
         return array();
     }
+}
+
+/**
+ * Get handler flags for a particular action log type.
+ *
+ * @param  ID_TEXT $the_type Action log type
+ * @return integer Flags
+ */
+function get_handler_flags($the_type)
+{
+    static $hook_obs = null;
+    if ($hook_obs === null) {
+        $hook_obs = find_all_hook_obs('systems', 'actionlog', 'Hook_actionlog_');
+    }
+
+    foreach ($hook_obs as $hook => $ob) {
+        $handlers = $ob->get_handlers();
+        if (array_key_exists($the_type, $handlers)) {
+            return $handlers[$the_type]['flags'];
+        }
+    }
+
+    return ACTIONLOG_FLAGS_NONE;
 }
 
 /**

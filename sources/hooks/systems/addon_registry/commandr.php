@@ -101,6 +101,9 @@ class Hook_addon_registry_commandr
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/commandr.php',
+            'sources/hooks/systems/logs/commandr.php',
+            'sources/hooks/systems/config/days_to_keep__resource_fs_log.php',
             'themes/default/images/icons/menu/adminzone/tools/commandr.svg',
             'themes/default/images/icons/tool_buttons/commandr_off.svg',
             'themes/default/images/icons/tool_buttons/commandr_on.svg',
@@ -200,6 +203,7 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/reset.php',
             'sources/hooks/systems/commandr_commands/rm.php',
             'sources/hooks/systems/commandr_commands/rmdir.php',
+            'sources/hooks/systems/commandr_commands/test_mail.php',
             'sources/hooks/systems/commandr_commands/time.php',
             'sources/hooks/systems/commandr_commands/untar.php',
             'sources/hooks/systems/commandr_commands/users_online.php',

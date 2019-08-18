@@ -25,9 +25,8 @@
  */
 function init__themewizard()
 {
-    global $THEMEWIZARD_IMAGES_CACHE, $THEME_SEED_CACHE, $THEME_DARK_CACHE;
+    global $THEMEWIZARD_IMAGES_CACHE, $THEME_DARK_CACHE;
     $THEMEWIZARD_IMAGES_CACHE = array();
-    $THEME_SEED_CACHE = array();
     $THEME_DARK_CACHE = array();
 
     global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD;
@@ -105,48 +104,6 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
     $THEMEWIZARD_IMAGES_NO_WILD = explode(',', $themewizard_images_no_wild);
 
     $THEMEWIZARD_IMAGES_CACHE[$theme] = $THEMEWIZARD_IMAGES;
-}
-
-/**
- * Find the seed of a theme.
- *
- * @param  ID_TEXT $theme The theme name
- * @return ID_TEXT The seed colour
- */
-function find_theme_seed($theme)
-{
-    global $THEME_SEED_CACHE;
-    if (isset($THEME_SEED_CACHE[$theme])) {
-        return $THEME_SEED_CACHE[$theme];
-    }
-
-    $seed = get_theme_option('seed', ($theme == 'default') ? null : '');
-
-    if ($seed == '') {
-        $css_path = get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css';
-        if (!is_file($css_path)) {
-            $css_path = get_file_base() . '/themes/default/css/global.css';
-        }
-        $css_file_contents = cms_file_get_contents_safe($css_path);
-        $matches = array();
-        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
-            $THEME_SEED_CACHE[$theme] = $matches[1];
-        } else {
-            /*if ($no_easy_anchor)
-            {
-                   We could put some auto-detection code here; possibly a future improvement but not needed currently.
-            } else {*/
-            if ($theme == 'default') {
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-            }
-            $THEME_SEED_CACHE[$theme] = find_theme_seed('default');
-            //}
-        }
-    } else {
-        $THEME_SEED_CACHE[$theme] = $seed;
-    }
-
-    return $THEME_SEED_CACHE[$theme];
 }
 
 /**
@@ -504,7 +461,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
             }
 
             if ($extending_existing) {
-                $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme_name)));
+                $temp_all_ids = collapse_2d_complexity('id', 'url', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), array('theme' => $theme_name)));
             } else {
                 $temp_all_ids = array();
             }
@@ -520,16 +477,16 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                     }
 
                     foreach (array_keys($_langs) as $lang) {
-                        $orig_path = find_theme_image($image_code, true, true, $source_theme, $lang);
-                        if ($orig_path == '') {
+                        $orig_url = find_theme_image($image_code, true, true, $source_theme, $lang);
+                        if ($orig_url == '') {
                             continue; // Theme has specified non-existent image as themewizard-compatible
                         }
 
-                        if ((strpos($orig_path, '/' . $lang . '/') === false) && ($lang != fallback_lang())) {
+                        if ((strpos($orig_url, '/' . $lang . '/') === false) && ($lang != fallback_lang())) {
                             continue;
                         }
 
-                        if (strpos($orig_path, '/' . fallback_lang() . '/') !== false) {
+                        if (strpos($orig_url, '/' . fallback_lang() . '/') !== false) {
                             $composite = 'themes/' . filter_naughty($theme_name) . '/images/' . $lang . '/';
                         } else {
                             $composite = 'themes/' . filter_naughty($theme_name) . '/images/';
@@ -538,7 +495,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                         $saveat_url = $composite . $image_code . '.png';
 
                         // Wipe out ones that might have been copied from source theme
-                        if (($source_theme != 'default') && (strpos($orig_path, 'images_custom') !== false)) {
+                        if (($source_theme != 'default') && (strpos($orig_url, 'images_custom') !== false)) {
                             foreach (array('png', 'jpg', 'gif', 'jpeg') as $ext) {
                                 $old_delete_path = str_replace('/images/', '/images_custom/', basename($saveat, '.png')) . '.' . $ext;
                                 @unlink($old_delete_path);
@@ -550,7 +507,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                             $image = calculate_theme($seed, $source_theme, $algorithm, $image_code, $dark, $colours, $landscape, $lang);
                             if ($image !== null) {
                                 $pos = strrpos($image_code, '/');
-                                if (($pos !== false) || (strpos($orig_path, '/' . fallback_lang() . '/') !== false)) {
+                                if (($pos !== false) || (strpos($orig_url, '/' . fallback_lang() . '/') !== false)) {
                                     afm_make_directory($composite . substr($image_code, 0, $pos), true, true);
                                 }
                                 cms_imagesave($image, $saveat) or intelligent_write_error($saveat);
@@ -971,7 +928,7 @@ function parse_css_colour_expression($textual)
     // '*' is inserted after a %, and then % is dropped
     $textual = preg_replace('#(^| )(\d+)%#', '\\1\\2 *', $textual);
 
-    // We're using spaces as token delimiters, so we need to do a trim to clean up, and also put spaces around brackets
+    // We're using spaces as token delimiters, so we need to do a trim to clean up, and also put spaces around parentheses
     $textual = trim(str_replace(')', ' )', str_replace('(', '( ', $textual)));
 
     // Perform inner conversion
@@ -992,7 +949,7 @@ function parse_css_colour_expression($textual)
 function _parse_css_colour_expression($tokens)
 {
     // We now scan through, structuring into an evaluation-order tree (but not an expression tree  at the level we're operating on)
-    // Brackets
+    // Parentheses
     $new_tokens = array();
     for ($i = 0; $i < count($tokens); $i++) {
         if ($tokens[$i] === '(') {
@@ -1654,15 +1611,15 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
             $scale_b = null;
             $scale_count = 0;
             if ($colour_a_orig_r != $colour_b_orig_r) {
-                $scale_r = ($colour_a_orig_r - $colour_b_orig_r == 0) ? 0.0 : floatval($existing_colour_r - $colour_b_orig_r) / floatval($colour_a_orig_r - $colour_b_orig_r);
+                $scale_r = ($colour_a_orig_r - $colour_b_orig_r == 0) ? 0.0 : (floatval($existing_colour_r - $colour_b_orig_r) / floatval($colour_a_orig_r - $colour_b_orig_r));
                 $scale_count++;
             }
             if ($colour_a_orig_r != $colour_b_orig_r) {
-                $scale_g = ($colour_a_orig_g - $colour_b_orig_g == 0) ? 0.0 : floatval($existing_colour_g - $colour_b_orig_g) / floatval($colour_a_orig_g - $colour_b_orig_g);
+                $scale_g = ($colour_a_orig_g - $colour_b_orig_g == 0) ? 0.0 : (floatval($existing_colour_g - $colour_b_orig_g) / floatval($colour_a_orig_g - $colour_b_orig_g));
                 $scale_count++;
             }
             if ($colour_a_orig_r != $colour_b_orig_r) {
-                $scale_b = ($colour_a_orig_b - $colour_b_orig_b == 0) ? 0.0 : floatval($existing_colour_b - $colour_b_orig_b) / floatval($colour_a_orig_b - $colour_b_orig_b);
+                $scale_b = ($colour_a_orig_b - $colour_b_orig_b == 0) ? 0.0 : (floatval($existing_colour_b - $colour_b_orig_b) / floatval($colour_a_orig_b - $colour_b_orig_b));
                 $scale_count++;
             }
             if ($scale_count == 0) { // Impossible to calculate

@@ -228,6 +228,9 @@ class Hook_ecommerce_cart_orders
      */
     public function member_for($type_code, $purchase_id)
     {
+        if (!is_numeric($purchase_id)) {
+            return null;
+        }
         $order_id = intval($purchase_id);
         return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_orders', 'member_id', array('id' => $order_id));
     }

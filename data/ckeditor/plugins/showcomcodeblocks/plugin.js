@@ -1,4 +1,4 @@
-﻿( function() {
+( function() {
 	'use strict';
 
 	CKEDITOR.plugins.add( 'showcomcodeblocks', {
@@ -22,6 +22,7 @@
 			while ( ( tag = tagsBlock.pop() ) ) {
 				trailing = tagsBlock.length ? ',' : '';
 
+				CKEDITOR.dtd.$editable['comcode-' + tag] = 1;
 				CKEDITOR.dtd.$block['comcode-' + tag] = 1;
 				CKEDITOR.dtd['comcode-' + tag] = CKEDITOR.dtd.div;
 
@@ -37,6 +38,8 @@
 			while ( ( tag = tagsInline.pop() ) ) {
 				trailing = tagsInline.length ? ',' : '';
 
+				CKEDITOR.dtd.$editable['comcode-' + tag] = 1;
+				CKEDITOR.dtd.$inline['comcode-' + tag] = 1;
 				CKEDITOR.dtd['comcode-' + tag] = CKEDITOR.dtd.span;
 
 				cssInline += 'comcode-' + tag + trailing;

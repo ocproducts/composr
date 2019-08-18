@@ -125,7 +125,7 @@ class Hook_search_filedump extends FieldsSearchHook
         $_rows = $GLOBALS['SITE_DB']->query_select('filedump');
         $rows = array();
         foreach ($_rows as $row) {
-            $rows[$row['path']] = $row;
+            $rows[$row['subpath']] = $row;
         }
         $i = 0;
         $out = array();
@@ -144,10 +144,10 @@ class Hook_search_filedump extends FieldsSearchHook
 
                 $pre = '';
                 $file_breadcrumbs = array();
-                $breadcrumbs_page_link = build_page_link(array('page' => 'filedump', 'place' => $pre . '/'), get_module_zone('filedump'));
+                $breadcrumbs_page_link = build_page_link(array('page' => 'filedump', 'subpath' => $pre . '/'), get_module_zone('filedump'));
                 $file_breadcrumbs[] = array($breadcrumbs_page_link, do_lang_tempcode('ROOT'));
                 foreach ($dirs as $dir) {
-                    $breadcrumbs_page_link = build_page_link(array('page' => 'filedump', 'place' => $pre . $dir . '/'), get_module_zone('filedump'));
+                    $breadcrumbs_page_link = build_page_link(array('page' => 'filedump', 'subpath' => $pre . $dir . '/'), get_module_zone('filedump'));
                     $file_breadcrumbs[] = array($breadcrumbs_page_link, $dir);
 
                     $pre .= $dir . '/';

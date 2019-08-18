@@ -137,6 +137,7 @@ You may wish to deny access to the usergroup and member directories when using t
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/booking.php',
             'sources_custom/hooks/systems/addon_registry/booking.php',
             'sources_custom/hooks/systems/notifications/booking_customer.php',
             'sources_custom/hooks/systems/notifications/booking_inform_staff.php',
@@ -167,6 +168,8 @@ You may wish to deny access to the usergroup and member directories when using t
             'sources_custom/hooks/systems/page_groupings/booking.php',
             'themes/default/images_custom/icons/calendar/booking.svg',
             'themes/default/images_custom/icons/calendar/index.html',
+            'themes/default/images_custom/icons_monochrome/calendar/booking.svg',
+            'themes/default/images_custom/icons_monochrome/calendar/index.html',
             'sources_custom/hooks/systems/config/bookings_max_ahead_months.php',
             'sources_custom/hooks/systems/config/bookings_show_warnings_for_months.php',
             'sources_custom/hooks/systems/config/member_booking_only.php',

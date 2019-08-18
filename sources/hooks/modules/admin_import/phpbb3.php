@@ -147,6 +147,7 @@ class Hook_import_phpbb3
             'smtp_host' => 'smtp_sockets_host',
             'smtp_username' => 'smtp_sockets_username',
             'smtp_password' => 'smtp_sockets_password',
+            'board_timezone' => 'timezone',
         );
         if (addon_installed('ldap')) {
             $config_remapping += array(
@@ -178,8 +179,6 @@ class Hook_import_phpbb3
             }
             $PROBED_FORUM_CONFIG[$row['config_name']] = $row['config_value'];
         }
-
-        set_value('timezone', $PROBED_FORUM_CONFIG['board_timezone']);
 
         set_option('one_per_email_address', strval(1 - intval($PROBED_FORUM_CONFIG['allow_emailreuse'])));
 

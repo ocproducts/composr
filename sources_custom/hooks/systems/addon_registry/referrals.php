@@ -145,6 +145,7 @@ Allows people to specify who referred them when they join your site or other con
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/referrals.php',
+            'sources_custom/hooks/systems/privacy/referrals.php',
             'sources_custom/hooks/systems/notifications/referral.php',
             'sources_custom/hooks/systems/notifications/referral_staff.php',
             'text_custom/referrals.txt',

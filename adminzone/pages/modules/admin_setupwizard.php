@@ -385,7 +385,7 @@ class Module_admin_setupwizard
         foreach (get_timezone_list() as $_timezone => $timezone_nice) {
             $timezone_list .= static_evaluate_tempcode(form_input_list_entry($_timezone, $_timezone == $timezone, $timezone_nice));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('DESCRIPTION_TIMEZONE_SITE'), 'timezone', make_string_tempcode($timezone_list)));
+        $fields->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('CONFIG_OPTION_timezone'), 'timezone', make_string_tempcode($timezone_list)));
 
         $fields->attach(form_input_line(do_lang_tempcode('GOOGLE_ANALYTICS'), do_lang_tempcode('CONFIG_OPTION_google_analytics'), 'google_analytics', $google_analytics, false));
 
@@ -570,6 +570,7 @@ class Module_admin_setupwizard
             'news_shared',
             'filedump',
             'filebased_persistent_caching',
+            'robots_txt',
             'getid3', // this will be downloaded as it is not bundled, for licensing reasons
         ));
         // ... unless the install profile really is shunning them
@@ -1115,7 +1116,7 @@ class Module_admin_setupwizard
                 $new_theme_name = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
 
                 global $THEME_IMAGES_CACHE;
-                $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
+                $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
                 if (!file_exists(get_custom_file_base() . '/themes/' . $new_theme_name)) {
                     make_theme($new_theme_name, 'default', 'equations', post_param_string('seed_hex'), /*$use=*/true, post_param_integer('dark', 0) == 1);
                 }
@@ -1181,7 +1182,7 @@ class Module_admin_setupwizard
             set_option('copyright', post_param_string('copyright'));
             set_option('staff_address', post_param_string('staff_address'));
             set_option('keywords', post_param_string('keywords'));
-            set_value('timezone', post_param_string('timezone'));
+            set_option('timezone', post_param_string('timezone'));
             set_option('google_analytics', post_param_string('google_analytics'));
             set_option('fixed_width', post_param_string('fixed_width', '0'));
 

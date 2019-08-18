@@ -104,7 +104,7 @@ Another Composr Field=Another SugarCRM field
 (Some static text)=A SugarCRM field
 [some_posted_field]=A SugarCRM field
 [/code]
-Parenthesis-bracketed fields on the left-hand-side always define static text to place into a SugarCRM field.
+Parenthesised fields on the left-hand-side always define static text to place into a SugarCRM field.
 Square-bracketed fields on the left-hand-side always define request field parameters (order: POST, GET, COOKIE) to place into a SugarCRM field.
 Fields on either the left-hand-side or right-hand-side do not need to exist, and will simply be skipped if so. The same will happen if the Composr field is blank. This system makes it feasible to have multiple very different contact forms all synching with SugarCRM.
 If multiple mappings are made to the same SugarCRM field then this will either:
@@ -139,7 +139,9 @@ CRM software supported:
             'requires' => array(
                 'PHP curl extension',
             ),
-            'recommends' => array(),
+            'recommends' => array(
+                'securitylogging',
+            ),
             'conflicts_with' => array(),
         );
     }
@@ -163,6 +165,7 @@ CRM software supported:
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/sugarcrm.php',
+            'sources_custom/hooks/systems/privacy/sugarcrm.php',
             'sources_custom/hooks/systems/health_checks/sugarcrm.php',
             'sources_custom/sugarcrm.php',
             'sources_custom/hooks/systems/contact_forms/sugarcrm.php',
@@ -194,6 +197,10 @@ CRM software supported:
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_member.php',
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_contact_metadata.php',
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_lead_metadata.php',
+
+            'sources_custom/hooks/systems/config/days_to_keep__sugarcrm_log.php',
+            'sources_custom/hooks/systems/logs/index.html',
+            'sources_custom/hooks/systems/logs/sugarcrm.php',
 
             'data_custom/user_metadata_display.php',
             'sources_custom/user_metadata_display.php',

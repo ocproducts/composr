@@ -1148,7 +1148,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $subscriber_count = $this->_count_on_newsletter(strval($newsletter['id']), $lang);
 
             $newsletter_title = get_translated_text($newsletter['title']);
-            $newsletter_description = get_translated_text($newsletter['description']);
+            $newsletter_description = get_translated_text($newsletter['the_description']);
             $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_SEND_TO', escape_html($newsletter_title)), do_lang_tempcode('DESCRIPTION_NEWSLETTER_SEND_TO', escape_html(integer_format($subscriber_count)), escape_html($newsletter_description)), strval($newsletter['id']), $send_to));
         }
         if (get_forum_type() == 'cns') {
@@ -1745,7 +1745,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         $r = $m[0];
 
-        return $this->get_form_fields(get_translated_text($r['title']), get_translated_text($r['description']));
+        return $this->get_form_fields(get_translated_text($r['title']), get_translated_text($r['the_description']));
     }
 
     /**

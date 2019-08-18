@@ -764,7 +764,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
                 return '!Object';
             }
             return $ret;
-        case 'BRACKETED':
+        case 'PARENTHESISED':
             return js_check_expression($inner[1], false, $is_guarded);
         case 'BOOLEAN_NOT':
             $expression = js_check_expression($inner[1], false, $is_guarded);

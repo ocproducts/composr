@@ -101,6 +101,7 @@ class Hook_addon_registry_filedump
             'themes/default/images/icons/menu/cms/filedump.svg',
             'themes/default/images/icons_monochrome/menu/cms/filedump.svg',
             'sources/hooks/systems/notifications/filedump.php',
+            'sources/hooks/systems/privacy/filedump.php',
             'sources/hooks/systems/config/filedump_show_stats_count_total_files.php',
             'sources/hooks/systems/config/filedump_show_stats_count_total_space.php',
             'sources/hooks/blocks/side_stats/filedump.php',
@@ -157,7 +158,7 @@ class Hook_addon_registry_filedump
         $thumbnails = array();
         $thumbnails[] = array(
             'FILENAME' => lorem_word(),
-            'PLACE' => placeholder_id(),
+            'SUBPATH' => placeholder_id(),
             'THUMBNAIL' => placeholder_image(),
             'IS_IMAGE' => true,
             'URL' => placeholder_url(),
@@ -177,7 +178,7 @@ class Hook_addon_registry_filedump
         return array(
             lorem_globalise(do_lorem_template('FILEDUMP_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'PLACE' => placeholder_id(),
+                'SUBPATH' => placeholder_id(),
                 'THUMBNAILS' => $thumbnails,
                 'LISTING' => placeholder_table(),
                 'UPLOAD_FORM' => placeholder_form(),

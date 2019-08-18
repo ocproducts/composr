@@ -96,9 +96,9 @@ class Hook_admin_stats_search
         }
 
         if ($sort_order == 'ASC') {
-            asort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_asort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
-            arsort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_arsort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         require_code('templates_results_table');

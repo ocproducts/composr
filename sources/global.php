@@ -183,10 +183,10 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                     }
                 }
                 foreach ($classes_diff as $class) {
-                    if (substr(strtolower($class), 0, 6) === 'module') {
+                    if (strtolower(substr($class, 0, 6)) === 'module') {
                         $class = ucfirst($class);
                     }
-                    if (substr(strtolower($class), 0, 4) === 'hook') {
+                    if (strtolower(substr($class, 0, 4)) === 'hook') {
                         $class = ucfirst($class);
                     }
 
@@ -330,7 +330,8 @@ function clean_php_file_for_eval($c, $path = null)
 
 // LEGACY (PHP < 7)
 if (!class_exists('Error')) {
-    class Error {
+    class Error
+    {
     }
 }
 

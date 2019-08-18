@@ -816,7 +816,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
 
             foreach ($sub_types as $__type => $_title) {
                 //$_type_list->attach(form_input_list_entry($__type, ($__type == $type), $_title));
-                $_type_list .= '<option value="' . escape_html($__type) . '"' . ($__type == $type ? ' selected="selected"' : '') . '>' . $_title->evaluate() . '</option>'; // XHTMLXHTML
+                $_type_list .= '<option value="' . escape_html($__type) . '"' . (($__type == $type) ? ' selected="selected"' : '') . '>' . $_title->evaluate() . '</option>'; // XHTMLXHTML
             }
         }
     }
@@ -891,7 +891,7 @@ abstract class ListFieldHook
                 break;
 
             default:
-                if ((addon_installed('nested_cpf_csv_lists')) && (substr(strtolower($default), -4) == '.csv')) {
+                if ((addon_installed('nested_cpf_csv_lists')) && (strtolower(substr($default, -4)) == '.csv')) {
                     $csv_heading = option_value_from_field_array($field, 'csv_heading', '');
 
                     require_code('nested_csv');

@@ -67,9 +67,9 @@ The Open Graph Title is taken as the same as the screen title (it's not combined
 
 The Open Graph Image is either contextual (the main image of whatever content is being viewed), or the [tt]logo/standalone_logo[/tt] theme image.
 
-Note that [tt]logo/trimmed_logo[/tt] is used for a number of things, including the e-mail header, and in RSS feeds. It is intended to be a simple standalone logo (i.e. not tied into the overall web design).
+Note that [tt]logo/standalone_logo[/tt] is used for a number of things, including the e-mail header, and in RSS feeds. It is intended to be a simple standalone logo (i.e. not tied into the overall web design).
 
-In your HTML the Open Graph tags look similar to:
+In your HTML the Open Graph tags come out similar to:
 [code="HTML"]
 <meta property="og:title" content="Example page" />
 <meta property="og:type" content="comcode_page" />
@@ -77,6 +77,8 @@ In your HTML the Open Graph tags look similar to:
 <meta property="og:image" content="http://yourbaseurl/themes/default/images/EN/logo/standalone_logo.png" />
 <meta property="og:locale" content="en_GB" />
 [/code]
+
+If you want to add validation rules to make sure the chosen metadata image meets Open Graph requirements, there are samples defined in the [tt]fields.xml[/tt] system (see the [page="_SEARCH:tut_fields_filter"]The form field filter system[/page] tutorial).
 
 [title="2"]Icons[/title]
 
@@ -106,6 +108,16 @@ Here are the step by step instructions for selecting an appropriate image:
 5) Look under your site theme, and in the options listed for it you should see a link for 'Manage theme images'; click this
 6) In the 'Manage theme images' page you should see a list of different types of images used in the website,  choose 'Logo' from this list which will expand to show all the logo images used in the website currently
 7) Click on [tt]standalone_logo[/tt] and you'll be taken to a 'edit the image' page where you can simply upload a new file and scroll down towards the bottom of the page and hit 'Save'
+
+[title="2"]Twitter[/title]
+
+If you are active on Twitter you may want to edit the [tt]HTML_HEAD[/tt] template and add in some extra code for Twitter, for example:
+
+[code="HTML"]
+<meta name="twitter:card" content="image" />
+<meta name="twitter:site" content="@yourTwitterName" />
+<meta name="twitter:creator" content="@yourTwitterName" />
+[/code]
 
 [concepts
  1_key="Open Graph"                1_value="Facebook's standard for supplying web-page metadata"

@@ -100,7 +100,7 @@ class theme_images_test_set extends cms_test_case
                     list($width, $height) = cms_getimagesize($path);
                 }
 
-                $this->assertTrue($width == $height, 'Non-square icon, ' . $path);
+                $this->assertTrue($width === $height, 'Non-square icon, ' . $path);
             }
         }
     }

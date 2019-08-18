@@ -98,6 +98,7 @@ class Hook_addon_registry_awards
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/awards.php',
             'themes/default/images/icons/menu/adminzone/setup/awards.svg',
             'themes/default/images/icons_monochrome/menu/adminzone/setup/awards.svg',
             'sources/hooks/systems/addon_registry/awards.php',

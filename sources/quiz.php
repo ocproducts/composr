@@ -457,12 +457,12 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
     }
     $unknowns_to_staff = new Tempcode();
     foreach ($unknowns as $unknown) {
-        $_unknown = do_lang('QUIZ_UNKNOWN', comcode_escape($unknown[0]), comcode_escape($unknown[1]));
+        $_unknown = do_lang('QUIZ_UNKNOWN', comcode_escape($unknown[0]->evaluate()), comcode_escape($unknown[1]));
         $unknowns_to_staff->attach($_unknown);
     }
     $given_answers_to_staff = new Tempcode();
     foreach ($given_answers as $given_answer) {
-        $_given_answer = do_lang('QUIZ_RESULT', comcode_escape($given_answer['QUESTION']), comcode_escape($given_answer['GIVEN_ANSWER']));
+        $_given_answer = do_lang('QUIZ_RESULT', comcode_escape($given_answer['QUESTION']->evaluate()), comcode_escape($given_answer['GIVEN_ANSWER']));
         $given_answers_to_staff->attach($_given_answer);
     }
     // NB: We don't have a list of what was correct because it's not interesting, only corrections/unknowns/everything.

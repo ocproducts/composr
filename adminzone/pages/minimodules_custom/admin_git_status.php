@@ -77,8 +77,8 @@ function git_status__browse($include_ignored = null)
     switch ($sort) {
         case 'path ASC':
         case 'path DESC':
-            ksort($local_changes, SORT_NATURAL | SORT_FLAG_CASE);
-            ksort($remote_changes, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_ksort($local_changes, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_ksort($remote_changes, SORT_NATURAL | SORT_FLAG_CASE);
             break;
 
         case 'file_size ASC':

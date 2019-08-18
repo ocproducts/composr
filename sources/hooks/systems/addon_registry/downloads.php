@@ -100,6 +100,7 @@ class Hook_addon_registry_downloads
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/downloads.php',
             'themes/default/images/icons/menu/rich_content/downloads.svg',
             'themes/default/images/icons/menu/cms/downloads/add_one_licence.svg',
             'themes/default/images/icons/menu/cms/downloads/edit_one_licence.svg',

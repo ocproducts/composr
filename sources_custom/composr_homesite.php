@@ -151,10 +151,10 @@ function load_version_download_rows()
                 $sql .= ' FORCE INDEX (recent_downloads)';
             }
             $sql .= ' WHERE validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('Composr Version %') . '\' ORDER BY add_date';
-            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('name' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS__COMCODE'));
             foreach ($DOWNLOAD_ROWS as $i => $row) {
                 $DOWNLOAD_ROWS[$i]['nice_title'] = get_translated_text($row['name']);
-                $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['description']);
+                $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['the_description']);
             }
         }
     }
@@ -420,11 +420,11 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     // Set some default config
     $db_conn = new DatabaseConnector('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $SITE_INFO['mysql_demonstratr_password'], 'cms_');
     $db_conn->query_update('config', array('c_value' => $email_address), array('c_name' => 'staff_address'), '', 1);
-    $pass = md5($password);
-    $salt = '';
-    $compat = 'md5';
+    require_code('crypt');
+    $salt = get_secure_random_string();
+    $password_salted = ratchet_hash($password, $salt);
     push_db_scope_check(false);
-    $db_conn->query_update('f_members', array('m_email_address' => $email_address, 'm_pass_hash_salted' => $pass, 'm_pass_salt' => $salt, 'm_password_compat_scheme' => $compat), array('m_username' => 'admin'), '', 1);
+    $db_conn->query_update('f_members', array('m_email_address' => $email_address, 'm_pass_hash_salted' => $password_salted, 'm_pass_salt' => $salt, 'm_password_compat_scheme' => ''), array('m_username' => 'admin'), '', 1);
     pop_db_scope_check();
 
     // Create default file structure
@@ -474,7 +474,7 @@ function special_demonstratr_dir()
 function get_site_categories()
 {
     $cats = array('Entertainment', 'Computers', 'Sport', 'Art', 'Music', 'Television/Movies', 'Businesses', 'Other', 'Informative/Factual', 'Political', 'Humour', 'Geographical/Regional', 'Games', 'Personal/Family', 'Hobbies', 'Culture/Community', 'Religious', 'Health');
-    sort($cats, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($cats, SORT_NATURAL | SORT_FLAG_CASE);
     return $cats;
 }
 

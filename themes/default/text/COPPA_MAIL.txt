@@ -1,0 +1,45 @@
+Due to compliance with child protection laws, your account on {$SITE_NAME@} is currently inactive.
+
+Please print this message out and ask if your parent or guardian can sign and date it. Once signed, it should be scanned and e-mailed to:
+
+{EMAIL_ADDRESS@}{+START,IF_NON_EMPTY,{POSTAL_ADDRESS}}
+
+[i]Or[/i] mailed to:
+
+{POSTAL_ADDRESS@}{+END}
+{+START,IF_NON_EMPTY,{FAX}}
+
+[i]Or[/i] faxed to:
+
+{FAX@}{+END}
+
+------------------------------ CUT HERE ------------------------------
+
+
+Permission to participate at {$SITE_NAME@}, with these details...
+{+START,LOOP,FIELDS_DONE}
+{LABEL@}: [html]{VALUE}[/html]
+{+END}
+
+Tick (check) all:
+
+[ ] I HAVE REVIEWED THE INFORMATION PROVIDED BY MY CHILD AND HEREBY GRANT PERMISSION TO {$SITE_NAME@} TO STORE THIS INFORMATION.
+[ ] I UNDERSTAND THIS INFORMATION CAN BE CHANGED AT ANY TIME BY ENTERING A PASSWORD.
+[ ] I UNDERSTAND THAT I MAY REQUEST FOR THIS INFORMATION TO BE REMOVED FROM {$SITE_NAME@} AT ANY TIME.
+[ ] I HAVE READ AND UNDERSTAND THE FULL PRIVACY POLICY PUBLISHED AT [url="{PRIVACY_POLICY_URL*}"]{PRIVACY_POLICY_URL*}[/url]
+
+Parent or Guardian
+
+(print your name here): _______________________________
+
+
+(sign here): __________________________________________
+
+
+Date: __________________
+
+
+------------------------------ CUT HERE ------------------------------
+
+
+Once a member of staff has received the above form your account will be activated.

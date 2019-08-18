@@ -422,6 +422,7 @@ class Hook_addon_registry_core_notifications
         );
         $interface = do_lorem_template('NOTIFICATIONS_MANAGE', array(
             'COLOR' => 'FFFFFF',
+            'INTRO' => lorem_paragraph(),
             'NOTIFICATION_TYPES_TITLES' => $notification_types_titles,
             'NOTIFICATION_SECTIONS' => $notification_sections,
             'AUTO_NOTIFICATION_CONTRIB_CONTENT' => false,

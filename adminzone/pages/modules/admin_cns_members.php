@@ -55,6 +55,10 @@ class Module_admin_cns_members
             return null;
         }
 
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         $ret = array(
             'browse' => array('MEMBERS', 'menu/social/members'),
             'step1' => array('ADD_MEMBER', 'menu/adminzone/tools/users/member_add'),
@@ -68,7 +72,7 @@ class Module_admin_cns_members
         $ret['export_csv'] = array('EXPORT_MEMBERS', 'admin/export_csv');
 
         if ($support_crosslinks) {
-            if (has_privilege(get_member(), 'member_maintenance')) {
+            if (has_privilege($member_id, 'member_maintenance')) {
                 $ret['_SEARCH:members:browse'] = array('MEMBER_DIRECTORY', 'menu/adminzone/tools/users/member_edit');
             }
             $ret['_SEARCH:admin_cns_merge_members:browse'] = array('MERGE_MEMBERS', 'menu/adminzone/tools/users/merge_members');
@@ -81,6 +85,7 @@ class Module_admin_cns_members
             if (addon_installed('securitylogging')) {
                 $ret['_SEARCH:admin_lookup:browse'] = array('INVESTIGATE_USER', 'menu/adminzone/tools/users/investigate_user');
             }
+            $ret['_SEARCH:admin_privacy:browse'] = array('PRIVACY', 'menu/pages/privacy_policy');
             /*
             We'll link these from elsewhere instead
             if (addon_installed('ecommerce')) {
@@ -266,6 +271,7 @@ class Module_admin_cns_members
                 array('menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('GROUP_MEMBER_TIMEOUTS'), 'DOC_GROUP_MEMBER_TIMEOUTS'),
                 addon_installed('ecommerce') ? array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'browse'), get_module_zone('admin_ecommerce')), do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP'), 'DOC_ECOMMERCE') : null,
                 array('menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('USERGROUPS'), 'DOC_GROUPS'),
+                array('menu/pages/privacy_policy', array('admin_privacy', array('type' => 'browse'), get_module_zone('admin_privacy'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('PRIVACY'), 'DOC_GDPR'),
             ), do_lang('MEMBERS')
         );
     }

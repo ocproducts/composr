@@ -298,7 +298,7 @@ function cron_bridge_script($caller)
 
         flock($log_file, LOCK_EX);
         fseek($log_file, 0, SEEK_END);
-        fwrite($log_file, date('Y-m-d H:i:s') . '  (CRON STARTING)' . "\n");
+        fwrite($log_file, loggable_date() . '  (CRON STARTING)' . "\n");
         flock($log_file, LOCK_UN);
     }
 
@@ -351,7 +351,7 @@ function cron_bridge_script($caller)
             if ($log_file !== null) {
                 flock($log_file, LOCK_EX);
                 fseek($log_file, 0, SEEK_END);
-                fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . ' (' . $info['label'] . ')' . "\n");
+                fwrite($log_file, loggable_date() . '  STARTING ' . $hook . ' (' . $info['label'] . ')' . "\n");
                 flock($log_file, LOCK_UN);
             }
 
@@ -404,7 +404,7 @@ function cron_bridge_script($caller)
             if ($log_file !== null) {
                 flock($log_file, LOCK_EX);
                 fseek($log_file, 0, SEEK_END);
-                fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . ' (' . $info['label'] . ')' . "\n");
+                fwrite($log_file, loggable_date() . '  FINISHED ' . $hook . ' (' . $info['label'] . ')' . "\n");
                 flock($log_file, LOCK_UN);
             }
         } else {
@@ -412,7 +412,7 @@ function cron_bridge_script($caller)
             if ($log_file !== null) {
                 flock($log_file, LOCK_EX);
                 fseek($log_file, 0, SEEK_END);
-                fwrite($log_file, date('Y-m-d H:i:s') . '  WAS LOCKED ' . $hook . ' (' . $info['label'] . ')' . "\n");
+                fwrite($log_file, loggable_date() . '  WAS LOCKED ' . $hook . ' (' . $info['label'] . ')' . "\n");
                 flock($log_file, LOCK_UN);
             }
         }
@@ -425,7 +425,7 @@ function cron_bridge_script($caller)
     if ($log_file !== null) {
         flock($log_file, LOCK_EX);
         fseek($log_file, 0, SEEK_END);
-        fwrite($log_file, date('Y-m-d H:i:s') . '  (CRON ENDING)' . "\n");
+        fwrite($log_file, loggable_date() . '  (CRON ENDING)' . "\n");
         flock($log_file, LOCK_UN);
 
         fclose($log_file);
@@ -584,7 +584,7 @@ function emoticons_script()
     require_code('images');
     foreach ($_rows as $myrow) {
         $test = cms_getimagesize_url(find_theme_image($myrow['e_theme_img_code'], true));
-        if ($test !== false) {
+        if (($test !== false) && ($test[0] !== null)) {
             list($_width,) = $test;
             $max_emoticon_width = max($max_emoticon_width, $_width);
         }

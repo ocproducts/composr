@@ -185,7 +185,7 @@ function set_cache_entry($codename, $ttl, $cache_identifier, $cache, $special_ca
             'the_theme' => $theme,
             'staff_status' => $staff_status,
             'the_member' => $member_id,
-            'groups' => $groups,
+            'the_groups' => $groups,
             'is_bot' => $is_bot,
             'timezone' => $timezone,
             'is_ssl' => $is_ssl,

@@ -114,7 +114,7 @@ class Hook_sitemap_catalogue_category extends Hook_sitemap_content
         }
 
         // Categories done after node callback, to ensure sensible ordering
-        $children = $this->_get_children_nodes($content_id, $page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row, '', null, 'cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
+        $children = $this->_get_children_nodes($content_id, $page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row, '', null, $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
         $struct['children'] = $children;
 
         return ($callback === null || $return_anyway) ? $struct : null;

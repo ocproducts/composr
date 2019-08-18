@@ -99,6 +99,7 @@ class Hook_addon_registry_authors
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/authors.php',
             'themes/default/images/icons/menu/cms/author_set_own_profile.svg',
             'themes/default/images/icons/menu/rich_content/authors.svg',
             'themes/default/images/icons_monochrome/menu/cms/author_set_own_profile.svg',

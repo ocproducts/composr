@@ -451,7 +451,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             }
             if ($filename === null) {
                 if (($obfuscate != 0) && ($obfuscate != 3)) {
-                    $ext = (($obfuscate == 2) && (!is_image($http_result->filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($http_result->filename);
+                    $ext = (($obfuscate == 2) && (!is_image($http_result->filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($http_result->filename, $http_result->download_mime_type);
                     list($place, , $filename) = find_unique_path($upload_folder, $filename);
                 } else {
                     $filename = shorten_urlencoded_filename($http_result->filename);
@@ -547,7 +547,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             if (function_exists('imagetypes')) {
                 $thumb_filename = basename(preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0])));
                 list($place, , $thumb_filename) = find_unique_path($thumb_folder, $thumb_filename);
-                $url_full = url_is_local($url[0]) ? get_custom_base_url() . '/' . $url[0] : $url[0];
+                $url_full = url_is_local($url[0]) ? (get_custom_base_url() . '/' . $url[0]) : $url[0];
 
                 $thumb = convert_image($url_full, $place, null, null, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
             } else {

@@ -110,8 +110,14 @@ To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/dat
 [box="Important note about Google"]
 For Google to accept the automated Sitemap submissions you need to first submit it via [url="Google webmaster tools"]https://www.google.com/webmasters/tools/home[/url]. After you have done this, future automated submissions will go straight through. Google webmaster tools is a great tool in its own right to see how your website is performing on Google.
 
-Alternatively you can reference it in your [tt]robots.txt[/tt] file, as shown in the [page="_SEARCH:tut_security"]Security[/page] tutorial.
+Alternatively you can reference it in your [tt]robots.txt[/tt] file (see next section).
 [/box]
+
+[title="2"]robots.txt[/title]
+
+{!DOC_ROBOTS_TXT}
+
+The bundled [tt]robots_txt[/tt] addon provides a good default. The installer puts this default in place if you don't already have a [tt]robots.txt[/tt] and if it can write out the file. There is also an editing UI at Admin Zone > Structure > Search engine policy ([tt]robots.txt[/tt]).
 
 [title="2"]URL Monikers[/title]
 
@@ -231,4 +237,4 @@ If you are going to go down the SEO route, make sure that you have someone who w
   - [url="WooRank"]https://www.woorank.com/[/url]
   - [url="Website Grader"]https://website.grader.com/[/url]
 
-{$SET,tutorial_tags,SEO,core,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,SEO,core,novice,robots_txt}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,For most websites, it is important to draw in visitors. We discuss the process of Search Engine Optimisation (SEO).}[block]main_tutorial_rating[/block]

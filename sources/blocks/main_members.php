@@ -109,6 +109,12 @@ class Block_main_members
         require_lang('cns');
         require_lang('cns_member_directory');
 
+        if (strpos(serialize($_GET), 'filter_') !== false) {
+            if (has_privilege(get_member(), 'view_any_profile_field')) {
+                log_it('MEMBER_SEARCH');
+            }
+        }
+
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         $block_id = get_block_id($map);
@@ -507,7 +513,7 @@ class Block_main_members
             'SORT_ORDER' => $sort_order,
             'FILTERS_ROW_A' => $filters_row_a,
             'FILTERS_ROW_B' => $filters_row_b,
-            'ITEM_WIDTH' => ($per_row === null) ? '' : float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%',
+            'ITEM_WIDTH' => ($per_row === null) ? '' : (float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%'),
             'PER_ROW' => ($per_row === null) ? '' : strval($per_row),
             'DISPLAY_MODE' => $display_mode,
             'MEMBER_BOXES' => $member_boxes,

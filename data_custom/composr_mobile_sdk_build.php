@@ -114,12 +114,12 @@ class Composr_mobile_sdk_tools
             exit('Theme ' . $theme . ' does not exist' . "\n");
         }
 
-        $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme, 'lang' => $lang));
+        $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'url'), array('theme' => $theme, 'lang' => $lang));
         foreach ($theme_images as $theme_image) {
-            $ext = get_file_extension($theme_image['path']);
+            $ext = get_file_extension($theme_image['url']);
             $file = basename($theme_image['id']) . '.' . $ext;
             @mkdir($out_dir . '/' . dirname($theme_image['id']), 0777, true);
-            @copy(get_file_base() . '/' . $theme_image['path'], $out_dir . '/' . dirname($theme_image['id']) . '/' . $file);
+            @copy(get_file_base() . '/' . $theme_image['url'], $out_dir . '/' . dirname($theme_image['id']) . '/' . $file);
         }
 
         echo 'FINISHED' . "\n";

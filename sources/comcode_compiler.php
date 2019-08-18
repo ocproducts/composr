@@ -1607,10 +1607,16 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 ($not_white_space) &&
                                 (!$differented);
                             $in_html_tag = false;
-                            if ($in_semihtml) {
-                                // Make sure not within an HTML tag
-                                if ($apparent_embedded_hyperlink) {
+                            if ($apparent_embedded_hyperlink) {
+                                if ($in_semihtml) {
+                                    // Make sure not within an HTML tag, or the written source of one
                                     $until_now = substr($comcode, 0, $pos - 1);
+                                    $a = strrpos($until_now, '<');
+                                    $b = strrpos($until_now, '>');
+                                    $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
+                                } else {
+                                    // Make sure not within the written source of an HTML tag
+                                    $until_now = html_entity_decode(substr($comcode, 0, $pos - 1), ENT_QUOTES, get_charset());
                                     $a = strrpos($until_now, '<');
                                     $b = strrpos($until_now, '>');
                                     $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
@@ -1618,10 +1624,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             }
                             if (
                                 $apparent_embedded_hyperlink &&
-                                (
-                                    (!$in_semihtml) ||
-                                    (!$in_html_tag)
-                                ) &&
+                                (!$in_html_tag) &&
                                 (
                                     ($textual_area) ||
                                     (

@@ -67,7 +67,7 @@ class Hook_commandr_fs_filedump
             return array();
         }
 
-        list($path, $place) = $this->get_complete_path($meta_dir);
+        list($path, $subpath) = $this->get_complete_path($meta_dir);
 
         $listing = array();
         if (is_dir($path)) {
@@ -111,7 +111,7 @@ class Hook_commandr_fs_filedump
     {
         $new_dir_name = filter_naughty($new_dir_name);
 
-        list($path, $place) = $this->get_complete_path($meta_dir);
+        list($path, $subpath) = $this->get_complete_path($meta_dir);
 
         if ((is_dir($path)) && (!file_exists($path . '/' . $new_dir_name)) && (cms_is_writable($path))) {
             $ret = @mkdir($path . '/' . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($path . '/' . $new_dir_name)), false, true);
@@ -136,7 +136,7 @@ class Hook_commandr_fs_filedump
     {
         $dir_name = filter_naughty($dir_name);
 
-        list($path, $place) = $this->get_complete_path($meta_dir);
+        list($path, $subpath) = $this->get_complete_path($meta_dir);
 
         if ((is_dir($path)) && (file_exists($path . '/' . $dir_name)) && (cms_is_writable($path . '/' . $dir_name))) {
             require_code('files');
@@ -145,10 +145,10 @@ class Hook_commandr_fs_filedump
             sync_file($path . '/' . $dir_name);
 
             // Cleanup from DB
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => cms_mb_substr($dir_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
             if ($test !== null) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($dir_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), '', 1);
             }
 
             return true;
@@ -170,19 +170,19 @@ class Hook_commandr_fs_filedump
     {
         $file_name = filter_naughty($file_name);
 
-        list($path, $place) = $this->get_complete_path($meta_dir);
+        list($path, $subpath) = $this->get_complete_path($meta_dir);
 
         if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             // What if folder meta...
 
-            $dir_name = basename($place);
-            $place = dirname($place);
+            $dir_name = basename($subpath);
+            $subpath = dirname($subpath);
 
             // Cleanup from DB
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => cms_mb_substr($dir_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
             if ($test !== null) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($dir_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), '', 1);
             }
 
             return true;
@@ -193,10 +193,10 @@ class Hook_commandr_fs_filedump
             sync_file($path . '/' . $file_name);
 
             // Cleanup from DB
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_description', array('name' => cms_mb_substr($file_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
             if ($test !== null) {
                 delete_lang($test);
-                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($file_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), '', 1);
             }
 
             return $ret;
@@ -218,19 +218,19 @@ class Hook_commandr_fs_filedump
     {
         $file_name = filter_naughty($file_name);
 
-        list($path, $place) = $this->get_complete_path($meta_dir);
+        list($path, $subpath) = $this->get_complete_path($meta_dir);
 
         if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             // What if folder meta...
 
-            $dir_name = basename($place);
-            $place = dirname($place);
+            $dir_name = basename($subpath);
+            $subpath = dirname($subpath);
 
-            $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($dir_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
             if (array_key_exists(0, $rows)) {
                 $output = $rows[0];
             } else {
-                $output = array('description' => '', 'the_member' => remap_resource_id_as_portable('member', get_member()));
+                $output = array('the_description' => '', 'the_member' => remap_resource_id_as_portable('member', get_member()));
             }
 
             return json_encode($output);
@@ -240,11 +240,11 @@ class Hook_commandr_fs_filedump
             $data = cms_file_get_contents_safe($path . '/' . $file_name);
 
             $output = array('data' => base64_encode($data));
-            $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($file_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)));
             if (array_key_exists(0, $rows)) {
                 $output += $rows[0];
             } else {
-                $output += array('description' => '', 'the_member' => remap_resource_id_as_portable('member', get_member()));
+                $output += array('the_description' => '', 'the_member' => remap_resource_id_as_portable('member', get_member()));
             }
 
             return json_encode($output);
@@ -267,18 +267,18 @@ class Hook_commandr_fs_filedump
     {
         $file_name = filter_naughty($file_name);
 
-        list($path, $place) = $this->get_complete_path($meta_dir);
+        list($path, $subpath) = $this->get_complete_path($meta_dir);
 
         if ($file_name == RESOURCE_FS_SPECIAL_DIRECTORY_FILE) {
             // What if folder meta...
 
-            $dir_name = basename($place);
-            $place = dirname($place);
+            $dir_name = basename($subpath);
+            $subpath = dirname($subpath);
 
             $input = json_decode($contents, true);
 
             if (count($input) != 0) {
-                table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($dir_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+                table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($dir_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             }
 
             return true;
@@ -297,7 +297,7 @@ class Hook_commandr_fs_filedump
             cms_file_put_contents_safe($path . '/' . $file_name, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
             if (count($input) != 0) {
-                table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+                table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($file_name, 0, 80), 'subpath' => cms_mb_substr($subpath, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             }
 
             return true;

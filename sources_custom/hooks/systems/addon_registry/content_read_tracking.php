@@ -132,6 +132,7 @@ class Hook_addon_registry_content_read_tracking
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/content_read_tracking.php',
+            'sources_custom/hooks/systems/privacy/content_read_tracking.php',
             'sources_custom/hooks/systems/symbols/MARK_READ.php',
             'sources_custom/hooks/systems/symbols/HAS_READ.php',
         );

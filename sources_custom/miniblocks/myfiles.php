@@ -36,11 +36,11 @@ if (count($files) == 0) {
     echo '<thead><tr><th>Filename</th><th>Description</th><th>File size</th></tr></thead>';
     echo '<tbody>';
     foreach ($files as $file) {
-        $dbrows = $GLOBALS['SITE_DB']->query_select('filedump', array('description', 'the_member'), array('name' => $file, 'path' => '/' . $GLOBALS['FORUM_DRIVER']->get_username($member_id) . '/'));
+        $dbrows = $GLOBALS['SITE_DB']->query_select('filedump', array('the_description', 'the_member'), array('name' => $file, 'path' => '/' . $GLOBALS['FORUM_DRIVER']->get_username($member_id) . '/'));
         if (!array_key_exists(0, $dbrows)) {
             $description = do_lang_tempcode('NONE_EM');
         } else {
-            $description = make_string_tempcode(get_translated_text($dbrows[0]['description']));
+            $description = make_string_tempcode(get_translated_text($dbrows[0]['the_description']));
         }
 
         require_code('files');

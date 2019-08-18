@@ -46,13 +46,42 @@ class Hook_block_ui_renderers_catalogues
             return form_input_list(titleify($parameter), escape_html($description), $parameter, $structured_list, null, false, false);
         }
 
+        if (($parameter == 'sort') && (in_array($block, array('main_cc_embed')))) {
+            $max_field_count = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'COUNT(*)', array(), 'GROUP BY c_name ORDER BY COUNT(*) DESC');
+
+            require_lang('fields');
+
+            $list = new Tempcode();
+            $order_by_fields = array('' => do_lang('DEFAULT'), 'add_date' => do_lang('ADDED'), 'compound_rating' => do_lang('POPULARITY'), 'average_rating' => do_lang('RATING'), 'fixed_random' => do_lang('RANDOM'));
+            for ($i = 1; $i <= $max_field_count; $i++) {
+                $order_by_fields[$i] = do_lang('CATALOGUE_FIELD') . ' #' . strval($i);
+            }
+            foreach ($order_by_fields as $order_by => $order_by_label) {
+                if (!is_string($order_by)) {
+                    $order_by = strval($order_by);
+                }
+
+                if ($order_by == '') {
+                    $selection_value = '';
+                    $list->attach(form_input_list_entry($selection_value, $selection_value == $default, $order_by_label));
+                } else {
+                    foreach (array('ASC' => do_lang('ASCENDING'), 'DESC' => do_lang('DESCENDING')) as $order_by_direction => $order_by_direction_label) {
+                        $selection_value = $order_by . ' ' . $order_by_direction;
+                        $list->attach(form_input_list_entry($selection_value, $selection_value == $default, $order_by_label . ' ' . $order_by_direction_label));
+                    }
+                }
+            }
+
+            return form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false);
+        }
+
         if ((($default == '') || (is_numeric($default))) && ($parameter == 'param') && (in_array($block, array('main_cc_embed')))) {
             $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)');
             $num_categories_top = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('cc_parent_id' => null));
             if (($num_categories_top < 300) && ((!$has_default) || ($num_categories < 300))) { // catalogue category
                 $list = new Tempcode();
                 $structured_list = new Tempcode();
-                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : array(), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
+                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : array(), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
                 $last_cat = null;
                 foreach ($categories as $cat) {
                     if (substr($cat['c_name'], 0, 1) == '_') {

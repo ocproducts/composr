@@ -110,6 +110,7 @@ class Hook_addon_registry_actionlog
             'themes/default/javascript/actionlog.js',
             'sources/hooks/systems/actionlog/actionlog.php',
             'themes/default/templates/ACTIONLOG_FOLLOWUP_URLS.tpl',
+            'sources/hooks/systems/privacy/actionlog.php',
 
             // Revisions
             'sources/hooks/systems/config/store_revisions.php',

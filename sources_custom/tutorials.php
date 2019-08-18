@@ -61,7 +61,7 @@ function list_tutorial_tags($skip_addons_and_specials = false)
         }
     }
 
-    sort($tags, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($tags, SORT_NATURAL | SORT_FLAG_CASE);
     return $tags;
 }
 

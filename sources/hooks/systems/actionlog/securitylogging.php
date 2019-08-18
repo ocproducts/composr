@@ -113,6 +113,16 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                     'INVESTIGATE_USER' => '_SEARCH:admin_lookup:param={0}',
                 ),
             ),
+            'INVESTIGATE_USER' => array(
+                'flags' => ACTIONLOG_FLAG__GDPR,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{0}',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:param={0}',
+                ),
+            ),
         );
     }
 }

@@ -116,7 +116,7 @@ function reconstitute_booking_requests(&$request)
 
     // Scan through, merging same things together and updating quantity
     for ($i = 0; $i < count($request); $i++) {
-        asort($request[$i]['supplements'], SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_asort($request[$i]['supplements'], SORT_NATURAL | SORT_FLAG_CASE);
 
         if ($i != 0) {
             $a = &$request[$i - 1];
@@ -228,7 +228,7 @@ function get_bookable_details_from_form()
 
     $bookable_details = array(
         'title' => post_param_string('title'),
-        'description' => post_param_string('description'),
+        'the_description' => post_param_string('description'),
         'price' => float_unformat(str_replace(ecommerce_get_currency_symbol(), '', post_param_string('price'))),
         'categorisation' => post_param_string('categorisation'),
         'cycle_type' => post_param_string('cycle_type'),
@@ -376,7 +376,7 @@ function add_bookable($bookable_details, $codes, $blacked = array(), $supplement
     prevent_double_submit('ADD_BOOKABLE', null, $title);
 
     $bookable_details = insert_lang_comcode('title', $bookable_details['title'], 1) + $bookable_details;
-    $bookable_details = insert_lang_comcode('description', $bookable_details['description'], 1) + $bookable_details;
+    $bookable_details = insert_lang_comcode('the_description', $bookable_details['the_description'], 1) + $bookable_details;
     $bookable_details = insert_lang_comcode('categorisation', $bookable_details['categorisation'], 1) + $bookable_details;
 
     $bookable_details['calendar_type'] = null;
@@ -442,7 +442,7 @@ function edit_bookable($bookable_id, $bookable_details, $codes, $blacked = null,
     $title = $bookable_details['title'];
 
     $bookable_details += lang_remap_comcode('title', $_old_bookable[0]['title'], $bookable_details['title']);
-    $bookable_details += lang_remap_comcode('description', $_old_bookable[0]['description'], $bookable_details['description']);
+    $bookable_details += lang_remap_comcode('the_description', $_old_bookable[0]['the_description'], $bookable_details['the_description']);
     $bookable_details += lang_remap_comcode('categorisation', $_old_bookable[0]['categorisation'], $bookable_details['categorisation']);
 
     $bookable_details['edit_date'] = time();
@@ -512,7 +512,7 @@ function delete_bookable($bookable_id)
     $title = get_translated_text($_old_bookable[0]['title']);
 
     delete_lang($_old_bookable[0]['title']);
-    delete_lang($_old_bookable[0]['description']);
+    delete_lang($_old_bookable[0]['the_description']);
     delete_lang($_old_bookable[0]['categorisation']);
 
     $calendar_type = $_old_bookable[0]['calendar_type'];

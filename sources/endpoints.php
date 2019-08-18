@@ -44,8 +44,7 @@ function endpoint_script()
     require_code('failure');
     set_throw_errors(true);
 
-    try
-    {
+    try {
         // Restful
         if (!empty($_SERVER['PATH_INFO'])) {
             // What response type is desired

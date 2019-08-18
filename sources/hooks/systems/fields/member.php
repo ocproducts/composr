@@ -99,7 +99,7 @@ class Hook_fields_member
             return $ev;
         }
 
-        if ($ev == '') {
+        if (($ev == '') || (!is_numeric($ev))) {
             return '';
         }
 

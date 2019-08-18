@@ -25,11 +25,10 @@
  */
 function init__symbols()
 {
-    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $CANONICAL_URL, $STATIC_TEMPLATE_TEST_MODE;
+    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $STATIC_TEMPLATE_TEST_MODE;
     $BLOCKS_CACHE = array();
     $PAGES_CACHE = array();
     $PANELS_CACHE = array();
-    $CANONICAL_URL = null;
     $STATIC_TEMPLATE_TEST_MODE = false;
 }
 
@@ -1458,7 +1457,7 @@ function _symbol_image_dims($param)
 
         $details = cms_getimagesize_url($url);
 
-        if ($details !== false) {
+        if (($details !== false) && ($details[0] !== null) && ($details[1] !== null)) {
             $value = array(strval($details[0]), strval($details[1]));
         }
 
@@ -2509,17 +2508,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
  */
 function ecv_CANONICAL_URL($lang, $escaped, $param)
 {
-    global $NON_CANONICAL_PARAMS, $CANONICAL_URL;
-    if ($CANONICAL_URL === null) {
-        $non_canonical = array();
-        if (is_array($NON_CANONICAL_PARAMS)) {
-            foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
-                $non_canonical[$n] = null;
-            }
-        }
-        $CANONICAL_URL = get_self_url(true, false, $non_canonical);
-    }
-    $value = $CANONICAL_URL;
+    $value = get_canonical_url();
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -2802,7 +2791,7 @@ function ecv_HAS_SU($lang, $escaped, $param)
 {
     $value = '0';
     if (!is_guest()) {
-        $value = (get_option('show_su') == '1') && (has_privilege(get_member(), 'assume_any_member')) ? '1' : '0';
+        $value = ((get_option('show_su') == '1') && (has_privilege(get_member(), 'assume_any_member'))) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -4789,7 +4778,7 @@ function ecv_VALID_FILE_TYPES($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    ksort($types, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_ksort($types, SORT_NATURAL | SORT_FLAG_CASE);
     foreach (array_flip($types) as $val) {
         $value .= $val . ',';
     }
@@ -6507,7 +6496,7 @@ function ecv_LOGIN_LABEL($lang, $escaped, $param)
 {
     switch (get_option('one_per_email_address')) {
         case '1':
-            $value = '<span class="must-show-together">' . do_lang('USERNAME') . '/' . do_lang('EMAIL_ADDRESS') . '</span>';
+            $value = '<span class="must-show-together">' . do_lang('USERNAME') . ' / ' . do_lang('EMAIL_ADDRESS') . '</span>';
             break;
 
         case '2':
@@ -6614,7 +6603,7 @@ function ecv_FONTS($lang, $escaped, $param)
     $fonts = array_map('trim', explode(',', get_option('fonts')));
     $google_fonts = array_map('trim', explode(',', get_option('google_fonts')));
     $all_fonts = array_unique(array_merge($fonts, $google_fonts));
-    sort($all_fonts, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_sort($all_fonts, SORT_NATURAL | SORT_FLAG_CASE);
     foreach ($all_fonts as $font) {
         if ($font != '') {
             $value .= ',';
@@ -6929,8 +6918,8 @@ function ecv_HAS_EDIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
+        $member_id = ((isset($param[2]))) ? intval($param[2]) : get_member();
+        $cms_page = ((isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
             $value = has_edit_permission($range, $member_id, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
         } else {

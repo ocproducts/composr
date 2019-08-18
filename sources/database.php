@@ -1565,7 +1565,7 @@ class DatabaseConnector
         if ($QUERY_FILE_LOG !== null) {
             flock($QUERY_FILE_LOG, LOCK_EX);
             fseek($QUERY_FILE_LOG, 0, SEEK_END);
-            fwrite($QUERY_FILE_LOG, $query . ';' . "\n\n");
+            fwrite($QUERY_FILE_LOG, loggable_date() . ' -- ' . $query . ';' . "\n\n");
             flock($QUERY_FILE_LOG, LOCK_UN);
         }
 

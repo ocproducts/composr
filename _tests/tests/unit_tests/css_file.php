@@ -31,16 +31,13 @@ class css_file_test_set extends cms_test_case
 
     public function testClassUsage()
     {
-        $debug = get_param_integer('debug', 0);
-        $only_theme = get_param_string('only_theme', null);
-
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
             if ($theme == '_unnamed_') {
                 continue;
             }
 
-            if (($only_theme !== null) && ($theme != $only_theme)) {
+            if (($this->only !== null) && ($this->only != $theme)) {
                 continue;
             }
 
@@ -52,7 +49,7 @@ class css_file_test_set extends cms_test_case
             sort($_classes_used);
             $classes_used = array_flip($_classes_used);
 
-            if ($debug == 1) {
+            if ($this->debug) {
                 foreach (array_keys($classes_used) as $class) {
                     // Exceptions
                     if (strpos($class, 'box___') !== false) {
@@ -147,15 +144,13 @@ class css_file_test_set extends cms_test_case
 
     public function testSelectorUsage()
     {
-        $only_theme = get_param_string('only_theme', null);
-
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
             if ($theme == '_unnamed_') {
                 continue;
             }
 
-            if (($only_theme !== null) && ($theme != $only_theme)) {
+            if (($this->only !== null) && ($this->only != $theme)) {
                 continue;
             }
 

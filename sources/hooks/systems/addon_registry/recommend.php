@@ -106,6 +106,7 @@ class Hook_addon_registry_recommend
             'lang/EN/recommend.ini',
             'pages/modules/recommend.php',
             'pages/comcode/EN/recommend_help.txt',
+            'sources/hooks/systems/actionlog/recommend.php',
             'sources/recommend.php',
             'sources/blocks/main_screen_actions.php',
             'themes/default/css/screen_actions.css',
@@ -113,6 +114,7 @@ class Hook_addon_registry_recommend
             'sources/hooks/systems/config/enable_csv_recommend.php',
             'sources/hooks/systems/page_groupings/recommend.php',
             'themes/default/css/recommend.css',
+            'sources/hooks/systems/privacy/recommend.php',
         );
     }
 
@@ -142,7 +144,7 @@ class Hook_addon_registry_recommend
                 'BLOCK_ID' => lorem_word(),
                 'PRINT_URL' => placeholder_url(),
                 'RECOMMEND_URL' => placeholder_url(),
-                'EASY_SELF_URL' => placeholder_url(),
+                'URL_ENCODED_CANONICAL_URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
             )), null, '', true)
         );

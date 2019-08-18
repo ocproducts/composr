@@ -35,7 +35,7 @@ class Module_admin_addons
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -99,7 +99,7 @@ class Module_admin_addons
             $GLOBALS['SITE_DB']->create_table('addons_files', array(
                 'id' => '*AUTO', // Because two SHORT_TEXT's as keys exceeds the 500 mysql key limit
                 'addon_name' => 'SHORT_TEXT',
-                'filename' => 'SHORT_TEXT',
+                'filepath' => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('addons_dependencies', array(
@@ -114,6 +114,10 @@ class Module_admin_addons
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_category', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_copyright_attribution', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_licence', 'SHORT_TEXT');
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('addons_files', 'filename', 'SHORT_TEXT', 'filepath');
         }
     }
 
@@ -1020,7 +1024,7 @@ class Module_admin_addons
         $url = build_url(array('page' => '_SELF', 'type' => '_addon_export', 'exp' => 'theme'), '_SELF');
         require_code('themes2');
         $all_themes = find_all_themes();
-        ksort($all_themes, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($all_themes, SORT_NATURAL | SORT_FLAG_CASE);
         $i = 0;
         $tpl_themes = new Tempcode();
         foreach ($all_themes as $theme => $theme_title) {

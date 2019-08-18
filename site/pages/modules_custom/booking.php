@@ -64,7 +64,7 @@ class Module_booking
                 'id' => '*AUTO',
                 //'num_available' => 'INTEGER',      Implied by number of bookable_codes attached to bookable_id
                 'title' => 'SHORT_TRANS__COMCODE',
-                'description' => 'LONG_TRANS__COMCODE',
+                'the_description' => 'LONG_TRANS__COMCODE',
                 'price' => 'REAL',
                 'categorisation' => 'SHORT_TRANS__COMCODE', // (will work as a heading, for the booking form)
                 'cycle_type' => 'ID_TEXT', // (same as event recurrences in the calendar addon; can be none [which would remove date chooser]) - a room cycles daily for example
@@ -161,6 +161,10 @@ class Module_booking
 
         if (($upgrade_from === null) || ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->create_index('booking', 'member_id', array('member_id'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('bookable', 'description', 'LONG_TRANS__COMCODE', 'the_description');
         }
     }
 
@@ -359,7 +363,7 @@ class Module_booking
                 $max_max_date = MAX_AHEAD_BOOKING_DATE;
             }
 
-            $description = get_translated_tempcode('bookable', $bookable, 'description');
+            $description = get_translated_tempcode('bookable', $bookable, 'the_description');
 
             if ((!$description->is_empty()) || (count($messages) > 0)) {
                 $has_details = true;
@@ -393,7 +397,7 @@ class Module_booking
             // Wrong - we're sorting by sort_order  sort_maps_by($categories[$category]['BOOKABLES'], 'BOOKABLE_TITLE', false, true);
         }
 
-        ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+        cms_mb_ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
         // Messages shared by all bookables will be transferred so as to avoid repetition
         $shared_messages = array();

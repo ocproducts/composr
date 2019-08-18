@@ -85,7 +85,7 @@ class Hook_fields_short_trans_multi
         $exploded = ($ev == '') ? array() : explode("\n", $ev);
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            sort($exploded, SORT_NATURAL | SORT_FLAG_CASE);
+            cms_mb_sort($exploded, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $ret = new Tempcode();

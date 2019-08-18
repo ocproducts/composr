@@ -18,9 +18,13 @@
 	<form title="{!PRIMARY_PAGE_FORM}" class="cns-join-1" method="post" action="{URL*}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<p class="agree-field">
-			<input type="checkbox" id="confirm" name="confirm" value="1" class="js-chb-click-toggle-proceed-btn" />
-			<label for="confirm">{!I_AGREE}</label>
+		<p class="cns-join-declarations">
+			{+START,LOOP,DECLARATIONS}
+				{+START,IF,{$NEQ,{_loop_key},0}}
+					<br />
+				{+END}
+				<input type="checkbox" id="confirm_{_loop_key*}" name="confirm_{_loop_key*}" value="1" class="js-chb-click-toggle-proceed-btn" /><label for="confirm_{_loop_key*}">{_loop_var*}</label>
+			{+END}
 		</p>
 
 		{+START,IF_NON_EMPTY,{GROUP_SELECT}}

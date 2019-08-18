@@ -89,7 +89,7 @@ function handle_permission_check_logging($member_id, $op, $params, $result)
             }
             flock($PERMISSION_CHECK_LOGGER, LOCK_EX);
             fseek($PERMISSION_CHECK_LOGGER, 0, SEEK_END);
-            fwrite($PERMISSION_CHECK_LOGGER, "\n\n" . date('Y/m/d h:i:s') . ' -- ' . $self_url . ' -- ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . "\n");
+            fwrite($PERMISSION_CHECK_LOGGER, "\n\n" . loggable_date() . ' -- ' . $self_url . ' -- ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . "\n");
             flock($PERMISSION_CHECK_LOGGER, LOCK_UN);
         } else {
             $PERMISSION_CHECK_LOGGER = false;

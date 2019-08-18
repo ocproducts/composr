@@ -263,7 +263,7 @@ mysqldump client_<codename> > _temp/stage2.sql
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Temporarily move any custom code and themes into a parallel directory structure under [tt]_old_code[/tt]
+| Temporarily move any custom themes into a parallel directory structure under [tt]_old[/tt]; use the integrity check in the upgrader to quarantine alien files, which will also move them under [tt]_old[/tt]
 |
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
@@ -307,7 +307,7 @@ git commit -a -m "Finished cleanup and quarantine"
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Use a diff tool to find all the changes made in the old theme (you put them in [tt]_old_code[/tt]).
+| Use a diff tool to find all the changes made in the old theme (you put them in [tt]_old[/tt]).
 | You can usually diff-compare against the [tt].editfrom[/tt] files, otherwise you'll need to go back and compare with the originals from the version you are upgrading from.
 There is a [tt]themechanges.sh[/tt] script which may be useful, but realistically you probably just want to do it yourself on a file-by-file basis.
 |-
@@ -316,8 +316,8 @@ There is a [tt]themechanges.sh[/tt] script which may be useful, but realisticall
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Use a diff tool to find all the changes made in code files you put in [tt]_old_code[/tt].
-| You'll need to compare overrides against the originals from the version you are upgrading from. Custom code and overridden code will need to be assessed to make sure it still is valid. By the time you're done you should be able to erase the [tt]_old_code[/tt] directory.
+| Use a diff tool to find all the changes made in code files you put in [tt]_old[/tt].
+| You'll need to compare overrides against the originals from the version you are upgrading from. Custom code and overridden code will need to be assessed to make sure it still is valid. By the time you're done you should be able to erase the [tt]_old[/tt] directory.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Run CQC.

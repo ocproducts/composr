@@ -54,7 +54,7 @@ class Block_main_image_fader
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
         }
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : 60;
         return $info;
     }
 
@@ -135,8 +135,8 @@ class Block_main_image_fader
             $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
         }
 
-        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type,cat FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_image . $where_sup . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS content_type,cat FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_video . $where_sup . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS content_type,cat FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_image . $where_sup . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.*,thumb_url AS url,\'video\' AS content_type,cat FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . $extra_join_sql . ' WHERE ' . $cat_select . $extra_where_video . $where_sup . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, 0, false, true, array('title' => 'SHORT_TRANS', 'the_description' => 'LONG_TRANS'));
         $all_rows = array();
         if ($order != '') {
             foreach (explode(',', $order) as $o) {
@@ -180,8 +180,8 @@ class Block_main_image_fader
             $images_full[] = $full_url;
 
             $titles[] = get_translated_text($row['title']);
-            $just_media_row = db_map_restrict($row, array('id', 'description'));
-            $html[] = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
+            $just_media_row = db_map_restrict($row, array('id', 'the_description'));
+            $html[] = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'the_description');
         }
 
         if (count($images) == 0) {

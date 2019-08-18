@@ -151,6 +151,7 @@ This addon does not contain the compo.sr install code and the overall site and t
     public function get_file_list()
     {
         return array(
+            'sources_custom/hooks/systems/privacy/composr_homesite.php',
             'sources_custom/hooks/systems/addon_registry/composr_homesite.php',
             'adminzone/pages/minimodules_custom/_make_release.php',
             'adminzone/pages/modules_custom/admin_cmsusers.php',
@@ -185,6 +186,9 @@ This addon does not contain the compo.sr install code and the overall site and t
             'themes/default/images_custom/icons/composr_homesite/index.html',
             'themes/default/images_custom/icons/composr_homesite/theme_upgrade.svg',
             'themes/default/images_custom/icons/composr_homesite/translations_rough.svg',
+            'themes/default/images_custom/icons_monochrome/composr_homesite/index.html',
+            'themes/default/images_custom/icons_monochrome/composr_homesite/theme_upgrade.svg',
+            'themes/default/images_custom/icons_monochrome/composr_homesite/translations_rough.svg',
             'themes/default/templates_custom/BLOCK_COMPOSR_MAINTENANCE_STATUS.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_PATREON_PATRONS.tpl',
             'themes/default/templates_custom/CMS_DOWNLOAD_BLOCK.tpl',

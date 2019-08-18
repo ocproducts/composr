@@ -189,7 +189,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
             }
 
             if ($avatar_url === null) {
-                $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', 'path' => '')); // In case failure cached, gets very confusing
+                $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', 'url' => '')); // In case failure cached, gets very confusing
                 $avatar_url = find_theme_image('cns_default_avatars/default', true, true);
                 if ($avatar_url === null) {
                     $avatar_url = '';
@@ -233,8 +233,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
             }
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != ''))
-        {
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '')) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if ($test !== null) {
                 warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
@@ -428,6 +427,16 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
         }
     }
 
+    // Copy notification defaults
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+        push_db_scope_check(false);
+        $notification_settings = $GLOBALS['FORUM_DB']->query_select('notifications_enabled', array('*'), array('l_member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id(), 'l_code_category' => ''));
+        foreach ($notification_settings as $notification_setting) {
+            $GLOBALS['FORUM_DB']->query_insert('notifications_enabled', array('l_member_id' => $member_id) + $notification_settings);
+        }
+        push_db_scope_check(true);
+    }
+
     require_code('member_mentions');
     dispatch_member_mention_notifications('member', strval($member_id));
 
@@ -485,11 +494,23 @@ function _cns_predefined_custom_field_details()
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://github.com/{RAW*}" rel="me">{NAME*}</a>',
         ),
+        'gitlab' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/gitlab',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://gitlab.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
         'sn_instagram' => array(
             'type' => 'codename',
             'icon' => 'icons/links/instagram',
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://www.instagram.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_tiktok' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/tiktok',
+            'section' => '',
+            'tempcode' => '{NAME*}: {RAW*}',
         ),
         'sn_minds' => array(
             'type' => 'codename',

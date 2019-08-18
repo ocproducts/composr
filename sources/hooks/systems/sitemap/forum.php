@@ -66,6 +66,10 @@ class Hook_sitemap_forum extends Hook_sitemap_content
             $zone = $matches[1];
             $page = $matches[2];
 
+            if (($page == 'vforums') && ($page_link == $zone . ':' . $page)) {
+                return SITEMAP_NODE_HANDLED_VIRTUALLY;
+            }
+
             require_code('content');
             $cma_ob = get_content_object($this->content_type);
             $cma_info = $cma_ob->info();
@@ -110,6 +114,41 @@ class Hook_sitemap_forum extends Hook_sitemap_content
         }
 
         $page = $this->_make_zone_concrete($zone, $page_link);
+
+        if ($page == 'vforums') {
+            // Special case, we put out hard-coded vforums entry-points...
+
+            require_code('hooks/systems/sitemap/entry_point');
+            $entry_point_ob = new Hook_sitemap_entry_point();
+
+            $vforums_zone = get_module_zone('vforums');
+            $topicview_zone = get_module_zone('topicview');
+
+            if ((is_guest(get_member())) || (($options & SITEMAP_GEN_AS_GUEST) != 0)) {
+                $entry_points = array(
+                    $vforums_zone . ':vforums:browse',
+                    $vforums_zone . ':vforums:unanswered',
+                );
+            } else {
+                $entry_points = array(
+                    $vforums_zone . ':vforums:browse',
+                    $vforums_zone . ':vforums:unread',
+                    $vforums_zone . ':vforums:recently_read',
+                    $vforums_zone . ':vforums:unanswered',
+                    $vforums_zone . ':vforums:involved',
+                    $topicview_zone . ':topicview',
+                );
+            }
+
+            foreach ($entry_points as $entry_point) {
+                $node = $entry_point_ob->get_node($entry_point, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, null, $return_anyway);
+                if (($callback === null || $return_anyway) && ($node !== null)) {
+                    $nodes[] = $node;
+                }
+            }
+
+            return $nodes;
+        }
 
         $parent = (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) ? db_get_first_id() : null;
 

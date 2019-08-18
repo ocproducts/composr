@@ -106,7 +106,7 @@ class Hook_whatsnew_galleries
             if ($_name != '') {
                 $name = $_name;
             }
-            $description = get_translated_text($row['description'], null, $lang);
+            $description = get_translated_text($row['the_description'], null, $lang);
             $member_id = (is_guest($row['submitter'])) ? null : strval($row['submitter']);
             $thumbnail = $row['thumb_url'];
             if ($thumbnail != '') {

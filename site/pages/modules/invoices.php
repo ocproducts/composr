@@ -115,7 +115,11 @@ class Module_invoices
             return null;
         }
 
-        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'COUNT(*)', array('i_member_id' => get_member())) > 0)) {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
+        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'COUNT(*)', array('i_member_id' => $member_id)) > 0)) {
             return array(
                 'browse' => array('MY_INVOICES', 'menu/adminzone/audit/ecommerce/invoices'),
             );

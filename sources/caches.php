@@ -275,6 +275,10 @@ class Self_learning_cache
             $this->data[$key] = array();
         }
 
+        if ((isset($this->data[$key])) && (!is_array($this->data[$key]))) { // Fix to corrupted data
+            $this->data[$key] = array();
+        }
+
         if ((!isset($this->data[$key][$value])) && !array_key_exists($value, $this->data[$key]) || $this->data[$key][$value] !== $value_2) {
             if ($this->paused) {
                 return true;
@@ -762,9 +766,9 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             $sql .= ' AND the_member=' . strval($member_id);
         }
         if ($groups === null) {
-            $sql .= ' AND ' . db_string_equal_to('groups', '');
+            $sql .= ' AND ' . db_string_equal_to('the_groups', '');
         } else {
-            $sql .= ' AND ' . db_string_equal_to('groups', $groups);
+            $sql .= ' AND ' . db_string_equal_to('the_groups', $groups);
         }
         if ($is_bot === null) {
             $sql .= ' AND is_bot IS NULL';

@@ -612,7 +612,6 @@ class Module_admin
                     }
                 }
             }
-            $all_options['timezone'] = array('human_name' => 'TIMEZONE', 'c_value' => '', 'the_type' => 'special', 'category' => 'SITE', 'group' => 'GENERAL', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0);
             $config_categories = array();
             $conf_found_count = 0;
             foreach ($all_options as $name => $p) {
@@ -1050,7 +1049,7 @@ class Module_admin
                     $dh = @opendir(get_file_base() . '/' . $lang_dir . '/' . fallback_lang() . '/');
                     if ($dh !== false) {
                         while (($file = readdir($dh)) !== false) {
-                            if (substr(strtolower($file), -4) == '.ini') {
+                            if (strtolower(substr($file, -4)) == '.ini') {
                                 if (!array_key_exists($file, $lang_file_contents)) {
                                     $lang_file_contents[$file] = file_get_contents(get_file_base() . '/' . $lang_dir . '/' . fallback_lang() . '/' . $file);
                                 }
@@ -1126,7 +1125,7 @@ class Module_admin
             foreach (array('templates_custom', 'templates', 'xml_custom', 'xml', 'text_custom', 'text') as $template_dir) {
                 $dh = opendir(get_file_base() . '/themes/default/' . $template_dir . '/');
                 while (($file = readdir($dh)) !== false) {
-                    if (((substr(strtolower($file), -4) == '.tpl') || (substr(strtolower($file), -4) == '.xml') || (substr(strtolower($file), -4) == '.txt') || (substr(strtolower($file), -3) == '.js')) && (!array_key_exists($file, $tpl_found))) {
+                    if (((strtolower(substr($file, -4)) == '.tpl') || (strtolower(substr($file, -4)) == '.xml') || (strtolower(substr($file, -4)) == '.txt') || (strtolower(substr($file, -3)) == '.js')) && (!array_key_exists($file, $tpl_found))) {
                         $n = $file;
                         if (($this->_keyword_match(basename($n, '.' . get_file_extension($n)))) || ($this->_keyword_match($n)) || (($template_dir == 'templates_custom') && ($this->_keyword_match(file_get_contents(get_file_base() . '/themes/default/' . $template_dir . '/' . $n))))) {
                             $_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme, 'f0file' => $template_dir . '/' . $file), get_module_zone('admin_themes'));
@@ -1153,7 +1152,7 @@ class Module_admin
             $content[$current_results_type] = new Tempcode();
             $dh = opendir(get_file_base() . '/themes/default/css/');
             while (($file = readdir($dh)) !== false) {
-                if (substr(strtolower($file), -4) == '.css') {
+                if (strtolower(substr($file, -4)) == '.css') {
                     $n = $file;
                     if ($this->_keyword_match(file_get_contents(get_file_base() . '/themes/default/css/' . $n))) {
                         $_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme, 'f0file' => 'css/' . $file), get_module_zone('admin_themes'));

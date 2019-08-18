@@ -138,6 +138,9 @@ class Hook_health_check_network extends Hook_Health_Check
 
         $threshold = floatval(get_option('hc_transfer_latency_threshold'));
 
+        $ok = false;
+        $time = null;
+
         for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
             $time_before = microtime(true);
 
@@ -165,7 +168,7 @@ class Hook_health_check_network extends Hook_Health_Check
             }
         }
 
-        $this->assertTrue($ok, 'Slow transfer latency @ ' . float_format($time) . ' seconds (downloading Google home page)');
+        $this->assertTrue($ok, 'Slow transfer latency @ ' . (($time === null) ? 'N/A' : float_format($time)) . ' seconds (downloading Google home page)');
     }
 
     /**
@@ -194,6 +197,9 @@ class Hook_health_check_network extends Hook_Health_Check
 
         $data_to_send = str_repeat(file_get_contents($test_file_path), 5);
         $post_params = array('test_data' => $data_to_send);
+
+        $ok = false;
+        $megabits_per_second = null;
 
         for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or compo.sr issue
             $time_before = microtime(true);
@@ -226,6 +232,6 @@ class Hook_health_check_network extends Hook_Health_Check
             }
         }
 
-        $this->assertTrue($ok, 'Slow speed transfering data to a remote machine @ ' . float_format($megabits_per_second) . ' Megabits per second');
+        $this->assertTrue($ok, 'Slow speed transfering data to a remote machine @ ' . (($megabits_per_second === null) ? 'N/A' : float_format($megabits_per_second)) . ' Megabits per second');
     }
 }

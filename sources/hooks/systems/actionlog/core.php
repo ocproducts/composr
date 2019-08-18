@@ -43,6 +43,7 @@ class Hook_actionlog_core extends Hook_actionlog
         require_lang('upgrade');
         require_lang('group_member_timeouts');
         require_lang('trackbacks');
+        require_lang('privacy');
 
         return array(
             'ADD_ZONE' => array(
@@ -293,7 +294,16 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'NOTIFICATIONS_LOCKDOWN' => '_SEARCH:admin_notifications',
+                    'NOTIFICATIONS_LOCKDOWN' => '_SEARCH:admin_notifications:lockdown',
+                ),
+            ),
+            'NOTIFICATIONS_DEFAULT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'NOTIFICATIONS_DEFAULT' => '_SEARCH:admin_notifications:default',
                 ),
             ),
             'PRIVILEGES' => array(
@@ -457,6 +467,26 @@ class Hook_actionlog_core extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'UPGRADER_UPGRADER_TITLE' => '_SEARCH:admin_config:upgrader',
+                ),
+            ),
+            'PERSONAL_DATA_DOWNLOAD' => array(
+                'flags' => ACTIONLOG_FLAG__GDPR,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
+                    'MEMBERS' => '_SEARCH:admin_cns_members',
+                ),
+            ),
+            'PERSONAL_DATA_PURGING' => array(
+                'flags' => ACTIONLOG_FLAG__GDPR,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
+                    'MEMBERS' => '_SEARCH:admin_cns_members',
                 ),
             ),
         );

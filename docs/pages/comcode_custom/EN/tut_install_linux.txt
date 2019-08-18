@@ -65,13 +65,15 @@ This section is not actively maintained. Package names may change, but it is des
 
 [title="3"]Ubuntu/Debian[/title]
 
+[i]These instructions have not been tested since changes have been made to them.[/i]
+
 [code="Bash"]
-apt-get install apache2 libapache2-mod-php5 php5 php5-common php5-cli php5-apcu php5-curl \
-php5-enchant php5-ffmpeg php5-gd php5-imap php5-mysqlnd php5-pspell openssl mysql-server \
+apt-get install apache2 libapache2-mod-php7.2 php7.2 php7.2-common php7.2-cli php7.2-apcu php7.2-curl \
+php7.2-enchant php7.2-ffmpeg php7.2-gd php7.2-imap php7.2-mysqlnd php7.2-pspell php7.2-json openssl mysql-server \
 mysql-client postfix nano wget lynx hunspell git openssh-server nano wget iostat
 [/code]
 
-Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need changing:
+Some lines in the default PHP ini ([tt]/etc/php7/apache2/php.ini[/tt]) file need changing:
 {|
 ! From
 ! To
@@ -86,7 +88,7 @@ Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need
 | [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
 |-
 | [tt]; extension_dir = "./"[/tt]
-| [tt]extension_dir = "usr/lib/php5/20121212"[/tt]
+| [tt]extension_dir = "usr/lib/php7/20121212"[/tt]
 |-
 | [tt];opcache.enable=0[/tt]
 | [tt]opcache.enable=1[/tt]
@@ -100,7 +102,7 @@ You may need to setup the [url="EPEL repository"]https://www.tecmint.com/how-to-
 
 [code="Bash"]
 yum install httpd mod_ssl mod_fcgid php php-common php-cli php-pecl-apc php-pdo curl enchant \
-freetype gd php-gd php-imap php-mysqlnd php-mbstring php-pspell php-xml openssl mysql-server \
+freetype gd php-gd php-imap php-mysqlnd php-mbstring php-pspell php-xml php-json openssl mysql-server \
 mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget iostat iotop \
 hunspell-en screen unzip
 [/code]

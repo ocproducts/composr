@@ -144,8 +144,9 @@ class modularisation_test_set extends cms_test_case
                     if ($m_count != 0) {
                         $unput_files[$matches[1]][] = $path;
                     }
-                    $this->assertTrue($m_count == 0, 'Could not find the addon for... \'' . htmlentities($path) . '\',');
                 }
+
+                $this->assertTrue($m_count == 0, 'Could not find the addon for... \'' . htmlentities($path) . '\',');
             }
         }
 

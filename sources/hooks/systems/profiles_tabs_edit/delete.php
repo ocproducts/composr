@@ -71,20 +71,33 @@ class Hook_profiles_tabs_edit_delete
         // UI fields
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
 
-        $text = paragraph(do_lang_tempcode('_DELETE_MEMBER' . (($member_id_of == $member_id_viewing) ? '_SUICIDAL' : ''), escape_html($username)));
+        $text = paragraph(do_lang_tempcode('_DELETE_MEMBER' . (($member_id_of == $member_id_viewing) ? '_SUICIDAL' : ''), escape_html($username), escape_html(strval($member_id_of))));
 
         if ($member_id_of != $member_id_viewing) {
+            $alternate_actions = new Tempcode();
+
             $merge_url = build_url(array('page' => 'admin_cns_merge_members', 'from' => $username, 'to' => $GLOBALS['FORUM_DRIVER']->get_username(get_member())), get_module_zone('admin_cns_merge_members'));
-            $text->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_MERGE', escape_html($merge_url->evaluate()))));
 
             if (has_privilege($member_id_of, 'comcode_dangerous')) {
                 $text->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_ADMIN', escape_html($merge_url->evaluate()))));
             }
 
+            $alternate_actions->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_MERGE', escape_html($merge_url->evaluate()))));
+
             if (addon_installed('search')) {
                 $search_url = build_url(array('page' => 'search', 'type' => 'results', 'author' => $username), get_module_zone('search'));
-                $text->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_SEARCH', escape_html($search_url->evaluate()))));
+                $alternate_actions->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_SEARCH', escape_html($search_url->evaluate()))));
             }
+
+            if (addon_installed('cns_warnings')) {
+                $warn_url = build_url(array('page' => 'warnings', 'member_id' => $member_id_of), get_module_zone('warnings'));
+                $alternate_actions->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_WARNING', escape_html($warn_url->evaluate()))));
+            }
+
+            $privacy_url = build_url(array('page' => 'admin_privacy', 'type' => 'browse', 'member_id' => $member_id_of), get_module_zone('admin_privacy'));
+            $alternate_actions->attach(paragraph(do_lang_tempcode('_DELETE_MEMBER_PRIVACY_PURGE', escape_html($privacy_url->evaluate()))));
+
+            $text->attach(put_in_standard_box($alternate_actions, do_lang_tempcode('ALTERNATE_ACTIONS')));
         }
 
         if (addon_installed('ecommerce')) {

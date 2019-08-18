@@ -156,7 +156,7 @@ class _commandr_fs_test_set extends cms_test_case
 
                 $ok = ($data1 == $data2);
 
-                if (get_param_integer('debug', 0) == 1) {
+                if ($this->debug) {
                     if (!$ok) {
                         @var_dump($data1);
                         @var_dump($data2);

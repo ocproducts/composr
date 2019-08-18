@@ -50,7 +50,7 @@ class Block_top_login
     {
         $info = array();
         $info['cache_on'] = 'is_guest() ? null : array()'; // No caching for guests due to self URL redirect
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : (60 * 24);
         return $info;
     }
 

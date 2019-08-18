@@ -68,7 +68,24 @@ function phase_0()
         $release_description = 'This version is the gold release of the next version of Composr';
     }
 
-    $changes = 'All reported bugs since the last release have been fixed.';
+    $previous_version = null;
+    $previous_tag = shell_exec('git describe --tags');
+    $matches = array();
+    if (preg_match('#^(.*)-\w+-\w+$#', $previous_tag, $matches) != 0) {
+        $previous_version = $matches[1];
+    }
+    if ($previous_version !== null) {
+        $changes = "The following changes have been made since version " . $previous_version . "...\n";
+        $_changes = shell_exec('git log --pretty=oneline HEAD...refs/tags/' . $previous_version);
+        foreach (explode("\n", $_changes) as $change) {
+            $parts = explode(' ', $change, 2);
+            if (count($parts) == 2) {
+                $changes .= ' - [url="' . $parts[1] . '"]https://github.com/ocproducts/composr/commit/' . $parts[0] . '[/url]' . "\n";
+            }
+        }
+    } else {
+        $changes = 'All reported bugs since the last release have been fixed.';
+    }
 
     $on_disk_version_parts = explode('.', $on_disk_version);
     $last = count($on_disk_version_parts) - 1;
@@ -79,10 +96,6 @@ function phase_0()
     if ((intval($on_disk_version_parts[$last]) >= 0) && (substr_count($on_disk_version, '.') == 2)) {
         $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
-
-    $changes .= '[staff_note] For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
-
-[/staff_note]For all changes, see the [url="git history"]' . COMPOSR_REPOS_URL . '/commits/[/url].';
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
@@ -268,9 +281,17 @@ function phase_2()
             </li>
         ';
     }
+    if (strpos(PHP_OS, 'Darwin') !== false) {
+        $command_to_try = 'open';
+    } elseif (strpos(PHP_OS, 'WIN') !== false) {
+        $command_to_try = 'start';
+    } else {
+        $command_to_try = 'gnome-open';
+    }
+    $command_to_try .= ' ' . get_custom_file_base() . '/exports/builds/' . $version_dotted . '/';
     echo '
         <li>
-            <strong>Upload</strong>: Upload all built files (in <kbd>builds/' . escape_html($version_dotted) . '</kbd>) to compo.sr server (<kbd>uploads/downloads</kbd>)
+            <strong>Upload</strong>: Upload all built files (in <a href="#" onclick="fauxmodal_alert(\'&lt;kbd&gt;' . escape_html($command_to_try) . '&lt;/kbd&gt;\',null,\'Command to open folder\',true);"><kbd>exports/builds/' . escape_html($version_dotted) . '</kbd></a>) to compo.sr server (<a target="_blank" href="sftp://web1@compo.sr/composr/uploads/downloads"><kbd>uploads/downloads</kbd></a>)
         </li>
         <li>
             Tag the release with <kbd>git commit -a -m "New build"; git push; git tag ' . escape_html(str_replace(' ', '-', $version_dotted)) . ' ; git push origin ' . escape_html(str_replace(' ', '-', $version_dotted)) . '</kbd>
@@ -297,6 +318,19 @@ function phase_2()
             <li>Update <a target="_blank" href="https://en.wikipedia.org/w/index.php?title=Composr_CMS&action=edit">listing on Wikipedia</a> ("latest release version" and "latest release date")</li>
         ';
     }
+
+    echo '
+        <li><strong>Addons</strong>:<ul>
+            <li>Generate the new addon set (<a target="_blank" href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'build_addons'), 'adminzone'))) . '">build_addons minimodule</a>)</li>
+    ';
+    if ($is_substantial && !$is_bleeding_edge) {
+        echo '
+            <li>Add them (<a target="_blank" href="http://compo.sr/adminzone/publish-addons-as-downloads.htm?cat=Version%20&amp;' . escape_html(urlencode($version_number)) . '&amp;version_branch=' . escape_html(urlencode($version_branch)) . '">publish_addons_as_downloads</a> minimodule)</li>
+        ';
+    }
+    echo '
+        </ul></li>
+    ';
 
     if ($is_substantial) {
         echo '

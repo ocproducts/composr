@@ -30,9 +30,6 @@ function init__cns_groups()
 
     global $GROUP_MEMBERS_CACHE;
     $GROUP_MEMBERS_CACHE = array();
-
-    global $PROBATION_GROUP_CACHE;
-    $PROBATION_GROUP_CACHE = null;
 }
 
 /**
@@ -72,7 +69,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:admin_cns_groups:__edit:' . strval($row['id']),
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : ('_SEARCH:admin_cns_groups:__edit:' . strval($row['id'])),
         'RESOURCE_TYPE' => 'group',
     ));
 }
@@ -276,8 +273,18 @@ function cns_get_group_name($group, $hide_hidden = true)
  */
 function cns_get_group_property($group, $property, $hide_hidden = true)
 {
-    cns_ensure_groups_cached(array($group));
+    cns_ensure_groups_cached(array($group), true);
     global $USER_GROUPS_CACHED;
+
+    if (!array_key_exists($group, $USER_GROUPS_CACHED)) { // DB corruption
+        switch ($property) {
+            case 'group_leader':
+                return null;
+
+            default:
+                return '';
+        }
+    }
 
     if ($hide_hidden) {
         $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
@@ -342,6 +349,24 @@ function cns_get_best_group_property($groups, $property)
 }
 
 /**
+ * Get the probation usergroup ID.
+ *
+ * @return ~GROUP Probation usergroup ID (false: none)
+ */
+function get_probation_group()
+{
+    static $probation_group_cache = null;
+    if ($probation_group_cache === null) {
+        $probation_group = get_option('probation_usergroup');
+        $probation_group_cache = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
+        if ($probation_group_cache === null) {
+            $probation_group_cache = false;
+        }
+    }
+    return $probation_group_cache;
+}
+
+/**
  * Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).
  *
  * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member)
@@ -365,15 +390,8 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
     if (($handle_probation) && ((!$GLOBALS['IS_VIA_BACKDOOR']) || ($member_id != get_member()))) {
         $opt = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_on_probation_until');
         if (($opt !== null) && ($opt > time())) {
-            global $PROBATION_GROUP_CACHE;
-            if ($PROBATION_GROUP_CACHE === null) {
-                $probation_group = get_option('probation_usergroup');
-                $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-                if ($PROBATION_GROUP_CACHE === null) {
-                    $PROBATION_GROUP_CACHE = false;
-                }
-            }
-            if ($PROBATION_GROUP_CACHE !== false) {
+            $probation_group = get_probation_group();
+            if ($probation_group !== false) {
                 if ($member_id == get_member() && running_script('index')) {
                     static $given_message = false;
                     if (!$given_message) {
@@ -384,7 +402,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
                     }
                 }
 
-                return array($PROBATION_GROUP_CACHE => true);
+                return array($probation_group => true);
             }
         }
     }

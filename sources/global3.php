@@ -129,6 +129,7 @@ function init__global3()
         // And...
         define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
         define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
+        define('A__INBUILT_DEFAULT', -0x4); // Never stored in DB, used as a flag inside admin_notifications module
     }
 
     global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
@@ -155,10 +156,12 @@ function init__global3()
 
     // Time limits...
 
-    define('TIME_LIMIT_EXTEND_modest', '30');
-    define('TIME_LIMIT_EXTEND_sluggish', '100');
-    define('TIME_LIMIT_EXTEND_slow', '300');
-    define('TIME_LIMIT_EXTEND_crawl', '1000');
+    if (!defined('TIME_LIMIT_EXTEND_modest')) {
+        define('TIME_LIMIT_EXTEND_modest', 30);
+        define('TIME_LIMIT_EXTEND_sluggish', 100);
+        define('TIME_LIMIT_EXTEND_slow', 300);
+        define('TIME_LIMIT_EXTEND_crawl', 1000);
+    }
 }
 
 /**
@@ -218,13 +221,22 @@ function brand_name()
 }
 
 /**
- * Get the file extension of the specified file. It returns without a dot.
+ * Get the file extension of the specified file. It returns without a dot. File extensions are considered never to themselves contain a dot.
  *
- * @param  string $name The filename
+ * @param  ?string $name The filename (null: unknown)
+ * @param  ?string $mime_type The mime-type (null: unknown)
  * @return string The filename extension (no dot)
  */
-function get_file_extension($name)
+function get_file_extension($name, $mime_type = null)
 {
+    if ($mime_type !== null) {
+        require_code('mime_types');
+        $ext = get_ext_from_mime_type($mime_type);
+        if ($ext !== null) {
+            return $ext;
+        }
+    }
+
     $dot_pos = strrpos($name, '.');
     if ($dot_pos === false) {
         return '';
@@ -542,7 +554,7 @@ function intelligent_write_error($path)
  * Discern the cause of a file-write error, and return an appropriate error message.
  *
  * @param  PATH $path File path that could not be written
- * @return Tempcode Message
+ * @return mixed Message (Tempcode or string)
  */
 function intelligent_write_error_inline($path)
 {
@@ -1240,6 +1252,31 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
 }
 
 /**
+ * Workaround for when we can't enable LC_CTYPE on the locale - temporarily enable it when we really need it.
+ *
+ * @param  boolean $start Whether to start the workaround (as opposed to ending it)
+ */
+function _local_ctype_hack($start)
+{
+    $ctype_hack = (do_lang('locale_ctype_hack') == '1');
+    if ($ctype_hack) {
+        if ($start) {
+            static $proper_locale = null;
+            if ($proper_locale === null) {
+                $proper_locale = explode(',', do_lang('locale'));
+            }
+            setlocale(LC_CTYPE, $proper_locale);
+        } else {
+            static $fallback_locale = null;
+            if ($fallback_locale === null) {
+                $fallback_locale = explode(',', do_lang('locale'));
+            }
+            setlocale(LC_CTYPE, $fallback_locale);
+        }
+    }
+}
+
+/**
  * Make a string title-case, with utf-8 awareness where possible/required.
  *
  * @param  string $in Subject
@@ -1247,15 +1284,19 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
  */
 function cms_mb_ucwords($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return ucwords($in);
+        $ret = ucwords($in);
+    } elseif (function_exists('mb_convert_case')) {
+        $ret = @mb_convert_case($in, MB_CASE_TITLE, get_charset());
+    } else {
+        $ret = ucwords($in);
     }
 
-    if (function_exists('mb_convert_case')) {
-        return @mb_convert_case($in, MB_CASE_TITLE);
-    }
+    _local_ctype_hack(false);
 
-    return ucwords($in);
+    return $ret;
 }
 
 /**
@@ -1266,15 +1307,19 @@ function cms_mb_ucwords($in)
  */
 function cms_mb_strtolower($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return strtolower($in);
+        $ret = strtolower($in);
+    } elseif (function_exists('mb_strtolower')) {
+        $ret = @mb_strtolower($in, get_charset());
+    } else {
+        $ret = strtolower($in);
     }
 
-    if (function_exists('mb_strtolower')) {
-        return @mb_strtolower($in);
-    }
+    _local_ctype_hack(false);
 
-    return strtolower($in);
+    return $ret;
 }
 
 /**
@@ -1285,15 +1330,190 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
+    _local_ctype_hack(true);
+
     if (get_charset() != 'utf-8') {
-        return strtoupper($in);
+        $ret = strtoupper($in);
+    } elseif (function_exists('mb_strtoupper')) {
+        $ret = @mb_strtoupper($in, get_charset());
+    } else {
+        $ret = strtoupper($in);
     }
 
-    if (function_exists('mb_strtoupper')) {
-        return @mb_strtoupper($in);
+    _local_ctype_hack(false);
+
+    return $ret;
+}
+
+
+/**
+ * Unicode-safe case-insensitive string comparison.
+ * Note we have no cms_mb_strcmp because intl (Collator class) cannot do case-sensitive comparison.
+ *
+ * @param  string $str1 The first string
+ * @param  string $str2 The second string
+ * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
+ */
+function cms_mb_strcasecmp($str1, $str2)
+{
+    _local_ctype_hack(true);
+
+    if (function_exists('collator_create')) {
+        if (function_exists('collator_set_attribute')) {
+            if (function_exists('collator_compare')) {
+                static $collator = false;
+                if ($collator === false) {
+                    $collator = collator_create(setlocale(LC_ALL, '0'));
+                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::OFF);
+                }
+                if ($collator !== null) {
+                    $ret = collator_compare($collator, $str1, $str2);
+
+                    _local_ctype_hack(false);
+
+                    return $ret;
+                }
+            }
+        }
     }
 
-    return strtoupper($in);
+    // Ideally we'd use strcoll, but that's case-sensitive and also doesn't work on Windows for Unicode
+
+    $ret = strcasecmp($str1, $str2);
+
+    _local_ctype_hack(false);
+
+    return $ret;
+}
+
+/**
+ * Case insensitive string comparisons using a "natural order" algorithm, Unicode-safe.
+ *
+ * @param  string $str1 The first string
+ * @param  string $str2 The second string
+ * @return integer <0 if s1<s2, 0 if s1=s2, >1 if s1>s2
+ */
+function cms_mb_strnatcasecmp($str1, $str2)
+{
+    _local_ctype_hack(true);
+
+    if (function_exists('collator_create')) {
+        if (function_exists('collator_set_attribute')) {
+            if (function_exists('collator_compare')) {
+                static $collator = false;
+                if ($collator === false) {
+                    $collator = collator_create(setlocale(LC_ALL, '0'));
+                    collator_set_attribute($collator, Collator::NUMERIC_COLLATION, Collator::ON);
+                }
+                if ($collator !== null) {
+                    $ret = collator_compare($collator, $str1, $str2);
+
+                    _local_ctype_hack(false);
+
+                    return $ret;
+                }
+            }
+        }
+    }
+
+    $ret = strnatcasecmp($str1, $str2);
+
+    _local_ctype_hack(false);
+
+    return $ret;
+}
+
+/**
+ * Sort an array of Unicode strings. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_sort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    usort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array of Unicode strings in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_rsort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    cms_mb_sort($array, $sort_flags);
+    $array = array_reverse($array);
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array of Unicode strings and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array Array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_asort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    uasort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array of Unicode strings in reverse order and maintain index association. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array Array
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_arsort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    cms_mb_asort($array, $sort_flags);
+    $array = array_reverse($array);
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array by Unicode key. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_ksort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    uksort($array, ((($sort_flags & SORT_NATURAL) != 0) ? 'cms_mb_strnatcasecmp' : 'cms_mb_strcasecmp'));
+
+    _local_ctype_hack(false);
+}
+
+/**
+ * Sort an array by Unicode key in reverse order. Assumes SORT_FLAG_CASE because our Unicode sorting cannot do case-sensitive, only the SORT_NATURAL flag does anything.
+ *
+ * @param  array $array The array to sort
+ * @param  integer $sort_flags Sort flags
+ */
+function cms_mb_krsort(&$array, $sort_flags = 0)
+{
+    _local_ctype_hack(true);
+
+    cms_mb_ksort($array, $sort_flags);
+    $array = array_reverse($array);
+
+    _local_ctype_hack(false);
 }
 
 /**
@@ -1355,7 +1575,7 @@ function addon_installed($addon, $check_hookless = false)
     $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
 
     // Check addons table
-    if (!running_script('install')) {
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
         require_code('database');
 
         if ((!$answer) && ($check_hookless)) {
@@ -2005,7 +2225,7 @@ function _strlen_sort($a, $b)
  *
  * @param  array $rows List of maps to sort
  * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it)
- * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort), doesn't support natural supporting
+ * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort)
  * @param  boolean $natural Whether to do a natural sort
  */
 function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $natural = false)
@@ -2038,11 +2258,12 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $
 
 /**
  * Do a user sort, preserving order where reordering not needed. Based on a PHP manual comment at http://php.net/manual/en/function.usort.php.
+ * Roughly equivalent to PHP's uasort.
  *
  * @param  array $array Sort array
  * @param  mixed $cmp_function Comparison function
  */
-function merge_sort(&$array, $cmp_function = 'strcmp')
+function merge_sort(&$array, $cmp_function = 'cms_mb_strcasecmp')
 {
     // Arrays of size<2 require no action.
     if (count($array) < 2) {
@@ -2163,9 +2384,9 @@ function _multi_sort($a, $b)
             }
 
             if ((is_numeric($av)) && (is_numeric($bv)) || $M_SORT_NATURAL) {
-                $ret = strnatcasecmp($av, $bv);
+                $ret = cms_mb_strnatcasecmp($av, $bv);
             } else {
-                $ret = strcasecmp($av, $bv);
+                $ret = cms_mb_strcasecmp($av, $bv);
             }
 
             if ($backwards) {
@@ -2414,7 +2635,7 @@ function get_os_string()
         return $_SERVER['HTTP_UA_OS'];
     } elseif ($_SERVER['HTTP_USER_AGENT'] != '') {
         // E.g. Mozilla/4.5 [en] (X11; U; Linux 2.2.9 i586)
-        // We need to get the stuff in the brackets
+        // We need to get the stuff in the parentheses
         $matches = array();
         if (preg_match('#\(([^\)]*)\)#', $_SERVER['HTTP_USER_AGENT'], $matches) != 0) {
             $ret = $matches[1];
@@ -4407,7 +4628,7 @@ function send_http_output_ping()
  */
 function cms_set_time_limit($secs)
 {
-    $previous = ini_get('max_execution_time');
+    $previous = intval(ini_get('max_execution_time'));
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit($secs);
@@ -4434,7 +4655,7 @@ function cms_disable_time_limit()
  */
 function cms_extend_time_limit($secs)
 {
-    $previous = ini_get('max_execution_time');
+    $previous = intval(ini_get('max_execution_time'));
 
     if ($previous == 0) {
         return 0;

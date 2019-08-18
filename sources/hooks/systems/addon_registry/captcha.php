@@ -99,6 +99,7 @@ class Hook_addon_registry_captcha
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/captcha.php',
             'sources/hooks/systems/snippets/captcha_wrong.php',
             'sources/hooks/systems/addon_registry/captcha.php',
             'themes/default/templates/FORM_SCREEN_INPUT_CAPTCHA.tpl',
@@ -154,6 +155,9 @@ class Hook_addon_registry_captcha
             'sources/hooks/systems/config/recaptcha_site_key.php',
             'sources/hooks/systems/config/captcha_member_days.php',
             'sources/hooks/systems/config/captcha_member_posts.php',
+            'sources/hooks/systems/config/captcha_question_pages.php',
+            'sources/hooks/systems/config/captcha_question_total.php',
+            'sources/hooks/systems/config/captcha_questions.php',
         );
     }
 

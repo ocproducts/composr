@@ -98,6 +98,7 @@ class Hook_addon_registry_quizzes
     public function get_file_list()
     {
         return array(
+            'sources/hooks/systems/privacy/quizzes.php',
             'themes/default/images/icons/menu/cms/quiz/find_winners.svg',
             'themes/default/images/icons/menu/cms/quiz/quiz_results.svg',
             'themes/default/images/icons/menu/rich_content/quiz.svg',

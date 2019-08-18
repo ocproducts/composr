@@ -75,7 +75,7 @@ PHP;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
         }
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 2;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : (60 * 2);
         return $info;
     }
 
@@ -265,7 +265,7 @@ PHP;
             }
 
             if ($i >= $start) {
-                $just_media_row = db_map_restrict($c[0], array('id', 'description'));
+                $just_media_row = db_map_restrict($c[0], array('id', 'the_description'));
 
                 switch ($c[1]) {
                     case 'image':
@@ -274,7 +274,7 @@ PHP;
                         $entry_title = get_translated_text($row_image['title']);
                         $view_url = build_url(array('page' => ($zone == '_SELF' && running_script('index')) ? get_page_name() : 'galleries', 'type' => 'image', 'id' => $row_image['id'], 'root' => $root, 'sort' => $sort), $zone);
                         $full_url = $row_image['url'];
-                        $file_size = url_is_local($full_url) ? file_exists(get_custom_file_base() . '/' . rawurldecode($full_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($full_url))) : '' : '';
+                        $file_size = url_is_local($full_url) ? (file_exists(get_custom_file_base() . '/' . rawurldecode($full_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($full_url))) : '') : '';
                         if (url_is_local($full_url)) {
                             $full_url = get_custom_base_url() . '/' . $full_url;
                         }
@@ -298,7 +298,7 @@ PHP;
                             '_GUID' => '043ac7d15ce02715ac02309f6e8340ff',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
-                            'DESCRIPTION' => get_translated_tempcode('images', $just_media_row, 'description'),
+                            'DESCRIPTION' => get_translated_tempcode('images', $just_media_row, 'the_description'),
                             'ID' => strval($row_image['id']),
                             'MEDIA_TYPE' => 'image',
                             'FILE_SIZE' => $file_size,
@@ -356,7 +356,7 @@ PHP;
                             '_GUID' => '66b7fb4d3b61ef79d6803c170d102cbf',
                             'RATING_DETAILS' => $entry_rating_details,
                             'TITLE' => $entry_title,
-                            'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'description'),
+                            'DESCRIPTION' => get_translated_tempcode('videos', $just_media_row, 'the_description'),
                             'ID' => strval($row_video['id']),
                             'MEDIA_TYPE' => 'video',
                             'CAT' => $row_video['cat'],

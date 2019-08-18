@@ -136,7 +136,7 @@ The following escaping filters are provided ([color="green"]green[/color] indica
 		</tr>
 		<tr style="background-color: #DDFFDD">
 			<td>[tt](^)[/tt]</td>
-			<td>Where new lines become [tt]\n[/tt] (multiple lines drawn together with \n as a separator).</td>
+			<td>Where new lines become [tt]\n[/tt] (individual lines are drawn together with \n as a separator).</td>
 			<td>[tt]a<br />b[/tt]</td>
 			<td>[tt]a\nb[/tt]</td>
 		</tr>
@@ -640,16 +640,22 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>
 				<p>This symbol is designed for assistive translations of user-supplied content.</p>
 
-				<p>Before you can use the API you must first configure it:</p>
+				<p>Before you can use the API you must first configure it. For the Google Translate backend:</p>
 				<ol>
 					<li>Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)</li>
-					<li>Make sure that Google Translation API is enabled on Google\'s end</li>
-					<li>Enable the "Google translate enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
+					<li>Make sure that Google Translation API is enabled on Google's end</li>
+					<li>Enable the "Google Translate enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
+				</ol>
+				<p>For the Bing Translator backend:</p>
+				<ol>
+					<li>Configure the Azure API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Microsoft API)</li>
+					<li>Make sure that Text Translator API is enabled on Azure's end</li>
+					<li>Enable the "Bing Translator enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
 				</ol>
 
 				<p>To use the symbol just wrap it around text that needs translating in templates, e.g. <kbd>{$PROVIDE_WITH_TRANSLATION,{TEXT},html_block,FR}</kbd>.</p>
 
-				<p>This example translates French in [tt]{TEXT}[/tt] to the site\'s current language, within the context of a block of HTML. The original text is followed by the translated text, and as it is a block of HTML it also includes the "Powered by Google Translate" message.</p>
+				<p>This example translates French in [tt]{TEXT}[/tt] to the site\'s current language, within the context of a block of HTML. The original text is followed by the translated text, and as it is a block of HTML it also includes the translation backends mandatory message (e.g. "Powered by Google Translate").</p>
 
 				<p>Here are the available translation modes:</p>
 				<ol>
@@ -897,7 +903,11 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MATURITY_FILTER_REQUESTED}</td>
-			<td>Do a header check, to see if family-friendly browsing experience was requested by the user's safe header preference. This symbol only works when Composr is installed on a server with the PHP Apache module, unless a new <kbd>HTTP_PREFER</kbd> server variable is added (see <a href="http://php.net/manual/en/function.apache-request-headers.php">apache-request-headers</a> &ndash; read <strong>callum85's</strong> comment for details).</td>
+			<td>Do a header check, to see if family-friendly browsing experience was requested by the user's safe header preference.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DO_NOT_TRACK_REQUESTED}</td>
+			<td>Do a header check, to see if do-not-track was requested by the user's browser preferences.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$TAPATALK}</td>
@@ -1130,31 +1140,31 @@ The [tt]{$THUMBNAIL}[/tt] tag is actually much more sophisticated and powerful t
 Usage: [tt]{$THUMBNAIL,source_image,widthxheight,output_dir,filename,fallback_image,algorithm,where,background,only_make_smaller}[/tt]
 where:
  - [tt]source_image[/tt] is the URL to the full image
- - [tt]widthxheight[/tt] is the desired width/height for the thumbnail. For types (see below) of width or height or crop you can omit either of the width or height for automatically calculated proportionality (e.g. [tt]x20[/tt] for just a height). If you specify both for crop it crops to the exact specified box rather than to the implied proportional box.
- - [tt]output_dir[/tt] is the name of a directory, either under Composr's [tt]uploads[/tt] directory or a longer path relative to the base directory
- - [tt]filename[/tt] is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image. An articulation of the thumbnail settings will be prepended to the filename in any case
- - [tt]fallback_image[/tt] is the URL to the image to use if no thumbnail could be generated. If not provided the source_image will be used
+ - [tt]widthxheight[/tt] is the desired width/height for the thumbnail. For types (see below) of width, height, or crop, you can omit either the width or height to scale according to the aspect ratio of the source image (e.g. [tt]x20[/tt] for just a height, or [tt]160x[/tt] for just a width). If you specify both dimensions for crop or pad, the thumbnail will be cropped or padded to the exact dimensions regardless of aspect ratio. If no dimensions are specified, the default is the value of the thumb_width option, with height omitted.
+ - [tt]output_dir[/tt] is the directory path to save the thumbnail (relative to the Composr base directory). The default is Composr's [tt]uploads[/tt] directory.
+ - [tt]filename[/tt] is the name of the thumbnail filename. If not provided, it will be automatically chosen based on the source_image. An articulation of the thumbnail settings will be prefixed to the filename in any case
+ - [tt]fallback_image[/tt] is the URL to the image to use if no thumbnail could be generated. If not provided, the source_image will be used.
  - [tt]algorithm[/tt] is either:
-  - [tt]box[/tt] for an image which should be scaled proportionally to fit into the given box dimensions, with no cropping or padding meaning it may be an irregular size (the default)
-  - [tt]width[/tt] for an image which is stretched to the given width and a height in proportion to that
-  - [tt]height[/tt] for an image which is stretched to the given height and a width in proportion to that
-  - [tt]crop[/tt] for an image which has been shrunk until one of its dimensions matched that given and the rest has been chopped off
-  - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out (padding will only be added if not together the where is 'both' and background is 'none' -- if both & none then it will just make the output image dimensions smaller)
-  - [tt]pad_vert_crop_vert[/tt] for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
-  - [tt]pad_horiz_crop_horiz[/tt] for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
- - The [tt]where[/tt] argument is not needed for [tt]width[/tt] or [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types it is where to *anchor from* when cropping/padding:
-  - [tt]both[/tt] (crops/pads around all edges; the default)
-  - [tt]start[/tt] (anchors to the lhs/top, therefore padding/cropping to the rhs/bottom)
-  - [tt]end[/tt] (anchors to the rhs/bottom, therefore padding/cropping to the lhs/top)
-  - [tt]start_if_vertical[/tt] (anchors to the centre/top)
-  - [tt]start_if_horizontal[/tt] (anchors to the lhs/centre)
-  - [tt]end_if_vertical[/tt] (anchors to the centre/bottom)
-  - [tt]end_if_horizontal[/tt] (anchors to the rhs/centre)
- - For [tt]pad[/tt] types the background is used to pad the image:
+  - [tt]box[/tt] for an image which should be scaled proportionally to fit into the given box dimensions, with no cropping or padding, meaning it may be an irregular size (the default)
+  - [tt]width[/tt] for an image which is scaled to the given width dimension and a height in proportion to that
+  - [tt]height[/tt] for an image which is scaled to the given height and a width in proportion to that
+  - [tt]crop[/tt] for an image which has been scaled until one of its dimensions matches any of the provided dimensions, and the rest of the image has been cropped off.
+  - [tt]pad[/tt] for an image which has been scaled proportionately until it completely fits within the given dimensions, and then padded out (padding will not be added if where is 'both' and background is 'none' -- instead, it will just make the output image dimensions smaller)
+  - [tt]pad_vert_crop_vert[/tt] for an image where the horizontal axis is privileged; the vertical axis gets cropped and the horizontal gets padding, as necessary, to fit the given dimensions. The goal is to preserve the source image's proportions while filling the entire box.
+  - [tt]pad_horiz_crop_horiz[/tt] for an image where the vertical axis is privileged; the horizontal axis gets cropped and the vertical gets padding, as necessary, to fit the given dimensions. The goal is to preserve the source image's proportions while filling the entire box.
+ - The [tt]where[/tt] argument is not needed for [tt]box[/tt], [tt]width[/tt], nor [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types, this defines the anchor point for cropping / padding:
+  - [tt]both[/tt] crops/pads around all edges; the default.
+  - [tt]start[/tt] anchors to the top left corner; cropping and padding is done in the bottom right.
+  - [tt]end[/tt] anchors to the bottom right corner; cropping and padding is done in the top left.
+  - [tt]start_if_vertical[/tt] anchors to the top center; cropping and padding is done at the bottom.
+  - [tt]start_if_horizontal[/tt] anchors to the left center; cropping and padding is done on the right side.
+  - [tt]end_if_vertical[/tt] anchors to the bottom center; cropping and padding is done at the top.
+  - [tt]end_if_horizontal[/tt] anchors to the right center; cropping and padding is done on the left side.
+ - For [tt]pad[/tt] types, the background is used to pad the image. The following values are acceptable:
   - an RGB hex code for a specific colour (optionally with alpha, i.e. RGBA)
   - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them)
-  - or, if the option is omitted for padded thumbnails then the average colour of the image is used.
- - [tt]only_make_smaller[/tt] can be set to "1" if the image should not be resized at all if it is already smaller than the requested thumbnail size
+  - or, if the option is omitted for padded thumbnails, then the average colour of the image is calculated and used.
+ - [tt]only_make_smaller[/tt] can be set to "1" if the image should not ever be made bigger than it already is. This parameter is ignored for crop and pad.
 
 [title="3"]Composr configuration/status querying[/title]
 
@@ -1346,7 +1356,7 @@ where:
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RATING,downloads,3}</td>
-			<td>Show a content type's rating. The first parameter is the content-type's code (usually the page name it's viewed from, e.g. downloads) and the second parameter is the ID for the resource.</td>
+			<td>Show a content type's rating. The first parameter is the content-type's code (usually the page name it's viewed from, e.g. downloads) and the second parameter is the ID for the resource. There's an optional third parameter of resource submitter, an optional fourth parameter as the content URL, an optional fifth parameter as the resource title, and an optional sixth parameter as the rating template to use (defaults to showing the raw rating value). Any optional parameters may be left blank to get to the next parameter.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$NUM_RATINGS,downloads,3}</td>
@@ -1923,7 +1933,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>INCLUDE</td>
-			<td>Include a template in another and pass parameters (this makes a template very much like a function in a conventional programming language). Note that the automated smart-decaching (for developers manually editing template files) will not work on manually edited included templates because Composr's optimiser means that the actual template is "compiled into" the template that calls it and thus not regularly individually checked. If you try to include a template into itself, and don't give any new parameters, Composr will include the default version of that template in (if you do give parameters, or are running HipHop-PHP, you'll probably get a fatal error instead)</td>
+			<td>Include a template in another and pass parameters (this makes a template very much like a function in a conventional programming language). Important notes:<ol><li>the automated smart-decaching (for developers manually editing template files) will not work on manually edited included templates because Composr's optimiser means that the actual template is "compiled into" the template that calls it and thus not regularly individually checked.</li><li>The parameters are written inside the directive, in a very simple text syntax, <kbd>KEY=VALUE</kbd> (e.g. <kbd>FOO={BAR}</kbd>), where the actual parameter values are evaluated into text prior to the <kbd>INCLUDE</kbd> directive being evaluated. This has the result of anything after a linebreak being lost, unless you make use of the directives support for escaped line-breaks (e.g. <kbd>FOO={BAR^}</kbd>).</li></ol>If you try to include a template into itself, and don't give any new parameters, Composr will include the default version of that template in (if you do give parameters, or are running HipHop-PHP, you'll probably get a fatal error instead)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>WHILE</td>

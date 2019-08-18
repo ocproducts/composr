@@ -22,10 +22,10 @@ function grab_photobucket_content()
             '^' . preg_quote('http://', '#') . '.*' . preg_quote('photobucket.com/', '#') . '.*$',
             '^' . preg_quote(find_script('external_url_proxy') . '?url=', '#') . preg_quote(urlencode('http://'), '#') . '.*' . preg_quote(urlencode('photobucket.com/'), '#') . '.*$',
         ),
-        'url_modifier' => function($url) {
+        'url_modifier' => function ($url) {
             return $url . '~original';
         },
-        'filename_extractor' => function($url) {
+        'filename_extractor' => function ($url) {
             if (strpos($url, find_script('external_url_proxy')) !== false) {
                 return preg_replace('#\?.*$#', '', basename(urldecode(preg_replace('#^.*\?url=$#', '', $url))));
             } else {
@@ -65,10 +65,10 @@ class RemoteContentGrabber
             'url_patterns' => array(
                 '^' . preg_quote('http://example.com/', '#') . '.*$',
             ),
-            'url_modifier' => function($url) {
+            'url_modifier' => function ($url) {
                 return $url;
             },
-            'filename_extractor' => function($url) {
+            'filename_extractor' => function ($url) {
                 return preg_replace('#\?.*$#', '', basename($url));
             },
 

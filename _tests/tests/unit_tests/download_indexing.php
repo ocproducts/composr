@@ -50,7 +50,7 @@ class download_indexing_test_set extends cms_test_case
             ),
         );
         require_code('zip');
-        $data = create_zip_file($file_array, false, false, null);
+        $data = create_zip_file($file_array);
 
         $data_mash = create_data_mash('foo.zip', $data);
 

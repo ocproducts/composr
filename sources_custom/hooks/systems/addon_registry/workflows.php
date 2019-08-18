@@ -140,6 +140,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/workflows.php',
+            'sources_custom/hooks/systems/privacy/workflows.php',
             'sources_custom/hooks/systems/notifications/workflow_step.php',
             'lang_custom/EN/workflows.ini',
             'cms/pages/modules_custom/cms_galleries.php',

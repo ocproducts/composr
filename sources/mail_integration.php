@@ -51,7 +51,7 @@ abstract class EmailIntegration
         $path = get_custom_file_base() . '/data_custom/mail_integration.log';
         if (is_file($path)) {
             $myfile = fopen($path, 'ab');
-            $log_line = date('Y-m-d H:i:s') . ': ' . $message . "\n";
+            $log_line = loggable_date() . ': ' . $message . "\n";
             fwrite($myfile, $log_line);
             fclose($myfile);
         }

@@ -108,6 +108,8 @@ class _lang_no_unused_test_set extends cms_test_case
             'CONFIG_GROUP_',
             'faqs__',
             'links__',
+            'COUNTRY_',
+            'CONTINENT_',
             'ECOM_CAT_',
             'ECOM_CATD_',
             'ARITHMETICAL_SYMBOL__',
@@ -224,6 +226,10 @@ class _lang_no_unused_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base() . '/lang/EN', get_file_base() . '/lang/EN', null, false, true, array('ini'));
         foreach ($files as $path) {
+            if (($this->only !== null) && ($this->only != basename($path))) {
+                continue;
+            }
+
             $input = array();
             _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
 

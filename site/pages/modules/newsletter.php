@@ -102,13 +102,13 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->create_table('newsletters', array(
                 'id' => '*AUTO',
                 'title' => 'SHORT_TRANS',
-                'description' => 'LONG_TRANS',
+                'the_description' => 'LONG_TRANS',
             ));
 
             $map = array();
             require_code('lang3');
             $map += lang_code_to_default_content('title', 'GENERAL');
-            $map += lang_code_to_default_content('description', 'NEWSLETTER_GENERAL');
+            $map += lang_code_to_default_content('the_description', 'NEWSLETTER_GENERAL');
             $GLOBALS['SITE_DB']->query_insert('newsletters', $map);
 
             $GLOBALS['SITE_DB']->create_table('newsletter_subscribe', array(
@@ -197,6 +197,10 @@ class Module_newsletter
 
         if (($upgrade_from === null) || ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->create_index('newsletter_subscribers', 'email', array('email'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 13)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('newsletters', 'description', 'LONG_TRANS', 'the_description');
         }
     }
 
@@ -366,7 +370,7 @@ class Module_newsletter
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a87e4be6cbc070e66e25ad4ece429cc4', 'TITLE' => do_lang_tempcode('NEWSLETTER_SUBSCRIPTIONS'))));
         foreach ($newsletters as $newsletter) {
             $newsletter_title = get_translated_text($newsletter['title']);
-            $newsletter_description = get_translated_text($newsletter['description']);
+            $newsletter_description = get_translated_text($newsletter['the_description']);
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
             $fields->attach(form_input_tick(do_lang_tempcode('SUBSCRIBE_TO', make_string_tempcode(escape_html($newsletter_title))), make_string_tempcode(escape_html($newsletter_description)), 'subscribe' . strval($newsletter['id']), true));
         }
@@ -454,7 +458,8 @@ class Module_newsletter
         // Change/make settings
         $old_password = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'the_password', array('email' => $email));
         $old_salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
-        if ((!has_privilege(get_member(), 'change_newsletter_subscriptions')) && ($old_confirm !== null) && ($old_confirm == 0) && ($old_password != '') && (!hash_equals($old_password, md5($password . $old_salt)))) { // Access denied. People who can change any subscriptions can't get denied.
+        require_code('crypt');
+        if ((!has_privilege(get_member(), 'change_newsletter_subscriptions')) && ($old_confirm !== null) && ($old_confirm == 0) && ($old_password != '') && (ratchet_hash_verify($password, $old_password, $old_salt))) { // Access denied. People who can change any subscriptions can't get denied.
             // Access denied to an existing record that was confirmed
             $_reset_url = build_url(array('page' => '_SELF', 'type' => 'reset', 'email' => $email), '_SELF');
             $reset_url = $_reset_url->evaluate();

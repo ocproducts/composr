@@ -46,8 +46,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testNoBomMarkers()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNoBomMarkers')) {
+        if (($this->only !== null) && ($this->only != 'testNoBomMarkers')) {
             return;
         }
 
@@ -71,8 +70,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testTabbing()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testTabbing')) {
+        if (($this->only !== null) && ($this->only != 'testTabbing')) {
             return;
         }
 
@@ -149,8 +147,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testNoTrailingWhitespace()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNoTrailingWhitespace')) {
+        if (($this->only !== null) && ($this->only != 'testNoTrailingWhitespace')) {
             return;
         }
 
@@ -186,6 +183,7 @@ class basic_code_formatting_test_set extends cms_test_case
                 'themes/default/javascript_custom/sortable_tables.js',
                 'themes/default/javascript_custom/unslider.js',
                 'themes/default/javascript_custom/charts.js',
+                'themes/default/javascript_custom/confluence2.js',
                 'themes/default/templates/BREADCRUMB_SEPARATOR.tpl',
                 'data_custom/rate_limiter.php',
             );
@@ -206,8 +204,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testNoNonAscii()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNoNonAscii')) {
+        if (($this->only !== null) && ($this->only != 'testNoNonAscii')) {
             return;
         }
 
@@ -238,6 +235,9 @@ class basic_code_formatting_test_set extends cms_test_case
                 'lang/langs.ini',
                 'mobiquo/license_agreement.txt',
                 'themes/default/css_custom/confluence.css',
+                'data_custom/webfonts/adgs-icons.svg',
+                'themes/default/javascript_custom/confluence.js',
+                'themes/default/javascript_custom/confluence2.js',
             );
             if (in_array($path, $exceptions)) {
                 continue;
@@ -254,6 +254,11 @@ class basic_code_formatting_test_set extends cms_test_case
                     $c = preg_replace('#//.*#', '', $c);
                 }
 
+                if ($ext == 'ini') {
+                    // We will allow utf-8 data in language files as a special exception
+                    continue;
+                }
+
                 $ok = (preg_match('#[^\x00-\x7f]#', $c) == 0);
                 $this->assertTrue($ok, 'Has non-ASCII data in ' . $path . '; find in your editor with this regexp [^\x00-\x7F]');
             }
@@ -262,8 +267,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testCorrectLineTerminationAndLineFormat()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testCorrectLineTerminationAndLineFormat')) {
+        if (($this->only !== null) && ($this->only != 'testCorrectLineTerminationAndLineFormat')) {
             return;
         }
 

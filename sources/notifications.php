@@ -977,6 +977,11 @@ function notifications_setting($notification_code, $notification_category, $memb
                 'l_code_category' => '',
             ));
         }
+
+        if (($test === null) && (get_forum_type() != 'cns') && (!is_guest($member_id))) { // For non-Conversr, we can't copy in settings from Guest for new users so we will manually query for Guest
+            return notifications_setting($notification_code, $notification_category, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+        }
+
         if ($test === null) {
             $ob = _get_notification_ob_for_code($notification_code);
             if ($ob === null) {

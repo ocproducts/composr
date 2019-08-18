@@ -46,7 +46,7 @@ class IOSPushNotifications
         $message_ob->setTitle($subject); // For Apple Watch, or possibly newer versions of iOS
         $message_ob->setText($message);
 
-        // TODO: Implement 'priority' if apnsPHP implements the new binary protocol
+        // NOTE: Implement 'priority' if apnsPHP implements the new binary protocol
 
         // Some extra metadata that may be useful...
 

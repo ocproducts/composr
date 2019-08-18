@@ -19,6 +19,59 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__themes2()
+{
+    global $THEME_SEED_CACHE;
+    $THEME_SEED_CACHE = array();
+}
+
+/**
+ * Find the seed of a theme.
+ *
+ * @param  ID_TEXT $theme The theme name
+ * @return ID_TEXT The seed colour
+ */
+function find_theme_seed($theme)
+{
+    global $THEME_SEED_CACHE;
+    if (isset($THEME_SEED_CACHE[$theme])) {
+        return $THEME_SEED_CACHE[$theme];
+    }
+
+    $seed = get_theme_option('seed', ($theme == 'default') ? null : '');
+
+    if ($seed == '') {
+        $css_path = get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css';
+        if (!is_file($css_path)) {
+            $css_path = get_file_base() . '/themes/default/css/global.css';
+        }
+        $css_file_contents = cms_file_get_contents_safe($css_path);
+        $matches = array();
+        if (preg_match('#\{\$THEMEWIZARD_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
+            $THEME_SEED_CACHE[$theme] = $matches[1];
+        } else {
+            /*if ($no_easy_anchor)
+            {
+                   We could put some auto-detection code here; possibly a future improvement but not needed currently.
+            } else {*/
+            if ($theme == 'default') {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            $THEME_SEED_CACHE[$theme] = find_theme_seed('default');
+            //}
+        }
+    } else {
+        $THEME_SEED_CACHE[$theme] = $seed;
+    }
+
+    return $THEME_SEED_CACHE[$theme];
+}
+
+/**
  * Try and find some CDNs to use.
  *
  * @return string List of CDNs
@@ -113,7 +166,7 @@ function find_all_themes()
     }
 
     // Sort
-    asort($themes, SORT_NATURAL | SORT_FLAG_CASE);
+    cms_mb_asort($themes, SORT_NATURAL | SORT_FLAG_CASE);
 
     // Default theme should go first
     if (isset($themes['default'])) {
@@ -460,7 +513,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
         $filename = $urls[2];
 
-        return cms_rawurlrecode($urls[0]);
+        return check_form_field_image($field_file, cms_rawurlrecode($urls[0]), get_custom_file_base() . '/' . rawurldecode($urls[0]));
     }
 
     // URL
@@ -477,7 +530,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return cms_rawurlrecode($url);
+        return check_form_field_image($field_url, cms_rawurlrecode($url));
     }
 
     // Filedump
@@ -495,7 +548,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
                 $thumb_url = $urls[1];
             }
 
-            return cms_rawurlrecode($url);
+            return check_form_field_image($field_filedump, cms_rawurlrecode($url));
         }
     }
 
@@ -516,7 +569,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return cms_rawurlrecode($url);
+        return check_form_field_image($field_choose, cms_rawurlrecode($url));
     }
 
     // ---
@@ -530,6 +583,182 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     }
 
     warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
+}
+
+/**
+ * Check form images based on fields.xml. Usually a no-op.
+ *
+ * @param  string $name The name of the parameter
+ * @param  URLPATH $val The current value of the parameter (if blank, no-op)
+ * @param  ?PATH $delete_on_error File path to delete if there's an error (null: none)
+ * @return string Altered $val
+ */
+function check_form_field_image($name, $val, $delete_on_error = null)
+{
+    if ($val == '') {
+        return '';
+    }
+
+    require_code('input_filter');
+    require_code('images');
+
+    global $FIELD_RESTRICTIONS;
+    if ($FIELD_RESTRICTIONS === null) {
+        $restrictions = load_field_restrictions();
+    } else {
+        $restrictions = $FIELD_RESTRICTIONS;
+    }
+
+    static $image_size_cache = array();
+
+    foreach ($restrictions as $_r => $_restrictions) {
+        $_r_exp = explode(',', $_r);
+        foreach ($_r_exp as $__r) {
+            if ((trim($__r) == '') || (simulated_wildcard_match($name, trim($__r), true))) {
+                foreach ($_restrictions as $bits) {
+                    list($restriction, $attributes) = $bits;
+
+                    if ((isset($attributes['error'])) && (substr($attributes['error'], 0, 1) == '!')) {
+                        $attributes['error'] = do_lang(substr($attributes['error'], 1));
+                    }
+
+                    // Pre-work
+                    if (!isset($image_size_cache[$val])) {
+                        $image_size = cms_getimagesize_url($val);
+                        $image_size_cache[$val] = $image_size;
+                        if ($image_size === false) {
+                            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($val)));
+                        }
+                    } else {
+                        $image_size = $image_size_cache[$val];
+                    }
+                    if (in_array(strtolower($restriction), array('minaspectratio', 'maxaspectratio'))) {
+                        $matches = array();
+                        if (preg_match('#^([\d\.]+):([\d\.]+)$#', $attributes['embed'], $matches) != 0) {
+                            $_embed = float_to_raw_string(floatval($matches[1]) / floatval($matches[2]), 10, true);
+                        } else {
+                            $_embed = $attributes['embed'];
+                        }
+                    }
+                    if (in_array(strtolower($restriction), array('maxfilesize'))) {
+                        $matches = array();
+                        if (preg_match('#^([\d\.]+)\s*B?$#i', $attributes['embed'], $matches) != 0) {
+                            $_embed = strval(intval(round(floatval($matches[1]))));
+                        } elseif (preg_match('#^([\d\.]+)\s*KB?$#i', $attributes['embed'], $matches) != 0) {
+                            $_embed = strval(intval(round(floatval($matches[1]) * 1024.0)));
+                        } elseif (preg_match('#^([\d\.]+)\s*MB?$#i', $attributes['embed'], $matches) != 0) {
+                            $_embed = strval(intval(round(floatval($matches[1]) * 1024.0 * 1024.0)));
+                        } else {
+                            $_embed = $attributes['embed'];
+                        }
+                    }
+
+                    switch (strtolower($restriction)) {
+                        case 'minwidth':
+                            if (($image_size[0] !== null) && ($image_size[0] < intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_NARROW', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'maxwidth':
+                            if (($image_size[0] !== null) && ($image_size[0] > intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_WIDE', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'minheight':
+                            if (($image_size[1] !== null) && ($image_size[1] < intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_SHORT', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'maxheight':
+                            if (($image_size[1] !== null) && ($image_size[1] > intval($attributes['embed']))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_TOO_TALL', escape_html($val), strval(intval($attributes['embed']))));
+                            }
+                            break;
+
+                        case 'minaspectratio':
+                            if (($image_size[0] !== null) && ($image_size[1] !== null) && ($image_size[0] / $image_size[1] < floatval($_embed))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_ASPECT_RATIO_TOO_LOW', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+
+                        case 'maxaspectratio':
+                            if (($image_size[0] !== null) && ($image_size[1] !== null) && ($image_size[0] / $image_size[1] > floatval($_embed))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_ASPECT_RATIO_TOO_HIGH', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+
+                        case 'maxfilesize':
+                            if ($image_size[2] > intval($_embed)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_FILESIZE_TOO_HIGH', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+
+                        case 'forcelossless':
+                            if (!is_image('unknown.' . $image_size[3], IMAGE_CRITERIA_LOSSLESS, true)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_NOT_LOSSLESS', escape_html($val)));
+                            }
+                            break;
+
+                        case 'forceraster':
+                            if (!is_image('unknown.' . $image_size[3], IMAGE_CRITERIA_RASTER, true)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_NOT_RASTER', escape_html($val)));
+                            }
+                            break;
+
+                        case 'forcevector':
+                            if (!is_image('unknown.' . $image_size[3], IMAGE_CRITERIA_VECTOR, true)) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_NOT_VECTOR', escape_html($val)));
+                            }
+                            break;
+
+                        case 'forcefileextension':
+                            if (!in_array($image_size[3], array_map('strtolower', array_map('trim', explode(',', str_replace('.', '', $attributes['embed'])))))) {
+                                if ($delete_on_error !== null) {
+                                    unlink($delete_on_error);
+                                }
+                                warn_exit(array_key_exists('error', $attributes) ? make_string_tempcode($attributes['error']) : do_lang_tempcode('FXML_IMAGE_INVALID_FILE_EXTENSION', escape_html($val), escape_html($attributes['embed'])));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    return $val;
 }
 
 /**
@@ -656,35 +885,35 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     if (!$dirs_only) {
         $expected_slashes = substr_count($type, '/') + 1;
 
-        $query = 'SELECT DISTINCT id,path,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
+        $query = 'SELECT DISTINCT id,url,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
         if (!$db_only) {
-            $query .= 'path NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('path', 'themes/default/images/blank.gif') . ' AND ';
+            $query .= 'url NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('url', 'themes/default/images/blank.gif') . ' AND ';
         }
-        $query .= '(' . db_string_equal_to('theme', $theme) . ' OR ' . db_string_equal_to('theme', 'default') . ') AND id LIKE \'' . db_encode_like($type . '%') . '\' ORDER BY path';
+        $query .= '(' . db_string_equal_to('theme', $theme) . ' OR ' . db_string_equal_to('theme', 'default') . ') AND id LIKE \'' . db_encode_like($type . '%') . '\' ORDER BY url';
         $rows = $db->query($query);
         foreach ($rows as $row) {
-            if ($row['path'] == '') {
+            if ($row['url'] == '') {
                 continue;
             }
 
             foreach ($skip as $s) {
-                if (preg_match('#(^|/)' . preg_quote($s, '#') . '(/|$)#', $row['path']) != 0) {
+                if (preg_match('#(^|/)' . preg_quote($s, '#') . '(/|$)#', $row['url']) != 0) {
                     continue 2;
                 }
             }
 
-            if ((!$recurse) && (substr_count($row['path'], '/') > $expected_slashes)) {
+            if ((!$recurse) && (substr_count($row['url'], '/') > $expected_slashes)) {
                 continue;
             }
 
-            if ((url_is_local($row['path'])) && (!$include_missing) && (!file_exists(((substr($row['path'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['path'])))) {
+            if ((url_is_local($row['url'])) && (!$include_missing) && (!file_exists(((substr($row['url'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['url'])))) {
                 continue;
             }
-            if ($row['path'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again
+            if ($row['url'] != 'themes/default/images/blank.gif') { // We sometimes associate to blank.gif to essentially delete images so they can never be found again
                 // Optimisation to avoid having to build the full theme image table for a new theme in one step (huge numbers of queries)
                 if (!multi_lang()) {
                     if (($theme == $row['theme']) || (($row['theme'] == 'default') && (!isset($THEME_IMAGES_CACHE['site'][$row['id']])))) {
-                        $THEME_IMAGES_CACHE['site'][$row['id']] = $row['path'];
+                        $THEME_IMAGES_CACHE['site'][$row['id']] = $row['url'];
                     }
                 }
 
@@ -875,16 +1104,16 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
  *
  * @param  ?ID_TEXT $it The currently selected image ID (null: none selected)
  * @param  ?string $filter An SQL where clause (including the WHERE), that filters the query somehow (null: none)
- * @param  boolean $do_id Whether to show IDs as the list entry captions, rather than paths
+ * @param  boolean $do_id Whether to show IDs as the list entry captions, rather than URLs
  * @param  boolean $include_all Whether to include images not yet used (i.e not in theme_images map yet)
+ * @param  string $under Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as URLs (blank: no limitation)
  * @return Tempcode Tempcode for a list selection of theme images
- * @param  string $under Only include images under this path. Including a trailing slash unless you specifically want to filter allowing filename stubs as well as paths (blank: no limitation)
  */
 function create_selection_list_theme_images($it = null, $filter = null, $do_id = false, $include_all = false, $under = '')
 {
     $out = new Tempcode();
     if (!$include_all) {
-        $rows = $GLOBALS['SITE_DB']->query('SELECT id,path FROM ' . get_table_prefix() . 'theme_images WHERE ' . db_string_equal_to('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . ' ' . $filter . ' ORDER BY path');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT id,url FROM ' . get_table_prefix() . 'theme_images WHERE ' . db_string_equal_to('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . ' ' . $filter . ' ORDER BY url');
         foreach ($rows as $myrow) {
             $id = $myrow['id'];
 
@@ -894,7 +1123,7 @@ function create_selection_list_theme_images($it = null, $filter = null, $do_id =
 
             $selected = ($id == $it);
 
-            $out->attach(form_input_list_entry($id, $selected, ($do_id) ? $id : $myrow['path']));
+            $out->attach(form_input_list_entry($id, $selected, ($do_id) ? $id : $myrow['url']));
         }
     } else {
         $rows = get_all_image_ids_type($under, true);
@@ -927,19 +1156,19 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
         return; // Still being used
     }
 
-    $path = ($old == '') ? null : find_theme_image($old, true, true);
-    if (($path === null) || ($path == '')) {
+    $url = ($old == '') ? null : find_theme_image($old, true, true);
+    if (($url === null) || ($url == '')) {
         return;
     }
 
-    if ((strpos($path, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array('path' => $path)) == 1)) {
+    if ((strpos($url, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array('url' => $url)) == 1)) {
         if ($db === null) {
             $db = $GLOBALS['SITE_DB'];
         }
         $count = $db->query_select_value($table, 'COUNT(*)', array($field => $old));
         if ($count == 0) {
-            @unlink(get_custom_file_base() . '/' . $path);
-            sync_file(get_custom_file_base() . '/' . $path);
+            @unlink(get_custom_file_base() . '/' . urldecode($url));
+            sync_file(get_custom_file_base() . '/' . urldecode($url));
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $old));
         }
     }

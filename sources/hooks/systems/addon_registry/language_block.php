@@ -358,6 +358,7 @@ class Hook_addon_registry_language_block
             'themes/default/images/flags_large/yt.svg',
             'themes/default/images/flags_large/za.svg',
             'themes/default/images/flags_large/zm.svg',
+            'themes/default/images/flags_large/zw.svg',
         );
     }
 

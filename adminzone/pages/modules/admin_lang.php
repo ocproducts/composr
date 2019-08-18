@@ -439,9 +439,9 @@ class Module_admin_lang
 
         // Make our translation page
         require_code('translation');
-        $has_translation = (has_translation()) && (get_google_lang_code($lang) !== null);
+        $has_translation = has_translation(get_site_default_lang(), $lang);
         if ($has_translation) {
-            $translation_credit = get_google_translate_credit();
+            $translation_credit = get_translation_credit(get_site_default_lang(), $lang);
         } else {
             $translation_credit = '';
         }
@@ -700,9 +700,9 @@ class Module_admin_lang
         // Make our translation page
         $lines = '';
         require_code('translation');
-        $has_translation = (has_translation()) && (get_google_lang_code($lang) !== null);
+        $has_translation = has_translation($base_lang, $lang);
         if ($has_translation) {
-            $translation_credit = get_google_translate_credit();
+            $translation_credit = get_translation_credit($base_lang, $lang);
         } else {
             $translation_credit = '';
         }

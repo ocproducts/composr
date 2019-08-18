@@ -32,9 +32,6 @@ class Hook_ecommerce_bank
         require_lang('bank');
 
         $bank_dividend = intval(get_option('bank_dividend'));
-        // IDEA: Make 30 days a config option too, or even have multiple products?
-        // IDEA: Send e-mail saying bank returned money?
-        // IDEA: Have the bank do marketing to people?
 
         return array(
             'category_name' => do_lang('BANKING', integer_format($bank_dividend)),

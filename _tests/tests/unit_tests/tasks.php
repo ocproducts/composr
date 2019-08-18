@@ -28,8 +28,7 @@ class tasks_test_set extends cms_test_case
 
     public function testNewsletterCSV()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testNewsletterCSV')) {
+        if (($this->only !== null) && ($this->only != 'testNewsletterCSV')) {
             return;
         }
 
@@ -57,8 +56,7 @@ class tasks_test_set extends cms_test_case
 
     public function testCatalogueCSV()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testCatalogueCSV')) {
+        if (($this->only !== null) && ($this->only != 'testCatalogueCSV')) {
             return;
         }
 
@@ -91,10 +89,7 @@ class tasks_test_set extends cms_test_case
 
     public function testCalendarICal()
     {
-        $only = get_param_string('only', null);
-        $debugging = (get_param_integer('debug', 0) == 1);
-
-        if (($only !== null) && ($only != 'testCalendarICal')) {
+        if (($this->only !== null) && ($this->only != 'testCalendarICal')) {
             return;
         }
 
@@ -160,7 +155,7 @@ class tasks_test_set extends cms_test_case
             $cookies = array('JSESSIONID' => $session_id);
             $extra_headers = array();
             $url = qualify_url(html_entity_decode($rel_url, ENT_QUOTES), 'https://ical-validator.herokuapp.com/validate/');
-            $result = http_get_contents($url, array('ignore_http_status' => $debugging, 'trigger_error' => false, 'files' => $files, 'post_params' => $post_params, 'cookies' => $cookies, 'extra_headers' => $extra_headers));
+            $result = http_get_contents($url, array('ignore_http_status' => $this->debug, 'trigger_error' => false, 'files' => $files, 'post_params' => $post_params, 'cookies' => $cookies, 'extra_headers' => $extra_headers));
             */
 
             $matches = array();
@@ -168,8 +163,8 @@ class tasks_test_set extends cms_test_case
             $rel_url = $matches[1];
             $post_params = array('snippet' => $ical);
             $url = qualify_url(html_entity_decode($rel_url, ENT_QUOTES), 'https://ical-validator.herokuapp.com/validate/');
-            $result = http_get_contents($url, array('ignore_http_status' => $debugging, 'trigger_error' => false, 'post_params' => $post_params));
-            if ($debugging) {
+            $result = http_get_contents($url, array('ignore_http_status' => $this->debug, 'trigger_error' => false, 'post_params' => $post_params));
+            if ($this->debug) {
                 @var_dump($url);
                 @var_dump($result);
                 exit();
@@ -195,7 +190,7 @@ class tasks_test_set extends cms_test_case
 
         $ok = ($last_rows_before == $last_rows_after);
         $this->assertTrue($ok, 'Our test events changed during the export/import cycle)');
-        if ((!$ok) && (get_param_integer('debug', 0) == 1)) {
+        if ((!$ok) && ($this->debug)) {
             @var_dump($last_rows_before);
             @var_dump($last_rows_after);
         }
@@ -221,8 +216,7 @@ class tasks_test_set extends cms_test_case
 
     public function testMemberCSV()
     {
-        $only = get_param_string('only', null);
-        if (($only !== null) && ($only != 'testMemberCSV')) {
+        if (($this->only !== null) && ($this->only != 'testMemberCSV')) {
             return;
         }
 

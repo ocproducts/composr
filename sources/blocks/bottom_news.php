@@ -54,7 +54,7 @@ class Block_bottom_news
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
         }
-        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 15;
+        $info['ttl'] = (get_value('disable_block_timeout') === '1') ? (60 * 60 * 24 * 365 * 5/*5 year timeout*/) : 15;
         return $info;
     }
 
@@ -94,7 +94,7 @@ class Block_bottom_news
         } else {
             require_code('selectcode');
             $selects_1 = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'p.news_category', 'id');
-            $selects_2 = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'd.news_category', 'id');
+            $selects_2 = selectcode_to_sqlfragment($select, 'r.id', 'news_categories', null, 'd.news_entry_category', 'id');
             $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
         }
         if ($blogs === 0) {
@@ -117,7 +117,7 @@ class Block_bottom_news
         if ($select_and != '') {
             require_code('selectcode');
             $selects_and_1 = selectcode_to_sqlfragment($select_and, 'r.id', 'news_categories', null, 'p.news_category', 'id');
-            $selects_and_2 = selectcode_to_sqlfragment($select_and, 'r.id', 'news_categories', null, 'd.news_category', 'id');
+            $selects_and_2 = selectcode_to_sqlfragment($select_and, 'r.id', 'news_categories', null, 'd.news_entry_category', 'id');
             $q_filter .= ' AND (' . $selects_and_1 . ' OR ' . $selects_and_2 . ')';
         }
 

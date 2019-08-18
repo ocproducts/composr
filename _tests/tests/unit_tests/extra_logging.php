@@ -36,8 +36,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testProfiler()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testProfiler')) {
+        if (($this->only !== null) && ($this->only != 'testProfiler')) {
             return;
         }
 
@@ -70,8 +69,7 @@ class extra_logging_test_set extends cms_test_case
             return;
         }
 
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testMemoryMonitorSlowURLs')) {
+        if (($this->only !== null) && ($this->only != 'testMemoryMonitorSlowURLs')) {
             return;
         }
 
@@ -88,8 +86,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testMemoryTracking()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testMemoryTracking')) {
+        if (($this->only !== null) && ($this->only != 'testMemoryTracking')) {
             return;
         }
 
@@ -106,8 +103,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeMemory()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeMemory')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeMemory')) {
             return;
         }
 
@@ -118,8 +114,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeIDELinkage()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeIDELinkage')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeIDELinkage')) {
             return;
         }
 
@@ -130,8 +125,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeQuery()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeQuery')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeQuery')) {
             return;
         }
 
@@ -142,8 +136,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeTranslateContent()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeTranslateContent')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeTranslateContent')) {
             return;
         }
 
@@ -154,8 +147,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeValidate()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeValidate')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeValidate')) {
             return;
         }
 
@@ -166,8 +158,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeThemeImages()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeThemeImages')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeThemeImages')) {
             return;
         }
 
@@ -178,8 +169,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeTemplates()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeTemplates')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeTemplates')) {
             return;
         }
 
@@ -190,8 +180,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeTree()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeTree')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeTree')) {
             return;
         }
 
@@ -202,8 +191,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeShowMarkers()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeShowMarkers')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeShowMarkers')) {
             return;
         }
 
@@ -214,8 +202,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testSpecialPageTypeShowEditLinks()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testSpecialPageTypeShowEditLinks')) {
+        if (($this->only !== null) && ($this->only != 'testSpecialPageTypeShowEditLinks')) {
             return;
         }
 
@@ -226,8 +213,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testErrorLog()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testErrorLog')) {
+        if (($this->only !== null) && ($this->only != 'testErrorLog')) {
             return;
         }
 
@@ -243,8 +229,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testPermissionChecksLog()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testPermissionChecksLog')) {
+        if (($this->only !== null) && ($this->only != 'testPermissionChecksLog')) {
             return;
         }
 
@@ -264,8 +249,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testQueryLog()
     {
-        $limit_to = get_param_string('limit_to', null);
-        if (($limit_to !== null) && ($limit_to != 'testQueryLog')) {
+        if (($this->only !== null) && ($this->only != 'testQueryLog')) {
             return;
         }
 

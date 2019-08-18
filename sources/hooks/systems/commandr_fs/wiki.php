@@ -105,7 +105,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         require_code('wiki');
 
         $parent_id = $this->_integer_category($category);
-        $description = $this->_default_property_str($properties, 'description');
+        $description = $this->_default_property_str($properties, 'the_description');
         $notes = $this->_default_property_str($properties, 'notes');
         $show_posts = $this->_default_property_int($properties, 'show_posts');
         $member_id = $this->_default_property_member($properties, 'submitter');
@@ -151,7 +151,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
 
         $properties = array(
             'label' => get_translated_text($row['title']),
-            'description' => get_translated_text($row['description']),
+            'the_description' => get_translated_text($row['the_description']),
             'notes' => $row['notes'],
             'show_posts' => $row['show_posts'],
             'submitter' => remap_resource_id_as_portable('member', $row['submitter']),

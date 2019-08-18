@@ -160,6 +160,8 @@ class Module_admin_lookup
             }
             if ($id === null) {
                 $id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            } else {
+                log_it('INVESTIGATE_USER', strval($id), $name);
             }
             if ($ip === null) {
                 $ip = '';

@@ -291,7 +291,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $value_found = get_translated_text($key, $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
             if ($value_found != '') {
                 $description = make_string_tempcode(escape_html($value_found));
-                $has_translation = (has_translation()) && (get_google_lang_code(user_lang()) !== null) && (user_lang() != get_site_default_lang());
+                $has_translation = (has_translation(get_site_default_lang(), user_lang())) && (user_lang() != get_site_default_lang());
                 if ($has_translation) {
                     $actions = do_template('TRANSLATE_ACTION', array(
                         '_GUID' => '441cd96588b2a4f74e94003643262833',
@@ -369,7 +369,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $value_found = do_lang($key, null, null, null, null, false);
             $description = array_key_exists($key, $descriptions) ? make_string_tempcode($descriptions[$key]) : new Tempcode();
             if ($value_found !== null) {
-                $has_translation = (has_translation()) && (get_google_lang_code(user_lang()) !== null) && (user_lang() != get_site_default_lang());
+                $has_translation = (has_translation(get_site_default_lang(), user_lang())) && (user_lang() != get_site_default_lang());
                 if ($has_translation) {
                     $actions = do_template('TRANSLATE_ACTION', array(
                         '_GUID' => '031eb918cb3bcaf4339130b46f8b1b8a',

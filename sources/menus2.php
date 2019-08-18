@@ -488,10 +488,10 @@ function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = 
         foreach ($node['children'] as $child) {
             $theme_image_code = null;
             if ($child['extra_meta']['image'] !== null) {
-                $_theme_image_code = $child['extra_meta']['image'];
-                if (substr($_theme_image_code, 0, strlen(get_custom_base_url() . '/')) == get_custom_base_url() . '/') {
-                    $_theme_image_code = substr($_theme_image_code, strlen(get_custom_base_url() . '/'));
-                    $theme_image_code = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('path' => $_theme_image_code));
+                $_theme_image_url = $child['extra_meta']['image'];
+                if (substr($_theme_image_url, 0, strlen(get_custom_base_url() . '/')) == get_custom_base_url() . '/') {
+                    $_theme_image_url = substr($theme_image_code, strlen(get_custom_base_url() . '/'));
+                    $theme_image_code = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('url' => $_theme_image_url));
                 }
             }
 

@@ -38,7 +38,7 @@ class Hook_config_enable_timezones
             'explanation' => 'CONFIG_OPTION_enable_timezones',
             'shared_hosting_restricted' => '0',
             'list_options' => '0|1|2',
-            'order_in_category_group' => 5,
+            'order_in_category_group' => 6,
             'required' => true,
 
             'public' => false,

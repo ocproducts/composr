@@ -57,8 +57,8 @@ $PTOKENS['QUESTION'] = '?';
 $PTOKENS['COMMA'] = ',';
 $PTOKENS['CURLY_CLOSE'] = '}';
 $PTOKENS['CURLY_OPEN'] = '{';
-$PTOKENS['BRACKET_OPEN'] = '(';
-$PTOKENS['BRACKET_CLOSE'] = ')';
+$PTOKENS['PARENTHESIS_OPEN'] = '(';
+$PTOKENS['PARENTHESIS_CLOSE'] = ')';
 $PTOKENS['COMMAND_TERMINATE'] = ';';
 $PTOKENS['EXTRACT_OPEN'] = '[';
 $PTOKENS['EXTRACT_CLOSE'] = ']';
@@ -495,8 +495,21 @@ function lex($text = null)
                             }
                         }
                     }
-                    if (($TEXT[$i] != ' ') && ($TEXT[$i] != "\n") && ($TEXT[$i] != "\r") && (in_array($token_found, array('IF', 'ELSEIF', 'FOREACH', 'FOR', 'WHILE', 'DO')))) {
-                        log_warning('Missing following spacing (for ' . $token_found . ') against coding standards', $i, true);
+                    if (in_array($token_found, array('IF', 'ELSE', 'ELSEIF', 'FOREACH', 'FOR', 'FOREACH', 'WHILE', 'DO', 'TRY', 'CATCH', 'SWITCH', 'INTERFACE', 'CLASS', 'FUNCTION'))) {
+                        $line_end = strpos($TEXT, "\n", $i);
+                        if ($line_end !== false) {
+                            $remaining_line = str_replace("\r", '', substr($TEXT, $i, $line_end - $i + 1));
+
+                            $next_line_end = strpos($TEXT, "\n", $line_end + 1);
+                            $next_line = ($next_line_end === false) ? '' : substr($TEXT, $line_end + 1, $next_line_end - $line_end - 1 + 1);
+
+                            if ((strpos($remaining_line, ' {') === false) && (strpos($remaining_line, '/*') === false) && (($token_found != 'WHILE') || (substr($remaining_line, -2) != ";\n")) && (strpos($next_line, '{') !== false/*brace should move to own line for multi-line boolean checks*/) && (in_array($token_found, array('IF', 'ELSE', 'ELSEIF', 'FOREACH', 'FOR', 'FOREACH', 'WHILE', 'DO', 'TRY', 'CATCH', 'SWITCH')))) {
+                                log_warning('Incorrect bracing spacing (for ' . $token_found . ') against coding standards', $i, true);
+                            }
+                            if ((strpos($remaining_line, ' {') !== false) && (strpos($remaining_line, ' (') === false) && (strpos($next_line, '{') === false/*To weed out edge cases like when a parameter default contains ' {'*/) && (in_array($token_found, array('INTERFACE', 'CLASS', 'FUNCTION')))) {
+                                log_warning('Incorrect bracing spacing (for ' . $token_found . ') against coding standards', $i, true);
+                            }
+                        }
                     }
                     if (($i_current > 0) && (($TEXT[$i_current - 1] != ' ') || (($TEXT[$i] != ' ') && ($TEXT[$i] != "\n") && ($TEXT[$i] != "\r"))) && (in_array($token_found, array('BOOLEAN_AND', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_OR_2')))) {
                         log_warning('Missing surrounding spacing (for ' . $token_found . ') against coding standards', $i, true);
@@ -706,9 +719,9 @@ function lex($text = null)
                         }
                         if (count($heredoc_buildup) > 0) {
                             $tokens[] = array('IDENTIFIER', 'strval', $i);
-                            $tokens[] = array('BRACKET_OPEN', $i);
+                            $tokens[] = array('PARENTHESIS_OPEN', $i);
                             $tokens = array_merge($tokens, $heredoc_buildup);
-                            $tokens[] = array('BRACKET_CLOSE', $i);
+                            $tokens[] = array('PARENTHESIS_CLOSE', $i);
                             $tokens[] = array('CONC', $i);
                         }
                         $special_token_value_2 = '';
@@ -836,7 +849,7 @@ function lex($text = null)
                     $lex_state = PLEXER_FREE;
                     $tokens[] = array('string_literal', $special_token_value, $i);
                     if ((isset($GLOBALS['CHECKS'])) && (isset($GLOBALS['PEDANTIC'])) && (strpos($special_token_value, '<') !== false) && (strpos($special_token_value, '<') != strlen($special_token_value) - 1)) {
-                        log_warning('Should\'t this be templated?', $i, true);
+                        log_warning('Shouldn\'t this be templated?', $i, true);
                     }
                     $special_token_value = '';
                     break;

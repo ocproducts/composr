@@ -1385,7 +1385,7 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
         $myfile = fopen(get_custom_file_base() . '/data_custom/ecommerce.log', 'at');
         flock($myfile, LOCK_EX);
         fseek($myfile, 0, SEEK_END);
-        fwrite($myfile, date('Y-m-d H:i:s') . "\n");
+        fwrite($myfile, loggable_date() . "\n");
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");
         fwrite($myfile, "\n\n");

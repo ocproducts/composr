@@ -237,14 +237,14 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         } else {
             $image_code = 'cns_emoticons/' . $emoticon_code;
         }
-        $url_path = cms_rawurlrecode('themes/default/images_custom/' . rawurlencode(basename($path)));
+        $url = cms_rawurlrecode('themes/default/images_custom/' . rawurlencode(basename($path)));
 
         // Images cleanup pipeline
         $full_path = get_custom_file_base() . '/' . $path;
         handle_images_cleanup_pipeline($full_path);
 
         $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $image_code));
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $image_code, 'theme' => 'default', 'path' => $url_path, 'lang' => get_site_default_lang()));
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $image_code, 'theme' => 'default', 'url' => $url, 'lang' => get_site_default_lang()));
         $GLOBALS['FORUM_DB']->query_delete('f_emoticons', array('e_code' => ':' . $emoticon_code . ':'), '', 1);
         $GLOBALS['FORUM_DB']->query_insert('f_emoticons', array(
             'e_code' => ':' . $emoticon_code . ':',

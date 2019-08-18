@@ -942,8 +942,7 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != $old_email_address) && ($email_address != STRING_MAGIC_NULL))
-        {
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != $old_email_address) && ($email_address != STRING_MAGIC_NULL)) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if (($test !== null) && ($test != $member_id)) {
                 warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
@@ -1004,12 +1003,6 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
 
             if (array_key_exists($field_id, $custom_fields)) {
                 if ($check_correctness) {
-                    if (($field['cf_public_view'] == 0) && ($member_id != get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                        access_denied('I_ERROR');
-                    }
-                    if (($field['cf_owner_view'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
-                        access_denied('I_ERROR');
-                    }
                     if (($field['cf_owner_set'] == 0) && ($member_id == get_member()) && (!has_privilege(get_member(), 'view_any_profile_field'))) {
                         access_denied('I_ERROR');
                     }
@@ -1708,23 +1701,23 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
             }
             warn_exit(do_lang_tempcode('USERNAME_ALREADY_EXISTS'));
         }
-        $username_changed = ($test === null);
+        $username_known_available = ($test === null);
     } else {
-        $username_changed = false;
+        $username_known_available = false;
     }
 
     if ($username !== null) {
         // Check for disallowed symbols in username
         $disallowed_characters = array(/*'<','>','&','"',"'",'$',','*/);
         foreach ($disallowed_characters as $disallowed_character) {
-            if ((strpos($username, $disallowed_character) !== false) && ($username_changed)) {
+            if ((strpos($username, $disallowed_character) !== false) && ($username_known_available)) {
                 if ($return_errors) {
                     return do_lang_tempcode('USERNAME_BAD_SYMBOLS');
                 }
                 warn_exit(do_lang_tempcode('USERNAME_BAD_SYMBOLS'));
             }
         }
-        if ((strpos($username, '@') !== false) && (strpos($username, '.') !== false) && ($username_changed)) {
+        if ((strpos($username, '@') !== false) && (strpos($username, '.') !== false) && ($username_known_available)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_BAD_SYMBOLS');
             }
@@ -1737,7 +1730,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
         if ($username !== null) {
             $_maximum_username_length = get_option('maximum_username_length');
             $maximum_username_length = intval($_maximum_username_length);
-            if ((cms_mb_strlen($username) > $maximum_username_length) && ($username_changed)) {
+            if ((cms_mb_strlen($username) > $maximum_username_length) && ($username_known_available)) {
                 if ($return_errors) {
                     return do_lang_tempcode('USERNAME_TOO_LONG', escape_html(integer_format($maximum_username_length)));
                 }
@@ -1745,7 +1738,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
             }
             $_minimum_username_length = get_option('minimum_username_length');
             $minimum_username_length = intval($_minimum_username_length);
-            if ((cms_mb_strlen($username) < $minimum_username_length) && ($username_changed)) {
+            if ((cms_mb_strlen($username) < $minimum_username_length) && ($username_known_available)) {
                 if ($return_errors) {
                     return do_lang_tempcode('USERNAME_TOO_SHORT', escape_html(integer_format($minimum_username_length)));
                 }
@@ -1764,7 +1757,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     // Check for whitespace
     if ($username !== null) {
         $prohibit_username_whitespace = get_option('prohibit_username_whitespace');
-        if (($prohibit_username_whitespace === '1') && (cms_preg_match_safe('#\s#', $username) != 0) && ($username_changed)) {
+        if (($prohibit_username_whitespace === '1') && (cms_preg_match_safe('#\s#', $username) != 0) && ($username_known_available)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
@@ -1773,7 +1766,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     }
     if ($password !== null) {
         $prohibit_password_whitespace = get_option('prohibit_password_whitespace');
-        if (($prohibit_password_whitespace === '1') && (cms_preg_match_safe('#\s#', $password) != 0) && ($username_changed)) {
+        if (($prohibit_password_whitespace === '1') && (cms_preg_match_safe('#\s#', $password) != 0) && ($username_known_available)) {
             if ($return_errors) {
                 return do_lang_tempcode('USERNAME_PASSWORD_WHITESPACE');
             }
@@ -1782,7 +1775,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
     }
 
     // Check against restricted usernames
-    if ((get_page_name() != 'admin_cns_members') && ($username_changed)) {
+    if ((get_page_name() != 'admin_cns_members') && ($username_known_available)) {
         $restricted_usernames = explode(',', get_option('restricted_usernames'));
         $restricted_usernames[] = do_lang('GUEST');
         $restricted_usernames[] = do_lang('UNKNOWN');
@@ -1915,7 +1908,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             $from_file = http_get_contents($stub . $avatar_url, array('byte_limit' => 1024 * 1024 * 4/*reasonable limit*/, 'triger_error' => false));
         }
         $test = cms_getimagesizefromstring($from_file, get_file_extension($avatar_url));
-        if ($test !== null) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
+        if (($test !== null) && ($test[0] !== null) && ($test[1] !== null)) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
             list($sx, $sy) = $test;
 
             require_code('cns_groups');
