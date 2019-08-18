@@ -1,6 +1,6 @@
 var passwordPrompt = '{PASSWORD_PROMPT;/}';
 /**
- * NOTE: This function also has a copy in CMS_TEMPLATES.js so update that as well when modifying here. TODO Salman change CMS_TEMPLATES.js to wherever the function is going to be now
+ * NOTE: This function also has a copy in themes/default/javascript/installer.js so update that as well when modifying here.
  * @param form
  * @return {boolean}
  */

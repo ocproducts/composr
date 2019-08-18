@@ -238,7 +238,7 @@
         }
 
         /**
-         * NOTE: This function also has a copy in PASSWORD_CHECK_JS.tpl so update that as well when modifying here.
+         * NOTE: This function also has a copy in themes/default/templates/PASSWORD_CHECK_JS.tpl so update that as well when modifying here.
          * @param form
          * @return {boolean}
          */
