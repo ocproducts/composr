@@ -1024,6 +1024,11 @@ function get_webservice_result($error_message)
     require_code('http');
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand);
     list($http_result) = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 60 * 24 * 31/*once a month*/);
+
+    if (!is_object($http_result)) {
+        return null;
+    }
+
     if ($http_result->download_mime_type != 'text/plain') {
         return null;
     }
