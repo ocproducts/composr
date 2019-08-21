@@ -986,6 +986,7 @@ class Module_admin_setupwizard
         $submit_name = do_lang_tempcode('PROCEED');
         $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
+        require_code('themes2');
         $fields = new Tempcode();
         $fields->attach(form_input_colour(do_lang_tempcode('SEED_COLOUR'), do_lang_tempcode('DESCRIPTION_SEED_COLOUR'), 'seed_hex', '#' . find_theme_seed('default'), true));
         $fields->attach(form_input_tick(do_lang_tempcode('DARK_THEME'), do_lang_tempcode('DESCRIPTION_DARK_THEME'), 'dark', get_param_integer('dark', 0) == 1));
