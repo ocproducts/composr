@@ -1261,8 +1261,10 @@ function _watermark_corner($source, $watermark_url, $x, $y)
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $layout_mode = GALLERY_LAYOUT_MODE_DEFAULT, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $allow_rating = 1, $allow_comments = 1, $skip_exists_check = false, $add_date = null, $g_owner = null, $meta_keywords = '', $meta_description = '', $uniqify = false)
+function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $layout_mode = null, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $allow_rating = 1, $allow_comments = 1, $skip_exists_check = false, $add_date = null, $g_owner = null, $meta_keywords = '', $meta_description = '', $uniqify = false)
 {
+    require_code('galleries');
+
     if ($layout_mode === null) {
         $layout_mode = GALLERY_LAYOUT_MODE_DEFAULT;
     }
