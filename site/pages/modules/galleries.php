@@ -69,7 +69,7 @@ class Module_galleries
         require_code('files');
         if (!$GLOBALS['DEV_MODE']) {
             deldir_contents(get_custom_file_base() . '/uploads/galleries', true, true);
-            deldir_contents(get_custom_file_base() . '/uploads/galleries_thumbs', true);
+            deldir_contents(get_custom_file_base() . '/uploads/galleries_thumbs', true, true);
         }
     }
 
@@ -230,9 +230,17 @@ HTML;
                 </div>[/semihtml]
 HTML;
 
-            add_image('Slide 1', 'homepage_hero_slider', trim($slide_1_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/bastei_bridge.png', 1, 0, 0, 0, '', null, null, null, 0);
-            add_image('Slide 2', 'homepage_hero_slider', trim($slide_2_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/rustic.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/rustic.png', 1, 0, 0, 0, '', null, null, null, 0);
-            add_image('Slide 3', 'homepage_hero_slider', trim($slide_3_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/waterfall.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/waterfall.png', 1, 0, 0, 0, '', null, null, null, 0);
+            $image_owner_id = null;
+            if (isset($GLOBALS['FORUM_DB'])) {
+                $super_group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array('g_is_super_admin' => 1));
+                if ($super_group_id !== null) {
+                    $image_owner_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_primary_group' => $super_group_id));
+                }
+            }
+
+            add_image('Slide 1', 'homepage_hero_slider', trim($slide_1_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/bastei_bridge.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/bastei_bridge.png', 1, 0, 0, 0, '', $image_owner_id, null, null, 0);
+            add_image('Slide 2', 'homepage_hero_slider', trim($slide_2_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/rustic.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/rustic.png', 1, 0, 0, 0, '', $image_owner_id, null, null, 0);
+            add_image('Slide 3', 'homepage_hero_slider', trim($slide_3_contents) . "\n", 'uploads/galleries/root/homepage_hero_slider/waterfall.jpg', 'uploads/galleries_thumbs/root/homepage_hero_slider/waterfall.png', 1, 0, 0, 0, '', $image_owner_id, null, null, 0);
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 7)) {

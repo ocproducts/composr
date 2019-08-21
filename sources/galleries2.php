@@ -426,11 +426,13 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         generate_resource_fs_moniker('image', strval($id), null, null, true);
     }
 
-    require_code('content2');
-    if (($meta_keywords == '') && ($meta_description == '')) {
-        seo_meta_set_for_implicit('image', strval($id), array($description), $description);
-    } else {
-        seo_meta_set_for_explicit('image', strval($id), $meta_keywords, $meta_description);
+    if (!running_script('install')) {
+        require_code('content2');
+        if (($meta_keywords == '') && ($meta_description == '')) {
+            seo_meta_set_for_implicit('image', strval($id), array($description), $description);
+        } else {
+            seo_meta_set_for_explicit('image', strval($id), $meta_keywords, $meta_description);
+        }
     }
 
     if ($validated == 1) {
@@ -449,12 +451,14 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
-    delete_cache_entry('side_galleries');
-    delete_cache_entry('main_personal_galleries_list');
-    delete_cache_entry('main_gallery_embed');
-    delete_cache_entry('main_gallery_mosaic');
-    delete_cache_entry('main_image_fader');
-    delete_cache_entry('main_image_slider');
+    if (!running_script('install')) {
+        delete_cache_entry('side_galleries');
+        delete_cache_entry('main_personal_galleries_list');
+        delete_cache_entry('main_gallery_embed');
+        delete_cache_entry('main_gallery_mosaic');
+        delete_cache_entry('main_image_fader');
+        delete_cache_entry('main_image_slider');
+    }
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('image', strval($id), $submitter);

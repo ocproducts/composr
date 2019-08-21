@@ -286,7 +286,16 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
                 if ($entryname[0] == '.') {
                     continue;
                 }
-                if (in_array(str_replace(get_file_base() . '/', '', $dir) . '/' . $entryname, array('uploads/banners/advertise_here.png', 'uploads/banners/donate.png', 'themes/map.ini', 'themes/default'))) {
+
+                $default_paths = array('uploads/banners/advertise_here.png', 'uploads/banners/donate.png', 'themes/map.ini', 'themes/default');
+
+                $hero_slider_images = array('bastei_bridge', 'rustic', 'waterfall');
+                foreach ($hero_slider_images as $img) {
+                    $default_paths[] = 'uploads/galleries/root/homepage_hero_slider/' . $img . '.jpg';
+                    $default_paths[] = 'uploads/galleries_thumbs/root/homepage_hero_slider/' . $img . '.png';
+                }
+
+                if (in_array(str_replace(get_file_base() . '/', '', $dir) . '/' . $entryname, $default_paths)) {
                     continue;
                 }
             }
