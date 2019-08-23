@@ -43,24 +43,32 @@
     };
 
     $cms.templates.blockMainNewsletterSignup = function (params, container) {
-        var nid = strVal(params.nid);
+        var nid = strVal(params.nid),
+            validValue;
 
-        $dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
-            if (!$cms.form.checkFieldForBlankness(form.elements['address' + nid])) {
-                e.preventDefault();
+        $dom.on(container, 'submit', '.js-form-newsletter-email-subscribe', function (e, form) {
+            var emailInput = form.elements['address' + nid];
+
+            if (validValue === emailInput.value) {
                 return;
             }
 
-            if (!form.elements['address' + nid].value.match(/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+$/)) {
-                e.preventDefault();
+            e.preventDefault();
+
+            if (!$cms.form.checkFieldForBlankness(emailInput)) {
+                return;
+            }
+
+            if (!emailInput.value.match(/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+$/)) {
                 $cms.ui.alert('{!javascript:NOT_A_EMAIL;}');
                 return;
             }
 
+            validValue = emailInput.value;
+
             $cms.ui.disableFormButtons(form);
 
             // Tracking
-            e.preventDefault();
             $cms.gaTrack(null, '{!newsletter:NEWSLETTER_JOIN;}').then(function () {
                 $dom.submit(form);
             });

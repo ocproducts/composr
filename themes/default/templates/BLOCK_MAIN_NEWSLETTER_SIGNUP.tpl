@@ -3,7 +3,7 @@
 {$REQUIRE_JAVASCRIPT,checking}
 {$REQUIRE_JAVASCRIPT,newsletter}
 
-<div id="{$GET*,ajax_block_main_newsletter_signup_wrapper}" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['.*'], targetsSelector: '#{$GET%,ajax_block_main_newsletter_signup_wrapper} form' }">
+<div id="{$GET*,ajax_block_main_newsletter_signup_wrapper}" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['.*'], targetsSelector: '.js-form-newsletter-email-subscribe' }">
    {+START,IF_PASSED,MSG}
        <p>{MSG}</p>
    {+END}
@@ -11,13 +11,13 @@
    <section class="box box---block-main-newsletter-signup" data-tpl="blockMainNewsletterSignup" data-tpl-params="{+START,PARAMS_JSON,NID}{_*}{+END}"><div class="box-inner">
        <h3>{!NEWSLETTER}{$?,{$NEQ,{NEWSLETTER_TITLE},{!GENERAL}},: {NEWSLETTER_TITLE*}}</h3>
    
-       <form class="js-form-submit-newsletter-check-email-field" title="{!NEWSLETTER}" action="{URL*}" method="post">
+       <form class="js-form-newsletter-email-subscribe" title="{!NEWSLETTER}" action="{URL*}" method="post">
            {$INSERT_SPAMMER_BLACKHOLE}
    
            <p class="accessibility-hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
    
            <div class="form-group">
-               <input class="form-control form-control-wide" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />
+               <input class="form-control form-control-wide" id="baddress" name="address{NID*}" autocomplete="email" placeholder="{!EMAIL_ADDRESS}" />
            </div>
    
            <p class="proceed-button">
