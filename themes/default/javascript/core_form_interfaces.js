@@ -667,12 +667,14 @@
             });
         }
 
-        var soundObject = (typeof window.Audio !== 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
+        if (document.getElementById('captcha-audio')) {
+            var soundObject = (typeof window.Audio !== 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
 
-        $dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
-            e.preventDefault();
-            $cms.playSelfAudioLink(link, soundObject);
-        });
+            $dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
+                e.preventDefault();
+                $cms.playSelfAudioLink(link, soundObject);
+            });
+        }
     };
 
     $cms.templates.formScreenInputList = function formScreenInputList(params, selectEl) {
