@@ -448,7 +448,7 @@ Composr provides a JavaScript function, [tt]$cms.gaTrack[/tt], to abstract this,
 
 You may easily extend this with whatever custom events you want, then configure [i]Google Analytics[/i] against those events. Just edit it into HTML within pages/templates, adding an [tt]onclick[/tt] to links like follows:
 [code="HTML"]
-onclick="return $cms.gaTrack(this,'My Event Name','My Event Parameter');"
+onclick="$cms.gaTrack(this,'My Event Name','My Event Parameter', event);"
 [/code]
 The [tt]'My Event Parameter'[/tt] bit is optional, but often you will want to define different parameter value underneath the same event name. For example, for the banner click events this is the codename of the clicked banner.
 

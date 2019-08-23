@@ -85,10 +85,10 @@
 
     $cms.templates.blockMainJoinDone = function blockMainJoinDone(params, container) {
         $dom.on(container, 'submit', '.js-submit-ga-track-dl-whitepaper', function (e, form) {
-            $cms.gaTrack(null, '{!cns:DOWNLOAD_WHITEPAPER;}', null, function () {
+            e.preventDefault();
+            $cms.gaTrack(null, '{!cns:DOWNLOAD_WHITEPAPER;}').then(function () {
                 $dom.submit(form);
             });
-            e.preventDefault();
         });
     };
 

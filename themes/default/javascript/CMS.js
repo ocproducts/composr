@@ -872,24 +872,23 @@
      * @param el
      * @param category
      * @param action
-     * @param callback
-     * @returns {boolean}
+     * @param event - To call event.preventDefault() if the event is handled
+     * @returns { Promise }
      */
-    $cms.gaTrack = function gaTrack(el, category, action, callback) {
-        if ($cms.configOption('google_analytics') && !$cms.isStaff() && !$cms.isAdmin()) {
-            if (!category) {
-                category = '{!URL;^}';
-            }
+    $cms.gaTrack = function gaTrack(el, category, action, event) {
+        if (!$cms.configOption('google_analytics') || $cms.isStaff() || $cms.isAdmin()) {
+            return Promise.resolve();
+        }
 
-            if (!action) {
-                action = el ? el.href : '{!UNKNOWN;^}';
-            }
+        return new Promise(function (resolve) {
+            category = strVal(category) || '{!URL;^}';
+            action = strVal(action) || (el ? el.href : '{!UNKNOWN;^}');
 
             var okay = true;
             try {
-                $util.inform('Beacon', 'send', 'event', category, action);
+                $util.log('Beacon', 'send', 'event', category, action);
 
-                window.ga('send', 'event', category, action, { transport: 'beacon', hitCallback: callback });
+                window.ga('send', 'event', category, action, { transport: 'beacon', hitCallback: resolve });
             } catch (err) {
                 okay = false;
             }
@@ -901,17 +900,13 @@
                     }, 100);
                 }
 
-                return false; // Cancel event because we'll be submitting by ourselves, either via click_link or callback
+                event && event.preventDefault(); // Cancel event because we'll be submitting by ourselves, either via $util.navigate() or on promise resolve
+            } else {
+                setTimeout(function () {
+                    resolve();
+                }, 100);
             }
-        }
-
-        if (callback != null) {
-            setTimeout(function () {
-                callback();
-            }, 100);
-        }
-
-        return null;
+        });
     };
 
     /**

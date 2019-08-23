@@ -688,8 +688,7 @@
                 $dom.on(el, 'click', function (e) {
                     var options = objVal($dom.data(el, 'clickGaTrack'));
 
-                    e.preventDefault();
-                    $cms.gaTrack(el, options.category, options.action);
+                    $cms.gaTrack(el, options.category, options.action, e);
                 });
             });
         }

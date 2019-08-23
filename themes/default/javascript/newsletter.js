@@ -61,7 +61,7 @@
 
             // Tracking
             e.preventDefault();
-            $cms.gaTrack(null, '{!newsletter:NEWSLETTER_JOIN;}', null, function () {
+            $cms.gaTrack(null, '{!newsletter:NEWSLETTER_JOIN;}').then(function () {
                 $dom.submit(form);
             });
         });
