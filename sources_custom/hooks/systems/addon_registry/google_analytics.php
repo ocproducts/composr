@@ -162,6 +162,7 @@ You can always see all metrics from Admin Zone > Audit > Site statistics > Googl
             'themes/default/templates_custom/GOOGLE_ANALYTICS_TABS.tpl',
             'themes/default/templates_custom/GOOGLE_SEARCH_CONSOLE_KEYWORDS.tpl',
             'themes/default/templates_custom/_GOOGLE_TIME_PERIODS.tpl',
+            'themes/default/javascript_custom/google_analytics.js',
         );
     }
 }

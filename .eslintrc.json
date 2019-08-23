@@ -38,6 +38,7 @@
     "globals": {
         "Set"             : false,
         "Map"             : false,
+        "WeakSet"         : false,
         "WeakMap"         : false,
         "Promise"         : false,
         "URLSearchParams" : false,

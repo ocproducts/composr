@@ -25,20 +25,19 @@ Metrics and dimension reference: https://developers.google.com/analytics/devguid
 function init__google_analytics()
 {
     load_csp(array('csp_allow_eval_js' => '1')); // Needed for its JSON implementation to work
-    load_csp(array('csp_enabled' => '0')); // TODO: Change once CSP implemented properly
 }
 
 function google_analytics_initialise($weak_test = false)
 {
     $property_id = get_value('ga_property_id', null, true);
     if ($property_id === null) {
-        $msg = 'You need to set the Google Analytics property ID (not the code starting <kbd>UA</kbd>) in Commandr with... <kbd>:set_value(\'ga_property_id\', \'SOME_NUMBER\');</kbd>';
-        return paragraph(make_string_tempcode($msg), 'red_alert');
+        $msg = 'You need to set the Google Analytics <strong>View ID</strong> (this is different from the property ID which starts with <kbd>UA</kbd>) in Commandr with... <kbd>:set_value(\'ga_property_id\', \'SOME_NUMBER\');</kbd>';
+        return paragraph(make_string_tempcode($msg), 'red-alert');
     }
 
     if ((get_option('google_apis_client_id') == '') || (get_option('google_apis_client_secret') == '')) {
         $msg = 'You need to configure the Google Client ID & Client Secret in the configuration';
-        return paragraph(make_string_tempcode($msg), 'red_alert');
+        return paragraph(make_string_tempcode($msg), 'red-alert');
     }
 
     require_code('oauth');
@@ -46,7 +45,7 @@ function google_analytics_initialise($weak_test = false)
         $refresh_token = get_oauth_refresh_token('google_analytics');
         if ($refresh_token === null) {
             $msg = 'You need to configure the Google Analytics oAuth connection';
-            return paragraph(make_string_tempcode($msg), 'red_alert');
+            return paragraph(make_string_tempcode($msg), 'red-alert');
         }
 
         return $refresh_token;
@@ -54,7 +53,7 @@ function google_analytics_initialise($weak_test = false)
         $access_token = refresh_oauth2_token('google_analytics', false);
         if ($access_token === null) {
             $msg = 'You need to configure the Google Analytics oAuth connection';
-            return paragraph(make_string_tempcode($msg), 'red_alert');
+            return paragraph(make_string_tempcode($msg), 'red-alert');
         }
     }
 
@@ -110,6 +109,8 @@ function render_google_analytics($metric = '*', $id = null, $days = 31, $access_
             $access_token = $result;
         }
     }
+
+    require_javascript('google_analytics');
 
     // Tab view
     if (($metric === null) || (strpos($metric, ',') !== false) || ($metric == '*')) {
@@ -219,10 +220,10 @@ function _render_google_analytics_chart($metric, $id, $days, $under_tab, $access
             $metrics = array('ga:sessions');
             $dimension = 'ga:browser';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' =>  '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'operating_systems':
@@ -241,10 +242,10 @@ function _render_google_analytics_chart($metric, $id, $days, $under_tab, $access
             $metrics = array('ga:sessions');
             $dimension = 'ga:screenResolution';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'countries':
@@ -252,10 +253,10 @@ function _render_google_analytics_chart($metric, $id, $days, $under_tab, $access
             $dimension = 'ga:country';
             //$chart_type = 'GEO'; Does not work well unfortunately due to not having any logarithmic scale (so almost all countries are the same colour)
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'ages':
@@ -274,50 +275,50 @@ function _render_google_analytics_chart($metric, $id, $days, $under_tab, $access
             $metrics = array('ga:sessions');
             $dimension = 'ga:language';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'interests_affinities':
             $metrics = array('ga:sessions');
             $dimension = 'ga:interestAffinityCategory';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 20,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 20,
+            );
             break;
 
         case 'interests_markets':
             $metrics = array('ga:sessions');
             $dimension = 'ga:interestInMarketCategory';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 20,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 20,
+            );
             break;
 
         case 'interests_other':
             $metrics = array('ga:sessions');
             $dimension = 'ga:interestOtherCategory';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 20,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 20,
+            );
             break;
 
         case 'referrers':
             $metrics = array('ga:sessions');
             $dimension = 'ga:source';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'referrers_social':
@@ -336,51 +337,34 @@ function _render_google_analytics_chart($metric, $id, $days, $under_tab, $access
             $metrics = array('ga:sessions');
             $dimension = 'ga:landingPagePath';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'exit_pages':
             $metrics = array('ga:sessions');
             $dimension = 'ga:exitPagePath';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         case 'popular_pages':
             $metrics = array('ga:sessions');
             $dimension = 'ga:pageTitle';
             $chart_type = 'COLUMN';
-            $extra = "
-                'sort': '-ga:sessions',
-                'max-results': 10,
-            ";
+            $extra = array(
+                'sort' => '-ga:sessions',
+                'max-results' => 10,
+            );
             break;
 
         default:
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
-    }
-
-    global $LOADED_GA_JS;
-    if (!isset($LOADED_GA_JS)) {
-        $LOADED_GA_JS = true;
-
-        // TODO: Move to .js file #2960
-        attach_to_screen_header("
-        <script nonce=\"" . $GLOBALS['CSP_NONCE'] . "\">
-            (function(w,d,s,g,js,fjs){
-                g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
-                js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
-                js.src='https://apis.google.com/js/platform.js';
-                fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
-            }(window,document,'script'));
-        </script>
-        ");
     }
 
     return do_template('GOOGLE_ANALYTICS', array(
@@ -409,7 +393,7 @@ function _render_google_search_console_keywords($id, $days, $under_tab)
     $access_token = refresh_oauth2_token('google_search_console', false);
     if ($access_token === null) {
         $msg = 'You need to configure the Google Search Console oAuth connection';
-        return paragraph(make_string_tempcode($msg), 'red_alert');
+        return paragraph(make_string_tempcode($msg), 'red-alert');
     }
 
     $base_url = get_base_url();
@@ -427,7 +411,7 @@ function _render_google_search_console_keywords($id, $days, $under_tab)
     $_result = http_get_contents($url, array('trigger_error' => $trigger_error, 'post_params' => array($json), 'raw_post' => true, 'raw_content_type' => 'application/json'));
     if ($_result === null) {
         $msg = 'Failed to query the Google Search Console API';
-        return paragraph(make_string_tempcode($msg), 'red_alert');
+        return paragraph(make_string_tempcode($msg), 'red-alert');
     }
     $result = json_decode($_result, true);
 
