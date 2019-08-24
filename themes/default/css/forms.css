@@ -236,8 +236,7 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 }
 
 .form-table-field-input .form-screen-input-text,
-.form-table-field-input .form-screen-input-author,
-.form-table-field-input .multi-field {
+.form-table-field-input .form-screen-input-author {
 	display: inline-block;
 }
 
