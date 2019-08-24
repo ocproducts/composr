@@ -1588,8 +1588,6 @@ class Module_topics
             $forum_id = null;
         }
 
-        $javascript = '';
-
         $staff_help_url = null;
 
         // Breadcrumbs etc
@@ -1632,8 +1630,7 @@ class Module_topics
         $existing_description = post_param_string('description', '');
         $post = post_param_string('post', '');
         if ($clone_id !== null) {
-            $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't.t_description'),
-                array('t.id' => $clone_id), '', 1);
+            $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't.t_description'), array('t.id' => $clone_id), '', 1);
             if ((array_key_exists(0, $post_rows)) && ($post_rows[0]['p_cache_forum_id'] !== null) && (has_category_access(get_member(), 'forums', strval($post_rows[0]['p_cache_forum_id'])))) {
                 $existing_title = $post_rows[0]['p_title'];
                 $existing_description = $post_rows[0]['t_description'];
@@ -2945,8 +2942,7 @@ END;
         $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY p.id DESC', 30);
         $js_function_calls = array();
         if (count($polls) !== 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',
-                array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
 
             $list = new Tempcode();
             $list->attach(form_input_list_entry('', true, ''));
@@ -3002,8 +2998,7 @@ END;
         if ($_existing != '') {
             $existing = intval($_existing);
 
-            $_poll_row = $GLOBALS['FORUM_DB']->query_select('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON t.t_poll_id=p.id', array('t_forum_id', 'p.*'),
-                array('p.id' => $existing), '', 1);
+            $_poll_row = $GLOBALS['FORUM_DB']->query_select('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON t.t_poll_id=p.id', array('t_forum_id', 'p.*'), array('p.id' => $existing), '', 1);
             if (!array_key_exists(0, $_poll_row)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }
@@ -3233,7 +3228,7 @@ END;
             $js_function_calls[] = 'moduleTopicsPostJavascriptForceGuestNames';
         }
 
-        $stub = str_replace("\n", '\n', addslashes(unixify_line_format(either_param_string('stub', ''))));
+        $stub = either_param_string('stub', '');
 
         $js_function_calls[] = array('moduleTopicsPostJavascript', $size, $stub);
 
