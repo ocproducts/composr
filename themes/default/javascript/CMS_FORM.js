@@ -35,4 +35,68 @@
             });
         });
     };
+
+    var formSubmitValidators = new WeakMap();
+    var haveAttachedSubmitListener = new WeakSet();
+    /**
+     * @memberof $cms.form
+     * @param { HTMLFormElement } formElement
+     * @param { function } validatorFunction
+     */
+    $cms.form.addSubmitValidator = function (formElement, validatorFunction) {
+        formElement = $dom.elArg(formElement);
+
+        var validatorsArray = formSubmitValidators.get(formElement);
+
+        if (validatorsArray == null) {
+            validatorsArray = [];
+            formSubmitValidators.set(formElement, validatorsArray);
+        }
+
+        validatorsArray.push(validatorFunction);
+
+        if (!haveAttachedSubmitListener.has(formElement)) {
+            haveAttachedSubmitListener.add(formElement);
+            $dom.on(formElement, 'submit', submitListenerForValidation);
+        }
+    };
+
+    var latestValidatorPromise = new WeakMap();
+
+    function submitListenerForValidation(e) {
+        var formElement = e.target;
+        var validatorsArray = formSubmitValidators.get(formElement);
+
+        if ((formElement.localName !== 'form') || (validatorsArray == null)) {
+            return;
+        }
+
+        validatorsArray.every(function (validatorFn) {
+            var result = validatorFn(formElement);
+
+            if ((result == null) || (result === true)) {
+                return; // continue
+            }
+
+            if (result === false) {
+                e.preventDefault();
+                return false; // break
+            }
+
+            if ($util.isPromise(result)) {
+                e.preventDefault();
+
+                latestValidatorPromise.set(formElement, result);
+
+                result.then(function (valid) {
+                    if (valid && (latestValidatorPromise.get(formElement) === result)) {
+                        $dom.submit(formElement);
+                    }
+                });
+
+                return false; // break
+            }
+        });
+    }
+
 }(window.$cms));
