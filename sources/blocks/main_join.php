@@ -114,7 +114,7 @@ class Block_main_join
         }
 
         // Joining now?
-        if (post_param_integer('joining', 0) == 1) {
+        if (post_param_integer('_joining', 0) == 1) {
             check_joining_allowed($adjusted_config_options);
 
             list($message, , $ready) = cns_join_actual($captcha_if_enabled, false, true, true, null, null, null, null, $adjusted_config_options);
@@ -143,6 +143,7 @@ class Block_main_join
             '_GUID' => $guid,
             'FORM' => $form,
             'HAS_EMAIL_TO_SEND' => $this->has_email_to_send($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str($map),
         ));
     }
 

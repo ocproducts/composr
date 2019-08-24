@@ -68,7 +68,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     $hidden = new Tempcode();
     $hidden->attach(build_keep_post_fields(($_lead_source_description == '') ? array() : array('_lead_source_description')));
 
-    $hidden->attach(form_input_hidden('_joining', '0'));
+    $hidden->attach(form_input_hidden('_joining', '1'));
 
     if ($_lead_source_description != '') {
         $hidden->attach(form_input_hidden('_lead_source_description', $_lead_source_description));

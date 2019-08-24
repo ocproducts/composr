@@ -265,7 +265,7 @@
             var value = form.elements['edit_password'].value;
             if ((value !== '') && (value !== validValue)) {
                 e.preventDefault();
-                var url = '{$FIND_SCRIPT_NOHTTP;^,username_check}?';
+                var url = '{$FIND_SCRIPT_NOHTTP;^,username_check}' + $cms.keep(true);
                 $cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(value)).then(function (valid) {
                     if (valid) {
                         validValue = value;
@@ -489,7 +489,7 @@
                 }
             }
 
-            var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
+            var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value) + $cms.keep();
             checkPromises.push($cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value)));
 
             if (params.invitesEnabled) {

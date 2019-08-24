@@ -14,7 +14,7 @@
 		{+END}
 	{+END}
 
-	<form title="{!PRIMARY_PAGE_FORM}" class="{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND}js-submit-modesecurity-workaround{+END}" method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END} id="{$GET*,form_name}">
+	<form title="{!PRIMARY_PAGE_FORM}" class="form-join {+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND}js-submit-modesecurity-workaround{+END}" method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END} id="{$GET*,form_name}">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
