@@ -1727,6 +1727,7 @@ class Module_topics
             $moderation_options = array();
         }
         $hidden_fields->attach(form_input_hidden('from_url', get_self_url(true)));
+        $js_function_calls = $this->_post_javascript();
         $options = array();
         if (!is_guest()) {
             if (addon_installed('cns_signatures')) {
@@ -1740,9 +1741,11 @@ class Module_topics
         }
         if (addon_installed('polls')) {
             $options[] = array(do_lang_tempcode('ADD_TOPIC_POLL'), 'add_poll', false, do_lang_tempcode('DESCRIPTION_ADD_TOPIC_POLL'));
+            $add_poll_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'adding_new_topic' => '1'), '_SELF');
+            $js_function_calls[] = array('newTopicFormChangeActionIfAddingPoll', array('add_poll_url' => $add_poll_url));
         }
-        if (count($options) == 1) { // Oh, actually we know this was just the option to add a poll, so show simply
-            $specialisation->attach(form_input_tick(do_lang_tempcode('ADD_TOPIC_POLL'), do_lang_tempcode('DESCRIPTION_ADD_TOPIC_POLL'), 'add_poll', false));
+        if (count($options) == 1) {
+            $specialisation->attach(form_input_tick($options[0][0], $options[0][3], $options[0][1], $options[0][2]));
         } else {
             $specialisation2->attach(form_input_various_ticks($options, ''));
         }
@@ -1795,7 +1798,6 @@ class Module_topics
             $specialisation2->attach(get_award_fields(array('topic', 'post')));
         }
 
-        $js_function_calls = $this->_post_javascript();
         if ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) {
             $js_function_calls[] = captcha_ajax_check_function();
         }
@@ -1823,8 +1825,7 @@ class Module_topics
         }
         $_title = get_screen_title($title, false);
 
-        return do_template('POSTING_SCREEN',
-            array('_GUID' => 'ba5308fe0a8f9f9a24988209423a3a16', 'STAFF_HELP_URL' => $staff_help_url, 'TEXT' => $text, 'TITLE' => $_title, 'POSTING_FORM' => $posting_form));
+        return do_template('POSTING_SCREEN', array('_GUID' => 'ba5308fe0a8f9f9a24988209423a3a16', 'STAFF_HELP_URL' => $staff_help_url, 'TEXT' => $text, 'TITLE' => $_title, 'POSTING_FORM' => $posting_form));
     }
 
     /**
@@ -2222,6 +2223,16 @@ class Module_topics
      */
     public function _add_reply() // Type
     {
+        $info = $this->_add_reply_and_return_info();
+        $tempcode = $info['output'];
+        return $tempcode;
+    }
+
+    /**
+     * @return array
+     */
+    public function _add_reply_and_return_info()
+    {
         if (addon_installed('captcha')) {
             require_code('captcha');
             enforce_captcha();
@@ -2281,12 +2292,7 @@ class Module_topics
         }
 
         $check_permissions = true;
-        $add_poll = post_param_integer('add_poll', 0);
         $topic_validated = $validated;
-        if ($validated == 1) {
-            $topic_validated = 1 - $add_poll; // If a topic is gonna have a poll added, it starts non-validated. Adding the poll will validate it.
-        }
-
         $anonymous = post_param_integer('anonymous', 0);
         $poster_name_if_guest = cns_get_safe_specified_poster_name();
 
@@ -2454,7 +2460,16 @@ END;
                     $url = $_url->evaluate();
                     $url .= '#first-unread';
                     $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
-                    return redirect_screen($_title, $url, $text);
+
+                    $info = array(
+                        'forum_id'  => $forum_id,
+                        'topic_id'  => $topic_id,
+                        'post_id'   => null,
+                        'member_id' => $member_id,
+                        'output' => redirect_screen($_title, $url, $text),
+                    );
+
+                    return $info;
                 }
 
                 cns_edit_topic($topic_id, null, null, $topic_validated, $open, $pinned, $cascading, '', ($new_title == '') ? null : $new_title);
@@ -2576,21 +2591,77 @@ END;
 
         cms_profile_end_for('_add_reply', '#' . strval($post_id));
 
-        if (($add_poll == 1) && (addon_installed('polls'))) {
-            if (post_param_integer('add_poll', 0) == 1) {
-                // Show it worked / Refresh
-                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => (post_param_date('schedule') === null) ? 1 : 0), '_SELF');
-                return redirect_screen($_title, $_url, do_lang_tempcode('SUCCESS'));
-            }
-        }
-
         if ((!$new_topic) && ($forum_id !== null) && ($member_id === null)) {
             handle_topic_ticket_reply($forum_id, $topic_id, $topic_title, $post);
         }
 
-        // Show it worked / Refresh
         $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
-        return redirect_screen($_title, $url, $text);
+
+        $info = array(
+            'forum_id'  => $forum_id,
+            'topic_id'  => $topic_id,
+            'post_id'   => $post_id,
+            'member_id' => $member_id,
+            'output' => redirect_screen($_title, $url, $text), // Show it worked / Refresh
+        );
+
+        return $info;
+    }
+
+    /**
+     * Used by Module_topics#add_poll() to validate input for new topic to be created together with the poll in one go
+     */
+    public function _validate_request_for_potential_topic()
+    {
+        $forum_id = post_param_integer('forum_id', null); // New topic in existing forum?
+        $member_id = post_param_integer('member_id', null); // Send TOPIC to specific member? Could be Private Topic (forum_id==null)
+
+        if ($member_id === null) {
+            $member_username = post_param_string('to_member_id_0', '');
+            if ($member_username != '') {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($member_username);
+                if ($member_id === null) {
+                    warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($member_username)));
+                }
+            }
+            foreach ($_POST as $key => $_invited_member) {
+                if (substr($key, 0, 13) != 'to_member_id_') {
+                    continue;
+                }
+                if ($key == 'to_member_id_0') {
+                    continue;
+                }
+                if ($_invited_member == '') {
+                    continue;
+                }
+
+                $invited_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_invited_member);
+                if ($invited_member === null) {
+                    attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($_invited_member)), 'warn');
+                }
+            }
+        }
+
+        $post = post_param_string('post');
+        require_code('form_templates');
+        handle_default_comcode_text_input($post);
+
+        $title = post_param_string('title', null);
+        if ($title === null) {
+            $title = '';
+        }
+
+        require_code('cns_posts_action');
+        cns_check_post($post);
+
+        if ($title == '') {
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'title'));
+        }
+
+        require_code('cns_topics');
+        if (!cns_may_post_topic($forum_id, get_member())) {
+            access_denied('I_ERROR');
+        }
     }
 
     /**
@@ -2918,19 +2989,29 @@ END;
         }
 
         if ($topic_id === null) {
-            $topic_id = get_param_integer('id');
+            $topic_id = get_param_integer('id', null);
         }
 
-        $map = array('page' => '_SELF', 'type' => '_add_poll', 'id' => $topic_id);
-        if (get_param_integer('try_validate', 0) == 1) {
-            $map['try_validate'] = 1;
+        $adding_new_topic = ($topic_id === null) && boolval(get_param_integer('adding_new_topic', 0));
+
+        $map = array('page' => '_SELF', 'type' => '_add_poll');
+
+        if ($adding_new_topic) {
+            $this->_validate_request_for_potential_topic();
+            $map['adding_new_topic'] = 1;
+        } else {
+            $map['id'] = $topic_id;
         }
-        if ((get_param_string('type', 'browse') == '_add_reply') && (post_param_integer('validated', 0) == 1)) {
-            $map['re_validate'] = 1;
-        }
+
         $post_url = build_url($map, '_SELF');
 
+        $hidden = new Tempcode();
         $fields = new Tempcode();
+
+        if ($adding_new_topic) {
+            // Preserve POSTed topic data in the add poll form
+            $hidden->attach(build_keep_post_fields());
+        }
 
         url_default_parameters__enable();
         $fields->attach($this->get_poll_form_fields());
@@ -2958,16 +3039,18 @@ END;
         $title = get_screen_title('ADD_TOPIC_POLL');
         $submit_name = do_lang_tempcode('ADD');
 
-        $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
-        if (!array_key_exists(0, $_topic_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
+        if (!$adding_new_topic) {
+            $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
+            if (!array_key_exists(0, $_topic_info)) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
+            }
+            $topic_info = $_topic_info[0];
+            $this->handle_topic_breadcrumbs($topic_info['t_forum_id'], $topic_id, $topic_info['t_cache_first_title'], do_lang_tempcode('ADD_TOPIC_POLL'));
         }
-        $topic_info = $_topic_info[0];
-        $this->handle_topic_breadcrumbs($topic_info['t_forum_id'], $topic_id, $topic_info['t_cache_first_title'], do_lang_tempcode('ADD_TOPIC_POLL'));
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => 'ce1752a0c5508a061bffbf242a13e5bd',
-            'HIDDEN' => '',
+            'HIDDEN' => $hidden,
             'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
@@ -2989,7 +3072,14 @@ END;
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        $topic_id = get_param_integer('id');
+        $topic_id = get_param_integer('id', null);
+
+        $adding_new_topic = ($topic_id === null) && boolval(get_param_integer('adding_new_topic', 0));
+
+        if ($adding_new_topic) {
+            $info = $this->_add_reply_and_return_info();
+            $topic_id = $info['topic_id'];
+        }
 
         require_code('cns_polls_action');
         require_code('cns_polls_action2');
@@ -3040,18 +3130,6 @@ END;
         }
 
         cns_make_poll($topic_id, $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers);
-
-        if (get_param_integer('try_validate', 0) == 1) {
-            $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
-            if (($forum_id !== null) && (!has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
-                $validated = 0;
-            } else {
-                $validated = 1;
-            }
-            if ($validated == 1) {
-                $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_validated' => 1), array('id' => $topic_id), '', 1);
-            }
-        }
 
         return $this->redirect_to('ADD_TOPIC_POLL', $topic_id);
     }

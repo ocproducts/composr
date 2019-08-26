@@ -66,15 +66,6 @@ function cns_make_poll($topic_id, $question, $is_private, $is_open, $minimum_sel
 
     $map = array('t_poll_id' => $poll_id);
 
-    // Now make the topic validated if this is attaching immediately
-    if (get_param_integer('re_validate', 0) == 1) {
-        $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
-
-        if (($forum_id === null) || (has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
-            $map['t_validated'] = 1;
-        }
-    }
-
     $GLOBALS['FORUM_DB']->query_update('f_topics', $map, array('id' => $topic_id), '', 1);
 
     return $poll_id;

@@ -137,6 +137,26 @@
         }
     };
 
+    var newTopicFormOrigAction;
+    $cms.functions.newTopicFormChangeActionIfAddingPoll = function newTopicFormChangeActionIfAddingPoll(options) {
+        var addPollCheckbox = (document.getElementsByName('add_poll') || [])[0],
+            addPollUrl = strVal(options.addPollUrl);
+
+        if (!addPollCheckbox) {
+            return;
+        }
+
+        if (newTopicFormOrigAction == null) {
+            newTopicFormOrigAction = addPollCheckbox.form.action;
+        }
+
+        addPollCheckbox.form.action = (addPollCheckbox.checked) ? addPollUrl : newTopicFormOrigAction;
+
+        addPollCheckbox.addEventListener('change', function () {
+            addPollCheckbox.form.action = (addPollCheckbox.checked) ? addPollUrl : newTopicFormOrigAction;
+        })
+    };
+
     $cms.templates.cnsVirtualForumFiltering = function cnsVirtualForumFiltering() {
         var container = this;
 
