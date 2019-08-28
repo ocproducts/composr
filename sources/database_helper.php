@@ -779,11 +779,12 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
 
     if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name) && (!multi_lang_content())) {
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
-            $sub_name = $name . '__' . $sub_name;
+            $sub_old_name = $name . '__' . $sub_name;
             $sub_new_name = $new_name . '__' . $sub_name;
-            $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' CHANGE ' . $sub_name . ' ' . $sub_new_name . ' ' . $type_remap[$sub_type];
+            $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' CHANGE ' . $sub_old_name . ' ' . $sub_new_name . ' ' . $type_remap[$sub_type];
             if ($sub_name == 'text_parsed') {
-                $query .= ' DEFAULT \'\'';
+                // $query .= ' DEFAULT \'\'';
+                // ^ Commented out because it throws an error on Windows: "BLOB, TEXT, GEOMETRY or JSON column 'foo__text_parsed' can't have a default value"
             } elseif ($sub_name == 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }
