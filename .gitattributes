@@ -130,6 +130,7 @@
 *.wma binary
 *.wmv binary
 *.woff binary
+*.woff2 binary
 *.xls binary
 *.xlsx binary
 *.zip binary
@@ -140,9 +141,11 @@
 *.class binary
 *.db binary
 *.dll binary
+*.eot binary
 *.jar binary
 *.kbd binary
 *.mf binary
 *.multi binary
+*.phar binary
 *.rws binary
 *.xap binary
