@@ -20,7 +20,6 @@
 *.svg text
 *.tpl text
 *.txt text
-*.vtt text
 *.xml text
 *.xsd text
 *.xsl text
@@ -37,7 +36,29 @@
 *.properties text
 *.java text
 *.sh text
-*.vtt
+*.vtt text
+*.bundle text
+*.c text
+*.cms text
+*.dist text
+*.dtd text
+*.example text
+*.h text
+*.hhi text
+*.in text
+*.m4 text
+*.md text
+*.pem text
+*.phps text
+*.py text
+*.rdf text
+*.rst text
+*.sample text
+*.template text
+*.w32 text
+*.wsdl text
+*.yaml text
+*.yml text
 
 # We have some upper case ones
 *.TXT text
@@ -149,3 +170,5 @@
 *.phar binary
 *.rws binary
 *.xap binary
+*.lock binary
+*.sq3 binary

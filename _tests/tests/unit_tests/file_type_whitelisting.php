@@ -47,10 +47,10 @@ class file_type_whitelisting_test_set extends cms_test_case
         sort($file_types);
 
         $file_types_expected = $this->file_types;
-        $file_types_expected = array_diff($file_types_expected, array('exe', 'dmg', 'htm', 'html', 'svg', 'css', 'js', 'json', 'woff', 'xml', 'xsd', 'xsl', 'rss', 'atom')); // No executable or web formats should be uploaded by non-admins
+        $file_types_expected = array_diff($file_types_expected, array('exe', 'dmg', 'htm', 'html', 'svg', 'css', 'js', 'json', 'woff', 'woff2', 'xml', 'xsd', 'xsl', 'rss', 'atom')); // No executable or web formats should be uploaded by non-admins
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . implode(', ', array_merge(array_diff($file_types_expected, $file_types), array_diff($file_types, $file_types_expected))));
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . serialize(array_diff($file_types_expected, $file_types)) . '/' . serialize(array_diff($file_types, $file_types_expected)));
     }
 
     public function testConfigValidTypes()
@@ -68,7 +68,7 @@ class file_type_whitelisting_test_set extends cms_test_case
         $file_types_expected = array_diff($file_types_expected, array('exe', 'dmg')); // No executables as users may try and get people to run on own machine (separately internally we filter web formats)
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected);
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . serialize(array_diff($file_types_expected, $file_types)) . '/' . serialize(array_diff($file_types, $file_types_expected)));
     }
 
     public function testAppYaml()
@@ -89,7 +89,7 @@ class file_type_whitelisting_test_set extends cms_test_case
         $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected);
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . serialize(array_diff($file_types_expected, $file_types)) . '/' . serialize(array_diff($file_types, $file_types_expected)));
 
         // --
 
@@ -104,7 +104,7 @@ class file_type_whitelisting_test_set extends cms_test_case
         $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected);
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . serialize(array_diff($file_types_expected, $file_types)) . '/' . serialize(array_diff($file_types, $file_types_expected)));
     }
 
     public function testCodebookRef()
@@ -123,7 +123,7 @@ class file_type_whitelisting_test_set extends cms_test_case
         $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected);
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . serialize(array_diff($file_types_expected, $file_types)) . '/' . serialize(array_diff($file_types, $file_types_expected)));
     }
 
     public function testHtaccess()
@@ -142,7 +142,7 @@ class file_type_whitelisting_test_set extends cms_test_case
         $file_types_expected = array_diff($file_types_expected, array('htm')); // No .htm files which may be web-generated
         sort($file_types_expected);
 
-        $this->assertTrue($file_types == $file_types_expected);
+        $this->assertTrue($file_types == $file_types_expected, 'Difference of: ' . serialize(array_diff($file_types_expected, $file_types)) . '/' . serialize(array_diff($file_types, $file_types_expected)));
     }
 
     public function testOtherValidTypes()
@@ -190,7 +190,22 @@ class file_type_whitelisting_test_set extends cms_test_case
             $this->assertTrue(!array_key_exists($ext, $found), 'Double referenced ' . $ext);
             $found[$ext] = true;
         }
-    }
+
+        // Test git is conclusive
+        $lines = explode("\n", shell_exec('git ls-files'));
+        $exts = array();
+        foreach ($lines as $line) {
+            $filename = basename($line);
+            $ext = get_file_extension($filename);
+            if (($ext != '') && ('.' . $ext != $filename)) {
+                $exts[$ext] = true;
+            }
+        }
+        ksort($exts);
+        foreach (array_keys($exts) as $ext) {
+            $this->assertTrue(array_key_exists($ext, $found), 'Unknown file type in git that should be in .gitattributes to clarify how to manage it: ' . $ext);
+        }
+     }
 
     public function testCSS()
     {

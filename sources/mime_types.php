@@ -152,6 +152,7 @@ function get_mime_types($as_admin)
         // Fonts
         'ttf' => 'font/ttf',
         'woff' => 'font/woff',
+        'woff2' => 'font/woff',
         'otf' => 'font/otf',
 
         // Archives / Compression
