@@ -544,7 +544,8 @@ class Module_admin_import
 
         $hidden = new Tempcode();
         $hidden->attach(build_keep_post_fields($skip_hidden));
-        $hidden->attach(build_keep_form_fields('', true));
+        $hidden->attach(build_keep_form_fields('', true, array('type', 'label_for__old_base_dir', 'require__old_base_dir', 'label_for__refresh_time', 'require__refresh_time')));
+        $hidden->attach(form_input_hidden('db_password', $db_password));
 
         return do_template('IMPORT_ACTION_SCREEN', array('_GUID' => 'a3a69637e541923ad76e9e7e6ec7e1af', 'EXTRA' => $extra, 'MESSAGE' => $message, 'TITLE' => $this->title, 'FIELDS' => '', 'HIDDEN' => $hidden, 'IMPORTER' => $importer, 'IMPORT_LIST' => $import_list, 'URL' => $url));
     }
