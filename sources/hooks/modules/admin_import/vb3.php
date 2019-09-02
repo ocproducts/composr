@@ -313,7 +313,7 @@ class Hook_vb3
      */
     public function import_cns_members($db, $table_prefix, $file_base)
     {
-        $row_start = 0;
+        $row_start = get_param_integer('JUMPSTART_import_cns_members', 0);
         $rows = array();
         do {
             $rows = $db->query('SELECT *,u.userid AS userid FROM ' . $table_prefix . 'user u LEFT JOIN ' . $table_prefix . 'administrator a ON u.userid=a.userid LEFT JOIN ' . $table_prefix . 'usertextfield t ON u.userid=t.userid ORDER BY u.userid', 200, $row_start);
@@ -395,6 +395,7 @@ class Hook_vb3
             }
 
             $row_start += 200;
+            $GLOBALS['JUMPSTART_import_cns_members'] = $row_start;
         } while (count($rows) > 0);
     }
 
@@ -409,7 +410,7 @@ class Hook_vb3
     {
         global $STRICT_FILE;
 
-        $row_start = 0;
+        $row_start = get_param_integer('JUMPSTART_import_cns_member_files', 0);
         $rows = array();
         do {
             $extra = '';
@@ -459,6 +460,7 @@ class Hook_vb3
             }
 
             $row_start += 200;
+            $GLOBALS['JUMPSTART_import_cns_member_files'] = $row_start;
         } while (count($rows) > 0);
     }
 
@@ -619,7 +621,7 @@ class Hook_vb3
      */
     public function import_cns_topics($db, $table_prefix, $file_base)
     {
-        $row_start = 0;
+        $row_start = get_param_integer('JUMPSTART_import_cns_topics', 0);
         $rows = array();
         do {
             $rows = $db->query('SELECT * FROM ' . $table_prefix . 'thread WHERE visible=1 ORDER BY threadid', 200, $row_start);
@@ -638,6 +640,7 @@ class Hook_vb3
             }
 
             $row_start += 200;
+            $GLOBALS['JUMPSTART_import_cns_topics'] = $row_start;
         } while (count($rows) > 0);
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'announcement ORDER BY announcementid', 200, $row_start);
@@ -691,7 +694,7 @@ class Hook_vb3
     {
         global $STRICT_FILE;
 
-        $row_start = 0;
+        $row_start = get_param_integer('JUMPSTART_import_cns_posts', 0);
 
         // Optimisation to speed through quickly, as can be slow scrolling through so many posts we may have already imported!
         do {
@@ -701,6 +704,7 @@ class Hook_vb3
             }
 
             $row_start += 200;
+            $GLOBALS['JUMPSTART_import_cns_posts'] = $row_start;
         } while (true);
 
         $rows = array();
@@ -839,7 +843,7 @@ class Hook_vb3
         require_code('attachments2');
         require_code('attachments3');
 
-        $row_start = 0;
+        $row_start = get_param_integer('JUMPSTART_import_cns_post_files', 0);
         $rows = array();
         do {
             $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachment ORDER BY attachmentid', 200, $row_start);
@@ -875,6 +879,7 @@ class Hook_vb3
             }
 
             $row_start += 200;
+            $GLOBALS['JUMPSTART_import_cns_post_files'] = $row_start;
         } while (count($rows) > 0);
     }
 

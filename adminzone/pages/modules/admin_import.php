@@ -18,6 +18,8 @@
  * @package    import
  */
 
+declare(ticks=1);
+
 /**
  * Module page class.
  */
@@ -567,17 +569,21 @@ class Module_admin_import
         $info = $object->info();
 
         // Protection from if things take too long
-        $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
+        $refresh_url = get_self_url(true, false, array('type' => 'import'), false, true);
         $refresh_time = either_param_integer('refresh_time', 0); // Shouldn't default, but reported on some systems to do so
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit($refresh_time);
+            @set_time_limit($refresh_time); // We cannot rely on this as the timer doesn't count DB activity etc on most PHP platforms but something like a CGI timeout will; hence register_tick_function also below
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
         send_http_output_ping();
         safe_ini_set('log_errors', '0');
-        global $I_REFRESH_URL;
+        global $I_REFRESH_URL, $I_REFRESH_TIME;
         $I_REFRESH_URL = $refresh_url;
+        $I_REFRESH_TIME = $refresh_time;
         $GLOBALS['NO_QUERY_LIMIT'] = true;
+        if ($I_REFRESH_TIME != 0) {
+            register_tick_function('i_timed_refresh');
+        }
 
         // Get data from session
         $session_row = $GLOBALS['SITE_DB']->query_select('import_session', array('*'), array('imp_session' => get_session_id()), '', 1);
