@@ -1324,7 +1324,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
                                                 } else {
                                                     if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
-                                                        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.2:TLSv1');
                                                         // Best to never mess with CURLOPT_SSL_CIPHER_LIST, because different servers have different ciphers, and things constantly evolve, hard-coding isn't going to work - this is a last-ditch option for old versions of PHP, we can be specifying TLSv1 as a cipher [=category] (which is undocumented)
                                                     } else {
                                                         curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
