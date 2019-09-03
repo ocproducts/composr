@@ -205,6 +205,7 @@ function i_force_refresh()
         $url = $I_REFRESH_URL;
         foreach ($GLOBALS as $key => $val) {
             if (preg_match('#^JUMPSTART_#', $key) != 0) {
+                $url = preg_replace('#&' . preg_quote($key, '#') . '=\d+#', '', $url);
                 $url .= '&' . $key . '=' . strval($val);
             }
         }

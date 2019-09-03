@@ -359,7 +359,7 @@ class Module_admin_import
             $db_name = get_db_site();
             $db_user = get_db_site_user();
             $db_table_prefix = array_key_exists('prefix', $info) ? $info['prefix'] : $GLOBALS['SITE_DB']->get_table_prefix();
-            $refresh_time = 0;
+            $refresh_time = 45;
         }
 
         // Build the form

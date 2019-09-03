@@ -474,7 +474,6 @@ class Hook_vb3
     public function import_cns_custom_profile_fields($db, $table_prefix, $file_base)
     {
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'profilefield');
-        $members = $db->query('SELECT * FROM ' . $table_prefix . 'userfield');
         foreach ($rows as $row) {
             if (import_check_if_imported('cpf', strval($row['profilefieldid']))) {
                 continue;
@@ -496,16 +495,34 @@ class Hook_vb3
                 $id_new = cns_make_custom_field($row['title'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], $row['memberlist'], $row['memberlist'], $row['displayorder'], '', 0, '', true);
             }
 
-            foreach ($members as $member) {
-                $v = $member['field' . strval($row['profilefieldid'])];
-                $member_id = import_id_remap_get('member', strval($member['userid']), true);
-                if (($v != '') && (!is_null($member_id))) {
-                    cns_set_custom_field($member_id, $id_new, $v);
-                }
-            }
-
             import_id_remap_put('cpf', strval($row['profilefieldid']), $id_new);
         }
+
+        $row_start = get_param_integer('JUMPSTART_import_cns_custom_profile_fields', 0);
+        $members = array();
+        do {
+            $members = $db->query('SELECT * FROM ' . $table_prefix . 'userfield', 200, $row_start);
+            foreach ($members as $member) {
+                if (import_check_if_imported('cpf_member', strval($member['userid']))) {
+                    continue;
+                }
+
+                foreach ($rows as $row) {
+                    $id_new = import_id_remap_get('cpf', strval($row['profilefieldid']));
+
+                    $v = $member['field' . strval($row['profilefieldid'])];
+                    $member_id = import_id_remap_get('member', strval($member['userid']), true);
+                    if (($v != '') && (!is_null($member_id))) {
+                        cns_set_custom_field($member_id, intval($id_new), $v);
+                    }
+                }
+
+                import_id_remap_put('cpf_member', strval($member['userid']), '1');
+            }
+
+            $row_start += 200;
+            $GLOBALS['JUMPSTART_import_cns_custom_profile_fields'] = $row_start;
+        } while (count($members) > 0);
     }
 
     /**
@@ -624,7 +641,7 @@ class Hook_vb3
         $row_start = get_param_integer('JUMPSTART_import_cns_topics', 0);
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'thread WHERE visible=1 ORDER BY threadid', 200, $row_start);
+            $rows = $db->query('SELECT threadid,forumid,iconid,visible,open,sticky,views FROM ' . $table_prefix . 'thread WHERE visible=1 ORDER BY threadid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['threadid']))) {
                     continue;
@@ -696,20 +713,21 @@ class Hook_vb3
 
         $row_start = get_param_integer('JUMPSTART_import_cns_posts', 0);
 
+        $max_per_cycle = 5;
+
         // Optimisation to speed through quickly, as can be slow scrolling through so many posts we may have already imported!
         do {
-            $rows = $db->query('SELECT postid FROM ' . $table_prefix . 'post ORDER BY postid', 1, $row_start + 200 - 1);
+            $rows = $db->query('SELECT postid FROM ' . $table_prefix . 'post ORDER BY postid', 1, $row_start + $max_per_cycle - 1);
             if ((!array_key_exists(0, $rows)) || (!import_check_if_imported('post', strval($rows[0]['postid'])))) {
                 break;
             }
 
-            $row_start += 200;
-            $GLOBALS['JUMPSTART_import_cns_posts'] = $row_start;
+            $row_start += $max_per_cycle;
         } while (true);
 
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'post ORDER BY postid', 200, $row_start);
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'post ORDER BY postid', $max_per_cycle, $row_start);
             foreach ($rows as $row) {
                 if ($row['visible'] == 0) { // We don't have in WHERE query as there's no index for it
                     import_id_remap_put('post', strval($row['postid']), -1);
@@ -744,7 +762,7 @@ class Hook_vb3
 
                 $title = '';
                 if ($row['parentid'] == 0) {
-                    $topics = $db->query('SELECT title FROM ' . $table_prefix . 'thread WHERE threadid=' . $row['threadid']);
+                    $topics = $db->query('SELECT title FROM ' . $table_prefix . 'thread WHERE threadid=' . strval($row['threadid']));
                     $title = $topics[0]['title'];
                 } elseif (!is_null($row['title'])) {
                     $title = $row['title'];
@@ -759,7 +777,8 @@ class Hook_vb3
                 import_id_remap_put('post', strval($row['postid']), $id_new);
             }
 
-            $row_start += 200;
+            $row_start += $max_per_cycle;
+            $GLOBALS['JUMPSTART_import_cns_posts'] = $row_start;
         } while (count($rows) > 0);
     }
 
@@ -917,12 +936,12 @@ class Hook_vb3
             $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : '');
             cms_file_put_contents_safe($path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
-            $url = 'uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : '');
+            $url = 'uploads/' . $sections . '/' . urlencode($filename) . ($obfuscate ? '.dat' : '');
 
             if ($thumbnail_data == '') {
                 if ($thumbnail) {
                     $t_filename = $filename;
-                    $thumb_url = 'uploads/' . $sections . '_thumbs/' . find_derivative_filename('uploads/' . $sections . '_thumbs', $t_filename, true);
+                    $thumb_url = 'uploads/' . $sections . '_thumbs/' . urlencode(find_derivative_filename('uploads/' . $sections . '_thumbs', $t_filename, true));
                     require_code('images');
                     convert_image(get_custom_base_url() . '/' . $url, $thumb_url, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     return array($url, $thumb_url);
@@ -933,7 +952,7 @@ class Hook_vb3
                 $thumb_filename = find_derivative_filename('uploads/' . $sections . '_thumbs', $filename);
                 $path = get_custom_file_base() . '/uploads/' . $sections . '_thumbs/' . $thumb_filename;
                 cms_file_put_contents_safe($path, $thumbnail_data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                $thumb_url = 'uploads/' . $sections . '_thumbs/' . $thumb_filename;
+                $thumb_url = 'uploads/' . $sections . '_thumbs/' . urlencode($thumb_filename);
 
                 return array($url, $thumb_url);
             }
@@ -1087,7 +1106,8 @@ class Hook_vb3
      */
     public function import_cns_private_topics($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'pm p LEFT JOIN ' . $table_prefix . 'pmtext t ON p.pmtextid=t.pmtextid WHERE folderid<>-1 AND title NOT LIKE \'' . db_encode_like('Sent:  %') . '\' ORDER BY dateline');
+        $sql = 'SELECT pmid,fromuserid,userid,title FROM ' . $table_prefix . 'pm p LEFT JOIN ' . $table_prefix . 'pmtext t ON p.pmtextid=t.pmtextid WHERE folderid<>-1 AND title NOT LIKE \'' . db_encode_like('Sent:  %') . '\' ORDER BY dateline';
+        $rows = $db->query($sql);
 
         // Group them up into what will become topics
         $groups = array();
@@ -1112,6 +1132,9 @@ class Hook_vb3
                 continue;
             }
 
+            $row_sup = $db->query_select('pm p LEFT JOIN ' . $table_prefix . 'pmtext t ON p.pmtextid=t.pmtextid', array('iconid', 'dateline', 'fromusername', 'message'), array('pmid' => $row['pmid']), '', 1);
+            $row += $row_sup[0];
+
             // Create topic
             $from_id = import_id_remap_get('member', strval($row['fromuserid']), true);
             if (is_null($from_id)) {
@@ -1125,6 +1148,9 @@ class Hook_vb3
 
             $first_post = true;
             foreach ($group as $_postdetails) {
+                $_postdetails_sup = $db->query_select('pm p LEFT JOIN ' . $table_prefix . 'pmtext t ON p.pmtextid=t.pmtextid', array('iconid', 'dateline', 'fromusername', 'message'), array('pmid' => $_postdetails['pmid']), '', 1);
+                $_postdetails += $_postdetails_sup[0];
+
                 if ($first_post) {
                     $title = $row['title'];
                 } else {
@@ -1339,30 +1365,36 @@ class Hook_vb3
      */
     public function import_points_gifts_and_charges($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'reputation');
-        foreach ($rows as $row) {
-            if (import_check_if_imported('points', strval($row['reputationid']))) {
-                continue;
+        $row_start = get_param_integer('JUMPSTART_import_points_gifts_and_charges', 0);
+        do {
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'reputation', 200, $row_start);
+            foreach ($rows as $row) {
+                if (import_check_if_imported('points', strval($row['reputationid']))) {
+                    continue;
+                }
+
+                $time = $row['dateline'];
+                $amount = $row['reputation'];
+                $viewer_member = import_id_remap_get('member', strval($row['whoadded']), true);
+                $member = import_id_remap_get('member', strval($row['userid']), true);
+                $reason = $row['reason'];
+                $anonymous = 0;
+                $map = array(
+                    'date_and_time' => $time,
+                    'amount' => $amount,
+                    'gift_from' => $viewer_member,
+                    'gift_to' => $member,
+                    'anonymous' => $anonymous,
+                );
+                $map += insert_lang_comcode('reason', $reason, 4);
+                $GLOBALS['SITE_DB']->query_insert('gifts', $map);
+
+                import_id_remap_put('points', strval($row['reputationid']), -1);
             }
 
-            $time = $row['dateline'];
-            $amount = $row['reputation'];
-            $viewer_member = import_id_remap_get('member', strval($row['whoadded']), true);
-            $member = import_id_remap_get('member', strval($row['userid']), true);
-            $reason = $row['reason'];
-            $anonymous = 0;
-            $map = array(
-                'date_and_time' => $time,
-                'amount' => $amount,
-                'gift_from' => $viewer_member,
-                'gift_to' => $member,
-                'anonymous' => $anonymous,
-            );
-            $map += insert_lang_comcode('reason', $reason, 4);
-            $GLOBALS['SITE_DB']->query_insert('gifts', $map);
-
-            import_id_remap_put('points', strval($row['reputationid']), -1);
-        }
+            $row_start += 200;
+            $GLOBALS['JUMPSTART_import_points_gifts_and_charges'] = $row_start;
+        } while (count($rows) > 0);
     }
 
     /**
