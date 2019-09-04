@@ -575,8 +575,8 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
             // Now set all of the parameters needed for blitting our image $sx and $sy are fine, since they cover the whole image
             $source_x = 0;
             $source_y = 0;
-            $_width = ($pad_axis == 'x') ? ($width - $pad_amount) : $width;
-            $_height = ($pad_axis == 'y') ? ($height - $pad_amount) : $height;
+            $_width = ($pad_axis == 'x') ? ($width - $padding) : $width;
+            $_height = ($pad_axis == 'y') ? ($height - $padding) : $height;
             $dest_x = ($pad_axis == 'x') ? $pad_amount : 0;
             $dest_y = ($pad_axis == 'y') ? $pad_amount : 0;
         }

@@ -1082,6 +1082,9 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
         if (function_exists('get_option')) {
             $handling_method = get_option('error_handling_' . $type . 's');
         }
+        if ($GLOBALS['DEV_MODE']) {
+            $handling_method = 'FATAL';
+        }
 
         // It's incredibly minor, so it's probably best to continue
         if ($handling_method == 'SKIP') {

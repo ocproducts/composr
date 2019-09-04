@@ -224,10 +224,10 @@ function _build_keep_post_fields($exclude = array(), $force_everything = false)
  */
 function _url_to_filename($url_full)
 {
-    $bad_chars = array('!', '/', '\\', '?', '*', '<', '>', '|', '"', ':', '%', ' ');
+    $bad_chars = array('!', '/', '\\', '?', '*', '<', '>', '|', '"', ':', '%', '!', ';', '~', ' ');
     $new_name = $url_full;
     foreach ($bad_chars as $bad_char) {
-        $good_char = '!' . strval(ord($bad_char));
+        $good_char = '~' . strval(ord($bad_char));
         if ($bad_char == ':') {
             $good_char = ';'; // So page_links save nice
         }
