@@ -603,7 +603,7 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
         }
     }
 
-    if (($_width == $sx) && ($_height == $sy) && (!$reorientated)) {
+    if (($_width == $sx) && ($_height == $sy) && ($dest_x == 0) && ($dest_y == 0) && (!$reorientated)) {
         // We can just escape, nothing to do...
         imagedestroy($source);
 

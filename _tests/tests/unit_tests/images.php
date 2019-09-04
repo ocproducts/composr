@@ -915,9 +915,18 @@ class images_test_set extends cms_test_case
                 $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/4x3.' . $extension, '8x6', 8, 6, 'pad', 'end_if_horizontal', /*$only_make_smaller=*/true, null, null, 0, 0, null, null, 3, 2, $additional_information), 'convert_image_plus w/ 4x3 ' . $extension . ' => 8x6 (only_make_smaller = true test; this parameter should be ignored for padding), Pad algorithm where = end_if_horizontal. ' . $additional_information);
             }
 
-            // Pad-Crop Tests
+            // Pad-Crop Tests (some simple ones just to confirm the pad vs crop algorithm works)
             if ($this->isRunningTest('234')) {
-                $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x9', 32, 9, 'pad_vert_crop_vert', 'both', /*$only_make_smaller=*/true, null, null, 8, 0, 7, 0, null, null, 24, 9, 25, 9, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+                $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x9', 32, 9, 'pad_vert_crop_vert', 'both', /*$only_make_smaller=*/false, null, null, 8, 0, 7, 0, null, null, 24, 9, 25, 9, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+            }
+            if ($this->isRunningTest('235')) {
+                $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x9', 32, 9, 'pad_horiz_crop_horiz', 'both', /*$only_make_smaller=*/false, 0, 0, null, null, null, null, 31, 8, null, null, null, null, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+            }
+            if ($this->isRunningTest('236')) {
+                $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x36', 32, 36, 'pad_vert_crop_vert', 'both', /*$only_make_smaller=*/false, 0, 0, null, null, null, null, 31, 35, null, null, null, null, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+            }
+            if ($this->isRunningTest('237')) {
+                $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x36', 32, 36, 'pad_horiz_crop_horiz', 'both', /*$only_make_smaller=*/false, null, null, null, null, 0, 0, null, null, null, null, 31, 35, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
             }
         }
 
