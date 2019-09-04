@@ -300,7 +300,7 @@ class images_test_set extends cms_test_case
 
         $wheres = array('both', 'start', 'end', 'start_if_vertical', 'start_if_horizontal', 'end_if_vertical', 'end_if_horizontal');
 
-        $this->cleanupFromConvertImagePlus();
+        $this->cleanupOutFiles();
 
         // Tests...
 
@@ -916,15 +916,34 @@ class images_test_set extends cms_test_case
             }
 
             // Pad-Crop Tests
-            // TODO: Finish these
-            //$this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x9', 32, 9, 'pad_vert_crop_vert', 'both', /*$only_make_smaller=*/true, null, null, 8, 0, 7, 0, null, null, 24, 9, 25, 9, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
-            //TODO: This one is failing at the moment. $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_18x32_4x4.' . $extension, '14x16', 31, 32, 'pad_horiz_crop_horiz', 'both', /*$only_make_smaller=*/true, null, null, 1, 1, 0, 0, null, null, 2, 2, 3, 3, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+            if ($this->isRunningTest('234')) {
+                $this->assertTrue($this->runPadCropTest(get_base_url() . '/_tests/assets/images/pad_crop_both_32x18_16x9.' . $extension, '32x9', 32, 9, 'pad_vert_crop_vert', 'both', /*$only_make_smaller=*/true, null, null, 8, 0, 7, 0, null, null, 24, 9, 25, 9, $additional_information), 'convert_image_plus w/ 32x18 and 16x9 object ' . $extension . ' => 32x9 pad_vert_crop_vert algorithm where = both. ' . $additional_information);
+            }
         }
 
-        $this->cleanupFromConvertImagePlus();
+        $this->cleanupOutFiles();
     }
 
     // Helper functions...
+
+    protected function isRunningTest($name)
+    {
+        if ($this->only === null) {
+            return true;
+        }
+        if ($this->only == $name) {
+            return true;
+        }
+        $matches = array();
+        if (preg_match('#^(\d+)\-(\d+)$#', $this->only, $matches) != 0) {
+            $from = intval($matches[1]);
+            $to = intval($matches[2]);
+            if (($from <= intval($name)) && ($to >= intval($name))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     protected function runDimensionTest($in_path, $convert_width, $convert_height, $box_size, $only_make_smaller, $expected_width, $expected_height, &$additional_information)
     {
@@ -939,7 +958,7 @@ class images_test_set extends cms_test_case
             return false;
         }
 
-        unlink($out_path);
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -956,6 +975,8 @@ class images_test_set extends cms_test_case
         if (!$this->checkImageSize($out_path, $expected_width, $expected_height, $additional_information)) {
             return false;
         }
+
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -988,7 +1009,7 @@ class images_test_set extends cms_test_case
             return false;
         }
 
-        unlink($out_path);
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -1043,7 +1064,7 @@ class images_test_set extends cms_test_case
             return false;
         }
 
-        unlink($out_path);
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -1077,7 +1098,7 @@ class images_test_set extends cms_test_case
             return false;
         }
 
-        unlink($out_path);
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -1105,7 +1126,7 @@ class images_test_set extends cms_test_case
             return false;
         }
 
-        unlink($out_path);
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -1143,6 +1164,8 @@ class images_test_set extends cms_test_case
                 return false;
             }
         }
+
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -1194,6 +1217,8 @@ class images_test_set extends cms_test_case
                 }
             }
         }
+
+        $this->outputDebugVisual($out_path, true);
 
         return true;
     }
@@ -1253,43 +1278,12 @@ class images_test_set extends cms_test_case
             }
         }
 
+        $this->outputDebugVisual($out_path, true);
+
         return true;
     }
 
-    protected function outputDebugVisual($out_path)
-    {
-        if (get_param_integer('debug', 0) == 1) {
-            echo '<br style="clear: both" />';
-            require_code('mime_types');
-            if (is_file($out_path)) {
-                $value = 'data:' . get_mime_type(get_file_extension($out_path), false) . ';base64,' . base64_encode(file_get_contents($out_path));
-                echo '<img style="float: left; width: 100px; padding-right: 1em;" src="' . escape_html($value) . '" />';
-            } else {
-                echo '<span style="float: left; width: 100px; padding-right: 1em;">MISSING</span>';
-            }
-        }
-    }
-
-    protected function isRunningTest($name)
-    {
-        if ($this->only === null) {
-            return true;
-        }
-        if ($this->only == $name) {
-            return true;
-        }
-        $matches = array();
-        if (preg_match('#^(\d+)\-(\d+)$#', $this->only, $matches) != 0) {
-            $from = intval($matches[1]);
-            $to = intval($matches[2]);
-            if (($from <= intval($name)) && ($to >= intval($name))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected function cleanupFromConvertImagePlus()
+    protected function cleanupOutFiles()
     {
         $dh = opendir(get_custom_file_base() . '/temp');
         if ($dh !== false) {
@@ -1322,7 +1316,6 @@ class images_test_set extends cms_test_case
             $additional_information = 'convert_image_plus failed on ' . $in_url;
             return false;
         }
-
         $out_path = convert_url_to_path($out_url);
         return $out_path;
     }
@@ -1360,6 +1353,15 @@ class images_test_set extends cms_test_case
             return false;
         }
         return $image_resource;
+    }
+
+    protected function checkImageStringsAreSame($string1, $string2, &$additional_information)
+    {
+        if ($string1 !== $string2) {
+            $additional_information = 'Expected the contents of the converted image to be exactly the same as the original image, but instead they were different.';
+            return false;
+        }
+        return true;
     }
 
     protected function checkColor($out_path, $image_resource, $x, $y, $expected_red, $expected_green, $expected_blue, $expected_alpha, $tolerance, &$additional_information)
@@ -1467,12 +1469,18 @@ class images_test_set extends cms_test_case
         return true;
     }
 
-    protected function checkImageStringsAreSame($string1, $string2, &$additional_information)
+    protected function outputDebugVisual($out_path, $worked = false)
     {
-        if ($string1 !== $string2) {
-            $additional_information = 'Expected the contents of the converted image to be exactly the same as the original image, but instead they were different.';
-            return false;
+        $debug_level = get_param_integer('debug', 0);
+        if (($debug_level != 0) && ((!$worked) || ($debug_level == 2))) {
+            echo '<br style="clear: both" /><br />';
+            require_code('mime_types');
+            if (is_file($out_path)) {
+                $value = 'data:' . get_mime_type(get_file_extension($out_path), false) . ';base64,' . base64_encode(file_get_contents($out_path));
+                echo '<img style="float: left; width: 100px; padding-right: 1em;" src="' . escape_html($value) . '" />';
+            } else {
+                echo '<span style="float: left; width: 100px; padding-right: 1em;">MISSING</span>';
+            }
         }
-        return true;
     }
 }
