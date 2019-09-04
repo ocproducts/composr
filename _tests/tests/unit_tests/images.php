@@ -691,7 +691,7 @@ class images_test_set extends cms_test_case
             }
             // Down-scaling where = start_if_horizontal
             if ($this->isRunningTest('162')) {
-                $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'start_if_horizontal', /*$only_make_smaller=*/false, 0, 2, 0, 3, 8, 8, 8, 7, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = start_if_horizontal. ' . $additional_information);
+                $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/16x9.' . $extension, '8x8', 8, 8, 'pad', 'start_if_horizontal', /*$only_make_smaller=*/false, 0, 2, 0, 3, 8, 8, 8, 6, $additional_information), 'convert_image_plus w/ 16x9 ' . $extension . ' => 8x8 (unequal aspect test, 16:9 => 1:1), Pad algorithm where = start_if_horizontal. ' . $additional_information);
             }
             if ($this->isRunningTest('163')) {
                 $this->assertTrue($this->runPadTest(get_base_url() . '/_tests/assets/images/9x16.' . $extension, '8x8', 8, 8, 'pad', 'start_if_horizontal', /*$only_make_smaller=*/false, 5, 0, 4, 0, 5, 8, 4, 8, $additional_information), 'convert_image_plus w/ 9x16 ' . $extension . ' => 8x8 (unequal aspect test, 9:16 => 1:1), Pad algorithm where = start_if_horizontal. ' . $additional_information);
@@ -1057,7 +1057,6 @@ class images_test_set extends cms_test_case
             return false;
         }
 
-        // Test image dimensions
         $dimensions = $this->checkImageSize($out_path, $expected_width, $expected_height, $additional_information);
         if ($dimensions === false) {
             return false;
@@ -1262,8 +1261,12 @@ class images_test_set extends cms_test_case
         if (get_param_integer('debug', 0) == 1) {
             echo '<br style="clear: both" />';
             require_code('mime_types');
-            $value = 'data:' . get_mime_type(get_file_extension($out_path), false) . ';base64,' . base64_encode(file_get_contents($out_path));
-            echo '<img style="float: left; width: 100px; padding-right: 1em;" src="' . escape_html($value) . '" />';
+            if (is_file($out_path)) {
+                $value = 'data:' . get_mime_type(get_file_extension($out_path), false) . ';base64,' . base64_encode(file_get_contents($out_path));
+                echo '<img style="float: left; width: 100px; padding-right: 1em;" src="' . escape_html($value) . '" />';
+            } else {
+                echo '<span style="float: left; width: 100px; padding-right: 1em;">MISSING</span>';
+            }
         }
     }
 
@@ -1315,7 +1318,7 @@ class images_test_set extends cms_test_case
     protected function convertImagePlus($in_url, $dimensions, $algorithm, $where, $only_make_smaller, &$additional_information)
     {
         $out_url = convert_image_plus($in_url, $dimensions, 'temp', null, null, $algorithm, $where, '#000000', $only_make_smaller);
-        if ($out_url === null) {
+        if ($out_url == '') {
             $additional_information = 'convert_image_plus failed on ' . $in_url;
             return false;
         }

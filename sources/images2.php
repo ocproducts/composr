@@ -621,7 +621,7 @@ function _convert_image($from, &$to, $width, $height, $box_size = null, $exit_on
             cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
         cms_set_time_limit($old_limit);
-        return $to;
+        return _image_path_to_url($to);
     }
 
     unset($from_file);
