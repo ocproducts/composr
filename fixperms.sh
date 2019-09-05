@@ -8,7 +8,7 @@ echo "1/4 Cleared caches"
 
 # Reset to good start state first
 touch _config.php
-find . -type f -not -path "./sites/*" -not -path "./servers/*" -not -path "./_old/*" -not -path "./uploads/*" -not -path "./uploads/website_specific/compo.sr/upgrades/full/*" -exec chmod 644 {} \;
+find . -type f -not -path "./sites/*" -not -path "./servers/*" -not -path "./_old/*" -not -path "./uploads/website_specific/compo.sr/upgrades/full/*" -exec chmod 644 {} \;
 find . -type d -not -path "./sites/*" -not -path "./servers/*" -not -path "./_old/*" -not -path "./uploads/website_specific/compo.sr/upgrades/full/*" -exec chmod 755 {} \;
 echo "2/4 Reset all permissions to good default state"
 
